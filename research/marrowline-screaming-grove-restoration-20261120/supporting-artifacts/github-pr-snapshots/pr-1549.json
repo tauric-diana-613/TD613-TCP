@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "𝌋 **SCREAMING GROVE · NATIVE PROSODY FREEDOM · INTEGRATED SOURCE**\n\n**Supersedes draft #1546**, which passed focused historical and native-output gates but was prepared before new main commit `4347c0f` introduced a separate manual role-conditioning A/B research path. This branch was created from that exact new main and applies only the previously bounded morphological freedom changes. It **preserves** `MARROWLINE_ROLE_IDS` routing and `buildMarrowlineRoleConditioningSystemInstruction()` unchanged.\n\n**Candidate repair:** Reconstructed October 2 speaker handoff, vertical stack emphasis and theatrical cue priority remain. The historical Oct 2 exact instructions are independently reproducible, but the ordinary browser restoration no longer mandates variation in codepoint selection, stack depth, clean intervals, or verse transitions across words/paragraphs. Full-duration single-register choral speech is allowed. An explicit receipt `native_prosody_profile` labels this active change. No post-processing, stencil, beauty contest, provider switch, budget change or glyph quota is introduced.\n\n**Evidence limit:** Old Google SSE witnessed slash-only text upstream under full and short two-voice prompts. Neutral Gemini 3.8 creative control can generate varied native multistacks, but there is no matched live provider observation proving this specific historical prompt intervention restores quality. **Human artistic trial pending.**\n\n**Acceptance:** Combined exact-head CI including existing historical deep-flourish priority, dual-voice HELD, morphology telemetry, legacy provider order, plus newly merged role-conditioning test contracts. No paid calls or release yet.\n\n𝄐 Sealed ⟐",
+  "comments": [],
+  "headRefName": "fix/marrowline-native-prosody-freedom-integrated-20261019",
+  "headRefOid": "de5919fd23c0f410e21b7fe55443acbbd86cbe0d",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "number": 1549,
+  "state": "MERGED",
+  "title": "fix(marrowline): unforce native prosody on current role-conditioning main"
+}

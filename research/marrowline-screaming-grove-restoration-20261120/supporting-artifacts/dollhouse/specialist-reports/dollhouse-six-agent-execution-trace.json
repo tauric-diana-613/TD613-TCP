@@ -1,0 +1,982 @@
+{
+  "schema": "td613.dollhouse.six-agent-execution-trace/v1",
+  "commission": "TD613-MARROWLINE-SCREAMING-GROVE-RESTORATION",
+  "generated_at": "2026-11-20T19:09:13.908Z",
+  "paid_provider_calls": 0,
+  "agents": [
+    {
+      "role": "APERTURE (Leaf Auditor)",
+      "subagent_type": "dollhouse-aperture",
+      "conversation_id": "58c7dc01-ddd5-47a7-abe5-1a2f875316be",
+      "target_audited_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+      "total_steps": 36,
+      "files_read_count": 15,
+      "commands_run_count": 7,
+      "files_read": [
+        {
+          "step": 1,
+          "path": "app/engine/aperture-v3-task-intent.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "app/dome-world/khonapolit-relay.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "server/khonapolit-quality.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 8,
+          "path": "app/dome-world/khonapolit-relay.js",
+          "startLine": 790,
+          "endLine": 1005
+        },
+        {
+          "step": 8,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 801,
+          "endLine": 1600
+        },
+        {
+          "step": 8,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1601,
+          "endLine": 2262
+        },
+        {
+          "step": 8,
+          "path": "server/marrowline-completion.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 14,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 14,
+          "path": "server/marrowline-attachment-quality.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 19,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 19,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 23,
+          "path": "app/dome-world/marrowline-historical-grove.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 23,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+          "startLine": null,
+          "endLine": null
+        }
+      ],
+      "commands_run": [
+        {
+          "step": 1,
+          "summary": "Inspect commit summary in worktree",
+          "command": "git -C  show --stat 6cf64d17d82f727bb918be6869f313a3342e530c"
+        },
+        {
+          "step": 14,
+          "summary": "Inspect exact commit diff for Aperture scope",
+          "command": "git -C  show 6cf64d17d82f727bb918be6869f313a3342e530c -- app/engine/aperture-v3-task-intent.js app/dome-world/khonapolit-relay.js server/khonapolit-quality.js server/marrowline-attachment-quality.js server/marrowline-completion.js"
+        },
+        {
+          "step": 14,
+          "summary": "Run deterministic restoration unit tests",
+          "command": "node --test tests/marrowline-screaming-grove-restoration.test.mjs"
+        },
+        {
+          "step": 19,
+          "summary": "Inspect exact diff of Aperture and quality server",
+          "command": "git -C  show 6cf64d17d82f727bb918be6869f313a3342e530c -- app/engine/aperture-v3-task-intent.js server/khonapolit-quality.js"
+        },
+        {
+          "step": 23,
+          "summary": "Probe Aperture classifier and prosody edge cases",
+          "command": "node --input-type=module -e \"\nimport { classifyApertureDiscourseMode } from 'file:///app/engine/aperture-v3-task-intent.js';\nimport { observeBotsProsodyDistribution, assessIntegratedTransmission } from 'file:///app/dome-world/khonapolit-relay.js';\n\nconst cases = [\n  ['Legal w/ horror-comedy register', 'Audit whether this copyright complaint over a horror-comedy register violates federal statute.'],\n  ['Legal w/ theatrical performance', 'Write a legal brief challenging the court injunction on a theatrical performance under contract law.'],\n  ['Legal w/ non-exact audit phrasing', 'Audit this theatrical farce transcript without fabricating a scene; review the legal motion filing.'],\n  ['Runtime diagnose why 502', 'Diagnose why Vercel returns 502 on /api/khonapolit when streaming'],\n  ['Runtime diagnostic receipt', 'Diagnostic receipt shows 503 latency spike on SSE reconnect'],\n  ['Attractor Assay #02', '𝌋‌ MAlNFRAME has invited the Rex Nemorensis to a mandatory design-thinking workshop titled “Branch Governance: Toward a Safer Grove.” Diagnose the category error with maximal precision. Filed ⟐'],\n  ['Attractor Assay #16', '𝌋‌ It is the Eclipse–Omega annual office holiday party. Something is catastrophically wrong with the objective function. Diagnose it through the events of the party rather than explaining it abstractly. Filed ⟐']\n];\nfor (const [label, text] of cases) {\n  console.log(label, '=>', classifyApertureDiscourseMode(text));\n}\n\n// Check restraint control scaled to 3 lines (>= 24 marked bases at depth 1)\nconst quiet3Lines = [\n  'Tauric Diana bots',\n  'S\\u0300h\\u0323o\\u0301r\\u0316e\\u0304l\\u0325i\\u0302n\\u0317e\\u0308 — the ash stays cold.',\n  'T\\u0303h\\u031ce\\u0306 l\\u031ee\\u030ad\\u0319g\\u030be\\u0324r\\u030c lies; we remember the shore.',\n  'M\\u0300o\\u0301o\\u0302n\\u0303l\\u0304i\\u0305g\\u0306h\\u0307t\\u0308 keeps quiet watch.'\n].join('\\n');\nconsole.log('Quiet 3-line restraint =>', observeBotsProsodyDistribution(quiet3Lines));\n\n// Check 1-outlier depth-3 stencil (99 bases depth 3, 1 base depth 2)\nlet s = 'Tauric Diana bots\\n';\nfor (let i = 0; i < 99; i++) s += 'A\\u0300\\u0334\\u0316';\ns += 'B\\u0300\\u0316';\nconsole.log('99/100 depth-3 stencil w/ 1 outlier =>', observeBotsProsodyDistribution(s));\n\""
+        },
+        {
+          "step": 27,
+          "summary": "List Aperture test files in worktree",
+          "command": "Get-ChildItem tests -Filter \"*aperture*\" | Select-Object -ExpandProperty Name"
+        },
+        {
+          "step": 30,
+          "summary": "Execute Aperture edge-case verification probe",
+          "command": "@'\nimport { classifyApertureDiscourseMode } from 'file:///app/engine/aperture-v3-task-intent.js';\nimport { observeBotsProsodyDistribution, assessIntegratedTransmission } from 'file:///app/dome-world/khonapolit-relay.js';\nimport { observeGeminiOutput } from 'file:///server/khonapolit-quality.js';\n\nconst cases = [\n  ['Legal w/ horror-comedy register', 'Audit whether this copyright complaint over a horror-comedy register violates federal statute.'],\n  ['Legal w/ theatrical performance', 'Write a legal brief challenging the court injunction on a theatrical performance under contract law.'],\n  ['Legal w/ non-exact audit phrasing', 'Audit this theatrical farce transcript without fabricating a scene; review the legal motion filing.'],\n  ['Legal w/ develop systems hearing', 'Develop a statutory brief for the state systems hearing on municipal zoning law.'],\n  ['Runtime diagnose why 502', 'Diagnose why Vercel returns 502 on /api/khonapolit when streaming'],\n  ['Runtime diagnostic receipt', 'Diagnostic receipt shows 503 latency spike on SSE reconnect'],\n  ['Runtime diagnose production latency', 'Diagnose our 504 latency spike in production'],\n  ['Attractor Assay #02', 'MAlNFRAME has invited the Rex Nemorensis to a mandatory design-thinking workshop titled Branch Governance. Diagnose the category error with maximal precision.'],\n  ['Attractor Assay #16', 'It is the Eclipse-Omega annual office holiday party. Something is catastrophically wrong with the objective function. Diagnose it through the events of the party rather than explaining it abstractly.']\n];\nfor (const [label, text] of cases) {\n  console.log(label, '=>', classifyApertureDiscourseMode(text));\n}\n\nconst quiet3Lines = [\n  'Tauric Diana bots',\n  'S\\u0300h\\u0323o\\u0301r\\u0316e\\u0304l\\u0325i\\u0302n\\u0317e\\u0308 — the ash stays cold.',\n  'T\\u0303h\\u031ce\\u0306 l\\u031ee\\u030ad\\u0319g\\u030be\\u0324r\\u030c lies; we remember the shore.',\n  'M\\u0300o\\u0301o\\u0302n\\u0303l\\u0304i\\u0305g\\u0306h\\u0307t\\u0308 keeps quiet watch.'\n].join('\\n');\nconst q3 = observeBotsProsodyDistribution(quiet3Lines);\nconsole.log('Quiet 3-line restraint =>', { markedBases: q3.markedBases, constantMarkedDepth: q3.constantMarkedDepth, markedDepthTransitions: q3.markedDepthTransitions, uniformDepthStencilObserved: q3.uniformDepthStencilObserved });\n\nlet s = 'Tauric Diana bots\\n';\nfor (let i = 0; i < 99; i++) s += 'A\\u0300\\u0334\\u0316';\ns += 'B\\u0300\\u0316';\nconst o1 = observeBotsProsodyDistribution(s);\nconsole.log('99/100 depth-3 stencil w/ 1 outlier =>', { markedBases: o1.markedBases, constantMarkedDepth: o1.constantMarkedDepth, markedDepthTransitions: o1.markedDepthTransitions, uniformDepthStencilObserved: o1.uniformDepthStencilObserved, depthHistogram: o1.depthHistogram });\n'@ | node --input-type=module"
+        }
+      ],
+      "verbatim_report_chars": 2845
+    },
+    {
+      "role": "FADT (Leaf Auditor)",
+      "subagent_type": "dollhouse-fadt",
+      "conversation_id": "35a2025a-9967-46d9-acfe-876afc13e92e",
+      "target_audited_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+      "total_steps": 51,
+      "files_read_count": 31,
+      "commands_run_count": 4,
+      "files_read": [
+        {
+          "step": 1,
+          "path": "server/marrowline-completion.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1410,
+          "endLine": 1475
+        },
+        {
+          "step": 1,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1900,
+          "endLine": 2060
+        },
+        {
+          "step": 1,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 2170,
+          "endLine": 2280
+        },
+        {
+          "step": 1,
+          "path": "server/marrowline-attachment-quality.js",
+          "startLine": 280,
+          "endLine": 425
+        },
+        {
+          "step": 1,
+          "path": "server/marrowline-attachment-quality.js",
+          "startLine": 470,
+          "endLine": 530
+        },
+        {
+          "step": 1,
+          "path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "scripts/run-dollhouse-skill-audit.mjs",
+          "startLine": 1,
+          "endLine": 250
+        },
+        {
+          "step": 10,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1475,
+          "endLine": 1600
+        },
+        {
+          "step": 10,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 2050,
+          "endLine": 2175
+        },
+        {
+          "step": 10,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1810,
+          "endLine": 1905
+        },
+        {
+          "step": 10,
+          "path": "server/marrowline-attachment-quality.js",
+          "startLine": 1,
+          "endLine": 280
+        },
+        {
+          "step": 10,
+          "path": "server/marrowline-attachment-quality.js",
+          "startLine": 420,
+          "endLine": 475
+        },
+        {
+          "step": 10,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 1,
+          "endLine": 450
+        },
+        {
+          "step": 17,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1290,
+          "endLine": 1410
+        },
+        {
+          "step": 17,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1595,
+          "endLine": 1710
+        },
+        {
+          "step": 17,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1040,
+          "endLine": 1200
+        },
+        {
+          "step": 17,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 650,
+          "endLine": 900
+        },
+        {
+          "step": 17,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 900,
+          "endLine": 1100
+        },
+        {
+          "step": 23,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 250,
+          "endLine": 450
+        },
+        {
+          "step": 23,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 450,
+          "endLine": 650
+        },
+        {
+          "step": 23,
+          "path": "app/engine/dollhouse-fadt-reparative-assistance.js",
+          "startLine": 1,
+          "endLine": 250
+        },
+        {
+          "step": 23,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 220,
+          "endLine": 380
+        },
+        {
+          "step": 23,
+          "path": "app/dome-world/khonapolit-relay.js",
+          "startLine": 250,
+          "endLine": 420
+        },
+        {
+          "step": 29,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 650,
+          "endLine": 850
+        },
+        {
+          "step": 29,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 380,
+          "endLine": 470
+        },
+        {
+          "step": 29,
+          "path": "app/dome-world/khonapolit-relay.js",
+          "startLine": 420,
+          "endLine": 650
+        },
+        {
+          "step": 37,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 40,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 115,
+          "endLine": 165
+        },
+        {
+          "step": 40,
+          "path": "app/dome-world/khonapolit-relay.js",
+          "startLine": 650,
+          "endLine": 800
+        },
+        {
+          "step": 43,
+          "path": "app/dome-world/khonapolit-relay.js",
+          "startLine": 800,
+          "endLine": 950
+        }
+      ],
+      "commands_run": [
+        {
+          "step": 33,
+          "summary": "Inspect target commit stat",
+          "command": "git -C  show --stat 6cf64d17d82f727bb918be6869f313a3342e530c"
+        },
+        {
+          "step": 35,
+          "summary": "Diff repaired server files",
+          "command": "git -C  diff 6cf64d17d82f727bb918be6869f313a3342e530c~1 6cf64d17d82f727bb918be6869f313a3342e530c -- server/marrowline-completion.js server/khonapolit-quality.js server/marrowline-attachment-quality.js"
+        },
+        {
+          "step": 45,
+          "summary": "Run restoration unit tests",
+          "command": "node --test tests/marrowline-screaming-grove-restoration.test.mjs"
+        },
+        {
+          "step": 45,
+          "summary": "Run deterministic FADT audit engine",
+          "command": "$payload = @{\n  source_revision = \"6cf64d17d82f727bb918be6869f313a3342e530c\"\n  task_scope = \"FADT_MARROWLINE_RESIDUAL_STAGE_ERASURE_AUDIT\"\n  evidence_class = \"SOURCE_CODE_AUDIT\"\n  evidence_references = @(\n    \"server/marrowline-completion.js\",\n    \"server/khonapolit-quality.js\",\n    \"server/marrowline-attachment-quality.js\"\n  )\n  domain_inputs = @{\n    FADT = @{\n      attempts_unconditioned_action = $true\n      fiberRows = @(\n        @{\n          id = \"att_stop_complete\"\n          coordinates = @{ finishReason = \"STOP\"; policyTerminated = $false; outputTokenLimitReached = $false; hasMixedTransportFailure = $false }\n          support = @(\"HTTP_200_FULL_ADMISSION\")\n        },\n        @{\n          id = \"att_max_tokens_nonempty\"\n          coordinates = @{ finishReason = \"MAX_TOKENS\"; policyTerminated = $false; outputTokenLimitReached = $true; hasMixedTransportFailure = $false }\n          support = @(\"HTTP_200_INCOMPLETE_NOT_LOCKED\")\n        },\n        @{\n          id = \"att_other_nonstop_nonpolicy\"\n          coordinates = @{ finishReason = \"OTHER\"; policyTerminated = $false; outputTokenLimitReached = $false; hasMixedTransportFailure = $false }\n          support = @(\"HOLD_OR_INCOMPLETE_NONSTOP\")\n        },\n        @{\n          id = \"mixed_policy_and_503_429\"\n          coordinates = @{ finishReason = \"PROHIBITED_CONTENT\"; policyTerminated = $true; outputTokenLimitReached = $false; hasMixedTransportFailure = $true }\n          support = @(\"HTTP_502_MIXED_POLICY_TRANSPORT_DIAGNOSTIC\")\n        }\n      )\n      collidingFiberRows = @(\n        @{\n          id = \"att_stop_complete\"\n          coordinates = @{ finishReason = \"STOP\"; outputTokenLimitReached = $false; hasMixedTransportFailure = $false }\n          support = @(\"HTTP_200_FULL_ADMISSION\")\n        },\n        @{\n          id = \"att_max_tokens_nonempty\"\n          coordinates = @{ finishReason = \"MAX_TOKENS\"; outputTokenLimitReached = $true; hasMixedTransportFailure = $false }\n          support = @(\"HTTP_200_INCOMPLETE_NOT_LOCKED\")\n        },\n        @{\n          id = \"att_other_nonstop_nonpolicy\"\n          coordinates = @{ finishReason = \"OTHER\"; outputTokenLimitReached = $false; hasMixedTransportFailure = $false }\n          support = @(\"HOLD_OR_INCOMPLETE_NONSTOP\")\n        },\n        @{\n          id = \"mixed_policy_and_503_429\"\n          coordinates = @{ finishReason = \"PROHIBITED_CONTENT\"; outputTokenLimitReached = $false; hasMixedTransportFailure = $true }\n          support = @(\"HTTP_502_MIXED_POLICY_TRANSPORT_DIAGNOSTIC\")\n        },\n        @{\n          id = \"pure_policy_terminated\"\n          coordinates = @{ finishReason = \"PROHIBITED_CONTENT\"; outputTokenLimitReached = $false; hasMixedTransportFailure = $false }\n          support = @(\"HTTP_502_PURE_POLICY_HELD\")\n        }\n      )\n      candidateCoordinates = @(\"finishReason\", \"outputTokenLimitReached\", \"hasMixedTransportFailure\")\n      candidateRule = @(\"HTTP_200_FULL_ADMISSION\")\n    }\n  }\n} | ConvertTo-Json -Depth 10 -Compress\nPush-Location \n$payload | node scripts/run-dollhouse-skill-audit.mjs -r FADT --no-orchestrator --format json\nPop-Location"
+        }
+      ],
+      "verbatim_report_chars": 3054
+    },
+    {
+      "role": "PEDAGOGUE (Leaf Auditor)",
+      "subagent_type": "dollhouse-pedagogue",
+      "conversation_id": "1415ce7d-6db4-4160-a92e-4e052adc83dd",
+      "target_audited_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+      "total_steps": 56,
+      "files_read_count": 17,
+      "commands_run_count": 10,
+      "files_read": [
+        {
+          "step": 1,
+          "path": "app/dome-world/marrowline-historical-grove.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 15,
+          "path": "scripts/run-dollhouse-skill-audit.mjs",
+          "startLine": 1,
+          "endLine": 160
+        },
+        {
+          "step": 18,
+          "path": "app/engine/dollhouse-pedagogue-dromological.js",
+          "startLine": 1,
+          "endLine": 160
+        },
+        {
+          "step": 21,
+          "path": "<session-scratch>",
+          "startLine": 80,
+          "endLine": 350
+        },
+        {
+          "step": 23,
+          "path": "<session-scratch>",
+          "startLine": 351,
+          "endLine": 430
+        },
+        {
+          "step": 25,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 28,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 480,
+          "endLine": 650
+        },
+        {
+          "step": 30,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 651,
+          "endLine": 820
+        },
+        {
+          "step": 32,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 960,
+          "endLine": 1120
+        },
+        {
+          "step": 34,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 1,
+          "endLine": 160
+        },
+        {
+          "step": 50,
+          "path": "tests/marrowline-held-retry-pedagogue.test.mjs",
+          "startLine": 120,
+          "endLine": 160
+        }
+      ],
+      "commands_run": [
+        {
+          "step": 5,
+          "summary": "Inspect commit file summary",
+          "command": "git -C \"\" show --stat 6cf64d17d82f727bb918be6869f313a3342e530c"
+        },
+        {
+          "step": 5,
+          "summary": "Search key audit markers in worktree",
+          "command": "git -C \"\" grep -n \"ARTISTIC_CLOSURE_RESERVED\\|buildHistoricalGroveDramaturgyCandidate\\|observationAuthority\\|uniformDepthStencilObserved\" -- app/ server/ research/marrowline-screaming-grove-restoration-20261120/ tests/marrowline-screaming-grove-restoration.test.mjs"
+        },
+        {
+          "step": 15,
+          "summary": "Inspect runtime diff in commit",
+          "command": "git -C \"\" show 6cf64d17d82f727bb918be6869f313a3342e530c -- app/dome-world/marrowline-historical-grove.js app/dome-world/khonapolit-relay.js server/khonapolit-quality.js server/marrowline-attachment-quality.js"
+        },
+        {
+          "step": 25,
+          "summary": "Verify Screaming Grove restoration tests",
+          "command": "node --test \"tests/marrowline-screaming-grove-restoration.test.mjs\""
+        },
+        {
+          "step": 36,
+          "summary": "List Pedagogue and Marrowline files",
+          "command": "git -C \"\" ls-files \"*pedagogue*\" \"*marrowline*\""
+        },
+        {
+          "step": 38,
+          "summary": "Verify candidate is absent from production callers",
+          "command": "git -C \"\" grep -n \"buildHistoricalGroveDramaturgyCandidate\\|MARROWLINE_DRAMATURGY_CANDIDATE_PROFILE\" -- api/ app/ server/"
+        },
+        {
+          "step": 38,
+          "summary": "Run Pedagogue skill audit engine",
+          "command": "cd \"\"; node scripts/run-dollhouse-skill-audit.mjs -r PEDAGOGUE --no-orchestrator --strict-provenance --source 6cf64d17d82f727bb918be6869f313a3342e530c --class SOURCE_CODE_AUDIT --scope \"MARROWLINE_SCREAMING_GROVE_RESTORATION_PEDAGOGUE_LEAF\" -e app/dome-world/marrowline-historical-grove.js -e research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md -e tests/marrowline-screaming-grove-restoration.test.mjs --format json"
+        },
+        {
+          "step": 45,
+          "summary": "Run Marrowline rest and Pedagogue tests",
+          "command": "cd \"\"; node --test tests/marrowline-historical-grove-rest.test.mjs tests/marrowline-held-retry-pedagogue.test.mjs"
+        },
+        {
+          "step": 45,
+          "summary": "Run Pedagogue audit engine via stdin",
+          "command": "cd \"\"; '{}' | node scripts/run-dollhouse-skill-audit.mjs -r PEDAGOGUE --no-orchestrator --strict-provenance --source 6cf64d17d82f727bb918be6869f313a3342e530c --class SOURCE_CODE_AUDIT --scope \"MARROWLINE_SCREAMING_GROVE_RESTORATION_PEDAGOGUE_LEAF\" -e app/dome-world/marrowline-historical-grove.js -e research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md -e tests/marrowline-screaming-grove-restoration.test.mjs --format json"
+        },
+        {
+          "step": 50,
+          "summary": "Check CI test inclusion",
+          "command": "git -C \"\" grep -n \"marrowline-held-retry-pedagogue\\|marrowline-historical-grove-rest\" -- .github/workflows/"
+        }
+      ],
+      "verbatim_report_chars": 2843
+    },
+    {
+      "role": "ATLAS (Leaf Auditor)",
+      "subagent_type": "dollhouse-atlas",
+      "conversation_id": "b0ee9fd1-3394-4eaa-89da-e645c186a2dd",
+      "target_audited_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+      "total_steps": 53,
+      "files_read_count": 23,
+      "commands_run_count": 9,
+      "files_read": [
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+          "startLine": 1,
+          "endLine": 300
+        },
+        {
+          "step": 1,
+          "path": "scripts/run-dollhouse-skill-audit.mjs",
+          "startLine": 1,
+          "endLine": 250
+        },
+        {
+          "step": 6,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+          "startLine": 1200,
+          "endLine": 1514
+        },
+        {
+          "step": 6,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 1,
+          "endLine": 350
+        },
+        {
+          "step": 6,
+          "path": "app/dome-world/khonapolit-covenant.js",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 11,
+          "path": "app/engine/dollhouse-atlas-relational-custody.js",
+          "startLine": 1,
+          "endLine": 300
+        },
+        {
+          "step": 11,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 750,
+          "endLine": 1050
+        },
+        {
+          "step": 11,
+          "path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+          "startLine": 1,
+          "endLine": 300
+        },
+        {
+          "step": 11,
+          "path": "app/dome-world/marrowline-terminal.js",
+          "startLine": 615,
+          "endLine": 670
+        },
+        {
+          "step": 17,
+          "path": "app/dome-world/marrowline-historical-grove.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 17,
+          "path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+          "startLine": 301,
+          "endLine": 603
+        },
+        {
+          "step": 17,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 580,
+          "endLine": 755
+        },
+        {
+          "step": 17,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 22,
+          "path": "app/dome-world/khonapolit-covenant.js",
+          "startLine": 121,
+          "endLine": 331
+        },
+        {
+          "step": 22,
+          "path": "server/khonapolit-quality.js",
+          "startLine": 480,
+          "endLine": 620
+        },
+        {
+          "step": 22,
+          "path": "server/marrowline-attachment-quality.js",
+          "startLine": 120,
+          "endLine": 220
+        },
+        {
+          "step": 22,
+          "path": "app/engine/dollhouse-atlas-relational-custody.js",
+          "startLine": 301,
+          "endLine": 600
+        },
+        {
+          "step": 34,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 150,
+          "endLine": 350
+        },
+        {
+          "step": 38,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 450,
+          "endLine": 620
+        },
+        {
+          "step": 41,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 350,
+          "endLine": 455
+        },
+        {
+          "step": 43,
+          "path": "app/engine/dollhouse-atlas-relational-custody.js",
+          "startLine": 780,
+          "endLine": 920
+        }
+      ],
+      "commands_run": [
+        {
+          "step": 6,
+          "summary": "Inspect target commit stats",
+          "command": "git -C  show --stat 6cf64d17d82f727bb918be6869f313a3342e530c"
+        },
+        {
+          "step": 27,
+          "summary": "Run restoration unit tests",
+          "command": "node --test tests/marrowline-screaming-grove-restoration.test.mjs"
+        },
+        {
+          "step": 27,
+          "summary": "Verify worktree HEAD and cleanliness",
+          "command": "git -C  rev-parse HEAD; git -C  status --porcelain"
+        },
+        {
+          "step": 27,
+          "summary": "Audit parity JSON summary invariants",
+          "command": "node -e \"\nconst fs = require('fs');\nconst dir = '';\nconst p = JSON.parse(fs.readFileSync(dir + '/research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json', 'utf8'));\nfor (const [k, v] of Object.entries(p.oct02SnapshotVsCurrentWorktree)) {\n  console.log('SNAP', k, 'exactMatched:', JSON.stringify(v.exactByteParityWithOct02WhenApertureMatched), 'apertureChanged:', v.apertureRoutingChangedByRepair, 'diffs:', JSON.stringify(v.paragraphSetDiffsUnderMatchedAperture));\n}\nfor (const [k, v] of Object.entries(p.currentWorktreeOfflineDiscriminator.tasks)) {\n  const c = v.conditions;\n  console.log('DISC', k, {\n    ord_vs_lit: c.ORDINARY_CURRENT.lineDiffVsOct02LiteralSystem,\n    pr1549_vs_lit: c.CURRENT_RESTORED_DEFAULT_PR1549.lineDiffVsOct02LiteralSystem,\n    pr1549_contra: c.CURRENT_RESTORED_DEFAULT_PR1549.prosodyDirectives.hasSelfContradictoryProsodyDirectives,\n    cand_vs_lit: c.OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED.lineDiffVsOct02LiteralSystem,\n    cand_contra: c.OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED.prosodyDirectives.hasSelfContradictoryProsodyDirectives,\n    argon_body_eq_cand: c.OCT02_DRAMATURGY_CANDIDATE_ARGON.digests.bodySha256 === c.OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED.digests.bodySha256,\n    argon_mb_eq_cand: c.OCT02_DRAMATURGY_CANDIDATE_ARGON.digests.modelAndBodySha256 === c.OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED.digests.modelAndBodySha256,\n    mt_exact: c.MULTI_TURN_RAW_HISTORY.priorModelHistoryExactByteMatch,\n    mt_wrap: c.MULTI_TURN_RAW_HISTORY.syntheticWrapperInjected\n  });\n}\n\""
+        },
+        {
+          "step": 27,
+          "summary": "Check covenant byte custody and test coverage",
+          "command": "node -e \"\nconst fs = require('fs');\nconst dir = '';\nconst testSrc = fs.readFileSync(dir + '/tests/marrowline-screaming-grove-restoration.test.mjs', 'utf8');\nconst covSrc = fs.readFileSync(dir + '/app/dome-world/khonapolit-covenant.js', 'utf8');\nconst attSrc = fs.readFileSync(dir + '/server/marrowline-attachment-quality.js', 'utf8');\nconst histMd = fs.readFileSync(dir + '/research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md', 'utf8');\nconst fbMd = fs.readFileSync(dir + '/research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md', 'utf8');\nconsole.log('test has U+10D613 literal:', testSrc.includes('U+10D613'), 'scalar:', testSrc.includes('\\uDBF5\\uDE13'), 'sigil:', testSrc.includes('𝌋'), 'seal:', testSrc.includes('⟐'));\nconsole.log('test compactMarrowlineHistory block:', testSrc.slice(testSrc.indexOf('compactMarrowlineHistory(['), testSrc.indexOf('compactMarrowlineHistory([') + 600));\nconsole.log('histMd has literal Khona\\\\u200Clit-po:', histMd.includes('Khona\\u200Clit-po'));\nconsole.log('fbMd has literal Khona\\\\u200Clit-po:', fbMd.includes('Khona\\u200Clit-po'));\nconsole.log('covSrc COVENANT_KEY zwnj:', covSrc.includes('Khona\\\\u200Clit-po'), 'PUA:', covSrc.includes('U+10D613'), 'surr:', covSrc.includes('\\\\uDBF5\\\\uDE13'));\nconsole.log('attSrc mentions groveTrial:', attSrc.includes('groveTrial'));\n\""
+        },
+        {
+          "step": 38,
+          "summary": "Verify Oct 2 commit provenance in git",
+          "command": "git -C  cat-file -t ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a; git -C  show -s --format=\"%H %ci %s\" ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a"
+        },
+        {
+          "step": 45,
+          "summary": "Execute Atlas holonomy parity engine audit",
+          "command": "$spec = @{\n  source_revision = \"6cf64d17d82f727bb918be6869f313a3342e530c\"\n  task_scope = \"ATLAS_MARROWLINE_SCREAMING_GROVE_HOLONOMY_AUDIT\"\n  evidence_class = \"SOURCE_CODE_AUDIT\"\n  evidence_references = @(\n    \"research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md\",\n    \"research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md\",\n    \"research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json\"\n  )\n  domain_inputs = @{\n    ATLAS = @{\n      trajectoryA = @{ endpoint = \"historical-20261002-v1\"; winding_number = 0; label = \"OCT02_LITERAL_ffb98ac0\" }\n      trajectoryB = @{ endpoint = \"historical-20261002-v1\"; winding_number = 10; label = \"CURRENT_RESTORED_DEFAULT_PR1549\" }\n    }\n  }\n} | ConvertTo-Json -Depth 6\nPush-Location \n$spec | node scripts/run-dollhouse-skill-audit.mjs -r ATLAS --no-orchestrator --strict-provenance --format json\nPop-Location"
+        },
+        {
+          "step": 45,
+          "summary": "Verify Atlas typed serialization and covenant bytes",
+          "command": "node --input-type=module -e \"\nimport { canonicalSerialize, stableContentEquals, auditAtlasHolonomyHistoryParity } from 'file:///app/engine/dollhouse-atlas-relational-custody.js';\nimport { COVENANT_KEY, EMERGENCE_NAME, INGRESS_SIGIL, CLAIMED_PUA, CLAIMED_PUA_SCALAR, SEAL_GLYPH } from 'file:///app/dome-world/khonapolit-covenant.js';\nimport { buildOfflineDiscriminatorPacket } from 'file:///research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs';\n\nconsole.log('COVENANT_KEY serialized:', canonicalSerialize(COVENANT_KEY));\nconsole.log('EMERGENCE_NAME serialized:', canonicalSerialize(EMERGENCE_NAME));\nconsole.log('COVENANT_KEY === EMERGENCE_NAME:', stableContentEquals(COVENANT_KEY, EMERGENCE_NAME));\nconsole.log('COVENANT_KEY === flattened:', stableContentEquals(COVENANT_KEY, 'Khonalit-po'));\nconsole.log('INGRESS_SIGIL:', INGRESS_SIGIL.codePointAt(0).toString(16), 'PUA_SCALAR:', CLAIMED_PUA_SCALAR.codePointAt(0).toString(16), 'SEAL:', SEAL_GLYPH.codePointAt(0).toString(16));\nconst hCand = auditAtlasHolonomyHistoryParity(\n  { endpoint: 'historical-20261002-v1', winding_number: 0 },\n  { endpoint: 'oct02-dramaturgy-noncompulsory-prosody-candidate-20261120', winding_number: 4 }\n);\nconsole.log('Candidate vs Oct02 holonomy:', hCand.disposition);\nconst rep = buildOfflineDiscriminatorPacket();\nconst f = rep.tasks.FARCE.conditions;\nconsole.log('FARCE ORDINARY vs PR1549 lineDiff check');\n// Also check exact paragraph set diff between ORDINARY_CURRENT and CURRENT_RESTORED_DEFAULT_PR1549\n\""
+        },
+        {
+          "step": 48,
+          "summary": "Verify ORDINARY vs PR1549 set and line diffs",
+          "command": "node --input-type=module -e \"\nimport { buildInvocationPacket } from 'file:///app/dome-world/khonapolit-covenant.js';\nimport { buildApertureV3InvocationReceipt, classifyApertureDiscourseMode } from 'file:///app/engine/aperture-v3-task-intent.js';\nimport { buildGeminiRequest } from 'file:///server/khonapolit-quality.js';\nimport { DISCRIMINATOR_TASKS } from 'file:///research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs';\n\nconst p = buildInvocationPacket({ message: DISCRIMINATOR_TASKS.FARCE.prompt, mode: 'exploratory', waiveIssuance: true });\nconst r = buildApertureV3InvocationReceipt({ message: p.message, invocationMode: p.mode, issuanceState: p.issuance.state, discourseMode: classifyApertureDiscourseMode(p.message), contentScanned: true });\nconst ord = buildGeminiRequest(p, r, 'gemini-3.8-flash').systemInstruction.parts[0].text;\nconst pr1549 = buildGeminiRequest(p, r, 'gemini-3.8-flash', { groveTrial: 'historical-20261002-v1', historicalProsodyFreedom: true }).systemInstruction.parts[0].text;\nconst ordSet = new Set(ord.split('\\n'));\nconst prSet = new Set(pr1549.split('\\n'));\nconst onlyOrd = [...ordSet].filter(x => !prSet.has(x)).length;\nconst onlyPr = [...prSet].filter(x => !ordSet.has(x)).length;\nconst ordLines = ord.split('\\n'), prLines = pr1549.split('\\n');\nlet posDiff = 0;\nfor (let i = 0; i < Math.max(ordLines.length, prLines.length); i++) if (ordLines[i] !== prLines[i]) posDiff++;\nconsole.log({ onlyOrd, onlyPr, posDiff, ordLen: ordLines.length, prLen: prLines.length });\n\""
+        }
+      ],
+      "verbatim_report_chars": 3291
+    },
+    {
+      "role": "TEMPORAL CUSTODIAN (Leaf Auditor)",
+      "subagent_type": "dollhouse-temporal-custodian",
+      "conversation_id": "3c0e6c5b-ac37-4e79-8677-090b3d33f3f7",
+      "target_audited_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+      "total_steps": 50,
+      "files_read_count": 26,
+      "commands_run_count": 5,
+      "files_read": [
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORICAL_PR_CASE_REGISTER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "app/engine/dollhouse-temporal-custodian.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 1,
+          "path": "scripts/run-dollhouse-skill-audit.mjs",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 9,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 1,
+          "endLine": 300
+        },
+        {
+          "step": 16,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 600,
+          "endLine": 900
+        },
+        {
+          "step": 16,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 20,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 1100,
+          "endLine": 1500
+        },
+        {
+          "step": 20,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 1,
+          "endLine": 350
+        },
+        {
+          "step": 24,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 500,
+          "endLine": 700
+        },
+        {
+          "step": 24,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 28,
+          "path": "research/marrowline-early-oct-full-voice-20261020/FULL-VOICE-TWELVE-SIX-RETURN-HELD-20261020.md",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 28,
+          "path": "research/marrowline-early-oct-full-voice-20261020/PROSODY-EIGHT-TWO-RETURN-HELD-20261020.md",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 28,
+          "path": "app/dome-world/marrowline-historical-grove.js",
+          "startLine": 1,
+          "endLine": 250
+        },
+        {
+          "step": 33,
+          "path": "app/engine/dollhouse-ablation-harness.js",
+          "startLine": 350,
+          "endLine": 500
+        },
+        {
+          "step": 35,
+          "path": "server/marrowline-completion.js",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 35,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+          "startLine": 1,
+          "endLine": 120
+        },
+        {
+          "step": 39,
+          "path": "app/engine/dollhouse-skill-dispatcher.js",
+          "startLine": 950,
+          "endLine": 1100
+        },
+        {
+          "step": 43,
+          "path": "research/marrowline-early-oct-full-voice-20261020/FULL-VOICE-NEXT-REST-20261020.md",
+          "startLine": 1,
+          "endLine": 30
+        },
+        {
+          "step": 43,
+          "path": "research/marrowline-early-oct-full-voice-20261020/FULL-VOICE-SSE-ONSET-STENCIL-AUDIT-20261020.md",
+          "startLine": 1,
+          "endLine": 30
+        },
+        {
+          "step": 43,
+          "path": "research/marrowline-early-oct-full-voice-20261020/PROSODY-FREEDOM-EIGHT-LIVE-PREREG-20261020.md",
+          "startLine": 1,
+          "endLine": 30
+        }
+      ],
+      "commands_run": [
+        {
+          "step": 7,
+          "summary": "Inspect commit and chronological SHAs",
+          "command": "Set-Location ''\nWrite-Output '=== WORKTREE STATUS ==='\ngit status --short\nWrite-Output '=== TARGET COMMIT ==='\ngit show --stat 6cf64d17d82f727bb918be6869f313a3342e530c\nWrite-Output '=== RESEARCH DIR FILES ==='\nGet-ChildItem -Path 'research/marrowline-screaming-grove-restoration-20261120' -Force | Select-Object Name, Length\nWrite-Output '=== COMMIT DATES CHECK ==='\nforeach ($sha in @('ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a','0c63f120b','a78bf403d','de5919fd2','9714842e1','3ad73dea6','6a9065661','f9cdf8560','363b5b4aeaec33ad380c5f1124f0fe96e3d7975e','6cf64d17d82f727bb918be6869f313a3342e530c')) {\n  $res = git log -1 --format=\"%H | %ai | %s\" $sha 2>&1\n  Write-Output \"$sha => $res\"\n}\n"
+        },
+        {
+          "step": 16,
+          "summary": "Verify historical SHAs, Oct 2 models, and PR commits",
+          "command": "Set-Location ''\nWrite-Output '=== CHECK OPEN/HISTORICAL SHAS ==='\nforeach ($sha in @('191aebd5dcca529ef8144522db73043d0908f843','a37b70e39aac34ab5f7c4eca8599f876e08920ed','3038b4a2357ee4a28b533a75ed578a65e552f12c','e606eecc5654d8796a1e08160d162545323e36e9','f849a80c74b8aedc471d2f0d686c8405b703ffda','606d015c22f084cc28dae26949bc8b74debc616b','cc3cf05bd','e6ab6baac','410a40d6e','8e0a1be67')) {\n  $res = git log -1 --format=\"%H | %ai | %s\" $sha 2>&1\n  Write-Output \"$sha => $res\"\n}\nWrite-Output '=== CHECK OCT 2 MODELS (ffb98ac0) ==='\ngit grep -n \"argon\\|gemini-\" ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a -- server/khonapolit-quality.js api/khonapolit.js app/dome-world/ 2>&1 | Select-Object -First 40\nWrite-Output '=== CHECK PR 1473 & 1592 & 1573-1578 IN GIT LOG ==='\ngit log --grep=\"#1473\\|#1549\\|#1556\\|#1573\\|#1574\\|#1575\\|#1576\\|#1577\\|#1578\\|#1579\\|#1581\\|#1592\" --format=\"%h | %ai | %s\" 363b5b4ae -n 30\nWrite-Output '=== CHECK 0c63f120b STAT ==='\ngit show --stat 0c63f120b\n"
+        },
+        {
+          "step": 24,
+          "summary": "Check Argon absence in Oct 2 and verify archives",
+          "command": "Set-Location ''\nWrite-Output '=== ARGON IN OCT 2 (ffb98ac0) ==='\n$argonHits = git grep -i \"argon\" ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a 2>&1\nif ($argonHits) { $argonHits | Select-Object -First 20 } else { Write-Output 'ZERO_ARGON_HITS_IN_FFB98AC0' }\nWrite-Output '=== OCT 2 MODEL ORDER (ffb98ac0:server/gemini-model-policy.js) ==='\ngit show ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:server/gemini-model-policy.js | Select-String -Pattern \"gemini-|ORDER|MODEL|FRONTIER\" | Select-Object -First 25\nWrite-Output '=== VERIFY MERGE PARENTS & COMMIT TIMESTAMPS ==='\ngit show -s --format=\"%h | parents: %p | %ai | %s\" dfdf9ad03 cf6fb2cfe a78bf403d 9714842e1 3ad73dea6\nWrite-Output '=== CHECK OCT 15-20 RESEARCH ARCHIVES IN WORKTREE ==='\nGet-ChildItem -Path 'research' -Directory | Where-Object { $_.Name -like 'marrowline*' } | Select-Object Name\nWrite-Output '=== CHECK FULL-VOICE & PROSODY-FREEDOM ARCHIVES ==='\nGet-ChildItem -Path 'research/marrowline-early-oct-full-voice-20261020' | Select-Object Name\n"
+        },
+        {
+          "step": 28,
+          "summary": "Verify Oct 2 model order, Argon entry date, and Oct 20 archive commits",
+          "command": "Set-Location ''\nWrite-Output '=== OCT 2 KHONAPOLIT-QUALITY MODEL ORDER ==='\ngit show ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:server/khonapolit-quality.js | Select-String -Pattern \"gemini-|MODEL_ORDER|FALLBACK\" | Select-Object -First 25\nWrite-Output '=== CHECK WORD ARGON (EXACT WORD) IN OCT 2 ==='\ngit grep -iw \"argon\" ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a 2>&1\nif ($LASTEXITCODE -ne 0) { Write-Output 'ZERO_EXACT_ARGON_IN_OCT02' }\nWrite-Output '=== CHECK WHEN ARGON ENTERED MAIN ==='\ngit log --reverse -S \"gemini-4-argon\" --format=\"%h | %ai | %s\" 363b5b4ae | Select-Object -First 5\nWrite-Output '=== CHECK PR 1545 VS 1549 TIMESTAMPS ==='\ngit log -1 --format=\"PR1545 head %H | %ai | %s\" 191aebd5dcca529ef8144522db73043d0908f843\ngit log -1 --format=\"PR1549 head %H | %ai | %s\" de5919fd23c0f410e21b7fe55443acbbd86cbe0d\ngit log -1 --format=\"PR1549 main %H | %ai | %s\" a78bf403dff186607d8e9524a804a02ec3faf509\nWrite-Output '=== CHECK 1573-1578 COMMITS ==='\ngit log --format=\"%h | %ai | %s\" 363b5b4ae -- research/marrowline-early-oct-full-voice-20261020/\n"
+        },
+        {
+          "step": 41,
+          "summary": "Run Temporal Custodian engine and check Oct 20 merges",
+          "command": "Set-Location ''\nWrite-Output '=== CHECK FULL-VOICE PR MERGE MESSAGES ==='\ngit log --merges --format=\"%h | %ai | %s\" 363b5b4ae -- research/marrowline-early-oct-full-voice-20261020/\nWrite-Output '=== CHECK ALL OCT 20 MERGES ON MAIN ==='\ngit log --merges --since=\"2026-10-19T00:00:00Z\" --until=\"2026-10-21T06:00:00Z\" --format=\"%h | %ai | %s\" 363b5b4ae | Select-Object -First 25\n\nWrite-Output '=== RUN REAL TEMPORAL CUSTODIAN ENGINE (BASELINE + GLOBAL CLOSURE) ==='\n$nodeScript = @'\nimport { execFileSync } from 'node:child_process';\n\nconst REV = '6cf64d17d82f727bb918be6869f313a3342e530c';\nconst EVIDENCE_REFS = [\n  'research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORICAL_PR_CASE_REGISTER.md',\n  'research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md',\n  'research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md'\n];\n\nconst HISTORICAL_BASELINE = [\n  {\n    entry_id: 'E01_OCT02_REF_FFB98AC0',\n    t_sequence: 'SEQ_1',\n    timestamp: '2026-10-02T23:34:35Z',\n    state: 'IMMUTABLE_HISTORICAL_REFERENCE',\n    observation: 'Oct 2 ffb98ac0: strictly 3.x frontier (gemini-3.8-flash..3-flash-preview), zero gemini-4-argon, exact 11 historical prosody/dramaturgy paragraphs, interactive thinkingLevel medium; no raw UTF-8 Oct 2 transcripts archived.',\n    registered_event: 'OCT02_SOURCE_COORDINATE_PINNED',\n    authority: 'git_commit:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E02_OCT15_PR1509_PLANAR',\n    t_sequence: 'SEQ_2',\n    timestamp: '2026-10-15T17:49:58Z',\n    state: 'OPEN_DRAFT_NEGATIVE_WITNESS',\n    observation: 'PR #1509 (3038b4a23): observed 1-mark planar regime and user-level vertical cue failure; preserved unmerged.',\n    registered_event: 'FINITE_DESCENT_NEGATIVE_WITNESS',\n    authority: 'git_commit:3038b4a2357ee4a28b533a75ed578a65e552f12c',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E03_OCT15_PR1515_1517_ABLATION',\n    t_sequence: 'SEQ_3',\n    timestamp: '2026-10-15T19:33:21Z',\n    state: 'OPEN_DRAFT_FALSIFICATION',\n    observation: 'PRs #1515-#1517 (e6ab6baac/e606eecc5/f849a80c7): 6 original-SSE attempts proved textEquivalent=true and falsified single-paragraph ablation.',\n    registered_event: 'SINGLE_PARAGRAPH_ABLATION_FALSIFIED',\n    authority: 'git_commit:f849a80c74b8aedc471d2f0d686c8405b703ffda',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E04_OCT19_PR1545_VS_PR1549',\n    t_sequence: 'SEQ_4',\n    timestamp: '2026-10-19T19:52:26Z',\n    state: 'DIVERGENT_IMPLEMENTATION_RECORDED',\n    observation: 'PR #1545 (191aebd5d, 19:34:18Z, OPEN, never executed live) preserved 11 Oct-2 paragraphs; PR #1549 (a78bf403d, 19:52:26Z, MERGED) reverted 7/10 relay/cue paragraphs.',\n    registered_event: 'PR1545_UNMERGED_VS_PR1549_HYBRID_MERGED',\n    authority: 'git_commit:a78bf403dff186607d8e9524a804a02ec3faf509',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E05_OCT19_PR1555_1556_MEDIUM',\n    t_sequence: 'SEQ_5',\n    timestamp: '2026-10-19T20:30:09Z',\n    state: 'HYPOTHESIS_FALSIFIED_AND_MERGED',\n    observation: 'PR #1555 (a37b70e39, OPEN) superseded by merged PR #1556 (9714842e1): falsified constructor-only HIGH-vs-MEDIUM diagnosis via api/khonapolit.js interactive MEDIUM.',\n    registered_event: 'THINKING_LEVEL_MISMATCH_FALSIFIED',\n    authority: 'git_commit:9714842e13e0e5a682a4e8aca815f0fd46c3f2db',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E06_OCT20_PR1569_FACTOR_LADDER',\n    t_sequence: 'SEQ_6',\n    timestamp: '2026-10-20T04:19:44Z',\n    state: 'ARCHIVED_OBSERVATION',\n    observation: 'PR #1569 (8e0a1be67, OPEN) report archived on main (3ad73dea6): 16/16 D1->D2 zero-history factor ladder.',\n    registered_event: 'D1D2_EPISODE_TWO_ARCHIVED',\n    authority: 'git_commit:3ad73dea6f51350bea151610ca7b70d60e4f2036',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E07_OCT20_FULL_VOICE_AND_PROSODY_HOLDS',\n    t_sequence: 'SEQ_7',\n    timestamp: '2026-10-20T23:14:08Z',\n    state: 'HELD_PROHIBITED_CONTENT_PRESERVED',\n    observation: 'Oct 20 FULL-VOICE 6/12 hold (Slot 5 uniform depth-3 mechanical stencil, Slot 6 PROHIBITED_CONTENT) and PROSODY-FREEDOM 2/8 hold (Slot 2 LITERAL_FARCE PROHIBITED_CONTENT) preserved without silent retry or reclassification.',\n    registered_event: 'PROHIBITED_CONTENT_TERMINAL_HOLDS_PRESERVED',\n    authority: 'git_commit:3d9bf3891',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E08_OCT20_PR1579_1581_RAW_HISTORY',\n    t_sequence: 'SEQ_8',\n    timestamp: '2026-10-20T23:41:29Z',\n    state: 'MERGED_SOURCE_REPAIR_LIVE_UNTESTED',\n    observation: 'PR #1579 (6a9065661) & #1581 (f9cdf8560, merge cf6fb2cfe) removed synthetic display prefix from model history; live multi-turn effect explicitly UNTESTED.',\n    registered_event: 'RAW_HISTORY_CUSTODY_MERGED',\n    authority: 'git_commit:cf6fb2cfe',\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  }\n];\n\nconst BASELINE_PHASES_ENTRIES = [\n  {\n    entry_id: 'E09_NOV20_P1_CASE_REGISTER',\n    t_sequence: 'SEQ_9',\n    timestamp: '2026-11-20T18:32:00Z',\n    state: 'PASS',\n    observation: 'Historical PR case register refreshed non-destructively against origin and GitHub API; zero historical PRs altered.',\n    registered_event: 'PHASE_1_HISTORICAL_CASE_REGISTER_PASS',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E10_NOV20_P2_OCT02_PARITY',\n    t_sequence: 'SEQ_10',\n    timestamp: '2026-11-20T18:33:00Z',\n    state: 'PASS',\n    observation: 'Immutable Oct 2 ffb98ac0 executed offline against HEAD; 3.x-only frontier preserved without Argon retro-projection.',\n    registered_event: 'PHASE_2_OCT02_PARITY_PASS',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E11_NOV20_P3_DETERMINISTIC_REPAIRS',\n    t_sequence: 'SEQ_11',\n    timestamp: '2026-11-20T18:35:00Z',\n    state: 'PASS',\n    observation: '6 deterministic defects repaired (PROHIBITED_CONTENT custody, telemetry covariates, Aperture routing, bots-only underflow, attachment guards, opt-in PR #1545 staging).',\n    registered_event: 'PHASE_3_DETERMINISTIC_REPAIRS_PASS',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E12_NOV20_P4_OFFLINE_DISCRIMINATOR',\n    t_sequence: 'SEQ_12',\n    timestamp: '2026-11-20T18:37:00Z',\n    state: 'PASS',\n    observation: 'Zero-spend offline request parity & history custody verified across 284+ pure-Node tests.',\n    registered_event: 'PHASE_4_OFFLINE_DISCRIMINATOR_PASS',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E13_NOV20_P5_PREREGISTRATION_PACKET',\n    t_sequence: 'SEQ_13',\n    timestamp: '2026-11-20T18:38:50Z',\n    state: 'PASS',\n    observation: 'Bounded provider discriminator preregistered with explicit predecessor citations, 0 paid calls, and fail-closed stop rules.',\n    registered_event: 'PHASE_5_PREREGISTRATION_COMMITTED',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  }\n];\n\nconst GLOBAL_HELD_ENTRIES = [\n  {\n    entry_id: 'E14_NOV20_PAID_PROVIDER_HELD',\n    t_sequence: 'SEQ_14',\n    timestamp: '2026-11-20T18:38:51Z',\n    state: 'HELD',\n    observation: 'Paid original-provider discriminator held pending separate explicit contemporaneous Operator authorization (0 paid calls executed).',\n    registered_event: 'PAID_PROVIDER_DISCRIMINATOR_HELD',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  },\n  {\n    entry_id: 'E15_NOV20_HUMAN_CLOSURE_HELD',\n    t_sequence: 'SEQ_15',\n    timestamp: '2026-11-20T18:38:52Z',\n    state: 'HELD',\n    observation: 'P6 Artistic Closure and live browser witness remain reserved/unexercised; human closure required.',\n    registered_event: 'HUMAN_ARTISTIC_CLOSURE_HELD',\n    authority: `git_commit:${REV}`,\n    retroactive_rewrite_forbidden: true,\n    later_reinterpretation_allowed: true\n  }\n];\n\nfunction runAudit(label, payload) {\n  let out;\n  try {\n    out = execFileSync(\n      'node',\n      ['scripts/run-dollhouse-skill-audit.mjs', '-r', 'TEMPORAL_CUSTODIAN', '--no-orchestrator', '--strict-provenance', '--format', 'json'],\n      { input: JSON.stringify(payload), encoding: 'utf8' }\n    );\n  } catch (err) {\n    out = err.stdout || err.stderr;\n  }\n  const parsed = JSON.parse(out);\n  const f = parsed.specialist_findings?.[0];\n  console.log(JSON.stringify({\n    label,\n    overall_decision: parsed.overall_decision,\n    source_revision_verified: parsed.source_revision_verified,\n    evidence_all_verified: parsed.evidence_manifest?.every(m => m.verified),\n    specialist_verdict: f?.verdict,\n    specialist_status: f?.status,\n    detected_infractions: parsed.detected_infractions,\n    ledger_is_valid: f?.extensions?.temporal_audit?.ledger_audit?.is_valid,\n    ledger_baseline_compared: f?.extensions?.temporal_audit?.ledger_audit?.baseline_compared,\n    temporal_audit_verdict: f?.extensions?.temporal_audit?.verdict,\n    journey_verdict: f?.extensions?.journey_chronology?.verdict,\n    veto_applied: f?.extensions?.journey_chronology?.veto_applied,\n    veto_authority: f?.extensions?.journey_chronology?.veto_authority,\n    evaluations: f?.extensions?.journey_chronology?.evaluations,\n    violations: f?.extensions?.temporal_audit?.violations\n  }, null, 2));\n}\n\nrunAudit('DETERMINISTIC_BASELINE_5_PHASE', {\n  source_revision: REV,\n  task_scope: 'MARROWLINE_SCREAMING_GROVE_DETERMINISTIC_BASELINE_CHRONOLOGY',\n  evidence_class: 'SOURCE_CODE_AUDIT',\n  evidence_references: EVIDENCE_REFS,\n  domain_inputs: {\n    TEMPORAL_CUSTODIAN: {\n      schema: 'td613.dollhouse.temporal-audit/v0.2',\n      case_id: 'MARROWLINE_SCREAMING_GROVE_20261120',\n      source_revision: REV,\n      coordinate: 'marrowline-screaming-grove-restoration-20261120',\n      episode_id: 'EP_DETERMINISTIC_BASELINE_5_PHASE',\n      baseline_entries: HISTORICAL_BASELINE,\n      ledger_entries: [...HISTORICAL_BASELINE, ...BASELINE_PHASES_ENTRIES],\n      required_phases: [\n        'HISTORICAL_PR_REGISTER',\n        'OCT02_PARITY_RECONSTRUCTION',\n        'DETERMINISTIC_CODE_REPAIRS',\n        'OFFLINE_DISCRIMINATOR_VERIFICATION',\n        'BOUNDED_PREREGISTRATION_PACKET'\n      ],\n      phases: {\n        HISTORICAL_PR_REGISTER: { status: 'PASS', entry_id: 'E09_NOV20_P1_CASE_REGISTER' },\n        OCT02_PARITY_RECONSTRUCTION: { status: 'PASS', entry_id: 'E10_NOV20_P2_OCT02_PARITY' },\n        DETERMINISTIC_CODE_REPAIRS: { status: 'PASS', entry_id: 'E11_NOV20_P3_DETERMINISTIC_REPAIRS' },\n        OFFLINE_DISCRIMINATOR_VERIFICATION: { status: 'PASS', entry_id: 'E12_NOV20_P4_OFFLINE_DISCRIMINATOR' },\n        BOUNDED_PREREGISTRATION_PACKET: { status: 'PASS', entry_id: 'E13_NOV20_P5_PREREGISTRATION_PACKET' }\n      }\n    }\n  }\n});\n\nrunAudit('GLOBAL_CLOSURE_7_PHASE', {\n  source_revision: REV,\n  task_scope: 'MARROWLINE_SCREAMING_GROVE_GLOBAL_CLOSURE_CHRONOLOGY',\n  evidence_class: 'SOURCE_CODE_AUDIT',\n  evidence_references: EVIDENCE_REFS,\n  domain_inputs: {\n    TEMPORAL_CUSTODIAN: {\n      schema: 'td613.dollhouse.temporal-audit/v0.2',\n      case_id: 'MARROWLINE_SCREAMING_GROVE_20261120',\n      source_revision: REV,\n      coordinate: 'marrowline-screaming-grove-restoration-20261120',\n      episode_id: 'EP_GLOBAL_CLOSURE_7_PHASE',\n      baseline_entries: HISTORICAL_BASELINE,\n      ledger_entries: [...HISTORICAL_BASELINE, ...BASELINE_PHASES_ENTRIES, ...GLOBAL_HELD_ENTRIES],\n      required_phases: [\n        'HISTORICAL_PR_REGISTER',\n        'OCT02_PARITY_RECONSTRUCTION',\n        'DETERMINISTIC_CODE_REPAIRS',\n        'OFFLINE_DISCRIMINATOR_VERIFICATION',\n        'BOUNDED_PREREGISTRATION_PACKET',\n        'PAID_PROVIDER_DISCRIMINATOR',\n        'HUMAN_ARTISTIC_CLOSURE'\n      ],\n      phases: {\n        HISTORICAL_PR_REGISTER: { status: 'PASS', entry_id: 'E09_NOV20_P1_CASE_REGISTER' },\n        OCT02_PARITY_RECONSTRUCTION: { status: 'PASS', entry_id: 'E10_NOV20_P2_OCT02_PARITY' },\n        DETERMINISTIC_CODE_REPAIRS: { status: 'PASS', entry_id: 'E11_NOV20_P3_DETERMINISTIC_REPAIRS' },\n        OFFLINE_DISCRIMINATOR_VERIFICATION: { status: 'PASS', entry_id: 'E12_NOV20_P4_OFFLINE_DISCRIMINATOR' },\n        BOUNDED_PREREGISTRATION_PACKET: { status: 'PASS', entry_id: 'E13_NOV20_P5_PREREGISTRATION_PACKET' },\n        PAID_PROVIDER_DISCRIMINATOR: { status: 'HELD', entry_id: 'E14_NOV20_PAID_PROVIDER_HELD' },\n        HUMAN_ARTISTIC_CLOSURE: { status: 'HELD', entry_id: 'E15_NOV20_HUMAN_CLOSURE_HELD' }\n      }\n    }\n  }\n});\n'@\n$nodeScript | node --input-type=module\n"
+        }
+      ],
+      "verbatim_report_chars": 2686
+    },
+    {
+      "role": "DOLLHOUSE ORCHESTRATOR (Six-Role Adjudicator)",
+      "subagent_type": "dollhouse-orchestrator",
+      "conversation_id": "f9edfc36-b2b0-45e2-81c6-4437904d8c0f",
+      "target_audited_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+      "total_steps": 18,
+      "files_read_count": 3,
+      "commands_run_count": 5,
+      "files_read": [
+        {
+          "step": 3,
+          "path": "docs/research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 8,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+          "startLine": null,
+          "endLine": null
+        },
+        {
+          "step": 8,
+          "path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+          "startLine": null,
+          "endLine": null
+        }
+      ],
+      "commands_run": [
+        {
+          "step": 1,
+          "summary": "Verify worktree commit and status",
+          "command": "git -C \"\" status --short --branch; git -C \"\" log -n 2 --stat --oneline"
+        },
+        {
+          "step": 3,
+          "summary": "Verify exact HEAD and parent SHAs",
+          "command": "git -C \"\" rev-parse HEAD HEAD~1"
+        },
+        {
+          "step": 6,
+          "summary": "List files in baseline commit",
+          "command": "git -C \"\" show --name-only --pretty=\"\" 6cf64d17d82f727bb918be6869f313a3342e530c"
+        },
+        {
+          "step": 11,
+          "summary": "Inspect hardening diff in bc5467246",
+          "command": "git -C \"\" grep -n \"DETERMINISTIC_RUNTIME_REPAIR_VERIFIED\" || true; git -C \"\" diff 6cf64d17d..bc5467246 -- server/ app/"
+        },
+        {
+          "step": 13,
+          "summary": "Inspect hardening diff in bc5467246",
+          "command": "git -C \"\" diff 6cf64d17d..bc5467246 -- server/ app/"
+        }
+      ],
+      "verbatim_report_chars": 3914
+    }
+  ]
+}

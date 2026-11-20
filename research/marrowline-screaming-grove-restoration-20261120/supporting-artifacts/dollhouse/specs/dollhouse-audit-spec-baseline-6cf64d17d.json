@@ -1,0 +1,144 @@
+{
+  "source_revision": "6cf64d17d82f727bb918be6869f313a3342e530c",
+  "task_scope": "MARROWLINE_SCREAMING_GROVE_DETERMINISTIC_REPAIR_BASELINE",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "server/marrowline-completion.js",
+    "server/khonapolit-quality.js",
+    "server/marrowline-attachment-quality.js",
+    "app/engine/aperture-v3-task-intent.js",
+    "app/dome-world/khonapolit-relay.js",
+    "app/dome-world/marrowline-historical-grove.js",
+    "tests/marrowline-screaming-grove-restoration.test.mjs",
+    "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10
+        },
+        {
+          "phase": "ACT",
+          "at": 20
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30
+        },
+        {
+          "phase": "NAME",
+          "at": 40
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "OCT02_LITERAL_REQUEST_PARITY_FFB98AC0",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "OCT02_LITERAL_REQUEST_PARITY_FFB98AC0",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": [
+            "HOLD_502",
+            "RECORD_POLICY_TERMINATION"
+          ],
+          "condition": "POLICY_NONSTOP_PROHIBITED_CONTENT"
+        },
+        {
+          "support": [
+            "ADMIT_TRANSCRIPT",
+            "RECORD_DESCRIPTIVE_PROSODY"
+          ],
+          "condition": "PROVIDER_STOP_TWO_VOICE_ADMISSIBLE"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "REMOTE_REENTRY": {
+          "status": "PASS",
+          "entry_id": "marrowline-reentry-20261120"
+        },
+        "PR_ARCHAEOLOGY": {
+          "status": "PASS",
+          "entry_id": "marrowline-pr-register-20261120"
+        },
+        "OCT02_PARITY": {
+          "status": "PASS",
+          "entry_id": "marrowline-oct02-parity-20261120"
+        },
+        "DETERMINISTIC_REPAIR": {
+          "status": "PASS",
+          "entry_id": "marrowline-deterministic-repairs-6cf64d17d"
+        },
+        "SOURCE_FREE_VERIFICATION": {
+          "status": "PASS",
+          "entry_id": "marrowline-tests-284-pass-20261120"
+        }
+      },
+      "required_phases": [
+        "REMOTE_REENTRY",
+        "PR_ARCHAEOLOGY",
+        "OCT02_PARITY",
+        "DETERMINISTIC_REPAIR",
+        "SOURCE_FREE_VERIFICATION"
+      ]
+    }
+  },
+  "options": {
+    "allow_synthetic_fault_injection": false
+  }
+}

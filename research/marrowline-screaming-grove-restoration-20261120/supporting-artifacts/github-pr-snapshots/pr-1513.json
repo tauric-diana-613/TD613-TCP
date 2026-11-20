@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "Isolated diagnostic execution only; no production source changes. This clean branch descends from #405's exact-source relock 8ae0580b1567b18318413c1b4afcfc96390130a0, and retains the source-only one-call verifier. The production native SSE instrument was already released successfully from #1512, with source and application bytes verified. Once PR scope is assigned, a one-shot CI job with an exact activation commit guard will run just one pinned Gemini 3.8 synthetic canary via plaintext-h /api/khonapolit, preserve original SSE, independently compare upstream part text with TD613 returned text, and then be removed. Zero retries, zero fallbacks, zero real personal data. This is not a style restoration.",
+  "comments": [],
+  "headRefName": "research/marrowline-raw-sse-one-shot-20261015-r1",
+  "headRefOid": "cc3cf05bdf00c7628e9f98b2e435ed0763299d99",
+  "isDraft": true,
+  "mergeable": "UNKNOWN",
+  "number": 1513,
+  "state": "OPEN",
+  "title": "research(marrowline): one-shot raw Gemini SSE origin parity canary"
+}
