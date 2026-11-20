@@ -1145,6 +1145,7 @@ jobs:
           python3 -m http.server 6131 --directory app > /tmp/marrowline-layout-server.log 2>&1 &
           node scripts/marrowline-instrument-layout-witness.mjs
           node tests/marrowline-reading-surface.browser.mjs
+          node scripts/marrowline-mobile-reader-browser-witness.mjs
       - name: Loom Instrument Lab desktop and 390px interface witness
         if: steps.layout_scope.outputs.changed == 'true'
         env:
@@ -1179,6 +1180,7 @@ jobs:
           name: bounded-layout-${{ github.event.pull_request.head.sha }}
           path: |
             artifacts/marrowline-layout
+            artifacts/marrowline-mobile-reader
             artifacts/marrowline-reading-surface
             artifacts/loom-portable-governance
             artifacts/loom-reentry
