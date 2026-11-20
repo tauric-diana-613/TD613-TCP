@@ -133,6 +133,19 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,data:execute(repo,script,args)};
     },
     WENDBINE_ATELIER:({operation,payload={}})=>{
+      if(operation==='wendbine_local_bitemporal_capture'){
+       const script=safePublicRoot(repo,['scripts','wendbine-bitemporal-capture-v1.py']);
+       const sourceId=nonempty(payload.source_id,80);
+       if(!/^reddit:t3_[a-z0-9]{5,12}$/.test(sourceId))HOLD('HELD_NATIVE_WENDBINE_EXACT_SOURCE_ID');
+       const cutoff=nonempty(payload.cutoff_utc,40);
+       if(!/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$/.test(cutoff))
+        HOLD('HELD_NATIVE_UTC_CAPTURE_CUTOFF_REQUIRED');
+       return {estate:'WENDBINE',kind:'TD613_LOCAL_CAPTURE_CLOCK_LENS',
+        read_only:true,source_capture_index_only:true,private_index_accessed:true,
+        independent_observation_clock_verified:false,historical_origin_proven:false,
+        scientific_credit:0,data:execute(repo,script,['--wendbine-db',
+         privateFile(repo,payload.index_path),'--source-id',sourceId,'--cutoff-utc',cutoff])};
+      }
       if(operation==='wendbine_observed_evidence_routes'){
        const script=safePublicRoot(repo,['scripts','wendbine-evidence-routes-v1.py']);
        const sourceId=nonempty(payload.source_id,80);
