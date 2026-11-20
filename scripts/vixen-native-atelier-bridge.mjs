@@ -51,16 +51,31 @@ function semanticRead(repo,estate,payload){
   semantic_corpus_pairing_verified_by_original_runtime:true,
   relation_proven:false,scientific_credit:0,data:execute(repo,script,args)};
 }
-function provenancePinnedRoot(repo,config,defaultRoot){
- if(!config)return defaultRoot;
- const path=privateDirectory(repo,config.path);
- const wanted=nonempty(config.git_head,40);
- if(!/^[0-9a-f]{40}$/.test(wanted))HOLD('HELD_NATIVE_PINNED_HEAD_REQUIRED');
- let observed=null;
- try{observed=execFileSync('git',['-C',path,'rev-parse','HEAD'],{encoding:'utf8',timeout:5000}).trim()}
- catch(_){HOLD('HELD_NATIVE_SOURCE_CHECKOUT_INVALID')}
- if(observed!==wanted)HOLD('HELD_NATIVE_SOURCE_CHECKOUT_HEAD_DRIFT');
- return path;
+function pinnedNativeRoots(repo,estate,config){
+ // Native scripts disagree by design on their --root contracts:
+ // single-estate route takes <checkout>/packages/.../<ESTATE>, whereas
+ // cross-estate loaders take <checkout> and append the estate subtree.
+ // Resolve both explicitly rather than forwarding the same untyped path.
+ const checkoutRoot=config?privateDirectory(repo,config.path):repo;
+ const estateRoot=resolve(checkoutRoot,'packages','dome_world_exact','fixtures','a15-r0',estate);
+ if(!inside(checkoutRoot,estateRoot)||!existsSync(estateRoot)||
+    !lstatSync(estateRoot).isDirectory()||lstatSync(estateRoot).isSymbolicLink())
+  HOLD('HELD_NATIVE_ESTATE_ROOT_MISSING');
+ let gitTop=null,observed=null;
+ try{
+  gitTop=realpathSync(execFileSync('git',['-C',checkoutRoot,'rev-parse','--show-toplevel'],
+    {encoding:'utf8',timeout:5000}).trim());
+  observed=execFileSync('git',['-C',checkoutRoot,'rev-parse','HEAD'],
+    {encoding:'utf8',timeout:5000}).trim();
+ }catch(_){HOLD('HELD_NATIVE_SOURCE_CHECKOUT_INVALID')}
+ if(gitTop!==checkoutRoot)HOLD('HELD_NATIVE_CHECKOUT_ROOT_CONTRACT_REQUIRED');
+ if(config){
+  const wanted=nonempty(config.git_head,40);
+  if(!/^[0-9a-f]{40}$/.test(wanted))HOLD('HELD_NATIVE_PINNED_HEAD_REQUIRED');
+  if(observed!==wanted)HOLD('HELD_NATIVE_SOURCE_CHECKOUT_HEAD_DRIFT');
+ }
+ return Object.freeze({checkoutRoot,estateRoot,
+   source_revision:observed,root_contract:'CHECKOUT_AND_ESTATE_DISTINCT'});
 }
 
 const PY=process.env.TD613_NATIVE_PYTHON || (process.platform==='win32'?'python':'python3');
@@ -95,11 +110,11 @@ function nativeText(repo,estate,payload,externalRoot=null){
 }
 export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCheckouts=null}={}){
   const repo=realpathSync(resolve(repoRoot));
-  const srcRoot=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','SRC']);
   const wRoot=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','WENDBINE']);
-  const emRoot=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','EMSTD613']);
-  const pinnedSRC=provenancePinnedRoot(repo,sourceCheckouts?.SRC,srcRoot);
-  const pinnedEm=provenancePinnedRoot(repo,sourceCheckouts?.EMSTD613,emRoot);
+  const srcRoots=pinnedNativeRoots(repo,'SRC',sourceCheckouts?.SRC);
+  const emRoots=pinnedNativeRoots(repo,'EMSTD613',sourceCheckouts?.EMSTD613);
+  const pinnedSRC=srcRoots.estateRoot, pinnedEm=emRoots.estateRoot;
+  const pinnedSRCCheckout=srcRoots.checkoutRoot,pinnedEmCheckout=emRoots.checkoutRoot;
   return Object.freeze({
     SRC_ATELIER:({operation,payload={}})=>{
       if(operation==='src_native_text')return nativeText(repo,'SRC',payload,pinnedSRC);
@@ -269,7 +284,7 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
        return {estate:'CROSS_ATELIER',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,
         source_bound:true,relation_proven:false,scientific_credit:0,
         data:execute(repo,script,['--repo-root',repo,'--wendbine-db',wdb,
-        '--src-checkout',pinnedSRC,'--em-checkout',pinnedEm,'semantic',
+        '--src-checkout',pinnedSRCCheckout,'--em-checkout',pinnedEmCheckout,'semantic',
         '--query-vector-file',privateFile(repo,payload.query_vector_file),
         '--private-vectors',privateFile(repo,payload.vector_index_file),
         '--model-sha256',modelSha,'--limit',String(bounded(payload.limit??8,20))])};
@@ -277,8 +292,8 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
       if(operation!=='cross_atelier_lexical')HOLD('HELD_CROSS_ATELIER_OPERATION');
       const wdb=privateFile(repo,payload.wendbine_db);
       const script=safePublicRoot(repo,['scripts','atelier-cross-estate-query-v1.py']);
-      const args=['--repo-root',repo,'--wendbine-db',wdb,'--src-checkout',pinnedSRC,
-        '--em-checkout',pinnedEm,'lexical',nonempty(payload.query,2000),
+      const args=['--repo-root',repo,'--wendbine-db',wdb,'--src-checkout',pinnedSRCCheckout,
+        '--em-checkout',pinnedEmCheckout,'lexical',nonempty(payload.query,2000),
         '--limit',String(bounded(payload.limit??8,20))];
       return {estate:'CROSS_ATELIER',kind:'ORIGINAL_NATIVE_EXECUTABLE',
         evidence_only:true,not_public_vixen_corpus:true,read_only:true,scientific_credit:0,
