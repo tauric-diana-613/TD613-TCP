@@ -82,6 +82,22 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
   }
  }
  need(observedManifestations===53&&boundIds.size===53,'HELD_EM_HISTORICAL_PERFORMER_CROSSWALK_CENSUS');
+ // Independently classify packaging objects so metadata sidecars cannot
+ // inflate Work identity, apparent unknown manuscripts or evidence totals.
+ const relations=new Map();
+ for(const row of l.rows)relations.set(row.relation,(relations.get(row.relation)||0)+1);
+ need(l.rows.length===87&&relations.get('MANIFESTATION_OF')===42&&
+  relations.get('SOLE_OBSERVED_MANIFESTATION_OF')===11&&
+  relations.get('METADATA_COMPANION')===33&&relations.get('CONTAINER')===1&&
+  l.rows.filter(x=>x.work_id==null).length===34,
+  'HELD_EM_HISTORICAL_METADATA_RELATION_CENSUS');
+ const extracted=d.rows.filter(x=>x.extraction_status==='EXTRACTED_NATIVE_TEXT');
+ const excluded=d.rows.filter(x=>x.extraction_status==='UNSUPPORTED_FORMAT');
+ need(extracted.length===53&&excluded.length===34&&
+  d.rows.length===87&&new Set(d.rows.map(x=>x.source_file_id)).size===87&&
+  extracted.every(x=>boundIds.has(x.source_file_id)&&x.derivative_relative_path)&&
+  excluded.every(x=>!boundIds.has(x.source_file_id)&&x.derivative_relative_path==null),
+  'HELD_EM_METADATA_COMPANION_OR_CONTAINER_PROMOTED_TO_WORK');
  let verifiedOriginalBytes=0,excluded=0;
  for(const file of s.rows){
   const name=file.archive_relative_path;
@@ -131,6 +147,10 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
   historical_source_population:s.rows.length,
   archive_manifestation_crosswalk_verified:observedManifestations,
   historical_work_count:w.rows.length,unresolved_identity_groups:8,
+  substantive_work_manifestations_extracted:53,
+  original_metadata_companions_excluded:33,
+  original_zip_containers_excluded:1,
+  unsupported_ancillary_objects_not_missing_work_manuscripts:34,
   local_native_text_derivatives_indexed:indexed.indexed_derivatives,
   native_work_route_executed:true,
   native_text_index_source_verified:true,
