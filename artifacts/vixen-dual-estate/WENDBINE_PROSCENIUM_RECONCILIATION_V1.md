@@ -14,6 +14,7 @@
 | scripts/wendbine-evidence-routes-v1.py | TD613 recorded capture observation route | Hash-bound text spans and route anchors in available local captures | Native SRC parity; intent; causal or protected-system connection |
 | scripts/wendbine-proscenium-assay.mjs | NEW TD613 derived host instrument | Original compiler execution receipt, retrospective prior-day held-out tests, permuted/ablated/decoy controls | Historical as-of capture, statistical significance or full methodology equivalence |
 | Vixen Podium native operation | TD613 host adapter; machine-only | Execution of native source compiler and derivative assay on separate estate, subject to operator gate | Foreign source import as Vixen Work, Composer approval, author ratification |
+| Two verified Vixen Works under a derived topology prior | NEW TD613 host transfer, borrowing original compiler's public concept/cooccurrence graph as heuristic reference | Rehashed body bytes from Experiment-A corpus, title/body/query response, paired controls and explicit source byte proofs | That original Wendbine methods are semantically equivalent on Vixen subjects or that its posted source Work has become a Vixen Performer |
 
 The original 48-hour public snapshot has 33 admitted posts and is explicitly NONEXHAUSTIVE. Other historical coverage totals and private capture stores belong to different evidence classes. Neither addition nor extrapolation constructs a complete source census.
 
@@ -40,7 +41,7 @@ The host journey operation offers a hypothesis, rival hypotheses, bound source I
 - **Computational execution:** exact native compiler and derived classifier execute, with source digest receipts.
 - **Methodological reconstruction:** exploratory multi-target diagnostic implemented; methodological establishment HELD pending independently witnessed outcomes and an independently preregistered test (the retrospective sweep does not retroactively preregister itself).
 - **True bitemporal replay:** HELD pending contemporaneous capture/observation timestamps; metadata recorded later cannot retroactively evidence earlier observation.
-- **Native-to-Vixen full method equivalence:** HELD. Browser receives no public Wendbine bodies, and no foreign Work is minted as a Vixen Performer.
+- **Native-to-Vixen full method equivalence:** HELD. A real, SHA-verified Vixen Work pair can now be processed using TD613's compiler-derived *heuristic* topology prior and ranked with title-only, label-permutation, graph-ablation, source-bound decoy and order controls. This demonstrates source-dependent computation, not that Wendbine's original native research process was transplanted with full fidelity. The browser receives no public Wendbine bodies, and no foreign Work is minted as a Vixen Performer.
 - **Scientific author intent, hidden memory, causal connection, and original source person's identity:** outside claim authority.
 - **Deployment / merge / publication:** separate author gates; this host-only assay grants none.
 
