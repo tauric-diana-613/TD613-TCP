@@ -25,7 +25,8 @@ const search='app/encyclopedia/vixen-estate/semantic-semiotic-search.mjs';
 const conductor='app/encyclopedia/vixen-estate/vixen-ai-conductor.mjs';
 const testPath='tests/vixen-native-atelier-bridge.test.mjs';
 const typedTestPath='tests/vixen-src-original-typed-traversal.test.mjs';
-const content=Object.fromEntries([js,podium,native,salon,search,conductor,testPath,typedTestPath,
+const phase2TestPath='tests/vixen-src-original-phase2-host.test.mjs';
+const content=Object.fromEntries([js,podium,native,salon,search,conductor,testPath,typedTestPath,phase2TestPath,
  'tests/vixen-synthesis-salon.test.mjs','app/encyclopedia/reference/vixen-podium.mjs'
 ].map(path=>[path,read(path)]));
 const originalPy=readdirSync(resolve(root,original)).filter(x=>x.endsWith('.py')).sort();
@@ -46,7 +47,8 @@ const srcModules=[
  ['HETEROSTRATIGRAPHIC_AUDIT',null,'runSrcHeterostratigraphicAudit','src_heterostratigraphic_audit',null],
  ['VERIFIED_VIXEN_WORK_PAIR',null,'scoreSrcUntypicalDocument','src_verified_vixen_work_pair',null],
  ['ORIGINAL_SRC_PROJECTIVE_VIXEN_DIFFERENTIAL','run-projective-routing-grammar-assay.py','runSrcProjectiveRouting','src_verified_vixen_original_projective_differential',null],
- ['ORIGINAL_SRC_TYPED_VIXEN_TRAVERSAL','src-evidence-rabbit-hole-v1.py','traverseSrcTypedStrata','src_verified_vixen_original_typed_traversal',null]
+ ['ORIGINAL_SRC_TYPED_VIXEN_TRAVERSAL','src-evidence-rabbit-hole-v1.py','traverseSrcTypedStrata','src_verified_vixen_original_typed_traversal',null],
+ ['ORIGINAL_SRC_PHASE2_VIXEN_CONTEXT_TOMOGRAPHY','build-phase2-assays.py',null,'src_verified_vixen_original_phase2',null]
 ];
 const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation,consumer])=>{
  const original_present=originalPyName?originalPy.includes(originalPyName):null;
@@ -60,7 +62,7 @@ const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation
  const consumer_wired=consumer?
   (consumer===salon?content[salon].includes(jsExport)||content[salon].includes('evaluateCorpusWithSrcEngines'):
    content[search].includes('srcEngines')||content[search].includes('deriveSrcQueryConditionedWeights')):null;
- const executed_by_specific_test=[testPath,typedTestPath].some(path=>content[path].includes(podiumOperation));
+ const executed_by_specific_test=[testPath,typedTestPath,phase2TestPath].some(path=>content[path].includes(podiumOperation));
  return{
   capability,original_python_reference:originalPyName?original+originalPyName:null,
   original_python_present:original_present,
@@ -69,7 +71,7 @@ const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation
   native_host_present,product_consumer:consumer,consumer_wired,
   tested_by_named_bridge_test:executed_by_specific_test,
   native_python_equivalence_witness:'UNPROVEN',
-  original_python_executed_on_vixen_corpus:['ORIGINAL_SRC_PROJECTIVE_VIXEN_DIFFERENTIAL','ORIGINAL_SRC_TYPED_VIXEN_TRAVERSAL'].includes(capability),
+  original_python_executed_on_vixen_corpus:['ORIGINAL_SRC_PROJECTIVE_VIXEN_DIFFERENTIAL','ORIGINAL_SRC_TYPED_VIXEN_TRAVERSAL','ORIGINAL_SRC_PHASE2_VIXEN_CONTEXT_TOMOGRAPHY'].includes(capability),
   original_research_corpus_admission:false
  };
 });
@@ -174,6 +176,68 @@ const nativeTypedWitness={
  adapted_input_parity:'HELD_UNPROVEN',
  scientific_credit:0,human_closure_required:true
 };
+const phase2MethodExecution=await originalSourceMethods.SRC_ATELIER({
+ operation:'src_verified_vixen_original_phase2',
+ payload:{
+  work_ids:['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'],
+  query:'Explore contextual roles and source representation changes'
+ }
+});
+assert.equal(phase2MethodExecution.native_python_executed,true);
+const phase2Original=phase2MethodExecution.original_native_phase2;
+const phase2SourceIdentity=sourceFingerprint(original+'build-phase2-assays.py');
+assert.equal(phase2Original.original_method_sha256,phase2SourceIdentity.byte_sha256);
+assert.deepEqual(phase2Original.source_proofs.map(x=>x.derivative_sha256),
+ sourceMethodExecution.source_proofs.map(x=>x.verified_derivative_sha256));
+assert.equal(phase2Original.catalogue_work_count,32);
+assert.equal(phase2Original.manifestation_count,53);
+assert.equal(phase2Original.original_src_historical_registries_used,false);
+assert.equal(phase2Original.contextual_roles.length,6);
+assert.equal(phase2Original.compilation_passes.length,2);
+assert.ok(phase2Original.contextual_roles.every(x=>x.role_normalized==='CANDIDATE_INPUT'&&
+ x.adjudication_status==='UNRESOLVED'&&x.evidence_ids.length===0));
+assert.ok(phase2Original.tomography.every(x=>x.delta_scope==='NARROWED'&&
+ x.delta_evidence==='UNKNOWN'&&x.delta_asserted_authority==='UNKNOWN'&&
+ x.composite_score===null));
+assert.equal(phase2Original.controls.withdraw_hypothetical_comparison_context.role_count,4);
+assert.equal(phase2Original.controls.withdraw_hypothetical_comparison_context.compiler_count,1);
+assert.ok(phase2Original.controls.inverse_representation_direction.tomography.every(x=>
+ x.delta_scope==='EXPANDED'&&x.delta_evidence==='UNKNOWN'&&x.composite_score===null));
+assert.equal(phase2Original.original_historical_compilation_proven,false);
+assert.equal(phase2Original.original_full_atelier_parity,'HELD_UNPROVEN');
+assert.equal(phase2MethodExecution.scientific_credit,0);
+const phase2Witness={
+ schema:'td613.vixen.original-src-phase2-dollhouse-witness/v1',
+ original_src_method_sha256:phase2Original.original_method_sha256,
+ source_proofs:phase2Original.source_proofs,
+ executed_functions:phase2Original.executed_original_functions,
+ recorded_protocols_without_historical_compiler_promotion:phase2Original.selected_recorded_protocols,
+ compiler_role_count:phase2Original.contextual_roles.length,
+ compilation_pass_count:phase2Original.compilation_passes.length,
+ candidate_roles_unresolved:true,
+ representation_lifts:phase2Original.tomography.map(x=>({
+  transformation_id:x.transformation_id,
+  delta_scope:x.delta_scope,
+  delta_evidence:x.delta_evidence,
+  delta_asserted_authority:x.delta_asserted_authority,
+  composite_score:x.composite_score
+ })),
+ representation_inverse_control:phase2Original.controls.inverse_representation_direction.tomography.map(x=>x.delta_scope),
+ withdrawn_comparison_role_count:phase2Original.controls.withdraw_hypothetical_comparison_context.role_count,
+ ephemeral_registry_sha256:phase2Original.ephemeral_registry_sha256,
+ original_registry_used:false,
+ historical_compiler_effect_proven:false,
+ actual_original_python_executed:true,
+ original_native_js_parity:'HELD_METHOD_DIFFERENTIAL_NOT_YET_WITNESSED',
+ independent_empirical_replication_credit:0,
+ human_closure_required:true
+};
+const phase2FadtSupport=computeFadtFiberBounds([
+ {condition:'SOURCE_READ_CONTEXT',support:['WORK_IDENTITY','VERIFIED_DERIVATIVE']},
+ {condition:'COMPARATIVE_READING_CONTEXT',support:['WORK_IDENTITY']}
+]);
+assert.ok(phase2FadtSupport.irreducible_gap_cardinality>0,
+ 'Compiler-context withdrawal must preserve finite-support differences');
 const supportStates=[
  {condition:'ORIGINAL_PYTHON_REFERENCE_PRESENT',support:originalAvailable},
  {condition:'VIXEN_JAVASCRIPT_AND_PODIUM_WIRED',support:wired}
@@ -245,6 +309,8 @@ const crossJurisdiction={
   union:fadtSupport.union_support,
   irreducible_gap:fadtSupport.irreducible_gap,
   gap_cardinality:fadtSupport.irreducible_gap_cardinality,
+  phase2_compiler_context_support_gap:phase2FadtSupport.irreducible_gap,
+  phase2_context_support_gap_cardinality:phase2FadtSupport.irreducible_gap_cardinality,
   actual_unconditioned_grant_attempted:false
  },
  synthetic_negative_controls:{
@@ -273,6 +339,8 @@ const redpen={
  missing_observations:[
   'No complete original-Python-versus-Vixen-JavaScript paired test across all methods',
   'No full historical SRC research-journey realization on Vixen Work corpus',
+  'No independent historical compiler input-role evidence for Vixen; host reading contexts remain unresolved candidates',
+  'No original Python versus JavaScript Phase II paired differential or independent evidence/authority delta',
   'No proof all public Vixen synthesis routes invoke original native Python',
   'Source archival builders and tests remain source-side tools, not product engines'
  ],
@@ -286,6 +354,7 @@ const receipt={
  original_python_inventory,
  native_original_method_witness:nativeMethodWitness,
  native_original_typed_witness:nativeTypedWitness,
+ native_original_phase2_witness:phase2Witness,
  matrix,cross_jurisdiction_handoff:crossJurisdiction,dollhouse:{
   roles_executed:m.roles_executed,
   findings:m.specialist_findings.map(f=>({
