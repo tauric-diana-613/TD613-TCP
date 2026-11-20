@@ -925,6 +925,13 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
    return originalNative.WENDBINE_ATELIER(request);
   };
   adapters.EM_ATELIER=async(request)=>{
+   if(request.operation==='em_hostile_method_expedition'){
+    const original=await importOptional(resolve(repoRoot,'scripts','vixen-em-hostile-method-expedition.mjs'));
+    if(typeof original?.runEmHostileHostProbe!=='function')
+     throw Error('HELD_EM_HOSTILE_NATIVE_PROBE_UNAVAILABLE');
+    return await original.runEmHostileHostProbe({repoRoot,
+     work_ids:request.payload?.work_ids});
+   }
    if(request.operation==='em_verified_vixen_native_span_identity'){
     const module=await importOptional(resolve(repoRoot,'scripts','vixen-em-native-work-transfer.mjs'));
     if(typeof module?.runVixenEmNativeWorkQualification!=='function')
