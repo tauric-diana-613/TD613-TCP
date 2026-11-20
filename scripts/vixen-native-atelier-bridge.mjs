@@ -182,8 +182,13 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
         args.push(nonempty(payload.query,1500),'--mode',mode,'--limit',String(bounded(payload.limit??10,30)));
        }else if(action==='recent')args.push('--limit',String(bounded(payload.limit??10,30)));
        else if(action==='resolve')args.push(nonempty(payload.entity_id,250));
+       const requestedMode=action==='search'?String(payload.mode||'lexical'):null;
        return {estate:'WENDBINE',kind:'ORIGINAL_NATIVE_EXECUTABLE',
-        public_index_only:true,read_only:true,scientific_credit:0,data:executeNode(repo,script,args)};
+        public_index_only:true,read_only:true,scientific_credit:0,
+        search_method:action==='search'?(requestedMode==='semantic'?
+         'ORIGINAL_CONCEPT_WEIGHTED_LEXICAL_RANKING_NOT_EMBEDDING_SEMANTICS':'ORIGINAL_LEXICAL_RANKING'):null,
+        embedding_model_executed:false,source_person_authorship_of_query_software:false,
+        data:executeNode(repo,script,args)};
       }
       if(operation==='wendbine_sealed_epoch_query'){
        const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','WENDBINE','99-ADMIN','wendbine-srcquery.mjs']);
