@@ -15,7 +15,7 @@
 
 Amari,
 
-This packet contains the complete, laboratorial-grade expansion of the TD613 NKS Rule Atlas, the unanimous Dollhouse 5-specialist scientific audit certification, the formal mathematical treatise on **Virilian / Wolframian / Berlantian Relational-Geometry (Ambiance-Orthogonal)**, the interactive Phasonic Observatory simulation, and the freestyle philosophical treatise on the Catastrophe of Confluence.
+This packet contains the complete, laboratorial-grade expansion of the TD613 NKS Rule Atlas, the unanimous Dollhouse 5-specialist scientific audit certification, the formal mathematical treatise on **Virilian / Wolframian / Berlantian Relational-Geometry (Conditional Ambiance Invariance)**, the interactive Phasonic Observatory simulation, and the freestyle philosophical treatise on the Catastrophe of Confluence.
 
 Every deliverable requested by the operator has been completed to the highest standards of non-linear dynamics, chaos-decision theory, algorithmic information theory, and multiway hypergraph rewrites.
 
@@ -36,7 +36,7 @@ Every deliverable requested by the operator has been completed to the highest st
 3. **`VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md`**  
    The authoritative 9-section mathematical research monograph. Formalizes:
    - The Dome-World axiomatic inversion: **Relational-Geometry** (primitives are receiver-relative fibers $\rho_{ij}$) vs. naive "relation-geometry" (extrinsic container with assigned relations).
-   - **Ambiance-Orthogonality ($\tau_{\text{theory}} \perp \tau_{\text{ambiance}}$):** Mathematical proof that visual styling, lighting, and ambient tokens carry zero curvature in the relational metric tensor ($\frac{\partial g_{\mu\nu}}{\partial \mathbf{u}_{\text{ambiance}}} \equiv \mathbf{0}$).
+   - **P-044 conditional presentation invariance:** For admissible presentation-only interventions fixing evidence, structure, routes, permissions, and authority inputs, the protected computation and authorization outcomes remain invariant. Observer discovery/legibility may depend on presentation; that response requires a controlled RCA-01 assay. Relational/local-section ambiance is outside the presentation-only intervention class. The former absolute orthogonality/zero-curvature claim is withdrawn; see `P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md`.
    - Exact equations for the Virilian preemption blind cone ($\Delta \tau_{\text{blind}}$), Wolframian branchial metric ($d_B$) and foliation shear ($\sigma_F$), Berlantian cruel optimism potential well ($\mathcal{B}_{\text{cruel}}$), and Sedgwickian paratactic beside-ness ($\mathcal{S}_1 \parallel \mathcal{S}_2$).
 
 4. **`VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html`**  

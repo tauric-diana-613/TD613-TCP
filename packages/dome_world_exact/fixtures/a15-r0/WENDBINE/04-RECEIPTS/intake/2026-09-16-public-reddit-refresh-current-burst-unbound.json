@@ -1,0 +1,44 @@
+{
+  "schema": "wendbine-public-refresh-receipt/v0.1",
+  "created_at": "2026-09-16T23:30:00Z",
+  "atelier_id": "WENDBINE",
+  "target_surface": "public Reddit",
+  "target_handle": "u/Upset-Ratio502",
+  "production_route": [
+    "fresh_public_search_capture",
+    "source_registry",
+    "typed_relation_registry",
+    "deterministic_compiler",
+    "topology",
+    "intake_assay_receipts",
+    "exact_head_ci"
+  ],
+  "route_state": {
+    "fresh_public_search_capture": "EXECUTED",
+    "source_registry": "HELD_NO_FRESH_SOURCE_BINDING",
+    "typed_relation_registry": "HELD_NO_FRESH_SOURCE_BINDING",
+    "deterministic_compiler": "NO_CORPUS_DELTA_TO_COMPILE",
+    "topology": "NO_CORPUS_DELTA_TO_PROMOTE",
+    "intake_assay_receipts": "THIS_RECEIPT",
+    "exact_head_ci": "PENDING"
+  },
+  "prior_hydrated_public_source_count": 35,
+  "newly_admitted_public_source_count": 0,
+  "state": "HELD_PUBLIC_INDEX_STALE_RELATIVE_TO_REPORTED_ACTIVITY",
+  "observations": [
+    "Human provenance reports sustained posting activity by u/Upset-Ratio502 on 2026-09-16.",
+    "Fresh public retrieval did not expose a source-bindable current-day post stream.",
+    "Available indexed Reddit material was older and therefore was not relabelled as a Sept 16 delta."
+  ],
+  "membranes": [
+    "NOT_RETRIEVED != DID_NOT_EXIST",
+    "STALE_INDEX != CURRENT_STREAM",
+    "HUMAN_REPORTED_ACTIVITY != SOURCE_BOUND_POST_OBJECT",
+    "NO_SOURCE_BINDING => NO_TYPED_RELATION_PROMOTION",
+    "NO_TYPED_RELATION_PROMOTION => NO_TOPOLOGY_PROMOTION"
+  ],
+  "next_required_event": "FRESH_PUBLIC_SOURCE_BINDING_FOR_SEPT16_POSTS",
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}

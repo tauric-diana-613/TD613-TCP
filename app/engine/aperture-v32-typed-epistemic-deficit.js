@@ -106,31 +106,40 @@ function jacobiEigenvalues(M, maxIter = 100) {
       }
     }
   }
-  return A.map((row, i) => Math.max(0, row[i]));
+  // Preserve signed eigenvalues. Clamping here makes indefinite covariance look PSD.
+  return A.map((row, i) => row[i]);
 }
 
 export function validateCovarianceMatrix(cov, expectedDim) {
-  if (!Array.isArray(cov) || cov.length !== expectedDim) {
-    return { valid: false, reason: 'noise covariance matrix must be a 2D array matching the latent dimension' };
+  const reject = (code, reason) => ({valid:false, code, reason});
+  if (!Number.isInteger(expectedDim) || expectedDim < 1 ||
+      !Array.isArray(cov) || cov.length !== expectedDim) {
+    return reject('INVALID_NOISE_COVARIANCE_DIMENSIONS',
+      'noise covariance matrix must be a square 2D array matching the latent dimension');
   }
+  // Validate the entire shape before accessing cov[j][i].
+  if (cov.some(row => !Array.isArray(row) || row.length !== expectedDim))
+    return reject('INVALID_NOISE_COVARIANCE_DIMENSIONS',
+      'noise covariance matrix rows must be square matching latent dimension');
   for (let i = 0; i < expectedDim; i++) {
-    if (!Array.isArray(cov[i]) || cov[i].length !== expectedDim) {
-      return { valid: false, reason: 'noise covariance matrix rows must be square matching latent dimension' };
-    }
     for (let j = 0; j < expectedDim; j++) {
-      if (!Number.isFinite(cov[i][j])) {
-        return { valid: false, reason: 'noise covariance matrix entries must be finite numbers' };
-      }
-      if (Math.abs(cov[i][j] - cov[j][i]) > 1e-10) {
-        return { valid: false, reason: 'noise covariance matrix is not symmetric' };
-      }
+      if (typeof cov[i][j] !== 'number' || !Number.isFinite(cov[i][j]))
+        return reject('NONFINITE_NOISE_COVARIANCE',
+          'noise covariance matrix entries must be finite numbers');
+      if (Math.abs(cov[i][j] - cov[j][i]) > 1e-10)
+        return reject('ASYMMETRIC_NOISE_COVARIANCE',
+          'noise covariance matrix is not symmetric');
     }
   }
+  // Covariance must be positive *semi*definite. A negative eigenvalue cannot
+  // be silently changed to zero by the eigenvalue solver.
   const eigenvalues = jacobiEigenvalues(cov);
-  if (eigenvalues.some(val => val <= 1e-12)) {
-    return { valid: false, reason: 'noise covariance matrix is not positive-definite' };
-  }
-  return { valid: true };
+  const scale = Math.max(1, ...eigenvalues.map(Math.abs));
+  const tolerance = 1e-10 * scale;
+  if (eigenvalues.some(value => !Number.isFinite(value) || value < -tolerance))
+    return reject('INDEFINITE_NOISE_COVARIANCE',
+      'noise covariance matrix has a negative eigenvalue (not positive-semidefinite)');
+  return {valid:true, code:'PSD_VERIFIED', eigenvalues, tolerance};
 }
 
 function hestenesSvd(matrix, maxSweeps = 50, tol = 1e-15) {
@@ -455,7 +464,14 @@ export function auditTypedEpistemicDeficit(input = {}) {
     }
   }
 
-  const classification = classifyTypedEpistemicDeficit(effectiveInput);
+  // Unconditional gate: a declared noise geometry is checked even when
+  // candidate_probes is absent, and its veto controls the outer disposition.
+  const covarianceCheck = input.noise_covariance == null ? null :
+    validateCovarianceMatrix(input.noise_covariance, Number(effectiveInput.latent_dimension));
+  const baseClassification = classifyTypedEpistemicDeficit(effectiveInput);
+  const classification = covarianceCheck && !covarianceCheck.valid ?
+    {deficit_class:'INVALID_NOISE_GEOMETRY',disposition:'REJECT',criterion:null,
+      reason:covarianceCheck.reason} : baseClassification;
   return deepFreeze({
     schema: APERTURE_V32_TYPED_DEFICIT_RECEIPT_SCHEMA,
     version: APERTURE_V32_VERSION,
@@ -473,6 +489,8 @@ export function auditTypedEpistemicDeficit(input = {}) {
     },
     deficit_class: classification.deficit_class,
     disposition: classification.disposition,
+    covariance_validation: covarianceCheck,
+    noise_geometry_error_code: covarianceCheck && !covarianceCheck.valid ? covarianceCheck.code : null,
     admissible_question_criterion: classification.criterion,
     reason: classification.reason,
     pedagogue_companion_cue: pedagogueCue(classification.disposition),

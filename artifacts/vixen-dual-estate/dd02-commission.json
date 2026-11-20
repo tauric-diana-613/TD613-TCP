@@ -1,0 +1,96 @@
+{
+  "commission_id": "TD613-DD02-OPERATOR-VIXEN-UNIVERSAL-ESTATE-20261108",
+  "seed": "Recompose the operator-facing Vixen Cybernetics Encyclopedia as one coherent dual-estate research product at /encyclopedia/vix-cyb.html. Preserve the first candidate's audacious Glinda / Mugler editorial monument and the second candidate's actual kinetic multi-harmonic Observatory; reject the third candidate's commercial catalogue and monolithic corpus stuffing. Make the active Vixen 32-Work / 53-manifestation research program capable of a genuinely new, source-bound encounter with Universal's independently served 1,141-record / 2,131-edge index and exact-byte records. Preserve the eight bilateral human identity gates, 21 documentary instruments, and unresolved authorial status. NOTICE before ACT; WORLD_ANSWERS or honest HELD refusal before NAME; free REST and EXIT. S ≠ W ≠ A; provenance verification never becomes claim entailment. Design cannot predetermine Experiment B postflight discoveries.",
+  "medium": "HYBRID",
+  "instruments": [
+    "SEDGWICK_REPARATIVE_TEXTURE",
+    "PHASONIC_COUNTERPOINT",
+    "CARO_INSTITUTIONAL_RECONSTRUCTION"
+  ],
+  "deliverable_count": 1,
+  "human_coordinates": {
+    "what": "Exactly one coherent operator-facing Vixen Encyclopedia research estate with functional historical Observatory, split-plane identity gates, real source-bound cross-estate read-only reference membrane and mobile UX",
+    "who": "Human operator and scholarly readers; Em authorship unresolved, Universal reference authors independently preserved, human scientific closure RESERVED",
+    "where": "td613.com/encyclopedia/vix-cyb.html eventual release path; development candidate in isolated GitHub draft PR",
+    "how": "Historically grounded C1 design and C2 kinetic mathematics; separate Vixen authored metadata and Universal canonical JSON record store; same-origin GET-only queries and SHA-256 source-bytes witness; never serialize the full Universal corpus into Vixen DOM",
+    "when": "2026-11-08 source-free Experiment A receiver qualification stage; prospective Experiment B protected Flight HELD until independently approved",
+    "why": "Earn a non-HELD receiver qualification through adversarial evidence instead of manufacturing a visual or scientific victory"
+  },
+  "historical_references": [
+    {
+      "reference_id": "TD613-ENTRY",
+      "source_path": "AGENTS.md",
+      "source_revision": "f981ffd3c814bf229e7db8fb0fc7d297f3420ef7",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Exact public/private and operator authority boundary"
+    },
+    {
+      "reference_id": "DD02-GOVERNOR",
+      "source_path": ".agents/skills/dollhouse-design/SKILL.md",
+      "source_revision": "f981ffd3c814bf229e7db8fb0fc7d297f3420ef7",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Eight-stage native conductor; one coherent estate deliverable; counterfactuals internal"
+    },
+    {
+      "reference_id": "UNIVERSAL-EDITION",
+      "source_path": "app/encyclopedia/reference/manifest.json",
+      "source_revision": "f981ffd3c814bf229e7db8fb0fc7d297f3420ef7",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Universal Reference Edition 1.4 and 1,141-record census"
+    }
+  ],
+  "audit_register": [
+    {
+      "role": "PEDAGOGUE",
+      "sha256": "2a2d83a991e86ae6325f3cdb451b001ecf35ddb32f683ea24a1d8fd2a4562733",
+      "requirement": "Actual source before theory naming, held refusal, rest and exit, no shopping interface"
+    },
+    {
+      "role": "APERTURE",
+      "sha256": "f470dc10116e58fb3340e5effab8eed6e651cc558a63743a9a3823f4d7e537f4",
+      "requirement": "SVD/noise claims conditioned, evidence witness from real reference, ciphertext/data presence not proof"
+    },
+    {
+      "role": "ATLAS",
+      "sha256": "48e03ead50f6222ab23303389d232c8fcd0dff37483d7314f276b50d4a19e706",
+      "requirement": "Glinda chrome, original signature ornamental only, 32 works 53 manifestations, bilateral 8 identity gates [32,40]"
+    },
+    {
+      "role": "FADT",
+      "sha256": "49b6d04e8d5edbb5e97bfc7a2211e9820dd6c965c1c11fab798357cafc848dc1",
+      "requirement": "Estate coordinate retained, no universal 3403-element theorem promotion, no unconditioned actions"
+    },
+    {
+      "role": "TEMPORAL",
+      "sha256": "db7f90a6617e36a5bc263c9d41eb7417fab21a077070e3eeba450e57ca366ee8",
+      "requirement": "Immutable predecessor chains and five-clock temporal regimes, no retroactive false closure"
+    }
+  ],
+  "predecessor_hashes": {
+    "candidate1": "19137898f1a1d66471b16fdcba815164c422a4b2cb9147bb8a22d0944cc381eb",
+    "candidate2": "8ae5be8ff1ac3dfed316f5155a385e5a31aa146e640e09da89a148bc7daddaf3",
+    "candidate3": "930f4c79860737c64619627b14f6718f6833dfd45509849dd365303bce22a10a"
+  },
+  "boundaries": {
+    "site_route_prospective": "/encyclopedia/vix-cyb.html",
+    "same_origin_reference_backend": "/encyclopedia/reference/",
+    "reference_schema": "td613.encyclopedia.reference/v1",
+    "no_additional_vercel_function": true,
+    "native_universal_atelier_sqlite_runtime": "SEPARATE_LINEAGE_NOT_PRODUCTION_WIRED",
+    "native_receiver_declared_operations": "search,get,cite,neighbors,route,context,verify,export,prepareImport,admitRecord",
+    "application_authorized_operations": "search,read,neighbors,route-trace; no import,export-to-server,prepareImport,admitRecord",
+    "private_Em_bodies": "NOT_EXPOSED",
+    "rendered_visual_approval": "PENDING_INDEPENDENT_HUMAN_REVIEW",
+    "runtime_browser_qualification": "PENDING_INDEPENDENT_AUDIT",
+    "production_mutation": false,
+    "release_authority": false,
+    "deployment_authority": false,
+    "merge_authority": false,
+    "experiment_b_flight": "HELD",
+    "human_scientific_closure": "RESERVED"
+  },
+  "scientific_audit_requested": false
+}

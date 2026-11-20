@@ -1,0 +1,253 @@
+/* RGI25 / VIXEN'S NOIR FOLIO — genuine replacement for desktop white-paper reader.
+ * Presentation only. No data mutation, attribution transfer, or authority gain.
+ * OPERA ≠ OPERAHOUSE ≠ PERFORMER. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-layout{
+  grid-template-columns:minmax(225px,32%) minmax(0,1fr)!important;gap:clamp(12px,1.4vw,22px)!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel.lexicon-reader{
+  min-width:0!important;padding:clamp(12px,1.3vw,20px)!important;
+  background:#0d1519!important;color:#f5ede3!important;border:1px solid #9c7d5c!important;
+  box-shadow:0 20px 38px #01060875,inset 0 0 0 1px #f6d7b014!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(h2,h3,h4){color:#f9e6d0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(.reader-section,.manifest-card,p){color:#e4d4bf!important;border-color:#a88d6b51!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount.expa-reader-shell{
+  margin:13px 0 0!important;padding:clamp(8px,1vw,16px)!important;
+  background:linear-gradient(135deg,#111b20,#081013)!important;border:1px solid #b594665c!important;
+  box-shadow:0 12px 24px #0007!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .expa-custody-desktop{display:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .expa-custody-disclosure{
+  display:block!important;margin:9px 0!important;padding:9px 12px!important;
+  color:#e9d3b8!important;background:#182125!important;border:1px solid #c3a27257!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .expa-custody-disclosure summary{
+  color:#fbe3ab!important;cursor:pointer!important;
+  font:700 10px/1.4 ui-monospace,Consolas,monospace!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-bar{
+  display:flex!important;justify-content:space-between!important;align-items:center!important;
+  margin:13px 0 0!important;padding:12px 14px!important;gap:10px!important;
+  background:linear-gradient(120deg,#1a2529,#0a1215)!important;border:1px solid #b99c716b!important;border-bottom:0!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-identity{
+  display:flex!important;flex-direction:column!important;gap:2px!important;min-width:0!important;flex:1 1 260px!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-eyebrow{
+  color:#ff94b5!important;font:700 9px/1.4 ui-monospace,Consolas,monospace!important;letter-spacing:.13em!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-name{
+  color:#fce9d2!important;font:italic 400 clamp(18px,1.65vw,27px)/1.13 Didot,"Bodoni MT",Georgia,serif!important;
+  letter-spacing:-.02em!important;text-wrap:balance!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-custody{
+  color:#cdbca9!important;font:500 9px/1.45 ui-monospace,Consolas,monospace!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-controls{
+  display:flex!important;flex:0 1 auto!important;gap:5px!important;flex-wrap:wrap!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-controls button,.vix-folio-footer button){
+  min-height:34px!important;padding:6px 9px!important;border:1px solid #b99a6f!important;
+  background:#1e292c!important;color:#f7ebd8!important;
+  font:750 9px/1.3 ui-monospace,Consolas,monospace!important;letter-spacing:.06em!important;
+  cursor:pointer!important;box-shadow:none!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-controls button[aria-pressed="true"]{
+  background:#eac684!important;color:#151f21!important;border-color:#fff0bc!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-controls button,.vix-folio-footer button):hover{
+  border-color:#ff8db6!important;box-shadow:0 0 12px #ed4e9b65!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-noir-folio-frame{
+  border:1px solid #c9a77770!important;min-width:0!important;background:#0b1215!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-topline,.vix-folio-footer){
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:8px!important;padding:7px 12px!important;color:#f0cd94!important;
+  background:#142025!important;font:650 9px/1.4 ui-monospace,Consolas,monospace!important;
+  letter-spacing:.05em!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-topline{
+  border-bottom:1px solid #af8e606c!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-footer{
+  border-top:1px solid #af8e606c!important;letter-spacing:0!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript{
+  width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;
+  margin:0!important;padding:clamp(14px,1.6vw,23px)!important;
+  max-height:min(65dvh,720px)!important;overflow-y:auto!important;overflow-x:hidden!important;
+  background:linear-gradient(130deg,#0c1519,#121d22 60%,#0c1519)!important;
+  color:#e9e1d6!important;border:0!important;box-shadow:none!important;
+  font:400 clamp(14px,1.04vw,16.5px)/1.53 "Iowan Old Style",Georgia,serif!important;
+  white-space:normal!important;letter-spacing:0!important;word-break:normal!important;
+  overflow-wrap:break-word!important;text-align:left!important;
+  scrollbar-color:#c4a374 #15252b!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript::before{
+  display:none!important;content:none!important;margin:0!important;height:0!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph{
+  display:block!important;max-width:none!important;width:auto!important;
+  margin:0 0 .78em!important;padding:0!important;
+  font:inherit!important;line-height:1.54!important;color:#ebe4d9!important;
+  white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;
+  text-wrap:pretty!important;hyphens:auto!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading{
+  max-width:60ch!important;color:#f8d8ac!important;
+  font:400 clamp(21px,1.9vw,29px)/1.17 Didot,"Bodoni MT",Georgia,serif!important;
+  margin:1.2em 0 .42em!important;letter-spacing:-.025em!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title{
+  font-size:clamp(24px,2.1vw,31px)!important;
+  color:#fce5c7!important;padding:0 0 13px!important;
+  border-bottom:1px solid #c9a47768!important;margin:0 0 .72em!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title::before{
+  display:block!important;content:"DOCUMENTARY EDITION · SOURCE-PRESERVED"!important;
+  color:#f19cb8!important;font:700 9px/1.5 ui-monospace,Consolas,monospace!important;
+  margin:0 0 6px!important;letter-spacing:.12em!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-lineation="pdf-source-wordflow-reconstructed"]>.vix-reader-paragraph:first-of-type::first-letter{
+  float:none!important;font:inherit!important;margin:0!important;color:inherit!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-raw{
+  margin:15px 0 0!important;background:#182328!important;border-top:1px solid #c0a47e70!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-raw summary{
+  color:#f2b0c7!important;font:700 10px/1.4 ui-monospace,Consolas,monospace!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-folio-density="comfort"]{
+  font-size:clamp(16px,1.18vw,19px)!important;line-height:1.72!important;
+  padding:clamp(18px,2.4vw,34px)!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-folio-density="comfort"] .vix-reader-paragraph{
+  margin-bottom:1.12em!important;line-height:1.72!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-layout[data-reading-focus="true"]{
+  display:block!important;max-width:1250px!important;margin:0 auto!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-layout[data-reading-focus="true"]>.lexicon-index{
+  display:none!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-layout[data-reading-focus="true"]>.lexicon-reader{
+  max-width:1250px!important;position:relative!important;top:auto!important
+}
+/* No implicit scientific or corpus promotion from these presentation controls. */
+@media(max-width:800px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-layout{
+  grid-template-columns:minmax(0,1fr)!important
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel.lexicon-reader{
+  padding:10px!important
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript{
+  font-size:14.5px!important;padding:14px!important;max-height:69dvh!important
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-footer span{
+  display:none!important
+ }
+}
+/* ENTRANCE — source-grounded proposals; scientific complexity is inspectable. */
+#constitutiveInquiry .ci-candidate-key{
+  display:flex;gap:7px;flex-wrap:wrap;padding:10px 0 13px;
+  border-top:1px solid #b69b7850;color:#efdabb;
+  font:700 9px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.09em
+}
+#constitutiveInquiry .ci-candidate-key span{
+  background:#192328;border:1px solid #ad8d6966;padding:4px 7px
+}
+#constitutiveInquiry .ci-candidate-grid{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:clamp(10px,1.3vw,20px)!important;align-items:stretch!important
+}
+#constitutiveInquiry .ci-candidate-card{
+  display:flex!important;flex-direction:column!important;min-width:0!important;
+  padding:clamp(15px,1.3vw,23px)!important;
+  background:linear-gradient(130deg,#111b20,#080f12)!important;
+  border:1px solid #b68e6b70!important;color:#f7eadd!important;
+  box-shadow:inset 0 0 0 1px #eec9990d,0 7px 20px #0005!important
+}
+#constitutiveInquiry .ci-candidate-card.is-active{
+  border-color:#f4d197!important;box-shadow:inset 0 0 0 1px #ffdfbbaa,0 0 21px #f1c47422!important
+}
+#constitutiveInquiry .ci-candidate-eyebrow{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  color:#ff9abd!important;font:750 9px/1.4 ui-monospace,Consolas,monospace!important;
+  letter-spacing:.12em!important
+}
+#constitutiveInquiry .ci-candidate-metrics{
+  display:flex;align-items:baseline;gap:9px;margin:14px 0 10px!important
+}
+#constitutiveInquiry .ci-cand-score{
+  color:#f6d09e!important;font:400 clamp(29px,2.65vw,45px)/1 Didot,Georgia,serif!important
+}
+#constitutiveInquiry .ci-candidate-metrics span{
+  color:#dccbbb!important;font:600 9px/1.45 ui-monospace,Consolas,monospace!important;
+  letter-spacing:.03em!important
+}
+#constitutiveInquiry .ci-conj-title{
+  font:400 clamp(21px,1.9vw,29px)/1.12 Didot,Georgia,serif!important;
+  color:#f5d6bc!important;letter-spacing:-.03em!important;
+  text-transform:none!important;margin:0 0 9px!important
+}
+#constitutiveInquiry .ci-candidate-subtitle{
+  color:#ffa8cc!important;font:700 10px/1.4 ui-monospace,Consolas,monospace!important;
+  letter-spacing:.065em!important;margin:0 0 10px!important
+}
+#constitutiveInquiry .ci-conj-body{
+  color:#e8dac9!important;font:400 14px/1.52 Georgia,serif!important;
+  flex:1 1 auto!important;margin:0 0 14px!important
+}
+#constitutiveInquiry .ci-candidate-domains{
+  display:flex;flex-wrap:wrap;gap:5px;margin:0 0 11px
+}
+#constitutiveInquiry .ci-candidate-domains span{
+  color:#e8d0b1;border:1px solid #bd95765c;padding:3px 6px;
+  font:650 9px/1.4 ui-monospace,Consolas,monospace
+}
+#constitutiveInquiry .ci-candidate-explanation{
+  border-top:1px solid #c09b6960;margin:0 0 15px;padding:10px 0 0;color:#e6d4bd
+}
+#constitutiveInquiry .ci-candidate-explanation summary{
+  cursor:pointer;color:#f6dc9e!important;
+  font:750 10px/1.5 ui-monospace,Consolas,monospace!important;
+  letter-spacing:.05em!important
+}
+#constitutiveInquiry .ci-candidate-axes{
+  padding:15px 0 10px;display:grid;gap:13px
+}
+#constitutiveInquiry .ci-axis-label{
+  display:flex;justify-content:space-between;gap:10px;color:#f3e0c9;
+  font:700 10px/1.45 ui-monospace,Consolas,monospace
+}
+#constitutiveInquiry .ci-axis-label span:last-child{color:#f0bf87}
+#constitutiveInquiry .ci-axis-rail{
+  height:4px;margin:6px 0;background:#455055
+}
+#constitutiveInquiry .ci-axis-rail>span{
+  display:block;height:100%;background:linear-gradient(90deg,#e79eaf,#f6d288)
+}
+#constitutiveInquiry .ci-axis p{
+  font:400 12px/1.4 Georgia,serif;color:#d3c4b3;margin:3px 0 0
+}
+#constitutiveInquiry :is(.ci-candidate-question,.ci-candidate-falsifier){
+  color:#e9dbc9;font:400 12px/1.53 Georgia,serif;
+  margin:11px 0 0
+}
+#constitutiveInquiry .ci-candidate-question{border-top:1px solid #b0937070;padding-top:10px}
+#constitutiveInquiry .ci-candidate-card .ci-actions-row{margin-top:auto;padding-top:10px}
+#constitutiveInquiry .ci-candidate-card .ci-btn{min-height:39px}
+#constitutiveInquiry .ci-candidate-error{color:#ffdcb3;border:1px solid #b88b6890;padding:18px}
+@media(max-width:1180px){
+ #constitutiveInquiry .ci-candidate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:700px){
+ #constitutiveInquiry .ci-candidate-grid{grid-template-columns:minmax(0,1fr)!important}
+ #constitutiveInquiry .ci-candidate-card{padding:16px!important}
+ #constitutiveInquiry .ci-candidate-eyebrow{font-size:9px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #constitutiveInquiry .ci-candidate-card{transition:none!important}
+}
