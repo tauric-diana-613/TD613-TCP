@@ -30,6 +30,21 @@ C0 is a prior-day-only title query over the fixed public registry. C1 shuffles s
 
 The algorithm is a simple deterministic comparator, not an attempt to synthesize an entire authored methodology. Its narrowness is an intentional experimental control, establishing a baseline a richer implementation must beat rather than claiming parity by tool naming.
 
+### Null-adversarial successor · query-blind frequency challenge
+
+The additional `wendbine-frequency-null-challenge.mjs` computes two *query-blind* baselines from strictly earlier public-day material. Graph-family frequency counts typed **source edges** and predicts three graph labels; concept frequency counts **per-post declared concepts** and predicts five concept labels. It compares their later-day hit counts with the frozen C0 and concept-label permutation comparator. The original historical protocol remains unchanged.
+
+Independent read-only calculation of this registered 33-post snapshot produced 12 eligible September 11 targets and the following descriptive totals:
+
+| Outcome (distinct classification task) | C0 current derived method | Frequency-only null | Permuted-concept control |
+|---|---:|---:|---:|
+| Three graph-family label predictions per target | 13 | 5 | 13 |
+| Five concept-label predictions per target | 15 | 15 | 2 |
+
+These are **post hoc retrospective counts**, not preregistered confirmation, a significance test, causal discovery or independent replication. The concept model *ties* a trivial frequency null, even while outperforming permutation. The graph model beats frequency in total hits but *ties* concept permutation. Hence no current witness isolates a scientifically distinctive advantage of the reconstructed method over **both** null families, and any method-specific superiority claim stays HELD. The zero graph hits in edge-ablation C3 arise by construction because the graph predictor has no edges; do not treat that zero alone as proof of a meaningful relational contribution.
+
+A creative research next move is to freeze a prospective time-matched, source-custody-qualified test set; blind target labels and capture times from the predictor; preregister both graph and concept outcomes; and test the incremental contribution of topology against label permutation **and** frequency priors. This is a new research acquisition requirement, not an automatic successor stage.
+
 The finite graph families and the five observed source-evidence classes are now whitelisted. Fabricated graph families and forged evidence classes fail closed before the original compiler executes. The newly available public sweep evaluates every admitted target with at least one strictly earlier publication day and aggregates C0/C2/C3/C4 counts with explicit abstentions. It is labelled HELD_EXPLORATORY_SWEEP_NOT_PREREGISTERED, provides no significance test, and cannot be rebranded as a historical or causal discovery. Its denominator comes from eligible source records, never an arbitrary stage count.
 
 The separately installed capture-route engine can now be called from host-only Podium as wendbine_observed_evidence_routes. It requires an operator-supplied absolute private SQLite index outside the repository, an exact public source ID and a bounded result limit. Its original Python instrument validates each observed text field's SHA-256 and returns byte offsets, observed Explore cues and explicit post links. A synthetic SQLite witness is used for its positive integration regression. This is a TD613 capture-observation instrument rather than an executable supplied by the original public poster; SRC stratigraphic parity and all causal/intent promotions remain HELD. None of the private capture bodies are transferred into the public Vixen browser.
