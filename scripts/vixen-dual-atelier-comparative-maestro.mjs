@@ -208,11 +208,11 @@ export async function runDualAtelierMaestroQualification({repoRoot=ROOT}={}){
    note:'Retrospective controls tie or defeat the current derived method; this is a simulated research intervention.'}});
  const wStep2=await requireEngine(podium,'WENDBINE_ATELIER','wendbine_maestro_research_step',
   {action:'report',previous_receipt:wStep1,observation:{kind:'NO_NEW_EVIDENCE'}});
- const wm=wDirected.diagnostics,wo=wOpen.summary;
+ const wm=wDirected.data?.diagnostics,wo=wOpen.data?.summary;
  assert(wTransfer.subject_work_count===2&&wTransfer.public_source_bodies_admitted===0,
   'HELD_COMPARATIVE_WENDBINE_FOREIGN_WORK_PROMOTION');
- assert(wDirected.original_compiler_receipt.original_compiler_executed===true&&
-  wOpen.original_compiler_receipt.original_compiler_executed===true,
+ assert(wDirected.data?.original_compiler_receipt?.original_compiler_executed===true&&
+  wOpen.data?.original_compiler_receipt?.original_compiler_executed===true,
   'HELD_COMPARATIVE_WENDBINE_COMPILER_NOT_EXECUTED');
  assert(wm.graph_outperforms_all_available_controls===false&&
   wm.concept_outperforms_all_available_controls===false&&
@@ -228,7 +228,7 @@ export async function runDualAtelierMaestroQualification({repoRoot=ROOT}={}){
    registered_source_executable:wenCompiler,source_sha256:hb(wenCompiler),
    executed_original_fixture_compiler:true,original_public_person_authorship_not_inferred:true,
    subject_source_proofs:witnesses(wTransfer.subject_source_proofs),
-   separate_public_source_snapshot_id:wDirected.snapshot_id,
+   separate_public_source_snapshot_id:wDirected.data.snapshot_id,
    public_source_bodies_admitted:0,transfer_native_algorithm_equivalence:wTransfer.native_algorithm_equivalence}),
   checkpoint(null,'ADVERSARIAL_NULL_AND_NOVELTY_CONTROL',{
    controlled_source_population:'21_EARLIER_POSTS_12_LATER_TITLE_DISCLOSED_TARGETS',
