@@ -34,7 +34,7 @@ class Gate3SpanIdentity(unittest.TestCase):
         ):
             target=self.root/relative
             target.parent.mkdir(parents=True,exist_ok=True)
-            target.write_text("".join(json.dumps(row)+"\\n" for row in rows),encoding="utf8")
+            target.write_text("".join(json.dumps(row)+"\n" for row in rows),encoding="utf8")
     def tearDown(self):self.temp.cleanup()
     def srcrow(self):
         raw=("The source-route distinction survives each independent paragraph. "*25).encode()
