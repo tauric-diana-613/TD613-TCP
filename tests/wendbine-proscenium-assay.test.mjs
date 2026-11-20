@@ -136,7 +136,7 @@ test('captured evidence routes execute from a real synthetic SQLite source but r
    'sha=lambda b:hashlib.sha256(b).hexdigest()',
    'con.execute("INSERT INTO capture_versions VALUES(?,?,?,?,?,?,?)",("capture-1","reddit:t3_abcde1","2026-10-01T00:00:00Z",title,body,sha(title),sha(body)))',
    'con.commit();con.close()'
-  ].join('\\n');
+  ].join('\n');
   execFileSync(python,['-c',makeDb,db],{encoding:'utf8',timeout:10000});
   const receipt=native.WENDBINE_ATELIER({operation:'wendbine_observed_evidence_routes',
    payload:{index_path:db,source_id:'reddit:t3_abcde1'}});
