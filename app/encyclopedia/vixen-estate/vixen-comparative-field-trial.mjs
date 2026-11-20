@@ -20,8 +20,10 @@ const short=x=>String(x||'').slice(0,170);
 const name=w=>w.display_title||w.declared_title||w.work_id;
 const safeError=e=>String(e?.message||e||'UNKNOWN').slice(0,180);
 const sourceRead=(id)=>{const a=window.VixenReference?.openWork?.(id);return Boolean(a?.opened)};
-const methodLabels={DOCUMENTARY:'Documentary cue route',RELATIONAL:'Relational concept route',
+const usefulLabels={DOCUMENTARY:'Documentary cue route',RELATIONAL:'Relational concept route',
  TIE:'Equally useful',NEITHER:'Neither was useful'};
+const trustworthyLabels={DOCUMENTARY:'Documentary cue route',RELATIONAL:'Relational concept route',
+ TIE:'Equally trustworthy',NEITHER:'Neither was trustworthy'};
 const download=(obj)=>{
  const content=JSON.stringify(obj,null,2)+'\n';
  const uri=URL.createObjectURL(new Blob([content],{type:'application/json'}));
@@ -98,6 +100,7 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
  };
  const commit=async form=>{
   if(!authorized()||state.busy||state.phase!=='REVIEW'||!state.run||!state.documents)return;
+  const token=state.epoch;
   state.busy=true;
   try{
    const report=validateHumanComparativeJudgment({
@@ -126,10 +129,12 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
     authorial_source_admission:false,composer_publication_authority:false,
     no_network_submission:true,human_closure_required:true};
    const digest=await rawSHA(JSON.stringify(payload));
+   // Source reset or role exit can revoke the report while digesting.
+   if(token!==state.epoch||!authorized()||state.phase!=='REVIEW')return;
    state.receipt={...payload,browser_untrusted_sha256:digest};
    state.phase='RECEIPT';render();
-  }catch(e){showStatus('Please complete the evidence fields: '+safeError(e));}
-  finally{state.busy=false}
+  }catch(e){if(token===state.epoch&&authorized())showStatus('Please complete the evidence fields: '+safeError(e));}
+  finally{if(token===state.epoch)state.busy=false}
  };
  function routePanel(kind){
   const result=kind==='DOCUMENTARY'?state.run.documentary:state.run.relational;
@@ -199,9 +204,10 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
     input.name='excerpt_'+i;input.required=true;
     form.append(field('Source passage '+(i+1)+' · '+d.title,input));
    }
-   const options=Object.entries(methodLabels).map(([k,v])=>[k,v]);
-   const u=select(options,'Which route was more useful?');u.name='useful';
-   const t=select(options,'Which route was more trustworthy?');t.name='trustworthy';
+   const usefulOptions=Object.entries(usefulLabels).map(([k,v])=>[k,v]);
+   const trustworthyOptions=Object.entries(trustworthyLabels).map(([k,v])=>[k,v]);
+   const u=select(usefulOptions,'Which route was more useful?');u.name='useful';
+   const t=select(trustworthyOptions,'Which route was more trustworthy?');t.name='trustworthy';
    form.append(field('Which route produced the more useful lead?',u),
     field('Which route made the more defensible claims?',t));
    for(const [key,labelText,placeholder,max] of [
@@ -226,7 +232,17 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
   status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   host.append(status);
  }
- const roleChange=()=>{if(!activeMaestro()&&state.phase!=='SETUP')reset();render()};
+ const roleChange=()=>{
+  if(!activeMaestro()){
+   // Leaving Maestro revokes outstanding reads and unsent research material,
+   // including questions entered while still in the SETUP phase.
+   state.epoch++;state.busy=false;state.phase='SETUP';
+   state.run=null;state.documents=null;state.receipt=null;state.calibration=null;
+   state.error=null;state.sourceA=0;state.sourceB=1;state.query='';
+   state.round=0;state.viewOrder=[];
+  }
+  render();
+ };
  window.addEventListener('vixen-maestro-session-state',roleChange);
  render();
  const api=Object.freeze({mounted:true,
