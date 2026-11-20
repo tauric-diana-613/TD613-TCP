@@ -1,6 +1,10 @@
 # 𝌋 TD613 Dollhouse Scientific Audit Report
 ## Emergence HQ Computational Rule Atlas & Expanded Multiway Index
 
+
+> **2026-11-14 prospective correction / audit supersession.** The historical W3/P-044 interpretation of \(\tau_{\rm theory}\perp\tau_{\rm ambiance}\perp\tau_{\rm resynthesis}\) as a mathematical orthogonality theorem is WITHDRAWN. This report is retained as the original **synthetic offline fixture** audit of the November 7 claim, not independent evidence for zero ambient curvature, human-observer invariance, or physics. The current rule and bounded replacement assays appear in [P-044 Corrigendum](./P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md), the active machine-readable Rule Atlas entries, and RCA-01 tests. Historical conclusions below remain visible for provenance and do not grant the superseded theorem current authority.
+
+
 **Invocation ID:** `dollhouse-audit-1794041184591-6a6e7cec`  
 **Schema:** `td613.dollhouse.skill-audit-receipt/v1.0`  
 **Target Revision:** `fb554ff63909b5c69262cd57ba63a8dd3e28442b` (HEAD, Draft PR #1718)  

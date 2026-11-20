@@ -199,6 +199,8 @@ jobs:
         run: npm run test:loom:instrument
       - name: Validate Dome-World runtime weather and hash regression
         run: node --test tests/dome-world-runtime-weather-hash-regression.test.mjs
+      - name: Validate P-044 bounded ambiance coupling and mutation controls
+        run: npm run test:ambiance
       - name: Validate restored 5-role Dollhouse specialist suites and native skill
         run: |
           node --test \
