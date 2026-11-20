@@ -135,12 +135,12 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
     WENDBINE_ATELIER:({operation,payload={}})=>{
       // Host-only derived research methods execute the preserved original public compiler
       // and a separately attributed TD613 assay. They never enter Vixen's public bundle.
-      if(['wendbine_public_reconstruction','wendbine_public_research_journey','wendbine_public_inventory'].includes(operation)){
+      if(['wendbine_public_reconstruction','wendbine_public_research_journey','wendbine_public_inventory','wendbine_public_sweep'].includes(operation)){
        const script=safePublicRoot(repo,['scripts','wendbine-proscenium-assay.mjs']);
        const mode=operation==='wendbine_public_reconstruction'?'assay':
-        operation==='wendbine_public_research_journey'?'journey':'inventory';
+        operation==='wendbine_public_research_journey'?'journey':operation==='wendbine_public_sweep'?'sweep':'inventory';
        const args=['--mode',mode];
-       if(mode!=='inventory')args.push('--target-source-id',nonempty(payload.target_source_id,80));
+       if(mode==='assay'||mode==='journey')args.push('--target-source-id',nonempty(payload.target_source_id,80));
        if(payload.as_of_day)args.push('--as-of-day',nonempty(payload.as_of_day,10));
        if(payload.question)args.push('--question',nonempty(payload.question,250));
        return {estate:'WENDBINE',kind:'ORIGINAL_COMPILER_PLUS_TD613_DERIVED_ASSAY',
