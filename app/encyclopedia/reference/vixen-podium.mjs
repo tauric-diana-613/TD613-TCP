@@ -63,6 +63,7 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'src_projective_routing','src_verified_vixen_work_pair',
    'src_verified_vixen_original_projective_differential',
    'src_verified_vixen_original_typed_traversal',
+   'src_verified_vixen_original_phase2',
   'src_phase2_tomography',
   'src_phase2_context_roles',
   'src_rabbit_hole_traversal',
