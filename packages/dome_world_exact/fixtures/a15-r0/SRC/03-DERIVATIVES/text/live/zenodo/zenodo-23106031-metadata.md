@@ -1,0 +1,149 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23106031"
+source_title: "HUMAN AGENCY TRANSFER (SR‑HAT): A Structural Genealogy of How Institutions, Algorithms, and AI Reallocate Effective Human Control"
+metadata_blob_sha256: a43fd483ba5eac855c642b543ebc69580d4da06d493ada0887ae742cdb1935be
+metadata_blob_path: 02-ORIGINALS/live/blobs/a4/a43fd483ba5eac855c642b543ebc69580d4da06d493ada0887ae742cdb1935be.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23106030",
+  "conceptrecid": "23106030",
+  "created": "2026-10-02T15:50:14.600408+00:00",
+  "doi": "10.5281/zenodo.23106031",
+  "doi_url": "https://doi.org/10.5281/zenodo.23106031",
+  "files": [
+    {
+      "checksum": "md5:b4a2fdea3f8dc3f34e25d4f813420197",
+      "id": "22a0115e-bfd1-45b6-8661-50df442ff715",
+      "key": "HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23106031/files/HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.docx/content"
+      },
+      "size": 1161330
+    },
+    {
+      "checksum": "md5:a1f916c4601bc94436e7ba37223bf16d",
+      "id": "481cbf18-0c29-44b1-954c-0d99ed2b0297",
+      "key": "HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23106031/files/HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/content"
+      },
+      "size": 340038
+    }
+  ],
+  "id": 23106031,
+  "links": {
+    "access": "https://zenodo.org/api/records/23106031/access",
+    "access_grants": "https://zenodo.org/api/records/23106031/access/grants",
+    "access_links": "https://zenodo.org/api/records/23106031/access/links",
+    "access_request": "https://zenodo.org/api/records/23106031/access/request",
+    "access_users": "https://zenodo.org/api/records/23106031/access/users",
+    "communities": "https://zenodo.org/api/records/23106031/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23106031/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23106031",
+    "draft": "https://zenodo.org/api/records/23106031/draft",
+    "file_modification": "https://zenodo.org/api/records/23106031/file-modification",
+    "files": "https://zenodo.org/api/records/23106031/files",
+    "latest": "https://zenodo.org/api/records/23106031/versions/latest",
+    "latest_html": "https://zenodo.org/records/23106031/latest",
+    "media_files": "https://zenodo.org/api/records/23106031/media-files",
+    "parent": "https://zenodo.org/api/records/23106030",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23106030",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23106030",
+    "parent_html": "https://zenodo.org/records/23106030",
+    "preview_html": "https://zenodo.org/records/23106031?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23106031/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23106031/request-deletion",
+    "requests": "https://zenodo.org/api/records/23106031/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23106031/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23106031",
+    "self_doi": "https://doi.org/10.5281/zenodo.23106031",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23106031",
+    "self_html": "https://zenodo.org/records/23106031",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23106031/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23106031/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23106031:HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23106031:HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23106031:HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23106031:HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23106031:HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23106031:HUMAN_AGENCY_TRANSFER_SR_HAT_2026-09-30.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23106031/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h2><strong>HUMAN AGENCY TRANSFER (SR‑HAT): A Structural Genealogy of How Institutions, Algorithms, and AI Reallocate Effective Human Control</strong></h2>\n<div>\n</div>\n<h2><strong>DESCRIPTION</strong></h2>\n<p><strong>SR‑HAT</strong> is a formal SR architecture that explains <strong>how effective human control moves</strong> across institutional, algorithmic, and AI systems. It defines human agency not as a metaphysical property but as <strong>executable control</strong> over the stages of decision formation, evidence selection, representation, evaluation, authorization, and execution.</p>\n<p>The paper introduces:</p>\n<ul>\n<li>\n<p>a <strong>historical genealogy</strong> of agency allocation</p>\n</li>\n<li>\n<p>a <strong>structural saturation mechanism</strong> linking load, buffer depletion, and external mediation</p>\n</li>\n<li>\n<p>a <strong>stage‑specific control ledger</strong> for measuring effective human vs AI control</p>\n</li>\n<li>\n<p>a <strong>restoration test</strong> that distinguishes capability‑driven delegation from structurally induced transfer</p>\n</li>\n<li>\n<p>a <strong>convergence thesis</strong> showing how AI unifies previously fragmented agency‑allocation systems</p>\n</li>\n<li>\n<p>falsifiable hypotheses and preregisterable experimental designs</p>\n</li>\n</ul>\n<p>SR‑HAT demonstrates that <strong>agency can move without disappearing</strong>, and that transfer is not inherently harmful &mdash; it becomes structural when human or institutional buffers deteriorate and independent execution becomes costly.</p>\n<div>\n</div>\n<h2><strong>HOW IT CONTRIBUTES TO SR</strong></h2>\n<p><strong>SR‑HAT</strong> is one of the most important transversal components of the SR Ultiverse and SR Systems Psychology. It contributes to the master architecture in five structural ways:</p>\n<h3><strong>1. It formalizes agency as a measurable SR object</strong></h3>\n<p>SR‑HAT defines agency as <strong>executable control</strong>, giving SR a rigorous, testable way to measure:</p>\n<ul>\n<li>\n<p>human retained control</p>\n</li>\n<li>\n<p>AI control share</p>\n</li>\n<li>\n<p>platform control</p>\n</li>\n<li>\n<p>institutional control</p>\n</li>\n</ul>\n<p>This becomes essential for <strong>Meaning &amp; Agency Science</strong>.</p>\n<h3><strong>2. It provides the mechanism behind Agency‑Substrate Divergence</strong></h3>\n<p>The Ultiverse predicts divergence between infrastructure, feasible agency, and lived value.<br>SR‑HAT provides the <strong>mechanism</strong>:</p>\n<blockquote>\n<p><em>Load &uarr; &rarr; Effective capacity &darr; &rarr; External mediation &uarr; &rarr; Agency transfer &uarr;</em></p>\n</blockquote>\n<p>This is the structural engine behind Ultiverse Prediction VI.</p>\n<h3><strong>3. It introduces the Buffer‑Restoration Test</strong></h3>\n<p>This is one of the strongest causal tests in SR:</p>\n<blockquote>\n<p><em>Hold AI capability constant. Restore human buffers.<br>If control returns &rarr; structural transfer is real.</em></p>\n</blockquote>\n<p>This test is crucial for falsification and for SR&rsquo;s scientific legitimacy.</p>\n<h3><strong>4. It defines the Agency‑Domain Vector and Convergence Index</strong></h3>\n<p>These constructs allow SR to:</p>\n<ul>\n<li>\n<p>track which agency dimensions become externally allocable</p>\n</li>\n<li>\n<p>measure how AI systems converge multiple agency functions</p>\n</li>\n<li>\n<p>model cross‑metatheory effects in the Ultiverse</p>\n</li>\n</ul>\n<p>This is foundational for <strong>transversal SR fields</strong> like SR Internet Infrastructure Science.</p>\n<h3><strong>5. It anchors SR&rsquo;s predictive claims about behavioural discontinuity and representational substitution</strong></h3>\n<p>SR‑HAT explains why:</p>\n<ul>\n<li>\n<p>behavioural discontinuity can occur before institutional discontinuity</p>\n</li>\n<li>\n<p>representational substitution can alter feasible agency</p>\n</li>\n<li>\n<p>saturation can accelerate machine‑mediated execution</p>\n</li>\n<li>\n<p>restoration requires cross‑metatheory coherence</p>\n</li>\n</ul>\n<p>This directly strengthens Ultiverse Predictions U3, U4, U5, U6, and U7.</p>",
+    "doi": "10.5281/zenodo.23106031",
+    "keywords": [
+      "Metatheory",
+      "Cognitive Psychology",
+      "Institutions",
+      "Social Psychology",
+      "Social Issues",
+      "Governance"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-02",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23106030"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "HUMAN AGENCY TRANSFER (SR‑HAT): A Structural Genealogy of How Institutions, Algorithms, and AI Reallocate Effective Human Control",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:13:37.461129+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23106031",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 10,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 10,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "HUMAN AGENCY TRANSFER (SR‑HAT): A Structural Genealogy of How Institutions, Algorithms, and AI Reallocate Effective Human Control",
+  "updated": "2026-10-06T01:13:37.461129+00:00"
+}
+```

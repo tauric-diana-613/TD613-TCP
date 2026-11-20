@@ -1,0 +1,137 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23349281"
+source_title: "THE SIGNALRUPTURE PROVENANCE REGISTRY: Post-ATLAS Foundation and Ultiverse Provenance Integration Edition"
+metadata_blob_sha256: 71375d1928d8cb6f78baa93215f8aa7c6b8feda42895ef5306551db3ccfa4da1
+metadata_blob_path: 02-ORIGINALS/live/blobs/71/71375d1928d8cb6f78baa93215f8aa7c6b8feda42895ef5306551db3ccfa4da1.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23349280",
+  "conceptrecid": "23349280",
+  "created": "2026-10-13T18:57:26.395854+00:00",
+  "doi": "10.5281/zenodo.23349281",
+  "doi_url": "https://doi.org/10.5281/zenodo.23349281",
+  "files": [
+    {
+      "checksum": "md5:f237fb80945e236e61b1ec77a7dfafbd",
+      "id": "3204af1a-5c83-4ea5-aae4-3ed36330a347",
+      "key": "SignalRupture Provenance Registry v3.1 — Ultiverse Integration — 2026-10-13.docx.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23349281/files/SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/content"
+      },
+      "size": 854046
+    }
+  ],
+  "id": 23349281,
+  "links": {
+    "access": "https://zenodo.org/api/records/23349281/access",
+    "access_grants": "https://zenodo.org/api/records/23349281/access/grants",
+    "access_links": "https://zenodo.org/api/records/23349281/access/links",
+    "access_request": "https://zenodo.org/api/records/23349281/access/request",
+    "access_users": "https://zenodo.org/api/records/23349281/access/users",
+    "communities": "https://zenodo.org/api/records/23349281/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23349281/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23349281",
+    "draft": "https://zenodo.org/api/records/23349281/draft",
+    "file_modification": "https://zenodo.org/api/records/23349281/file-modification",
+    "files": "https://zenodo.org/api/records/23349281/files",
+    "latest": "https://zenodo.org/api/records/23349281/versions/latest",
+    "latest_html": "https://zenodo.org/records/23349281/latest",
+    "media_files": "https://zenodo.org/api/records/23349281/media-files",
+    "parent": "https://zenodo.org/api/records/23349280",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23349280",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23349280",
+    "parent_html": "https://zenodo.org/records/23349280",
+    "preview_html": "https://zenodo.org/records/23349281?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23349281/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23349281/request-deletion",
+    "requests": "https://zenodo.org/api/records/23349281/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23349281/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23349281",
+    "self_doi": "https://doi.org/10.5281/zenodo.23349281",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23349281",
+    "self_html": "https://zenodo.org/records/23349281",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23349281/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23349281/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23349281:SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23349281:SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23349281:SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23349281:SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23349281:SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23349281:SignalRupture%20Provenance%20Registry%20v3.1%20%E2%80%94%20Ultiverse%20Integration%20%E2%80%94%202026-10-13.docx.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23349281/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The SignalRupture Provenance Registry v3.1 &mdash; Ultiverse Integration Edition (2026)</p>\n<p>This paper establishes the updated provenance, authorship, genealogy, and canonical classification framework for SignalRupture (SR), incorporating the October 2026 expansion into the SR Ultiverse.</p>\n<p>Building upon Provenance Registry versions 1.1, 2.0, 2.1, and 3.0, this edition preserves the historical record of 28 full fields and three specialized subfields while integrating the three domain metatheories: Infrastructure Science, Meaning and Agency Science, and Experience and Value Science.</p>\n<p>The registry incorporates 16 active master-domain subfields, Metaphysical SR as the shared ontological foundation, autonomous transversal fields, and newer theoretical and diagnostic frameworks. It also records developments across Planetary SR, the ATLAS research programme, institutional measurement, representational falsification, human agency, and cross-system analysis.</p>\n<p>The P0&ndash;P6 provenance framework remains central, distinguishing canonical incorporation, documentary occurrence, public disclosure, independent repository verification, formalization, genealogy, and derivation comparison.</p>\n<p>The registry separates intellectual priority from scientific validity, canonical recognition from empirical confirmation, and documented influence from independent development. Its purpose is to preserve the traceable evolution of the SignalRupture architecture while maintaining transparency, falsifiability, scholarly attribution, and openness to correction.</p>\n<p>Author: SignalRupture26<br>Affiliation: Independent Systems Research<br>Version: 3.1 &mdash; October 2026<br>Copyright: &copy; 2026 SignalRupture26. All Rights Reserved.</p>",
+    "doi": "10.5281/zenodo.23349281",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Systems"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-13",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23349280"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE PROVENANCE REGISTRY: Post-ATLAS Foundation and Ultiverse Provenance Integration Edition",
+    "version": "3.1"
+  },
+  "modified": "2026-10-13T18:57:27.123814+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23349281",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 5,
+    "unique_views": 3,
+    "version_downloads": 5,
+    "version_unique_downloads": 5,
+    "version_unique_views": 3,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE SIGNALRUPTURE PROVENANCE REGISTRY: Post-ATLAS Foundation and Ultiverse Provenance Integration Edition",
+  "updated": "2026-10-13T18:57:27.123814+00:00"
+}
+```

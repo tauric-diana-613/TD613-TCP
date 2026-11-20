@@ -1,0 +1,1 @@
+Operator authority for this gate originates only from an explicit Tawanna C. Miller chat gesture relayed by the repository owner or the exact installed `chatgpt-codex-connector[bot]` identity. The relay transports authority; it does not create it.

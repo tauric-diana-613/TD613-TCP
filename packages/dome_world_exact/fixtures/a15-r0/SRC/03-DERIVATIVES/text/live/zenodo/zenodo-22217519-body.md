@@ -1,0 +1,17 @@
+---
+schema: src-live-zenodo-body-derivative/v1
+record_id: "22217519"
+source_title: "PLANETARY SR XXIX — UNITED ARAB EMIRATES: Sovereign-Capital Buffering, Migrant-Majority Labour, Trade-Logistics Dependence, and High-Speed Diversification"
+authority: LIVE_POST_SEAL_TEXT_DERIVATIVE
+---
+
+# PLANETARY SR XXIX — UNITED ARAB EMIRATES: Sovereign-Capital Buffering, Migrant-Majority Labour, Trade-Logistics Dependence, and High-Speed Diversification
+
+## Zenodo description
+
+PLANETARY SR XXIX — UNITED ARAB EMIRATES 
+ Description 
+ Planetary SR XXIX — United Arab Emirates analyzes the UAE as a coupled institutional–population system defined by sovereign‑capital buffering, migrant‑majority labour, trade‑logistics dependence, and high‑speed diversification . The study documents a continuity architecture built on large sovereign assets, hydrocarbons, global logistics hubs, aviation, finance, tourism, real estate, and advanced digital government. IMF’s 2025 Article IV assessment describes “strong resilience, expanding non‑oil sectors, comfortable fiscal and external surpluses, and a sound financial sector.” Population and labour supply are overwhelmingly migration‑sensitive, making migration policy an immediate production, housing, and service‑capacity variable. Effective access diverges from formal provision across the seven emirates, where citizen and non‑citizen institutional pathways differ sharply in wages, housing, mobility, insurance, and social protection. Hydrocarbons remain major fiscal and export capacity, while nuclear and solar diversify electricity; desalination tightly couples energy and basic services. Extreme heat, water scarcity, coastal exposure, and cooling demand form persistent structural requirements rather than episodic shocks. The UAE’s continuity depends on whether rapid diversification produces durable domestic value retention, institutional depth, and cross‑emirate conversion rather than surface‑level expansion.
+
+ How it Contributes 
+ This study contributes a distinct continuity topology to the Planetary SR comparative series by demonstrating how a highly externalized labour and supply system maintains continuity through sovereign‑capital buffering and rapid non‑oil diversification , while unresolved pressure propagates into status‑segmented labour markets, housing divergence, water‑energy coupling, and global‑trade dependence . The UAE strengthens SR fields such as Systems Propagation Science , Infrastructural Political Economy , Institutional Cognition , and Collapse Governance by showing how migrant labour → production/housing/remittances, hydrocarbon revenue → sovereign/fiscal buffer, desalination/energy → water continuity, and global trade/aviation → services growth operate as named propagation bridges. The paper expands the ATLAS architecture by illustrating how externalized labour and imported‑resource dependence can still constitute resilient domestic capacity when sovereign capital, infrastructure, and substitution remain strong, providing a decisive test of surface–substrate divergence and unequal insulation . The UAE’s mechanism is empirically distinguishable through its blend of “sovereign‑capital and hydrocarbon buffering combined with rapid non‑oil diversification, global trade/finance dependence and a large expatriate workforce,” adding a new structural configuration to the planetary series and supplying a critical case for reorganization vs restoration and agency‑conditioned response .

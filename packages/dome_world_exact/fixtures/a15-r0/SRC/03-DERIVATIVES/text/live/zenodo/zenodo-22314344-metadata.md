@@ -1,0 +1,140 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22314344"
+source_title: "ATLAS X OWNERSHIP, FINANCE, AND PROFIT REPATRIATION: Who Controls the Surplus After Production Occurs"
+metadata_blob_sha256: 932dfdbfb74cfcf4104e87559e66c43cfbb7b11bc2cde474fb790fe6d8fdf166
+metadata_blob_path: 02-ORIGINALS/live/blobs/93/932dfdbfb74cfcf4104e87559e66c43cfbb7b11bc2cde474fb790fe6d8fdf166.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22314343",
+  "conceptrecid": "22314343",
+  "created": "2026-09-05T01:46:38.451685+00:00",
+  "doi": "10.5281/zenodo.22314344",
+  "doi_url": "https://doi.org/10.5281/zenodo.22314344",
+  "files": [
+    {
+      "checksum": "md5:6a230122cd4f0383ec4c84e2cf31b274",
+      "id": "edabcb30-286d-4665-bec5-86417700b86e",
+      "key": "ATLAS X — OWNERSHIP, FINANCE, AND PROFIT REPATRIATION.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22314344/files/ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/content"
+      },
+      "size": 161436
+    }
+  ],
+  "id": 22314344,
+  "links": {
+    "access": "https://zenodo.org/api/records/22314344/access",
+    "access_grants": "https://zenodo.org/api/records/22314344/access/grants",
+    "access_links": "https://zenodo.org/api/records/22314344/access/links",
+    "access_request": "https://zenodo.org/api/records/22314344/access/request",
+    "access_users": "https://zenodo.org/api/records/22314344/access/users",
+    "archive": "https://zenodo.org/api/records/22314344/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22314344/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22314344/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22314344/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22314344",
+    "draft": "https://zenodo.org/api/records/22314344/draft",
+    "file_modification": "https://zenodo.org/api/records/22314344/file-modification",
+    "files": "https://zenodo.org/api/records/22314344/files",
+    "latest": "https://zenodo.org/api/records/22314344/versions/latest",
+    "latest_html": "https://zenodo.org/records/22314344/latest",
+    "media_files": "https://zenodo.org/api/records/22314344/media-files",
+    "parent": "https://zenodo.org/api/records/22314343",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22314343",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22314343",
+    "parent_html": "https://zenodo.org/records/22314343",
+    "preview_html": "https://zenodo.org/records/22314344?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22314344/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22314344/request-deletion",
+    "requests": "https://zenodo.org/api/records/22314344/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22314344/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22314344",
+    "self_doi": "https://doi.org/10.5281/zenodo.22314344",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22314344",
+    "self_html": "https://zenodo.org/records/22314344",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22314344/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22314344/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22314344:ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22314344:ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22314344:ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22314344:ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22314344:ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22314344:ATLAS%20X%20%E2%80%94%20OWNERSHIP,%20FINANCE,%20AND%20PROFIT%20REPATRIATION.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22314344/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS X &mdash; Ownership, Finance, and Profit Repatriation</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS X</em> formalizes the <strong>ownership‑and‑finance layer</strong> of the ATLAS universe: the diagnostic architecture showing how domestic production can coexist with <strong>external value capture</strong> when ownership, finance, intellectual property, and distribution rights move surplus outward and limit domestic reinvestment. As the manuscript states, <em>&ldquo;Domestic production can coexist with external value capture when ownership, finance, intellectual property, and distribution rights move surplus outward and limit domestic reinvestment.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions ownership and finance as <strong>structural determinants</strong> of whether domestic production translates into retained capability or renewed dependency.</p>\n<p>ATLAS X extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how concentrated ownership and profit repatriation reduce retained value (R), increase burdens (B), weaken substitution capacity (S), raise external dependence (D), and lower bargaining agency (A). It introduces a measurement architecture focused on ultimate beneficial ownership, primary‑income debits, reinvested earnings, royalty and interest payments, local procurement depth, technology transfer, and tax contribution.</p>\n<p>The manuscript establishes that foreign participation is not automatically extraction; it becomes problematic only when <strong>surplus mobility exceeds domestic learning and reinvestment capacity</strong>.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS X provides the <strong>ownership‑finance foundation</strong> of the ATLAS universe. It operationalizes <strong>External Value Capture</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable account of how surplus moves across borders after production occurs.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how concentrated ownership and financial outflows weaken domestic capability formation and reproduce dependency. It strengthens <strong>Society as a Pressure Ecology</strong> by demonstrating how ownership and finance act as transmission channels for externalization.</p>\n<p>The migration‑ownership audit expands ATLAS&rsquo;s cross‑border incidence analysis by tracing how capital mobility and human mobility interact through profit repatriation, transfer pricing, recruitment fees, remittance costs, and wage capture. As the manuscript states, <em>&ldquo;Remittances are a household flow, not automatic evidence that the broader ownership structure is reciprocal.&rdquo;</em></p>\n<p>ATLAS X also provides the empirical substrate for evaluating <strong>restoration</strong> through disclosure, contract transparency, performance‑linked investment policy, domestic supplier development, and anti‑avoidance enforcement.</p>\n<p>Ultimately, ATLAS X contributes the <strong>surplus‑control grammar</strong> required to evaluate whether societies can retain gains, govern essential systems, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22314344",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Economics"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22314343"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS X OWNERSHIP, FINANCE, AND PROFIT REPATRIATION: Who Controls the Surplus After Production Occurs",
+    "version": "1.0"
+  },
+  "modified": "2026-09-05T01:48:05.289323+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22314344",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 3,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 3,
+    "version_views": 4,
+    "views": 4
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS X OWNERSHIP, FINANCE, AND PROFIT REPATRIATION: Who Controls the Surplus After Production Occurs",
+  "updated": "2026-09-05T01:48:05.289323+00:00"
+}
+```

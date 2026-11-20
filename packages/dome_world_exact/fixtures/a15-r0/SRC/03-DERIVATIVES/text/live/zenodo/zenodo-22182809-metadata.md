@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22182809"
+source_title: "PLANETARY SR X — SWEDEN: Decentralized Welfare Capacity, Household-Credit Exposure, Export Dependence, and High-Capacity Adaptation"
+metadata_blob_sha256: 75b90205b1ca22e942c33855312944d5c0802f4c2b073029887e10a11c151811
+metadata_blob_path: 02-ORIGINALS/live/blobs/75/75b90205b1ca22e942c33855312944d5c0802f4c2b073029887e10a11c151811.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22182808",
+  "conceptrecid": "22182808",
+  "created": "2026-08-31T00:58:37.742176+00:00",
+  "doi": "10.5281/zenodo.22182809",
+  "doi_url": "https://doi.org/10.5281/zenodo.22182809",
+  "files": [
+    {
+      "checksum": "md5:9ddf2326906433fb068d40376d0a359d",
+      "id": "2aa96595-688e-479f-bdaa-89e57e540798",
+      "key": "PLANETARY SR X — SWEDEN.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22182809/files/PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/content"
+      },
+      "size": 405776
+    }
+  ],
+  "id": 22182809,
+  "links": {
+    "access": "https://zenodo.org/api/records/22182809/access",
+    "access_grants": "https://zenodo.org/api/records/22182809/access/grants",
+    "access_links": "https://zenodo.org/api/records/22182809/access/links",
+    "access_request": "https://zenodo.org/api/records/22182809/access/request",
+    "access_users": "https://zenodo.org/api/records/22182809/access/users",
+    "archive": "https://zenodo.org/api/records/22182809/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22182809/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22182809/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22182809/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22182809",
+    "draft": "https://zenodo.org/api/records/22182809/draft",
+    "file_modification": "https://zenodo.org/api/records/22182809/file-modification",
+    "files": "https://zenodo.org/api/records/22182809/files",
+    "latest": "https://zenodo.org/api/records/22182809/versions/latest",
+    "latest_html": "https://zenodo.org/records/22182809/latest",
+    "media_files": "https://zenodo.org/api/records/22182809/media-files",
+    "parent": "https://zenodo.org/api/records/22182808",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22182808",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22182808",
+    "parent_html": "https://zenodo.org/records/22182808",
+    "preview_html": "https://zenodo.org/records/22182809?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22182809/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22182809/request-deletion",
+    "requests": "https://zenodo.org/api/records/22182809/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22182809/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22182809",
+    "self_doi": "https://doi.org/10.5281/zenodo.22182809",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22182809",
+    "self_html": "https://zenodo.org/records/22182809",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22182809/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22182809/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22182809:PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22182809:PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22182809:PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22182809:PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22182809:PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22182809:PLANETARY%20SR%20X%20%E2%80%94%20SWEDEN.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22182809/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR X &mdash; SWEDEN</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR X &mdash; Sweden</em> provides a structural diagnostic of Sweden as a coupled institutional&ndash;population system, using evidence from 2000&ndash;2025 with 2026 verification. The paper identifies Sweden&rsquo;s continuity architecture as <strong>decentralized high‑capacity welfare provision with strong public institutions, high household‑credit sensitivity, and deep export dependence</strong>. Sweden&rsquo;s macro profile&mdash;<em>&ldquo;OECD projected GDP growth of 1.6% in 2025 and unemployment of 8.7%&rdquo;</em>&mdash;coexists with structural pressures including <em>&ldquo;the lowest birth count in 23 years (97,500 births)&rdquo;</em> and high household leverage that makes interest rates a direct buffer variable. The study distinguishes universal statutory coverage from effective access, showing how regional waiting times, staffing constraints, housing pressure, and household debt shape continuity beneath strong institutional insulation. Sweden&rsquo;s low‑carbon electricity base&mdash;hydro, nuclear, and wind&mdash;provides durable capacity, while grid constraints, industrial electrification, and demographic renewal remain central conversion tests.</p>\n<h2><strong>Contribution</strong></h2>\n<p>This paper extends the Planetary SR comparative series by introducing a <strong>new continuity topology</strong> distinct from Canada, the United States, Mexico, Germany, France, the United Kingdom, Italy, and Spain. Sweden&rsquo;s configuration strengthens SR fields such as <strong>Planetary Pressure Ecology</strong>, <strong>Institutional Reflex Science</strong>, <strong>Planetary Drift Mechanics</strong>, and <strong>Systems Propagation Science</strong> by demonstrating how decentralized welfare institutions, household‑credit exposure, demographic contraction, and export‑dependent industry interact across 21 regions and 290 municipalities. The document provides high‑resolution evidence for SR&rsquo;s frozen hypotheses, including compensated continuity, unequal insulation, surface&ndash;substrate divergence, and reorganization. It also contributes to the ATLAS architecture by showing how high institutional insulation can coexist with household‑level vulnerability and globally exposed industrial sectors. As the paper states, Sweden&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;decentralized high‑capacity welfare provision with strong institutions, high household‑credit sensitivity and deep export dependence,&rdquo;</em> thereby adding a new structural configuration to the planetary series.</p>",
+    "doi": "10.5281/zenodo.22182809",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Society",
+      "Sweden"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22182808"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR X — SWEDEN: Decentralized Welfare Capacity, Household-Credit Exposure, Export Dependence, and High-Capacity Adaptation",
+    "version": "1.0"
+  },
+  "modified": "2026-08-31T00:58:38.535508+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22182809",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR X — SWEDEN: Decentralized Welfare Capacity, Household-Credit Exposure, Export Dependence, and High-Capacity Adaptation",
+  "updated": "2026-08-31T00:58:38.535508+00:00"
+}
+```

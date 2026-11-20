@@ -1,0 +1,148 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23064759"
+source_title: "Collapse Psychology: Structural Sensitivity, Structural Accuracy, and Structural Overload — A Candidate Specialized Subfield and Falsifiable Research Protocol"
+metadata_blob_sha256: 428ad6fcab3e6f3e49126151c4a72e26ab79995070090dc19f35c7b25768de2a
+metadata_blob_path: 02-ORIGINALS/live/blobs/42/428ad6fcab3e6f3e49126151c4a72e26ab79995070090dc19f35c7b25768de2a.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23064758",
+  "conceptrecid": "23064758",
+  "created": "2026-09-30T15:37:50.472997+00:00",
+  "doi": "10.5281/zenodo.23064759",
+  "doi_url": "https://doi.org/10.5281/zenodo.23064759",
+  "files": [
+    {
+      "checksum": "md5:ba3d0a66fa86fd2e39ca3bbd441bf135",
+      "id": "afdc2fba-9e2e-4177-a42f-1db1b5bfbc95",
+      "key": "STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23064759/files/STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.docx/content"
+      },
+      "size": 925383
+    },
+    {
+      "checksum": "md5:1b04d2be744c234ba6a0f5e5db8361e9",
+      "id": "d52af242-3bcf-4edb-91d4-b43db54458e6",
+      "key": "STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23064759/files/STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/content"
+      },
+      "size": 428770
+    }
+  ],
+  "id": 23064759,
+  "links": {
+    "access": "https://zenodo.org/api/records/23064759/access",
+    "access_grants": "https://zenodo.org/api/records/23064759/access/grants",
+    "access_links": "https://zenodo.org/api/records/23064759/access/links",
+    "access_request": "https://zenodo.org/api/records/23064759/access/request",
+    "access_users": "https://zenodo.org/api/records/23064759/access/users",
+    "communities": "https://zenodo.org/api/records/23064759/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23064759/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23064759",
+    "draft": "https://zenodo.org/api/records/23064759/draft",
+    "file_modification": "https://zenodo.org/api/records/23064759/file-modification",
+    "files": "https://zenodo.org/api/records/23064759/files",
+    "latest": "https://zenodo.org/api/records/23064759/versions/latest",
+    "latest_html": "https://zenodo.org/records/23064759/latest",
+    "media_files": "https://zenodo.org/api/records/23064759/media-files",
+    "parent": "https://zenodo.org/api/records/23064758",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23064758",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23064758",
+    "parent_html": "https://zenodo.org/records/23064758",
+    "preview_html": "https://zenodo.org/records/23064759?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23064759/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23064759/request-deletion",
+    "requests": "https://zenodo.org/api/records/23064759/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23064759/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23064759",
+    "self_doi": "https://doi.org/10.5281/zenodo.23064759",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23064759",
+    "self_html": "https://zenodo.org/records/23064759",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23064759/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23064759/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23064759:STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23064759:STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23064759:STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23064759:STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23064759:STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23064759:STRUCTURAL_PERCEPTION_AND_OVERLOAD_CANONICAL_2026-09-28.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23064759/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Collapse Psychology: Structural Sensitivity, Structural Accuracy, and Structural Overload &mdash; A Candidate Specialized Subfield and Falsifiable Research Protocol</strong></p>\n<div>\n</div>\n<h2><strong>Description</strong></h2>\n<p><strong>This manuscript defines a candidate specialized subfield within Collapse Psychology focused on how individuals convert ordinary events into system‑level interpretations, how accurately those interpretations correspond to evidence, and when the processing becomes burdensome. It distinguishes three non‑equivalent constructs: structural sensitivity (propensity to infer system relations from everyday cues), structural accuracy (evidence‑calibrated correctness of those inferences), and structural overload (the cognitive or emotional cost of persistent structural processing). The paper introduces the Structural Perception Process, the Recursive Formalization Loop, a candidate measurement architecture, preregisterable hypotheses, negative cases, and falsification rules. Autobiographical experience is used only as a source of hypotheses, not validation. The manuscript positions Structural Perception and Overload as a provisional SR subfield requiring empirical testing against established constructs such as justice sensitivity, systems thinking, need for cognition, rumination, and sensory processing sensitivity.</strong></p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p><strong>This paper provides the first SR‑specific architecture for understanding why ordinary events can trigger system‑level interpretations, why those interpretations vary in accuracy, and why they sometimes become cognitively heavy. It formalizes structural sensitivity, accuracy, and overload as separate measurable constructs, preventing self‑confirmation and avoiding diagnostic claims. The manuscript introduces a falsifiable process model, a recursive formalization mechanism linking writing to both relief and increased future detection, and a multi‑stage measurement protocol capable of discriminating SR constructs from existing psychological frameworks. It establishes a preregisterable validation program, negative cases, and revision rules, positioning Collapse Psychology as a structured research domain rather than a narrative category. The contribution is a scientifically testable foundation for studying structural perception without conflating insight, distress, or complexity &mdash; and without treating persistent structural interpretation as pathology or superiority.</strong></p>",
+    "doi": "10.5281/zenodo.23064759",
+    "keywords": [
+      "Metatheory",
+      "Psychology",
+      "Institutions",
+      "Social Psychology",
+      "Cognition"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-30",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23064758"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Collapse Psychology: Structural Sensitivity, Structural Accuracy, and Structural Overload — A Candidate Specialized Subfield and Falsifiable Research Protocol",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:14:42.471252+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23064759",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 12,
+    "unique_downloads": 10,
+    "unique_views": 11,
+    "version_downloads": 12,
+    "version_unique_downloads": 10,
+    "version_unique_views": 11,
+    "version_views": 13,
+    "views": 13
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Collapse Psychology: Structural Sensitivity, Structural Accuracy, and Structural Overload — A Candidate Specialized Subfield and Falsifiable Research Protocol",
+  "updated": "2026-10-06T01:14:42.471252+00:00"
+}
+```

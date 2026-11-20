@@ -1,0 +1,144 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22381793"
+source_title: "ATLAS XI TECHNOLOGY, KNOWLEDGE, AND INTELLECTUAL PROPERTY: The Capability Layer of Developmental Lock-In"
+metadata_blob_sha256: afd6fbc2a670c9281be1f9519a2974d960587e22831e591c2ba4cd6876ae9ba6
+metadata_blob_path: 02-ORIGINALS/live/blobs/af/afd6fbc2a670c9281be1f9519a2974d960587e22831e591c2ba4cd6876ae9ba6.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22381792",
+  "conceptrecid": "22381792",
+  "created": "2026-09-05T18:57:02.230917+00:00",
+  "doi": "10.5281/zenodo.22381793",
+  "doi_url": "https://doi.org/10.5281/zenodo.22381793",
+  "files": [
+    {
+      "checksum": "md5:f6caf40f4aa1193cc6b932d22800fa7c",
+      "id": "7badb9e0-da28-4af4-a7d5-96488f8b895b",
+      "key": "ATLAS XI — TECHNOLOGY, KNOWLEDGE, AND INTELLECTUAL PROPERTY.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22381793/files/ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/content"
+      },
+      "size": 163653
+    }
+  ],
+  "id": 22381793,
+  "links": {
+    "access": "https://zenodo.org/api/records/22381793/access",
+    "access_grants": "https://zenodo.org/api/records/22381793/access/grants",
+    "access_links": "https://zenodo.org/api/records/22381793/access/links",
+    "access_request": "https://zenodo.org/api/records/22381793/access/request",
+    "access_users": "https://zenodo.org/api/records/22381793/access/users",
+    "archive": "https://zenodo.org/api/records/22381793/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22381793/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22381793/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22381793/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22381793",
+    "draft": "https://zenodo.org/api/records/22381793/draft",
+    "file_modification": "https://zenodo.org/api/records/22381793/file-modification",
+    "files": "https://zenodo.org/api/records/22381793/files",
+    "latest": "https://zenodo.org/api/records/22381793/versions/latest",
+    "latest_html": "https://zenodo.org/records/22381793/latest",
+    "media_files": "https://zenodo.org/api/records/22381793/media-files",
+    "parent": "https://zenodo.org/api/records/22381792",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22381792",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22381792",
+    "parent_html": "https://zenodo.org/records/22381792",
+    "preview_html": "https://zenodo.org/records/22381793?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22381793/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22381793/request-deletion",
+    "requests": "https://zenodo.org/api/records/22381793/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22381793/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22381793",
+    "self_doi": "https://doi.org/10.5281/zenodo.22381793",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22381793",
+    "self_html": "https://zenodo.org/records/22381793",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22381793/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22381793/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22381793:ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22381793:ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22381793:ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22381793:ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22381793:ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22381793:ATLAS%20XI%20%E2%80%94%20TECHNOLOGY,%20KNOWLEDGE,%20AND%20INTELLECTUAL%20PROPERTY.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22381793/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS XI &mdash; Technology, Knowledge, and Intellectual Property</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS XI</em> formalizes the <strong>capability layer</strong> of the ATLAS universe: the diagnostic architecture showing how the highest‑value functions of production&mdash;<strong>design, standards, data, intellectual property, and organizational knowledge</strong>&mdash;shape developmental outcomes. As the manuscript states, <em>&ldquo;Importing technology does not itself create the capability to modify, reproduce, govern, or replace it.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions technology and knowledge not as neutral inputs but as <strong>structural determinants</strong> of whether domestic production translates into real capability formation or renewed dependency.</p>\n<p>ATLAS XI extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how limited technological sovereignty reduces retained value (R), increases burdens (B), weakens substitution capacity (S), raises external dependence (D), and lowers bargaining agency (A). It introduces a measurement architecture focused on R&amp;D employment, patent and licensing flows, domestic design participation, technology‑service import dependence, supplier learning, product upgrading, and data/platform control.</p>\n<p>The manuscript establishes that technology use is not capability; capability is demonstrated only when a society can <strong>adapt, substitute, govern, and reproduce</strong> the systems it relies on.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS XI provides the <strong>technology‑sovereignty foundation</strong> of the ATLAS universe. It operationalizes <strong>Technological Sovereignty</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable account of how knowledge location determines developmental trajectory.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how licensing regimes, platform dependence, and external standards weaken domestic learning and reproduce dependency. It strengthens <strong>Society as a Pressure Ecology</strong> by demonstrating how technology acts as a cross‑domain transmission channel for externalization.</p>\n<p>The migration‑knowledge audit expands ATLAS&rsquo;s cross‑border incidence analysis by distinguishing capability circulation (diaspora networks, joint innovation, return migration) from capability extraction (deskilling, non‑recognition of credentials, restrictive IP control). As the manuscript states, <em>&ldquo;A &lsquo;brain drain&rsquo; label is insufficient: ATLAS requires occupational flows, training costs, knowledge transfer, return probabilities, ownership of resulting innovation, and migrant welfare on both sides of the corridor.&rdquo;</em></p>\n<p>ATLAS XI also provides the empirical substrate for evaluating <strong>restoration</strong> through engineering systems, open standards, learning‑conditioned procurement, and regional technology institutions.</p>\n<p>Ultimately, ATLAS XI contributes the <strong>capability grammar</strong> required to evaluate whether societies can retain gains, govern essential systems, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22381793",
+    "keywords": [
+      "Metatheory",
+      "Technology",
+      "Economics",
+      "Institutions",
+      "Society",
+      "World",
+      "Governance",
+      "Government"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22381792"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS XI TECHNOLOGY, KNOWLEDGE, AND INTELLECTUAL PROPERTY: The Capability Layer of Developmental Lock-In",
+    "version": "1.0"
+  },
+  "modified": "2026-09-05T18:57:02.527747+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22381793",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS XI TECHNOLOGY, KNOWLEDGE, AND INTELLECTUAL PROPERTY: The Capability Layer of Developmental Lock-In",
+  "updated": "2026-09-05T18:57:02.527747+00:00"
+}
+```

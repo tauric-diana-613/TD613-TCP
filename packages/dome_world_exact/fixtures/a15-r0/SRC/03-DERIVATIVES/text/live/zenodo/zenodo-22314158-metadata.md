@@ -1,0 +1,143 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22314158"
+source_title: "ATLAS IX FISCAL SPACE, DEBT, AND VALUE TRANSFER: When Financing Conditions Reproduce Productive Dependence"
+metadata_blob_sha256: 4dc3fc8d9efb16c9b8ea5035a31ac0a0fee5322a05c29c0092af18f6b572c1cc
+metadata_blob_path: 02-ORIGINALS/live/blobs/4d/4dc3fc8d9efb16c9b8ea5035a31ac0a0fee5322a05c29c0092af18f6b572c1cc.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22314157",
+  "conceptrecid": "22314157",
+  "created": "2026-09-05T01:24:15.668876+00:00",
+  "doi": "10.5281/zenodo.22314158",
+  "doi_url": "https://doi.org/10.5281/zenodo.22314158",
+  "files": [
+    {
+      "checksum": "md5:5a7dd374fa019a00bc37adb63eaede6c",
+      "id": "9210b0e1-c027-484d-9a96-a4b7d66b61a2",
+      "key": "ATLAS IX — FISCAL SPACE, DEBT, AND VALUE TRANSFER.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22314158/files/ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/content"
+      },
+      "size": 162054
+    }
+  ],
+  "id": 22314158,
+  "links": {
+    "access": "https://zenodo.org/api/records/22314158/access",
+    "access_grants": "https://zenodo.org/api/records/22314158/access/grants",
+    "access_links": "https://zenodo.org/api/records/22314158/access/links",
+    "access_request": "https://zenodo.org/api/records/22314158/access/request",
+    "access_users": "https://zenodo.org/api/records/22314158/access/users",
+    "archive": "https://zenodo.org/api/records/22314158/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22314158/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22314158/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22314158/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22314158",
+    "draft": "https://zenodo.org/api/records/22314158/draft",
+    "file_modification": "https://zenodo.org/api/records/22314158/file-modification",
+    "files": "https://zenodo.org/api/records/22314158/files",
+    "latest": "https://zenodo.org/api/records/22314158/versions/latest",
+    "latest_html": "https://zenodo.org/records/22314158/latest",
+    "media_files": "https://zenodo.org/api/records/22314158/media-files",
+    "parent": "https://zenodo.org/api/records/22314157",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22314157",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22314157",
+    "parent_html": "https://zenodo.org/records/22314157",
+    "preview_html": "https://zenodo.org/records/22314158?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22314158/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22314158/request-deletion",
+    "requests": "https://zenodo.org/api/records/22314158/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22314158/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22314158",
+    "self_doi": "https://doi.org/10.5281/zenodo.22314158",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22314158",
+    "self_html": "https://zenodo.org/records/22314158",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22314158/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22314158/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22314158:ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22314158:ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22314158:ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22314158:ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22314158:ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22314158:ATLAS%20IX%20%E2%80%94%20FISCAL%20SPACE,%20DEBT,%20AND%20VALUE%20TRANSFER.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22314158/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS IX &mdash; Fiscal Space, Debt, and Value Transfer</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS IX</em> formalizes the <strong>fiscal‑dependency layer</strong> of the ATLAS universe: the diagnostic architecture showing how debt, refinancing conditions, currency exposure, and fiscal stress can become <strong>mechanisms of developmental lock‑in</strong>. As the manuscript states, <em>&ldquo;Debt becomes a lock-in mechanism when servicing and risk pricing divert resources from productive transformation, force procyclical adjustment, or increase dependence on the same external earnings structure that generated vulnerability.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions debt not as inherently harmful, but as a <strong>conditional structural mechanism</strong> that can either support productive transformation or reproduce dependency depending on how fiscal burdens, currency mismatches, and refinancing pressures interact with domestic capability formation.</p>\n<p>ATLAS IX extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how fiscal burdens (B) and external financing dependence (D) weaken substitution capacity (S), reduce bargaining agency (A), and increase the probability of renewed externalization (X). It introduces a measurement architecture focused on external debt service, maturity profiles, currency composition, reserve adequacy, interest&ndash;growth differentials, public investment, tax leakage, illicit flows, and commodity‑linked fiscal volatility.</p>\n<p>The manuscript establishes that fiscal stress is not a moral failure or administrative incompetence; it is a <strong>structural consequence</strong> of dependency architectures that limit a government&rsquo;s ability to invest, stabilize, and transform.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS IX provides the <strong>fiscal‑pressure foundation</strong> of the ATLAS universe. It operationalizes <strong>Fiscal Dependency</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable account of how debt service and refinancing risk shape developmental outcomes.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how fiscal depletion weakens capability formation, increases dependence on external earnings structures, and reduces executable bargaining agency. It strengthens <strong>Society as a Pressure Ecology</strong>by demonstrating how fiscal pressure becomes a cross‑border burden‑transfer mechanism.</p>\n<p>The migration‑fiscal audit expands ATLAS&rsquo;s cross‑border incidence analysis by tracing how publicly financed education, health investment, tax base changes, remittances, recruitment subsidies, and deskilling interact across origin and destination economies. As the manuscript states, <em>&ldquo;Migrants cannot be classified as a fiscal burden without a complete lifetime and distributional account.&rdquo;</em></p>\n<p>ATLAS IX also provides the empirical substrate for evaluating <strong>restoration</strong> through countercyclical stabilization funds, transparent borrowing, domestic revenue capture, and debt restructuring linked to productive transformation.</p>\n<p>Ultimately, ATLAS IX contributes the <strong>fiscal grammar</strong> required to evaluate whether societies can retain gains, avoid procyclical adjustment, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22314158",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Society",
+      "Debt",
+      "Governance",
+      "Government"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22314157"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS IX FISCAL SPACE, DEBT, AND VALUE TRANSFER: When Financing Conditions Reproduce Productive Dependence",
+    "version": "1.0"
+  },
+  "modified": "2026-09-05T01:24:16.070661+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22314158",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS IX FISCAL SPACE, DEBT, AND VALUE TRANSFER: When Financing Conditions Reproduce Productive Dependence",
+  "updated": "2026-09-05T01:24:16.070661+00:00"
+}
+```

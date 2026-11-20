@@ -1,0 +1,139 @@
+{
+  "all_fixture_families_stable": true,
+  "aperture_artifact_sha256": "6e49c7f5650dfcdaaf0770c5c81de50ba041c13a06d3eddd083868f8aa49faaa",
+  "bound_epoch": {
+    "atelier_snapshot_id": "src-20260824-p2-001",
+    "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a"
+  },
+  "cases": {
+    "A_LEVEL_CLAIM_LEVEL_SENSOR": {
+      "classification": [
+        "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "ASK_NOTHING"
+      ],
+      "input": {
+        "condition_number": 1.0,
+        "condition_number_ceiling": 10.0,
+        "current_rank": 1,
+        "latent_dimension": 1,
+        "mathematical_condition_number": 1.0,
+        "sigma_min": 1.0,
+        "sigma_min_floor": 0.25,
+        "uncertainty_status": "VALID_DECLARED"
+      }
+    },
+    "B_LEVEL_DRIFT_CLAIM_LEVEL_ONLY": {
+      "classification": [
+        "STRUCTURAL_RANK_DEFICIT",
+        "PROPOSE"
+      ],
+      "input": {
+        "condition_number": 2000.0,
+        "condition_number_ceiling": 10.0,
+        "current_rank": 1,
+        "latent_dimension": 2,
+        "mathematical_condition_number": "Infinity",
+        "sigma_min": 0.0,
+        "sigma_min_floor": 0.25,
+        "uncertainty_status": "VALID_DECLARED"
+      }
+    },
+    "C_LEVEL_DRIFT_NEAR_REDUNDANT": {
+      "classification": [
+        "NUMERICAL_STABILITY_DEFICIT",
+        "PROPOSE"
+      ],
+      "input": {
+        "condition_number": 2000.000499882572,
+        "condition_number_ceiling": 10.0,
+        "current_rank": 2,
+        "latent_dimension": 2,
+        "mathematical_condition_number": 2000.000499882572,
+        "sigma_min": 0.0007071066928397556,
+        "sigma_min_floor": 0.25,
+        "uncertainty_status": "VALID_DECLARED"
+      }
+    },
+    "D_LEVEL_DRIFT_INDEPENDENT": {
+      "classification": [
+        "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "ASK_NOTHING"
+      ],
+      "input": {
+        "condition_number": 1.0,
+        "condition_number_ceiling": 10.0,
+        "current_rank": 2,
+        "latent_dimension": 2,
+        "mathematical_condition_number": 1.0,
+        "sigma_min": 1.0,
+        "sigma_min_floor": 0.25,
+        "uncertainty_status": "VALID_DECLARED"
+      }
+    }
+  },
+  "claim_ceiling": [
+    "fixture-only",
+    "not SR empirical validation",
+    "not universal threshold validation"
+  ],
+  "classification_replay_stability": "WITNESSED_FOR_THIS_PREDECLARED_FIXTURE_ONLY",
+  "family_stability": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true
+  },
+  "global_aperture_classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+  "rank_deficit_condition_encoding_caveat": "mathematical condition is Infinity; runtime-compatible finite sentinel 2000 is used only to reach the rank branch",
+  "replay_grid": {
+    "ceilings": [
+      5.0,
+      10.0,
+      20.0
+    ],
+    "epsilons": [
+      0.0005,
+      0.001,
+      0.002
+    ],
+    "floors": [
+      0.125,
+      0.25,
+      0.5
+    ],
+    "n": 54
+  },
+  "schema": "td613.aperture.v32-dcf-claim-conditioned-calibration-replay/v0.1",
+  "source_witness": "DCF_PROJECTION_REFINEMENT_AFTER_NULL_SOURCE_WITNESS.md",
+  "uncertainty_posture_probe": [
+    {
+      "classification": [
+        "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "ASK_NOTHING"
+      ],
+      "uncertainty_status": "VALID_DECLARED"
+    },
+    {
+      "classification": [
+        "NOISE_GEOMETRY_INCOMPLETE",
+        "ABSTAIN"
+      ],
+      "uncertainty_status": "INCOMPLETE"
+    },
+    {
+      "classification": [
+        "INVALID_NOISE_GEOMETRY",
+        "REJECT"
+      ],
+      "uncertainty_status": "INVALID"
+    },
+    {
+      "classification": [
+        "UNDECLARED_OPERATOR_GEOMETRY",
+        "ABSTAIN"
+      ],
+      "uncertainty_status": "UNDECLARED"
+    }
+  ],
+  "version": "v3.2-alpha"
+}
