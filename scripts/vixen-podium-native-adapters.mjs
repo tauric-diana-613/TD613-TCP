@@ -924,7 +924,17 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
    }
    return originalNative.WENDBINE_ATELIER(request);
   };
-  adapters.EM_ATELIER=async(request)=>originalNative.EM_ATELIER(request);
+  adapters.EM_ATELIER=async(request)=>{
+   if(request.operation==='em_verified_vixen_native_span_identity'){
+    const module=await importOptional(resolve(repoRoot,'scripts','vixen-em-native-work-transfer.mjs'));
+    if(typeof module?.runVixenEmNativeWorkQualification!=='function')
+     throw Error('HELD_EM_VIXEN_NATIVE_SOURCE_CONTROL_UNAVAILABLE');
+    return module.runVixenEmNativeWorkQualification({
+     repoRoot,work_ids:request.payload?.work_ids
+    });
+   }
+   return originalNative.EM_ATELIER(request);
+  };
   adapters.CROSS_ATELIER=async(request)=>originalNative.CROSS_ATELIER(request);
  }
  return Object.freeze(adapters);
