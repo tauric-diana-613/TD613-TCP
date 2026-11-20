@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
+import {execFileSync} from 'node:child_process';
 import {createVixenAiSession} from '../app/encyclopedia/vixen-estate/vixen-ai-session.mjs';
 import {
   auditTypedEpistemicDeficit,validateCovarianceMatrix
@@ -157,7 +158,9 @@ test('MATH-B/AP-04: candidate and parent mathematical veto agree; valid PSD surv
 
 test('MATH-C: native Dollhouse specialist preserves typed covariance veto',async()=>{
   const run=await runDollhouseSkillAudit({
-    source_revision:'WORKING_TREE_UNCOMMITTED',
+    source_revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
+    strict_provenance:true,
+    evidence_references:['app/engine/aperture-v32-typed-epistemic-deficit.js'],
     task_scope:'G1_APERTURE_INVALID_COVARIANCE_SYNTHETIC',
     evidence_class:'SYNTHETIC_TEST_FIXTURE',
     roles:['APERTURE'],include_orchestrator:false,
@@ -170,4 +173,6 @@ test('MATH-C: native Dollhouse specialist preserves typed covariance veto',async
   assert(finding.infractions.includes('INDEFINITE_NOISE_COVARIANCE'));
   assert(!finding.infractions.includes('URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED'));
   assert.equal(run.exit_code,1,'Native mathematical veto must fail closed');
+  assert.equal(run.machine_receipt.git_commit_verified,true);
+  assert.equal(run.machine_receipt.is_exact_checkout_match,true);
 });
