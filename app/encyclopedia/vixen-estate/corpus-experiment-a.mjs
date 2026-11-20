@@ -222,6 +222,8 @@ export async function loadJsonSibling(filename, {
   const reqBytes = expectedBytes != null ? Number(expectedBytes) : (seal?.byte_length ?? null);
   const reqSchema = expectedSchema || seal?.schema || null;
   const key = `${baseUrl || 'relative'}::${filename}`;
+  // Deduplicate identical sealed loads too, but never share across differing custody expectations.
+  const inFlightKey=JSON.stringify([key,reqSha,reqBytes,reqSchema]);
 
   if (!forceReload && SHARD_CACHE.has(key)) {
     const meta = SHARD_META_CACHE.get(key);
@@ -232,7 +234,7 @@ export async function loadJsonSibling(filename, {
     SHARD_CACHE.delete(key);
     SHARD_META_CACHE.delete(key);
   }
-  if (!forceReload && !reqSha && SHARD_INFLIGHT.has(key)) return SHARD_INFLIGHT.get(key);
+  if (!forceReload && SHARD_INFLIGHT.has(inFlightKey)) return SHARD_INFLIGHT.get(inFlightKey);
 
   const p = (async () => {
     const isNode = typeof process !== 'undefined' && Boolean(process.versions?.node);
@@ -290,12 +292,14 @@ export async function loadJsonSibling(filename, {
       byte_length: rawBytes.byteLength,
       schema: data?.schema || null
     });
-    SHARD_INFLIGHT.delete(key);
     return data;
   })();
 
-  if (!reqSha) SHARD_INFLIGHT.set(key, p);
-  p.catch(() => SHARD_INFLIGHT.delete(key));
+  SHARD_INFLIGHT.set(inFlightKey,p);
+  const clearInFlight=()=>{
+    if(SHARD_INFLIGHT.get(inFlightKey)===p)SHARD_INFLIGHT.delete(inFlightKey);
+  };
+  p.then(clearInFlight,clearInFlight);
   return p;
 }
 
