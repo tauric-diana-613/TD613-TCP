@@ -176,6 +176,11 @@ test('native host and machine-only Podium expose controlled reconstruction, with
  assert.equal(nativeOut.read_only,true);
  assert.ok(BOUNDED_ENGINE_OPERATIONS.WENDBINE_ATELIER.includes('wendbine_public_reconstruction'));
  assert.ok(BOUNDED_ENGINE_OPERATIONS.WENDBINE_ATELIER.includes('wendbine_public_sweep'));
+ const publicRank=native.WENDBINE_ATELIER({operation:'wendbine_public_query',payload:{
+  action:'search',mode:'semantic',query:'dependency',limit:3}});
+ assert.equal(publicRank.search_method,'ORIGINAL_CONCEPT_WEIGHTED_LEXICAL_RANKING_NOT_EMBEDDING_SEMANTICS');
+ assert.equal(publicRank.embedding_model_executed,false);
+ assert.equal(publicRank.source_person_authorship_of_query_software,false);
  const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
  const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
  const match=html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
