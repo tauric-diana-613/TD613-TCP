@@ -184,3 +184,15 @@
  #vixenAiJourney .vma-role{transition:none!important}
  #vixenAiJourney .vma-role:hover{transform:none}
 }
+
+/* Stage III.5: the living optical field remains present through the reading
+   aperture, but it must sit behind Maestro's text and source controls.
+   An intentionally translucent matte lets a small amount of movement read
+   through instead of deleting the chromepunk room's ambience. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenAiJourney{
+ position:relative;z-index:2!important;isolation:isolate;
+ background:
+  radial-gradient(ellipse 40% 70% at 92% 3%,rgba(150,60,87,.14),transparent 85%),
+  radial-gradient(ellipse 55% 65% at 3% 92%,rgba(29,91,98,.17),transparent 88%),
+  linear-gradient(120deg,rgba(16,26,32,.90),rgba(22,30,33,.91) 45%,rgba(12,20,25,.92))!important;
+}
