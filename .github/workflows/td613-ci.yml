@@ -35,6 +35,31 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  atlas_eighth_order:
+    name: Atlas After Hours Eighth-Order exact-head research tests
+    needs: scope
+    if: github.event_name == 'pull_request' && needs.scope.outputs.head_is_current == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate source-free Eighth-Order and historical Rulefield tests
+        run: |
+          node --test tests/rulefield-*.test.mjs
+          node scripts/rulefield.mjs stats > /dev/null
+          node scripts/rulefield-loom.mjs eighth-order > /dev/null
+          node scripts/run-eighth-order-reparative-trial.mjs
+          node scripts/run-ninth-order-confluence-trial.mjs > /dev/null
+      - name: Assert original custody/scientific holds stay visible
+        run: |
+          node --input-type=module -e "import {runEighthOrderTrial} from './packages/rulefield/lab/eighth_order_reparative_consequence.mjs';const x=runEighthOrderTrial();if(!x.preexistingHolds.includes('HOLD_HOLONOMY_HISTORY_PARITY_FAILED')||x.contract.protectedFlight!=='HELD'||x.auditStatus!=='POST_EXECUTION_AUDIT_NOT_RUN_BY_MODULE')process.exit(1)"
+
   scope:
     name: Classify exact-head browser witness scope
     if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
@@ -1577,3 +1602,343 @@ jobs:
           path: gemini-observation.json
           if-no-files-found: error
           retention-days: 7
+  rulefield_handoff:
+    name: Rulefield exact-head Node contracts and portable Antigravity ZIP
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'research/living-rulefield-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact Rulefield PR head
+        id: source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Rulefield source-free scientific and human-facing contracts
+        run: |
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs tests/rulefield-types.test.mjs tests/rulefield-docket2.test.mjs tests/rulefield-tomography.test.mjs tests/rulefield-semantic-paired.test.mjs tests/rulefield-docket3.test.mjs
+          python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+      - name: Verify reversible Rulefield and Rule type correction
+        run: |
+          node scripts/rulefield-types.mjs validate
+          node scripts/rulefield-types.mjs summary > dist-type-summary.json
+          node scripts/rulefield-types.mjs rule INF-01 > dist-type-model-inventory.json
+          node scripts/rulefield-types.mjs field RF-060 > dist-type-local-rule-parent.json
+          mkdir -p dist
+          cd dist
+          node ../scripts/rulefield-types.mjs export RULEFIELD_TYPED_PROJECTION_ROD0002.json
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('RULEFIELD_TYPED_PROJECTION_ROD0002.json','utf8'));if(x.counts.original_legacy_rule_records!==596||x.counts.assessed_retypes!==26||x.objects.children.length!==31||x.authority.canonical_mutation!==false)process.exit(1);console.log('RULEFIELD_TYPE_PROJECTION_WITNESSED')"
+      - name: Run typed rulefield agenda and staged priority permutation without visual UI
+        run: |
+          node scripts/rulefield-fields.mjs validate
+          node scripts/rulefield-fields.mjs stats
+          node scripts/rulefield-fields.mjs field RF-002 > /tmp/rulefield-RF-002.json
+          node scripts/rulefield-fields.mjs move RF-002 before Q05 > /tmp/rulefield-move-review.json
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('/tmp/rulefield-move-review.json','utf8'));if(x.canonical_queue_mutated!==false||x.historical_relative_order_preserved!==true||x.agenda.find(y=>y.id==='RF-002').rank!==5)process.exit(1);console.log('RULEFIELD_TYPED_QUEUE_WITNESSED')"
+          mkdir -p dist
+          node scripts/rulefield-fields.mjs queue-md > dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
+          node scripts/rulefield-fields.mjs queue > dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
+      - name: Generate full source-bound human operator docket
+        run: |
+          node scripts/rulefield-docket.mjs validate
+          node scripts/rulefield-docket.mjs export dist
+          node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.fields.length!==80||d.inherited_priorities.length!==70||d.authority.canonical_registry_mutated!==false)process.exit(1);console.log('FULL_IN_CHAT_OPERATOR_DOCKET_VERIFIED',d.id,d.docket_sha256)"
+      - name: Generate full source-bound revised operator docket (86 fields + role multiplicity)
+        run: |
+          node scripts/rulefield-docket2.mjs validate
+          node scripts/rulefield-docket2.mjs export dist
+          node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.startsWith('RF-OD-0002--')&&x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.fields.length!==86||d.original_priorities.length!==70||d.ontology.role_bindings.length!==10||d.authority.od02!=='HELD')process.exit(1);console.log('ROD0002_FULL_SUCCESSOR_WITNESSED',d.sha256)"
+      - name: Source-preserving residual semantic triage and evidence-conditioned temporal preview
+        run: |
+          node scripts/rulefield-tomography.mjs triage-summary
+          node scripts/rulefield-tomography.mjs rank-empty 2026-11-08T12:00:00Z
+          mkdir -p dist
+          cd dist
+          node ../scripts/rulefield-tomography.mjs triage-export RULEFIELD_559_RESIDUAL_TRIAGE_ROD0003.json
+          node -e "const fs=require('fs');const t=JSON.parse(fs.readFileSync('RULEFIELD_559_RESIDUAL_TRIAGE_ROD0003.json','utf8'));if(t.rows.length!==559||t.counts.prior_audited!==37||t.authority.od02!=='HELD')process.exit(1);console.log('RESIDUAL_559_SOURCE_LEDGER_WITNESSED',t.digest)"
+
+      - name: Qualify source-read casebook and paired empirical priority with explicit holds
+        run: |
+          node scripts/rulefield-qualification.mjs semantic-summary
+          node scripts/rulefield-qualification.mjs paired-empty 2026-11-08T12:00:00Z
+          mkdir -p dist
+          cd dist
+          node ../scripts/rulefield-qualification.mjs semantic-export RULEFIELD_559_SEMANTIC_REVIEW_ROD0003.json
+          node ../scripts/rulefield-qualification.mjs paired-export RULEFIELD_PAIRED_PRIORITY_EMPTY_ROD0003.json 2026-11-08T12:00:00Z
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('RULEFIELD_559_SEMANTIC_REVIEW_ROD0003.json','utf8'));const p=JSON.parse(fs.readFileSync('RULEFIELD_PAIRED_PRIORITY_EMPTY_ROD0003.json','utf8'));if(x.rows.length!==559||x.totals.selected_agent_interpretations!==132||x.totals.deterministic_only!==427||x.totals.scientific_adjudications!==0||p.counts.qualified_internal!==0||p.authority.canonical_mutation!==false)process.exit(1);console.log('RULEFIELD_ROD0003_BOUNDED_INTERPRETATION_AND_PAIRED_ASSAY_WITNESS',x.digest,p.digest)"
+
+      - name: Render complete RF-OD-0003 historical/semantic/empirical operator docket
+        run: |
+          node scripts/rulefield-docket3.mjs validate
+          node scripts/rulefield-docket3.mjs export dist
+          node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.startsWith('RF-OD-0003--')&&x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.rows.length!==559||d.original_field_expressions.length!==86||d.original_historical_priorities.length!==70||d.agent_reviewed_total!==132||d.auto_only!==427||d.authority.od02!=='HELD'||d.preview.priority_moves!==0)process.exit(1);console.log('FULL_ROD0003_SOURCE_BOUNDED_WITNESS',d.digest)"
+
+      - name: Run native Dollhouse Design for the engine-only field commission
+        run: |
+          mkdir -p dist
+          node scripts/run-dollhouse-design.mjs --input packages/rulefield/rulefields/design/COMMISSION.json --output dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json --format human
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json','utf8'));if(x.output_contract.requested_deliverables!==1||x.governance.human_closure_required!==true)process.exit(1);console.log('DOLLHOUSE_ENGINE_DESIGN_PROCESS_WITNESSED',x.commission_id)"
+      - name: Exercise complete human disclosure on an example source-free packet
+        run: |
+          node scripts/rulefield-amend.mjs init RF-AP-20261107-OPERATORCI
+          node scripts/rulefield-operator.mjs disclose RF-AP-20261107-OPERATORCI.json
+          test -f packages/rulefield/amendments/outbox/RF-AP-20261107-OPERATORCI--*.disclosure.json
+          test -f packages/rulefield/amendments/outbox/RF-AP-20261107-OPERATORCI--*.disclosure.md
+      - name: Execute real /dollhouse-design conductor for operator protocol
+        run: |
+          mkdir -p dist
+          node scripts/run-dollhouse-design.mjs --input packages/rulefield/operator/design/COMMISSION.json --output dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json --format human
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json','utf8'));if(x.output_contract.requested_deliverables!==4||x.governance.human_closure_required!==true)process.exit(1);console.log('DOLLHOUSE_DESIGN_EXECUTED_PROCESS_ONLY',x.commission_id)"
+      - name: Upload operator design and source-free disclosure witnesses
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-operator-witness-${{ github.event.pull_request.head.sha }}
+          path: |
+            dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json
+            dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json
+            dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
+            dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
+            dist/RULEFIELD_TYPED_PROJECTION_ROD0002.json
+            dist/*.docket.json
+            dist/*.docket.md
+            dist/*.chat.json
+            dist/RULEFIELD_559_RESIDUAL_TRIAGE_ROD0003.json
+            dist/RULEFIELD_559_SEMANTIC_REVIEW_ROD0003.json
+            dist/RULEFIELD_PAIRED_PRIORITY_EMPTY_ROD0003.json
+            packages/rulefield/amendments/outbox/*.disclosure.json
+            packages/rulefield/amendments/outbox/*.disclosure.md
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Build tracked-source Antigravity handoff ZIP
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        run: python3 scripts/build-rulefield-handoff.py --exact-head "${{ github.event.pull_request.head.sha }}"
+      - name: Preserve exact-head portable Rulefield even when tests fail
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-handoff-${{ github.event.pull_request.head.sha }}
+          path: dist/TD613_Rulefield_Antigravity_Handoff_*.zip
+          if-no-files-found: error
+          retention-days: 14
+  rulefield_ix_canonical_and_research:
+    name: 99 inherited Git blobs + full Rulefield tests + Ninth-Order research holds
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute full scoped Rulefield suite and original ancestry verification
+        run: node --test tests/rulefield-*.test.mjs
+      - name: Execute source-linked research receptor and invariants
+        run: |
+          node scripts/rulefield.mjs validate
+          node scripts/rulefield-lab.mjs suite
+          node scripts/rulefield-amend.mjs baseline
+          node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const p=JSON.parse(readFileSync('packages/rulefield/rulefields/research/ninth_order_confluence_proposal.json','utf8'));assert.equal(p.canonicalMutation,false);assert.equal(p.originalRulePriorityCount,70);assert.equal(p.proposedRulefieldsCount,86);assert.equal(p.retainedHistoricalRecords,596);assert.equal(p.humanClosure,'RESERVED');assert.equal(p.experimentB,'HELD');assert.equal(p.externalAssayRef.parameters,1512);"
+      - name: Run verified ZIP intake negative and positive tests
+        run: python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+  rulefield_ix_portable_handoff:
+    name: Exact-head complete portable Rulefield ZIP — extract and retest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_ARCHIVE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate source-preserving full-stack archive
+        run: python3 scripts/build-rulefield-handoff.py --output-dir dist --exact-head "$EXPECTED_ARCHIVE_SHA"
+      - name: Verify portable ZIP contents and quarantine intake contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(dist/TD613_Rulefield_Succession_Handoff_*.zip)
+          test "${#files[@]}" -eq 1
+          python3 scripts/rulefield-intake.py verify "${files[0]}"
+          python3 -m zipfile -t "${files[0]}"
+          mkdir -p "$RUNNER_TEMP/rulefield-portable"
+          unzip -q "${files[0]}" -d "$RUNNER_TEMP/rulefield-portable"
+          cd "$RUNNER_TEMP/rulefield-portable"
+          node --test tests/rulefield-*.test.mjs
+          node scripts/rulefield.mjs validate
+          node scripts/rulefield-lab.mjs suite
+          node scripts/rulefield-amend.mjs help > /dev/null
+          node scripts/rulefield-amend.mjs baseline > /dev/null
+          python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+      - name: Upload sole inner source ZIP for agent-neutral handoff
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-pr1734-agent-neutral-exact-head-handoff
+          path: dist/TD613_Rulefield_Succession_Handoff_*.zip
+          if-no-files-found: error
+          retention-days: 30
+  rulefield_ix_native_dollhouse_audit:
+    name: Genuine five-specialist Dollhouse audit — retained HELD, no release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_AUDIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native five-specialist /dollhouse-audit on exact PR head
+        shell: bash
+        run: |
+          mkdir -p audit-artifacts
+          set +e
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input packages/rulefield/rulefields/research/PR1734_DOLLHOUSE_ADVERSARIAL_INPUT.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1734_native_dollhouse_receipt.json \
+            > audit-artifacts/pr1734_stdout.json
+          status=$?
+          echo "$status" > audit-artifacts/pr1734_native_exit_code.txt
+          set -e
+          if [ "$status" -gt 1 ]; then exit "$status"; fi
+      - name: Execute separately typed healthy Rulefield Dollhouse scenario
+        run: |
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input packages/rulefield/rulefields/research/PR1734_DOLLHOUSE_POSITIVE_CONTROL.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1734_native_positive_control_receipt.json \
+            > audit-artifacts/pr1734_positive_stdout.json
+      - name: Enforce Rulefield contrastive native audit (negative HELD, positive SUPPORTED)
+        run: node scripts/check-rulefield-pr1734-dollhouse-verdict.mjs audit-artifacts/pr1734_native_dollhouse_receipt.json audit-artifacts/pr1734_native_positive_control_receipt.json
+      - name: Publish specialist receipts without human closure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-pr1734-native-dollhouse-audit
+          path: audit-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
+  atlas_ix_source_free:
+    name: Ninth Order executable + 18 original byte-hash holds
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run bounded Ninth-Order and predecessor regression suites
+        run: |
+          node --test tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs tests/rulefield-ninth-order-full-commission-custody.test.mjs tests/atlas-after-hours-predecessor-byte-custody.test.mjs tests/atlas-after-hours-original-zip-inventory.test.mjs
+      - name: Run independent source-free Ninth Order simulation
+        run: node scripts/run-ninth-order-confluence-trial.mjs > /dev/null
+      - name: Assert laboratory holds and external protocol disposition
+        run: |
+          node --input-type=module -e "import {CONTRACT,runGeneralizationGrid} from './packages/rulefield/lab/ninth_order_generalization.mjs';const x=runGeneralizationGrid();if(CONTRACT.experimentalFlight!=='HELD'||CONTRACT.scientificClosure!=='RESERVED'||x.count!==1512)process.exit(1);"
+          grep -F 'NO_ACQUISITION' dossier/NINTH_ORDER_EXTERNAL_GENERALIZATION_PREREGISTRATION.md
+  atlas_ix_native_dollhouse_audit:
+    name: Native Dollhouse five-specialist adversarial audit
+    runs-on: ubuntu-latest
+    env:
+      EXPECTED_AUDIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native /dollhouse-audit at exact GitHub HEAD
+        shell: bash
+        run: |
+          mkdir -p audit-artifacts
+          set +e
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input artifacts/atlas-after-hours/pr1735_dollhouse_adversarial_input.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1735_native_dollhouse_receipt.json \
+            > audit-artifacts/pr1735_stdout.json
+          EXIT_CODE=$?
+          echo "$EXIT_CODE" > audit-artifacts/pr1735_native_exit_code.txt
+          set -e
+          if [ "$EXIT_CODE" -gt 1 ]; then
+            echo "Native audit execution failed, exit $EXIT_CODE"
+            exit "$EXIT_CODE"
+          fi
+      - name: Execute separately typed healthy Atlas Dollhouse scenario
+        run: |
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input artifacts/atlas-after-hours/pr1735_dollhouse_positive_control.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1735_native_positive_control_receipt.json \
+            > audit-artifacts/pr1735_positive_stdout.json
+      - name: Enforce Atlas contrastive native audit (negative HELD, positive SUPPORTED)
+        run: node scripts/check-atlas-pr1735-dollhouse-verdict.mjs audit-artifacts/pr1735_native_dollhouse_receipt.json audit-artifacts/pr1735_native_positive_control_receipt.json
+      - name: Publish bounded native audit receipts (no authority conveyed)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pr1735-native-dollhouse-adversarial-audit
+          path: audit-artifacts/
+          if-no-files-found: warn
+  atlas_ix_one_piece_handoff:
+    name: Atlas estate — complete exact-HEAD ZIP, historic custody and extracted source-free replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      ATLAS_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build one-piece Atlas from exact Git source blobs
+        run: python3 scripts/build-atlas-after-hours-handoff.py --output-dir dist --exact-head "$ATLAS_SOURCE_SHA"
+      - name: Verify, extract and replay portable archive without repository root
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(dist/TD613_Atlas_After_Hours_Succession_*.zip)
+          test "${#files[@]}" -eq 1
+          python3 scripts/build-atlas-after-hours-handoff.py --verify "${files[0]}"
+          mkdir -p "$RUNNER_TEMP/atlas-portable"
+          unzip -q "${files[0]}" -d "$RUNNER_TEMP/atlas-portable"
+          cd "$RUNNER_TEMP/atlas-portable"
+          node --test tests/atlas-after-hours-*.test.mjs tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs tests/rulefield-ninth-order-full-commission-custody.test.mjs
+          node scripts/run-ninth-order-confluence-trial.mjs >/dev/null
+          node scripts/run-atlas-after-hours-trial.mjs >/dev/null
+          node scripts/run-dollhouse-skill-audit.mjs --help >/dev/null
+      - name: Upload portable Atlas estate for cross-agent research relay
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pr1735-one-piece-succession-handoff
+          path: dist/TD613_Atlas_After_Hours_Succession_*.zip
+          if-no-files-found: error
+          retention-days: 30

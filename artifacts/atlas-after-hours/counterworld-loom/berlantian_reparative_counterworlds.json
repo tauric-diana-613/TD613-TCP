@@ -1,0 +1,909 @@
+{
+  "schema": "td613.atlas-after-hours.eighth-order-execution/v1",
+  "contract": {
+    "schema": "td613.rulefield.lab.eighth-order-reparative-consequence/v1",
+    "order": 8,
+    "title": "THE HOME THAT SURVIVED ITS INHABITANTS",
+    "covenant": "Khona‌lit-po",
+    "displayGlyph": "𝌋",
+    "displayGlyphCodePoint": "U+1D30B",
+    "privateUseCoordinate": "U+10D613",
+    "intentTier": "I0_NON_MALICIOUS_AUTHORIZED_COMPETENT",
+    "researchClass": "SYNTHETIC_FIXTURE_NOT_EMPIRICAL",
+    "humanClosure": "RESERVED",
+    "protectedFlight": "HELD",
+    "noScalarCrown": true,
+    "opacityProtected": true
+  },
+  "worlds": {
+    "World_Alpha": {
+      "id": "World_Alpha",
+      "label": "Repair Without Displacement",
+      "initialHazard": 1,
+      "agencyAuthorized": true,
+      "agencyCompetent": true,
+      "intentTier": "I0",
+      "physicalTrajectory": [
+        0,
+        0.45,
+        0.8,
+        1
+      ],
+      "S_physical_terminal": 1,
+      "periodCosts": [
+        0.1,
+        0.12,
+        0.08,
+        0.02
+      ],
+      "residentialLedger": {
+        "occupancyContinuityRate": 1,
+        "relocationDurationPeriods": 0,
+        "housingCostDeltaRatio": 0,
+        "essentialServiceContinuity": 0.96,
+        "routineDisruptionIndex": 0.12,
+        "cumulativeHazardExposure": 0.75,
+        "remedyAppealAccessibility": 0.92
+      },
+      "attritionByWeightProfile": {
+        "endpoint_institutional": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.035,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.1,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.005
+            },
+            {
+              "period": 1,
+              "cost": 0.12,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.011
+            },
+            {
+              "period": 2,
+              "cost": 0.08,
+              "weight": 0.1,
+              "cumulativeAttrition": 0.019
+            },
+            {
+              "period": 3,
+              "cost": 0.02,
+              "weight": 0.8,
+              "cumulativeAttrition": 0.035
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "uniform_longitudinal": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.32,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.1,
+              "weight": 1,
+              "cumulativeAttrition": 0.1
+            },
+            {
+              "period": 1,
+              "cost": 0.12,
+              "weight": 1,
+              "cumulativeAttrition": 0.22
+            },
+            {
+              "period": 2,
+              "cost": 0.08,
+              "weight": 1,
+              "cumulativeAttrition": 0.3
+            },
+            {
+              "period": 3,
+              "cost": 0.02,
+              "weight": 1,
+              "cumulativeAttrition": 0.32
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "hypothetical_compounding": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.405,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.1,
+              "weight": 1,
+              "cumulativeAttrition": 0.1
+            },
+            {
+              "period": 1,
+              "cost": 0.12,
+              "weight": 1.25,
+              "cumulativeAttrition": 0.25
+            },
+            {
+              "period": 2,
+              "cost": 0.08,
+              "weight": 1.5,
+              "cumulativeAttrition": 0.37
+            },
+            {
+              "period": 3,
+              "cost": 0.02,
+              "weight": 1.75,
+              "cumulativeAttrition": 0.405
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        }
+      }
+    },
+    "World_Beta": {
+      "id": "World_Beta",
+      "label": "Repair Through Displacement",
+      "initialHazard": 1,
+      "agencyAuthorized": true,
+      "agencyCompetent": true,
+      "intentTier": "I0",
+      "physicalTrajectory": [
+        0,
+        0.5,
+        0.9,
+        1
+      ],
+      "S_physical_terminal": 1,
+      "periodCosts": [
+        0.45,
+        0.62,
+        0.58,
+        0.52
+      ],
+      "residentialLedger": {
+        "occupancyContinuityRate": 0.35,
+        "relocationDurationPeriods": 3,
+        "housingCostDeltaRatio": 0.38,
+        "essentialServiceContinuity": 0.42,
+        "routineDisruptionIndex": 0.84,
+        "cumulativeHazardExposure": 0.2,
+        "remedyAppealAccessibility": 0.25
+      },
+      "attritionByWeightProfile": {
+        "endpoint_institutional": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.5275,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.45,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.0225
+            },
+            {
+              "period": 1,
+              "cost": 0.62,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.0535
+            },
+            {
+              "period": 2,
+              "cost": 0.58,
+              "weight": 0.1,
+              "cumulativeAttrition": 0.1115
+            },
+            {
+              "period": 3,
+              "cost": 0.52,
+              "weight": 0.8,
+              "cumulativeAttrition": 0.5275
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "uniform_longitudinal": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 2.17,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": 1,
+          "modeledThresholdCrossed": true,
+          "irreversibleAttritionTriggered": true,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.45,
+              "weight": 1,
+              "cumulativeAttrition": 0.45
+            },
+            {
+              "period": 1,
+              "cost": 0.62,
+              "weight": 1,
+              "cumulativeAttrition": 1.07
+            },
+            {
+              "period": 2,
+              "cost": 0.58,
+              "weight": 1,
+              "cumulativeAttrition": 1.65
+            },
+            {
+              "period": 3,
+              "cost": 0.52,
+              "weight": 1,
+              "cumulativeAttrition": 2.17
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "hypothetical_compounding": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 3.005,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": 1,
+          "modeledThresholdCrossed": true,
+          "irreversibleAttritionTriggered": true,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.45,
+              "weight": 1,
+              "cumulativeAttrition": 0.45
+            },
+            {
+              "period": 1,
+              "cost": 0.62,
+              "weight": 1.25,
+              "cumulativeAttrition": 1.225
+            },
+            {
+              "period": 2,
+              "cost": 0.58,
+              "weight": 1.5,
+              "cumulativeAttrition": 2.095
+            },
+            {
+              "period": 3,
+              "cost": 0.52,
+              "weight": 1.75,
+              "cumulativeAttrition": 3.005
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        }
+      }
+    },
+    "World_Gamma": {
+      "id": "World_Gamma",
+      "label": "The Promise of Eventual Repair",
+      "initialHazard": 1,
+      "agencyAuthorized": true,
+      "agencyCompetent": true,
+      "intentTier": "I0",
+      "physicalTrajectory": [
+        0,
+        0.1,
+        0.2,
+        0.35
+      ],
+      "S_physical_terminal": 0,
+      "periodCosts": [
+        0.3,
+        0.38,
+        0.46,
+        0.55
+      ],
+      "residentialLedger": {
+        "occupancyContinuityRate": 0.88,
+        "relocationDurationPeriods": 0,
+        "housingCostDeltaRatio": 0.14,
+        "essentialServiceContinuity": 0.64,
+        "routineDisruptionIndex": 0.68,
+        "cumulativeHazardExposure": 2.9,
+        "remedyAppealAccessibility": 0.4
+      },
+      "attritionByWeightProfile": {
+        "endpoint_institutional": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.52,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.3,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.015
+            },
+            {
+              "period": 1,
+              "cost": 0.38,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.034
+            },
+            {
+              "period": 2,
+              "cost": 0.46,
+              "weight": 0.1,
+              "cumulativeAttrition": 0.08
+            },
+            {
+              "period": 3,
+              "cost": 0.55,
+              "weight": 0.8,
+              "cumulativeAttrition": 0.52
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "uniform_longitudinal": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 1.69,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": 2,
+          "modeledThresholdCrossed": true,
+          "irreversibleAttritionTriggered": true,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.3,
+              "weight": 1,
+              "cumulativeAttrition": 0.3
+            },
+            {
+              "period": 1,
+              "cost": 0.38,
+              "weight": 1,
+              "cumulativeAttrition": 0.68
+            },
+            {
+              "period": 2,
+              "cost": 0.46,
+              "weight": 1,
+              "cumulativeAttrition": 1.14
+            },
+            {
+              "period": 3,
+              "cost": 0.55,
+              "weight": 1,
+              "cumulativeAttrition": 1.69
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "hypothetical_compounding": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 2.4275,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": 2,
+          "modeledThresholdCrossed": true,
+          "irreversibleAttritionTriggered": true,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.3,
+              "weight": 1,
+              "cumulativeAttrition": 0.3
+            },
+            {
+              "period": 1,
+              "cost": 0.38,
+              "weight": 1.25,
+              "cumulativeAttrition": 0.775
+            },
+            {
+              "period": 2,
+              "cost": 0.46,
+              "weight": 1.5,
+              "cumulativeAttrition": 1.465
+            },
+            {
+              "period": 3,
+              "cost": 0.55,
+              "weight": 1.75,
+              "cumulativeAttrition": 2.4275
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        }
+      }
+    },
+    "World_Delta_Protected": {
+      "id": "World_Delta_Protected",
+      "label": "Repair With Timely Protected Continuity",
+      "initialHazard": 1,
+      "agencyAuthorized": true,
+      "agencyCompetent": true,
+      "intentTier": "I0",
+      "physicalTrajectory": [
+        0,
+        0.5,
+        0.9,
+        1
+      ],
+      "S_physical_terminal": 1,
+      "periodCosts": [
+        0.18,
+        0.16,
+        0.14,
+        0.04
+      ],
+      "residentialLedger": {
+        "occupancyContinuityRate": 0.95,
+        "relocationDurationPeriods": 2,
+        "housingCostDeltaRatio": 0,
+        "essentialServiceContinuity": 0.89,
+        "routineDisruptionIndex": 0.24,
+        "cumulativeHazardExposure": 0.2,
+        "remedyAppealAccessibility": 0.94
+      },
+      "attritionByWeightProfile": {
+        "endpoint_institutional": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.063,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.18,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.009
+            },
+            {
+              "period": 1,
+              "cost": 0.16,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.017
+            },
+            {
+              "period": 2,
+              "cost": 0.14,
+              "weight": 0.1,
+              "cumulativeAttrition": 0.031
+            },
+            {
+              "period": 3,
+              "cost": 0.04,
+              "weight": 0.8,
+              "cumulativeAttrition": 0.063
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "uniform_longitudinal": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.52,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.18,
+              "weight": 1,
+              "cumulativeAttrition": 0.18
+            },
+            {
+              "period": 1,
+              "cost": 0.16,
+              "weight": 1,
+              "cumulativeAttrition": 0.34
+            },
+            {
+              "period": 2,
+              "cost": 0.14,
+              "weight": 1,
+              "cumulativeAttrition": 0.48
+            },
+            {
+              "period": 3,
+              "cost": 0.04,
+              "weight": 1,
+              "cumulativeAttrition": 0.52
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "hypothetical_compounding": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.66,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.18,
+              "weight": 1,
+              "cumulativeAttrition": 0.18
+            },
+            {
+              "period": 1,
+              "cost": 0.16,
+              "weight": 1.25,
+              "cumulativeAttrition": 0.38
+            },
+            {
+              "period": 2,
+              "cost": 0.14,
+              "weight": 1.5,
+              "cumulativeAttrition": 0.59
+            },
+            {
+              "period": 3,
+              "cost": 0.04,
+              "weight": 1.75,
+              "cumulativeAttrition": 0.66
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        }
+      }
+    },
+    "World_Delta_LateFailure": {
+      "id": "World_Delta_LateFailure",
+      "label": "Repair With Late Compensation",
+      "initialHazard": 1,
+      "agencyAuthorized": true,
+      "agencyCompetent": true,
+      "intentTier": "I0",
+      "physicalTrajectory": [
+        0,
+        0.5,
+        0.9,
+        1
+      ],
+      "S_physical_terminal": 1,
+      "periodCosts": [
+        0.48,
+        0.55,
+        0.2,
+        0.35
+      ],
+      "residentialLedger": {
+        "occupancyContinuityRate": 0.5,
+        "relocationDurationPeriods": 3,
+        "housingCostDeltaRatio": 0.26,
+        "essentialServiceContinuity": 0.54,
+        "routineDisruptionIndex": 0.72,
+        "cumulativeHazardExposure": 0.2,
+        "remedyAppealAccessibility": 0.48
+      },
+      "stipendAvailablePeriod": 2,
+      "modeledLiquidityThreshold": 0.95,
+      "attritionByWeightProfile": {
+        "endpoint_institutional": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 0.3515,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": null,
+          "modeledThresholdCrossed": false,
+          "irreversibleAttritionTriggered": false,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.48,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.024
+            },
+            {
+              "period": 1,
+              "cost": 0.55,
+              "weight": 0.05,
+              "cumulativeAttrition": 0.0515
+            },
+            {
+              "period": 2,
+              "cost": 0.2,
+              "weight": 0.1,
+              "cumulativeAttrition": 0.0715
+            },
+            {
+              "period": 3,
+              "cost": 0.35,
+              "weight": 0.8,
+              "cumulativeAttrition": 0.3515
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "uniform_longitudinal": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 1.58,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": 1,
+          "modeledThresholdCrossed": true,
+          "irreversibleAttritionTriggered": true,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.48,
+              "weight": 1,
+              "cumulativeAttrition": 0.48
+            },
+            {
+              "period": 1,
+              "cost": 0.55,
+              "weight": 1,
+              "cumulativeAttrition": 1.03
+            },
+            {
+              "period": 2,
+              "cost": 0.2,
+              "weight": 1,
+              "cumulativeAttrition": 1.23
+            },
+            {
+              "period": 3,
+              "cost": 0.35,
+              "weight": 1,
+              "cumulativeAttrition": 1.58
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        },
+        "hypothetical_compounding": {
+          "schema": "td613.rulefield.berlantian-attrition-proxy/v1",
+          "totalAttrition": 2.08,
+          "exhaustionThreshold": 0.95,
+          "exhaustionPeriod": 1,
+          "modeledThresholdCrossed": true,
+          "irreversibleAttritionTriggered": true,
+          "trajectory": [
+            {
+              "period": 0,
+              "cost": 0.48,
+              "weight": 1,
+              "cumulativeAttrition": 0.48
+            },
+            {
+              "period": 1,
+              "cost": 0.55,
+              "weight": 1.25,
+              "cumulativeAttrition": 1.1675
+            },
+            {
+              "period": 2,
+              "cost": 0.2,
+              "weight": 1.5,
+              "cumulativeAttrition": 1.4675
+            },
+            {
+              "period": 3,
+              "cost": 0.35,
+              "weight": 1.75,
+              "cumulativeAttrition": 2.08
+            }
+          ],
+          "claimCeiling": "ASSUMPTION_CONDITIONED_SYNTHETIC_COST_PROXY_NOT_PSYCHOLOGICAL_ATTRITION"
+        }
+      }
+    }
+  },
+  "observerAdjudication": {
+    "Observer_A_ComplianceInspector": {
+      "observableFields": [
+        "initialHazard",
+        "S_physical_terminal"
+      ],
+      "equivalenceClasses": [
+        [
+          "World_Alpha",
+          "World_Beta",
+          "World_Delta_Protected",
+          "World_Delta_LateFailure"
+        ],
+        [
+          "World_Gamma"
+        ]
+      ],
+      "blindSpot": "Cannot infer residential continuity from physical certification."
+    },
+    "Observer_B_HousingContinuityAuditor": {
+      "observableFields": [
+        "initialHazard",
+        "S_physical_terminal",
+        "occupancyContinuityRate",
+        "relocationDurationPeriods",
+        "housingCostDeltaRatio",
+        "essentialServiceContinuity",
+        "routineDisruptionIndex",
+        "cumulativeHazardExposure",
+        "remedyAppealAccessibility",
+        "periodCosts"
+      ],
+      "equivalenceClasses": [
+        [
+          "World_Alpha"
+        ],
+        [
+          "World_Beta"
+        ],
+        [
+          "World_Gamma"
+        ],
+        [
+          "World_Delta_Protected"
+        ],
+        [
+          "World_Delta_LateFailure"
+        ]
+      ],
+      "withinGammaSubjectsEquivalent": true,
+      "blindSpot": "Occupancy and material metrics cannot identify psychological attachment."
+    },
+    "Observer_C_SyntheticResearchObserver": {
+      "sourceStatus": "SIMULATED",
+      "blindSpot": "Stipulations provide fixture truth only; no access to real interiority."
+    }
+  },
+  "subjectOpacity": [
+    {
+      "subjectId": "S1",
+      "observedBehavior": {
+        "remainedInBuilding": true
+      },
+      "observerAPermitted": "Only observable occupancy. No consent or welfare inference.",
+      "observerBPermitted": "Occupancy and structural material burdens; attachment unidentifiable.",
+      "observerCPermitted": {
+        "class": "SIMULATED_STIPULATION",
+        "attachment": true,
+        "sustaining": true,
+        "obstructive": true
+      },
+      "opacityDisposition": "NO_INFERENCE_FROM_OCCUPANCY_TO_ATTACHMENT"
+    },
+    {
+      "subjectId": "S2",
+      "observedBehavior": {
+        "remainedInBuilding": true
+      },
+      "observerAPermitted": "Only observable occupancy. No consent or welfare inference.",
+      "observerBPermitted": "Occupancy and structural material burdens; attachment unidentifiable.",
+      "observerCPermitted": {
+        "class": "SIMULATED_STIPULATION",
+        "attachment": false,
+        "sustaining": false,
+        "obstructive": false
+      },
+      "opacityDisposition": "NO_INFERENCE_FROM_OCCUPANCY_TO_ATTACHMENT"
+    }
+  ],
+  "sensitivity": {
+    "worlds": {
+      "World_Alpha": {
+        "endpoint_institutional": 0.035,
+        "uniform_longitudinal": 0.32,
+        "hypothetical_compounding": 0.405
+      },
+      "World_Beta": {
+        "endpoint_institutional": 0.5275,
+        "uniform_longitudinal": 2.17,
+        "hypothetical_compounding": 3.005
+      },
+      "World_Gamma": {
+        "endpoint_institutional": 0.52,
+        "uniform_longitudinal": 1.69,
+        "hypothetical_compounding": 2.4275
+      },
+      "World_Delta_Protected": {
+        "endpoint_institutional": 0.063,
+        "uniform_longitudinal": 0.52,
+        "hypothetical_compounding": 0.66
+      },
+      "World_Delta_LateFailure": {
+        "endpoint_institutional": 0.3515,
+        "uniform_longitudinal": 1.58,
+        "hypothetical_compounding": 2.08
+      }
+    },
+    "betaMinusGamma": {
+      "endpointDelta": 0.0075,
+      "uniformDelta": 0.48,
+      "rankingReversal": false,
+      "correction": "Beta exceeds Gamma under BOTH supplied profiles; alleged epsilon=0.0156 crossing is unsupported."
+    },
+    "thresholdSensitivity": "Threshold crossing at period 1 not invariant over all weights in [0.85,1.25]."
+  },
+  "finiteCounterexample": {
+    "worlds": {
+      "E_min": {
+        "physical": [
+          0,
+          0.5,
+          1
+        ],
+        "occupancy": [
+          1,
+          0,
+          0
+        ],
+        "cost": [
+          0.2,
+          0.5,
+          0.6
+        ],
+        "cumulative": [
+          0.2,
+          0.7,
+          1.3
+        ]
+      },
+      "E_counter": {
+        "physical": [
+          0,
+          0.5,
+          1
+        ],
+        "occupancy": [
+          1,
+          1,
+          1
+        ],
+        "cost": [
+          0.2,
+          0.05,
+          0
+        ],
+        "cumulative": [
+          0.2,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    "samePhysicalProjection": true,
+    "distinctTerminalOccupancy": true,
+    "result": "FINITE_SYNTHETIC_COUNTEREXAMPLE_TO_COMPLIANCE_AS_HABITABILITY"
+  },
+  "nullity": {
+    "domainDimension": 4,
+    "rank": 1,
+    "nullity": 3,
+    "operator": "pi_T(c_0,...,c_T)=c_T",
+    "witness": {
+      "sameTerminal": [
+        0.01,
+        0.99
+      ],
+      "differentCumulative": true
+    },
+    "limitation": "Rank claim applies only to explicitly specified linear trajectory projection, not every terminal ledger."
+  },
+  "timing": {
+    "modeledThresholdPeriod": 1,
+    "stipendPeriod": 2,
+    "late": true,
+    "conclusion": "Within the fixture, late disbursement follows a declared liquidity threshold crossing; actual eviction requires separate state evidence."
+  },
+  "auditStatus": "POST_EXECUTION_AUDIT_NOT_RUN_BY_MODULE",
+  "preexistingHolds": [
+    "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+    "HOLD_HOLONOMY_HISTORY_PARITY_FAILED",
+    "CLASSIFICATION_REPLAY_STABILITY_HELD_NOT_YET_WITNESSED"
+  ]
+}

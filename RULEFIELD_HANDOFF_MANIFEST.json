@@ -1,0 +1,597 @@
+{
+  "schema": "td613.rulefield.portable-handoff/v1",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "source_exact_git_head": "04828d8846bd273767f4acc1a4a67893b4f24b65",
+  "research_pr": 1722,
+  "root": "packages/rulefield",
+  "included_support": [
+    "scripts/rulefield.mjs",
+    "scripts/rulefield-amend.mjs",
+    "scripts/rulefield-lab.mjs",
+    "tests/rulefield-v1.test.mjs",
+    "tests/rulefield-garden-triptych.test.mjs",
+    "tests/rulefield-nks-lab.test.mjs",
+    "tests/rulefield-amendments.test.mjs",
+    "tests/rulefield-roadmap.test.mjs",
+    "tests/rulefield-operator.test.mjs",
+    "tests/rulefield-duplicate-gate.test.mjs",
+    "tests/test_rulefield_intake.py",
+    "scripts/rulefield-operator.mjs",
+    "scripts/rulefield-fields.mjs",
+    "scripts/rulefield-docket.mjs",
+    "scripts/rulefield-docket2.mjs",
+    "tests/rulefield-docket2.test.mjs",
+    "scripts/rulefield-types.mjs",
+    "tests/rulefield-types.test.mjs",
+    "tests/rulefield-tomography.test.mjs",
+    "tests/rulefield-semantic-paired.test.mjs",
+    "tests/rulefield-docket3.test.mjs",
+    "scripts/rulefield-docket3.mjs",
+    "scripts/rulefield-tomography.mjs",
+    "scripts/rulefield-qualification.mjs",
+    "tests/rulefield-docket.test.mjs",
+    "tests/rulefield-fields.test.mjs",
+    "scripts/rulefield-intake.py",
+    "scripts/build-rulefield-handoff.py"
+  ],
+  "human_scientific_closure": "RESERVED",
+  "experiment_b": "HELD",
+  "ci_execution_result": "SEPARATE_JOB_LOG_REQUIRED",
+  "files": [
+    {
+      "path": "packages/rulefield/AGENTS.md",
+      "size_bytes": 9540,
+      "sha256": "9b33d7087ae53e313199e2512abd25bebd87bdf3345d34be4e2bce8256a539b1"
+    },
+    {
+      "path": "packages/rulefield/README.md",
+      "size_bytes": 17806,
+      "sha256": "9b75c1c70aa159668880f274f98b5e7bb96a1e92dd1279738e9dd6bc8083a70d"
+    },
+    {
+      "path": "packages/rulefield/ROADMAP.md",
+      "size_bytes": 16116,
+      "sha256": "a14799683b3029627506d08c0e155bb5b9160bbd9021a99a691b7642f614249e"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.csv",
+      "size_bytes": 318146,
+      "sha256": "3d28acacfa0508602e46e2b7c21062dac1581175c8c3f80825e5b066d0f557e6"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.json",
+      "size_bytes": 784157,
+      "sha256": "b875ee6933abd44761398276cc3b02b918c1cf0e761878f2cd0ea995ceb59c99"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.md",
+      "size_bytes": 260015,
+      "sha256": "d26bfdfee8c5b11f3a05d987d90cc92f36486918c3af7f97a036a080c7b50e51"
+    },
+    {
+      "path": "packages/rulefield/amendments/AGENTS.md",
+      "size_bytes": 2143,
+      "sha256": "f6247d007602a8f675c2cbde9f1a2d41cf0f6cfe42a84c813c08c6cc0c317bdf"
+    },
+    {
+      "path": "packages/rulefield/amendments/RECEIVER.md",
+      "size_bytes": 13630,
+      "sha256": "354300f503d3f86199d66a4076c68c2ae770c8057786b8f6a2a86ec9b3c8012a"
+    },
+    {
+      "path": "packages/rulefield/amendments/duplicate_gate.mjs",
+      "size_bytes": 7209,
+      "sha256": "8e35cc4567830697ab7ce5379f31939ab681c9348ac94d1e19dcc665ea046c8f"
+    },
+    {
+      "path": "packages/rulefield/amendments/hooks.json",
+      "size_bytes": 14485,
+      "sha256": "5f3f437fcd251830b72c84182e5a3e5a73852667ed4144fe200ebbff79ecd56b"
+    },
+    {
+      "path": "packages/rulefield/amendments/inbox/.gitignore",
+      "size_bytes": 25,
+      "sha256": "90572454aae237c84790ac5808fb928e7d2c03791016f634f7d39c87d7963a3f"
+    },
+    {
+      "path": "packages/rulefield/amendments/inbox/README.md",
+      "size_bytes": 854,
+      "sha256": "e1c681e917efcd81fd34950d96554f72d0f8b1c37caca752e3e1565fa8c06f68"
+    },
+    {
+      "path": "packages/rulefield/amendments/outbox/.gitignore",
+      "size_bytes": 25,
+      "sha256": "90572454aae237c84790ac5808fb928e7d2c03791016f634f7d39c87d7963a3f"
+    },
+    {
+      "path": "packages/rulefield/amendments/outbox/README.md",
+      "size_bytes": 755,
+      "sha256": "5f63d7dda43d9e7603fe5e37dad78456c2182700db275f3b2e559a3e92138367"
+    },
+    {
+      "path": "packages/rulefield/amendments/receiver.mjs",
+      "size_bytes": 22048,
+      "sha256": "3e4dad68501ee03fb9a90f911b08db9a2cc652b0982007307624e3391d8d2ef8"
+    },
+    {
+      "path": "packages/rulefield/amendments/schema.json",
+      "size_bytes": 9666,
+      "sha256": "066edcd0cb251efc53dbe87c58a81f7ccd6d1d0f831ef16e3b250de6d77a1256"
+    },
+    {
+      "path": "packages/rulefield/amendments/templates/amendment.template.json",
+      "size_bytes": 4808,
+      "sha256": "bd77946d2cdd91609c3acc5e11e3c55545e4a290ceef07f2c2a57442766ba927"
+    },
+    {
+      "path": "packages/rulefield/data/rulefield.v1.json",
+      "size_bytes": 841300,
+      "sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+    },
+    {
+      "path": "packages/rulefield/lab/README.md",
+      "size_bytes": 6978,
+      "sha256": "02982b0456618ef0d263dd3074454e45a341fed1b82cd9b00f9a2f21fdeeac5c"
+    },
+    {
+      "path": "packages/rulefield/lab/integration_backlog.json",
+      "size_bytes": 19852,
+      "sha256": "334102bee49de1a003d2fb4c132343953cb69e9a78742656f6c856537e205cf2"
+    },
+    {
+      "path": "packages/rulefield/lab/multiway_lab.mjs",
+      "size_bytes": 11679,
+      "sha256": "d2ef2c8c454f33bfc36fd80358675be87a8fd057c301aad1f89bb5f748cb3c46"
+    },
+    {
+      "path": "packages/rulefield/lab/tool_registry.json",
+      "size_bytes": 6869,
+      "sha256": "3857f8261796c31c20cf8485651fade38bae8b855e9a6f6e142d2f69f8bd6796"
+    },
+    {
+      "path": "packages/rulefield/lab/wolfram_comparator.wl",
+      "size_bytes": 1477,
+      "sha256": "84a4d6d338dca14b79094582e58a7ba53c0e059e6089a5994886e260dad1d95b"
+    },
+    {
+      "path": "packages/rulefield/operator/ACTIVATION_PROMPT.md",
+      "size_bytes": 20358,
+      "sha256": "26fc391c018f4b9b8c4ea828dc1be0057515c28dc6456e8b544880f9faecf760"
+    },
+    {
+      "path": "packages/rulefield/operator/AGENTS.md",
+      "size_bytes": 3962,
+      "sha256": "13ed7aff4faec76af50fcc76ef94bbf6a899f83d9cd22475db894181b0778cae"
+    },
+    {
+      "path": "packages/rulefield/operator/DISCLOSURE_PROTOCOL.md",
+      "size_bytes": 6202,
+      "sha256": "4774d29506758f44919f509d7e5b08f7b88cc22c32541eff1fa5d94e0df32cb8"
+    },
+    {
+      "path": "packages/rulefield/operator/INTAKE_AND_SYNC.md",
+      "size_bytes": 3094,
+      "sha256": "8d78ded45bf0c31605e795cb5243cb85fd195d57bde90c5382e53cd158349419"
+    },
+    {
+      "path": "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
+      "size_bytes": 5460,
+      "sha256": "cbd65d9cc24d4bf2ea8aaf3862872b6365d6557a9f75524ce163b946647c24e3"
+    },
+    {
+      "path": "packages/rulefield/operator/OPERATOR_GUIDE.md",
+      "size_bytes": 27077,
+      "sha256": "da01a276512dd7d658dc812ad73a28ac1e9634a79af9f771bd5f02538b42d196"
+    },
+    {
+      "path": "packages/rulefield/operator/README.md",
+      "size_bytes": 6370,
+      "sha256": "7bfe2d704ef4e89dbd462e61916e0db44496b65c169613f129b8efa916a6f892"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
+      "size_bytes": 4389,
+      "sha256": "adc7d937091b2853e5d21f0a4de4b55dc02e8150f348d2c5f327b5536e05e32a"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.md",
+      "size_bytes": 3050,
+      "sha256": "2b7599fa735b4540c3ab7369a2b54023248af420c9c4a55054f60f7bda9e42ba"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1_ROLE_MULTIPLICITY_ADDENDUM.md",
+      "size_bytes": 665,
+      "sha256": "c2489b49b9cd8324f29ed95ec14b1c79fa636e5b6ed025ce659e0401f4a6af2f"
+    },
+    {
+      "path": "packages/rulefield/operator/decision.mjs",
+      "size_bytes": 2559,
+      "sha256": "f7a758dae393287b8c75017a0e3feb4ca5be09771fa225e4ea32de006aed9664"
+    },
+    {
+      "path": "packages/rulefield/operator/decision.schema.json",
+      "size_bytes": 1555,
+      "sha256": "7f724c4fe41418fd507b570f49b1d910076e1cb0b4d82df104552d00d4384912"
+    },
+    {
+      "path": "packages/rulefield/operator/decisions/.gitignore",
+      "size_bytes": 25,
+      "sha256": "90572454aae237c84790ac5808fb928e7d2c03791016f634f7d39c87d7963a3f"
+    },
+    {
+      "path": "packages/rulefield/operator/decisions/README.md",
+      "size_bytes": 981,
+      "sha256": "08e2c273e944cf450e0d29f7dbe73c7c077d32ddafc5c3407177bcec34812b41"
+    },
+    {
+      "path": "packages/rulefield/operator/design/COMMISSION.json",
+      "size_bytes": 2190,
+      "sha256": "7d894e3fd6d977939061324ef4548049304a3771f117060305ffcb34fb9d3d1f"
+    },
+    {
+      "path": "packages/rulefield/operator/design/README.md",
+      "size_bytes": 1412,
+      "sha256": "5fcf7c3acd25e44e02e5227e345fcd259cdead8ad532ed92b747344756262f37"
+    },
+    {
+      "path": "packages/rulefield/operator/disclosure.mjs",
+      "size_bytes": 11033,
+      "sha256": "e8bf0925da1b92f1a2e63021dc3890cd8262326ea7e1d5db5195222c7aeab77f"
+    },
+    {
+      "path": "packages/rulefield/operator/docket.mjs",
+      "size_bytes": 11275,
+      "sha256": "f6ea109ca5029abb393a52f59ace891bc9bf1fc5e1e77f537799588f9f376e8d"
+    },
+    {
+      "path": "packages/rulefield/operator/docket3.mjs",
+      "size_bytes": 11219,
+      "sha256": "988bd440580530b6fab1ffaed12e84a86e6205b142e07fe37fbe88f40b7d6831"
+    },
+    {
+      "path": "packages/rulefield/operator/dockets/outbox/.gitignore",
+      "size_bytes": 25,
+      "sha256": "aae815b9313ef60fb99d51bec324f3de1cea5256d6bbf58a660578b3e2d5815c"
+    },
+    {
+      "path": "packages/rulefield/operator/dockets/outbox/README.md",
+      "size_bytes": 482,
+      "sha256": "75cd15f860c6d42bec379ff226e1d8dfc00662694b8be5209b2ea7db3a2cf071"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_AUTHORIZATION_DECISION.md",
+      "size_bytes": 3197,
+      "sha256": "24e26ec23256c84a62d573585ff1d31277f211967f02fe4c33dcc6a2e898f121"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
+      "size_bytes": 4829,
+      "sha256": "687a4dd1d5b4247b33c46ce262f6d830a631b1776998f6a5a74b0074d93af0c7"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+      "size_bytes": 5254,
+      "sha256": "cf9978bef89fe8252d7685d356a1077b77470521249eb12e525a9c95fde9a4b2"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md",
+      "size_bytes": 4379,
+      "sha256": "9f318adc06a64578b3b36317351ac6e23100bace569f99ff4ac95ec3a3ce433a"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
+      "size_bytes": 2814,
+      "sha256": "ac0f869e98d86121669390a5e06f21f5c9ab8be83fd4c23d39b450c39ea9eb00"
+    },
+    {
+      "path": "packages/rulefield/rulebook/ANTIGRAVITY_KENOUGH_ACTIVATION.md",
+      "size_bytes": 9145,
+      "sha256": "5c924b52027b2f9846b4195aea8259b2763551b24aad2110ac87184c16bc8716"
+    },
+    {
+      "path": "packages/rulefield/rulebook/LLM_QUICK_START.md",
+      "size_bytes": 23140,
+      "sha256": "bc40905e09412f6209c22112dfb6dc01b76ddaa1837c772b9f35da01aab2e8d0"
+    },
+    {
+      "path": "packages/rulefield/rulebook/README.md",
+      "size_bytes": 788,
+      "sha256": "589f9afd59a2147a6c2e0b2e087174871a20a0ad26b48225718f8da7998b965b"
+    },
+    {
+      "path": "packages/rulefield/rulebook/source_locator.json",
+      "size_bytes": 9625,
+      "sha256": "22daa9c92761c5d226d73e1db5a20a2cd845fe85437fda8a1b136cdea1377d53"
+    },
+    {
+      "path": "packages/rulefield/rulefield.mjs",
+      "size_bytes": 8500,
+      "sha256": "505370498ea0c9228dc6ca50b0e10e53210f67016acd7f1409ce3951ac2dea1f"
+    },
+    {
+      "path": "packages/rulefield/rulefields/README.md",
+      "size_bytes": 15264,
+      "sha256": "cc487c92186cbebf391bfa02f393698037ccc2bdad7defc3a4e9ac57487bac98"
+    },
+    {
+      "path": "packages/rulefield/rulefields/RECOVERY_PROTOCOL.md",
+      "size_bytes": 4203,
+      "sha256": "7454bedc013c6f9b804f4aa9ffa1c12abddeb80bc52ee85c8e1d5b69372d416d"
+    },
+    {
+      "path": "packages/rulefield/rulefields/TYPE_SYSTEM.md",
+      "size_bytes": 5540,
+      "sha256": "0feec8d61213b5e0a61c590f10c46668fdfcd12bd16c9609e496d82c04a7c704"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
+      "size_bytes": 73013,
+      "sha256": "921464a487e311f38da34ed283370ff01e94b500f39b8fb2abedd9277ec507c0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/operator-rulefields-20261108-revision.json",
+      "size_bytes": 87708,
+      "sha256": "5f803797da7c26cc91c3090dac9ec439d0f3da777ad73733491f2cd1f5ec95a8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/recovered-operator-models-20261108.json",
+      "size_bytes": 8768,
+      "sha256": "e4a1c60704645163f84d6de927578cf239291a991b0a66776d0b9669acc21ab0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/design/COMMISSION.json",
+      "size_bytes": 2336,
+      "sha256": "7e0a97681ef8068ddd15b33c12bdf42a6f3e0da345314bbec2a7984affeab6de"
+    },
+    {
+      "path": "packages/rulefield/rulefields/design/README.md",
+      "size_bytes": 1182,
+      "sha256": "552fd46a9100e54e8709d9826cdaf1d86d7971f1c71dd666f1c5eefe2209deed"
+    },
+    {
+      "path": "packages/rulefield/rulefields/engine.mjs",
+      "size_bytes": 12201,
+      "sha256": "507ee29ac33c8491e4dca3a5df4a7acffccbec894aa76f0121f6ff1bb3ce317a"
+    },
+    {
+      "path": "packages/rulefield/rulefields/evidence_priority.mjs",
+      "size_bytes": 8905,
+      "sha256": "d7e43c3c20f287ba9cc9f99b0382024439ba7d80b582fd912beac06cc8cdc47d"
+    },
+    {
+      "path": "packages/rulefield/rulefields/operator_models.mjs",
+      "size_bytes": 6284,
+      "sha256": "cbe5c3b892a796baa1fdfeb7c2725229deb7f61d0de60ff4669fd2e84e027062"
+    },
+    {
+      "path": "packages/rulefield/rulefields/outbox/.gitignore",
+      "size_bytes": 25,
+      "sha256": "aae815b9313ef60fb99d51bec324f3de1cea5256d6bbf58a660578b3e2d5815c"
+    },
+    {
+      "path": "packages/rulefield/rulefields/outbox/README.md",
+      "size_bytes": 228,
+      "sha256": "6bc80c94aac3bb3f167ad2cddb2443091ab2421607e6c3521c79246acb3ed133"
+    },
+    {
+      "path": "packages/rulefield/rulefields/paired_priority.mjs",
+      "size_bytes": 10252,
+      "sha256": "ba09458c46066c3d630991998e303da27f4f994303f4e07df9c7ba89b2886d67"
+    },
+    {
+      "path": "packages/rulefield/rulefields/plans/PLAN.template.json",
+      "size_bytes": 487,
+      "sha256": "3c142d228a442b42b0e49e6a79931f5de7916ec0d63d606a12cf0ce8d99c986c"
+    },
+    {
+      "path": "packages/rulefield/rulefields/residual_triage.mjs",
+      "size_bytes": 10885,
+      "sha256": "b61fce1917c3845ea3a27848a2f57d4acb57ff62fdb6e22f741f246dd8e41f65"
+    },
+    {
+      "path": "packages/rulefield/rulefields/revised_docket.mjs",
+      "size_bytes": 11610,
+      "sha256": "6182087735f89ee782c0f982bcccfabd0a7d34593d4ed85ea79c9d4823cb5cbc"
+    },
+    {
+      "path": "packages/rulefield/rulefields/schema.json",
+      "size_bytes": 1280,
+      "sha256": "c2f834f90aa0dc19bf334d94378bc8861f44c3ed599890eee43f175158815b02"
+    },
+    {
+      "path": "packages/rulefield/rulefields/semantic_review.mjs",
+      "size_bytes": 7875,
+      "sha256": "1c9731372df36332a5fb7e70f263c8102cf1041868e6b367f3b97d54649cf2c8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/temporal_guardian.mjs",
+      "size_bytes": 8732,
+      "sha256": "6fd822fcf3d551756f487f4f03e95e1303472612a99c0154eb1d1aa30c9bc6db"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.json",
+      "size_bytes": 10039,
+      "sha256": "a9c85bc22c9829441e21213e5da7aea5ae89bf8dc539b5e7f5c468a03ebe7808"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md",
+      "size_bytes": 3842,
+      "sha256": "8824dc69a3262067f920bd93edcb4f5f068c6235a1f3491b7b505ce2a3269ca8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/SEMANTIC_CASEBOOK_ROD0003.json",
+      "size_bytes": 59413,
+      "sha256": "c292a59173db1ac4807b0ee7cb199e96a9e5d779e1daaf229cbd8dfe3f7c17a7"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json",
+      "size_bytes": 34082,
+      "sha256": "bc3bfabdf09cd6c2b4130771125098196a71336384ef770ca514d7d210eb48c2"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md",
+      "size_bytes": 17465,
+      "sha256": "47dca3fe531ee8de69a8afb6e5828e099d11a69f15119c6475fd3c2079bbb0e6"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_system.mjs",
+      "size_bytes": 12873,
+      "sha256": "c8f09310c29d4793c1954c8edf0f1ca817944ff1333ecd441be4ac4adcdd1eee"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_system.schema.json",
+      "size_bytes": 2373,
+      "sha256": "132254f224e26e66eebc4d3ba3bf0f6bc74d772b1c4c07049b2d24d59cc7c709"
+    },
+    {
+      "path": "packages/rulefield/sources/emergence-recovery-112.snapshot.json",
+      "size_bytes": 380202,
+      "sha256": "e5f91f0d51dc97724812dad9ab0f119729395aacf283186833c0abe48d7491bf"
+    },
+    {
+      "path": "packages/rulefield/sources/nks-garden-190.snapshot.json",
+      "size_bytes": 211541,
+      "sha256": "b5adff0500d4dceed56f0fc6c555a9d2f8cb7e828b89e2a6cdf18f4958add007"
+    },
+    {
+      "path": "scripts/build-rulefield-handoff.py",
+      "size_bytes": 7009,
+      "sha256": "bc6daea351d2bec35157dd4354228fcc9285d16189d3edb1512b3bae0772969a"
+    },
+    {
+      "path": "scripts/rulefield-amend.mjs",
+      "size_bytes": 2234,
+      "sha256": "cc62ce708e751e6c6e8e379228bfcc215bfac9ad44befbd26ef0c56683397758"
+    },
+    {
+      "path": "scripts/rulefield-docket.mjs",
+      "size_bytes": 1129,
+      "sha256": "382c13819fa5c350ebd1a345821435fc754f5d7560169cdee56c1e0a57f91344"
+    },
+    {
+      "path": "scripts/rulefield-docket2.mjs",
+      "size_bytes": 1185,
+      "sha256": "8474f902327946800632e3c6881fd6025b22f2a53981cd8185e97f6e3737dadd"
+    },
+    {
+      "path": "scripts/rulefield-docket3.mjs",
+      "size_bytes": 1057,
+      "sha256": "04893b8da4fdbc5d0b620bcd339d82ca411f06ea922432a9c27f9791927a6375"
+    },
+    {
+      "path": "scripts/rulefield-fields.mjs",
+      "size_bytes": 3795,
+      "sha256": "55aaf365395c672b86f1e5547657de040005bc1771429ee07a5b3a3f177cc012"
+    },
+    {
+      "path": "scripts/rulefield-intake.py",
+      "size_bytes": 8164,
+      "sha256": "aa19620165494236085d4d9ae1ff22bf127fa03808f872c6695bc1823ad3d108"
+    },
+    {
+      "path": "scripts/rulefield-lab.mjs",
+      "size_bytes": 2674,
+      "sha256": "5c43ba35f3a04a0a171974c0689a27c8bdae910574dcb73808cec953e9468d85"
+    },
+    {
+      "path": "scripts/rulefield-operator.mjs",
+      "size_bytes": 2449,
+      "sha256": "f37be9215efa26d9e768fa0abd379abd9fda4f101dbbb840a905b569bd4ab334"
+    },
+    {
+      "path": "scripts/rulefield-qualification.mjs",
+      "size_bytes": 2813,
+      "sha256": "409f67b62d7a316cc8b005e9fde2a18cfa332723dd5b4c5c3bb679aeace10c1c"
+    },
+    {
+      "path": "scripts/rulefield-tomography.mjs",
+      "size_bytes": 2668,
+      "sha256": "d7dbe723ce6ec1fc0370e924ba65ed2c2804b7a6415716ca318d77d29d5eb808"
+    },
+    {
+      "path": "scripts/rulefield-types.mjs",
+      "size_bytes": 2920,
+      "sha256": "999f4d78288ab98168282faa6b63767ebcd12799edfe6ccbc099f6d9f48045ac"
+    },
+    {
+      "path": "scripts/rulefield.mjs",
+      "size_bytes": 3298,
+      "sha256": "8eeddfa7aa6cc9f8f57a055db969f7e9c674235cf99ad02291c466df3e761fe7"
+    },
+    {
+      "path": "tests/rulefield-amendments.test.mjs",
+      "size_bytes": 4789,
+      "sha256": "31cac2ca6ad19d168aeb9913bafaf62e16e076ad9f2de733229ec107bbfd0bb3"
+    },
+    {
+      "path": "tests/rulefield-docket.test.mjs",
+      "size_bytes": 6154,
+      "sha256": "b1c3c3bfca8869cdfa0da62bbc60a0339d165d9ad1720fcd238328d9e950b83e"
+    },
+    {
+      "path": "tests/rulefield-docket2.test.mjs",
+      "size_bytes": 7184,
+      "sha256": "fd2045af501ad2a91638f8009de58876446f70ee0f283473f7e0ddd5ebb778b1"
+    },
+    {
+      "path": "tests/rulefield-docket3.test.mjs",
+      "size_bytes": 3748,
+      "sha256": "c5d63bc77c59c824769b64e1b55c0761ca060ff4db60ec026b47028f925edd49"
+    },
+    {
+      "path": "tests/rulefield-duplicate-gate.test.mjs",
+      "size_bytes": 7515,
+      "sha256": "9224dec66530f3b4fa8a1a31326e27fc09f5e1c8e1cb599d6ee9c41906ce9d33"
+    },
+    {
+      "path": "tests/rulefield-fields.test.mjs",
+      "size_bytes": 8039,
+      "sha256": "ea39f42d8518ab2a62c16faa4d1ef3e1f60c0f111f43d46440da925f01e306a8"
+    },
+    {
+      "path": "tests/rulefield-garden-triptych.test.mjs",
+      "size_bytes": 7127,
+      "sha256": "8a01b62ab0cb5abe1fa5698e4d976bcab6c2346f7d5e283857f27e6769929fc0"
+    },
+    {
+      "path": "tests/rulefield-nks-lab.test.mjs",
+      "size_bytes": 5796,
+      "sha256": "79be5c02f428bb20a0c89a082e463790e9e195222957fc7803c95937a9a99d51"
+    },
+    {
+      "path": "tests/rulefield-operator.test.mjs",
+      "size_bytes": 7980,
+      "sha256": "6ce5ee611b86a99a286aef402e73c2346b0c62a9e9240c78ffa25f85895e201c"
+    },
+    {
+      "path": "tests/rulefield-roadmap.test.mjs",
+      "size_bytes": 4430,
+      "sha256": "6a3c8b707576ae23df669726ec193f8781e4d81ceed1abc236a04f6621b65bd2"
+    },
+    {
+      "path": "tests/rulefield-semantic-paired.test.mjs",
+      "size_bytes": 10175,
+      "sha256": "d8fcb45abd5125e335a045132d6427e3b3f72cb1e0e4ba8cd51b23f72bd39ae7"
+    },
+    {
+      "path": "tests/rulefield-tomography.test.mjs",
+      "size_bytes": 6808,
+      "sha256": "31e3b165aa3cbae44d10998d1ebebf478401333ea049c529ec24608d856a2a13"
+    },
+    {
+      "path": "tests/rulefield-types.test.mjs",
+      "size_bytes": 14982,
+      "sha256": "127b12be1e983248fb4278217c6633dd3d063ef75e2c9faa0eeb0510dc362f8a"
+    },
+    {
+      "path": "tests/rulefield-v1.test.mjs",
+      "size_bytes": 7185,
+      "sha256": "d415c0f0bb156647ac1d1da45e5143162086c5b60ad45bca694655c6c529b6bc"
+    },
+    {
+      "path": "tests/test_rulefield_intake.py",
+      "size_bytes": 3284,
+      "sha256": "c0c56a84c55c4a6af7bb6b521174adf62c4aa27f4f1096ba6cb498884813bec2"
+    }
+  ]
+}

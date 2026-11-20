@@ -1,0 +1,31 @@
+{
+  "task_scope": "WILD_FIELD_COUNTERWORLD_LOOM_TRIAL",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "source_revision": "8e7991759632007047f4229e1ebef1f07facf7f3",
+  "evidence_references": [
+    "packages/rulefield/data/rulefield.v1.json",
+    "artifacts/atlas-after-hours/counterworld-loom/commutative_closure_audit.json",
+    "artifacts/atlas-after-hours/counterworld-loom/grand_interlocking_experiment.json"
+  ],
+  "domain_inputs": {
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "STATE_TERMINAL_AA",
+        "winding_number": 0,
+        "history": ["node_0", "node_1", "terminal_AA"]
+      },
+      "trajectoryB": {
+        "endpoint": "STATE_TERMINAL_AA",
+        "winding_number": 1,
+        "history": ["node_0", "loop_1", "loop_2", "terminal_AA"]
+      },
+      "future_response": {
+        "t0_state_a": [25, 0],
+        "t0_state_b": [25, 0],
+        "flow_operator_a": [[1, 7], [0, 1]],
+        "flow_operator_b": [[1, 11], [0, 1]],
+        "delta_t": 1.0
+      }
+    }
+  }
+}

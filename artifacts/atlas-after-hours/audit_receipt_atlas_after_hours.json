@@ -1,0 +1,149 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1794123099896-8dc13f47",
+  "timestamp": "2026-11-08T07:31:39.896Z",
+  "source_revision": "87dcede2a28ede19d1d5855c1be928b3595596b6",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "87dcede2a28ede19d1d5855c1be928b3595596b6",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": false,
+  "exact_checkout_verified": false,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "87dcede2a28ede19d1d5855c1be928b3595596b6",
+    "audit_execution_revision": "87dcede2a28ede19d1d5855c1be928b3595596b6",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": false,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [],
+  "is_historical_commit_only": false,
+  "task_scope": "ATLAS_AFTER_HOURS_RULEFIELD_RECURSION_TRIAL",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/rulefield/data/rulefield.v1.json",
+    "artifacts/atlas-after-hours/relational_atlas_hypergraph.json",
+    "artifacts/atlas-after-hours/seven_chamber_record.json"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "packages/rulefield/data/rulefield.v1.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed",
+      "byte_digest_verified": true,
+      "sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+    },
+    {
+      "reference": "artifacts/atlas-after-hours/relational_atlas_hypergraph.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "5b300c171bb8aeb07c925011b4dd5c0889897dcba120e6efe1e90d582f4a4bcb",
+      "byte_digest_verified": true,
+      "sha256": "5b300c171bb8aeb07c925011b4dd5c0889897dcba120e6efe1e90d582f4a4bcb"
+    },
+    {
+      "reference": "artifacts/atlas-after-hours/seven_chamber_record.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "212109bddebfa7006b05ce4bddefec972360f6989c6b762d8deb82e1a2c0fa52",
+      "byte_digest_verified": true,
+      "sha256": "212109bddebfa7006b05ce4bddefec972360f6989c6b762d8deb82e1a2c0fa52"
+    }
+  ],
+  "roles_requested": [
+    "ATLAS"
+  ],
+  "roles_attempted": [
+    "ATLAS"
+  ],
+  "roles_executed": [
+    "ATLAS"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "HELD",
+      "status": "VIOLATION_DETECTED",
+      "defect_class": "SYNTHETIC_MATHEMATICAL_VIOLATION",
+      "claim": "equal endpoints do not erase distinct winding histories or loop powers",
+      "infractions": [
+        "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+        "HOLD_HOLONOMY_HISTORY_PARITY_FAILED"
+      ],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "holonomy_parity": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "STATE_TERMINAL_AA",
+          "endpoint_b": "STATE_TERMINAL_AA",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 1,
+          "winding_delta": -1,
+          "history_parity_equal": false,
+          "modulo_2_parity_equal": false,
+          "disposition": "HOLD_DISTINCT_HISTORY_NOT_ERASED",
+          "reason": "equal endpoints do not erase distinct winding histories or loop powers",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        },
+        "future_response": {
+          "capability_id": "A-01",
+          "name": "Temporal Fiber Geometry & Continuation Distinguishability",
+          "mathematical_domain": "Dynamical Systems & Temporal Continuation",
+          "is_custom_input": false,
+          "positive_control": {
+            "passed": true,
+            "t0_observation_A": 25,
+            "t0_observation_B": 25,
+            "t0_equivalent": true,
+            "t1_observation_A": 32,
+            "t1_observation_B": 36,
+            "t1_distinguishable": true
+          },
+          "negative_control": {
+            "passed": true,
+            "radial_congruence_maintained": true
+          },
+          "epistemic_status": "FIXTURE_DEMONSTRATION",
+          "scientific_status": "CANONICAL_FIXTURE_DEMONSTRATION",
+          "summary": "Evaluates snapshot observational equivalence at t=0 against continuation distinguishability under forward transformation T."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [
+    "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+    "HOLD_HOLONOMY_HISTORY_PARITY_FAILED"
+  ],
+  "orchestrator": null,
+  "case_dossier": null,
+  "replication_status": "STANDALONE_SPECIALIST_EXECUTION",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Infractions detected: PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK, HOLD_HOLONOMY_HISTORY_PARITY_FAILED."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 580
+}

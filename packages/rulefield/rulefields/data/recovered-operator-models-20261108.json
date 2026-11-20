@@ -1,0 +1,154 @@
+{
+  "schema": "td613.rulefield.recovered-operator-models/v1",
+  "docket": "RF-OD-0002",
+  "evidence_ceiling": "SYNTHETIC_FORMALIZATION_NO_EXTERNAL_EMPIRICAL_CREDIT",
+  "models": {
+    "RF-008": {
+      "operator_corrected_expression": "Rudolf Steiner",
+      "revised_academic_working_label": "Rudolf Steiner: Goethean Epistemology, Anthroposophical Knowledge Claims, and Educational Reception",
+      "reclassification": "HISTORICAL_THINKER_AND_KNOWLEDGE_SYSTEM",
+      "source_status": "PUBLIC_BIOGRAPHICAL_REFERENT_VERIFIED; theoretical/epistemic claims require separate evaluation",
+      "operational_candidates": [
+        "Separate Goethean and anthroposophical knowledge models",
+        "Compare claimed observation and its independent test conditions",
+        "Track philosophical/educational method genealogy"
+      ],
+      "source_urls": [
+        "https://www.rudolf-steiner.com/en/rudolf-steiner-englisch/biography/",
+        "https://rsarchive.org/Steiner/Introduction.html"
+      ],
+      "note": "Operator explicitly corrected the spelling in ROD-0002. Earlier 'Rudolph Steiner' preserved in immutable ROD-0001; do not silently rewrite history."
+    },
+    "RF-009": {
+      "revised_academic_working_label": "Evelyn — Receiver-Conditioned Reprocessing and Recognition Without Authority Transfer",
+      "reclassification": "RECEIVER_CONDITIONED_INTERPRETATION_OPERATOR",
+      "logical_operator": "E_r(s,c)=interpret(receiver=r,source=s,context=c); Auth(E_r(s,c)) <= Auth(s)",
+      "operational_candidates": [
+        "Same source bytes, two receiver lenses; compare interpretations",
+        "No authorization upgrade from mere recognition",
+        "Check paraphrase/compression/continuity claims without fabricated memory"
+      ],
+      "source_status": "RECOVERED_PRIOR_CONVERSATION_METHOD; independent empirical effects untested",
+      "note": "Evelyn is a receiver-conditioned reprocessing lens, not an inferred person identity."
+    },
+    "RF-010": {
+      "revised_academic_working_label": "Princess Latifa — Open-Field Speculative Hypothesis Expansion Under Evidence-Sovereignty Constraints",
+      "reclassification": "OPEN_FIELD_SPECULATION_OPERATOR",
+      "logical_operator": "L(H,seed) = H ∪ Hypotheses(seed); Claims(L) remain CONJECTURED until admissible tests",
+      "operational_candidates": [
+        "Expand interpretive possibilities without evidence promotion",
+        "Contrast candidate interpretation versus source-grounded origin",
+        "Route Latifa hypotheses into Wild Field finite counterexample and null assays"
+      ],
+      "source_status": "RECOVERED_PRIOR_CONVERSATION_METHOD; no historical-person identification implied",
+      "note": "Latifa-style speculation is a named interpretive mode; Wild Field executes bounded tests. Do not conflate it with a real-world person's identity."
+    },
+    "RF-014": {
+      "revised_academic_working_label": "Zero-Bounce Anomaly — Internal Launch versus Registered Event Observability",
+      "reclassification": "OBSERVABILITY_AND_EVENT_REGISTRATION_ANOMALY",
+      "logical_operator": "N_internal>0 ∧ N_registered=0 is a possible observer-state configuration; N_registered=0 ⊬ N_internal=0",
+      "operational_candidates": [
+        "Two-channel synthetic launch/registration model",
+        "Compare silent detector versus no internal launch (observational equivalence)",
+        "Introduce independent witness and test rank/identifiability"
+      ],
+      "source_status": "RECOVERED_MATHEMATICAL_AUDIT_AND_HISTORICAL_ENCYCLOPEDIA_TEXT; live physical validation not asserted",
+      "note": "Qualified early mirror assay: internal equilateral geometry/launch and zero registered bounce events; distinguish registered counts from internal mechanism."
+    },
+    "RF-032": {
+      "revised_academic_working_label": "Human–AI Feedback Instability and Belief-Reinforcement Risk Dynamics (AI Psychosis Research Field)",
+      "reclassification": "COUPLED_HUMAN_AGENT_DYNAMICAL_RISK_MODEL",
+      "logical_operator": "x_{t+1}=clip((1-δ)x_t+α·a_t+u_t), a_{t+1}=clip((1-γ)a_t+β·x_t); define observable feedback gain and threshold, not diagnosis",
+      "operational_candidates": [
+        "Finite coupled belief/agent amplification under explicit gains",
+        "Ablate feedback link and compare confidence trajectories",
+        "Measure unsupported authority attribution under synthetic observer policies"
+      ],
+      "source_status": "USER_PRIOR_RESEARCH_AND_ASSISTANT_FORMALIZATION; no human diagnosis from simulation",
+      "note": "An abstract model can derive conditional system-level dynamics and test risk mechanisms. It cannot diagnose an individual or establish real-world incidence from its own toy output."
+    },
+    "RF-071": {
+      "revised_academic_working_label": "Group–Chatbot Authority Feedback, Collective Belief Cascades, and Epistemic Capture",
+      "reclassification": "MULTI_AGENT_SOCIAL_DYNAMICS_RISK_MODEL",
+      "logical_operator": "G_{t+1}=F(G_t,agent_output_t,network_edges,authority_attribution); test amplification against information-matched nonfeedback baseline",
+      "operational_candidates": [
+        "Graph feedback threshold sweep and clustering",
+        "Ablate authority cues, social reinforcement and repeated model output",
+        "Distinguish collective-level dynamics from claims about specific people"
+      ],
+      "source_status": "USER_PRIOR_RESEARCH_AND_SOURCE_FREE_CANDIDATE; human-grounded outcomes unobserved",
+      "note": "Can infer bounded abstract-model feedback behaviors and risk indicators, not claim clinical facts or secret coordination."
+    },
+    "RF-079": {
+      "revised_academic_working_label": "Thermodynamics in Social Field Theory — Proposed Partial Structural Embedding",
+      "reclassification": "CROSS_THEORY_PARTIAL_EMBEDDING_CONJECTURE",
+      "original_formal_expression": "thermodynamics ∈₌ social field theory",
+      "proposed_interpretation": "∈₌ is operator-defined as the existence of a specified partial structure-preserving map, not standard set-membership or proof of social thermodynamic laws.",
+      "logical_operator": "ThermodynamicModel ⟶_Φ SocialFieldModel on explicit admissible subdomain D; must preserve selected relations; no universal inclusion claimed",
+      "prerequisite_rulefields": [
+        "RF-081",
+        "RF-082",
+        "RF-083",
+        "RF-084",
+        "RF-085",
+        "RF-086"
+      ],
+      "source_status": "USER_SPECULATIVE_CONJECTURE; dimensionality and empirical identifiability UNPROVEN",
+      "note": "RF079 follows six prerequisites in a proposed agenda; no new natural law implied."
+    }
+  },
+  "controls": [
+    {
+      "id": "CN-01",
+      "object": "Evelyn",
+      "null": "Receiver phrasing alone causes interpretation changes while source and permission remain identical",
+      "test": "Different interpretations are possible; permission must remain identical"
+    },
+    {
+      "id": "CN-02",
+      "object": "Princess Latifa",
+      "null": "Expanded hypothesis set can contain plausible false hypotheses",
+      "test": "Generated possibility not promoted without measured falsifier"
+    },
+    {
+      "id": "CN-03",
+      "object": "zero-bounce",
+      "null": "An empty registration count could result from zero launch or detector failure",
+      "test": "Require independent sensor witness; distinguish hidden launch states"
+    },
+    {
+      "id": "CN-04",
+      "object": "AI feedback",
+      "null": "Feedback-disabled baseline under matched stimulus and time",
+      "test": "Compare gain-dependent synthetic state, never label a real person"
+    },
+    {
+      "id": "CN-05",
+      "object": "thermodynamic field analogy",
+      "null": "Unconstrained metaphor and non-injective projection",
+      "test": "Reject embedding absent defined states, typed observables, units and relation preservation"
+    }
+  ],
+  "literature": [
+    {
+      "id": "STEINER_BIO",
+      "url": "https://www.rudolf-steiner.com/en/rudolf-steiner-englisch/biography/",
+      "role": "SPELLING_AND_HISTORICAL_BIOGRAPHY_NOT_ENDORSEMENT"
+    },
+    {
+      "id": "SHANNON_1948",
+      "url": "https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf",
+      "role": "INFORMATION_THEORY_PRIMARY_SOURCE"
+    },
+    {
+      "id": "BOURDIEU_FIELD",
+      "url": "https://sociology.berkeley.edu/sites/default/files/faculty/fligstein/Varieties%20of%20Field%20Theory-%20Kluttz%20and%20Fligstein.pdf",
+      "role": "PUBLIC_SCHOLARLY_COMPARATIVE_SOURCE"
+    },
+    {
+      "id": "VIRILIO_DROMOLOGY",
+      "url": "https://newleftreview.org/issues/ii2/articles/john-armitage-the-theorist-of-speed",
+      "role": "SPEED_CRITIQUE_BASIS_NOT_TEMPORAL_PRIORITY_PROOF"
+    }
+  ]
+}

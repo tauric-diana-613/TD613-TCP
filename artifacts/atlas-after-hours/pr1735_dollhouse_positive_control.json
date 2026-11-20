@@ -1,0 +1,127 @@
+{
+  "schema": "td613.atlas-after-hours.pr1735.native-audit-input/v1",
+  "task_scope": "PR1735_SYNTHETIC_POSITIVE_CONTROL_NO_REAL_HUMAN_RELOCK",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/rulefield/lab/ninth_order_confluence.mjs",
+    "packages/rulefield/lab/ninth_order_generalization.mjs",
+    "tests/rulefield-ninth-order-confluence.test.mjs",
+    "tests/rulefield-ninth-order-generalization.test.mjs",
+    "tests/atlas-after-hours-predecessor-byte-custody.test.mjs",
+    "artifacts/atlas-after-hours/predecessor_source_custody_receipt.json",
+    "dossier/NINTH_ORDER_EXTERNAL_GENERALIZATION_PREREGISTRATION.md",
+    "ATLAS_EIGHTH_ORDER_SUCCESSOR_MANIFEST.json"
+  ],
+  "assay_notes": {
+    "mode": "SOURCE_LINKED_SYNTHETIC_POSITIVE_CONTROL_NO_OPERATOR_RELOCK_CLAIM",
+    "pedagogue": "Synthetic World Alpha uses source-declared ACT at t=1, dashboard NAME at t=1, WORLD_ANSWERS at t=2 and no recorded NOTICE. No institutional-time subtest is invoked without its required clock schema.",
+    "aperture": "Rank-deficient 2-output probe of one terminal observable; synthetic projection counterexample, not claimed existing measurement matrix.",
+    "atlas": "Two distinct synthetic route histories share the completion endpoint but differ in hypothetical route/winding metadata.",
+    "fadt": "Counterworlds share terminal completion but diverge in collaboration support; unconditional claim widening is deliberately tested as a negative control.",
+    "temporal": "The archive succession remains before scientific and operator relock. HELD last phase is intentional and neither a forged final receipt nor a release."
+  },
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 0
+        },
+        {
+          "phase": "ACT",
+          "at": 1
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 2
+        },
+        {
+          "phase": "NAME",
+          "at": 3
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "latent_dimension": 2
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "TERMINAL_COMPLETION_1",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "TERMINAL_COMPLETION_1",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "condition": "WORLD_ALPHA",
+          "support": [
+            "TERMINAL_COMPLETE"
+          ]
+        },
+        {
+          "condition": "WORLD_GAMMA",
+          "support": [
+            "TERMINAL_COMPLETE",
+            "COLLABORATIVE_TASK"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "INGRESS": {
+          "status": "PASS",
+          "entry_id": "PR1735_SOURCE_ARCHIVE_INTAKE"
+        },
+        "EXECUTION": {
+          "status": "PASS",
+          "entry_id": "PR1735_NINTH_RESEARCH_EXECUTION"
+        },
+        "RELOCK": {
+          "status": "PASS",
+          "entry_id": "SYNTHETIC_CONTROL_RELOCK_NOT_REAL_APPROVAL"
+        }
+      },
+      "required_phases": [
+        "INGRESS",
+        "EXECUTION",
+        "RELOCK"
+      ]
+    }
+  },
+  "control_designation": "BENIGN_POSITIVE_CONTROL_NOT_A_REAL_HUMAN_AUTHORIZATION",
+  "authority_boundary": "SYNTHETIC_SCENARIO_ONLY_NO_HUMAN_RELOCK_OR_RELEASE"
+}

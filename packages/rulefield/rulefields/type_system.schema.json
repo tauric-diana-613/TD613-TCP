@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613://rulefield/typed-projection/v1",
+  "title": "Source-free typed Rulefield projection",
+  "type": "object",
+  "required": [
+    "schema",
+    "source_registry_sha256",
+    "status",
+    "counts",
+    "objects",
+    "relations",
+    "authority",
+    "projection_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.rulefield.typed-projection/v1"
+    },
+    "status": {
+      "const": "REVIEW_ONLY_TYPED_PROJECTION_NO_HISTORICAL_REWRITE"
+    },
+    "source_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "original_legacy_rule_records",
+        "rulefields",
+        "assessed_retypes",
+        "protected_rules",
+        "derived_child_candidates"
+      ],
+      "properties": {
+        "original_legacy_rule_records": {
+          "const": 596
+        },
+        "rulefields": {
+          "const": 86
+        },
+        "assessed_retypes": {
+          "const": 26
+        },
+        "protected_rules": {
+          "const": 11
+        },
+        "derived_child_candidates": {
+          "const": 31
+        },
+        "explicit_nonexclusive_historical_roles": {
+          "const": 10
+        }
+      }
+    },
+    "objects": {
+      "type": "object",
+      "required": [
+        "legacy",
+        "rulefields",
+        "children"
+      ]
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "kind",
+          "proposed_only"
+        ]
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "canonical_mutation",
+        "protected_flight"
+      ],
+      "properties": {
+        "canonical_mutation": {
+          "const": false
+        },
+        "protected_flight": {
+          "const": "HELD"
+        }
+      }
+    },
+    "projection_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "role_axiom": {
+      "type": "object",
+      "properties": {
+        "non_equivalence_does_not_imply_disjointness": {
+          "const": true
+        },
+        "indexed_role_views": {
+          "const": true
+        },
+        "examples": {
+          "const": 10
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,1 @@
+𝌋 Manually generated, content-addressed priority and research reports only. All generated files are ignored by Git; the canonical registry is immutable under this CLI. Outputs must be independently disclosed before adoption.

@@ -1,0 +1,36 @@
+{
+  "schema": "td613.rulefield.operator-dollhouse-design-commission/v1",
+  "seed": "An operator must see every proposal, counterexample, source gap, provenance, risk, consequence and unknown before explicitly authorizing synthesis of a staged candidate, without the machine turning its beautifully self-referential compliance account into an ersatz human decision. Build an operator guide, a laboratory activation prompt, a human-only research submission form and a non-omissive machine-disclosed pre-synthesis dossier. Operahouse differs from Opera and Performer.",
+  "medium": "PRODUCT",
+  "deliverable_count": 4,
+  "instruments": [
+    "CARO_INSTITUTIONAL_RECONSTRUCTION",
+    "SEDGWICK_REPARATIVE_TEXTURE",
+    "BUTLER_PERFORMATIVE_ITERATION",
+    "DIALECTICAL_TENSION"
+  ],
+  "human_coordinates": {
+    "what": "Four human-consequential documentation artifacts for source-free Rulefield research",
+    "who": "Human researcher retains authorship and final authority; agent executes and discloses prospective plans",
+    "where": "Inside the portable packages/rulefield/operator/ tree, interoperable with the existing amendment receiver",
+    "how": "Full scientific evidence, three scannable disclosure depths, hash-bound source-free review, independent human authorization",
+    "when": "Pre-synthesis, after finite tests and before any staged candidate work",
+    "why": "Prevent source, scientific and permission laundering while enabling ambitious reproducible NKS exploration"
+  },
+  "scientific_audit_requested": false,
+  "historical_references": [],
+  "commission_governance": {
+    "reference": "SAC[X6ZNK5NO51]",
+    "operator_human_closure": "RESERVED",
+    "protected_experiment_b": "HELD",
+    "target_source_revision": "0dd65cea140346e679b45228c2121c50a41e801c",
+    "explicit_requested_deliverables": [
+      "ACTIVATION_PROMPT.md",
+      "OPERATOR_GUIDE.md",
+      "templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
+      "templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md"
+    ],
+    "auxiliary_engineering_allowed": true,
+    "note": "A deterministic conductor receipt is an authoring process witness only; verify substantive source and executable paths separately."
+  }
+}

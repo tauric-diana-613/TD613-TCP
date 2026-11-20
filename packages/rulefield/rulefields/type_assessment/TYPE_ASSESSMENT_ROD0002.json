@@ -1,0 +1,664 @@
+{
+  "schema": "td613.rulefield.type-assessment/v1",
+  "source_revision": "3ab70bc26b208251785f54bf6d5db5dcd8664dfd",
+  "docket": "RF-OD-0002",
+  "status": "PROPOSED_CROSSWALK_ONLY_NO_AUTOMATIC_RECLASSIFICATION",
+  "scope": "Curated high-impact assessment across all source-lane categories, not a verified exhaustive semantic pass through all 596 statements.",
+  "formal_type_contract": {
+    "rulefield": "Research problem-space with sources, models, hypotheses, competing candidate local laws, assays, unresolved terms.",
+    "rule": "Typed domain D, guard G, update δ or invariant I, specified observer/scheduler, test/falsifier and nonzero evidentiary scope.",
+    "assay": "A procedure for producing/evaluating observations, with designs and comparator obligations.",
+    "conjecture": "Claim not yet qualified by sufficient proof or empirical evidence.",
+    "source": "Historical text, provenance record or independent observation, not itself an executable rule.",
+    "non_equivalence": "Rulefield != Rule != Assay != Empirical Claim != Source",
+    "legitimate_many_to_many": "A field can contain many rules; one executable rule can be used in several fields; converting a field does not erase it."
+  },
+  "statistical_inventory": {
+    "registered_rules": 596,
+    "historical_NKS": 190,
+    "queue_proposals": 245,
+    "recovered_source_proposals": 112,
+    "thinker_conditions": 20,
+    "operahouse_membranes": 16,
+    "CBFE_DD02": 12,
+    "future_hypothesis": 1,
+    "proposed_rulefields": 86
+  },
+  "promote_rule_records_to_field_or_assay": [
+    {
+      "rule_id": "INF-01",
+      "field_or_priority_anchor": "Q03",
+      "proposed_kind": "MODEL_INVENTORY",
+      "rationale": "Three Information Dome scenes enumerate a research instrument; membership is not a local transition.",
+      "split_action": "Separate scene execution predicates from the scene catalogue.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "INF-05",
+      "field_or_priority_anchor": "Q03",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Mandating hypotheses, falsifiers and alternatives is an assay contract, with executable completeness checks as child rules.",
+      "split_action": "Derive a guard for missing required scene fields.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "INF-07",
+      "field_or_priority_anchor": "Q03",
+      "proposed_kind": "EVIDENCE_BOUNDARY",
+      "rationale": "Bending fields and hulls awaiting geometry/embedding are a mathematical research field with a possible future proof gate.",
+      "split_action": "Hold geometry equivalence until metrics and independent comparison exist.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "X-001",
+      "field_or_priority_anchor": "Q07",
+      "proposed_kind": "EXPERIMENTAL_PROGRAM",
+      "rationale": "Directed transfer Atelier→Encyclopedia is an experiment design rather than a single local rewrite law.",
+      "split_action": "Retain controlled-transfer protocol and separate the receiver's transition implementation.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "X-060",
+      "field_or_priority_anchor": "Q41",
+      "proposed_kind": "RESEARCH_PIPELINE",
+      "rationale": "Refractive Couture PP0–PP6 denotes a distinct multi-stage mathematical-art pipeline.",
+      "split_action": "Formal admission rule can be extracted after source-verified PP stage predicates.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "AMB-08",
+      "field_or_priority_anchor": "Q01",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Blinded presentation ablations are experimental procedures, not state-transition laws.",
+      "split_action": "Separate experiment allocation from the appearance-overcoherence detection guard.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q01-A04",
+      "field_or_priority_anchor": "Q01",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Four presentation conditions comprise a predeclared human study.",
+      "split_action": "Require matched underlying evidence as a distinct executable preflight constraint.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q04-A03",
+      "field_or_priority_anchor": "Q04",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Testimony quieting/smothering scenarios are proposed model interventions; lived experience is not itself a local software rule.",
+      "split_action": "Define hearing-route variables and a null before formalizing any transition.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q04-A05",
+      "field_or_priority_anchor": "Q04",
+      "proposed_kind": "MIXED_RESEARCH_PROGRAM",
+      "rationale": "Dialogic contest, consent, rest and appeal are a bundle of governance methods, not one indivisible rewrite.",
+      "split_action": "Extract consented appeal and non-retroactivity as separate conditional guards.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q16-R01",
+      "field_or_priority_anchor": "Q16",
+      "proposed_kind": "EXPERIMENTAL_PROGRAM",
+      "rationale": "Full-history, capsule, sibling-world, misinformation and no-history arms form a comparison design.",
+      "split_action": "Keep arm allocation/matching as test preconditions and the overall study as a field.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q17-R03",
+      "field_or_priority_anchor": "Q17",
+      "proposed_kind": "NEGATIVE_RESULT_RECORD",
+      "rationale": "The withdrawn +0.1753 estimate is a preserved negative evidence example, not a transition rule.",
+      "split_action": "Keep the invalid inference trace as a falsifier fixture.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q18-R01",
+      "field_or_priority_anchor": "Q18",
+      "proposed_kind": "THEOREM_AND_ASSAY",
+      "rationale": "Constructing twin worlds and checking indistinguishable admitted records is a proof/test specification.",
+      "split_action": "Formal lemma can become a separate theorem object; not a social or physical rewrite rule.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q15-R02",
+      "field_or_priority_anchor": "Q15",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Host-swap comparison under fixed source/evaluator is an experiment, with its testable invariance separately expressible.",
+      "split_action": "Extract host-identity preservation guard from the trial.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "TC01",
+      "field_or_priority_anchor": "Q04",
+      "proposed_kind": "THEORETICAL_METHOD",
+      "rationale": "Collins-derived role/site/authority perturbation is a situated methodology and experimental intervention.",
+      "split_action": "Retain thinker attribution and separate typed gate tests.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "TC06",
+      "field_or_priority_anchor": "RF-061",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Enumerating all enabled local rewrite applications is an exploration protocol, not itself a CA transition law.",
+      "split_action": "Implement bounded scheduler checks and termination labels as separate rules.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "TC11",
+      "field_or_priority_anchor": "RF-086",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Vary prestige at fixed evidence quality is a Bourdieu-inspired factorial intervention.",
+      "split_action": "Extract stable evidence and contrast preconditions, retaining sociology as a field.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "TC19",
+      "field_or_priority_anchor": "RF-085",
+      "proposed_kind": "MEASUREMENT_CONTRACT",
+      "rationale": "Compute entropy only under declared distribution/sampling assumptions: measurement method plus validation guard.",
+      "split_action": "Extract normalization guard and Shannon functional as independent typed objects.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "DRO-01",
+      "field_or_priority_anchor": "RF-007",
+      "proposed_kind": "SOURCE_SCHEMA",
+      "rationale": "Seven typed temporal coordinates constitute a research model; individual ordering restrictions are rules.",
+      "split_action": "Extract nonretroactivity, missing-clock and source-availability guards.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "BFE-01",
+      "field_or_priority_anchor": "Q04",
+      "proposed_kind": "SOURCE_SCHEMA",
+      "rationale": "Testimony availability, expression, uptake, admission and use are observational stages, not a single natural law.",
+      "split_action": "Derive type distinctions and transitions, preserving Black feminist epistemology's wider scope.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "CBFE-RG-PATH-FIBER-01",
+      "field_or_priority_anchor": "Q04",
+      "proposed_kind": "FUTURE_RESEARCH_HYPOTHESIS",
+      "rationale": "History fibers above equal path costs + competent-null comparison is a mixed research program and proof obligation.",
+      "split_action": "Split into an event-history-preservation implementation guard and a separate comparative assay.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "AE-15",
+      "field_or_priority_anchor": "RF-019",
+      "proposed_kind": "EMPIRICAL_HYPOTHESIS",
+      "rationale": "Scaffolding may affect question selection or confidence; a human-outcome conjecture, not software-proven law.",
+      "split_action": "Design randomized observer assay before claiming directional effects.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "AE-16",
+      "field_or_priority_anchor": "RF-029",
+      "proposed_kind": "HISTORICAL_VERSIONING_METHOD",
+      "rationale": "Role migration across editions requires provenance/version comparison and cannot be proved from one instance.",
+      "split_action": "Extract a guard for unresolved historical label attribution.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q01-A03",
+      "field_or_priority_anchor": "RF-025",
+      "proposed_kind": "FORMALIZATION_DEBT",
+      "rationale": "Clock independence is not established by separate triggers; an orthogonality claim needs specified stochastic or geometric meaning.",
+      "split_action": "Convert to typed trigger-separation guard; hold claimed statistical independence.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "RGI-01h",
+      "field_or_priority_anchor": "Q02",
+      "proposed_kind": "OBSERVABLE_DEFINITION",
+      "rationale": "Cycle rank and branch ancestry are finite graph observables, not evidence of physical spacetime.",
+      "split_action": "Expose specific graph measurement functions, preserving epistemic limit.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "Q16-R05",
+      "field_or_priority_anchor": "Q16",
+      "proposed_kind": "COUNTEREXAMPLE_CONSTRUCTION",
+      "rationale": "Iso-projection twin worlds are a method of testing hidden-process recoverability, not a local rewrite.",
+      "split_action": "Make observer-equivalence a relation and independent comparison a witness.",
+      "status": "REVIEW_ONLY"
+    },
+    {
+      "rule_id": "TC20",
+      "field_or_priority_anchor": "Q16",
+      "proposed_kind": "ASSAY_SPECIFICATION",
+      "rationale": "Capsule byte-budget versus predictive relevance is an information-bottleneck optimization study.",
+      "split_action": "Define compression constraints and held-out task before treating it as a rule.",
+      "status": "REVIEW_ONLY"
+    }
+  ],
+  "extract_rule_candidates_from_rulefields": [
+    {
+      "rulefield_id": "RF-001",
+      "proposed_rule_title": "DUPLICATE_REVIEW_GUARD",
+      "formal_specification": "If a candidate was previously proposed, send it to source-aware overlap review; do not assign scientific redundancy from prior existence alone.",
+      "discriminating_test": "Reused candidate; exact rule ID collision; materially different falsifier.",
+      "claim_boundary": "Executable decision gate, not claim of originality.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-002",
+      "proposed_rule_title": "RULEFIELD_RULE_TYPE_GUARD",
+      "formal_specification": "Reject automatic insertion of an object typed RULEFIELD into the RULE registry without an independently specified transition and review.",
+      "discriminating_test": "Field-only specimen cannot pass rule-typing validation.",
+      "claim_boundary": "Already suggested by schema; child guard.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-006",
+      "proposed_rule_title": "SELECTION_STAGING_COMMIT_GATE",
+      "formal_specification": "SELECTED, STAGED, and CANONICALLY_ADOPTED are distinct states; any adoption requires separate exact-diff human approval.",
+      "discriminating_test": "A shopping-tray addition attempts immediate canonical adoption.",
+      "claim_boundary": "User-experience metaphor, implementable as state machine.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-007",
+      "proposed_rule_title": "EPISTEMIC_TIME_ADMISSIBILITY",
+      "formal_specification": "If source.available_at > observer.as_of then observer cannot be credited with that source at as_of.",
+      "discriminating_test": "Later-retrieved source attempts to authorize earlier conclusion.",
+      "claim_boundary": "Computational guard, distinct from general institutional time theory.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-013",
+      "proposed_rule_title": "CHILD_LEGIBLE_EXPLANATION_CONTRACT",
+      "formal_specification": "Require an operator-facing NOW/WHY/EXACT consequence description before a consequential decision; measure actual comprehension separately.",
+      "discriminating_test": "Disclosures omit the consequence or actionable boundary.",
+      "claim_boundary": "Software report schema, not experimentally proven pedagogy.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-014",
+      "proposed_rule_title": "ZERO_BOUNCE_IDENTIFIABILITY",
+      "formal_specification": "If registered_events=0, the admitted observation cannot infer internal_launches=0 without an independent launch witness.",
+      "discriminating_test": "Two worlds give same zero registration with launch counts 0 and positive.",
+      "claim_boundary": "Synthetic observation guard, not a physical detection result.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-015",
+      "proposed_rule_title": "STRATIGRAPHIC_SOURCE_GUARD",
+      "formal_specification": "Never merge source layers with incompatible provenance/timestamps without a marked transformation and version record.",
+      "discriminating_test": "Undated older source is silently treated as newer contemporaneous witness.",
+      "claim_boundary": "Source custody constraint.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-019",
+      "proposed_rule_title": "AMBIANCE_KERNEL_AUTHORITY_INVARIANCE",
+      "formal_specification": "For an allowed theme-only intervention, preserve immutable source digest, kernel output and human authorization state; separately evaluate observer outcomes.",
+      "discriminating_test": "Changing theme mutates rule authority or evidence payload.",
+      "claim_boundary": "Finite software test; observer effect remains an experiment.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-022",
+      "proposed_rule_title": "INFORMATION_MATCHED_ABLATION_PRECONDITION",
+      "formal_specification": "Reject causal advantage claims from ablations whose evaluated arms have unequal relevant information, compute budget or stopping rule.",
+      "discriminating_test": "Candidate gets full source history but comparator only terminal state.",
+      "claim_boundary": "Methodology-to-validation guard, no empirical superiority assumed.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-025",
+      "proposed_rule_title": "AMBIANCE_FIELD_AMBIENCE_TYPING",
+      "formal_specification": "Require separate tagged types for representational ambiance, computational/observational field, and ambient physical or social conditions.",
+      "discriminating_test": "Mis-typed presentation setting satisfies a field-measurement input.",
+      "claim_boundary": "This is a proposed system type rule; not universal ontology.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-027",
+      "proposed_rule_title": "COVENANTAL_AUTHORITY_SCOPE",
+      "formal_specification": "Without an actual human scope-bound authorization event, a model proposal cannot transition into a staged canonical change.",
+      "discriminating_test": "Agent-written approval text is mistaken for a user decision.",
+      "claim_boundary": "Requires reliable identity/authorization channel.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-029",
+      "proposed_rule_title": "STYLOMETRY_PROVENANCE_NONIMPLICATION",
+      "formal_specification": "A style similarity score alone must not identify a human author or authenticate source origin.",
+      "discriminating_test": "High stylometric score is silently converted to person-attribution fact.",
+      "claim_boundary": "Forensic inference guard, not proof that authorship is impossible.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-032",
+      "proposed_rule_title": "COUPLED_FEEDBACK_LOCAL_UPDATE",
+      "formal_specification": "In declared synthetic model, x[t+1]=clip((1−δ)x[t]+αa[t]); a[t+1]=clip((1−γ)a[t]+βx[t]); compare β=0 ablation.",
+      "discriminating_test": "Matched synthetic feedback and no-feedback trajectories fail model prediction.",
+      "claim_boundary": "No diagnosis, mental-state determination or incidence inference.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-034",
+      "proposed_rule_title": "COMBINATORIAL_CONFIGURATION_BOUND",
+      "formal_specification": "For n independent cells each with k states, potential configurations = k^n; do not infer that all are reachable, novel or emergent.",
+      "discriminating_test": "Bounded enumerator reports >k^n distinct assignments.",
+      "claim_boundary": "Mathematical count under explicit independence assumptions.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-035",
+      "proposed_rule_title": "EXPERIMENTAL_EXECUTION_EVIDENCE_GATE",
+      "formal_specification": "An unexecuted predicted trajectory retains CONJECTURED status; observed synthetic trace earns at most finite-model status.",
+      "discriminating_test": "Simulation never executed but result marked OBSERVED.",
+      "claim_boundary": "Scientific reporting guard.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-036",
+      "proposed_rule_title": "FINITE_ITERATED_LOCAL_UPDATE",
+      "formal_specification": "Given declared state space S and local update F, s[t+1]=F(s[t]); specify synchronous/asynchronous scheduling explicitly.",
+      "discriminating_test": "Two schedulers yield divergent traces and are falsely conflated.",
+      "claim_boundary": "Executable only after choosing a concrete F.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-041",
+      "proposed_rule_title": "IRREDUCIBILITY_CLAIM_HOLD",
+      "formal_specification": "A finite speed-up comparison or apparent unpredictability cannot certify global computational irreducibility.",
+      "discriminating_test": "Shortcut search stopped at finite budget and claim promoted to theorem.",
+      "claim_boundary": "Claim-grading restriction, not the proof itself.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-043",
+      "proposed_rule_title": "EVOLUTIONARY_SEARCH_STOPPING_RULE",
+      "formal_specification": "Declare candidate-family size, budget, held-out evaluation and stopping conditions before declaring a selected pattern novel.",
+      "discriminating_test": "Selection repeatedly probes evaluation set and hides unsuccessful branches.",
+      "claim_boundary": "Split multi-part heuristic into separately testable search/admission constraints.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-049",
+      "proposed_rule_title": "OPERATOR_DECISION_GATE",
+      "formal_specification": "If a prospective rule attempts canonical promotion without a distinct human decision bound to exact packet/dossier/diff, reject mutation.",
+      "discriminating_test": "Draft packet auto-merges following successful local tests.",
+      "claim_boundary": "Research governance guard, not universal law of emergence.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-059",
+      "proposed_rule_title": "CONWAY_LIFE_B3_S23",
+      "formal_specification": "For binary cell s with eight live-neighbor count n: next=1 iff (s=0 and n=3) or (s=1 and n∈{2,3}); synchronous update.",
+      "discriminating_test": "Blinker and still-life finite fixtures; compare B3/S23 reference.",
+      "claim_boundary": "Well-specified classical CA local rule; cite source.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-060",
+      "proposed_rule_title": "ECA_RULE_30",
+      "formal_specification": "For left/center/right bits (l,c,r): next = l XOR (c OR r); rule table 111..000→00011110.",
+      "discriminating_test": "Finite table of eight neighborhoods; controlled initial rows.",
+      "claim_boundary": "Existing established CA rule, not TD613 scientific novelty.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-067",
+      "proposed_rule_title": "FINITE_ATTRACTOR_BASIN_DEFINITION",
+      "formal_specification": "For finite deterministic F and attractor A, B(A)={s | exists t≥0 such that F^t(s)∈A}; identify A from the actual transition graph.",
+      "discriminating_test": "Finite state graph containing cycle and transient states.",
+      "claim_boundary": "Mathematical definition/algorithm; model supplies concrete dynamics.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-070",
+      "proposed_rule_title": "PERTURBATION_MEASUREMENT_CONTRACT",
+      "formal_specification": "Given defined metric d and initial perturbation ε, report finite-horizon d(F^t(x),F^t(y)); do not relabel it a Lyapunov exponent without its limiting assumptions.",
+      "discriminating_test": "No metric/small-perturbation regime but result labelled chaos proof.",
+      "claim_boundary": "Scientific measurement rule for synthetic trajectories.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-072",
+      "proposed_rule_title": "EXTERIORITY_NONBOOTSTRAP_GATE",
+      "formal_specification": "Hash-valid and self-attested records cannot alone upgrade exterior origin status without an independently accessible origin witness.",
+      "discriminating_test": "Bit-identical internal/external twin worlds admitted as distinguishable from only their common record.",
+      "claim_boundary": "Forensic verifier non-identification principle.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-075",
+      "proposed_rule_title": "TESTIMONY_LAYER_PRESERVATION",
+      "formal_specification": "Represent source availability, expression, hearing, admission and decision use as distinct fields; absent uptake does not imply false testimony.",
+      "discriminating_test": "Heard=false is used to deduce source=false.",
+      "claim_boundary": "Formal custody/epistemic guard, not substitute for lived epistemology.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-079",
+      "proposed_rule_title": "PARTIAL_THERMOSOCIAL_MAP_HOLD",
+      "formal_specification": "A proposed Φ:D⊆ThermodynamicModel→SocialFieldModel is HELD unless domain, codomain, dimensional interpretation, preserved relations and falsifier are declared.",
+      "discriminating_test": "Undeclared ∈₌ notation asserted as established physical equivalence.",
+      "claim_boundary": "Provisional formalization only; keep research field, six prerequisites and original notation.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-080",
+      "proposed_rule_title": "CHOICE_ARCHITECTURE_NONCOERCION_GUARD",
+      "formal_specification": "A UI choice or nudged selection alone cannot substitute for a separate human authorization event for canonical change.",
+      "discriminating_test": "Default-checked option triggers an unauthorized merge.",
+      "claim_boundary": "Scope of Rulefield governance only.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-085",
+      "proposed_rule_title": "SHANNON_ENTROPY_MEASUREMENT",
+      "formal_specification": "For declared finite probability distribution p, H(p)=−Σ_{p_i>0} p_i log₂ p_i, requiring p_i≥0 and Σp_i=1.",
+      "discriminating_test": "Non-normalized or undefined probabilities rejected before entropy output.",
+      "claim_boundary": "Established mathematical functional under declared assumptions.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-086",
+      "proposed_rule_title": "PRESTIGE_ABLATION_PROTOCOL",
+      "formal_specification": "Hold evidence quality and source payload fixed while varying institutional prestige; compare output deltas with preregistered conditions.",
+      "discriminating_test": "Prestige arm receives different source contents, confounding attribution.",
+      "claim_boundary": "Research assay specification; its preconditions are executable guards, not a universal law.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-081",
+      "proposed_rule_title": "THERMODYNAMIC_STATE_UNITS_GUARD",
+      "formal_specification": "Require a declared physical thermodynamic system, state variables and compatible measurement units before transferring an equation.",
+      "discriminating_test": "Temperature/energy transferred into social-capital units without mapping.",
+      "claim_boundary": "A modeling guard, not a newly discovered law.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    },
+    {
+      "rulefield_id": "RF-083",
+      "proposed_rule_title": "THERMODYNAMIC_LAW_SCOPE_GUARD",
+      "formal_specification": "Do not apply entropy or energy-balance constraints outside their stated physical assumptions and boundaries.",
+      "discriminating_test": "Isolated-system entropy law asserted for an undefined open social institution.",
+      "claim_boundary": "Claim-admissibility guard, not a social physics theorem.",
+      "status": "UNQUALIFIED_DERIVATION_FOR_REVIEW"
+    }
+  ],
+  "protect_as_existing_rules": [
+    {
+      "rule_id": "I-001",
+      "kind": "GUARD",
+      "rationale": "Protected admission precondition with refusal fixture.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "I-005",
+      "kind": "GUARD",
+      "rationale": "Insufficient source metadata yields TOPIC_UNCLASSIFIED_ORDER_HELD.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "I-014",
+      "kind": "SEQUENCE_GUARD",
+      "rationale": "Dispatch intent precedes terminal capture and advancement.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "I-023",
+      "kind": "BUDGET_GUARD",
+      "rationale": "Available reserve must cover conservative reservation.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "I-029",
+      "kind": "INPUT_GUARD",
+      "rationale": "Accessors and untrusted descriptors refused without evaluation.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "RGI-01a",
+      "kind": "RULE_GENERATION_GUARD",
+      "rationale": "Typed rewrite must retain event/source parent and declared guard.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "DRO-03",
+      "kind": "TEMPORAL_INVARIANT",
+      "rationale": "A later source update cannot revise historical observer state.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "AE-04",
+      "kind": "EVIDENCE_AUTHORITY_GUARD",
+      "rationale": "Tool receipt cannot promote into independent empirical truth.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "CBFE-RG-08",
+      "kind": "CONSENT_AND_TIME_GUARD",
+      "rationale": "Optional appeal cannot alter earlier consent state retroactively.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "CBFE-RG-09",
+      "kind": "TYPE_SAFETY",
+      "rationale": "Distinguish source, hearing, warrant and public claim.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    },
+    {
+      "rule_id": "Q15-R01",
+      "kind": "TYPE_SAFETY",
+      "rationale": "Host machinery cannot silently authorize performer/source claims.",
+      "recategorization": "KEEP_ORIGINAL_RULE_ID"
+    }
+  ],
+  "protect_as_research_fields": [
+    {
+      "rulefield_id": "RF-003",
+      "kind": "COMPUTATIONAL_THEORY",
+      "rationale": "Computational irreducibility requires model-specific proof obligations; finite unpredictability alone cannot be a universal rule.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-009",
+      "kind": "RECEIVER_CONDITIONED_METHOD",
+      "rationale": "Evelyn is a lens/interpretive operation; each derived guard needs separate scope.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-010",
+      "kind": "SPECULATIVE_METHOD",
+      "rationale": "Princess Latifa expands candidate hypotheses; none self-certifies.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-021",
+      "kind": "CRITICAL_SEMIOTICS",
+      "rationale": "Queer semiotics cannot be collapsed into a generic executable automaton.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-026",
+      "kind": "INTELLECTUAL_HISTORY",
+      "rationale": "Postmodernism and poststructuralism remain distinct traditions, not local rewrite laws.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-032",
+      "kind": "HUMAN_AGENT_DYNAMICS",
+      "rationale": "Finite feedback mechanisms can be modeled, but medical diagnosis must remain outside synthetic simulation.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-055",
+      "kind": "SPECULATIVE_NEUROSCIENCE",
+      "rationale": "Holonomic brain theory must not be promoted from analogy into brain measurement.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-056",
+      "kind": "SOCIAL_THEORY",
+      "rationale": "Structural violence needs social mechanisms and exterior empirical evidence.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-058",
+      "kind": "TECHNOLOGY_COMPARATIVE_CASE",
+      "rationale": "Named commercial platform is a research source/case, not a software rule.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-063",
+      "kind": "RESEARCH_PROGRAM",
+      "rationale": "Wolfram Physics Project hypotheses remain research program, not empirical physics proof.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-065",
+      "kind": "COMPUTATIONAL_PROPERTY",
+      "rationale": "Turing completeness requires formal universality proof; can't emerge by naming.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-079",
+      "kind": "CROSS_THEORY_CONJECTURE",
+      "rationale": "Partial embedding with original ∈₌ notation remains unqualified pending maps, units and relation preservation.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-084",
+      "kind": "SOCIOLOGICAL_THEORY",
+      "rationale": "Social field theory can motivate formal models without being exhausted by one update law.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    },
+    {
+      "rulefield_id": "RF-086",
+      "kind": "SOCIOLOGICAL_THEORY",
+      "rationale": "Bourdieu is a field/theoretical lineage; experiment derived from it remains a distinct assay.",
+      "recategorization": "KEEP_RULEFIELD_MAY_HAVE_CHILD_RULES"
+    }
+  ],
+  "authorization": {
+    "human_decision_received_for_this_crosswalk": false,
+    "canonical_rule_registry_changed": false,
+    "historical_priority_changed": false,
+    "experiment_b": "HELD"
+  },
+  "external_reference_checks": [
+    {
+      "topic": "Rule 30",
+      "url": "https://mathworld.wolfram.com/ElementaryCellularAutomaton.html",
+      "scope": "Formal neighborhood table/8-bit Wolfram code"
+    },
+    {
+      "topic": "Conway B3/S23",
+      "url": "https://conwaylife.com/wiki/Conway%27s_Game_of_Life",
+      "scope": "Classical CA transition conditions"
+    },
+    {
+      "topic": "CellularAutomaton",
+      "url": "https://reference.wolfram.com/language/ref/CellularAutomaton",
+      "scope": "Existing implementation/reference, not evidence of novel TD613 physics"
+    }
+  ]
+}

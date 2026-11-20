@@ -1,0 +1,11 @@
+{
+  "initial_observation_WA": 25,
+  "initial_observation_WB": 25,
+  "initial_equivalent": true,
+  "future_observation_WA": 32,
+  "future_observation_WB": 36,
+  "future_distinguishable": true,
+  "diagram_failure_norm": 4,
+  "proof": "No single-valued operator bar_T: Y -> Y satisfies Pi o T = bar_T o Pi on {WA, WB}. The observable manifold lacks predictive closure; apparent indeterminism is an artifact of representational projection loss.",
+  "disposition": "COMMUTATIVE_OBSERVATIONAL_CLOSURE_FAILED"
+}

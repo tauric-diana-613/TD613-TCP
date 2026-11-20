@@ -1,0 +1,20 @@
+{
+  "draft_1": {
+    "intent": "Unified multi-tenant projection",
+    "proposal": "All tenant trajectories projecting to the same terminal coordinates shall be merged into a single state tensor."
+  },
+  "discrepancy_fiber": {
+    "schema": "td613.atlas.discrepancy-fiber/v1.0",
+    "failed_distinction": "Endpoint Identity != Trajectory Holonomy Identity",
+    "counterexample": "Trajectories with endpoint AA but windings w=0 vs w=1 collide under state-only merger (HOLD_DISTINCT_HISTORY_NOT_ERASED)",
+    "missing_coordinate": "w in Z (holonomy winding index)",
+    "repair_proposal": "Factorize projection into fiber-bundle Cartesian product: S_quotient x Z_holonomy",
+    "timestamp": "2026-11-08T08:36:16.818Z"
+  },
+  "repaired_candidate": {
+    "intent": "Unified multi-tenant projection",
+    "repaired_proposal": "Multi-tenant relational state shall be represented as a fiber bundle where base coordinate tracks Endpoint Identity and fiber index preserves w in Z (holonomy winding index).",
+    "grounding": "REPAIRED_VIA_DISCREPANCY_FIBER: Factorize projection into fiber-bundle Cartesian product: S_quotient x Z_holonomy"
+  },
+  "formal_characterization": "Discrepancy is not generic rejection; it is an informational functor mapping a representational failure to the exact missing coordinate necessary for structural repair."
+}

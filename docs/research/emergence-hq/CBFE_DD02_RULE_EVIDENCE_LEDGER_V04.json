@@ -1,0 +1,104 @@
+{
+  "schema": "td613.cbfe.dd02.rule-evidence-ledger/v0.4",
+  "source_reference": "CBFE_DD02_COMPETENT_NULL_PREFLIGHT_V04.md",
+  "result_reference": "CBFE_DD02_COMPETENT_NULL_RESULT_V04.json",
+  "existing_190_rules_mutated": 0,
+  "existing_12_cbfe_rules_mutated": 0,
+  "new_historical_I_P_X_rules": 0,
+  "candidate_next_rule": {
+    "id": "CBFE-RG-PATH-FIBER-01",
+    "title": "MULTIWAY_WARRANTED_PATH_FIBER",
+    "status": "PROPOSED_NOT_QUALIFIED",
+    "falsifier": "Missing distinct minimal warranted routes or invented route warrants under independent enumerator"
+  },
+  "rules": [
+    {
+      "rule_id": "CBFE-RG-01",
+      "scope": "finite synthetic typed incidence vs lawful route",
+      "result": "Supported as a representation distinction; 49/384 deliberately incomplete static ablation is not a strong-null comparison",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-02",
+      "scope": "source identity under standing change",
+      "result": "Checked for synthetic source digests, not independently authenticated external origin",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-03",
+      "scope": "standing vs calibration",
+      "result": "Formal separation in code; no empirical discrimination rate",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-04",
+      "scope": "conditional vs pooled interaction",
+      "result": "Earlier v0.3 synthetic controls only; this v0.4 does not measure Palace standing utility",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-05",
+      "scope": "availability and as-of withdrawal",
+      "result": "Negative controls passed on finite source-free cases",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-06",
+      "scope": "distinct clocks",
+      "result": "Retained in v0.3 fixture; not fully requalified by v0.4 differential study",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-07",
+      "scope": "unheard/unknown source",
+      "result": "UNKNOWN remains HELD, not false; source-free only",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-08",
+      "scope": "consent-controlled access",
+      "result": "Monotonic consent route law checked; source withdrawal still blocks",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-09",
+      "scope": "source/warrant/host receipt types",
+      "result": "Host receipt cannot satisfy source-to-claim warrant in this toy model",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-10",
+      "scope": "theme-only kernel invariance",
+      "result": "Finite software state invariant; no human observer study",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-11",
+      "scope": "observer-specific claim recovery",
+      "result": "Equal-cost route history multiplicity identified; observer partition not independently evaluated",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    },
+    {
+      "rule_id": "CBFE-RG-12",
+      "scope": "competent-null comparison",
+      "result": "SOURCE_FREE_BOUNDED_TIE: both complete models 384/384; surplus zero",
+      "status": "SOURCE_FREE_BOUNDED_TEST_ONLY",
+      "empirical_credit": 0
+    }
+  ],
+  "claim_ceiling": "SOURCE_FREE_BOUNDED_TIE",
+  "empirical_replication": 0,
+  "protected_experiment_b": "HELD",
+  "human_closure": "RESERVED"
+}

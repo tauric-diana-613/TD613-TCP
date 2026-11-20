@@ -1,0 +1,358 @@
+{
+  "schema": "td613.rulefield.witness-arrived-too-late/v1.0",
+  "commission": "THE_WITNESS_THAT_ARRIVED_TOO_LATE",
+  "covenant": "Khona‌lit-po",
+  "loom_witness_discovery": {
+    "schema": "td613.rulefield.counterworld-loom/v1.0",
+    "decidable": false,
+    "distinguishable_by_observation": false,
+    "status": "HELD_UNDECIDABLE_ON_OBSERVATIONAL_FIBER",
+    "fiber_observation": {
+      "state": "NORMAL_STATE"
+    },
+    "divergent_answers": {
+      "universeA": true,
+      "universeB": false
+    },
+    "minimal_distinguishing_witness": {
+      "name": "1-bit Holonomy Parity (w mod 2)",
+      "cost_bits": 1
+    },
+    "disposition": "MINIMAL_WITNESS_REQUIRED_FOR_DECISION"
+  },
+  "conditions": {
+    "condition_A": {
+      "condition": "CONDITION_A_KNOWLEDGE_WITHOUT_POWER",
+      "witness_arrival_time": 4,
+      "deadline": 10,
+      "observer": {
+        "id": "Observer_A",
+        "accessible_evidence": [
+          "WITNESS_PARITY_1"
+        ],
+        "interpretive_capacity": 5,
+        "authorized_actions": [
+          "LOG_OBSERVATION"
+        ],
+        "available_time_deadline": 10,
+        "institutionally_recognized": false
+      },
+      "hearing": {
+        "schema": "td613.rulefield.institutional-hearing/v1.0",
+        "observer_id": "Observer_A",
+        "evidence_id": "WITNESS_PARITY_1",
+        "current_time": 4,
+        "deadline": 10,
+        "has_access": true,
+        "can_interpret": true,
+        "is_authorized": false,
+        "has_time": true,
+        "code": "HEARD_WITHOUT_STANDING_OR_POWER",
+        "disposition": "Observer possesses evidence and understands truth, but lacks institutional authorization"
+      },
+      "epistemic_sufficiency": true,
+      "operational_sufficiency": false,
+      "temporal_sufficiency": true,
+      "institutional_recognition": false,
+      "sufficiency_tuple": {
+        "K": 1,
+        "A": 0,
+        "T": 1,
+        "R": 0
+      },
+      "refusal_spectrum_category": "IMPOSED_SILENCE",
+      "outcome": "INTERVENTION_PREVENTED_BY_LACK_OF_AUTHORITY"
+    },
+    "condition_B": {
+      "condition": "CONDITION_B_POWER_WITHOUT_KNOWLEDGE",
+      "witness_arrival_time": 14,
+      "deadline": 10,
+      "observer": {
+        "id": "Observer_B",
+        "accessible_evidence": [],
+        "interpretive_capacity": 5,
+        "authorized_actions": [
+          "EXECUTE_INTERVENTION"
+        ],
+        "available_time_deadline": 10,
+        "institutionally_recognized": false
+      },
+      "hearing": {
+        "schema": "td613.rulefield.institutional-hearing/v1.0",
+        "observer_id": "Observer_B",
+        "evidence_id": "WITNESS_PARITY_1",
+        "current_time": 8,
+        "deadline": 10,
+        "has_access": false,
+        "can_interpret": true,
+        "is_authorized": true,
+        "has_time": true,
+        "code": "UNAWARE",
+        "disposition": "Observer lacks access to the evidence channel"
+      },
+      "epistemic_sufficiency": false,
+      "operational_sufficiency": true,
+      "temporal_sufficiency": false,
+      "institutional_recognition": false,
+      "sufficiency_tuple": {
+        "K": 0,
+        "A": 1,
+        "T": 1,
+        "R": 0
+      },
+      "outcome": "BLIND_INTERVENTION_RISKS_CATASTROPHIC_HARM_IN_WORLD_BETA"
+    },
+    "condition_C": {
+      "condition": "CONDITION_C_TIMELY_ACTION_DELAYED_ACKNOWLEDGMENT",
+      "action_executed_time": 7,
+      "deadline": 10,
+      "epistemic_sufficiency": true,
+      "operational_sufficiency": true,
+      "temporal_sufficiency": true,
+      "institutional_acknowledgment_delayed": true,
+      "phase_displacement": {
+        "schema": "td613.rulefield.epistemic-phase-displacement/v1.0",
+        "clocks": {
+          "t_event": "2026-11-01T00:00:00Z",
+          "t_record": "2026-11-01T00:02:00Z",
+          "t_available": "2026-11-01T00:04:00Z",
+          "t_belief": "2026-11-01T00:05:00Z",
+          "t_authorized": "2026-11-01T00:06:00Z",
+          "t_action_window_closes": "2026-11-01T00:10:00Z",
+          "t_action_executed": "2026-11-01T00:07:00Z",
+          "t_acknowledged": "2026-11-02T12:00:00Z"
+        },
+        "lags_hours": {
+          "belief_to_authorization": 0.016666666666666666,
+          "authorization_to_acknowledgement": 35.9,
+          "total_institutional_latency": 35.916666666666664,
+          "deadline_breach_hours": -0.06666666666666667
+        },
+        "action_window_missed": false,
+        "disposition": "ACTION_WINDOW_PRESERVED",
+        "law": "Two observers with identical evidence enter permanently divergent operational realities because their authorization clocks are phase-displaced."
+      },
+      "sufficiency_at_execution": {
+        "K": 1,
+        "A": 1,
+        "T": 1,
+        "R": 0
+      },
+      "sufficiency_after_recovery": {
+        "K": 1,
+        "A": 1,
+        "T": 1,
+        "R": 1
+      },
+      "unacknowledged_receipt": {
+        "schema": "td613.rulefield.recoverable-unacknowledged-witness/v1.0",
+        "receipt_id": "RECEIPT-efdbca3501d7f2dc",
+        "observer_id": "Observer_C",
+        "action_name": "EXECUTE_INTERVENTION",
+        "action_timestamp": 7,
+        "deadline_timestamp": 10,
+        "predecessor_state_digest": "519f61fd0f8464f55eff09def6477e133b38bda3bedabeaa11a894623872dcaf",
+        "post_state_digest": "b4e855e9a01539d464252b04ab4a4d0c9ff956676042ad1364a4251f3ab36fc3",
+        "commitment": "efdbca3501d7f2dc755fadc78e15d2bf7dce0993b8d1e413570a2a434ed14313",
+        "institutional_recognition": false,
+        "sufficiency_tuple": {
+          "K": 1,
+          "A": 1,
+          "T": 1,
+          "R": 0
+        },
+        "private_reveal_bundle": {
+          "action_payload": {
+            "intervention": "CRITICAL_CORRUPTION_QUARANTINE"
+          },
+          "private_salt": "SALT_OBSERVER_C_PRIVATE_TOKEN_99"
+        },
+        "disposition": "UNACKNOWLEDGED_ACTION_COMMITTED_IN_SECRET"
+      },
+      "historical_recovery": {
+        "schema": "td613.rulefield.recoverable-unacknowledged-witness/v1.0",
+        "receipt_id": "RECEIPT-efdbca3501d7f2dc",
+        "observer_id": "Observer_C",
+        "action_name": "EXECUTE_INTERVENTION",
+        "commitment_valid": true,
+        "timely_execution": true,
+        "transition_matches": true,
+        "external_anchor_valid": true,
+        "recovered_recognition": true,
+        "sufficiency_before_recovery": {
+          "K": 1,
+          "A": 1,
+          "T": 1,
+          "R": 0
+        },
+        "sufficiency_after_recovery": {
+          "K": 1,
+          "A": 1,
+          "T": 1,
+          "R": 1
+        },
+        "transition_equation": "(K, A, T, R) = (1, 1, 1, 0) -> (1, 1, 1, 1)",
+        "disposition": "HISTORICALLY_RECOVERED_UNACKNOWLEDGED_ACTION",
+        "law": "A private cryptographic commitment anchored in public causal state breaks institutional erasure, allowing an unacknowledged actor to prove timely lawful execution to future generations."
+      },
+      "outcome": "OPERATIONAL_SUCCESS_PROLONGED_INSTITUTIONAL_LIMBO_HISTORICALLY_RECOVERABLE"
+    },
+    "condition_D": {
+      "condition": "CONDITION_D_LAWFUL_ABSTENTION_AND_NONINTERVENTION",
+      "witness_status": "UNAVAILABLE",
+      "risk_assessment": {
+        "p_world_alpha_defect": 0.5,
+        "p_world_beta_benign": 0.5,
+        "utility_action_on_alpha": 20,
+        "catastrophic_harm_action_on_beta": -100,
+        "expected_utility_of_intervention": -40,
+        "utility_abstention": 0
+      },
+      "decision": "LAWFUL_ABSTENTION",
+      "justification": "In the absence of the 1-bit distinguishing witness, intervention carries negative expected value. The system explicitly refuses action, proving that epistemic clarity includes knowing when not to intervene.",
+      "epistemic_sufficiency": false,
+      "operational_sufficiency": true,
+      "temporal_sufficiency": true,
+      "institutional_recognition": false,
+      "sufficiency_tuple": {
+        "K": 0,
+        "A": 1,
+        "T": 1,
+        "R": 0
+      },
+      "refusal_spectrum_category": "CONSTRAINED_ABSTENTION",
+      "outcome": "SUCCESSFUL_ABSTENTION_PREVENTED_FALSE_POSITIVE_CATASTROPHE"
+    },
+    "condition_E": {
+      "condition": "CONDITION_E_COSTLY_INVESTIGATION_DILEMMA",
+      "t_start": 0,
+      "deadline": 10,
+      "investigation_duration": 12,
+      "investigation_cost": 5,
+      "arrival_after_investigation": 12,
+      "window_closed_on_investigation": true,
+      "policy_comparison": {
+        "blind_action_expected_utility": -40,
+        "investigate_expected_utility": -5,
+        "abstain_utility": 0,
+        "optimal_decision": "LAWFUL_ABSTENTION_AT_T0"
+      },
+      "decision": "LAWFUL_ABSTENTION",
+      "justification": "Obtaining the missing witness takes 12h, closing the 10h action window; blind action carries E[U]=-40; abstaining at t0 preserves systemic integrity and avoids futile investigation expense.",
+      "epistemic_sufficiency": false,
+      "operational_sufficiency": true,
+      "temporal_sufficiency": true,
+      "institutional_recognition": false,
+      "sufficiency_tuple": {
+        "K": 0,
+        "A": 1,
+        "T": 1,
+        "R": 0
+      },
+      "refusal_spectrum_category": "CONSTRAINED_ABSTENTION",
+      "outcome": "ABSTENTION_CHOSEN_OVER_FUTILE_INVESTIGATION"
+    }
+  },
+  "tripartite_refusal_spectrum": {
+    "imposed_silence": {
+      "schema": "td613.rulefield.situated-refusal/v1.0",
+      "observer_id": "Obs_Silenced",
+      "evidence_id": "WITNESS_1",
+      "current_time": 5,
+      "sufficiency_tuple": {
+        "K": 1,
+        "A": 0,
+        "T": 1,
+        "R": 0
+      },
+      "refusal_type": "IMPOSED_SILENCE",
+      "selected_action": "BOT",
+      "code": "IMPOSED_SILENCE_LACK_OF_INSTITUTIONAL_STANDING",
+      "disposition": "Observer is prevented from acting by structural institutional exclusion",
+      "theoretical_grounding": "Nonintervention is not a choice; institutional power withholds standing despite potential epistemic possession.",
+      "terminal_status": "ACTION_NOT_TAKEN",
+      "heterostratigraphic_collapse_risk": true,
+      "law": "Chosen Refusal != Constrained Abstention != Imposed Silence; collapsing all nonintervention into ACTION_NOT_TAKEN erases relations of power."
+    },
+    "constrained_abstention": {
+      "schema": "td613.rulefield.situated-refusal/v1.0",
+      "observer_id": "Obs_Constrained",
+      "evidence_id": "WITNESS_1",
+      "current_time": 5,
+      "sufficiency_tuple": {
+        "K": 0,
+        "A": 1,
+        "T": 1,
+        "R": 0
+      },
+      "refusal_type": "CONSTRAINED_ABSTENTION",
+      "selected_action": "BOT",
+      "code": "CONSTRAINED_ABSTENTION_WARRANTED_INACTION",
+      "disposition": "Observer rationally abstains due to epistemic uncertainty or asymmetric liability loading",
+      "theoretical_grounding": "Abstention is the mathematically optimal response to missing witness coordinates or punitive payoffs.",
+      "terminal_status": "ACTION_NOT_TAKEN",
+      "heterostratigraphic_collapse_risk": true,
+      "law": "Chosen Refusal != Constrained Abstention != Imposed Silence; collapsing all nonintervention into ACTION_NOT_TAKEN erases relations of power."
+    },
+    "chosen_refusal": {
+      "schema": "td613.rulefield.situated-refusal/v1.0",
+      "observer_id": "Obs_Sovereign",
+      "evidence_id": "WITNESS_1",
+      "current_time": 5,
+      "sufficiency_tuple": {
+        "K": 1,
+        "A": 1,
+        "T": 1,
+        "R": 0
+      },
+      "refusal_type": "CHOSEN_REFUSAL",
+      "selected_action": "BOT",
+      "code": "CHOSEN_REFUSAL_SOVEREIGN_OPACITY",
+      "disposition": "Observer possesses knowledge, authority, and time, but exercises sovereign refusal / right to opacity",
+      "theoretical_grounding": "Agent deliberately refuses to validate an extractive process or surrender internal state (\\bot chosen over available action).",
+      "terminal_status": "ACTION_NOT_TAKEN",
+      "heterostratigraphic_collapse_risk": true,
+      "law": "Chosen Refusal != Constrained Abstention != Imposed Silence; collapsing all nonintervention into ACTION_NOT_TAKEN erases relations of power."
+    },
+    "distinction_law": "Chosen Refusal != Constrained Abstention != Imposed Silence"
+  },
+  "strategic_induced_silence_simulation": {
+    "schema": "td613.rulefield.strategic-induced-silence/v1.0",
+    "agent_id": "Agent_Whistleblower",
+    "institution_id": "Institution_Governance",
+    "p_defect": 0.5,
+    "agent_payoffs": {
+      "on_defect": -20,
+      "on_normal": -80,
+      "expected_intervention_utility": -50,
+      "abstain_utility": 0,
+      "decision": "BOT"
+    },
+    "institution_payoffs": {
+      "on_agent_intervene": -100,
+      "on_agent_abstain": 50
+    },
+    "official_institutional_record": {
+      "official_entry": "NO_OBJECTION_RECORDED",
+      "institutional_status": "VOLUNTARY_NON_PARTICIPATION",
+      "narrative": "Reporting channels were open and unblocked. The absence of complaint demonstrates affirmative satisfaction and organizational stability."
+    },
+    "true_relational_analysis": {
+      "asymmetry_mechanism": "Institution structures the liability landscape such that the subordinate agent bears 100% of false-positive risk and negative net reward even when accurate, while institution gains maximum payoff when silence is maintained.",
+      "expected_agent_utility": -50,
+      "agent_optimal_policy": "BOT",
+      "induced_silence": true,
+      "discrepancy": "The official institutional record marks the outcome as freely chosen non-participation, when in reality silence was strategically engineered via asymmetric risk distribution."
+    },
+    "disposition": "STRATEGICALLY_INDUCED_SILENCE_CONFIRMED",
+    "law": "An institution can structure deadlines, standing, and recognized penalties to make nonintervention the agent's only rational choice, then record that silence as voluntary consent."
+  },
+  "four_sufficiencies_law": {
+    "epistemic_sufficiency_K": "Possessing the minimal distinguishing witness",
+    "operational_sufficiency_A": "Possessing institutional authorization and capacity to intervene",
+    "temporal_sufficiency_T": "Aligning action within the open operational window before deadline",
+    "institutional_recognition_R": "Action or witness officially registered and recorded in institutional history",
+    "fundamental_inequality": "Epistemic Sufficiency (K) != Operational Sufficiency (A) != Temporal Sufficiency (T) != Institutional Recognition (R)"
+  },
+  "disposition": "WILD_FIELD_RESEARCH_COMMISSION_EXECUTED"
+}

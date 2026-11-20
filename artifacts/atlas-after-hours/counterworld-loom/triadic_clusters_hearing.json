@@ -1,0 +1,35 @@
+{
+  "witnesshood_simulation": {
+    "underlying_event": {
+      "id": "EV_904",
+      "fact": "Buffer corrupted at turn 12",
+      "redex_proof": "sha256:d8a9..."
+    },
+    "observers": {
+      "obs_1_full_custody": {
+        "access_level": "RAW_TRANSACTION_JOURNAL",
+        "result": "CONFIRMED_TRUE",
+        "reason": "Full transactional WAL journal inspected; byte-exact residue matched."
+      },
+      "obs_2_coarse_grained": {
+        "access_level": "TERMINAL_STATE_ONLY",
+        "result": "UNIDENTIFIABLE",
+        "reason": "Terminal state shows clean exit code; intermediate buffer residue projected out."
+      },
+      "obs_3_partitioned": {
+        "access_level": "EXTERNAL_STATION_PARTITION",
+        "result": "UNAVAILABLE",
+        "reason": "Partition boundary blocks telemetry packets; zero receipt arrived."
+      }
+    },
+    "invariance": "Underlying event EV_904 is immutable and absolute. Truth is invariant; witnesshood is a function of observer projection and custody tier."
+  },
+  "hearing_result": {
+    "observer": "Auditor_No_Power",
+    "has_access": true,
+    "can_interpret": true,
+    "is_authorized": false,
+    "has_time": true,
+    "disposition": "HEARD_WITHOUT_STANDING_OR_POWER"
+  }
+}

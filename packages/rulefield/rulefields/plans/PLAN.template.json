@@ -1,0 +1,14 @@
+{
+  "schema": "td613.rulefield.priority-plan/v1",
+  "human_review": "REQUIRED_FOR_ANY_LATER_ADOPTION",
+  "canonical_sha256": "REPLACE_WITH_OUTPUT_FROM_FIELDS_STATS",
+  "field_seed_sha256": "REPLACE_WITH_OUTPUT_FROM_FIELDS_STATS",
+  "operations": [
+    {
+      "op": "MOVE_BEFORE",
+      "item_id": "RF-002",
+      "reference_id": "Q05"
+    }
+  ],
+  "note": "This is only a template. CLI plan command will refuse stale or placeholder fingerprints. It does not apply canonical changes."
+}
