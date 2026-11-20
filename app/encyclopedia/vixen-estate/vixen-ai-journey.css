@@ -194,5 +194,5 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenAiJourney{
  background:
   radial-gradient(ellipse 40% 70% at 92% 3%,rgba(150,60,87,.14),transparent 85%),
   radial-gradient(ellipse 55% 65% at 3% 92%,rgba(29,91,98,.17),transparent 88%),
-  linear-gradient(120deg,rgba(16,26,32,.90),rgba(22,30,33,.91) 45%,rgba(12,20,25,.92))!important;
+  linear-gradient(120deg,rgba(16,26,32,.86),rgba(22,30,33,.87) 45%,rgba(12,20,25,.88))!important;
 }
