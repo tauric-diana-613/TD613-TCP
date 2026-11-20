@@ -909,6 +909,12 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
    throw Error('HELD_SRC_BROWSER_ADAPTER_UNAVAILABLE');
   };
   adapters.WENDBINE_ATELIER=async(request)=>{
+   if(request.operation==='wendbine_maestro_research_step'){
+    const maestro=await importOptional(resolve(repoRoot,'scripts','wendbine-maestro-research-loop.mjs'));
+    if(typeof maestro?.invokeMaestroMethodLoop!=='function')
+     throw Error('HELD_WENDBINE_MAESTRO_METHOD_LOOP_UNAVAILABLE');
+    return await maestro.invokeMaestroMethodLoop(request.payload||{});
+   }
    if(request.operation==='wendbine_verified_vixen_method_transfer'){
     const method=await importOptional(resolve(repoRoot,'scripts','vixen-wendbine-method-transfer.mjs'));
     if(typeof method?.runNativeVixenWendbineTransfer!=='function')
