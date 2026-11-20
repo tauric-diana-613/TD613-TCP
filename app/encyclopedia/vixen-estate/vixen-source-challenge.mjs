@@ -47,13 +47,13 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
   validateSourceChallengeCatalogue(corpus);
  }catch(_){host.textContent='Source challenge held · original source register unqualified.';return Object.freeze({mounted:false})}
  const state={phase:'SETUP',epoch:0,busy:false,sourceA:0,sourceB:1,
-  question:'',documents:null,result:null,report:null,receipt:null,error:null};
+  question:'',focus:null,documents:null,result:null,report:null,receipt:null,error:null};
  const authorized=()=>maestro()&&!host.closest('#vmaPlayPanel')?.hidden;
  const showStatus=msg=>{const x=host.querySelector('.ve-status');if(x)x.textContent=msg};
  const wipe=()=>{
   state.epoch++;state.phase='SETUP';state.busy=false;
-  state.sourceA=0;state.sourceB=1;state.question='';
-  state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;
+  state.sourceA=0;state.sourceB=1;state.question='';state.focus=null;
+  state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;state.focus=null;
  };
  const redraw=()=>{
   host.hidden=!maestro();
@@ -99,6 +99,23 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
     box.append(button('Read the original Work',()=>window.VixenReference?.openWork?.(d.work_id)));
     host.append(box);
    }
+   const protocols=make('div','ve-protocols');
+   protocols.append(make('h4','','The original research instruments behind these Works'));
+   const assigned=state.result.documentary_protocol_assignments;
+   for(let i=0;i<2;i++){
+    const names=assigned[i].map(x=>x.replace(/_V\d+_\d+$/,'').replace(/_/g,' ').toLowerCase());
+    protocols.append(make('p','ve-muted','Work '+(i+1)+' · '+names.join(' · ')));
+   }
+   const shared=state.result.shared_original_documentary_protocols;
+   protocols.append(make('p','ve-muted',shared.length?
+    'Shared recorded protocol assignments: '+shared.length+'. These are documentary instructions; no original scholarly procedure has automatically executed here.':
+    'These two Works have no shared recorded research-protocol assignment. That divergence is a clue, not proof of unrelated mechanisms.'));
+   protocols.append(button('Examine the original research instruments',()=>{
+    const nav=document.querySelector('#vixenRoomRail [data-view="protocols"]')||
+     document.querySelector('button[data-view="protocols"]');
+    nav?.click();
+   }));
+   host.append(protocols);
    const proposal=state.result.source_derived_candidate;
    host.append(make('div','ve-finding',proposal?
     'Candidate term: “‘'+proposal+'” · occurrence counts '+state.result.source_repetition_count.join(' / ')+
@@ -125,12 +142,34 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
     'A selected example, extraction artifact, or retrospective matching bias']){
     alternatives.append(make('p','ve-rival',s));
    }
+   const directions=[
+    ['OPERATORS','Follow the actual operators','Find each rule and the conditions where it works'],
+    ['GENEALOGY','Trace the source ancestry','Check citations, chronology and possible common origins'],
+    ['GENERIC_NULL','Try a field-generic rival','Seek matched sources where identical wording carries different mechanisms']
+   ];
+   const forks=make('div','ve-forks');
+   forks.append(make('h4','','Choose what the guide investigates next'));
+   for(const [key,label,description]of directions){
+    const b=button(label,()=>{state.focus=key;redraw();},'ve-btn'+(state.focus===key?' ve-selected':''));
+    b.setAttribute('aria-pressed',String(state.focus===key));
+    forks.append(actionRow(b,make('span','ve-muted',description)));
+   }
+   host.append(forks);
    host.append(alternatives,make('p','ve-warning','Scientific classification: HELD. The original Python archival firewall has not run in this browser. A structural-looking form must be tied independently to actual operators, boundaries, and predictions. All eight Work identity gates remain unresolved.'),
     make('p','ve-next','Next highest-information move: '+state.result.decision.recommended_next_action));
-   host.append(actionRow(button('Investigate the actual structural claim',()=>advance('COUNTERTEST','FIELDWORK'),'ve-btn ve-primary'),
+   host.append(actionRow(button('Investigate the actual structural claim',()=>{
+    if(!state.focus){showStatus('Choose an investigation route before proceeding.');return}
+    advance('COUNTERTEST','FIELDWORK');
+   },'ve-btn ve-primary'),
     button('Return to exact source windows',()=>advance('COUNTERTEST','SOURCE'))));
   }else if(state.phase==='FIELDWORK'){
-   host.append(make('p','ve-caption','04 · Your redpen. Supply exact passages from both manuscripts and write the structural countertest. These are your local, unverified interpretations—not machine-generated scientific findings.'));
+   const focus={
+    OPERATORS:'You chose the formal-operators route. Locate a defined transformation and its admissible boundary.',
+    GENEALOGY:'You chose the source-ancestry route. Distinguish citations and chronology from thematic resemblance.',
+    GENERIC_NULL:'You chose a generic-field rival. Identify a matching comparison that could independently reproduce the vocabulary.'
+   }[state.focus]||'Your research route is not selected.';
+   host.append(make('p','ve-caption','04 · Your redpen. '+focus+
+    ' Supply exact passages from both manuscripts; these remain your unverified interpretations.'));
    const form=make('form','ve-form');form.addEventListener('submit',e=>{e.preventDefault();submit(form)});
    for(const [i,d]of state.documents.entries()){
     const x=area('Copy an exact passage of at least 16 characters from this original Work.',500);
@@ -177,7 +216,7 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
  const advance=(from,to)=>{if(!authorized()||state.phase!==from)return;
   state.phase=to;redraw()};
  const reset=()=>{state.epoch++;state.phase='SETUP';state.busy=false;
-  state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;
+  state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;state.focus=null;
   redraw()};
  const begin=async()=>{
   if(!authorized()||state.busy||state.phase!=='SETUP')return;
@@ -233,7 +272,8 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
     schema:'td613.vixen.visitor-hostile-source-challenge-receipt/v1',
     session_role:'MAESTRO',visitor_choice:'DIRECT_OPTIONAL_LOCAL_FORM',
     browser_time:new Date().toISOString(),browser_time_is_independent_provenance:false,
-    research_question:state.question,verified_source_challenge:state.result,
+    research_question:state.question,operator_selected_investigation_route:state.focus,
+    verified_source_challenge:state.result,
     visitor_review:review,
     original_foreign_source_manuscript_count:0,
     original_native_python_executed_in_browser:false,
