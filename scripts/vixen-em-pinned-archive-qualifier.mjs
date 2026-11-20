@@ -4,7 +4,7 @@
  * OUTSIDE the Vixen repository at the exact ORIGINAL PR #962 immutable HEAD.
  * Only output aggregate custody and bounded native search receipts.
  */
-import {readFileSync,existsSync,lstatSync,realpathSync,mkdtempSync,rmSync} from 'node:fs';
+import {readFileSync,readdirSync,existsSync,lstatSync,realpathSync,mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {resolve,relative,dirname,isAbsolute,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -82,6 +82,25 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
   }
  }
  need(observedManifestations===53&&boundIds.size===53,'HELD_EM_HISTORICAL_PERFORMER_CROSSWALK_CENSUS');
+ const documentaryDir=resolve(em,'06-INSTRUMENTS');
+ const instrumentFiles=readdirSync(documentaryDir).filter(x=>x.endsWith('.md')).sort();
+ need(instrumentFiles.length===21,'HELD_EM_ORIGINAL_DOCUMENTARY_INSTRUMENT_CENSUS');
+ const instrumentNames=new Set(instrumentFiles.map(x=>x.slice(0,-3)));
+ let instrumentBytesVerified=0;
+ for(const file of instrumentFiles){
+  const pathname=resolve(documentaryDir,file);
+  need(existsSync(pathname)&&!lstatSync(pathname).isSymbolicLink()&&
+   readFileSync(pathname).length>100,'HELD_EM_ORIGINAL_PROTOCOL_BYTES_UNAVAILABLE');
+  instrumentBytesVerified++;
+ }
+ const assigned=vixen.flatMap(w=>w.protocols||[]);
+ need(assigned.length===66&&new Set(assigned).size===21&&
+  assigned.every(x=>instrumentNames.has(x))&&
+  [...instrumentNames].every(x=>assigned.includes(x)),
+  'HELD_EM_ORIGINAL_DOCUMENTARY_METHOD_TO_WORK_CROSSWALK');
+ const dirty=execFileSync('git',['-C',em,'status','--porcelain=v1','--untracked-files=no'],
+  {encoding:'utf8',timeout:15000}).trim();
+ need(!dirty,'HELD_EM_ORIGINAL_INSTRUMENT_CHECKOUT_MODIFIED');
  // Independently classify packaging objects so metadata sidecars cannot
  // inflate Work identity, apparent unknown manuscripts or evidence totals.
  const relations=new Map();
@@ -148,6 +167,10 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
   archive_manifestation_crosswalk_verified:observedManifestations,
   historical_work_count:w.rows.length,unresolved_identity_groups:8,
   substantive_work_manifestations_extracted:53,
+  original_documentary_instruments_verified:instrumentBytesVerified,
+  vixen_work_to_documentary_instrument_assignments:assigned.length,
+  documentary_protocol_contract_name_coverage_exact:true,
+  documentary_protocol_executable_methods_automatically_executed:0,
   original_metadata_companions_excluded:33,
   original_zip_containers_excluded:1,
   unsupported_ancillary_objects_not_missing_work_manuscripts:34,
