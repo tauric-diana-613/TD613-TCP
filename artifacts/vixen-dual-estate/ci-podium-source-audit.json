@@ -1,0 +1,162 @@
+{
+  "schema": "td613.vixen.podium.source-bound-native-audit/v1",
+  "source_revision": "270e3a8d20bb4c4339bedb538adf679074602a71",
+  "source_contracts": [
+    {
+      "id": "TWELVE_TYPED_ROUTES",
+      "passed": true
+    },
+    {
+      "id": "NO_MACHINE_AUTO_IMPORT",
+      "passed": true
+    },
+    {
+      "id": "SALON_SHARED_CONJECTURAL_KERNEL",
+      "passed": true
+    },
+    {
+      "id": "NO_TASK_JSON_SELF_AUTHORITY",
+      "passed": true
+    },
+    {
+      "id": "INDEPENDENT_VERIFIED_REFERENCE",
+      "passed": true
+    },
+    {
+      "id": "FATAL_RAW_UTF8",
+      "passed": true
+    },
+    {
+      "id": "GATEWAY_CORRECT_ESTATE",
+      "passed": true
+    },
+    {
+      "id": "EXCLUSIVE_PERFORMANCE",
+      "passed": true
+    },
+    {
+      "id": "ACTIVE_MASTHEAD",
+      "passed": true
+    },
+    {
+      "id": "NO_HUMAN_CLOSURE",
+      "passed": true
+    },
+    {
+      "id": "NATIVE_ENGINE_CALLS_EXPLICIT",
+      "passed": true
+    },
+    {
+      "id": "UNCERTAIN_REPLICATION",
+      "passed": true
+    }
+  ],
+  "source_bytes": {
+    "app/encyclopedia/reference/vixen-podium.mjs": {
+      "sha256": "80db437db4426c584fe936e6eb9dda53cce635476ff04ff59d797e4a1b538db9",
+      "byte_count": 35215,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "app/encyclopedia/reference/vixen-stage-boundary.mjs": {
+      "sha256": "9a09d6e57570c47707867e25bb4f4627d9afad8c1bd03e7a88779427eff700f1",
+      "byte_count": 2707,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "app/encyclopedia/reference/vixen-operator-encounter.mjs": {
+      "sha256": "289eb1dcb5a159a2f2ec85640dc4eb00f77d6ad7e23d129e7b75fc2c50e8ba1e",
+      "byte_count": 21820,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "app/encyclopedia/reference/vixen-read-gateway.mjs": {
+      "sha256": "2f6d3db7571348b964f8376f2e77169ca6f121bd15bffde6102ec5823e759396",
+      "byte_count": 12136,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "app/encyclopedia/reference/vixen-operator-encounter.css": {
+      "sha256": "192380c25863d7fabb4efbf11a681736596b1ba289816e3fc889df6787e8ecaf",
+      "byte_count": 9329,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "app/encyclopedia/reference/podium/manifest.json": {
+      "sha256": "caedb983371a756bcb8b4b54300a74eb55b88ea05dacab385967295759a04acf",
+      "byte_count": 7800,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "scripts/vixen-podium.mjs": {
+      "sha256": "29ba526b957b9f8dd45ff8d55a23ca17a6ed6542b4baa3686b8622ccc1aa0f6d",
+      "byte_count": 23927,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "scripts/vixen-podium-native-adapters.mjs": {
+      "sha256": "2b41e56113691559e34a5d870d3eb19d33a58ca8e3d68551b606b7d4f370e95a",
+      "byte_count": 29198,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    },
+    "tests/vixen-podium.test.mjs": {
+      "sha256": "ceff686775079279398a64f377cb01e888aeb71d48b32e7072b9a64b7020ce95",
+      "byte_count": 32196,
+      "evidence_class": "CURRENT_CHECKOUT_SOURCE_BYTES"
+    }
+  },
+  "native_dollhouse": {
+    "provenance": "REAL_NATIVE_FIVE_ROLE_ENGINE_EXECUTED_ON_SYNTHETIC_DOMAIN_PROBES",
+    "source_specific_full_domain_proof": false,
+    "roles_executed": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "orchestrator": {
+      "decision": "HELD",
+      "consensus": "HELD_DISSENT",
+      "primary_verdicts_consensus": "HELD_DISSENT",
+      "nested_extension_holds": [
+        {
+          "role": "APERTURE",
+          "property": "classification_replay_stability",
+          "status": "HELD_NOT_YET_WITNESSED",
+          "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+        }
+      ],
+      "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+      "empirical_replication_count": 0,
+      "active_roles": [
+        "PEDAGOGUE",
+        "APERTURE",
+        "ATLAS",
+        "FADT",
+        "TEMPORAL_CUSTODIAN"
+      ],
+      "findings_count": 5,
+      "detected_infractions": [
+        "HUMAN_CONSEQUENCE_BROKEN_RETURN_PROMISE",
+        "CADENCE_VIOLATION",
+        "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+        "HOLD_HOLONOMY_HISTORY_PARITY_FAILED",
+        "ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING",
+        "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION"
+      ],
+      "release_authority": false,
+      "deployment_authority": false,
+      "human_closure_required": true
+    },
+    "receipt_schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+    "detected_infractions": [
+      "HUMAN_CONSEQUENCE_BROKEN_RETURN_PROMISE",
+      "CADENCE_VIOLATION",
+      "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+      "HOLD_HOLONOMY_HISTORY_PARITY_FAILED",
+      "ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING",
+      "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION"
+    ]
+  },
+  "review_state": "SOURCE_CONTRACTS_PASS_AND_NATIVE_PROBES_RETAIN_HELD",
+  "independent_empirical_witness": false,
+  "human_scientific_closure": "RESERVED",
+  "merge_authority": false,
+  "release_authority": false,
+  "deployment_authority": false,
+  "protected_experiment_b": "HELD"
+}

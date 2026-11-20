@@ -1226,8 +1226,17 @@ export async function runDollhouseSkillAudit(input = {}, callerOptions = {}) {
           if (disp === 'REJECT' || disp === 'ABSTAIN' || deficit === 'NUMERICAL_STABILITY_DEFICIT') {
             activeVerdict = 'HELD';
             activeStatus = 'VIOLATION_DETECTED';
-            activeClaim = `Aperture deficit detected: ${deficit}`;
-            activeInfractions.push(deficit);
+            activeClaim = extensions.epistemic_deficit.reason ||
+              `Aperture deficit detected: ${deficit}`;
+            const mathCode = extensions.epistemic_deficit.noise_geometry_error_code;
+            // A real mathematical veto must not be mislabeled as a URL hash problem.
+            if (mathCode) {
+              activeInfractions = activeInfractions.filter(
+                code => code !== 'URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED');
+              activeInfractions.push('INVALID_NOISE_GEOMETRY', mathCode);
+            } else {
+              activeInfractions.push(deficit);
+            }
           }
         }
         if (extensions.matrix_svd) {

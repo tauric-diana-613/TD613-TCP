@@ -91,6 +91,10 @@ test('pointer series and held keys admit one action while new gestures stay avai
   await until(()=>h.root.dataset.firstCrossingStep==='5','new gesture accepted');
   assert.equal(h.ui.inspect().session,null);assert.equal(h.requests.length,0);
   h.dispose();assert.equal(h.pointer('#loomFirstCrossingStop',2).defaultPrevented,false);
+  // A detached UI must reject the button's residual direct click listeners
+  // *before* they reach the destroyed owner clock, including async tails.
+  await new Promise(resolve=>setTimeout(resolve,20));
+  assert.equal(h.ui.inspect().clock.destroyed,true);
 });
 
 test('complete artifact inspection preserves historical request and never advances the scene',async t=>{
