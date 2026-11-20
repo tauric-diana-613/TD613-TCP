@@ -175,6 +175,7 @@ jobs:
           done
           node tests/vixen-public-copy-browser.test.mjs
           node tests/vixen-ai-journey-browser.test.mjs
+          node tests/vixen-human-comparative-field-browser.test.mjs
           node tests/vixen-browser-visual-witness.mjs
           node tests/vixen-observatory-open-form-browser.test.mjs
           node tests/vixen-foundry-webgl-canary.mjs
@@ -263,6 +264,9 @@ jobs:
           node --test tests/wendbine-directed-walk-falsification.test.mjs
           node --test tests/wendbine-open-world-ceiling.test.mjs
           node --test tests/vixen-dual-atelier-comparative-maestro.test.mjs
+          node --test tests/vixen-human-comparative-field.test.mjs
+          node --check app/encyclopedia/vixen-estate/comparative-field-probes.mjs
+          node --check app/encyclopedia/vixen-estate/vixen-comparative-field-trial.mjs
           node --test tests/vixen-observatory-throughput.test.mjs
           # Execute the original Python SRC typed traverser against real verified Vixen derivatives.
           node --test tests/vixen-src-original-typed-traversal.test.mjs
