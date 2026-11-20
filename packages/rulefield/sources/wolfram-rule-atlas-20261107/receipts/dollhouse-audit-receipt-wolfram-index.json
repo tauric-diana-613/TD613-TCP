@@ -1,0 +1,681 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1794041184591-6a6e7cec",
+  "timestamp": "2026-11-07T08:46:24.591Z",
+  "source_revision": "fb554ff63909b5c69262cd57ba63a8dd3e28442b",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "fb554ff63909b5c69262cd57ba63a8dd3e28442b",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "fb554ff63909b5c69262cd57ba63a8dd3e28442b",
+    "audit_execution_revision": "fb554ff63909b5c69262cd57ba63a8dd3e28442b",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [
+    {
+      "role": "APERTURE",
+      "property": "classification_replay_stability",
+      "status": "HELD_NOT_YET_WITNESSED",
+      "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+    }
+  ],
+  "is_historical_commit_only": false,
+  "task_scope": "EMERGENCE_HQ_WOLFRAMIAN_RULE_INDEX_SCIENTIFIC_AUDIT",
+  "evidence_class": "RESEARCH_RULE_INDEX_AUDIT",
+  "evidence_references": [
+    "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_164_Rules.json",
+    "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_179_Rules.json",
+    "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_2026-11-07.csv",
+    "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_2026-11-07.md",
+    "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_Expanded.md",
+    "app/engine/dollhouse-skill-dispatcher.js",
+    "app/engine/dollhouse-ablation-harness.js",
+    "app/engine/dollhouse-pedagogue-dromological.js",
+    "app/engine/aperture-v32-typed-epistemic-deficit.js",
+    "app/engine/dollhouse-atlas-relational-custody.js",
+    "app/engine/atlas-mathematical-engine.js",
+    "app/engine/dollhouse-fadt-reparative-assistance.js",
+    "app/engine/dollhouse-temporal-custodian.js"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_164_Rules.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "aa4d00d808ca537080197d399e2d58327c3a53563e0fc9bd6b6fe989e94918ad",
+      "byte_digest_verified": true,
+      "sha256": "aa4d00d808ca537080197d399e2d58327c3a53563e0fc9bd6b6fe989e94918ad"
+    },
+    {
+      "reference": "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_179_Rules.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "cef0603abcab9681cdc78eb33ddf6feb4a33540f684d6571261a96850ba5cd5b",
+      "byte_digest_verified": true,
+      "sha256": "cef0603abcab9681cdc78eb33ddf6feb4a33540f684d6571261a96850ba5cd5b"
+    },
+    {
+      "reference": "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_2026-11-07.csv",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "4309e3bb9f274d66ab9418ba3a4d3b19a7bce4cc75c8793d7d38148ede96e385",
+      "byte_digest_verified": true,
+      "sha256": "4309e3bb9f274d66ab9418ba3a4d3b19a7bce4cc75c8793d7d38148ede96e385"
+    },
+    {
+      "reference": "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_2026-11-07.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "5e0c8269b1c1c17a4fa23861d39749c137632acbc32ced255729f67b7fa794f6",
+      "byte_digest_verified": true,
+      "sha256": "5e0c8269b1c1c17a4fa23861d39749c137632acbc32ced255729f67b7fa794f6"
+    },
+    {
+      "reference": "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_Expanded.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "ac836d145c51feed786fceaea1592e11f01e085cb624dc8e4bf8ed37ec4dab1d",
+      "byte_digest_verified": true,
+      "sha256": "ac836d145c51feed786fceaea1592e11f01e085cb624dc8e4bf8ed37ec4dab1d"
+    },
+    {
+      "reference": "app/engine/dollhouse-skill-dispatcher.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "ddbc33c7bb6bfa6a043ed0ee7fc2819f2a0141eaf6b351b06e1bb99c1b0ebeb6",
+      "byte_digest_verified": true,
+      "sha256": "ddbc33c7bb6bfa6a043ed0ee7fc2819f2a0141eaf6b351b06e1bb99c1b0ebeb6"
+    },
+    {
+      "reference": "app/engine/dollhouse-ablation-harness.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6cd08501f80c7313c2f0654ceb16315ea52e5aa5a155f065dd1eab2a8a2560e7",
+      "byte_digest_verified": true,
+      "sha256": "6cd08501f80c7313c2f0654ceb16315ea52e5aa5a155f065dd1eab2a8a2560e7"
+    },
+    {
+      "reference": "app/engine/dollhouse-pedagogue-dromological.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "a79729cd1294db4c5e1a94aa99e84a2a0d5e400203f62a054b3a53bae14e92b0",
+      "byte_digest_verified": true,
+      "sha256": "a79729cd1294db4c5e1a94aa99e84a2a0d5e400203f62a054b3a53bae14e92b0"
+    },
+    {
+      "reference": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "3eb293c4367e7e82faf3008f1b68a73e95bbd3798aac899ba4c0fab8bc70f806",
+      "byte_digest_verified": true,
+      "sha256": "3eb293c4367e7e82faf3008f1b68a73e95bbd3798aac899ba4c0fab8bc70f806"
+    },
+    {
+      "reference": "app/engine/dollhouse-atlas-relational-custody.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6f8b9dbc66f4bd7fe36352b76a44291348da8f5684fcfab52b871a8009a5cd83",
+      "byte_digest_verified": true,
+      "sha256": "6f8b9dbc66f4bd7fe36352b76a44291348da8f5684fcfab52b871a8009a5cd83"
+    },
+    {
+      "reference": "app/engine/atlas-mathematical-engine.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "752080cd65126cf0d8a5147c750e3b145e7f08be9397c774b63c383ac4aac6bd",
+      "byte_digest_verified": true,
+      "sha256": "752080cd65126cf0d8a5147c750e3b145e7f08be9397c774b63c383ac4aac6bd"
+    },
+    {
+      "reference": "app/engine/dollhouse-fadt-reparative-assistance.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "3d8fc2158fde25b720c94273529f6ebb227a32b60067b9ab427ea6352dcbb66f",
+      "byte_digest_verified": true,
+      "sha256": "3d8fc2158fde25b720c94273529f6ebb227a32b60067b9ab427ea6352dcbb66f"
+    },
+    {
+      "reference": "app/engine/dollhouse-temporal-custodian.js",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205",
+      "byte_digest_verified": true,
+      "sha256": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": 5,
+            "observed_world_answer_dwell": 10,
+            "rest_required": true,
+            "exit_required": true,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 10,
+            "ACT": 20,
+            "WORLD_ANSWERS": 30,
+            "NAME": 40,
+            "REST": 50,
+            "EXIT": 60
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "pedagogue-wolfram-atlas-cadence-audit",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "phase_times": {
+              "NOTICE": 10,
+              "ACT": 20,
+              "WORLD_ANSWERS": 30,
+              "NAME": 40,
+              "REST": 50,
+              "EXIT": 60
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": 5,
+              "observed_world_answer_dwell": 10,
+              "rest_required": true,
+              "exit_required": true,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        },
+        "institutional_time_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "INSTITUTIONAL_TIME_AUDIT",
+          "verdict": "SUPPORTED",
+          "preemption_gap": 0,
+          "acts_before_counts": false,
+          "context_lags_action": false,
+          "rupture": false,
+          "classification": "NO_DECLARED_INSTITUTIONAL_PREEMPTION",
+          "authority": {
+            "recommendation_only": true,
+            "automatic_intervention": false,
+            "production_mutation_authorized": false,
+            "external_transmission_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "institutional_time_only": true,
+            "physical_time_travel_claim": false,
+            "quantum_mechanism_claim": false,
+            "malicious_intent_inferred": false,
+            "psychological_diagnosis": false,
+            "learner_profile_created": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-institutional-time-audit/v0.1",
+            "case_id": "pedagogue-wolfram-atlas-institutional-time-case",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "clocks": {
+              "t_sense": 10,
+              "t_model": 15,
+              "t_op": 20,
+              "t_inst": 20,
+              "t_pub": 30,
+              "t_context": 10
+            },
+            "closure": {
+              "closure_class": "closed",
+              "score_millipoints": 1000,
+              "faithful": true
+            },
+            "preemption": {
+              "preemption_gap": 0,
+              "acts_before_counts": false,
+              "institution_never_registered": false,
+              "public_visibility_lag": 10,
+              "context_preemption_gap": -10,
+              "context_lags_action": false
+            },
+            "rupture": {
+              "operational_action_present": true,
+              "failed_faithful_closure": false,
+              "rupture": false
+            },
+            "beacon": null,
+            "compression": null,
+            "classification": "NO_DECLARED_INSTITUTIONAL_PREEMPTION",
+            "scope": {
+              "institutional_time_only": true,
+              "physical_time_travel_claim": false,
+              "quantum_mechanism_claim": false,
+              "malicious_intent_inferred": false,
+              "psychological_diagnosis": false,
+              "learner_profile_created": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_intervention": false,
+              "production_mutation_authorized": false,
+              "external_transmission_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability_and_identifiability",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "epistemic_deficit": {
+          "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+          "version": "v3.2-alpha",
+          "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+          "authority_class": "A2_DERIVATIONAL",
+          "input": {
+            "latent_dimension": 3,
+            "current_rank": 3,
+            "sigma_min": 0.8092111524042129,
+            "condition_number": 1.4010868589538659,
+            "uncertainty_status": "VALID_DECLARED",
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "threshold_authority": "OPERATOR_DECLARED_LOCAL"
+          },
+          "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+          "disposition": "ASK_NOTHING",
+          "admissible_question_criterion": "DO_NOT_MANUFACTURE_A_QUESTION",
+          "reason": "declared local rank and stability posture is presently satisfied",
+          "pedagogue_companion_cue": "PEDAGOGUE_SHOULD_NOT_MANUFACTURE_A_QUESTION",
+          "candidate_probe_evaluation": {
+            "schema": "td613.aperture.candidate-probe-evaluation/v0.1",
+            "latent_dimension": 3,
+            "current_observations": 3,
+            "base_rank": 3,
+            "base_condition_number": 1.4010868589538659,
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "disposition": "ABSTAIN",
+            "best_candidate": {
+              "index": 0,
+              "recommendation": "DO_NOT_MANUFACTURE_REDUNDANT_PROBE",
+              "condition_number": 1.4966287985284241
+            },
+            "candidates": [
+              {
+                "index": 0,
+                "probe": [
+                  0.3,
+                  0.5,
+                  0.2
+                ],
+                "base_rank": 3,
+                "augmented_rank": 3,
+                "delta_rank": 0,
+                "sigma_min": 0.8120425885581468,
+                "condition_number": 1.4966287985284241,
+                "deficit_class": "NO_INFORMATIVE_RANK_LIFT",
+                "disposition": "ASK_NOTHING",
+                "recommendation": "DO_NOT_MANUFACTURE_REDUNDANT_PROBE",
+                "is_acceptable": false
+              }
+            ]
+          },
+          "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+          "no_scalar_crown": true,
+          "proposal_is_execution": false,
+          "widening_is_validation": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "promotion_authority": false,
+          "production_mutation": false,
+          "human_closure_required": true
+        },
+        "matrix_svd": {
+          "m": 3,
+          "n": 3,
+          "rank": 3,
+          "singular_values": [
+            1.1337751117524568,
+            1.0245639593482436,
+            0.8092111524042129
+          ],
+          "sigma_max": 1.1337751117524568,
+          "sigma_min": 0.8092111524042129,
+          "condition_number": 1.4010868589538659
+        }
+      }
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "holonomy_parity": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "MULTIWAY_BRANCH_TERMINAL_STATE_S0",
+          "endpoint_b": "MULTIWAY_BRANCH_TERMINAL_STATE_S0",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 0,
+          "winding_delta": 0,
+          "history_parity_equal": true,
+          "modulo_2_parity_equal": true,
+          "disposition": "PASS",
+          "reason": "endpoints and winding histories match exactly",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        },
+        "relation_identity": {
+          "schema": "td613.dollhouse.atlas-relation-identity/v0.1",
+          "relation": "FIXED_SELF",
+          "held": false,
+          "left_custody": {
+            "a": 1,
+            "b": 1,
+            "s": 1,
+            "path": [
+              "D"
+            ]
+          },
+          "right_custody": {
+            "a": 1,
+            "b": 1,
+            "s": 1,
+            "path": [
+              "D"
+            ]
+          },
+          "shared_orbit": true,
+          "left_is_palindrome": true,
+          "right_is_palindrome": true,
+          "concrete_paths_preserved": true,
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        },
+        "mathematical_evaluation": {
+          "capability_id": "A-01",
+          "name": "Temporal Fiber Geometry & Continuation Distinguishability",
+          "mathematical_domain": "Dynamical Systems & Temporal Continuation",
+          "is_custom_input": false,
+          "positive_control": {
+            "passed": true,
+            "t0_observation_A": 25,
+            "t0_observation_B": 25,
+            "t0_equivalent": true,
+            "t1_observation_A": 32,
+            "t1_observation_B": 36,
+            "t1_distinguishable": true
+          },
+          "negative_control": {
+            "passed": true,
+            "radial_congruence_maintained": true
+          },
+          "epistemic_status": "FIXTURE_DEMONSTRATION",
+          "scientific_status": "CANONICAL_FIXTURE_DEMONSTRATION",
+          "summary": "Evaluates snapshot observational equivalence at t=0 against continuation distinguishability under forward transformation T."
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "finite_support_boundary",
+      "verdict": "SUPPORTED",
+      "status": "ALREADY_EXACT_NO_RECOVERY_NEEDED",
+      "defect_class": "NONE",
+      "claim": "FADT coordinate recovery verified: ALREADY_EXACT_NO_RECOVERY_NEEDED",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "fiber_bounds": {
+          "antecedent_count": 3,
+          "union_support": [
+            "DRAFT_HEAD",
+            "EXTERIOR_PROGRAM_OBSERVATION",
+            "NON_FLIGHT_ATELIER",
+            "PENDING_HUMAN_GESTURE",
+            "PROPOSED_PREREGISTRATION",
+            "SOURCE_FREE_TEST",
+            "SYNTHETIC_WITNESS"
+          ],
+          "union_cardinality": 7,
+          "intersection_support": [],
+          "intersection_cardinality": 0,
+          "irreducible_gap": [
+            "DRAFT_HEAD",
+            "EXTERIOR_PROGRAM_OBSERVATION",
+            "NON_FLIGHT_ATELIER",
+            "PENDING_HUMAN_GESTURE",
+            "PROPOSED_PREREGISTRATION",
+            "SOURCE_FREE_TEST",
+            "SYNTHETIC_WITNESS"
+          ],
+          "irreducible_gap_cardinality": 7,
+          "exact_descent_exists": false,
+          "universally_sound_available": false,
+          "disposition": "HOLD_IRREDUCIBLE_GAP",
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        },
+        "coordinate_recovery": {
+          "schema": "td613.dollhouse.fadt-reparative-assistance/v0.1",
+          "status": "ALREADY_EXACT_NO_RECOVERY_NEEDED",
+          "base_bounds": {
+            "antecedent_count": 2,
+            "union_support": [
+              "READ",
+              "VERIFY"
+            ],
+            "union_cardinality": 2,
+            "intersection_support": [
+              "READ",
+              "VERIFY"
+            ],
+            "intersection_cardinality": 2,
+            "irreducible_gap": [],
+            "irreducible_gap_cardinality": 0,
+            "exact_descent_exists": true,
+            "universally_sound_available": true,
+            "disposition": "EXACT_DESCENT",
+            "laws": {
+              "exact_finite_admissibility_descent": true,
+              "universally_sound_support_never_widens_antecedents": true,
+              "sharp_discrepancy_identity_holds_universally": true,
+              "unlawful_widening_rejected": true,
+              "unoccupied_quotient_has_no_authority": true
+            }
+          },
+          "minimal_resolving_sets": [],
+          "best_extension": null,
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "PASS",
+          "veto_applied": false,
+          "veto_authority": null,
+          "evaluations": {
+            "OCT_22_HISTORICAL_INHERITANCE": "PASS",
+            "OCT_30_LAUNCHBRIDGE_PREFLIGHT": "PASS",
+            "NOV_05_EXPERIMENT_SUCCESSION": "PASS",
+            "NOV_07_WOLFRAMIAN_RULE_ATLAS_FREEZE": "PASS"
+          },
+          "violations": [],
+          "rationale": "All required declared phases passed in the explicit route order."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "SUPPORTED",
+    "consensus": "UNANIMOUS_SUPPORT",
+    "primary_verdicts_consensus": "UNANIMOUS_SUPPORT",
+    "nested_extension_holds": [
+      {
+        "role": "APERTURE",
+        "property": "classification_replay_stability",
+        "status": "HELD_NOT_YET_WITNESSED",
+        "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+      }
+    ],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [],
+  "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
+  "execution_duration_ms": 353
+}

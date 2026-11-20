@@ -1,0 +1,203 @@
+{
+  "schema": "td613.rulefield.complexity-tool-registry/v1",
+  "as_of": "2026-11-07",
+  "purpose": "External tool connectors, computational capability menus, falsifiable experiment selection and honest evidence ceilings",
+  "version_policy": "VERIFY_LIVE_AVAILABILITY_AND_LICENSE_WHEN_USED",
+  "native_wolfram_was_executed": false,
+  "external_wolfram_computation_credit": 0,
+  "external_agent_model_computation_credit": 0,
+  "capability_classes": [
+    "ELEMENTARY_CELLULAR_AUTOMATA",
+    "FINITE_STRING_REWRITE_MULTIWAY",
+    "HYPERGRAPH_EVENT_REWRITE",
+    "CRITICAL_PAIRS_JOINABILITY",
+    "EVENT_LEVEL_CAUSAL_GRAPH",
+    "BRANCHIAL_STATES_AND_PATH_WEIGHTS",
+    "OBSERVER_COARSE_GRAINING",
+    "INFORMATION_THEORY",
+    "CHAOS_SENSITIVITY_WITH_DEFINED_MAP",
+    "AGENT_BASED_DYNAMICS",
+    "MODEL_COMPARATORS"
+  ],
+  "resources": [
+    {
+      "id": "WPP-TOOLS",
+      "provider": "Wolfram Physics Project",
+      "url": "https://www.wolframphysics.org/tools/",
+      "access": "PUBLIC_READ_OPEN_SOURCE",
+      "capabilities": [
+        "hypergraph rule exploration",
+        "notebook archive",
+        "source code",
+        "model registry"
+      ],
+      "adapter": "READ_AND_PIN_NOTEBOOK",
+      "evidence_ceiling": "EXTERNAL_TOOL_DOCUMENTED_NOT_EXECUTED_IN_THIS_RESEARCH_RUN"
+    },
+    {
+      "id": "WPP-INTRO",
+      "provider": "Wolfram Cloud",
+      "url": "https://www.wolframcloud.com/obj/wolframphysics/Tools/hands-on-introduction-to-the-wolfram-physics-project.nb",
+      "access": "PUBLIC_NOTEBOOK_COPY_MAY_REQUIRE_ACCOUNT",
+      "capabilities": [
+        "WolframModel",
+        "MultiwaySystem",
+        "rule space search",
+        "string substitution",
+        "causal invariance"
+      ],
+      "adapter": "MANUAL_WOLFRAM_CLOUD_NOTEBOOK",
+      "evidence_ceiling": "NOTEBOOK_AVAILABLE_NOT_RUN"
+    },
+    {
+      "id": "WPP-FUNCTION-GUIDE",
+      "provider": "Wolfram Cloud",
+      "url": "https://www.wolframcloud.com/obj/wolframphysics/Tools/guide-page",
+      "access": "PUBLIC_GUIDE",
+      "capabilities": [
+        "WolframModel",
+        "MultiwaySystem",
+        "BranchPairs",
+        "CausalInvariantQ",
+        "KnuthBendixCompletion"
+      ],
+      "adapter": "FUNCTION_REPOSITORY_DIRECT",
+      "evidence_ceiling": "OFFICIAL_REFERENCE_ONLY"
+    },
+    {
+      "id": "WFR-MULTIWAY",
+      "provider": "Wolfram Function Repository",
+      "url": "https://resources.wolframcloud.com/FunctionRepository/resources/MultiwaySystem",
+      "access": "PUBLIC_DOCUMENTATION_WOLFRAM_KERNEL_REQUIRED_FOR_EXECUTION",
+      "capabilities": [
+        "AllStatesList",
+        "AllEventsList",
+        "StatesGraph",
+        "EvolutionGraphUnmerged",
+        "IncludeEventInstances",
+        "IncludeStatePathWeights",
+        "BranchPairsList",
+        "BranchPairResolutionsList",
+        "CausalInvariantQ"
+      ],
+      "adapter": "MANUAL_OR_CONFIGURED_WOLFRAM_ENGINE",
+      "evidence_ceiling": "REFERENCE_IMPLEMENTATION_NOT_REPLICATED_AUTOMATICALLY"
+    },
+    {
+      "id": "WFR-WOLFRAMMODEL",
+      "provider": "Wolfram Function Repository",
+      "url": "https://resources.wolframcloud.com/FunctionRepository/resources/WolframModel",
+      "access": "PUBLIC_DOCUMENTATION_WOLFRAM_KERNEL_REQUIRED_FOR_EXECUTION",
+      "capabilities": [
+        "hypergraph event rewriting",
+        "AllEventsList",
+        "EdgeCreatorEventIndices",
+        "EdgeDestroyerEventIndices",
+        "EventOrderingFunction"
+      ],
+      "adapter": "MANUAL_OR_CONFIGURED_WOLFRAM_ENGINE",
+      "evidence_ceiling": "HYPERGRAPH_CAUSAL_GRAPH_NEEDS_ACTUAL_EVENT_WITNESS"
+    },
+    {
+      "id": "WFR-MULTIWAYFUNCTION",
+      "provider": "Wolfram Function Repository",
+      "url": "https://resources.wolframcloud.com/FunctionRepository/resources/MultiwayFunctionSystem",
+      "access": "PUBLIC_DOC",
+      "capabilities": [
+        "integer multiway evolution",
+        "states graph",
+        "event graph",
+        "causal graph",
+        "branchial graph",
+        "path weights",
+        "KnuthBendixCompletion"
+      ],
+      "adapter": "MANUAL_OR_CONFIGURED_WOLFRAM_ENGINE",
+      "evidence_ceiling": "DOC_ONLY"
+    },
+    {
+      "id": "WPP-HYPERGRAPH",
+      "provider": "Wolfram Institute",
+      "url": "https://github.com/WolframInstitute/Hypergraph/blob/main/docs/Tutorials/HypergraphRewriting.md",
+      "access": "PUBLIC_OPEN_SOURCE",
+      "capabilities": [
+        "hypergraph objects",
+        "hypergraph rewrite rules",
+        "rule enumeration"
+      ],
+      "adapter": "ADAPTER_REQUIRES_WOLFRAM_KERNEL",
+      "evidence_ceiling": "NO_HYPERGRAPH_RUN_CREDIT"
+    },
+    {
+      "id": "WOLFRAM-DEMONSTRATIONS",
+      "provider": "Wolfram",
+      "url": "https://demonstrations.wolfram.com/education.html",
+      "access": "PUBLIC_INTERACTIVE_DEMOS",
+      "capabilities": [
+        "cellular automata",
+        "substitution systems",
+        "simple programs",
+        "fractal models"
+      ],
+      "adapter": "INTERACTIVE_HUMAN_EXPERIMENT",
+      "evidence_ceiling": "INTERACTIVE_VISUALIZATION_IS_NOT_SOURCE_EXPERIMENT"
+    },
+    {
+      "id": "WOLFRAM-RESOURCES",
+      "provider": "Wolfram",
+      "url": "https://www.wolfram.com/resources/",
+      "access": "PUBLIC_FREEMIUM_AND_EDUCATION_VARIES",
+      "capabilities": [
+        "free Wolfram Cloud",
+        "free engine for developer conditions",
+        "online NKS book",
+        "Wolfram U"
+      ],
+      "adapter": "OPTIONAL_CLOUD_OR_LOCAL",
+      "evidence_ceiling": "CHECK_CURRENT_TERMS_AND_CREDITS"
+    },
+    {
+      "id": "NETLOGO-WEB",
+      "provider": "Northwestern NetLogo",
+      "url": "https://www.netlogo.org/",
+      "access": "FREE_WEB_AND_DESKTOP",
+      "capabilities": [
+        "agent-based models",
+        "emergent phenomena",
+        "model library",
+        "browser experiments"
+      ],
+      "adapter": "NETLOGO_MODEL_EXPORT_AND_REPLICATION",
+      "evidence_ceiling": "DIFFERENT_MODEL_CLASS_FROM_WOLFRAM_MULTIWAY_REWRITES"
+    },
+    {
+      "id": "NETLOGO-MODELS",
+      "provider": "Northwestern NetLogo",
+      "url": "https://ccl.netlogo.org/netlogo/models/",
+      "access": "PUBLIC_BROWSER_RUNNABLE",
+      "capabilities": [
+        "sample models",
+        "tutorial models",
+        "agent populations",
+        "networks"
+      ],
+      "adapter": "NETLOGO_MODEL_CONTRACT",
+      "evidence_ceiling": "SOURCE_MODEL_LICENSES_DIFFER_CHECK_BEFORE_REDISTRIBUTION"
+    },
+    {
+      "id": "SFI-COMPLEXITY",
+      "provider": "Santa Fe Institute",
+      "url": "https://www.complexityexplorer.org/",
+      "access": "MANY_FREE_ONLINE_COURSES",
+      "capabilities": [
+        "complex systems",
+        "nonlinear dynamics",
+        "information theory",
+        "agent-based modeling",
+        "emergence"
+      ],
+      "adapter": "METHOD_LEARNING_REFERENCE",
+      "evidence_ceiling": "EDUCATIONAL_BACKGROUND_NOT_EXECUTION"
+    }
+  ]
+}

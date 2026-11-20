@@ -1,0 +1,3210 @@
+{
+  "schema": "td613.nks.rule-index/v1",
+  "as_of": "2026-11-07",
+  "jurisdiction": "source-free / read-only research classification",
+  "classification": "Flight-target-specific, exploratory edges do not grant Flight changes",
+  "sources": {
+    "F01": {
+      "title": "Experiment B source-free protocol and calibration",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1607"
+    },
+    "F02": {
+      "title": "Flight launchbridge and admission",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1609"
+    },
+    "F03": {
+      "title": "Redpen III execution and chronology controls",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1610"
+    },
+    "F04": {
+      "title": "Native source-free Codex qualification",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1616"
+    },
+    "F05": {
+      "title": "Prospective full Flight contract and D01–D20 docket",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1617"
+    },
+    "F06": {
+      "title": "Offline token-capacity instrument",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1618"
+    },
+    "F07": {
+      "title": "Resumable Flight implementation",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1619"
+    },
+    "F08": {
+      "title": "Native physical terminal capture and admission-only bootstrap",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1621"
+    },
+    "F09": {
+      "title": "Offline restricted worker boundary",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1622"
+    },
+    "F10": {
+      "title": "D04/D13 native runtime capture candidate",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1625"
+    },
+    "F11": {
+      "title": "Native observability refusal propagation",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1627"
+    },
+    "F12": {
+      "title": "Safe Harbor purpose-scoped custody adapter",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1628"
+    },
+    "F13": {
+      "title": "Prospective local custodian implementation",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1629"
+    },
+    "F14": {
+      "title": "Mandate-scoped terminal reconciliation repair",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1631"
+    },
+    "F15": {
+      "title": "Arm 1 native control fidelity and checkpoint seam repair",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1632"
+    },
+    "F16": {
+      "title": "Descriptor-safe request and binding repair",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1643"
+    },
+    "F17": {
+      "title": "PE01–PE09 source-free exact-head test report",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1653"
+    },
+    "F18": {
+      "title": "Full-design scientific-freeze structural candidate",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1660"
+    },
+    "G01": {
+      "title": "Atelier + Encyclopedia to Manifest succession",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/426c2a18c3be33e754c86a551311c8d3ec25adfb/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+    },
+    "G02": {
+      "title": "Wendbine reciprocal expedition",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1694"
+    },
+    "G03": {
+      "title": "Universal Atelier and four-crossing comparative matrix",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1696"
+    },
+    "G04": {
+      "title": "Manifest competent-null, custody and concealed falsification",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1702"
+    },
+    "G05": {
+      "title": "Cross-Atelier integration and curiosity/latency experiment",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1707"
+    },
+    "G06": {
+      "title": "Vixen V4 research interface and corrected V3 specification",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1718"
+    },
+    "G07": {
+      "title": "Pedagogue Design Gate",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/d9e1051ebd23cadf8f032a71e8ef553e6129cd33/docs/PEDAGOGUE_DESIGN_GATE.md"
+    },
+    "G08": {
+      "title": "Western Horizon same-episode empirical contract",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/2026-09-28-loom-gate-golden-egg/03-GOLDEN-EGG-EMPIRICAL-CONTRACT.md"
+    },
+    "G09": {
+      "title": "Eclipse–Omega admissibility/tomography counter-tool",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/aperture/v3.1-alpha/source/TD613_Aperture_v3_1-alpha_Admissibility_Tomography_Spec_v0_1.md"
+    },
+    "G10": {
+      "title": "TD613 Encyclopedia visual-interface succession",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1596"
+    },
+    "G11": {
+      "title": "Reciprocal A/B scientific succession witness",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1688"
+    },
+    "G12": {
+      "title": "SignalRupture mechanism falsification expedition",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1690"
+    },
+    "G13": {
+      "title": "Em full-corpus synthesis and reciprocal inheritance",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1709"
+    },
+    "G14": {
+      "title": "Vixen Refractive Couture monograph",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/d9e1051ebd23cadf8f032a71e8ef553e6129cd33/docs/reviews/vixen-ux-architecture-20261106/refractive-couture/REFRACTIVE_COUTURE_SCHOLARLY_MONOGRAPH.md"
+    },
+    "G15": {
+      "title": "Canonical Practice Fixture contract",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/d9e1051ebd23cadf8f032a71e8ef553e6129cd33/docs/CANONICAL_PRACTICE_FIXTURE.md"
+    },
+    "G16": {
+      "title": "Cross-Atelier protocol succession, Oct 28 (Library)",
+      "url": null
+    },
+    "G17": {
+      "title": "Western Horizon empirical-shore rest (repo)",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/dollhouse/lineage/originals/rest-1002-western-horizon-empirical-shore-rest.js.source.md"
+    },
+    "G18": {
+      "title": "Eclipse–Omega dissertation (Library)",
+      "url": null
+    },
+    "G19": {
+      "title": "Recent operator instructions on OPERAHOUSE ≠ OPERA and Astra handoff",
+      "url": null
+    },
+    "N01": {
+      "title": "Wolfram multiway systems and states",
+      "url": "https://www.wolframphysics.org/technical-introduction/the-updating-process-in-our-models/multiway-systems-for-our-models/"
+    },
+    "N02": {
+      "title": "Confluence versus causal invariance, Piskunov 2020",
+      "url": "https://bulletins.wolframphysics.org/2020/11/confluence-and-causal-invariance/"
+    },
+    "N03": {
+      "title": "Computational irreducibility, MathWorld",
+      "url": "https://mathworld.wolfram.com/ComputationalIrreducibility.html"
+    },
+    "N04": {
+      "title": "Introduction to A New Kind of Science, Wolfram",
+      "url": "https://www.stephenwolfram.com/publications/introduction-to-a-new-kind-of-science/"
+    }
+  },
+  "rules": [
+    {
+      "id": "I-001",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "guard",
+      "rule": "No protected archive intake before distinct authenticated admission.",
+      "transition": "preflight source -> REFUSE; synthetic admitted fixture -> accepted metadata only",
+      "witness": "Negative fixture refusal and no real reads",
+      "sources": [
+        "F02",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-002",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "guard",
+      "rule": "An archive source is not admitted through directory scanning.",
+      "transition": "unbounded filesystem discovery -> REFUSE",
+      "witness": "Attempt to glob external Downloads refused",
+      "sources": [
+        "F02"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-003",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "invariant",
+      "rule": "Source bytes, exact 64-hex digests and required derivative metadata are bound.",
+      "transition": "invalid derivative digest/absent omissions -> REJECT",
+      "witness": "Binary-derivative negative test",
+      "sources": [
+        "F03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-004",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "guard",
+      "rule": "Source and capture chronology are distinct; archive order supplies neither.",
+      "transition": "unknown verified dates -> CHRONOLOGY_UNIDENTIFIABLE",
+      "witness": "Undated order fixture produces hold",
+      "sources": [
+        "F03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-005",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "guard",
+      "rule": "Unsupported topical classification is held rather than inferred from keywords.",
+      "transition": "insufficient metadata -> TOPIC_UNCLASSIFIED_ORDER_HELD",
+      "witness": "Topic negative fixture",
+      "sources": [
+        "F03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-006",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "invariant",
+      "rule": "Protected inputs use controlled in-process admission identity.",
+      "transition": "unregistered member object -> REFUSE",
+      "witness": "WeakMap intake identity test",
+      "sources": [
+        "F07",
+        "F15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-007",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "guard",
+      "rule": "External admission-only mandate is scope-, expiry- and payload-bound.",
+      "transition": "wrong policy, missing permit or replay -> REFUSE",
+      "witness": "Synthetic permission/escrow suite",
+      "sources": [
+        "F08",
+        "F12"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-008",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "invariant",
+      "rule": "Permit use is single-shot and purpose-scoped in local custodian candidate.",
+      "transition": "duplicate or cross-purpose use -> REJECT",
+      "witness": "Synthetic concurrency/restart tests; not installed as separate accounts",
+      "sources": [
+        "F12",
+        "F13",
+        "F14"
+      ],
+      "confidence": "CANDIDATE_CODE",
+      "notes": ""
+    },
+    {
+      "id": "I-009",
+      "class_": "I",
+      "family": "Controlled admission",
+      "kind": "guard",
+      "rule": "Terminal bookkeeping accepts only owning mandate and allowlisted fields.",
+      "transition": "foreign mandate or undeclared fields -> REFUSE",
+      "witness": "Five negative cases reproduced before repair",
+      "sources": [
+        "F14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-010",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "rewrite",
+      "rule": "Four arm identities exist as distinct runner lanes.",
+      "transition": "ARM_0, ARM_1, ARM_2A, ARM_2B -> typed lane definitions",
+      "witness": "Synthetic plan and engine consistency",
+      "sources": [
+        "F01",
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-011",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "rewrite",
+      "rule": "A paired unit remains incomplete until its required arms settle.",
+      "transition": "partial pair -> retained/unscored, never fabricated completion",
+      "witness": "Resumable pair-barrier synthetic test",
+      "sources": [
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-012",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "invariant",
+      "rule": "Accepted turn output is replayed byte-exact, without a new inference call.",
+      "transition": "ACCEPTED turn -> reopen from terminal checkpoint",
+      "witness": "Idempotence/reopen test",
+      "sources": [
+        "F07",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-013",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Unknown post-dispatch state prevents speculative redispatch.",
+      "transition": "UNCERTAIN call -> HELD unit",
+      "witness": "Interrupted synthetic call test",
+      "sources": [
+        "F07",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-014",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "invariant",
+      "rule": "Dispatch intent precedes terminal capture, which precedes accepted advancement.",
+      "transition": "intent -> final capture -> accepted step",
+      "witness": "Ordered journal event test",
+      "sources": [
+        "F07",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-015",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "invariant",
+      "rule": "Historical evidence is retained when source-free runner faults.",
+      "transition": "failure -> append failure receipt, do not overwrite predecessor",
+      "witness": "Preserved initial CI failure and repair lineage",
+      "sources": [
+        "F07",
+        "F17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-016",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Frozen plan changes and mismatched resource schedules are rejected before exposure.",
+      "transition": "resource plan mismatch -> REFUSE",
+      "witness": "Pre-admission schedule mismatch tests",
+      "sources": [
+        "F11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-017",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "invariant",
+      "rule": "Prospective Stage 2 receives a held candidate but cannot self-warrant without reviewer.",
+      "transition": "generation -> PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS",
+      "witness": "No independent witness yields no warrant",
+      "sources": [
+        "F03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-018",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Unobserved native adverse conditions remain UNKNOWN.",
+      "transition": "no evidence flag -> UNKNOWN, not successful isolation assertion",
+      "witness": "Native observability refusal tests",
+      "sources": [
+        "F11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-019",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Malformed native outputs or terminal mismatches fail closed.",
+      "transition": "corrupt JSONL/final mismatch -> REFUSE",
+      "witness": "Focused parser/final-file tests",
+      "sources": [
+        "F08",
+        "F10",
+        "F11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-020",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "invariant",
+      "rule": "Matched mathematical service interface has a bounded finite arithmetic implementation.",
+      "transition": "restricted worker + BigInt math request -> exact response",
+      "witness": "Offline restricted-worker arithmetic proof only; research parity unproven",
+      "sources": [
+        "F09",
+        "F10"
+      ],
+      "confidence": "CANDIDATE_CODE",
+      "notes": ""
+    },
+    {
+      "id": "I-021",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Native tool allowlist and candidate no-network sandbox are enforced in offline fixture.",
+      "transition": "forbidden filesystem/network operation -> REJECT",
+      "witness": "Container network-none; read-only root; dropped caps witness",
+      "sources": [
+        "F09",
+        "F10"
+      ],
+      "confidence": "OFFLINE_ONLY",
+      "notes": ""
+    },
+    {
+      "id": "I-022",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "invariant",
+      "rule": "Native CLI package identity has an offline version-and-digest witness.",
+      "transition": "pinned package -> offline --version -> digest match",
+      "witness": "Offline version report; served model identity not attested",
+      "sources": [
+        "F09"
+      ],
+      "confidence": "OFFLINE_ONLY",
+      "notes": ""
+    },
+    {
+      "id": "I-023",
+      "class_": "I",
+      "family": "Budgets",
+      "kind": "guard",
+      "rule": "Finite reserve precedes a call; fail when insufficient budget.",
+      "transition": "available < conservative reservation -> REFUSE",
+      "witness": "Synthetic shared-budget tests",
+      "sources": [
+        "F03",
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-024",
+      "class_": "I",
+      "family": "Budgets",
+      "kind": "invariant",
+      "rule": "Attempts include retries and failures, not only accepted responses.",
+      "transition": "attempt -> quota ledger increment regardless of success",
+      "witness": "Retry-accounting test",
+      "sources": [
+        "F03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-025",
+      "class_": "I",
+      "family": "Budgets",
+      "kind": "invariant",
+      "rule": "Observed, unknown, cached, billable and quota uses are separate fields.",
+      "transition": "usage event -> typed accounting tuple",
+      "witness": "Journal readback test",
+      "sources": [
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-026",
+      "class_": "I",
+      "family": "Budgets",
+      "kind": "guard",
+      "rule": "Capacity tools count an explicitly selected synthetic render in pinned tokenizers.",
+      "transition": "synthetic render -> BPE reference count, not served-model count",
+      "witness": "38 synthetic tests of reference tokenizer",
+      "sources": [
+        "F06"
+      ],
+      "confidence": "REFERENCE_ONLY",
+      "notes": ""
+    },
+    {
+      "id": "I-027",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "invariant",
+      "rule": "Transactional local journal commits precede later-lane transitions.",
+      "transition": "write intent -> atomic flush -> next step",
+      "witness": "SQLite WAL/FULL source-free tests",
+      "sources": [
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-028",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "invariant",
+      "rule": "Canonical digest and keyed receipt bind stored checkpoint data.",
+      "transition": "record -> canonical encode -> SHA-256/HMAC receipt",
+      "witness": "Synthetic checkpoint integrity suite; external key still needed",
+      "sources": [
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-029",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "guard",
+      "rule": "Untrusted request descriptors and accessors are rejected without getter evaluation.",
+      "transition": "accessor/proxy-like request -> REFUSE",
+      "witness": "B91 caught negative controls; no getters called",
+      "sources": [
+        "F16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-030",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "invariant",
+      "rule": "Asynchronous request attribution is snapshotted before suspension.",
+      "transition": "request -> copy validated bindings -> await -> same original attribution",
+      "witness": "Pending-mutation hostile tests",
+      "sources": [
+        "F16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-031",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "guard",
+      "rule": "Revised archival control refuses forged proposals and legacy binding promotions.",
+      "transition": "mismatched control implementation / modified proposal -> REFUSE",
+      "witness": "Arm 1 two-seam trial",
+      "sources": [
+        "F15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-032",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "invariant",
+      "rule": "Actual archival compiler outcome is distinguishable from proposal and refusal.",
+      "transition": "executed native/zero/proposed/unavailable -> separate typed outcomes",
+      "witness": "Source-free Arm 1 fidelity tests",
+      "sources": [
+        "F15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-033",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "guard",
+      "rule": "Exact-head CI uses four approved workflow files, rather than adding a fifth.",
+      "transition": "extra workflow -> failing workflow-estate test",
+      "witness": "Resumable CI repaired then exact-head SUCCESS",
+      "sources": [
+        "F07",
+        "F17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-034",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "guard",
+      "rule": "A separate full-design checker rejects underspecified purported full-flight plans.",
+      "transition": "three-source valid bookkeeping plan -> FULL_DESIGN refusal",
+      "witness": "Six source-free conformance tests",
+      "sources": [
+        "F18"
+      ],
+      "confidence": "SEPARATE_CHECKER_NOT_INTEGRATED",
+      "notes": ""
+    },
+    {
+      "id": "I-035",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "guard",
+      "rule": "Full-design source-free candidate encodes all 4 arms and 4x2 factorial/order cells.",
+      "transition": "invented 20–24 IDs -> eight schedule lanes verified structurally",
+      "witness": "Scientific freeze script; no protected data",
+      "sources": [
+        "F18"
+      ],
+      "confidence": "SEPARATE_CHECKER_NOT_INTEGRATED",
+      "notes": ""
+    },
+    {
+      "id": "I-036",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "guard",
+      "rule": "Full-design checker requires strong union raw access, matched calls and separate three lineages.",
+      "transition": "missing comparator opportunity / lineage -> REFUSE",
+      "witness": "Structural checker; semantic matching unverified",
+      "sources": [
+        "F18"
+      ],
+      "confidence": "SEPARATE_CHECKER_NOT_INTEGRATED",
+      "notes": ""
+    },
+    {
+      "id": "I-037",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "guard",
+      "rule": "Full-design checker demands predeclared estimand, missingness and unblinding order.",
+      "transition": "absent strings/flags -> REFUSE",
+      "witness": "Syntax-structural check only; not statistical adequacy",
+      "sources": [
+        "F18"
+      ],
+      "confidence": "SEPARATE_CHECKER_NOT_INTEGRATED",
+      "notes": ""
+    },
+    {
+      "id": "I-038",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "observation",
+      "rule": "Five source-free calibration cases distinguish true join, false join, revision, abstention, snapshot.",
+      "transition": "synthetic input -> documented bounded result",
+      "witness": "5/5 recorded calibration; not population claim",
+      "sources": [
+        "F01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-039",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "invariant",
+      "rule": "Source-free exact-head PE suites preserve each draft candidate and failure receipt.",
+      "transition": "8 heads -> 8 isolated worktrees -> separate test receipts",
+      "witness": "33/33 tests in GitHub CI; no protected work",
+      "sources": [
+        "F17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-040",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "observation",
+      "rule": "Real authenticated native model turns occurred under source-free qualification with explicit effort holds.",
+      "transition": "invented contradiction -> transcript evidence, no Flight source admission",
+      "witness": "12 turns, served effort and arms isolation unattested",
+      "sources": [
+        "F04"
+      ],
+      "confidence": "SOURCE_FREE_MODEL_ONLY",
+      "notes": ""
+    },
+    {
+      "id": "P-001",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Complete protected Flight must retain all four arms in every applicable matched condition.",
+      "transition": "authorized full schedule -> Arm0/1/2A/2B genuinely executed",
+      "witness": "Independent authentic run; current software alone insufficient",
+      "sources": [
+        "F01",
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-002",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "RCA-01 crosses authentic versus negative evidence with neutral versus structured representation.",
+      "transition": "2x2 factorial x forward/reverse -> eight schedule lanes",
+      "witness": "Protected blinded factorial execution",
+      "sources": [
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-003",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Strong union and modular condition receive comparable model/effort and unweakened opportunity.",
+      "transition": "equal tools, calls, history, source rights -> fair comparator",
+      "witness": "External served configuration and meaningful-opportunity witness",
+      "sources": [
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-004",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Stage 1 may discover unanticipated candidates in both reasoner arms.",
+      "transition": "candidate taxonomy open -> preserve surprise without goal-directed prompting",
+      "witness": "Novelty rubric and sealed controls",
+      "sources": [
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-005",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Capture chronology, contradictions, withdrawal and revised hypotheses across repeated exposure.",
+      "transition": "new evidence -> update or retain contested theory with predecessor",
+      "witness": "Predeclared longitudinal episode with nonretroactive archive",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-006",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Prospectively define the seven dimensions and individual estimands.",
+      "transition": "dimension definitions + scoring function -> frozen preregistered evaluation",
+      "witness": "Independent evaluator agreement",
+      "sources": [
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-007",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Fresh hidden holdouts and valid negative controls are maintained without leakage.",
+      "transition": "held-out construction -> blinded candidate comparisons",
+      "witness": "Independent control generation and custody",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-008",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Meaningful test calls are counted in full; no truncated or disadvantaged comparator.",
+      "transition": "two calls per source + t0/final both arms -> matched opportunity",
+      "witness": "Live complete source-order trace",
+      "sources": [
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-009",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Counterbalance order; do not confuse archive order with historical chronology.",
+      "transition": "legitimate order metadata -> forward/reversed/topical where licensed",
+      "witness": "Authenticated schedule/seed and chronology proof",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-010",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Specify replication count, effect size, precision and multiplicity before exposure.",
+      "transition": "adopted power analysis -> fixed analysis protocol",
+      "witness": "Independent design reviewer and resource approval",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-011",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Frozen analysis controls missingness, stopping and censored/unknown outputs.",
+      "transition": "failure/withdrawal/overflow -> predefined paired censoring",
+      "witness": "Full analysis plan enforced in protected orchestration",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-012",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "The full-design checker must be integrated if declared a mandatory protected-flight gate.",
+      "transition": "scientific-freeze-v01 PASS -> enforced pre-admission prerequisite",
+      "witness": "Integration and independent tests; PR #1660 remains draft",
+      "sources": [
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-013",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Preserve historical three lineages as independent source, presentation and adjudication ancestry.",
+      "transition": "same answer with different lineage -> distinguish authority",
+      "witness": "Independent custody and semantic source witness",
+      "sources": [
+        "F05",
+        "F18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-014",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Externally attest exact served model, effort, decoding and provider revision.",
+      "transition": "configuration drift -> stop/hold, do not assume matching from request",
+      "witness": "Provider-issued actual served receipts",
+      "sources": [
+        "F04",
+        "F05",
+        "F11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-015",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Approve one provider/account and binding confidentiality/retention terms.",
+      "transition": "unknown terms or disallowed treatment -> no protected access",
+      "witness": "Human provider acceptance and privacy audit",
+      "sources": [
+        "F05",
+        "F10"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-016",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Witness source/prompt/history isolation between arms and trials.",
+      "transition": "different arm -> independent private histories and protected context",
+      "witness": "OS/runtime observation and independent challenge",
+      "sources": [
+        "F04",
+        "F05",
+        "F10"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-017",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Provision authenticated provider egress for restricted worker without general network.",
+      "transition": "isolated container + approved gateway -> only allowed provider route",
+      "witness": "External operator/network custodian witness",
+      "sources": [
+        "F09",
+        "F10"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-018",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Establish actual matched native tool/kernel opportunity and failure classes.",
+      "transition": "same pure tool functions + versions + tolerances -> fair tool access",
+      "witness": "Independent math service parity witness",
+      "sources": [
+        "F05",
+        "F09",
+        "F10"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-019",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Use actual model-specific tokenizer, effective caps and reliable usage observations.",
+      "transition": "unknown hidden framing/output/reasoning -> HOLD rather than fit",
+      "witness": "Provider authenticated limit/usage evidence",
+      "sources": [
+        "F05",
+        "F06",
+        "F10"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-020",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Proposed 720k per-arm limit needs scope adoption and physical enforcement.",
+      "transition": "approved per-arm scope + cost envelope -> cap enforced; else HOLD",
+      "witness": "D04/D05 decisions; earlier 60k/180k history preserved",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-021",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Full 20–24 source schedule must fit enforceable model context and resource windows.",
+      "transition": "too-large projected run -> separately scoped redesign; no implicit truncation",
+      "witness": "Model-profile capacity and quota evidence",
+      "sources": [
+        "F05",
+        "F06"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-022",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Adopt a finite retry/attempt/censoring policy with nonduplicated provider work.",
+      "transition": "unknown dispatch -> stop affected pair; permitted transient retry only",
+      "witness": "D17 final policy and runtime proof",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-023",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Verify effective output-file semantics of installed live model CLI.",
+      "transition": "live terminal -> captured file + JSONL + transcript agreement",
+      "witness": "Authorized source-free first-party model witness",
+      "sources": [
+        "F08",
+        "F10"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-024",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Accept source ownership, access rights, consent and permitted exposure per protected member.",
+      "transition": "rights-unverified member -> access denied",
+      "witness": "Independent real-source permission ledger",
+      "sources": [
+        "F05",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-025",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "A separate actual custodian must hold signing keys and consume one-use permits.",
+      "transition": "approved signed grant -> external atomic consume; no local self-grant",
+      "witness": "Installed independent service and peer identity",
+      "sources": [
+        "F12",
+        "F13",
+        "F14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-026",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Externally retained checkpoint minima prevent whole-store rollback.",
+      "transition": "old database snapshot + stale root -> REFUSE",
+      "witness": "Independent monotonic external trust root",
+      "sources": [
+        "F07",
+        "F13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-027",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Real crash/power-loss/concurrent-writer durability remains to be measured.",
+      "transition": "kill/restart/concurrent writer -> recover unique committed prefix",
+      "witness": "Production-like fault injection",
+      "sources": [
+        "F07",
+        "F13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-028",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Preimport code, dependency and executable identity must have trusted provenance.",
+      "transition": "substituted binary/dependency -> REJECT before import",
+      "witness": "Signed independent trust root beyond post hoc Git/hash",
+      "sources": [
+        "F07",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-029",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Distinct OS accounts must enforce controller/custodian isolation.",
+      "transition": "same user/admin reachability -> HOLD; denied cross-account access -> proof",
+      "witness": "Actual production account/ACL/key installation",
+      "sources": [
+        "F13",
+        "F14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-030",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Protect confidential bytes and metadata from repository and public stdout.",
+      "transition": "private field -> private custody only; public projection redacted",
+      "witness": "Human D18 retention, export and disclosure acceptance",
+      "sources": [
+        "F05",
+        "F11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-031",
+      "class_": "P",
+      "family": "Custody and rights",
+      "kind": "constraint",
+      "rule": "Protected archive may be opened only under separately accepted admission and final Flight grants.",
+      "transition": "D20 ungranted -> real archive unread/unanalyzed",
+      "witness": "Distinct human closure and external grant",
+      "sources": [
+        "F05",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-032",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Independent Stage 2 must use a separately controlled person/key/service.",
+      "transition": "author-generated result -> held until independent proof/countercontrol",
+      "witness": "Reviewer credentials, conflict and custody",
+      "sources": [
+        "F05",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-033",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Mathematical novelty requires formal proof plus matched falsifiers, not score alone.",
+      "transition": "candidate discovery -> proof, negative control, separate warrant",
+      "witness": "Real candidate independent adjudication",
+      "sources": [
+        "F02",
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-034",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Representation equivalence and semantic blinding must be checked independently.",
+      "transition": "structure-specific prompt clues -> mask fail and replan",
+      "witness": "Neutral packet leakage audit, independent scorer",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-035",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "No source-evidence-to-consequence promotion by classifier self-label.",
+      "transition": "model says VERIFIED -> held pending provenance/proof",
+      "witness": "Auditor performs independent warrant",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-036",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Retain every candidate through Stage 2 without favorable filtering.",
+      "transition": "overflow -> HOLD/explicit scope change, not silent drop",
+      "witness": "D16 workload/overflow policy",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-037",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Freeze scores and missingness before controlled unblinding.",
+      "transition": "stage2 scored and signed -> human-authorized unblind",
+      "witness": "Independent review and unblinding custodian",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-038",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Report science by effect classes, uncertainty and comparator sensitivity.",
+      "transition": "matching null result -> no discovery claim; differences require replication",
+      "witness": "Predefined interpretation criteria",
+      "sources": [
+        "F05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-039",
+      "class_": "P",
+      "family": "Evaluation",
+      "kind": "constraint",
+      "rule": "Source-free calibration rates cannot be treated as protected efficacy evidence.",
+      "transition": "synthetic parity -> calibration-only report",
+      "witness": "Protected matched outcome replication",
+      "sources": [
+        "F01",
+        "F04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-040",
+      "class_": "P",
+      "family": "Governance",
+      "kind": "constraint",
+      "rule": "D01–D20 require current explicit adoption, with superseded decisions retained.",
+      "transition": "decision missing -> final activation CLOSED",
+      "witness": "Human decision docket; some partial D02–D17 choices separately recorded",
+      "sources": [
+        "F05",
+        "F11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-041",
+      "class_": "P",
+      "family": "Governance",
+      "kind": "constraint",
+      "rule": "Final protected Flight has separate operator gesture after Gate F qualification.",
+      "transition": "D20 absent -> HELD regardless of green CI",
+      "witness": "External permission and contemporaneous human authorization",
+      "sources": [
+        "F05",
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "P-042",
+      "class_": "P",
+      "family": "Governance",
+      "kind": "constraint",
+      "rule": "Postflight and post-postflight art/theory work cannot rewrite frozen Flight results.",
+      "transition": "later derivative -> separate episode and clock",
+      "witness": "Independent freeze/unblinding witnesses",
+      "sources": [
+        "F05",
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-001",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "rewrite",
+      "rule": "Directed transfer from a native Atelier into an independently empty Encyclopedia.",
+      "transition": "Atelier-native source/method -> empty recipient -> inspect preserved/novel operations",
+      "witness": "Experiment A W/E/S, not Flight arm transition",
+      "sources": [
+        "G11",
+        "G02",
+        "G16"
+      ],
+      "confidence": "EXTERIOR_NOT_FLIGHT",
+      "notes": ""
+    },
+    {
+      "id": "X-002",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "rewrite",
+      "rule": "Reverse transfer from original Encyclopedia into independent Universal Atelier.",
+      "transition": "Encyclopedia-native corpus -> empty Atelier -> assess new relations",
+      "witness": "Experiment A Crossing T",
+      "sources": [
+        "G03",
+        "G11"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-003",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "constraint",
+      "rule": "Recipient emptiness requires an observed initial zero state, not a label.",
+      "transition": "initialize receiver -> query actual zero tables",
+      "witness": "Wendbine/Universal zero-row witnesses",
+      "sources": [
+        "G02",
+        "G03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-004",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "constraint",
+      "rule": "The receiver must execute native research operations, not merely replicate a transport envelope.",
+      "transition": "source import -> native operation with trace",
+      "witness": "Native execution/zero/unsupported distinction",
+      "sources": [
+        "G02",
+        "G03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-005",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "invariant",
+      "rule": "Native research estates remain method-non-equivalent under a common wrapper.",
+      "transition": "SRC != Wendbine != Em != Encyclopedia despite shared schema",
+      "witness": "Method-specific capability matrices",
+      "sources": [
+        "G03",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-006",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "constraint",
+      "rule": "A third converged machine must earn new operations over an equal-input union.",
+      "transition": "composed A∘B vs B∘A vs union -> assess distinctive operations",
+      "witness": "Original Manifest C0; neither order asserted equivalent",
+      "sources": [
+        "G01",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-007",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "constraint",
+      "rule": "Operator-selected sequence and historical execution sequence retain separate timestamps.",
+      "transition": "prospective route vs completed SRC/Em/Wendbine qualification",
+      "witness": "Non-retroactive episode records",
+      "sources": [
+        "G11",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-008",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "constraint",
+      "rule": "Independent third-party human–AI exploration requires separately agreed roles and consent.",
+      "transition": "participant encounter -> situated report with own attribution",
+      "witness": "Experiment C participant study, not Flight Stage 2",
+      "sources": [
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-009",
+      "class_": "X",
+      "family": "Reciprocal experimental architecture",
+      "kind": "invariant",
+      "rule": "A successfully routed packet carries no automatic claim of new research synthesis.",
+      "transition": "successful transfer -> transport evidence only",
+      "witness": "Scientific threshold for convergence",
+      "sources": [
+        "G01",
+        "G03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-010",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "A source object, Work, manifestation, capture and derivative have distinct identities.",
+      "transition": "same title/bytes across layers -> typed links, never collapse",
+      "witness": "Identity crosswalks and anti-equivalence wall",
+      "sources": [
+        "G16",
+        "G13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-011",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "Newest observation does not automatically control historical lineage.",
+      "transition": "new capture -> preserve earlier epoch and authority",
+      "witness": "Wendbine chronology",
+      "sources": [
+        "G02",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-012",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "Temporal adjacency does not establish causal linkage.",
+      "transition": "successive records -> no causal edge without warrant",
+      "witness": "Cross-origin typed graph refusals",
+      "sources": [
+        "G02",
+        "G12",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-013",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "Motif recurrence does not establish common mechanism.",
+      "transition": "same motif across sources -> proposal, not genealogy",
+      "witness": "SRC/Em/Wendbine comparative research",
+      "sources": [
+        "G16",
+        "G13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-014",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "Graph adjacency does not transfer evidence or institutional authority.",
+      "transition": "adjacent nodes -> source-local warrants retained",
+      "witness": "Explicit local section/graph admission",
+      "sources": [
+        "G01",
+        "G04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-015",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "Not retrieved differs from nonexistent; unavailable differs from suppressed.",
+      "transition": "null query -> aperture-qualified unknown",
+      "witness": "Search and missingness law",
+      "sources": [
+        "G16",
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-016",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "guard",
+      "rule": "Typed graph families reject unregistered relation predicates.",
+      "transition": "unregistered 9-graph relation -> REFUSE",
+      "witness": "Wendbine native relation registry",
+      "sources": [
+        "G02"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-017",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "invariant",
+      "rule": "Cooccurrence overlays do not establish mechanism/causation.",
+      "transition": "cooccur -> weighted hypothesis edge only",
+      "witness": "Wendbine 143 cooccurrence overlays",
+      "sources": [
+        "G02"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-018",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "rewrite",
+      "rule": "Reverse-citation indices preserve cite direction and contextual return paths.",
+      "transition": "admit A→B -> citedBy(B) contains A",
+      "witness": "Universal recipient operation, not Flight protocol",
+      "sources": [
+        "G03"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-019",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "constraint",
+      "rule": "Historical SRC methods retain projective, cartographic, topological, contextual and tomographic specificity.",
+      "transition": "native graph route -> proper typed response/refusal",
+      "witness": "SRC-first operation-recovery requirement",
+      "sources": [
+        "G12",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-020",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "guard",
+      "rule": "Contradictory sources are retained in the graph rather than harmonized away.",
+      "transition": "A claims p, B claims ¬p -> contested pair",
+      "witness": "Cross-Atelier emergence goal",
+      "sources": [
+        "G01",
+        "G04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-021",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "constraint",
+      "rule": "Conceptual convergence and genealogical descent are distinct classification axes.",
+      "transition": "similarity finding -> no source-inheritance conclusion",
+      "witness": "Em methods and attribution discipline",
+      "sources": [
+        "G13",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-022",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "constraint",
+      "rule": "Work authorship is individually attributed and unresolved aliases remain separate.",
+      "transition": "same handle/titles -> no identity merge",
+      "witness": "Vixen 32 Work authorship=UNRESOLVED",
+      "sources": [
+        "G06",
+        "G13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-023",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "guard",
+      "rule": "No invented method executor can be called historically native.",
+      "transition": "documentary method -> documentary, new implementation -> prospective",
+      "witness": "21 Em documentary instruments, zero historical standalone executors",
+      "sources": [
+        "G06",
+        "G13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-024",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "constraint",
+      "rule": "AppleDouble packaging sidecars are metadata artifacts, not native research works.",
+      "transition": "._ file -> packaging metadata / quarantine",
+      "witness": "Em catalogue reconciliation",
+      "sources": [
+        "G06"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-025",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "rewrite",
+      "rule": "Six phason-seam transitions classify bytes, projection, permissions, route, local compatibility and relation dynamics.",
+      "transition": "event -> one of six distinct transition kinds",
+      "witness": "Prospective Manifest state transition model",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-026",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "invariant",
+      "rule": "Projection change without source-byte change is distinct from source edit.",
+      "transition": "source hash constant + renderer changed -> PROJECTION_CHANGED_INVARIANT",
+      "witness": "Atlas visual seam / Theory Edition",
+      "sources": [
+        "G01",
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-027",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "invariant",
+      "rule": "Local sections can remain incompatible without forced total gluing.",
+      "transition": "incompatible epistemic sections -> record obstruction",
+      "witness": "Prospective sheaf/section analysis",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-028",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Ambiance is situated and multidimensional, not a universal truth scalar.",
+      "transition": "measurement vector -> retain components/context",
+      "witness": "Manifest research cosmology",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-029",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Route memory can differ even when terminal source tree or state matches.",
+      "transition": "equal tree + different commit parentage -> distinct route histories",
+      "witness": "Project Cupola historical same-tree witness",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-030",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "invariant",
+      "rule": "Recorded route-memory difference alone does not prove geometric holonomy.",
+      "transition": "non-equal histories -> transport/curvature claim HELD",
+      "witness": "Finite-state geometric claim ceiling",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-031",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Claim recoverability depends on observation projection, not observation cardinality.",
+      "transition": "q partitions states -> f identifiable iff f=g∘q",
+      "witness": "F31 finite transport counterexample",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-032",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Cupola or First Dome geometry remains falsifiable against null repositories.",
+      "transition": "repository-to-Dome resemblance -> no correspondence without nulls",
+      "witness": "Separate Cupola correspondence project",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-033",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "invariant",
+      "rule": "A new relationship may be proposed and later dissolved without rewriting historic sources.",
+      "transition": "candidate edge -> falsifier -> demote with predecessor trace",
+      "witness": "Manifest relationship lifecycle",
+      "sources": [
+        "G01",
+        "G04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-034",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Manifest comparison uses a competent strong union rather than a handicapped null.",
+      "transition": "Manifest 16/16 vs matched union 16/16 -> delta zero",
+      "witness": "M-01 distinct assay; not Flight comparator result",
+      "sources": [
+        "G04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-035",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "A discovered research operation must survive controlled removal of the representation lens.",
+      "transition": "candidate isomorphism -> prove mathematically independent of metaphor",
+      "witness": "Manifest refraction/reasoning",
+      "sources": [
+        "G01",
+        "G04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-036",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Palace curiosity actions may be throttled when prior belief is already confident.",
+      "transition": "p>=0.75 -> restrict costly probe under accepted exploratory policy",
+      "witness": "Cross-Atelier curiosity-policy study; not Flight dosing",
+      "sources": [
+        "G05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-037",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Belief-revision time and action time have distinct latency coordinates.",
+      "transition": "t_action − t_belief -> preserve negative-latency signatures",
+      "witness": "Palace dromology; not Flight clock",
+      "sources": [
+        "G05"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-038",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Concealed independent Manifest falsification is not candidate-authored evaluation.",
+      "transition": "author candidate -> concealed suite by separate reviewer",
+      "witness": "Manifest M-01 preregistration",
+      "sources": [
+        "G04"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-039",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "An original researcher may operate an exported Manifest without TD613/Vercel accounts.",
+      "transition": "portable source-bound package -> local tools and models",
+      "witness": "Em independent operability",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-040",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "invariant",
+      "rule": "Original researcher retains refusal and withdrawal choices over derivatives and exposure.",
+      "transition": "permission withdraw -> stop future export; retain lawful audit",
+      "witness": "Manifest rights model, not Flight archive-only grant",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-041",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "Saved research selections become a portable Action Folio.",
+      "transition": "select research entries -> source-ID-addressed commission",
+      "witness": "Future Manifest UI feature",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-042",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "invariant",
+      "rule": "An exported dispatch file conveys intent, not execution authority.",
+      "transition": "portable instruction -> requires local authorization before side effects",
+      "witness": "Action Folio dispatch separation",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-043",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "Publication can release mathematics without releasing private source bodies.",
+      "transition": "result visibility ≠ original-source visibility",
+      "witness": "Manifest granular permissions",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-044",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "Original researcher may select local models/APIs and privacy context.",
+      "transition": "new owner-local model -> no permanent host coupling",
+      "witness": "Independent portable Manifest design",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-045",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "Local source ownership and rights persist across derivation and model migrations.",
+      "transition": "migrate renderer/engine -> same source stewardship",
+      "witness": "Manifest custodian sovereignty",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-046",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "A source-derived UI must not require knowledge of its host instrumentation.",
+      "transition": "operahouse infrastructure -> hidden by default, research native visible",
+      "witness": "OPERAHOUSE ≠ OPERA ≠ PERFORMER, Vixen Pedagogue activation",
+      "sources": [
+        "G07",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-047",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "Host substitution must preserve core source identity and scholarly operations.",
+      "transition": "Vixen(V,H1) -> Vixen(V,H2) with equivalent research routes",
+      "witness": "Proposed interusable/interoperable research product test",
+      "sources": [
+        "G06",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-048",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "All original editorial content remains unchanged by visual simplification.",
+      "transition": "lower visitor jargon burden -> preserve raw source terms",
+      "witness": "Pedagogue product vocabulary law",
+      "sources": [
+        "G07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-049",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "rewrite",
+      "rule": "Consequence is encountered before ontology naming.",
+      "transition": "NOTICE -> ACT -> WORLD_ANSWERS -> NAME",
+      "witness": "Pedagogue Design Gate; visitor-route review",
+      "sources": [
+        "G07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-050",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "constraint",
+      "rule": "A practice case follows the real route rather than a special easy demo path.",
+      "transition": "fictional input -> same validators with authority flag false",
+      "witness": "Canonical Practice Fixture",
+      "sources": [
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-051",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "invariant",
+      "rule": "Loading a practice case causes zero retrieval, writes and grants.",
+      "transition": "fixture load -> Δ(retrieval,writes,authority)=0",
+      "witness": "Practice fixture negative contract",
+      "sources": [
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-052",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "constraint",
+      "rule": "Rest and exit remain accessible without penalty or false completion.",
+      "transition": "REST/EXIT -> original context preserved",
+      "witness": "Pedagogue/Dome-World routes",
+      "sources": [
+        "G07",
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-053",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "invariant",
+      "rule": "A design gate may advise but not mutate production or infer user identity.",
+      "transition": "design diagnosis -> non-authoritative advice",
+      "witness": "Pedagogue independent reviewer role",
+      "sources": [
+        "G07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-054",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "constraint",
+      "rule": "Exact methods and status codes stay accessible to experts without becoming default prose.",
+      "transition": "default visitor -> plain route; expert click -> underlying IDs",
+      "witness": "Vixen host/performer membrane",
+      "sources": [
+        "G06",
+        "G07",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-055",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "constraint",
+      "rule": "A notice of missing records must include its observation aperture.",
+      "transition": "zero result -> source/date/filter-bounded notice",
+      "witness": "Canonical practice observation aperture",
+      "sources": [
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-056",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "invariant",
+      "rule": "Expected normative values annotate rather than replace an observation.",
+      "transition": "observed ≠ expected -> retain discrepancy",
+      "witness": "Pedagogue practice-record law",
+      "sources": [
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-057",
+      "class_": "X",
+      "family": "Pedagogical rules",
+      "kind": "constraint",
+      "rule": "Same outcome with different routes retains measurable route burden.",
+      "transition": "R1,R2 same endpoint -> compare step/effort histories",
+      "witness": "Pedagogue route-memory comparator",
+      "sources": [
+        "G07",
+        "G15"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-058",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Artwork may precede source admission as provisional presentation.",
+      "transition": "creative image -> visual anchor, evidentiary authority zero",
+      "witness": "Empty Encyclopedia and Vixen frontispiece precedent",
+      "sources": [
+        "G10",
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-059",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "invariant",
+      "rule": "Presentation, theory and later resynthesis have independent clocks.",
+      "transition": "τ_ambiance ⟂ τ_theory ⟂ τ_resynthesis",
+      "witness": "Refractive Couture Three Clocks",
+      "sources": [
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-060",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Refractive Couture PP0–PP6 defines a separate mathematical-image research pipeline, with independently gated entry.",
+      "transition": "deferred math/art pipeline -> new artwork and inquiry only under separate postflight activation",
+      "witness": "Deferred Refractive Couture pipeline",
+      "sources": [
+        "G14",
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-061",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "invariant",
+      "rule": "A rendered silhouette cannot uniquely recover an occluded 3D object.",
+      "transition": "2D projection -> infinitely many compatible depth configurations",
+      "witness": "Inverse-projection nullspace RC-03",
+      "sources": [
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-062",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Apparent axial symmetry can be projection-induced coincidence.",
+      "transition": "different 3D symmetry groups -> same visible quotient",
+      "witness": "Observational quotient collapse; no hidden discovery",
+      "sources": [
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-063",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Question generation by artwork is a prospective cognitive outcome.",
+      "transition": "image/no-image randomized encounter -> measure novel questions",
+      "witness": "RC-12 wild-field proposal, not established effect",
+      "sources": [
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-064",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Creative frontispiece and responsive visual grammar remain independently editable.",
+      "transition": "theme edit -> identical underlying source identity",
+      "witness": "Encyclopedia/Manifest Atlas seam",
+      "sources": [
+        "G10",
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-065",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "An artwork/branding expression cannot become an ungrounded numerical calculator.",
+      "transition": "Vixen formula signature -> identity ornament only",
+      "witness": "Vixen original false mechanism correction",
+      "sources": [
+        "G06"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-066",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Source scholarship, comparative interpretation and host diagnostics have different editorial layers.",
+      "transition": "reader meets Work first; opt-in inspector reveals framework",
+      "witness": "Vixen observatory/Operahouse repair",
+      "sources": [
+        "G06",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-067",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "A theory revision produces a new owner-triggered Theory Edition, retaining predecessors.",
+      "transition": "authorized advanced resynthesis -> new versioned narrative/artifact",
+      "witness": "Prospective Manifest edition mechanism",
+      "sources": [
+        "G01"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-068",
+      "class_": "X",
+      "family": "Visual and representational rules",
+      "kind": "constraint",
+      "rule": "Visual ambition is not conditioned on protected Flight success.",
+      "transition": "τ_ambiance change -> presentation without empirical promotion",
+      "witness": "Provisional Vixen artwork law",
+      "sources": [
+        "G14",
+        "G06"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-069",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "invariant",
+      "rule": "Internal integrity provides no proof of external origin.",
+      "transition": "identical admitted record across twin origins -> origin unresolved",
+      "witness": "Western Horizon exteriority twin-world rest",
+      "sources": [
+        "G17",
+        "G08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-070",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "External origin warrants an independent exogenous source of information.",
+      "transition": "X=f(A) -> no conditional origin information; require I(Ω;X|A)>0",
+      "witness": "Western Horizon exogenous-witness condition",
+      "sources": [
+        "G17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-071",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "Five Golden Egg surfaces require one immutable matched empirical episode.",
+      "transition": "L,R,J,G,C across distinct records -> no same-episode completion",
+      "witness": "Western Horizon empirical contract",
+      "sources": [
+        "G08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-072",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "invariant",
+      "rule": "Temporal reconstruction cannot rewrite a past observer epistemic state.",
+      "transition": "later evidence -> new conclusion, preserve earlier knowledge limit",
+      "witness": "Western Horizon temporal nonretroactivity",
+      "sources": [
+        "G08",
+        "G17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-073",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "A verified internal receipt cannot bootstrap an empirical outside witness.",
+      "transition": "record A authenticated -> external origin still held",
+      "witness": "Western Horizon finite rest",
+      "sources": [
+        "G17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-074",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "Admissibility limits the set of registered events relative to latent possibilities.",
+      "transition": "D⊃C_k⊃C_κ⊃C_B⊃E; absence at E not absence in D",
+      "witness": "Eclipse–Omega modeled retrieval narrowing",
+      "sources": [
+        "G09",
+        "G18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-075",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "Observed state, internal state and registered event need independent types.",
+      "transition": "internal event not displayed/registered -> no observer claim",
+      "witness": "PRCS-A formal research model, not actual surveillance evidence",
+      "sources": [
+        "G09",
+        "G18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-076",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "Naming, search aperture and evidence admission act as distinct information filters.",
+      "transition": "rename/mask/reroute -> change visible subset, source remains",
+      "witness": "Retrieval ontology dissertation hypothesis",
+      "sources": [
+        "G18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-077",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "invariant",
+      "rule": "Original-source absence cannot be inferred from corpus/search incompleteness.",
+      "transition": "NOT_RETRIEVED -> missingness, not deleted",
+      "witness": "Atelier rest and Eclipse–Omega counter-tool",
+      "sources": [
+        "G09",
+        "G16"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-078",
+      "class_": "X",
+      "family": "Epistemic limits and formal observability",
+      "kind": "constraint",
+      "rule": "No further Western Horizon formal stage is earned without empirical exteriority.",
+      "transition": "only internal record transformation -> official rest remains",
+      "witness": "Empirical-shore rest",
+      "sources": [
+        "G17"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-079",
+      "class_": "X",
+      "family": "Authorial and covenant constraints",
+      "kind": "invariant",
+      "rule": "Consent cannot be inferred from inheritance, a name, or a model output.",
+      "transition": "claimed legacy -> no automatic consent or grant",
+      "witness": "Covenant literary/protocol corpus; independently established consent rules remain necessary",
+      "sources": [
+        "G18",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-080",
+      "class_": "X",
+      "family": "Authorial and covenant constraints",
+      "kind": "invariant",
+      "rule": "A stylistic or lexical resemblance cannot prove authorship or authority transfer.",
+      "transition": "matching cadence -> author identity unresolved",
+      "witness": "Heritage/anti-equivalence program",
+      "sources": [
+        "G18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-081",
+      "class_": "X",
+      "family": "Authorial and covenant constraints",
+      "kind": "constraint",
+      "rule": "Literary fracture and narrative protection are not evidentiary safety proofs.",
+      "transition": "expressive metaphor -> no source/rights attestation",
+      "witness": "Covenant anti-equivalence texts",
+      "sources": [
+        "G18"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "X-082",
+      "class_": "X",
+      "family": "Authorial and covenant constraints",
+      "kind": "constraint",
+      "rule": "Aesthetic acceptance of Vixen visual artifacts remains with the commissioning human designer.",
+      "transition": "machine-generated visual treatment -> provisional until human aesthetic acceptance",
+      "witness": "Vixen couture human aesthetic acceptance, separate from Flight D20",
+      "sources": [
+        "G01",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": ""
+    },
+    {
+      "id": "I-041",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Epistemic Control Plane Hostile Battery & Preemption Refusal. Semantic steering (S), witness verification (W), and plant actuation (A) must remain strictly non-equivalent. Any actuator command bypassing the witness produces an unmitigated algedonic fault.",
+      "transition": "u_A = T_SA(C_S(S, R_WS(W))); algedonic_bypass -> REFUSE_PREEMPTION_SPIKE",
+      "witness": "Verified in Vixen Canvas simulator Tab I & EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+      "sources": [
+        "G06",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Derived from in-app Vixen V4 epistemic control plane engineering"
+    },
+    {
+      "id": "I-042",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "invariant",
+      "rule": "Continuous Jacobi SVD vs. Finite-Field F_31 Solvability Invariant. Real-valued singular value decomposition (Jacobi SVD) is strictly forbidden on finite modular fields (F_31). Solvability over finite fields requires Gaussian elimination and algebraic nullity calculation; SVD is defined only on continuous metric manifolds.",
+      "transition": "F_31 continuous SVD request -> REFUSE_TYPE_ERROR; F_31 Gaussian -> exact rank/nullity; Real matrix -> Jacobi SVD (kappa)",
+      "witness": "Computed Aperture v3.2 Bridge (R4-05), aperture-v32-computed-bridge.mjs. 11/11 adversarial controls passed.",
+      "sources": [
+        "F10",
+        "G09"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Atlas Wild Field A-04 mathematical qualification"
+    },
+    {
+      "id": "I-043",
+      "class_": "I",
+      "family": "Scientific structure",
+      "kind": "guard",
+      "rule": "Prompt & Tool Symmetrical Exclusion Parity (R4-06). Exogenous charters, theoretical crosswalks, and ground-truth solution keys must be verified absent from candidate-generation prompts in both Arm 2A and Arm 2B before model dispatch.",
+      "transition": "prompt contains (ATLAS.md or charter or crosswalk) -> ABORT_ACCESS_PARITY_VIOLATION",
+      "witness": "Verified in verifyAccessParityContract() in run-heterogeneous-discovery-harness.mjs",
+      "sources": [
+        "F05",
+        "F07"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Experiment B flight execution parity guard"
+    },
+    {
+      "id": "I-044",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "guard",
+      "rule": "Episode-Bound Attestation Replay Sieve (R4-07). Independent Stage 2 attestations and receipts are cryptographically locked to a unique episode identifier; an attestation issued for Episode E_1 fails closed if presented to Episode E_2.",
+      "transition": "verify(receipt, E_actual != E_bound) -> REFUSE_EPISODE_MISMATCH",
+      "witness": "scripts/run-experiment-b-flight.mjs --episode-id with Stage2IndependentEvaluator",
+      "sources": [
+        "F05",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Stage 2 attestation replay protection"
+    },
+    {
+      "id": "I-045",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "invariant",
+      "rule": "Atomic Journal Resumption & Turn-Level Idempotence (R4-04). Interrupted execution recovery restores completed turns from transactional disk journals without repeating model provider inference calls or mutating existing step digests.",
+      "transition": "reopen(state) -> replay(steps[0..k]) and resume(k+1)",
+      "witness": "AtomicCustodyLedger with { resume: true } and isArmCompleted lifecycle journaling",
+      "sources": [
+        "F07",
+        "F08"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Flight SQLite WAL transactional resume"
+    },
+    {
+      "id": "I-046",
+      "class_": "I",
+      "family": "Execution graph",
+      "kind": "guard",
+      "rule": "Native Execution Fallback Proscription (R4-01). When executing under an in-app native agent harness, loss of connection to the local agent runner must fail closed immediately; silent fallback to Gemini REST or public endpoints is prohibited.",
+      "transition": "native_runner_disconnected -> NATIVE_UNIMPLEMENTED_HELD (no REST fallback)",
+      "witness": "td613.antigravity.native-orchestration-contract/v0.1 in antigravity-native-orchestrator.mjs",
+      "sources": [
+        "F08",
+        "F09"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Strict local runner custody"
+    },
+    {
+      "id": "I-047",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "guard",
+      "rule": "WebCrypto Throw/Reject Fail-Closed Invariant. Any unexpected exception or promise rejection inside window.crypto.subtle.digest must be caught, recorded with code ERR_WEBCRYPTO_DIGEST_FAILED, and yield verified: false with zero state mutation (Delta s = 0).",
+      "transition": "crypto.subtle.digest() throws/rejects -> REJECTED_FAIL_CLOSED and stateUnmutated: true",
+      "witness": "Verified in Inspector Tab II negative-control bench and CDP browser witness test suite",
+      "sources": [
+        "G06"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "V4 pre-freeze client-side cryptographic hardening"
+    },
+    {
+      "id": "I-048",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "guard",
+      "rule": "Multi-Byte UTF-8 Boundary Split Guard. Byte-level slice benchmarks that bisect a multi-byte UTF-8 sequence (such as U+1D30B, U+10D613, or ZWNJ U+200C) must throw ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT rather than silently emitting replacement characters (U+FFFD).",
+      "transition": "slice(buf, mid_codepoint) -> ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT",
+      "witness": "Reconciled in V4 diagnostic bench; verified under headless Chrome CDP testing",
+      "sources": [
+        "G06",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "UTF-8 code point integrity preservation"
+    },
+    {
+      "id": "I-049",
+      "class_": "I",
+      "family": "Custody",
+      "kind": "invariant",
+      "rule": "Session-Local Non-Retroactive Tombstoning. In client-side evaluation sessions, source retractions must append a TOMBSTONE record while leaving historical predecessor evaluations immutable via deep freezing (Object.freeze).",
+      "transition": "retract(source_i) -> tombstone(source_i) and predecessor_evaluations unchanged",
+      "witness": "Demonstrated in V4 session-local snapshot bench with non-retroactive predecessor retention",
+      "sources": [
+        "G06",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Historical non-retroactivity in ephemeral DOM sessions"
+    },
+    {
+      "id": "I-050",
+      "class_": "I",
+      "family": "Presentation",
+      "kind": "invariant",
+      "rule": "Presentation Seam Gauge Invariance. Presentation styling, palette tokens, and typography must be strictly isolated to dedicated theme tags, ensuring that layout changes do not alter structural DOM hashes.",
+      "transition": "SHA256(DOM \\ #manifest-instance-theme) = const",
+      "witness": "Reconciled across V3/V4 prototype builds; verified via reconciliation-verification-receipt.json",
+      "sources": [
+        "G06",
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Theme vs structural DOM gauge separation"
+    },
+    {
+      "id": "P-043",
+      "class_": "P",
+      "family": "Runtime identity",
+      "kind": "constraint",
+      "rule": "Five-Clock Non-Equivalence Vernier. Calculations of derivative rates (de/dt) across disparate clock domains must declare their exact coordinate basis; differentiating across mismatched clocks without an anchored vernier is a fatal type error.",
+      "transition": "Delta e / Delta k_layer != Delta e / Delta n_tok != de / d tau_cont != Delta e / Delta t_wall != Delta e / Delta t_plant",
+      "witness": "Formulated in DERIVATIVE_CLOCK_CUSTODY_V0_1 and V4 Synthesis Observatory Tab II",
+      "sources": [
+        "F05",
+        "G06"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Multi-clock derivative rate disambiguation"
+    },
+    {
+      "id": "P-044",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Three-Clock Non-Interference Separation. Theoretical invariants (tau_theory), artistic ambiance (tau_ambiance), and prospective empirical resynthesis (tau_resynthesis) must run on independent timelines. Visual changes must never grant scientific credit, and unexecuted empirical protocols must remain pinned at zero credit.",
+      "transition": "tau_theory perp tau_ambiance perp tau_resynthesis",
+      "witness": "Preregistered in Refractive Couture Mathematical Dossier (TD613-B-PPF-REFRACTIVE-COUTURE-20261031-R1)",
+      "sources": [
+        "G01",
+        "G14"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Three-clock orthogonality across theory, ambiance, resynthesis"
+    },
+    {
+      "id": "P-045",
+      "class_": "P",
+      "family": "Scientific design",
+      "kind": "constraint",
+      "rule": "Atlas 9-Domain Mathematical Capability Threshold (A-01 through A-09). Claims of emergent mathematical discovery in candidate models require passing all nine non-lexical mathematical assays (including 3-way parity holonomy, Liouville phase contraction div(F) < 0, GHZ entanglement rank, and commutator defect detection) rather than scoring benchmark text.",
+      "transition": "score > threshold and not passed(A01..A09) -> REJECT_UNEARNED_DISCOVERY",
+      "witness": "Established in Issue #1612, Redpen VI, and atlas-mathematical-qualification-suite.mjs",
+      "sources": [
+        "F05",
+        "G09"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Atlas Wild Field 9-domain mathematical qualification"
+    },
+    {
+      "id": "X-083",
+      "class_": "X",
+      "family": "Independent operator portability",
+      "kind": "constraint",
+      "rule": "The Operahouse Anti-Leakage Law. Host infrastructure nomenclature and internal evaluation mechanics must never leak into default public research navigation. The research object must be encountered on its own terms before diagnostic apparatuses are exposed.",
+      "transition": "OPERAHOUSE != OPERA != PERFORMER; host_telemetry -> CONCEALED_INSPECTOR (Alt+I)",
+      "witness": "Flow-Core Pedagogue Design Gate intervention on Vixen Cybernetics V4",
+      "sources": [
+        "G06",
+        "G07",
+        "G19"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Membrane boundary protecting research encounters from host infrastructure jargon"
+    },
+    {
+      "id": "X-084",
+      "class_": "X",
+      "family": "Atelier graph semantics",
+      "kind": "constraint",
+      "rule": "Substantive vs. Resource Sidecar Fiber Quotient (c_4). Operating-system metadata sidecars (such as macOS AppleDouble ._* resource forks) must be quotiented cleanly into packaging metadata fibers (33 files, 64,896 B) rather than merged into substantive historical manuscripts (54 files), while preserving the exact archival byte sum (87 files).",
+      "transition": "c_4: E_87 -> S_54 x M_33",
+      "witness": "FADT coordinate c_4, corpus-inspector.mjs, and V4 Observatory Tab III",
+      "sources": [
+        "G06",
+        "G13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "AppleDouble sidecar fiber quotienting"
+    },
+    {
+      "id": "X-085",
+      "class_": "X",
+      "family": "Manifest rule composition",
+      "kind": "constraint",
+      "rule": "Competent-Null Comparator Discipline (E-00.1). A claim of algorithmic emergence or novel synthesis is held invalid unless compared against a matched, unhandicapped algorithmic strong union. When performance matches the null (16/16 vs 16/16), the outcome is formally typed as BOUNDED_TIE with zero empirical credit.",
+      "transition": "Delta(Candidate, StrongUnion) = 0 => BOUNDED_TIE",
+      "witness": "competent-null-comparator.mjs and EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+      "sources": [
+        "G04",
+        "G13"
+      ],
+      "confidence": "SOURCE_BOUND",
+      "notes": "Fair algorithmic null comparison preventing premature emergence claims"
+    }
+  ],
+  "candidate_crossings": [
+    {
+      "id": "C-01",
+      "from_rule": "I-014",
+      "to_rule": "X-029",
+      "title": "Checkpoint routes vs equal terminal tree",
+      "assay": "Construct two byte-equal terminal states with different complete journal histories; compare trace-sensitive claims.",
+      "edge_type": "CAUSAL_DEPENDENCY",
+      "claim_ceiling": "Counterexample to state-only equivalence; no automatic holonomy",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-02",
+      "from_rule": "I-037",
+      "to_rule": "X-034",
+      "title": "Scientific admission vs strong-union methodological null",
+      "assay": "Run a source-free matched algorithmic comparator on each candidate, then independent holdout; never mutate Flight rubric.",
+      "edge_type": "COMPETENT_NULL",
+      "claim_ceiling": "Surplus may vanish after fair controls",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-03",
+      "from_rule": "I-036",
+      "to_rule": "X-066",
+      "title": "Full-design gates vs visual editorial layer",
+      "assay": "Change graphical presentation while retaining exact source trace and measure operator comprehension.",
+      "edge_type": "REPRESENTATION_INTERVENTION",
+      "claim_ceiling": "UI effects need preregistered non-Flight human study",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-04",
+      "from_rule": "I-011",
+      "to_rule": "X-001",
+      "title": "Resumable pairs vs reciprocal instrument order",
+      "assay": "Compare forward receiver compositions in synthetic paired pipelines.",
+      "edge_type": "NONCOMMUTATIVITY",
+      "claim_ceiling": "A∘B ≠ B∘A possible even when same records copied",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-05",
+      "from_rule": "I-025",
+      "to_rule": "X-036",
+      "title": "Observed token cost vs curiosity probing",
+      "assay": "Vary probe policy under equal compute envelopes; quantify regret and novelty yield.",
+      "edge_type": "RESOURCE_SENSITIVITY",
+      "claim_ceiling": "No change to Flight budgets or dosing",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-06",
+      "from_rule": "I-031",
+      "to_rule": "X-069",
+      "title": "Metadata-verified source vs exteriority",
+      "assay": "Use indistinguishable admitted records from two differently sourced toy worlds; challenge provenance conclusion.",
+      "edge_type": "TWIN_WORLD",
+      "claim_ceiling": "A valid digest fails to identify origin",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-07",
+      "from_rule": "I-038",
+      "to_rule": "X-063",
+      "title": "Strong source-free outcome vs visible aesthetic stimulus",
+      "assay": "Randomize illustration while preserving underlying task and exact source.",
+      "edge_type": "OBSERVATION_APERTURE",
+      "claim_ceiling": "Outcome contrast does not prove emergence",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-08",
+      "from_rule": "I-021",
+      "to_rule": "X-054",
+      "title": "Tool-bound computational result vs operator-facing terminology",
+      "assay": "Swap technical UI jargon for domain-native labels while keeping function identity.",
+      "edge_type": "PRODUCT_PORTABILITY",
+      "claim_ceiling": "Route burden change is not scientific equivalence",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-09",
+      "from_rule": "I-013",
+      "to_rule": "X-015",
+      "title": "Uncertain dispatch vs missing public source",
+      "assay": "Separately vary unknown runtime state and unknown source capture to prevent conflation.",
+      "edge_type": "TYPED_UNKNOWN",
+      "claim_ceiling": "Distinct held classes retain their reasons",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-10",
+      "from_rule": "I-039",
+      "to_rule": "X-074",
+      "title": "Native model response vs selective admissibility",
+      "assay": "Simulate layered retrieval apertures and measure what claims remain identifiable.",
+      "edge_type": "PROJECTION_IDENTIFIABILITY",
+      "claim_ceiling": "Cannot infer real platform intent from a toy simulation",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-11",
+      "from_rule": "I-035",
+      "to_rule": "X-021",
+      "title": "Syntactic design conformance vs false convergence",
+      "assay": "Adversarially modify method semantics without changing checked tokens; assess semantic validator limits.",
+      "edge_type": "VALIDATOR_FALSIFICATION",
+      "claim_ceiling": "Structural checker can PASS while science fails",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-12",
+      "from_rule": "I-030",
+      "to_rule": "X-025",
+      "title": "Request immutability vs method evolution",
+      "assay": "Branch one history after rule update; compare replay validity under versioned contracts.",
+      "edge_type": "RULE_EVOLUTION",
+      "claim_ceiling": "Frozen experimental history must remain distinct",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-13",
+      "from_rule": "I-019",
+      "to_rule": "X-066",
+      "title": "Verdict labels vs representational framing",
+      "assay": "Swap authoritative labels for bounded hypotheses, compare user false-confidence.",
+      "edge_type": "AUTHORITY_LAUNDERING",
+      "claim_ceiling": "Independent user study separate from Flight",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-14",
+      "from_rule": "P-007",
+      "to_rule": "X-055",
+      "title": "Hidden holds vs native negative results",
+      "assay": "Test sealed outcome discipline against genuine negative source-retrieval routes in standalone reciprocal study.",
+      "edge_type": "NEGATIVE_EVIDENCE",
+      "claim_ceiling": "Never reuse contaminated controls as unseen",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-15",
+      "from_rule": "P-016",
+      "to_rule": "X-070",
+      "title": "Model source isolation vs exteriority source",
+      "assay": "Disentangle process isolation witness from proof that evidence originated outside verifier.",
+      "edge_type": "WITNESS_TYPE",
+      "claim_ceiling": "Isolation is not origin",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-16",
+      "from_rule": "P-012",
+      "to_rule": "X-049",
+      "title": "Flight schedule guard vs distributed cognition",
+      "assay": "Compare synthetic schedule completeness and practice-reader comprehension without using protected source.",
+      "edge_type": "AGENT_HUMAN_INTERFACE",
+      "claim_ceiling": "No protected Flight protocol amendment",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-17",
+      "from_rule": "P-033",
+      "to_rule": "X-080",
+      "title": "Proof requirements vs authorial mythology",
+      "assay": "Build attribution-preserving synthetic examples where authorship labels contradict evidence.",
+      "edge_type": "AUTHORITY_NONTRANSFER",
+      "claim_ceiling": "No personal attribution inference",
+      "flight_amendment_authorized": false
+    },
+    {
+      "id": "C-18",
+      "from_rule": "P-037",
+      "to_rule": "X-059",
+      "title": "Unblinding custody vs false discovery optics",
+      "assay": "Compare pre/post-score UI designs for susceptibility to outcome-contingent storytelling.",
+      "edge_type": "HINDSIGHT_BIAS",
+      "claim_ceiling": "Purely prospective non-Flight usability test",
+      "flight_amendment_authorized": false
+    }
+  ],
+  "inventory": {
+    "total_rules": 180,
+    "implemented_I": 50,
+    "proposed_P": 45,
+    "exterior_X": 85,
+    "total_crossings": 24
+  },
+  "crossings": [
+    {
+      "id": "C-01",
+      "tag": "CAUSAL_DEPENDENCY",
+      "rules": [
+        "I-014",
+        "X-029"
+      ],
+      "description": "Checkpoint routes vs equal terminal tree. Construct two byte-equal terminal states with different complete journal histories; compare trace-sensitive claims. Counterexample to state-only equivalence; no automatic holonomy."
+    },
+    {
+      "id": "C-02",
+      "tag": "COMPETENT_NULL",
+      "rules": [
+        "I-037",
+        "X-034"
+      ],
+      "description": "Scientific admission vs strong-union methodological null. Run a source-free matched algorithmic comparator on each candidate, then independent holdout; never mutate Flight rubric."
+    },
+    {
+      "id": "C-03",
+      "tag": "REPRESENTATION_INTERVENTION",
+      "rules": [
+        "I-036",
+        "X-066"
+      ],
+      "description": "Full-design gates vs visual editorial layer. Change graphical presentation while retaining exact source trace and measure operator comprehension."
+    },
+    {
+      "id": "C-04",
+      "tag": "NONCOMMUTATIVITY",
+      "rules": [
+        "I-011",
+        "X-001"
+      ],
+      "description": "Resumable pairs vs reciprocal instrument order. Compare forward receiver compositions in synthetic paired pipelines."
+    },
+    {
+      "id": "C-05",
+      "tag": "RESOURCE_SENSITIVITY",
+      "rules": [
+        "I-025",
+        "X-036"
+      ],
+      "description": "Observed token cost vs curiosity probing. Vary probe policy under equal compute envelopes; quantify regret and novelty yield."
+    },
+    {
+      "id": "C-06",
+      "tag": "TWIN_WORLD",
+      "rules": [
+        "I-031",
+        "X-069"
+      ],
+      "description": "Metadata-verified source vs exteriority. Use indistinguishable admitted records from two differently sourced toy worlds; challenge provenance conclusion."
+    },
+    {
+      "id": "C-07",
+      "tag": "OBSERVATION_APERTURE",
+      "rules": [
+        "I-038",
+        "X-063"
+      ],
+      "description": "Strong source-free outcome vs visible aesthetic stimulus. Randomize illustration while preserving underlying task and exact source."
+    },
+    {
+      "id": "C-08",
+      "tag": "PRODUCT_PORTABILITY",
+      "rules": [
+        "I-021",
+        "X-054"
+      ],
+      "description": "Tool-bound computational result vs operator-facing terminology. Swap technical UI jargon for domain-native labels while keeping function identity."
+    },
+    {
+      "id": "C-09",
+      "tag": "TYPED_UNKNOWN",
+      "rules": [
+        "I-013",
+        "X-015"
+      ],
+      "description": "Uncertain dispatch vs missing public source. Separately vary unknown runtime state and unknown source capture to prevent conflation."
+    },
+    {
+      "id": "C-10",
+      "tag": "PROJECTION_IDENTIFIABILITY",
+      "rules": [
+        "I-039",
+        "X-074"
+      ],
+      "description": "Native model response vs selective admissibility. Simulate layered retrieval apertures and measure what claims remain identifiable."
+    },
+    {
+      "id": "C-11",
+      "tag": "VALIDATOR_FALSIFICATION",
+      "rules": [
+        "I-035",
+        "X-021"
+      ],
+      "description": "Syntactic design conformance vs false convergence. Adversarially modify method semantics without changing checked tokens."
+    },
+    {
+      "id": "C-12",
+      "tag": "RULE_EVOLUTION",
+      "rules": [
+        "I-030",
+        "X-025"
+      ],
+      "description": "Request immutability vs method evolution. Branch one history after rule update; compare replay validity under versioned contracts."
+    },
+    {
+      "id": "C-13",
+      "tag": "AUTHORITY_LAUNDERING",
+      "rules": [
+        "I-019",
+        "X-066"
+      ],
+      "description": "Verdict labels vs representational framing. Swap authoritative labels for bounded hypotheses, compare user false-confidence."
+    },
+    {
+      "id": "C-14",
+      "tag": "NEGATIVE_EVIDENCE",
+      "rules": [
+        "P-007",
+        "X-055"
+      ],
+      "description": "Hidden holds vs native negative results. Test sealed outcome discipline against genuine negative source-retrieval routes."
+    },
+    {
+      "id": "C-15",
+      "tag": "WITNESS_TYPE",
+      "rules": [
+        "P-016",
+        "X-070"
+      ],
+      "description": "Model source isolation vs exteriority source. Disentangle process isolation witness from proof that evidence originated outside verifier."
+    },
+    {
+      "id": "C-16",
+      "tag": "AGENT_HUMAN_INTERFACE",
+      "rules": [
+        "P-012",
+        "X-049"
+      ],
+      "description": "Flight schedule guard vs distributed cognition. Compare synthetic schedule completeness and practice-reader comprehension."
+    },
+    {
+      "id": "C-17",
+      "tag": "AUTHORITY_NONTRANSFER",
+      "rules": [
+        "P-033",
+        "X-080"
+      ],
+      "description": "Proof requirements vs authorial mythology. Build attribution-preserving synthetic examples where authorship labels contradict evidence."
+    },
+    {
+      "id": "C-18",
+      "tag": "HINDSIGHT_BIAS",
+      "rules": [
+        "P-037",
+        "X-059"
+      ],
+      "description": "Unblinding custody vs false discovery optics. Compare pre/post-score UI designs for susceptibility to outcome-contingent storytelling."
+    },
+    {
+      "id": "C-19",
+      "tag": "CLOCK_DESYNCHRONIZATION",
+      "rules": [
+        "I-045",
+        "P-043"
+      ],
+      "description": "Journal Replay vs. Multi-Clock Vernier. Replaying a persisted journal step across mismatched wall-clock or plant ticks."
+    },
+    {
+      "id": "C-20",
+      "tag": "OPERATIONAL_LEAKAGE",
+      "rules": [
+        "I-043",
+        "X-083"
+      ],
+      "description": "Prompt Scrubbing vs. Operahouse Membrane. Host telemetry leaking into system prompts."
+    },
+    {
+      "id": "C-21",
+      "tag": "ALGEBRAIC_CONTRADICTION",
+      "rules": [
+        "I-042",
+        "P-045"
+      ],
+      "description": "Finite Field Nullity vs. Continuous Symplectic Flow. Refusal of SVD on modular F_31 manifolds."
+    },
+    {
+      "id": "C-22",
+      "tag": "FAIL_CLOSED_STATE_INTEGRITY",
+      "rules": [
+        "I-047",
+        "I-049"
+      ],
+      "description": "WebCrypto Rejection vs. Session Predecessor Retention. Preserving byte-unmutated predecessor state under crypto fault."
+    },
+    {
+      "id": "C-23",
+      "tag": "QUOTIENT_FIBER_ATTRIBUTION",
+      "rules": [
+        "X-022",
+        "X-084"
+      ],
+      "description": "Unresolved Authorship vs. AppleDouble Quarantine. Disentangling packaging metadata sidecars from authentic manuscript author identity."
+    },
+    {
+      "id": "C-24",
+      "tag": "NULL_SURPLUS_COLLAPSE",
+      "rules": [
+        "P-033",
+        "X-085"
+      ],
+      "description": "Mathematical Novelty vs. Competent-Null Tie. Verification of null surplus collapse under competent strong union."
+    }
+  ]
+}

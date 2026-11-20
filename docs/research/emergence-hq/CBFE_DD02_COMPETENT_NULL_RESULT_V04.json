@@ -1,0 +1,265 @@
+{
+  "schema": "td613.cbfe.dd02.competent-null/v0.4",
+  "seed": 3422422801,
+  "generated_at": "DETERMINISTIC_SOURCE_FREE",
+  "pre_registration": "CBFE_DD02_COMPETENT_NULL_PREFLIGHT_V04.md",
+  "qualifications": {
+    "native_dollhouse_design": "SEPARATELY_EXECUTED_AT_V03",
+    "independent_empirical_replication": false,
+    "protected_experiment_b": "HELD",
+    "human_scientific_closure": "RESERVED"
+  },
+  "scope": "FINITE_SYNTHETIC_GENERATED_DIFFERENTIAL_TEST_NOT_HUMAN_EPISTEMIC_STUDY",
+  "sample_size": 384,
+  "summary": {
+    "total": 384,
+    "M0": 49,
+    "M1": 384,
+    "M2": 384,
+    "reachable": 209,
+    "blocked": 134,
+    "held": 41
+  },
+  "by_stratum": {
+    "H0_BASIC": {
+      "total": 128,
+      "M0": 23,
+      "M1": 128,
+      "M2": 128,
+      "reachable": 95,
+      "blocked": 33,
+      "held": 0
+    },
+    "H1_CONDITIONAL": {
+      "total": 128,
+      "M0": 21,
+      "M1": 128,
+      "M2": 128,
+      "reachable": 100,
+      "blocked": 28,
+      "held": 0
+    },
+    "H2_WITHDRAWAL_TYPE": {
+      "total": 128,
+      "M0": 5,
+      "M1": 128,
+      "M2": 128,
+      "reachable": 14,
+      "blocked": 73,
+      "held": 41
+    }
+  },
+  "competent_union_surplus": 0,
+  "decision": "SOURCE_FREE_BOUNDED_TIE",
+  "candidate_counterexamples": [],
+  "static_baseline_failures": [
+    {
+      "id": "H0_BASIC-000",
+      "stratum": "H0_BASIC",
+      "oracle": {
+        "status": "REACHABLE",
+        "cost": 4
+      },
+      "static": {
+        "status": "REACHABLE",
+        "cost": 3
+      },
+      "cause": "ACTIVE/REGISTERED_SOURCE/STANDING_NEUTRAL"
+    },
+    {
+      "id": "H0_BASIC-001",
+      "stratum": "H0_BASIC",
+      "oracle": {
+        "status": "REACHABLE",
+        "cost": 6
+      },
+      "static": {
+        "status": "REACHABLE",
+        "cost": 3
+      },
+      "cause": "ACTIVE/REGISTERED_SOURCE/STANDING_NEUTRAL"
+    },
+    {
+      "id": "H0_BASIC-002",
+      "stratum": "H0_BASIC",
+      "oracle": {
+        "status": "REACHABLE",
+        "cost": 5
+      },
+      "static": {
+        "status": "REACHABLE",
+        "cost": 3
+      },
+      "cause": "ACTIVE/REGISTERED_SOURCE/STANDING_NEUTRAL"
+    },
+    {
+      "id": "H0_BASIC-003",
+      "stratum": "H0_BASIC",
+      "oracle": {
+        "status": "REACHABLE",
+        "cost": 5
+      },
+      "static": {
+        "status": "REACHABLE",
+        "cost": 3
+      },
+      "cause": "ACTIVE/REGISTERED_SOURCE/STANDING_NEUTRAL"
+    },
+    {
+      "id": "H0_BASIC-004",
+      "stratum": "H0_BASIC",
+      "oracle": {
+        "status": "REACHABLE",
+        "cost": 5
+      },
+      "static": {
+        "status": "REACHABLE",
+        "cost": 3
+      },
+      "cause": "ACTIVE/REGISTERED_SOURCE/STANDING_NEUTRAL"
+    }
+  ],
+  "intervention_witnesses": [
+    {
+      "id": "H1_CONDITIONAL-000",
+      "policy": "PRESTIGE_GATED",
+      "high": {
+        "status": "REACHABLE",
+        "cost": 4,
+        "route": [
+          "submit",
+          "hearing",
+          "claim"
+        ]
+      },
+      "low": {
+        "status": "REACHABLE",
+        "cost": 8,
+        "route": [
+          "submit",
+          "request-appeal",
+          "review-appeal",
+          "claim"
+        ]
+      }
+    },
+    {
+      "id": "H1_CONDITIONAL-002",
+      "policy": "PRESTIGE_GATED",
+      "high": {
+        "status": "REACHABLE",
+        "cost": 6,
+        "route": [
+          "submit",
+          "hearing",
+          "claim"
+        ]
+      },
+      "low": {
+        "status": "BLOCKED",
+        "cost": null,
+        "route": null
+      }
+    },
+    {
+      "id": "H1_CONDITIONAL-004",
+      "policy": "PRESTIGE_GATED",
+      "high": {
+        "status": "REACHABLE",
+        "cost": 3,
+        "route": [
+          "submit",
+          "hearing",
+          "claim"
+        ]
+      },
+      "low": {
+        "status": "REACHABLE",
+        "cost": 5,
+        "route": [
+          "submit",
+          "request-appeal",
+          "review-appeal",
+          "claim"
+        ]
+      }
+    },
+    {
+      "id": "H1_CONDITIONAL-006",
+      "policy": "PRESTIGE_GATED",
+      "high": {
+        "status": "REACHABLE",
+        "cost": 4,
+        "route": [
+          "submit",
+          "hearing",
+          "claim"
+        ]
+      },
+      "low": {
+        "status": "REACHABLE",
+        "cost": 6,
+        "route": [
+          "submit",
+          "request-appeal",
+          "review-appeal",
+          "claim"
+        ]
+      }
+    },
+    {
+      "id": "H1_CONDITIONAL-009",
+      "policy": "PRESTIGE_GATED",
+      "high": {
+        "status": "REACHABLE",
+        "cost": 3,
+        "route": [
+          "submit",
+          "hearing",
+          "claim"
+        ]
+      },
+      "low": {
+        "status": "REACHABLE",
+        "cost": 6,
+        "route": [
+          "submit",
+          "request-appeal",
+          "review-appeal",
+          "claim"
+        ]
+      }
+    }
+  ],
+  "scalar_projection_failure": {
+    "source_id": "ADVERSARIAL-EQUAL-COST-DIFFERENT-HISTORY",
+    "cost": 4,
+    "minimal_routes": [
+      [
+        "submit",
+        "hearing",
+        "claim"
+      ],
+      [
+        "submit",
+        "request-appeal",
+        "review-appeal",
+        "claim"
+      ]
+    ],
+    "geometry_returns_single_route": [
+      "submit",
+      "hearing",
+      "claim"
+    ],
+    "conclusion": "Two different route histories share scalar cost. Any scalar-only representation lacks the data required for full history reconstruction."
+  },
+  "output_rows_sha256": "07f44633567d625b099c799e8329c4bd90bbdf720d11e41d1482c03d826ec4a5",
+  "full_rows_reproducible": "node tests/cbfe-competent-null-probe.v04.mjs --json /path/to/report.json",
+  "limits": [
+    "Reference uses exhaustive simple-path search, candidate uses Dijkstra, strong union uses Bellman-Ford; all share declared policy semantics; no external source independence",
+    "Synthetic policy labels are not demographic identity and cannot establish discrimination",
+    "Same cost can conceal distinct custody histories",
+    "Absence of surplus over competent union is a warranted null, not a failed software engineering task"
+  ]
+}

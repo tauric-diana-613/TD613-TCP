@@ -1,0 +1,3 @@
+# 𝌋 Nomenclature v1 — Role Multiplicity (Non-breaking Interpretation)
+
+**Compatibility supplement, not a renaming.** The frozen `RULEFIELD ≠ RULE` vocabulary specifies **distinct role semantics**, not disjoint object extensions. Historical object `I-001` may be investigated as a Rulefield while its executable guard retains the Rule role. Typed role bindings require separate context, scope, tests and authority, and never implicitly migrate evidence or authorization between roles. Same record identity, different qualified views. See [ROLE_MULTIPLICITY_ROD0002.md](../../rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md). Human OD-02 remains HELD.

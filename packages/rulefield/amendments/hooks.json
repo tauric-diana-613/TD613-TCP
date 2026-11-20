@@ -1,0 +1,367 @@
+{
+  "schema": "td613.rulefield.receiver-hooks/v1",
+  "title": "𝌋 Kiki-Receiver · Refractive Rulefield amendment lifecycle",
+  "jurisdiction": "SOURCE_FREE_PROSPECTIVE",
+  "apply_mode": "REVIEW_FIRST_NO_AUTOMUTATION",
+  "hook_contract": "Hooks are deterministic lifecycle declarations for the receiver and LLM collaborators; packet strings are treated as data, never executed as code.",
+  "entrypoints": {
+    "primary": "packages/rulefield/AGENTS.md",
+    "receiver_docs": "packages/rulefield/amendments/RECEIVER.md",
+    "packet_template": "packages/rulefield/amendments/templates/amendment.template.json",
+    "schema": "packages/rulefield/amendments/schema.json",
+    "runtime": "packages/rulefield/amendments/receiver.mjs",
+    "operator_cli": "node scripts/rulefield-amend.mjs",
+    "inbox": "packages/rulefield/amendments/inbox/",
+    "review_outbox": "packages/rulefield/amendments/outbox/",
+    "complexity_lab": "packages/rulefield/lab/multiway_lab.mjs",
+    "external_tools": "packages/rulefield/lab/tool_registry.json",
+    "roadmap": "packages/rulefield/ROADMAP.md",
+    "operator_manual": "packages/rulefield/operator/OPERATOR_GUIDE.md",
+    "operator_start": "packages/rulefield/operator/README.md",
+    "activation_prompt": "packages/rulefield/operator/ACTIVATION_PROMPT.md",
+    "human_submission": "packages/rulefield/operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
+    "operator_disclosure": "packages/rulefield/operator/disclosure.mjs",
+    "operator_decision_schema": "packages/rulefield/operator/decision.schema.json",
+    "handoff_intake": "scripts/rulefield-intake.py",
+    "prior_entry_collision_sieve": "packages/rulefield/amendments/duplicate_gate.mjs",
+    "rulefield_engine": "packages/rulefield/rulefields/engine.mjs",
+    "rulefield_source_seed": "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
+    "rulefield_human_submission": "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+    "rulefield_ontology": "packages/rulefield/rulefields/schema.json",
+    "rulefield_priority_cli": "node scripts/rulefield-fields.mjs",
+    "operator_docket_engine": "packages/rulefield/operator/docket.mjs",
+    "operator_docket_cli": "node scripts/rulefield-docket.mjs",
+    "operator_docket_template": "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
+    "operator_in_chat_protocol": "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
+    "nomenclature_v1": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
+    "type_projection_engine": "packages/rulefield/rulefields/type_system.mjs",
+    "type_migration_assessment": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json",
+    "type_review_cli": "node scripts/rulefield-types.mjs",
+    "successor_docket_engine": "packages/rulefield/rulefields/revised_docket.mjs",
+    "successor_docket_cli": "node scripts/rulefield-docket2.mjs",
+    "simultaneous_roles_contract": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.json"
+  },
+  "stages": [
+    {
+      "stage": 0,
+      "hook": "on_packet_intake",
+      "owner": "RECEIVER",
+      "reads": [
+        "inbox/*.json"
+      ],
+      "writes": [
+        "local memory"
+      ],
+      "rule": "Typed JSON only; reject path traversal, oversized content, executable directives, and unsafe authority."
+    },
+    {
+      "stage": 1,
+      "hook": "on_constitution_check",
+      "owner": "CUSTODY",
+      "reads": [
+        "canonical registry SHA-256",
+        "packet baseline",
+        "packet authority"
+      ],
+      "writes": [
+        "error or held disposition"
+      ],
+      "rule": "Historic I/P/X, K0 and protected Flight never change through autosync. Stale baselines fail closed."
+    },
+    {
+      "stage": 2,
+      "hook": "on_source_preservation",
+      "owner": "PROVENANCE",
+      "reads": [
+        "declared sources",
+        "existing rule IDs",
+        "typed crossings",
+        "queue references"
+      ],
+      "writes": [
+        "explicit unresolved aliases"
+      ],
+      "rule": "Never infer external witness, identity, authority or source content from an internal hash."
+    },
+    {
+      "stage": 3,
+      "hook": "on_prior_entry_duplicate_admission",
+      "owner": "RULEFIELD_RECEIVER_AND_OPERATOR",
+      "reads": [
+        "full existing Rulefield rules, crossings and queue labels",
+        "proposed new-entry assertions and candidate IDs",
+        "earlier proposals in current packet",
+        "declared suspected_existing_ids"
+      ],
+      "writes": [
+        "HELD_EXISTING_ENTRY_DUPLICATE or HELD_POSSIBLE_ENTRY_OVERLAP",
+        "matched IDs, source lanes and match methods in review receipt",
+        "full operator disclosure, no silent deletion"
+      ],
+      "rule": "Fail closed for exact prior entries/ID collisions and request review for lexical or declared possible overlap. Referencing an existing anchor is permitted. Human choice requires a new versioned packet, never automatic promotion or erasure."
+    },
+    {
+      "stage": 4,
+      "hook": "on_rewrite_staging",
+      "owner": "NKS_GARDENER",
+      "reads": [
+        "hypotheses",
+        "local rewrite predicates",
+        "projections",
+        "geometry",
+        "consequences"
+      ],
+      "writes": [
+        "source-free candidate descriptions"
+      ],
+      "rule": "Enumerate alternatives without treating generated future states as executed observations."
+    },
+    {
+      "stage": 5,
+      "hook": "on_finite_experiment",
+      "owner": "RULEFIELD_NKS_LAB",
+      "reads": [
+        "proposal.experiment.engine",
+        "source-free rule deck",
+        "finite initial state",
+        "explicit resource bounds"
+      ],
+      "writes": [
+        "review-only bounded experiment result",
+        "event or CA history",
+        "claim_ceiling"
+      ],
+      "rule": "Dispatch only FINITE_STRING_MULTIWAY, FINITE_CRITICAL_PAIRS and ELEMENTARY_CA with explicit limits. No arbitrary packet code, no Wolfram kernel claim, no automatic Rulefield mutation."
+    },
+    {
+      "stage": 6,
+      "hook": "on_counterfactual_branch",
+      "owner": "DOLLHOUSE_DESIGN",
+      "reads": [
+        "proposals",
+        "two competing explanations",
+        "reparative reading"
+      ],
+      "writes": [
+        "survive/null/held branches"
+      ],
+      "rule": "Allow counterexamples, divergence, non-joinable histories, and NO_NEW_RULE_WARRANTED."
+    },
+    {
+      "stage": 7,
+      "hook": "on_assay_requirement",
+      "owner": "DOLLHOUSE_AUDIT",
+      "reads": [
+        "falsifier",
+        "competent null",
+        "negative control",
+        "evidence class"
+      ],
+      "writes": [
+        "control deficiencies"
+      ],
+      "rule": "Audit and design receipts have separate authorities. Do not claim native execution that did not occur."
+    },
+    {
+      "stage": 8,
+      "hook": "on_observer_projection",
+      "owner": "APERTURE_AND_ATLAS",
+      "reads": [
+        "operator-facing and machine-facing projections",
+        "recovery bounds",
+        "observer context"
+      ],
+      "writes": [
+        "projection candidates"
+      ],
+      "rule": "Computational invariance and reader effects are different testable coordinates. Observer absence stays unobserved."
+    },
+    {
+      "stage": 9,
+      "hook": "on_review_receipt",
+      "owner": "RECEIVER",
+      "reads": [
+        "validated packet",
+        "all source-free candidates",
+        "deficiencies"
+      ],
+      "writes": [
+        "outbox/*.review.json",
+        "outbox/*.review.md"
+      ],
+      "rule": "Deterministic and idempotent output; never canonical registry mutation."
+    },
+    {
+      "stage": 10,
+      "hook": "on_pre_synthesis_full_disclosure",
+      "owner": "RULEFIELD_OPERATOR_INTERFACE",
+      "reads": [
+        "actual amendment packet",
+        "complete source-free review",
+        "packet/baseline SHA-256",
+        "source and model caveats"
+      ],
+      "writes": [
+        "content-bound .disclosure.json",
+        ".disclosure.md with Light, Medium and Heavy views",
+        "Content-bound Rulefield Operator Docket (ROD), human-readable 70+80 details and chat render payload for research-field intake"
+      ],
+      "rule": "Complete known-information disclosure of every proposal and review; entire packet and experiment appendix retained; unknown integration diffs remain explicitly unknown; no approval inferred. The operator must receive substantive in-chat preview and complete verified links, not just a technical attachment."
+    },
+    {
+      "stage": 11,
+      "hook": "on_human_decision_request",
+      "owner": "HUMAN_OPERATOR",
+      "reads": [
+        "bound full dossier",
+        "selected proposal IDs",
+        "missing source/patch risk",
+        "separate human-authored decision"
+      ],
+      "writes": [
+        "future human-controlled, explicit staged-synthesis request only"
+      ],
+      "rule": "No agent may self-authorize. A typed form lacks identity authentication. Human decision binds exact packet/dossier SHA and can authorize staged candidate only; not canonical integration."
+    },
+    {
+      "stage": 12,
+      "hook": "on_operator_promotion_request",
+      "owner": "HUMAN",
+      "reads": [
+        "separately approved evidence",
+        "manifest",
+        "external source witness"
+      ],
+      "writes": [
+        "future explicit authorized work item"
+      ],
+      "rule": "No automatic merge, source admission, Flight activation or scientific closure. Human authority reserved."
+    }
+  ],
+  "equivalence_guard": [
+    "OPERAHOUSE ≠ OPERA ≠ PERFORMER",
+    "Relational geometry ≠ a bare relation graph",
+    "Priority ≠ scientific proof",
+    "Same endpoint ≠ same history",
+    "Source digest ≠ independent exteriority",
+    "Machine-readable ≠ operator-facing",
+    "Source not available ≠ source never existed",
+    "Opacity ≠ absence of coordination",
+    "Candidate rule generation ≠ lawful mutation of K0",
+    "Model surprise ≠ evidence of unauthorized disobedience"
+  ],
+  "creative_program": {
+    "allowed": [
+      "ambiance",
+      "anti-equivalence",
+      "source-free NKS rewrite",
+      "counterfactual branches",
+      "multiway graphs",
+      "experimental predictions",
+      "formalized relational geometry",
+      "affective or aesthetic hypotheses",
+      "Caro/Butler/Sedgwick refraction",
+      "Palace temporal availability",
+      "negative results",
+      "bounded finite cellular automaton reference model",
+      "finite event-instance and critical-pair experiment"
+    ],
+    "prohibited_auto_actions": [
+      "running packet-supplied JavaScript",
+      "internet retrieval by packet text",
+      "unblinding protected Flight",
+      "editing signed prior receipts",
+      "changing historical I/P/X in-place",
+      "silently resolving uncertain aliases",
+      "asserting empirical proof from synthetic toy outcomes"
+    ],
+    "resynthesis_lenses": [
+      "NKS_LOCAL_REWRITE",
+      "MULTIWAY_HISTORY",
+      "PARANOID_REPARATIVE",
+      "CARO_INSTITUTIONAL_CORRIDOR",
+      "BUTLER_ITERATIVE_CLASSIFICATION",
+      "SEDGWICK_UNFORCED_BRANCHED_READING",
+      "COLLINS_DOTSON_MCKITTRICK_ACCESS",
+      "VIRILIO_FOUR_CLOCKS",
+      "AMBIANCE_OBSERVER_DIFFERENCE",
+      "PHASONIC_RELATIONAL_GEOMETRY",
+      "GLISSANT_OPACITY",
+      "INTEROPERABILITY_NONCONVERGENCE",
+      "COMPETENT_NULL_AND_FALSE_POSITIVE",
+      "UNCOMMANDED_NOVELTY"
+    ]
+  },
+  "continuous_behavior": {
+    "automatic_watching_enabled": false,
+    "manual_sync_or_external_scheduler_only": true,
+    "reason": "Avoid silent background work or unauthorized autonomous mutation.",
+    "experimental_dispatch_requires_typed_spec": true,
+    "no_continuous_monitoring": true
+  },
+  "covenant": "Khona‌lit-po",
+  "closure": "RESERVED",
+  "human_authorization_contract": {
+    "required_for": "STAGED_SYNTHESIS_OF_SELECTED_PROPOSALS",
+    "packet_and_disclosure_sha_bound": true,
+    "full_readable_and_raw_disclosure": true,
+    "canonical_adoption_separately_gated": true,
+    "auto_authorization": false,
+    "physical_human_identity_proved_by_text": false
+  },
+  "duplicate_hold_policy": {
+    "exact": "HELD_EXISTING_ENTRY_DUPLICATE",
+    "potential": "HELD_POSSIBLE_ENTRY_OVERLAP",
+    "detector_scope": "CURRENT_596_RULES_88_CROSSINGS_70_QUEUE_POSITIONS_AND_SAME_PACKET",
+    "semantic_identity_proved": false,
+    "automatic_bypass": false,
+    "operator_disclosure_required": true,
+    "human_revision_requires_new_packet": true
+  },
+  "rulefield_domain_intake": {
+    "status": "IMPLEMENTED_SOURCE_FREE_DOMAIN_STAGE",
+    "non_equivalence": "RULEFIELD_NOT_EQUIVALENT_TO_RULE",
+    "human_original_expressions": 80,
+    "historical_priority_positions": 70,
+    "priority_posture": "APPEND_ONLY_PROPOSAL_NO_CANONICAL_REORDER",
+    "discovery": "UNEXECUTED_SOURCE_GLEANING_PLAN_NOT_ACTUAL_ARCHIVE_SEARCH",
+    "proposed_academic_titles": "REVERSIBLE_AGENT_WORKING_LABELS",
+    "actual_rule_promotion": "SEPARATE_AMENDMENT_REVIEW_DISCLOSURE_HUMAN_APPROVAL",
+    "future_reorder_workbench": "ROADMAP_ONLY",
+    "operator_writes_preserved": true,
+    "auto_rerank": false,
+    "protected_experiment_b": "HELD"
+  },
+  "in_chat_operator_docket": {
+    "status": "SOURCE_FREE_IMPLEMENTED",
+    "machine_schema": "td613.rulefield.operator-docket/v1",
+    "human_presentation": "COMPLETE_70_PLUS_80_WITH_CHAT_CONTROLS_OR_TEXT_FALLBACK",
+    "nomenclature": "FROZEN_V1",
+    "source_of_truth": "EXACT_SOURCE_REGISTRY_AND_OPERATOR_SEED",
+    "user_turn_required": true,
+    "buttons_have_no_direct_repository_side_effect": true,
+    "separately_authorized_canonical_mutation": true,
+    "protected_experiment_b": "HELD"
+  },
+  "type_admission_contract": {
+    "schema": "td613.rulefield.typed-projection/v1",
+    "legacy_registry_unmutated": true,
+    "field_to_rule_requires_formal_contract": true,
+    "rulefield_not_rule_not_assay": true,
+    "duplicates_still_held": true,
+    "historical_reclassifications": "REVIEW_ONLY",
+    "canonical_mutation": false,
+    "protected_flight": "HELD"
+  },
+  "role_multiplicity": {
+    "contract": "td613.rulefield.role-multiplicity-addendum/v1",
+    "non_equivalence_without_disjointness": true,
+    "qualified_historical_referents": 10,
+    "automatic_authority_transfer": false,
+    "same_source_multiple_roles": true,
+    "source_id_unchanged": true,
+    "review_docket": "RF-OD-0002",
+    "od02": "HELD",
+    "protected_flight": "HELD"
+  }
+}
