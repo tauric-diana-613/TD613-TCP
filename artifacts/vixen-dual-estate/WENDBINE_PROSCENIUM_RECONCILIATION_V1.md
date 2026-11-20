@@ -65,6 +65,14 @@ The new independent **host-only** operation **wendbine_public_topology_rewire** 
 
 **Required external hinge.** Before a distinct prospective experiment acquires target labels, preregister an endpoint-aware comparator, an unchanged graph-label classifier, title disclosure policy, the degree-preserving rewiring seed/rule, target selection and custody, variance assessment, acceptance thresholds and exclusion rules. Require independently obtained, bounded pre-cutoff capture witnesses. If that new witness does not arrive, the correct next action is HOLD, not algorithmic self-certification. No automatic successor stage, historical reconstruction, Vixen performer reclassification, publication or release follows from this assay.
 
+### Endpoint-aware exploratory successor · 𝄐 falsifiability before pedigree
+
+The host-only derived operation `wendbine_public_directed_walk` now implements explicit directed endpoint-conditioned one- and two-hop candidate ranking over strictly earlier-day typed relations and per-source evidence IDs. Its 12 later-day target titles are **disclosed queries**; their labels and relations are absent from training and admitted only at scoring. The fixed directional weights and source-typed construction are made inspectable. A degree-preserving synthetic endpoint rewire must change score geometry if the model truly responds to relations, but response alone is **not predictive superiority**; its controls independently include the previous title-informed C0 and a query-blind frequency prior.
+
+The experiment is deliberately labelled **post hoc** because the historical archive had been inspected before its design. The test prints actual positive and negative results without adaptive parameter retuning on the held-out scores. A losing original graph/concept score, or an improved score on the counterfactual synthetic graph, must remain visible. It cannot be promoted to original source author methodology, native program parity, independently timestamped historical replay, or Vixen Composer authority.
+
+The separate [Next Empirical Shore charter](WENDBINE_NEXT_EMPIRICAL_SHORE_PROTOCOL.md) spells out the five distinct observability, topology, custody, invariance, and human-inspection questions and explicitly leaves independent sample size, source capture, observation timestamps and external adjudication **UNSET**. This is a research plan requiring human and external acquisition, **not** a retroactive preregistration.
+
 ## IV. Evidence grades
 
 - **Computational execution:** exact native compiler and derived classifier execute, with source digest receipts.
