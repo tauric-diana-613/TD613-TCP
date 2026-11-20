@@ -523,7 +523,8 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
  if(srcEngines){
   adapters.SRC_ATELIER=async({operation,payload={}}={})=>{
    if(['src_verified_vixen_work_pair','src_verified_vixen_original_projective_differential',
-       'src_verified_vixen_original_typed_traversal'].includes(operation)){
+       'src_verified_vixen_original_typed_traversal',
+       'src_verified_vixen_original_phase2'].includes(operation)){
     // Read only the two explicitly requested Vixen Works. The SRC engine
     // supplies computation; SRC's research corpus supplies no input.
     const workIds=payload.work_ids;
@@ -578,6 +579,65 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
       record_id:workId,work_id:workId,title:work.display_title||work.declared_title||workId,
       cluster:work.cluster||'',body:selected.body.text_body,created:work.created||null
      });
+    }
+    if(operation==='src_verified_vixen_original_phase2'){
+     // Original SRC Python functions run against short-lived Vixen host registers.
+     // No historical compiler role, authority or evidence delta is invented.
+     const script=resolve(repoRoot,'scripts','vixen-src-original-phase2-host.py');
+     if(!existsSync(script))throw Error('HELD_SRC_ORIGINAL_PHASE2_HOST_UNAVAILABLE');
+     const packet={
+      query,
+      catalogue:corpus.works.map(w=>({
+       work_id:w.work_id,title:w.display_title||w.declared_title||w.work_id,
+       protocols:Array.isArray(w.protocols)?w.protocols:[],
+       linked_sources:(w.linked_sources||[]).map(s=>({
+        source_file_id:s.source_file_id,original_sha256:s.sha256
+       }))
+      })),
+      selected:documents.map((d,i)=>({
+       work_id:d.work_id,source_file_id:sourceProofs[i].source_file_id,
+       original_sha256:sourceProofs[i].declared_original_source_sha256,
+       derivative_sha256:sourceProofs[i].verified_derivative_sha256,body:d.body
+      }))
+     };
+     const python=process.env.TD613_NATIVE_PYTHON||(process.platform==='win32'?'python':'python3');
+     let replay;
+     try{
+      replay=JSON.parse(execFileSync(python,[script],{
+       cwd:repoRoot,input:JSON.stringify(packet),encoding:'utf8',timeout:20000,
+       maxBuffer:4*1024*1024,
+       env:{...process.env,PYTHONDONTWRITEBYTECODE:'1',PYTHONUTF8:'1'}
+      }));
+     }catch(e){
+      throw Error('HELD_SRC_ORIGINAL_PHASE2_EXECUTION: '+String(e?.message||'UNKNOWN').slice(0,180));
+     }
+     if(replay?.native_python_executed!==true||
+        replay.original_method!=='build-phase2-assays.py'||
+        replay.catalogue_work_count!==32||replay.manifestation_count!==53||
+        replay.source_proofs?.length!==2||
+        !/^[0-9a-f]{64}$/.test(replay.original_method_sha256||'')||
+        replay.source_proofs.some((p,i)=>
+         p.work_id!==sourceProofs[i].work_id||
+         p.source_file_id!==sourceProofs[i].source_file_id||
+         p.derivative_sha256!==sourceProofs[i].verified_derivative_sha256)||
+        replay.contextual_roles?.length!==6||
+        replay.compilation_passes?.length!==2||
+        replay.tomography?.length!==2||
+        replay.original_historical_compilation_proven!==false||
+        replay.original_src_historical_registries_used!==false)
+      throw Error('HELD_SRC_ORIGINAL_PHASE2_VIXEN_RECEIPT_MISMATCH');
+     return{
+      schema:'td613.vixen.original-src-phase2-podium/v1',
+      method:'ORIGINAL_SRC_PHASE2_CONTEXT_COMPILER_EVIDENCE_TOMOGRAPHY',
+      source_estate:'VIXEN_EXPERIMENT_A_ONLY',
+      native_python_executed:true,
+      original_native_phase2:replay,source_proofs:sourceProofs,
+      historical_compilation_proven:false,
+      original_native_equivalence:'HELD_UNPROVEN',
+      read_only:true,scholarly_relation_admission:false,
+      authorship_promotion:false,scientific_credit:0,
+      empirical_replication_credit:0,human_closure_required:true
+     };
     }
     if(operation==='src_verified_vixen_original_typed_traversal'){
      // The unchanged original SRC Python evidence traverser receives only
