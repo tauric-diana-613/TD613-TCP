@@ -34,7 +34,7 @@ test('EM source protocol matrix refuses historical estate into Vixen and identif
  assert.equal(m.full_original_method_parity,'HELD');
  assert.equal(m.restored_identity_github_blob_verified,true);
  assert.equal(m.original_firewall_github_blob_verified,true);
- assert.equal(m.rows.filter(x=>x.real_execution_grade==='HOST_ONLY_REAL_VERIFIED_VIXEN_PAIR_EXECUTED').length,1);
+ assert.equal(m.rows.filter(x=>x.real_execution_grade==='HOST_ONLY_REAL_VERIFIED_VIXEN_PAIR_EXECUTED').length,2);
  assert(m.rows.every(r=>r.external_empirical_credit===0));
 });
 test('original TD613 Em motif firewall and identity sensitivity execute on two real Vixen bytes without granting motif or mechanism',async()=>{
