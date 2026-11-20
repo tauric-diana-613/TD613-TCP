@@ -239,7 +239,22 @@ export function hestenesJacobiSvd(matrixRows, nCols, maxSweeps = 12, tol = 1e-10
       residual: 0
     };
   }
-  // Build column-major copy B (nRows x rCols) where rCols = min(nRows, nCols) via Gram on smaller dim or direct columns
+  // One-sided Jacobi works on the shorter axis. Rotating 48 columns in a
+  // 12-row observation under a fixed sweep cap fabricated up to 44 nonzero
+  // modes: mathematically impossible since rank(A) <= min(m,n).
+  // Transpose wide matrices so Jacobi rotates only min(m,n) vectors while
+  // retaining the original 12x48 observation dimensions in the receipt.
+  if (nRows < nCols) {
+    const transposed = Array.from({length:nCols}, (_,j) =>
+      Array.from({length:nRows}, (_,i) => matrixRows[i]?.[j] ?? 0));
+    const svd = hestenesJacobiSvd(transposed,nRows,maxSweeps,tol);
+    return {...svd,matrix_rows:nRows,matrix_columns:nCols,
+      algebraic_rank:Math.min(nRows,svd.algebraic_rank),
+      nullity:nCols-Math.min(nRows,svd.algebraic_rank),
+      full_column_identifiability_established:false,
+      noise_geometry_identifiability:'UNKNOWN_NOT_MEASURED'};
+  }
+  // Rotate nCols vectors only where nRows>=nCols; preserve bounded rank.
   const cols = [];
   for (let j = 0; j < nCols; j++) {
     const col = new Float64Array(nRows);
