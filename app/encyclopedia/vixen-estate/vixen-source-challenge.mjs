@@ -319,7 +319,8 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
    schema:'td613.vixen.unsent-draft-status/v1',role:'MAESTRO',phase:state.phase,
    revision:state.draftRevision,
    unsent_characters:Object.values(state.draft).reduce((n,v)=>n+String(v||'').length,0),
-   has_unsent_draft:Object.values(state.draft).some(v=>String(v||'').trim().length>0),
+   has_unsent_draft:Object.values(state.draft).some(v=>String(v||'').trim().length>0)||
+    (state.phase==='SETUP'&&state.question.trim().length>0),
    has_local_receipt:!!state.receipt,receipt_export_requested:state.receiptExportRequested,
    unexported_receipt:!!state.receipt&&!state.receiptExportRequested,
    no_automatic_persistence:true
