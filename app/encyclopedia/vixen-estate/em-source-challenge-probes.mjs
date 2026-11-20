@@ -109,6 +109,14 @@ export async function runBrowserSourceChallenge({documents,corpus,question}={}){
  const mask=word?documents[1].body.replace(new RegExp('\\b'+word+'\\b','gi'),' '):null;
  const before=word?b.get(word):0,after=word?counts(mask).get(word)||0:0;
  need(!word||(before>0&&after===0),'HELD_CHALLENGE_COUNTERFACTUAL_ABLATION_NOT_OBSERVED');
+ const assigned=documents.map(d=>{
+  const w=corpus.works.find(w=>w.work_id===d.work_id);
+  const labels=w?.protocols||[];
+  need(Array.isArray(labels)&&labels.every(x=>typeof x==='string'&&
+   /^[A-Z0-9_]+$/.test(x)),'HELD_CHALLENGE_PROTOCOL_ASSIGNMENT_CUSTODY');
+  return labels.slice();
+ });
+ const both=assigned[0].filter(x=>assigned[1].includes(x));
  const source_works=documents.map(d=>({work_id:d.work_id,source_file_id:d.source_file_id,
   declared_original_source_sha256:d.declared_original_source_sha256,
   verified_derivative_sha256:d.verified_derivative_sha256,
@@ -118,6 +126,9 @@ export async function runBrowserSourceChallenge({documents,corpus,question}={}){
   regime:'BROWSER_DERIVED_LEXICAL_SOURCE_CONTROL_NOT_ORIGINAL_NATIVE_PYTHON',
   research_question:question.trim(),
   source_works,identity_census:census,
+  documentary_protocol_assignments:assigned,
+  shared_original_documentary_protocols:both,
+  original_documentary_protocols_executed_in_browser:0,
   source_derived_candidate:word,
   candidate_count:shared.length,
   source_repetition_count:word?[a.get(word),b.get(word)]:[0,0],
