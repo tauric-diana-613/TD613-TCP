@@ -1,0 +1,921 @@
+{
+  "schema": "td613.vixen.public-method-calibration-projection/v1",
+  "source_registry": "WENDBINE/01-MANIFESTS/public-reddit-48h-source-registry-v01.jsonl",
+  "snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "source_post_count": 33,
+  "source_registry_git_blob_sha": "4cc9feff9c9478eb9ae3e9ae3a4093dcda1806ce",
+  "projection_class": "TD613_DERIVED_PUBLIC_CONCEPT_TERMS_NOT_ORIGINAL_AUTHOR_METHOD",
+  "full_post_bodies_copied": false,
+  "public_author_identity_inferred": false,
+  "not_a_vixen_work": true,
+  "concept_labels": [
+    "access_control",
+    "account_boundary",
+    "account_memory",
+    "account_state",
+    "adaptive_topology",
+    "alternative_hypotheses",
+    "api_ecosystem",
+    "app_sandbox",
+    "async_propagation",
+    "async_workflow",
+    "attack_surface",
+    "attestation",
+    "attribution",
+    "audit_provenance",
+    "authentication",
+    "authoritative_state",
+    "authority",
+    "authority_opacity",
+    "authority_propagation",
+    "authority_reach",
+    "authority_relations",
+    "authorization",
+    "automation",
+    "bind_protocol",
+    "capability_security",
+    "causal_reconstruction",
+    "causal_sequence",
+    "causal_topology",
+    "centrality",
+    "change_point_detection",
+    "command_provenance",
+    "command_relations",
+    "common_cause",
+    "content_flow",
+    "control_plane",
+    "correction_graph",
+    "coupling_strength",
+    "cross_platform_correspondence",
+    "cross_platform_identity",
+    "custody",
+    "data_plane",
+    "data_to_control_boundary",
+    "dependency_boundary",
+    "dependency_burden",
+    "dependency_drift",
+    "dependency_geometry",
+    "dependency_graph",
+    "dependency_minimization",
+    "dependency_provenance",
+    "dependency_relations",
+    "dependency_topology",
+    "derived_state",
+    "device_state",
+    "direct_dependency",
+    "direct_trust",
+    "directed_graph",
+    "distributed_version_state",
+    "drift",
+    "echocore",
+    "embedded_service",
+    "emergent_behavior",
+    "encryption",
+    "entity_resolution",
+    "escalation_path",
+    "estimated_state",
+    "event_sequence",
+    "eventual_consistency",
+    "execution_state",
+    "execution_tree",
+    "expected_edge",
+    "explicit_propagation",
+    "external_interface",
+    "failure_cascade",
+    "fault_propagation",
+    "fault_tolerance",
+    "feedback",
+    "feedback_relations",
+    "freshness",
+    "graph_alignment",
+    "graph_sparsification",
+    "guardian_verifier",
+    "hardware_backed_keys",
+    "hardware_root",
+    "heterogeneous_graph",
+    "heterogeneous_relations",
+    "hidden_dependency",
+    "hidden_mediation",
+    "host_application",
+    "human_operator",
+    "human_trigger",
+    "identity",
+    "identity_graph",
+    "identity_opacity",
+    "identity_propagation",
+    "identity_relations",
+    "identity_representation",
+    "implicit_inference",
+    "information_flow",
+    "information_flow_control",
+    "inherited_trust",
+    "isolation",
+    "layered_security_boundary",
+    "least_privilege",
+    "local_version_state",
+    "machine_continuation",
+    "malicious_propagation",
+    "measurement_error",
+    "memory_atom",
+    "memory_lock_ring",
+    "memory_relations",
+    "metadata",
+    "metadata_flow",
+    "metadata_propagation",
+    "model_error",
+    "multiplex_identity_topology",
+    "multiplex_network",
+    "network_boundary",
+    "network_control",
+    "nonlinear_cross_effects",
+    "observability",
+    "observability_drift",
+    "observability_loss",
+    "observable_projection",
+    "observation_boundary",
+    "observed_state",
+    "observed_vs_derived",
+    "offline_authenticator",
+    "operational_digital_twin",
+    "partial_observability",
+    "partial_order",
+    "partial_projection",
+    "path_provenance",
+    "pending_transition",
+    "permission",
+    "permissions",
+    "persistent_state",
+    "principal_identity",
+    "prompt_injection",
+    "provenance",
+    "queue",
+    "recalibration",
+    "recovery",
+    "recovery_cost",
+    "redundancy",
+    "replaceability",
+    "replicated_state",
+    "resilience",
+    "retrieval_precedence",
+    "retry",
+    "revocation",
+    "revocation_lag",
+    "robustness",
+    "rollback",
+    "scope_inheritance",
+    "sdk_dependency",
+    "secure_boot",
+    "selective_rollback",
+    "service_chain",
+    "service_dependency",
+    "session_state",
+    "shared_upstream",
+    "source_provenance",
+    "stale_state",
+    "state_estimation",
+    "state_transition",
+    "supply_chain",
+    "support_dependency",
+    "surface_state",
+    "system_boundary",
+    "system_state",
+    "temporal_graph",
+    "temporal_provenance",
+    "temporal_relations",
+    "third_party_service",
+    "timing",
+    "transformation_history",
+    "transitive_dependency",
+    "transitive_flow",
+    "trust_fanout",
+    "trust_inheritance",
+    "typed_cut_set",
+    "typed_trust",
+    "uncertainty",
+    "unexpected_edge",
+    "unknown_state",
+    "verified_boot",
+    "version_pinning",
+    "version_propagation",
+    "versioning",
+    "witness_check",
+    "zero_trust"
+  ],
+  "public_cooccurrence_pairs": [
+    {
+      "from": "operational_digital_twin",
+      "to": "provenance",
+      "weight": 9
+    },
+    {
+      "from": "dependency_graph",
+      "to": "provenance",
+      "weight": 7
+    },
+    {
+      "from": "dependency_graph",
+      "to": "operational_digital_twin",
+      "weight": 6
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "provenance",
+      "weight": 6
+    },
+    {
+      "from": "operational_digital_twin",
+      "to": "stale_state",
+      "weight": 6
+    },
+    {
+      "from": "async_propagation",
+      "to": "operational_digital_twin",
+      "weight": 5
+    },
+    {
+      "from": "async_propagation",
+      "to": "stale_state",
+      "weight": 5
+    },
+    {
+      "from": "dependency_graph",
+      "to": "hidden_mediation",
+      "weight": 5
+    },
+    {
+      "from": "entity_resolution",
+      "to": "graph_alignment",
+      "weight": 5
+    },
+    {
+      "from": "operational_digital_twin",
+      "to": "state_estimation",
+      "weight": 5
+    },
+    {
+      "from": "provenance",
+      "to": "state_estimation",
+      "weight": 5
+    },
+    {
+      "from": "provenance",
+      "to": "trust_inheritance",
+      "weight": 5
+    },
+    {
+      "from": "authority_propagation",
+      "to": "dependency_graph",
+      "weight": 4
+    },
+    {
+      "from": "dependency_graph",
+      "to": "trust_inheritance",
+      "weight": 4
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "operational_digital_twin",
+      "weight": 4
+    },
+    {
+      "from": "async_propagation",
+      "to": "authority_propagation",
+      "weight": 3
+    },
+    {
+      "from": "async_propagation",
+      "to": "automation",
+      "weight": 3
+    },
+    {
+      "from": "async_propagation",
+      "to": "hidden_mediation",
+      "weight": 3
+    },
+    {
+      "from": "async_propagation",
+      "to": "information_flow",
+      "weight": 3
+    },
+    {
+      "from": "async_propagation",
+      "to": "observability_loss",
+      "weight": 3
+    },
+    {
+      "from": "async_propagation",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "async_propagation",
+      "to": "state_estimation",
+      "weight": 3
+    },
+    {
+      "from": "authority_propagation",
+      "to": "automation",
+      "weight": 3
+    },
+    {
+      "from": "authority_propagation",
+      "to": "information_flow",
+      "weight": 3
+    },
+    {
+      "from": "authority_propagation",
+      "to": "operational_digital_twin",
+      "weight": 3
+    },
+    {
+      "from": "authority_propagation",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "authority_propagation",
+      "to": "trust_inheritance",
+      "weight": 3
+    },
+    {
+      "from": "automation",
+      "to": "information_flow",
+      "weight": 3
+    },
+    {
+      "from": "automation",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "automation",
+      "to": "trust_inheritance",
+      "weight": 3
+    },
+    {
+      "from": "causal_reconstruction",
+      "to": "dependency_graph",
+      "weight": 3
+    },
+    {
+      "from": "causal_reconstruction",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "dependency_graph",
+      "to": "information_flow",
+      "weight": 3
+    },
+    {
+      "from": "dependency_graph",
+      "to": "metadata_propagation",
+      "weight": 3
+    },
+    {
+      "from": "dependency_topology",
+      "to": "state_estimation",
+      "weight": 3
+    },
+    {
+      "from": "entity_resolution",
+      "to": "operational_digital_twin",
+      "weight": 3
+    },
+    {
+      "from": "entity_resolution",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "entity_resolution",
+      "to": "state_estimation",
+      "weight": 3
+    },
+    {
+      "from": "graph_alignment",
+      "to": "operational_digital_twin",
+      "weight": 3
+    },
+    {
+      "from": "graph_alignment",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "graph_alignment",
+      "to": "state_estimation",
+      "weight": 3
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "observability_loss",
+      "weight": 3
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "stale_state",
+      "weight": 3
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "state_estimation",
+      "weight": 3
+    },
+    {
+      "from": "information_flow",
+      "to": "operational_digital_twin",
+      "weight": 3
+    },
+    {
+      "from": "metadata_propagation",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "observability_loss",
+      "to": "provenance",
+      "weight": 3
+    },
+    {
+      "from": "observability_loss",
+      "to": "stale_state",
+      "weight": 3
+    },
+    {
+      "from": "operational_digital_twin",
+      "to": "recovery",
+      "weight": 3
+    },
+    {
+      "from": "operational_digital_twin",
+      "to": "temporal_graph",
+      "weight": 3
+    },
+    {
+      "from": "provenance",
+      "to": "recovery",
+      "weight": 3
+    },
+    {
+      "from": "provenance",
+      "to": "stale_state",
+      "weight": 3
+    },
+    {
+      "from": "stale_state",
+      "to": "state_estimation",
+      "weight": 3
+    },
+    {
+      "from": "api_ecosystem",
+      "to": "dependency_graph",
+      "weight": 2
+    },
+    {
+      "from": "api_ecosystem",
+      "to": "hidden_mediation",
+      "weight": 2
+    },
+    {
+      "from": "api_ecosystem",
+      "to": "provenance",
+      "weight": 2
+    },
+    {
+      "from": "async_propagation",
+      "to": "dependency_graph",
+      "weight": 2
+    },
+    {
+      "from": "async_propagation",
+      "to": "metadata_propagation",
+      "weight": 2
+    },
+    {
+      "from": "async_propagation",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "async_propagation",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "async_workflow",
+      "to": "dependency_graph",
+      "weight": 2
+    },
+    {
+      "from": "async_workflow",
+      "to": "hidden_mediation",
+      "weight": 2
+    },
+    {
+      "from": "async_workflow",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "async_workflow",
+      "to": "provenance",
+      "weight": 2
+    },
+    {
+      "from": "authentication",
+      "to": "recovery",
+      "weight": 2
+    },
+    {
+      "from": "authority",
+      "to": "dependency_graph",
+      "weight": 2
+    },
+    {
+      "from": "authority",
+      "to": "provenance",
+      "weight": 2
+    },
+    {
+      "from": "authority",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "hidden_mediation",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "metadata_propagation",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "observability_loss",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "recovery",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "authority_propagation",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "dependency_graph",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "hidden_mediation",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "metadata_propagation",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "observability_loss",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "automation",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "capability_security",
+      "to": "least_privilege",
+      "weight": 2
+    },
+    {
+      "from": "capability_security",
+      "to": "revocation",
+      "weight": 2
+    },
+    {
+      "from": "causal_reconstruction",
+      "to": "hidden_mediation",
+      "weight": 2
+    },
+    {
+      "from": "causal_reconstruction",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "causal_reconstruction",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "causal_reconstruction",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "dependency_drift",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "dependency_graph",
+      "to": "metadata_flow",
+      "weight": 2
+    },
+    {
+      "from": "dependency_graph",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "dependency_graph",
+      "to": "observability_loss",
+      "weight": 2
+    },
+    {
+      "from": "dependency_graph",
+      "to": "recovery",
+      "weight": 2
+    },
+    {
+      "from": "dependency_graph",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "dependency_graph",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "dependency_minimization",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "dependency_topology",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "dependency_topology",
+      "to": "provenance",
+      "weight": 2
+    },
+    {
+      "from": "drift",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "entity_resolution",
+      "to": "identity_representation",
+      "weight": 2
+    },
+    {
+      "from": "entity_resolution",
+      "to": "temporal_graph",
+      "weight": 2
+    },
+    {
+      "from": "eventual_consistency",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "eventual_consistency",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "failure_cascade",
+      "to": "recovery",
+      "weight": 2
+    },
+    {
+      "from": "graph_alignment",
+      "to": "identity_representation",
+      "weight": 2
+    },
+    {
+      "from": "graph_alignment",
+      "to": "temporal_graph",
+      "weight": 2
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "information_flow",
+      "weight": 2
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "metadata_propagation",
+      "weight": 2
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "hidden_mediation",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "identity_representation",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "identity_representation",
+      "to": "temporal_graph",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "metadata_propagation",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "observability_loss",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "provenance",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "information_flow",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "least_privilege",
+      "to": "revocation",
+      "weight": 2
+    },
+    {
+      "from": "metadata_propagation",
+      "to": "multiplex_identity_topology",
+      "weight": 2
+    },
+    {
+      "from": "metadata_propagation",
+      "to": "observability_loss",
+      "weight": 2
+    },
+    {
+      "from": "metadata_propagation",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "metadata_propagation",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "metadata_propagation",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "multiplex_identity_topology",
+      "to": "observability_loss",
+      "weight": 2
+    },
+    {
+      "from": "multiplex_identity_topology",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "multiplex_identity_topology",
+      "to": "provenance",
+      "weight": 2
+    },
+    {
+      "from": "multiplex_identity_topology",
+      "to": "stale_state",
+      "weight": 2
+    },
+    {
+      "from": "multiplex_identity_topology",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "multiplex_identity_topology",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "observability_loss",
+      "to": "operational_digital_twin",
+      "weight": 2
+    },
+    {
+      "from": "observability_loss",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "observability_loss",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "operational_digital_twin",
+      "to": "temporal_provenance",
+      "weight": 2
+    },
+    {
+      "from": "operational_digital_twin",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "recovery",
+      "to": "robustness",
+      "weight": 2
+    },
+    {
+      "from": "recovery",
+      "to": "state_estimation",
+      "weight": 2
+    },
+    {
+      "from": "revocation",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "stale_state",
+      "to": "temporal_provenance",
+      "weight": 2
+    },
+    {
+      "from": "stale_state",
+      "to": "trust_inheritance",
+      "weight": 2
+    },
+    {
+      "from": "state_estimation",
+      "to": "trust_inheritance",
+      "weight": 2
+    }
+  ]
+}
