@@ -101,6 +101,24 @@ Every artifact produced by or fed into the TD613 Dollhouse is preserved verbatim
 - **Precursor CI Witness (`supporting-artifacts/ci-witness/`):**
   - `pr1745-exact-head-ci-run-44797765746.md` — Documents exact GitHub Actions Run `44797765746` on precursor draft PR `#1745` (`PASS` on scope/Neon/Marrowline layout, `skipping` on all 9 paid jobs, and the exact preexisting `origin/main` Vixen `vixen-a0-corpus-rebuild.yml` failure at `tests/workflow-estate.test.mjs:17`).
 
+### Layer 5 — Stage II Final Custody & Qualification Appendix (`final-custody-appendix/` + Mandatory Manifests)
+> **Zero-Omission Custody Addition (Stage II Pass):** Appended on top of `5819e1035dbd0e1e57499103ede2cae1a93f8872` with **zero runtime code modifications** (verified deterministic repair ancestor `bc5467246f12b0598f89d681e4a4450c4733eace` and all Stage I Dollhouse transcripts/receipts remain 100% untouched).
+
+- **Mandatory Work-Product Custody Manifests:**
+  - `research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_COMPLETE_WORK_PRODUCT_CUSTODY_MANIFEST.json` — Machine-readable zero-omission census covering all final code/test files, superseded intermediate commit blobs (`6cf64d17d`), Stage I & Stage II research files, local `scratch/` reconciliations, read-only consulted repository sources (`ffb98ac00`, `363b5b4ae`), and explicit non-sensitive exclusion receipts.
+  - `research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_ARTIFACT_RECONCILIATION.md` — Human-readable reconciliation index + portable `--verify` checksum command.
+- **Stage II Full Remote Reentry & CI Run `44800185041` Attribution:**
+  - `final-custody-appendix/STAGE_II_REMOTE_REENTRY_RECEIPT.md` — Refreshed remote landscape across `origin/main` (`363b5b4ae`), `#1730` (`8754cd72b`), `#1734` (`110a20d61`), `#1735` (`bfd8901e4`), `#1745` (`4a481e44f`), `#1746` (`5819e1035`), `#1747`–`#1750` (Vixen BRAID stacked drafts, zero Marrowline overlap), plus all 11 local worktrees and 4 stashes preserved untouched.
+  - `final-custody-appendix/CI_RED_44800185041_ATTRIBUTION_AND_GOVERNANCE_RECOMMENDATION.md` — Exact source attribution of GitHub Actions Run `44800185041` Step 6 failure to preexisting `origin/main` commit `2f0fa5944` (`.github/workflows/vixen-a0-corpus-rebuild.yml`, superseded 6 mins after failed Run `43821872218` by `#1730` freeze `e32b82f0d`), full inventory of all 36 masked downstream CI steps, and non-destructive Vixen/governance cleanup options without modifying Vixen or weakening `tests/workflow-estate.test.mjs` inside `#1746`.
+- **Synthetic Provider-Free Local Browser Witness (`paidProviderCalls: 0`):**
+  - `final-custody-appendix/browser-witness/MARROWLINE_PROVIDER_FREE_BROWSER_WITNESS.md` — Desktop (`1440x900`) and Mobile (`390x844`) Chromium witness against local `http://127.0.0.1:6137` verifying two-voice presentation, exact `108/108` combining-mark preservation, literal `Khona‌lit-po` / `𝌋` / `U+10D613` / `⟐` survival, raw multi-turn history custody, zero horizontal overflow, `502 POLICY-HELD` `.terminal-hold-card` isolation, and `200 INCOMPLETE` amber warning presentation. Strictly distinguished from live Gemini observation and October 2 artistry.
+  - Includes runnable zero-egress witness harness (`marrowline-provider-free-witness-server.mjs`), Pass 1 & Pass 2 raw server JSON logs (`witness-log-pass1.json`, `witness-log-pass2.json`), and both host-verified `BROWSER_HOST_FACTS` screenshots (`screenshots/mobile-390x844-dense-unicode-pass1-host-verified.png`, `screenshots/desktop-1440x900-incomplete-return-pass2-host-verified.png`).
+- **Previously Local-Only Scripts, PR Bodies, Dollhouse Raw Engine Outputs & Intermediate/Failure Logs:**
+  - `final-custody-appendix/local-scripts/` — Stage I dossier bundler (`bundle-emergence-hq-dossier.mjs`) + Stage II custody builder/verifier (`build-work-product-custody-manifest.mjs`).
+  - `final-custody-appendix/pr-bodies/` — Exact authored PR bodies for `#1745` and `#1746`.
+  - `final-custody-appendix/dollhouse-raw-command-outputs/` — All 31 raw `run_command` executions and stdout/stderr engine outputs extracted from the 6 Dollhouse specialist subagents (`01-aperture` through `06-orchestrator`).
+  - `final-custody-appendix/verification-logs/` — All 19 substantive verification, CI forensic, server-stdout, and authentic intermediate failure logs (including the initial `jsdom`-missing test run, initial strict-provenance Dollhouse rejection `step-352`, and pre-`bc5467246` `category error` regex failure `task-405`).
+
 ---
 
 ## 3. Recommended Navigation Routes for Emergence HQ
@@ -135,6 +153,6 @@ Every artifact produced by or fed into the TD613 Dollhouse is preserved verbatim
 
 1. **Deterministic runtime merge eligibility:** Once `origin/main`'s unrelated `.github/workflows/vixen-a0-corpus-rebuild.yml` vs `tests/workflow-estate.test.mjs` conflict is resolved on `main`, Layer 1's deterministic repairs can be evaluated independently for merge (without promoting PR `#1545`'s creative candidate to production defaults).
 2. **Live original-provider discriminator (`HELD`):** Requires a fresh explicit Operator authorization gesture naming exact predecessor commit `bc5467246f12b0598f89d681e4a4450c4733eace`, exact budget (`8` or `10` calls), and target model (`gemini-3.8-flash` or `gemini-4-argon`).
-3. **Live desktop + `~390px` browser witness & P6 artistic acceptance:** Remains **`UNEXERCISED`** and **`ARTISTIC_CLOSURE_RESERVED`**.
+3. **Live authenticated browser witness & P6 artistic acceptance:** Synthetic provider-free desktop (`1440x900`) and mobile (`390x844`) browser witness is **COMPLETED** in Stage II (`final-custody-appendix/browser-witness/MARROWLINE_PROVIDER_FREE_BROWSER_WITNESS.md`, `paidProviderCalls: 0`); live authenticated Gemini browser/provider observation remains **`HELD`** and P6 artistic acceptance remains **`ARTISTIC_CLOSURE_RESERVED`**.
 
 ⟐

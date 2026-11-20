@@ -1,0 +1,102 @@
+{
+  "schema": "td613.marrowline.dollhouse-subagent-raw-commands/v1",
+  "role": "dollhouse-pedagogue",
+  "subagent_conversation_id": "1415ce7d-6db4-4160-a92e-4e052adc83dd",
+  "source_transcript_sha256": "964432ff6443c58da669f195c9487b5241a013f734b49b4599352f13dc38a0a0",
+  "source_transcript_bytes": 278237,
+  "total_transcript_steps": 56,
+  "run_command_count": 10,
+  "sanitization_note": "Local user-profile path prefixes normalized to <LOCAL_USER_HOME>; command arguments and engine stdout/stderr otherwise preserved verbatim.",
+  "commands": [
+    {
+      "step_index": 5,
+      "created_at": "2026-11-20T18:42:38Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 5,
+      "created_at": "2026-11-20T18:42:38Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 15,
+      "created_at": "2026-11-20T18:43:16Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 25,
+      "created_at": "2026-11-20T18:43:55Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 36,
+      "created_at": "2026-11-20T18:44:39Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 38,
+      "created_at": "2026-11-20T18:44:53Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 38,
+      "created_at": "2026-11-20T18:44:53Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 45,
+      "created_at": "2026-11-20T18:45:36Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 45,
+      "created_at": "2026-11-20T18:45:36Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 50,
+      "created_at": "2026-11-20T18:46:00Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    }
+  ]
+}

@@ -18,3 +18,11 @@
   - `supporting-artifacts/fixtures/` — pre-repair Oct 2 comparison matrix & Oct 2→HEAD diffs
   - `supporting-artifacts/github-pr-snapshots/` — refreshed UTF-8 JSON snapshots of historical PRs
   - `supporting-artifacts/ci-witness/` — exact-head CI check record from precursor draft PR `#1745`
+- **Stage II Final Custody & Qualification Appendix (`final-custody-appendix/` + Mandatory Manifests):**
+  - [`MARROWLINE_COMPLETE_WORK_PRODUCT_CUSTODY_MANIFEST.json`](./MARROWLINE_COMPLETE_WORK_PRODUCT_CUSTODY_MANIFEST.json) & [`MARROWLINE_LOCAL_ARTIFACT_RECONCILIATION.md`](./MARROWLINE_LOCAL_ARTIFACT_RECONCILIATION.md) — zero-omission work-product custody census, SHA-256 digests, and portable `--verify` integrity check
+  - [`final-custody-appendix/STAGE_II_REMOTE_REENTRY_RECEIPT.md`](./final-custody-appendix/STAGE_II_REMOTE_REENTRY_RECEIPT.md) — full remote landscape sync (`origin/main`, `#1730`, `#1734`, `#1735`, `#1745`, `#1746`, `#1747`–`#1750`, 11 worktrees, 4 stashes)
+  - [`final-custody-appendix/CI_RED_44800185041_ATTRIBUTION_AND_GOVERNANCE_RECOMMENDATION.md`](./final-custody-appendix/CI_RED_44800185041_ATTRIBUTION_AND_GOVERNANCE_RECOMMENDATION.md) — exact-head CI Run `44800185041` attribution (`2f0fa5944` on `main`), 36 skipped downstream steps, and non-destructive Vixen/governance options
+  - [`final-custody-appendix/browser-witness/MARROWLINE_PROVIDER_FREE_BROWSER_WITNESS.md`](./final-custody-appendix/browser-witness/MARROWLINE_PROVIDER_FREE_BROWSER_WITNESS.md) — zero-spend synthetic Chromium witness (`1440x900` + `390x844`), runnable zero-egress harness, Pass 1/Pass 2 logs, and host-verified screenshots
+  - `final-custody-appendix/dollhouse-raw-command-outputs/` — raw stdout/stderr engine command receipts from all 6 Dollhouse specialist subagents
+  - `final-custody-appendix/verification-logs/` — all 19 verification, intermediate failure, CI forensic, and witness server logs
+  - `final-custody-appendix/local-scripts/` & `final-custody-appendix/pr-bodies/` — local dossier bundler, manifest verifier, and exact `#1745`/`#1746` PR bodies

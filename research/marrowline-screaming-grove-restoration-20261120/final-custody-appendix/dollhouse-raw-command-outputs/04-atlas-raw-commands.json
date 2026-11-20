@@ -1,0 +1,93 @@
+{
+  "schema": "td613.marrowline.dollhouse-subagent-raw-commands/v1",
+  "role": "dollhouse-atlas",
+  "subagent_conversation_id": "b0ee9fd1-3394-4eaa-89da-e645c186a2dd",
+  "source_transcript_sha256": "2f312e439311d7f1dccb17abd71b16bbb67f13980efdbfaa4b0c25792ad82e3b",
+  "source_transcript_bytes": 349309,
+  "total_transcript_steps": 53,
+  "run_command_count": 9,
+  "sanitization_note": "Local user-profile path prefixes normalized to <LOCAL_USER_HOME>; command arguments and engine stdout/stderr otherwise preserved verbatim.",
+  "commands": [
+    {
+      "step_index": 6,
+      "created_at": "2026-11-20T18:42:42Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 27,
+      "created_at": "2026-11-20T18:44:07Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 27,
+      "created_at": "2026-11-20T18:44:07Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 27,
+      "created_at": "2026-11-20T18:44:07Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 27,
+      "created_at": "2026-11-20T18:44:07Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 38,
+      "created_at": "2026-11-20T18:45:22Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 45,
+      "created_at": "2026-11-20T18:45:46Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 45,
+      "created_at": "2026-11-20T18:45:46Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 48,
+      "created_at": "2026-11-20T18:46:18Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    }
+  ]
+}

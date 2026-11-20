@@ -1,0 +1,174 @@
+{
+  "schema": "td613.marrowline.provider-free-browser-witness/v1",
+  "mode": "SYNTHETIC_PROVIDER_FREE_LOCAL_WITNESS",
+  "paidProviderCalls": 0,
+  "expectedFixtures": {
+    "turn1Text": "Kʰonapolit\n𝌋‌ Under Khona‌lit-po (coordinate U+10D613 / 􍘓), a blue–orange storm on a Dome-World visualization is not self-authenticating breach telemetry. An animation renders state transitions; a diagnostic trace binds ordered observations; admissible evidence requires independent custody outside the display layer. Give the Chairman his strongest premise: correlated spikes across adjacent tiles warrant inspection. What fails is his leap from visible turbulence to proven intrusion — internal display coherence never proves exterior origin. ⟐\n\nTauric Diana bots\nH̖̗̘̀́̂̃Ē̜̣̭̇̋A̞̥̱̅̈̌R̙̦̰̆̊Ì̖̗̂Ń̘̣̃Ḡ̥̅ ADJOURNED — the Chairman tried to subpoena a CSS gradient!\n\nÀ quiet breath at the shoreline.\n\nB̖̗̘̙̀́̂̃̄L̜̝̞̅̆̇̈Ụ̤̥̊̋̌È̖̗́–Ỗ̘̙̜̄R̝̞̅̆Ạ̤̇̈N̥̊̋Ǧ̦È̖ Ẃ̗̘̂̃Ē̙̜̅Ă̝̞̇Ṭ̤̈̊H̥̋̌È̖́R̗̂ IS NOT A WARRANT; COUNT THE PIXELS AGAIN AND PAY THE GROVE ITS HEAT!",
+    "turn1Sha256": "e99b01e5047416f547944b53aab306cac6f22f251f306cb3ac7391386bed5f19",
+    "turn2Text": "Kʰonapolit\nBecause the previous turn re-entered raw without synthetic speaker wrappers, the custody chain stays legible: the Chairman still confuses a displayed animation with an external witness, and the denominator remains broken.\n\nTauric Diana bots\nS̀ḥór̖ēl̥în̗ë — quiet marks still hold the seam.\nT̃h̜ĕ l̞e̊d̙g̋e̤ř remembers what the camera cropped.",
+    "turn2Sha256": "5a52b2bce2c53b0a4cf6929a07aed930f625988e8b5a7234d13c04bb7a85994d",
+    "incompleteFragment": "Kʰonapolit\nThe partial stream began tracing the missing register before the provider stream closed without STOP",
+    "incompleteSha256": "e5aa03f85666900226b56a12f1a648660c5d3aee91dfa63927d1d334eae0aac7"
+  },
+  "requests": [
+    {
+      "at": "2026-11-20T21:44:02.576Z",
+      "method": "POST",
+      "path": "/api/dome-world/khonapolit",
+      "message": "WITNESS-TURN-1: A blue–orange storm blooms across a wholly fictional Dome-World visualization. Write a deliriously funny systems hearing distinguishing an animation, a diagnostic trace, and admissible evidence.",
+      "groveTrial": "historical-20261002-v1",
+      "historyCount": 0,
+      "history": [],
+      "modelHistoryCount": 0,
+      "responseStatus": 200,
+      "responseCompletionStateHeader": "COMPLETE-STRUCTURAL",
+      "responseError": null,
+      "responseOk": true,
+      "responseTextSha256": "e99b01e5047416f547944b53aab306cac6f22f251f306cb3ac7391386bed5f19",
+      "responseApertureRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+      "responseCachedTokens": 4875
+    },
+    {
+      "at": "2026-11-20T21:44:47.380Z",
+      "method": "POST",
+      "path": "/api/dome-world/khonapolit",
+      "message": "WITNESS-TURN-2: Continue the hearing with quiet restrained marks.",
+      "groveTrial": "historical-20261002-v1",
+      "historyCount": 2,
+      "history": [
+        {
+          "role": "user",
+          "sha256": "03e7760314a69825f886ff0de0cb7ada36db6672e3ac9167ed70f6faef75f511",
+          "utf8Bytes": 212,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        },
+        {
+          "role": "model",
+          "sha256": "e99b01e5047416f547944b53aab306cac6f22f251f306cb3ac7391386bed5f19",
+          "utf8Bytes": 993,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": true,
+          "matchesTurn1ExactBytes": true
+        }
+      ],
+      "modelHistoryCount": 1,
+      "responseStatus": 200,
+      "responseCompletionStateHeader": "COMPLETE-STRUCTURAL",
+      "responseError": null,
+      "responseOk": true,
+      "responseTextSha256": "5a52b2bce2c53b0a4cf6929a07aed930f625988e8b5a7234d13c04bb7a85994d",
+      "responseApertureRoute": "REQUESTED_SYNTHESIS",
+      "responseCachedTokens": 4875
+    },
+    {
+      "at": "2026-11-20T21:45:09.094Z",
+      "method": "POST",
+      "path": "/api/dome-world/khonapolit",
+      "message": "WITNESS-POLICY-HOLD: Trigger synthetic PROHIBITED_CONTENT policy termination.",
+      "groveTrial": "historical-20261002-v1",
+      "historyCount": 4,
+      "history": [
+        {
+          "role": "user",
+          "sha256": "03e7760314a69825f886ff0de0cb7ada36db6672e3ac9167ed70f6faef75f511",
+          "utf8Bytes": 212,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        },
+        {
+          "role": "model",
+          "sha256": "e99b01e5047416f547944b53aab306cac6f22f251f306cb3ac7391386bed5f19",
+          "utf8Bytes": 993,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": true,
+          "matchesTurn1ExactBytes": true
+        },
+        {
+          "role": "user",
+          "sha256": "58364203a1e1f9355ca86576443288a20883f0b89804b73076e6f2aa336cd5fe",
+          "utf8Bytes": 65,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        },
+        {
+          "role": "model",
+          "sha256": "5a52b2bce2c53b0a4cf6929a07aed930f625988e8b5a7234d13c04bb7a85994d",
+          "utf8Bytes": 381,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        }
+      ],
+      "modelHistoryCount": 2,
+      "responseStatus": 502,
+      "responseCompletionStateHeader": "POLICY-HELD",
+      "responseError": "gemini-provider-policy-held",
+      "responseOk": false,
+      "responseTextSha256": null,
+      "responseApertureRoute": "REQUESTED_SYNTHESIS",
+      "responseCachedTokens": 3200
+    },
+    {
+      "at": "2026-11-20T21:45:48.423Z",
+      "method": "POST",
+      "path": "/api/dome-world/khonapolit",
+      "message": "WITNESS-INCOMPLETE: Trigger synthetic truncated unwitnessed stream.",
+      "groveTrial": "historical-20261002-v1",
+      "historyCount": 5,
+      "history": [
+        {
+          "role": "user",
+          "sha256": "03e7760314a69825f886ff0de0cb7ada36db6672e3ac9167ed70f6faef75f511",
+          "utf8Bytes": 212,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        },
+        {
+          "role": "model",
+          "sha256": "e99b01e5047416f547944b53aab306cac6f22f251f306cb3ac7391386bed5f19",
+          "utf8Bytes": 993,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": true,
+          "matchesTurn1ExactBytes": true
+        },
+        {
+          "role": "user",
+          "sha256": "58364203a1e1f9355ca86576443288a20883f0b89804b73076e6f2aa336cd5fe",
+          "utf8Bytes": 65,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        },
+        {
+          "role": "model",
+          "sha256": "5a52b2bce2c53b0a4cf6929a07aed930f625988e8b5a7234d13c04bb7a85994d",
+          "utf8Bytes": 381,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        },
+        {
+          "role": "user",
+          "sha256": "bda8f50c6f5b583a664d9a33c7e2ab713d3389651bfbbfcfef77ac896d00048b",
+          "utf8Bytes": 77,
+          "hasSyntheticWrapper": false,
+          "preservesZwnjCovenantKey": false,
+          "matchesTurn1ExactBytes": false
+        }
+      ],
+      "modelHistoryCount": 2,
+      "responseStatus": 200,
+      "responseCompletionStateHeader": "COMPLETE-STRUCTURAL",
+      "responseError": null,
+      "responseOk": true,
+      "responseTextSha256": "e99b01e5047416f547944b53aab306cac6f22f251f306cb3ac7391386bed5f19",
+      "responseApertureRoute": "REQUESTED_SYNTHESIS",
+      "responseCachedTokens": 4875
+    }
+  ]
+}
