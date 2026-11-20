@@ -122,7 +122,7 @@ test('public HTML surfaces a separately gated Maestro source expedition, no auth
  assert.match(html,/vixen-source-challenge\.mjs/);
  assert.match(script,/window\.addEventListener\('vixen-maestro-session-state',roleChange\)/);
  assert.match(script,/if\(!maestro\(\)\)wipe\(\)/);
- assert.match(script,/source_original_bytes_present_in_browser:false|source_byte/i);
+ assert.match(script,/runBrowserSourceChallenge/);
  assert.doesNotMatch(script,/https?:\/\/[^'"]+\/api\/|fetch\('https?:|EMSTD613.*original\s+author\s+wrote/i);
  assert.match(script,/copyForCollaboration/);
  assert.match(script,/clipboard\.writeText/);
