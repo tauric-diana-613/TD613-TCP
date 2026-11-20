@@ -196,86 +196,101 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
    opening_turn:session.latestTurn,notes_permission:'NOT_REQUESTED',read_only:true});
  };
  const choose=async({choice_id,source_work_id=null,question=''}={})=>{
-  if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
-  if(current.path.length>=LIMIT)return receipt('HELD',stateError('SESSION_ROUTE_HISTORY_LIMIT_EXPORT_AND_RESTART'));
+  const session=current;
+  if(!session?.active)return held('SESSION_NOT_STARTED');
+  if(session.path.length>=LIMIT)return held('SESSION_ROUTE_HISTORY_LIMIT_EXPORT_AND_RESTART');
   const id=safe(choice_id,60);
-  const valid=new Set([...displayOptions(current.role,current.current).map(x=>x.id),
-   ...(current.latestTurn?.choices||[]).map(x=>x.choice_id)]);
-  if(!valid.has(id))return receipt('HELD',stateError('CHOICE_NOT_AVAILABLE_ON_CURRENT_TRAIL'));
-  if(source_work_id!==null&&!works.has(source_work_id))
-   return receipt('HELD',stateError('UNKNOWN_SOURCE_WORK'));
-  const step={sequence:current.path.length+1,node_id:id,
-   source_work_id:source_work_id||current.latestTurn?.featured_work?.work_id||null,
-   role:current.role,visitor_question:safe(question,300),
+  const valid=new Set([...displayOptions(session.role,session.current).map(x=>x.id),
+   ...(session.latestTurn?.choices||[]).map(x=>x.choice_id)]);
+  if(!valid.has(id))return held('CHOICE_NOT_AVAILABLE_ON_CURRENT_TRAIL');
+  if(source_work_id!==null&&!works.has(source_work_id))return held('UNKNOWN_SOURCE_WORK');
+  const op=nextTurn(session,'CHOOSE');
+  const step={sequence:session.path.length+1,node_id:id,
+   source_work_id:source_work_id||session.latestTurn?.featured_work?.work_id||null,
+   role:session.role,visitor_question:safe(question,300),
    evidence_class:'USER_CHOSEN_ROUTE_NOT_INDEPENDENT_OBSERVATION'};
-  let narrative=null;
-  try{narrative=await conductVixenNarrativeTurn({corpus,role:current.role,goal:current.goal,
-   choice_id:id,question:step.visitor_question,source_work_id:step.source_work_id,
-   trail:current.path,cart:getCart(),hostRead,
-   max_read_calls:typeof hostRead==='function'?2:0,step_number:step.sequence});}
-  catch(_){return receipt('HELD',stateError('NARRATIVE_CONDUCTOR_UNAVAILABLE'));}
-  narrative=await enrichWithVerifiedHost(narrative);
-  current.path.push(step);current.current=id;current.cartSnapshot=getCart();
-  current.latestTurn=narrative;current.turns.push({step,narrative});
-  if(current.notesAllowed){
-   let drafted=null;
-   if(typeof authorProgramNote==='function'){
-    try{drafted=await authorProgramNote({role:current.role,step,narrative,
-     route_history:current.path.slice(),visitor_reports:current.questReports.slice()});}
-    catch(_){drafted=null;}
-   }
-   current.notes.push({
-    note_number:current.notes.length+1,linked_step:step.sequence,
-    title:shared[id].title,draft:typeof drafted==='string'?safe(drafted,3500):null,
+  let narrative;
+  try{
+   narrative=await conductVixenNarrativeTurn({corpus,role:session.role,goal:session.goal,
+    choice_id:id,question:step.visitor_question,source_work_id:step.source_work_id,
+    trail:session.path.slice(),cart:getCart(),hostRead,
+    max_read_calls:typeof hostRead==='function'?2:0,step_number:step.sequence});
+   if(guard(session,op))return guard(session,op);
+   narrative=await enrichWithVerifiedHost(narrative,session);
+  }catch(_){return guard(session,op)||held('NARRATIVE_CONDUCTOR_UNAVAILABLE');}
+  if(guard(session,op))return guard(session,op);
+  let drafted=null;
+  const authorNotes=session.notesAllowed;
+  if(authorNotes&&typeof authorProgramNote==='function'){
+   try{drafted=await authorProgramNote({role:session.role,step,narrative,
+    route_history:[...session.path,step],visitor_reports:session.questReports.slice()});}
+   catch(_){drafted=null;}
+  }
+  // Commit route and note only after all awaited work has passed the epoch guard.
+  if(guard(session,op))return guard(session,op);
+  session.path.push(step);session.current=id;session.cartSnapshot=getCart();
+  session.latestTurn=narrative;session.turns.push({step,narrative});
+  if(authorNotes&&session.notesAllowed){
+   session.notes.push({
+    note_number:session.notes.length+1,linked_step:step.sequence,
+    title:shared[id]?.title||id,draft:typeof drafted==='string'?safe(drafted,3500):null,
     authoring_status:typeof drafted==='string'?'HOST_AI_DRAFT':'LOCAL_STRUCTURED_OUTLINE',
     highlighted_work:narrative.featured_work?.title||null,
     alternative_work:narrative.alternative_work?.title||null,
-    next_tests:narrative.choices.slice(0,3).map(x=>x.title),
+    next_tests:(narrative.choices||[]).slice(0,3).map(x=>x.title),
     route_reason:narrative.featured_work?.provenance_reason||[],
-    source_work_ids:narrative.provenance.corpus_work_ids,
+    source_work_ids:narrative.provenance?.corpus_work_ids||[],
     claim_ceiling:'PROVISIONAL_ROUTE_REFLECTION_NOT_SOURCE_TESTIMONY'
    });
   }
-  return receipt('SUPPORTED',{step,chat_card:publicCard(current,id),narrative,
-   route_hint:{view:shared[id].view,requires_human_navigation:true},
+  return receipt('SUPPORTED',{step,chat_card:publicCard(session,id),narrative,
+   route_hint:{view:shared[id]?.view||'works',requires_human_navigation:true},
    optional_quests:narrative.quests,
    suggested_cart_action:id==='cart'?'Review selections; add items only via the visitor-controlled cart.':null});
  };
  const report=async({quest_id,outcome='',observation='',skip=false}={})=>{
-  if(!current?.active||!current.latestTurn)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
-  const id=safe(quest_id,100),quest=current.latestTurn.quests?.find(x=>x.quest_id===id);
-  if(!quest)return receipt('HELD',stateError('MISSION_NOT_OFFERED_ON_CURRENT_STEP'));
-  if(quest.actor==='AI')return receipt('HELD',stateError('AI_READ_RECEIPT_CANNOT_BE_SELF_REPORTED'));
-  if(current.questReports.some(x=>x.quest_id===id))return receipt('HELD',stateError('MISSION_ALREADY_REPORTED'));
+  const session=current;
+  if(!session?.active||!session.latestTurn)return held('SESSION_NOT_STARTED');
+  const id=safe(quest_id,100),quest=session.latestTurn.quests?.find(x=>x.quest_id===id);
+  if(!quest)return held('MISSION_NOT_OFFERED_ON_CURRENT_STEP');
+  if(quest.actor==='AI')return held('AI_READ_RECEIPT_CANNOT_BE_SELF_REPORTED');
+  if(session.questReports.some(x=>x.quest_id===id))return held('MISSION_ALREADY_REPORTED');
   const entry={quest_id:id,actor:quest.actor,status:skip?'VOLUNTARILY_SKIPPED':'VISITOR_REPORTED',
    outcome:skip?'':safe(outcome,400),observation:skip?'':safe(observation,1200),
    source_work_id:quest.target_work_id||null,
    evidence_class:'USER_REPORT_UNVERIFIED',independent_witness:false,crosswalk_proven:false};
-  if(!skip&&!entry.observation)return receipt('HELD',stateError('VISITOR_REPORT_OR_SKIP_REQUIRED'));
-  current.questReports.push(entry);
+  if(!skip&&!entry.observation)return held('VISITOR_REPORT_OR_SKIP_REQUIRED');
+  const op=nextTurn(session,'REPORT');
   let followup=null;
   if(!skip){
    try{
-    followup=await conductVixenNarrativeTurn({corpus,role:current.role,
-     goal:current.goal,choice_id:'countertest',question:entry.observation,
-     source_work_id:entry.source_work_id,trail:current.path,cart:getCart(),
+    followup=await conductVixenNarrativeTurn({corpus,role:session.role,
+     goal:session.goal,choice_id:'countertest',question:entry.observation,
+     source_work_id:entry.source_work_id,trail:session.path.slice(),cart:getCart(),
      hostRead,max_read_calls:typeof hostRead==='function'?2:0,
-     step_number:current.path.length+1});
-    followup=await enrichWithVerifiedHost(followup);
-    current.latestTurn=followup;
-    current.turns.push({type:'FOLLOW_UP_TO_VOLUNTARY_VISITOR_REPORT',
-     report_id:entry.quest_id,narrative:followup});
+     step_number:session.path.length+1});
+    if(guard(session,op))return guard(session,op);
+    followup=await enrichWithVerifiedHost(followup,session);
    }catch(_){followup=null;}
   }
-  if(current.notesAllowed&&!skip){
-   let drafted=null;
-   if(typeof authorProgramNote==='function'){
-    try{drafted=await authorProgramNote({role:current.role,
-      report:entry,narrative:followup,route_history:current.path.slice()});}
-    catch(_){drafted=null;}
-   }
-   current.notes.push({
-    note_number:current.notes.length+1,linked_report:entry.quest_id,
+  if(guard(session,op))return guard(session,op);
+  let drafted=null;
+  const authorNotes=session.notesAllowed&&!skip;
+  if(authorNotes&&typeof authorProgramNote==='function'){
+   try{drafted=await authorProgramNote({role:session.role,report:entry,
+    narrative:followup,route_history:session.path.slice()});}
+   catch(_){drafted=null;}
+  }
+  if(guard(session,op))return guard(session,op);
+  session.questReports.push(entry);
+  if(followup){
+   session.latestTurn=followup;
+   session.turns.push({type:'FOLLOW_UP_TO_VOLUNTARY_VISITOR_REPORT',
+    report_id:entry.quest_id,narrative:followup});
+  }
+  if(authorNotes&&session.notesAllowed){
+   session.notes.push({
+    note_number:session.notes.length+1,linked_report:entry.quest_id,
     title:'A visitor clue and its countertest',draft:typeof drafted==='string'?safe(drafted,3500):null,
     authoring_status:typeof drafted==='string'?'HOST_AI_DRAFT':'LOCAL_STRUCTURED_OUTLINE',
     visitor_observation:entry.observation,
@@ -285,10 +300,9 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
   }
   return receipt('SUPPORTED',{report:entry,
    narrative_followup:skip?'This optional quest can be skipped without closing your research path.':
-    'A new counterexample-oriented research branch was prepared from your visitor report; it remains an unverified observation.',
-   research_turn:followup,
-   next_choices:current.latestTurn?.choices||[],
-   notes_written:current.notesAllowed&&!skip});
+    'A counterexample-oriented research branch was prepared; it remains an unverified visitor observation.',
+   research_turn:followup,next_choices:session.latestTurn?.choices||[],
+   notes_written:authorNotes&&session.notesAllowed});
  };
  const handoff=()=>{
   if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
