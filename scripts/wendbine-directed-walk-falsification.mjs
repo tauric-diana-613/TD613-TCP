@@ -178,7 +178,8 @@ export function calculateDirectedWalkFalsification({meta,posts,relations}){
    concept_outperforms_all_available_controls:beatsConcept,
    rewire_improves_graph_hits:graphRewired>graphOriginal,
    rewire_improves_concept_hits:conceptRewired>conceptOriginal,
-   did_not_optimize_on_evaluation_labels_after_design:true
+   historical_labels_seen_during_exploratory_design:true,
+   independent_preregistration_credit:0
   },
   per_target:perTarget,
   decision_rule:'ANY_NULL_TIE_OR_WIN_PREVENTS_METHOD_SPECIFIC_SUPERIORITY;_POST_HOC_ADVANTAGE_STILL_REQUIRES_INDEPENDENT_REPLICATION',
