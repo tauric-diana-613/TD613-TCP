@@ -189,7 +189,7 @@ export async function runDualAtelierMaestroQualification({repoRoot=ROOT}={}){
   checkpoint(null,'HUMAN_ACTION_AND_HELD_RESEARCH',{
    revised_hypothesis:'NATIVE_VS_ADAPTED_PROJECTIVE_ROUTE_DIFFERS_WITHOUT_ESTABLISHING_HISTORICAL_CAUSE',
    next_action:'Inspect the two actual Work spans under an independent reviewer and preregister a paired source-bound method differential before new claims',
-   visitor_task_status:'PROPOSED_NOT_COMPLETED',external_historical_witness:false})
+   human_task_status:'PROPOSED_NOT_COMPLETED',external_historical_witness:false})
  ];
  for(let i=1;i<srcTrace.length;i++)srcTrace[i]=checkpoint(srcTrace[i-1],srcTrace[i].stage,
   Object.fromEntries(Object.entries(srcTrace[i]).filter(([k])=>!['stage','previous_hash','hash','evidence_class','original_method_full_equivalence','scientific_credit','independent_empirical_replication_credit'].includes(k))));
