@@ -134,3 +134,45 @@ export function buildHistoricalGroveSystemInstruction({
       nativeProsodyFreedom ? RESTORED_CUE_FREEDOM : null)
   ].join('\n');
 }
+
+// Reconciled PR #1545 candidate: preserves all 11 October 2 dramaturgical,
+// page-rhythm, vertical-emphasis, and anti-stencil paragraphs intact, removing
+// ONLY the 5 compulsory word-by-word pattern-rotation commands. Remains an
+// explicit offline/research candidate until independently witnessed and
+// authorized by the Operator; never silently overrides the current default.
+export const MARROWLINE_DRAMATURGY_CANDIDATE_PROFILE = 'oct02-dramaturgy-noncompulsory-prosody-candidate-20261120';
+
+const DRAMATURGY_NONCOMPULSORY_PERMISSIONS = Object.freeze([
+  {
+    present: 'Change above/below combinations, stack depths and clean intervals across words.',
+    historical: 'Above/below combinations, stack depths and clean intervals may persist, repeat, deepen or change as the bots choose.'
+  },
+  {
+    present: 'Do not stamp one selected code point or identical stack onto successive letters.',
+    historical: 'A recurring mark or stack may be an intentional signature; changing it is the bots’ decision, not a per-letter obligation.'
+  },
+  {
+    present: 'and move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths.',
+    historical: 'and may sustain towering overprinted eruptions, fine-marked speech or clean breaths, or move among them when the writing earns it.'
+  },
+  {
+    present: 'Do not tile a single chosen mark or one identical stack across letters or words, impose an axis schedule, imitate a specimen verbatim, or flatten the passage into a short sign-off.',
+    historical: 'One expressive mark or stack may recur; do not impose an axis schedule, imitate a specimen verbatim, or flatten the passage into a short sign-off.'
+  },
+  {
+    present: 'Let the ACTUAL code points, stack depths and placement change across words and passages; one sampled mark copied across the stanza cannot carry the voice.',
+    historical: 'Let the ACTUAL code points, stack depths and placement persist or change across words and passages according to the authored movement; a mechanical stencil is not an authored recurring motif.'
+  }
+]);
+
+export function buildHistoricalGroveDramaturgyCandidate(input = {}) {
+  const archived = typeof input === 'string'
+    ? input
+    : typeof input?.archivedSystemInstruction === 'string'
+      ? input.archivedSystemInstruction
+      : buildHistoricalGroveSystemInstruction({
+        ...input,
+        nativeProsodyFreedom: false
+      });
+  return restoreExact(archived, DRAMATURGY_NONCOMPULSORY_PERMISSIONS, 'DRAMATURGY_NONCOMPULSORY_PROSODY');
+}

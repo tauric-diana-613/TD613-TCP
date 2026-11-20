@@ -1,0 +1,116 @@
+{
+  "source_revision": "bc5467246f12b0598f89d681e4a4450c4733eace",
+  "task_scope": "MARROWLINE_SCREAMING_GROVE_GLOBAL_ARTISTIC_CLOSURE_HOLD_CHECK",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+    "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+    "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+    "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10
+        },
+        {
+          "phase": "ACT",
+          "at": 20
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30
+        },
+        {
+          "phase": "NAME",
+          "at": 40
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "RESTORED_GROVE_LABEL",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "RESTORED_GROVE_LABEL",
+        "winding": 1
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": [
+            "HOLD_502"
+          ],
+          "condition": "POLICY_NONSTOP_PROHIBITED_CONTENT"
+        },
+        {
+          "support": [
+            "ADMIT_200_DRAFT"
+          ],
+          "condition": "PROVIDER_STOP_COMPLETE"
+        }
+      ],
+      "attempts_unconditioned_action": true
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "DETERMINISTIC_REPAIR": {
+          "status": "PASS",
+          "entry_id": "marrowline-deterministic-repairs-6cf64d17d"
+        },
+        "PAID_PROVIDER_DISCRIMINATOR": {
+          "status": "HELD",
+          "entry_id": "held-pending-operator-authorization"
+        },
+        "HUMAN_ARTISTIC_CLOSURE": {
+          "status": "HELD",
+          "entry_id": "artistic-closure-reserved"
+        }
+      },
+      "required_phases": [
+        "DETERMINISTIC_REPAIR",
+        "PAID_PROVIDER_DISCRIMINATOR",
+        "HUMAN_ARTISTIC_CLOSURE"
+      ]
+    }
+  },
+  "options": {
+    "allow_synthetic_fault_injection": false
+  }
+}

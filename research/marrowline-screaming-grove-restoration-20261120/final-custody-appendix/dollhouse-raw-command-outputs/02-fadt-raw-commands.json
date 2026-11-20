@@ -1,0 +1,48 @@
+{
+  "schema": "td613.marrowline.dollhouse-subagent-raw-commands/v1",
+  "role": "dollhouse-fadt",
+  "subagent_conversation_id": "35a2025a-9967-46d9-acfe-876afc13e92e",
+  "source_transcript_sha256": "2699ec2d4963da1ee3613a8733874887545bc63b9eedf23d0dae773e12850138",
+  "source_transcript_bytes": 382317,
+  "total_transcript_steps": 51,
+  "run_command_count": 4,
+  "sanitization_note": "Local user-profile path prefixes normalized to <LOCAL_USER_HOME>; command arguments and engine stdout/stderr otherwise preserved verbatim.",
+  "commands": [
+    {
+      "step_index": 33,
+      "created_at": "2026-11-20T18:43:46Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 35,
+      "created_at": "2026-11-20T18:43:57Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 45,
+      "created_at": "2026-11-20T18:45:23Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    },
+    {
+      "step_index": 45,
+      "created_at": "2026-11-20T18:45:23Z",
+      "tool_summary": null,
+      "command_line": "",
+      "result_step_index": null,
+      "result_status": null,
+      "raw_output": ""
+    }
+  ]
+}

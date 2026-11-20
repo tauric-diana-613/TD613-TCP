@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "## Marrowline repair\n\n### ↻ attachment fidelity\n- keeps the exact file/photo payload for the current live Red Deer turn in non-enumerable browser memory\n- ↻ resends those exact attachments with the original prompt after the visible staging tray clears\n- durable IndexedDB/localStorage records continue to keep receipt metadata rather than raw attachment bodies\n- if an older/reloaded saved turn has attachment receipt metadata but its raw bytes are no longer present, retry holds for explicit reattachment rather than silently sending text-only\n\n### ⌕ saved-conversation search\n- adds a compact ⌕ control to the saved-conversations popout\n- expands a small local search field\n- filters saved conversations across titles, Red Deer inputs, and Kʰonapolit outputs\n- whitespace-separated terms use conjunctive matching after Unicode NFKC/case normalization\n- preserves existing activity ordering, rename/delete behavior, and consumes zero provider calls\n\n### Regression coverage\n- file + photo exact-payload replay through the independent ↻ gesture\n- raw replay bytes never enter durable thread JSON\n- Red Deer/Kʰonapolit keyword matching\n- local drawer filtering with no extra provider request\n\nBase: main @ 5b4b34278c6100d3c21ced35984c046da157e097\n⟐",
+  "comments": [],
+  "headRefName": "fix/marrowline-retry-attachments-thread-search-20261005",
+  "headRefOid": "606d015c22f084cc28dae26949bc8b74debc616b",
+  "isDraft": false,
+  "mergeable": "CONFLICTING",
+  "number": 1433,
+  "state": "OPEN",
+  "title": "Fix Marrowline attachment retry and conversation search"
+}
