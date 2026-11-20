@@ -346,7 +346,8 @@
       "wendbine_public_inventory",
       "wendbine_public_reconstruction",
       "wendbine_public_research_journey",
-      "wendbine_public_sweep"
+      "wendbine_public_sweep",
+      "wendbine_observed_evidence_routes"
     ],
     "EM_ATELIER": [
       "em_native_text",
