@@ -1,0 +1,105 @@
+/* A source-specific human challenge. Scoped to Maestro; flaxen gold and cool silver,
+   small editorial type, compact density, no plum/purple/violet and no native-method pretense. */
+#vixenAiJourney #vmaSourceChallenge{
+ box-sizing:border-box!important;position:relative;isolation:isolate;min-width:0;max-width:100%;
+ margin:12px 0!important;padding:clamp(12px,2vw,22px)!important;
+ background:linear-gradient(130deg,#07171e,#102830 62%,#0b191d)!important;
+ color:#f7ead4!important;border:1px solid #d8bd917a!important;
+ overflow-wrap:anywhere
+}
+#vmaSourceChallenge[hidden]{display:none!important}
+#vmaSourceChallenge *{box-sizing:border-box}
+#vmaSourceChallenge :is(.ve-eyebrow,.ve-small){
+ font:800 10px/1.5 system-ui,sans-serif!important;letter-spacing:.12em;
+ color:#e6c597!important;margin:0 0 5px!important
+}
+#vmaSourceChallenge .ve-headline{
+ font:italic 400 clamp(22px,2.3vw,30px)/1.15 Georgia,serif!important;
+ color:#ffe7bf!important;letter-spacing:-.035em;margin:3px 0 9px!important
+}
+#vmaSourceChallenge :is(.ve-lede,.ve-caption,.ve-muted,.ve-warning,.ve-next,.ve-success){
+ font:400 12px/1.55 system-ui,sans-serif!important;
+ color:#d8d9d3!important;margin:7px 0 12px!important
+}
+#vmaSourceChallenge .ve-caption{color:#f5dbad!important}
+#vmaSourceChallenge .ve-warning{border-left:2px solid #ecd1a0!important;padding:10px 12px!important;
+ background:#142b33!important;color:#f0e3cc!important}
+#vmaSourceChallenge .ve-success{color:#f1ddb8!important;font-weight:650!important}
+#vmaSourceChallenge .ve-next{font-weight:650!important;color:#f6e5cd!important}
+#vmaSourceChallenge .ve-steps{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;
+ padding:0!important;margin:16px 0!important;list-style:none!important
+}
+#vmaSourceChallenge .ve-step{
+ border:1px solid #67818977!important;padding:8px 6px!important;
+ font:750 9px/1.3 system-ui,sans-serif!important;letter-spacing:.04em;
+ color:#a5b9bb!important;background:#111f25!important;min-width:0;
+ text-align:center
+}
+#vmaSourceChallenge .ve-step-current{border-color:#f1d3a4!important;
+ background:#2a3635!important;color:#ffeac7!important}
+#vmaSourceChallenge .ve-step-complete{border-color:#8caa9e!important;color:#d9e5d7!important}
+#vmaSourceChallenge .ve-field{
+ display:grid!important;gap:6px;min-width:0;margin:11px 0!important;
+ font:450 12px/1.45 system-ui,sans-serif!important;color:#ecdcc3!important
+}
+#vmaSourceChallenge .ve-label{font-weight:650!important;color:#f1ddb7!important}
+#vmaSourceChallenge .ve-control{
+ display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+ padding:10px 11px!important;background:#07151a!important;
+ border:1px solid #8a9d9c!important;border-radius:2px!important;
+ color:#f8ead5!important;font:400 12px/1.5 system-ui,sans-serif!important
+}
+#vmaSourceChallenge textarea.ve-control{resize:vertical;min-height:80px!important}
+#vmaSourceChallenge :is(input,textarea,select,button):focus-visible{
+ outline:2px solid #e9ce98!important;outline-offset:2px!important
+}
+#vmaSourceChallenge .ve-actions{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0!important}
+#vmaSourceChallenge .ve-btn{
+ cursor:pointer!important;max-width:100%;border:1px solid #a2a39a!important;
+ border-radius:2px!important;background:#1d3038!important;color:#f5e5d0!important;
+ padding:10px 12px!important;font:680 11px/1.4 system-ui,sans-serif!important;
+ min-height:36px!important;text-align:center
+}
+#vmaSourceChallenge .ve-btn.ve-primary{
+ background:#e6c899!important;color:#182326!important;border-color:#f4d8ae!important
+}
+#vmaSourceChallenge .ve-btn:hover{border-color:#fff0d3!important}
+#vmaSourceChallenge .ve-source{
+ min-width:0;border:1px solid #82939674;background:#0b1b21!important;
+ padding:12px!important;margin:9px 0!important
+}
+#vmaSourceChallenge .ve-source h4,#vmaSourceChallenge .ve-challenge h4,
+#vmaSourceChallenge .ve-alternatives h4{
+ font:600 16px/1.24 Georgia,serif!important;color:#ffe9ca!important;
+ margin:4px 0 8px!important
+}
+#vmaSourceChallenge .ve-passage{
+ border-left:2px solid #d8bd90;padding:8px 12px!important;
+ background:#172831!important;color:#eddfc7!important;
+ margin:11px 0!important;font:italic 400 13px/1.65 Georgia,serif!important;
+ white-space:pre-wrap;overflow-wrap:anywhere
+}
+#vmaSourceChallenge :is(.ve-finding,.ve-challenge,.ve-alternatives){
+ background:#10252b!important;border:1px solid #768f8d7a;
+ padding:12px!important;margin:11px 0!important;
+ font:500 12px/1.55 system-ui,sans-serif!important;color:#f1e0c8!important
+}
+#vmaSourceChallenge .ve-rival{margin:6px 0!important;padding-left:12px!important;
+ border-left:2px solid #7b9790;color:#dae0d9!important}
+#vmaSourceChallenge .ve-form{
+ border-top:1px solid #8f958966;margin-top:15px!important;padding-top:9px!important
+}
+#vmaSourceChallenge .ve-error{color:#ffb7a6!important;font-weight:650!important}
+#vmaSourceChallenge .ve-status{
+ border-top:1px solid #71878265;margin:14px 0 0!important;padding-top:10px!important;
+ font:450 11px/1.5 system-ui,sans-serif!important;color:#d0d9d4!important
+}
+@media(max-width:700px){
+ #vmaSourceChallenge .ve-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #vmaSourceChallenge .ve-actions{display:grid;grid-template-columns:minmax(0,1fr)}
+ #vmaSourceChallenge .ve-btn{width:100%!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #vmaSourceChallenge *{animation:none!important;transition:none!important}
+}
