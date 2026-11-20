@@ -13,6 +13,7 @@ import {stableContentEquals,computeTypedFnv32} from '../app/engine/dollhouse-atl
 import {computeFadtFiberBounds} from '../app/engine/dollhouse-fadt-reparative-assistance.js';
 import {runDollhouseSkillAudit} from '../app/engine/dollhouse-skill-dispatcher.js';
 import {createPodiumNativeReadAdapters} from './vixen-podium-native-adapters.mjs';
+import {runSrcPhase2Tomography,runSrcPhase2ContextRoles} from '../app/encyclopedia/vixen-estate/src-atelier-engines.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=path=>readFileSync(resolve(root,path),'utf8');
@@ -238,6 +239,59 @@ const phase2FadtSupport=computeFadtFiberBounds([
 ]);
 assert.ok(phase2FadtSupport.irreducible_gap_cardinality>0,
  'Compiler-context withdrawal must preserve finite-support differences');
+// Execute the adapted JS functions on the SAME original-Python Vixen lens inputs.
+// Comparable projected categories can agree without proving method equivalence.
+const phase2JsLifts=phase2Original.tomography.map(row=>({
+ transformation_id:row.transformation_id,from_id:row.from_id,to_id:row.to_id,
+ claim_effects:row.other_observed_effects,evidence_ids:row.evidence_ids
+}));
+const phase2JsTomography=runSrcPhase2Tomography(phase2JsLifts,{
+ snapshot:'VIXEN_HOST_UNSEALED_SOURCE_COMPARISON'
+});
+assert.equal(phase2JsTomography.candidate_count,phase2Original.tomography.length);
+const phase2TomographyProjection=phase2JsTomography.tomography.map((row,i)=>({
+ transform:row.transformation_id,
+ js_delta_scope:row.delta_scope,
+ python_delta_scope:phase2Original.tomography[i].delta_scope,
+ js_composite_score:row.composite_score,
+ python_composite_score:phase2Original.tomography[i].composite_score,
+ category_agreement:row.delta_scope===phase2Original.tomography[i].delta_scope
+}));
+assert.ok(phase2TomographyProjection.every(x=>x.category_agreement&&
+ x.js_composite_score===null&&x.python_composite_score===null));
+const phase2RoleInputs=phase2Original.contextual_roles.map(row=>({
+ compiler_id:row.architecture_id,input_id:row.subject_id,
+ role_in_context:row.role_normalized,adjudication_status:row.adjudication_status
+}));
+const phase2JsExplicit=runSrcPhase2ContextRoles(phase2RoleInputs,[],{
+ snapshot:'VIXEN_HOST_UNSEALED_SOURCE_COMPARISON'
+});
+assert.equal(phase2JsExplicit.role_count,phase2Original.contextual_roles.length);
+assert.equal(phase2JsExplicit.pass_count,phase2Original.compilation_passes.length);
+assert.ok(phase2JsExplicit.roles.every(row=>row.adjudication_status==='UNRESOLVED'));
+const phase2JsMissingStatus=runSrcPhase2ContextRoles(
+ phase2RoleInputs.map(({adjudication_status,...row})=>row),[],{
+  snapshot:'VIXEN_HOST_UNSEALED_SOURCE_COMPARISON'
+ });
+assert.ok(phase2JsMissingStatus.roles.every(x=>x.adjudication_status==='WITNESSED'),
+ 'Existing adapted JS defaults missing status to WITNESSED; keep this divergence conspicuous');
+assert.ok(phase2Original.contextual_roles.every(x=>x.adjudication_status==='UNRESOLVED'));
+const originalVsAdaptedPhase2={
+ schema:'td613.vixen.original-src-phase2-js-differential/v1',
+ original_python_method_sha256:phase2Original.original_method_sha256,
+ js_engine:'SRC_PHASE2_TOMOGRAPHY_AND_CONTEXT_ROLES_ADAPTED',
+ observed_category_agreement_for_two_real_vixen_title_projections:phase2TomographyProjection,
+ compiler_role_counts_align_under_explicit_unresolved_status:true,
+ missing_status_control:{
+  input:'SYNTHETIC_OMITTED_ADJUDICATION_FIELD_NOT_HISTORICAL_SOURCE',
+  original_candidate_roles:'UNRESOLVED',
+  adapted_js_default:'WITNESSED',
+  actual_execution_disagreement:true,
+  risk:'DEFAULT_STATUS_PROMOTION_IF_JS_CALLER_OMITS_EXPLICIT_ADJUDICATION'
+ },
+ original_method_equivalence:'HELD_UNPROVEN',
+ scientific_credit:0,human_closure_required:true
+};
 const supportStates=[
  {condition:'ORIGINAL_PYTHON_REFERENCE_PRESENT',support:originalAvailable},
  {condition:'VIXEN_JAVASCRIPT_AND_PODIUM_WIRED',support:wired}
@@ -332,7 +386,7 @@ const redpen={
   {role:'ATLAS',verdict:atlas.verdict,infractions:atlas.infractions},
   {role:'FADT',verdict:fadt.verdict,infractions:fadt.infractions}
  ],
- observed_original_python_vs_js_method_comparisons:1,
+ observed_original_python_vs_js_method_comparisons:2,
   independently_confirmed_scientific_equivalence:0,
  numerical_assay_class:'ABSTRACT_EVIDENCE_COVERAGE_RANK_NOT_PHYSICAL_OBSERVATION',
  disposition:'HELD_NATIVE_METHOD_EQUIVALENCE_NOT_YET_WITNESSED',
@@ -340,7 +394,8 @@ const redpen={
   'No complete original-Python-versus-Vixen-JavaScript paired test across all methods',
   'No full historical SRC research-journey realization on Vixen Work corpus',
   'No independent historical compiler input-role evidence for Vixen; host reading contexts remain unresolved candidates',
-  'No original Python versus JavaScript Phase II paired differential or independent evidence/authority delta',
+  'Phase II JavaScript omitted-status default diverges from original unresolved Python candidate roles; no full method equivalence established',
+  'No independent evidence or authority delta observed for Phase II projections',
   'No proof all public Vixen synthesis routes invoke original native Python',
   'Source archival builders and tests remain source-side tools, not product engines'
  ],
@@ -355,6 +410,7 @@ const receipt={
  native_original_method_witness:nativeMethodWitness,
  native_original_typed_witness:nativeTypedWitness,
  native_original_phase2_witness:phase2Witness,
+ original_vs_adapted_phase2_differential:originalVsAdaptedPhase2,
  matrix,cross_jurisdiction_handoff:crossJurisdiction,dollhouse:{
   roles_executed:m.roles_executed,
   findings:m.specialist_findings.map(f=>({
