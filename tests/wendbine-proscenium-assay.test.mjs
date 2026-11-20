@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync,realpathSync} from 'node:fs';
+import {readFileSync,realpathSync,mkdtempSync,rmSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {tmpdir} from 'node:os';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {runReconstructionAssay,runRetrospectiveSweep,validateNativeMaterials,loadOriginalPublicFixture,runNativeWendbineAssay}
@@ -110,6 +112,41 @@ test('original public compiler executes on frozen native fixture, with its own d
  assert.equal(result.historical_replay_established,false);
  assert.equal(result.scientific_credit,0);
  assert.equal(result.earlier_day_source_count,fixture.posts.filter(p=>p.public_date<w.public_date).length);
+});
+
+test('captured evidence routes execute from a real synthetic SQLite source but refuse missing private custody',()=>{
+ const native=createNativeAtelierReadAdapters({repoRoot:repo});
+ assert.throws(()=>native.WENDBINE_ATELIER({operation:'wendbine_observed_evidence_routes',
+  payload:{source_id:'reddit:t3_abcde1'}}),/HELD_NATIVE_INPUT_REQUIRED/);
+ assert.throws(()=>native.WENDBINE_ATELIER({operation:'wendbine_observed_evidence_routes',
+  payload:{index_path:resolve(repo,'package.json'),source_id:'reddit:t3_abcde1'}}),
+  /HELD_PRIVATE_INDEX_OUTSIDE_REPO_REQUIRED/);
+ const scratch=mkdtempSync(resolve(tmpdir(),'td613-wendbine-capture-host-'));
+ try{
+  const db=resolve(scratch,'synthetic.sqlite');
+  const python=process.env.TD613_NATIVE_PYTHON||(process.platform==='win32'?'python':'python3');
+  const makeDb=[
+   'import hashlib,sqlite3,sys',
+   'con=sqlite3.connect(sys.argv[1])',
+   'con.execute("CREATE TABLE sources(source_id TEXT)")',
+   'con.execute("INSERT INTO sources VALUES(\\'reddit:t3_abcde1\\')")',
+   'con.execute("INSERT INTO sources VALUES(\\'reddit:t3_abcde2\\')")',
+   'con.execute("CREATE TABLE capture_versions(capture_id TEXT,source_id TEXT,captured_at_utc TEXT,title BLOB,selftext BLOB,title_sha256 TEXT,body_sha256 TEXT)")',
+   'title=b"Example";body=b"Explore topology. See https://www.reddit.com/r/Wendbine/comments/abcde2/"',
+   'sha=lambda b:hashlib.sha256(b).hexdigest()',
+   'con.execute("INSERT INTO capture_versions VALUES(?,?,?,?,?,?,?)",("capture-1","reddit:t3_abcde1","2026-10-01T00:00:00Z",title,body,sha(title),sha(body)))',
+   'con.commit();con.close()'
+  ].join('\\n');
+  execFileSync(python,['-c',makeDb,db],{encoding:'utf8',timeout:10000});
+  const receipt=native.WENDBINE_ATELIER({operation:'wendbine_observed_evidence_routes',
+   payload:{index_path:db,source_id:'reddit:t3_abcde1'}});
+  assert.equal(receipt.kind,'TD613_CAPTURE_BOUND_OBSERVATION_ENGINE');
+  assert.equal(receipt.data.observed_capture_versions,1);
+  assert.equal(receipt.data.routes_total,2);
+  assert.equal(receipt.data.native_src_heterostratigraphic_parity,'UNTESTED');
+  assert.equal(receipt.scientific_credit,0);
+  assert.ok(receipt.data.observed_routes.every(x=>x.direct_relation_promotion===false));
+ }finally{rmSync(scratch,{recursive:true,force:true});}
 });
 
 test('native host and machine-only Podium expose controlled reconstruction, with operator gating',async()=>{
