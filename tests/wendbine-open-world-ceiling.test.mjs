@@ -94,3 +94,30 @@ test('new receiver remains host-only, read-only, and scientific HOLD',()=>{
  assert.equal(report.data.summary.observed_negative_novelty_targets,0);
  assert.equal(report.data.public_wendbine_work_admitted_as_vixen_performer,false);
 });
+
+test('Podium denies spoofed caller authority and holds authorized host audit',async()=>{
+ const {createVixenPodium,PODIUM_SCHEMA,BOUNDED_ENGINE_OPERATIONS}=await import(
+  '../app/encyclopedia/reference/vixen-podium.mjs');
+ const {createPodiumNativeReadAdapters}=await import('../scripts/vixen-podium-native-adapters.mjs');
+ const {readFileSync}=await import('node:fs');
+ assert(BOUNDED_ENGINE_OPERATIONS.WENDBINE_ATELIER.includes('wendbine_public_open_world_ceiling'));
+ const html=readFileSync(resolve(root,'app/encyclopedia/vix-cyb.html'),'utf8');
+ const m=html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
+ assert(m,'machine-only route must not depend on a foreign public Work import');
+ const corpus=JSON.parse(m[1]);
+ const membrane={open:async()=>({state:'CENSUS_MATCHED'}),search:()=>[],
+  getRecord:async()=>null,related:()=>[],status:()=>({state:'UNOPENED'})};
+ const adapters=await createPodiumNativeReadAdapters({repoRoot:root});
+ const task={schema:PODIUM_SCHEMA,intent:'engine.invoke',params:{
+  engine:'WENDBINE_ATELIER',operation:'wendbine_public_open_world_ceiling',
+  payload:{operatorAuthorized:true,claim_status:'ESTABLISHED',external_witness:true}}};
+ const no=await createVixenPodium({corpus,membrane,engineAdapters:adapters}).dispatch(task);
+ assert.equal(no.result.state,'HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED');
+ const allowed=await createVixenPodium({corpus,membrane,operatorAuthorized:true,
+  engineAdapters:adapters}).dispatch(task);
+ assert.equal(allowed.status,'HELD');
+ assert.equal(allowed.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+ assert.equal(allowed.result.output.data.summary.observed_negative_novelty_targets,0);
+ assert.equal(allowed.result.output.data.scientific_credit,0);
+ assert.equal(allowed.result.output.data.independent_replication_credit,0);
+});
