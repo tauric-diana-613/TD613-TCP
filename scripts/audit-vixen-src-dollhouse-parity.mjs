@@ -273,8 +273,8 @@ const phase2JsMissingStatus=runSrcPhase2ContextRoles(
  phase2RoleInputs.map(({adjudication_status,...row})=>row),[],{
   snapshot:'VIXEN_HOST_UNSEALED_SOURCE_COMPARISON'
  });
-assert.ok(phase2JsMissingStatus.roles.every(x=>x.adjudication_status==='WITNESSED'),
- 'Existing adapted JS defaults missing status to WITNESSED; keep this divergence conspicuous');
+assert.ok(phase2JsMissingStatus.roles.every(x=>x.adjudication_status==='UNRESOLVED'),
+ 'Corrected JS must refuse automatic witness promotion on missing adjudication');
 assert.ok(phase2Original.contextual_roles.every(x=>x.adjudication_status==='UNRESOLVED'));
 const originalVsAdaptedPhase2={
  schema:'td613.vixen.original-src-phase2-js-differential/v1',
@@ -285,9 +285,10 @@ const originalVsAdaptedPhase2={
  missing_status_control:{
   input:'SYNTHETIC_OMITTED_ADJUDICATION_FIELD_NOT_HISTORICAL_SOURCE',
   original_candidate_roles:'UNRESOLVED',
-  adapted_js_default:'WITNESSED',
-  actual_execution_disagreement:true,
-  risk:'DEFAULT_STATUS_PROMOTION_IF_JS_CALLER_OMITS_EXPLICIT_ADJUDICATION'
+  adapted_js_default:'UNRESOLVED',
+  actual_execution_disagreement:false,
+  observed_repair:'MISSING_ADJUDICATION_NOW_FAILS_CLOSED_TO_UNRESOLVED',
+  full_method_equivalence_still_unproven:true
  },
  original_method_equivalence:'HELD_UNPROVEN',
  scientific_credit:0,human_closure_required:true
@@ -394,7 +395,7 @@ const redpen={
   'No complete original-Python-versus-Vixen-JavaScript paired test across all methods',
   'No full historical SRC research-journey realization on Vixen Work corpus',
   'No independent historical compiler input-role evidence for Vixen; host reading contexts remain unresolved candidates',
-  'Phase II JavaScript omitted-status default diverges from original unresolved Python candidate roles; no full method equivalence established',
+  'Phase II default-status projection repaired; wider role identity, compilation semantics and chronology still lack full original-Python/JS equivalence proof',
   'No independent evidence or authority delta observed for Phase II projections',
   'No proof all public Vixen synthesis routes invoke original native Python',
   'Source archival builders and tests remain source-side tools, not product engines'
