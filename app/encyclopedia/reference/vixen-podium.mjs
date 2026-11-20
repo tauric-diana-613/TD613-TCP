@@ -75,7 +75,7 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'wendbine_public_query','wendbine_sealed_epoch_query',
   'wendbine_public_inventory','wendbine_public_reconstruction','wendbine_public_research_journey',
   'wendbine_public_sweep','wendbine_observed_evidence_routes',
-  'wendbine_verified_vixen_method_transfer']),
+  'wendbine_verified_vixen_method_transfer','wendbine_local_bitemporal_capture']),
  EM_ATELIER:Object.freeze(['em_native_text','em_native_semantic','em_native_work_route','em_native_research_journey']),
  CROSS_ATELIER:Object.freeze(['cross_atelier_lexical','cross_atelier_semantic'])
 });
