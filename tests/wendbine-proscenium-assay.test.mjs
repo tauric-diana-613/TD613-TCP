@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,realpathSync} from 'node:fs';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {runReconstructionAssay,validateNativeMaterials,loadOriginalPublicFixture,runNativeWendbineAssay}
+import {runReconstructionAssay,runRetrospectiveSweep,validateNativeMaterials,loadOriginalPublicFixture,runNativeWendbineAssay}
  from '../scripts/wendbine-proscenium-assay.mjs';
 import {createNativeAtelierReadAdapters} from '../scripts/vixen-native-atelier-bridge.mjs';
 import {createPodiumNativeReadAdapters} from '../scripts/vixen-podium-native-adapters.mjs';
@@ -38,6 +38,9 @@ test('finite graphs, provenance class and real-person boundary hold against prom
   /HELD_SOURCE_PERSON_BOUNDARY/);
  assert.throws(()=>validateNativeMaterials(meta,posts,[...relations,e('z99999','G_D')]),
   /HELD_RELATION_UNADMITTED_SOURCE/);
+ assert.throws(()=>validateNativeMaterials(meta,posts,[...relations,
+   {...e('a11111','G_D'),evidence_class:'SOURCE_AUTHOR_INTENT_PROVEN'}]),
+  /HELD_RELATION_EVIDENCE_PROMOTION/);
 });
 
 test('prior-day-only reconstruction excludes future and same-day sources',()=>{
@@ -47,6 +50,8 @@ test('prior-day-only reconstruction excludes future and same-day sources',()=>{
  assert.ok(receipt.controls.C0.prediction.witnesses.every(x=>x.public_date==='2026-09-10'));
  assert.equal(receipt.controls.C1.identical_to_baseline,true);
  assert.equal(receipt.controls.C3.prediction.graph_families.length,0);
+ assert.equal(receipt.controls.C4.decoy_source_id,posts[1].source_id);
+ assert.equal(receipt.controls.C4.semantic_independence_proven,false);
  assert.equal(receipt.controls.C0.scoring.graph_hits,1);
  assert.equal(receipt.historical_replay_established,false);
  assert.equal(receipt.source_id_ordering_not_chronology,true);
@@ -73,6 +78,18 @@ test('research journey revises the query rather than granting itself publication
  assert.equal(receipt.journey.automated_hypothesis_promotion,false);
 });
 
+test('archive-wide retrospective sweep enumerates eligible targets and exposes every control',()=>{
+ const sweep=runRetrospectiveSweep({meta,posts,relations});
+ assert.equal(sweep.target_count,2);
+ assert.equal(sweep.baseline_source_count,4);
+ assert.equal(sweep.per_target.length,2);
+ assert.ok(sweep.per_target.every(x=>x.earlier_source_count===2));
+ assert.ok(sweep.per_target.every(x=>x.control_order_witness));
+ assert.equal(sweep.statistical_significance,'UNTESTED');
+ assert.equal(sweep.state,'HELD_EXPLORATORY_SWEEP_NOT_PREREGISTERED');
+ assert.equal(sweep.scientific_credit,0);
+});
+
 test('original public compiler executes on frozen native fixture, with its own digest and no archive writes',async()=>{
  const fixture=await loadOriginalPublicFixture();
  assert.equal(fixture.compiler_receipt.original_compiler_executed,true);
@@ -81,6 +98,11 @@ test('original public compiler executes on frozen native fixture, with its own d
  assert.match(fixture.digests.original_compiler.sha256,/^[a-f0-9]{64}$/);
  const w=fixture.posts.find(p=>p.public_date==='2026-09-11')||fixture.posts[fixture.posts.length-1];
  const result=await runNativeWendbineAssay({mode:'journey',target_source_id:w.source_id});
+ const sweep=await runNativeWendbineAssay({mode:'sweep'});
+ assert.equal(sweep.original_compiler_receipt.original_compiler_executed,true);
+ assert.equal(sweep.target_count,fixture.posts.filter(p=>p.public_date>
+  [...new Set(fixture.posts.map(x=>x.public_date))].sort()[0]).length);
+ assert.equal(sweep.statistical_significance,'UNTESTED');
  assert.equal(result.original_compiler_receipt.original_compiler_executed,true);
  assert.equal(result.target_source_id,w.source_id);
  assert.equal(result.original_archive_modified,false);
@@ -102,6 +124,7 @@ test('native host and machine-only Podium expose controlled reconstruction, with
  assert.equal(nativeOut.data.historical_replay_established,false);
  assert.equal(nativeOut.read_only,true);
  assert.ok(BOUNDED_ENGINE_OPERATIONS.WENDBINE_ATELIER.includes('wendbine_public_reconstruction'));
+ assert.ok(BOUNDED_ENGINE_OPERATIONS.WENDBINE_ATELIER.includes('wendbine_public_sweep'));
  const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
  const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
  const match=html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
