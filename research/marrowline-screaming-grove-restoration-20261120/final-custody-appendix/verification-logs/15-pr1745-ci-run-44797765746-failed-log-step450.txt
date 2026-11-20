@@ -1,0 +1,40 @@
+Created At: 2026-11-20T13:59:30-05:00
+Completed At: 2026-11-20T13:59:39-05:00
+Command exited with code 0.
+
+Command output:
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5649320Z + actual - expected
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5649489Z 
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5649575Z   [
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5649778Z     'pages.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5650001Z     'td613-ci.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5650270Z     'vercel-operator-release.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5650588Z     'vercel-relock-safety.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5650910Z +   'vixen-a0-corpus-rebuild.yml'
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5651172Z   ]
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5651278Z 
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5651582Z     at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/workflow-estate.test.mjs:17:8
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5652200Z     at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5652778Z     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5653492Z     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5654313Z   generatedMessage: false,
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5654569Z   code: 'ERR_ASSERTION',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5654807Z   actual: [
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5655014Z     'pages.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5655372Z     'td613-ci.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5655640Z     'vercel-operator-release.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5655948Z     'vercel-relock-safety.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5656239Z     'vixen-a0-corpus-rebuild.yml'
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5656559Z   ],
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5656755Z   expected: [
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5656961Z     'pages.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5657167Z     'td613-ci.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5657426Z     'vercel-operator-release.yml',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5657730Z     'vercel-relock-safety.yml'
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5658267Z   ],
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5658665Z   operator: 'deepStrictEqual',
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5659095Z   diff: 'simple'
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5659365Z }
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5659476Z 
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5659583Z Node.js v22.23.5
+Static, constitutional, and release contracts	Enforce the four-workflow estate and release membrane	2026-11-20T18:59:16.5693997Z ##[error]Process completed with exit code 1.

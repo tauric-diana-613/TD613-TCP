@@ -1,0 +1,86 @@
+Created At: 2026-11-20T13:29:58-05:00
+Completed At: 2026-11-20T13:30:04-05:00
+Command exited with code 1.
+
+Command output:
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.888Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":7,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.888Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.888Z:3:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.888Z:4:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.888Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":204922,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.898Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:30:03.956Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.975Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.975Z:2:gemini-3.5-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.975Z:3:gemini-3.6-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.975Z:4:gemini-3.7-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.975Z:5:gemini-3-flash-preview:200","route":"marrowline-attachment","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":204987,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.995Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:30:03.995Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ observeMarrowlineCompletion classifies streamed PROHIBITED_CONTENT and promptBlockReason as policy-terminated, never unwitnessed stream (5.6594ms)
+✔ observeGeminiOutput preserves cachedContentTokenCount, finishMessage, and promptBlockReason without altering absent-field contract (1.5108ms)
+✔ khonapolitHandler holds PROHIBITED_CONTENT (with partial text) as 502 POLICY-HELD and NEVER promotes to 200 OK or injects into structural repair (100.4021ms)
+✔ Aperture routes Screaming Grove farces, Blue-orange digital weather, and Attractor Assays cleanly without breaking real legal/runtime negative controls (5.2081ms)
+✖ Section VII negative control: high-depth uniform 3-mark mechanical stencil is distinguished descriptively and NEVER classified as artistic restoration (27.8378ms)
+✖ Section VII restraint control: restrained/sustained shallow single-style bots movement stays structurally admissible and is never vetoed (3.3364ms)
+✔ bots-only nativeMarkUnderflow does NOT trigger unnecessary second-seat failover on short poetic bots passage after long Kʰonapolit prose (20.9561ms)
+✔ attachment route classifies discourseMode, holds PROHIBITED_CONTENT, and does not veto morphology-warned terminal continuations (39.6684ms)
+✖ staged PR #1545-reconciled dramaturgy candidate preserves Oct-2 dramaturgy without self-contradiction while leaving production defaults untouched (2.6179ms)
+✔ multi-turn history compaction retains raw provider-authored text verbatim without synthetic Kʰonapolit ∴ Tauric Diana bots wrapper and excludes unadmitted returns (0.7559ms)
+✔ offline zero-spend discriminator builds exact effective request parity across all four tasks with zero paid calls (73.1789ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 8
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 560.6462
+
+✖ failing tests:
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:286:1
+✖ Section VII negative control: high-depth uniform 3-mark mechanical stencil is distinguished descriptively and NEVER classified as artistic restoration (27.8378ms)
+  TypeError: Cannot read properties of undefined (reading 'maxDepth')
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:319:18)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:331:1
+✖ Section VII restraint control: restrained/sustained shallow single-style bots movement stays structurally admissible and is never vetoed (3.3364ms)
+  TypeError: Cannot read properties of undefined (reading 'uniformDepthStencilObserved')
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:345:59)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:497:1
+✖ staged PR #1545-reconciled dramaturgy candidate preserves Oct-2 dramaturgy without self-contradiction while leaving production defaults untouched (2.6179ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'native-single-register-permission-20261019'
+  - 'native-prosody-freedom-20261019'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:522:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'native-single-register-permission-20261019',
+    expected: 'native-prosody-freedom-20261019',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -320,126 +320,126 @@ function runBuild() {
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-12.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/01-stage1-preflight-refs-task12.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/01-stage1-preflight-refs-task12.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · Section P0 Pre-Fetch Custody Inventory',
       notes: 'Exact pre-fetch ref and worktree inventory recorded before Stage I git fetch.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-97.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/02-initial-84-test-jsdom-missing-failure-task97.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/02-initial-84-test-jsdom-missing-failure-task97.txt',
       artifact_class: 'failed_intermediate_run_log',
       source_episode: 'Stage I · Baseline Test Discovery (Failed Run)',
       notes: 'Original failed 84-test sweep revealing ERR_MODULE_NOT_FOUND for jsdom in isolated worktree without node_modules.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-126.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/03-pre-repair-baseline-pure-node-task126.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/03-pre-repair-baseline-pure-node-task126.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · Pre-Repair Pure-Node Baseline',
       notes: 'Pre-repair pure-Node Marrowline baseline sweep.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-212.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/04-post-repair-6cf64d17d-pure-node-277pass-task212.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/04-post-repair-6cf64d17d-pure-node-277pass-task212.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · First Post-Repair Verification (6cf64d17d)',
       notes: '277/277 pure-Node Marrowline tests passing on pre-hardening repair commit 6cf64d17d.'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/269/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/05-restoration-test-authoring-intermediate-fail1-step269.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/05-restoration-test-authoring-intermediate-fail1-step269.txt',
       artifact_class: 'failed_intermediate_run_log',
       source_episode: 'Stage I · Restoration Test Authoring (Intermediate Failure 1)',
       notes: 'Failed intermediate test execution during initial authoring of tests/marrowline-screaming-grove-restoration.test.mjs.'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/292/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/06-restoration-test-authoring-intermediate-fail2-step292.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/06-restoration-test-authoring-intermediate-fail2-step292.txt',
       artifact_class: 'failed_intermediate_run_log',
       source_episode: 'Stage I · Restoration Test Authoring (Intermediate Failure 2)',
       notes: 'Second failed intermediate test execution before settling restoration test suite.'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/299/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/07-restoration-test-authoring-first-pass-step299.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/07-restoration-test-authoring-first-pass-step299.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · Restoration Test Authoring (First Pass)',
       notes: 'First passing execution of tests/marrowline-screaming-grove-restoration.test.mjs.'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/301/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/08-local-workflow-estate-vixen-red-step301.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/08-local-workflow-estate-vixen-red-step301.txt',
       artifact_class: 'ci_diagnostic_log',
       source_episode: 'Stage I · Local Constitutional Guard Witness',
       notes: 'Local failure witness of tests/workflow-estate.test.mjs tripping on main commit 2f0fa5944 (vixen-a0-corpus-rebuild.yml).'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/303/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/09-local-release-plumbing-vixen-red-step303.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/09-local-release-plumbing-vixen-red-step303.txt',
       artifact_class: 'ci_diagnostic_log',
       source_episode: 'Stage I · Local Release-Plumbing Guard Witness',
       notes: 'Local failure witness of tests/release-plumbing.test.mjs tripping on executable git push in vixen-a0-corpus-rebuild.yml.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-308.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/10-dollhouse-audits-220pass-task308.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/10-dollhouse-audits-220pass-task308.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · Dollhouse Audits Suite (220/220 PASS)',
       notes: 'Full npm run test:dollhouse:audits passing 220/220 locally.'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/352/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/11-dollhouse-strict-validator-initial-rejection-step352.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/11-dollhouse-strict-validator-initial-rejection-step352.txt',
       artifact_class: 'failed_intermediate_run_log',
       source_episode: 'Stage I · Initial Strict-Provenance Dollhouse Audit Rejection (6cf64d17d)',
       notes: 'Pre-fix strict-provenance Dollhouse engine output (dollhouse-audit-1795199987778-4a8b7b6f) documenting initial schema rejection across both baseline and global-hold specs before fixing TEMPORAL_CUSTODIAN UNPERFORMED->HELD and ATLAS.relation_entry.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-405.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/12-hardening-pre-bc5467246-category-error-regex-fail-task405.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/12-hardening-pre-bc5467246-category-error-regex-fail-task405.txt',
       artifact_class: 'failed_intermediate_run_log',
       source_episode: 'Stage I · Post-Dollhouse Hardening Pre-Commit Intermediate Failure',
       notes: 'Failed intermediate test run during post-Dollhouse hardening that caught the category-error regex collision in tests/marrowline-screaming-grove-restoration.test.mjs before fixing it and committing bc5467246.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-410.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/13-hardening-bc5467246-pure-node-285pass-task410.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/13-hardening-bc5467246-pure-node-285pass-task410.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · Final Hardened Verification (bc5467246)',
       notes: '285/285 pure-Node Marrowline tests passing on verified deterministic repair ancestor bc5467246.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-440.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/14-prepush-generated-sync-and-retrieval-lane-task440.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/14-prepush-generated-sync-and-retrieval-lane-task440.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · Pre-Push Contract Gate',
       notes: 'check-generated-sync.mjs and retrieval-lane.test.mjs green verification output.'
     },
     {
       src: path.join(brainDir, '.system_generated/steps/450/output.txt'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/15-pr1745-ci-run-44797765746-failed-log-step450.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/15-pr1745-ci-run-44797765746-failed-log-step450.txt',
       artifact_class: 'ci_diagnostic_log',
       source_episode: 'Stage I · PR #1745 CI Run 44797765746 Failure Log',
       notes: 'Raw gh run view --log-failed output from PR #1745 exact-head CI run 44797765746.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-480.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/16-stage1-dossier-hygiene-scan-task480.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/16-stage1-dossier-hygiene-scan-task480.txt',
       artifact_class: 'verification_or_diagnostic_log',
       source_episode: 'Stage I · PR #1746 Pre-Commit Hygiene & JSON Scan',
       notes: 'Stage I dossier hygiene verification (49 scanned files, 24 valid JSON files, 0 hygiene hits).'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-521.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/18-browser-witness-pass1-server-stdout-task521.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/18-browser-witness-pass1-server-stdout-task521.txt',
       artifact_class: 'browser_witness_server_log',
       source_episode: 'Stage II · Section VI Pass 1 Witness Server Stdout',
       notes: 'Local zero-egress witness server Pass 1 stdout including synthetic gemini-consumption receipts.'
     },
     {
       src: path.join(brainDir, '.system_generated/tasks/task-541.log'),
-      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/19-browser-witness-pass2-server-stdout-task541.log',
+      dest: 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/19-browser-witness-pass2-server-stdout-task541.txt',
       artifact_class: 'browser_witness_server_log',
       source_episode: 'Stage II · Section VI Pass 2 Witness Server Stdout',
       notes: 'Local zero-egress witness server Pass 2 stdout for WITNESS-INCOMPLETE verification.'
@@ -482,7 +482,7 @@ function runBuild() {
   const ciCombined = ciStepFiles
     .map((p, idx) => `================ STEP ${[504, 506, 508][idx]} ================\n` + sanitizeText(fs.readFileSync(p, 'utf8')))
     .join('\n\n');
-  const ciCombinedRel = 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/17-pr1746-ci-run-44800185041-forensics-step504-506-508.log';
+  const ciCombinedRel = 'research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/17-pr1746-ci-run-44800185041-forensics-step504-506-508.txt';
   const ciCombinedAbs = path.join(REPO_ROOT, ciCombinedRel);
   ensureDir(ciCombinedAbs);
   fs.writeFileSync(ciCombinedAbs, ciCombined, 'utf8');

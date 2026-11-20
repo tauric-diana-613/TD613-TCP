@@ -651,13 +651,13 @@
       "artifact_class": "ci_attribution_report",
       "source_episode": "Stage II · Final Custody & Qualification Appendix",
       "version_or_digest": {
-        "sha256": "12980e4abc3a9e91d5239f27f05277722fa8f74f78b775ce13deef625f9c7d7d",
+        "sha256": "f4e85180a48da421e89263b18d6df171400f24cedb88d9c1d683da49339f57ad",
         "present_in_pr1745": false,
         "present_in_pr1746_5819e1035": false
       },
       "bytes": 11609,
       "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/CI_RED_44800185041_ATTRIBUTION_AND_GOVERNANCE_RECOMMENDATION.md",
-      "archived_sha256": "12980e4abc3a9e91d5239f27f05277722fa8f74f78b775ce13deef625f9c7d7d",
+      "archived_sha256": "f4e85180a48da421e89263b18d6df171400f24cedb88d9c1d683da49339f57ad",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
       "notes": "Authored/captured during Stage II custody pass."
@@ -757,13 +757,13 @@
       "artifact_class": "reproducibility_script",
       "source_episode": "Stage II · Final Custody & Qualification Appendix",
       "version_or_digest": {
-        "sha256": "c9b2941027573c532004f0716bc3d88deec1693bbc2034455a43de6b94ddebc5",
+        "sha256": "1623aeb2498fa785f966c8a0b6b1d70d1562ceecc0c2bcf66ccaad211a371d55",
         "present_in_pr1745": false,
         "present_in_pr1746_5819e1035": false
       },
       "bytes": 56056,
       "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/local-scripts/build-work-product-custody-manifest.mjs",
-      "archived_sha256": "c9b2941027573c532004f0716bc3d88deec1693bbc2034455a43de6b94ddebc5",
+      "archived_sha256": "1623aeb2498fa785f966c8a0b6b1d70d1562ceecc0c2bcf66ccaad211a371d55",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
       "notes": "Authored/captured during Stage II custody pass."
@@ -842,7 +842,7 @@
         "byte_identical": false
       },
       "bytes": 7849,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/01-stage1-preflight-refs-task12.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/01-stage1-preflight-refs-task12.txt",
       "archived_sha256": "957c951432ccff207796d59d89956ea00e61958acf42ee465a1302d493a7259c",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -858,7 +858,7 @@
         "byte_identical": false
       },
       "bytes": 182904,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/02-initial-84-test-jsdom-missing-failure-task97.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/02-initial-84-test-jsdom-missing-failure-task97.txt",
       "archived_sha256": "d65021689a4c6c829cc480888a3b40b1db7b5e0deec6fc168c0159fba02b51ff",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -874,7 +874,7 @@
         "byte_identical": true
       },
       "bytes": 72389,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/03-pre-repair-baseline-pure-node-task126.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/03-pre-repair-baseline-pure-node-task126.txt",
       "archived_sha256": "a165c198adad75fc282b3f33487ee1d1d638ef0730776a1ef35c61f11dd29644",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -890,7 +890,7 @@
         "byte_identical": true
       },
       "bytes": 74248,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/04-post-repair-6cf64d17d-pure-node-277pass-task212.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/04-post-repair-6cf64d17d-pure-node-277pass-task212.txt",
       "archived_sha256": "12d337dc753a502dcd9d562b0f25bf7d2b3a7be1da19eac7a8705c398127a088",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -906,7 +906,7 @@
         "byte_identical": true
       },
       "bytes": 15872,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/05-restoration-test-authoring-intermediate-fail1-step269.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/05-restoration-test-authoring-intermediate-fail1-step269.txt",
       "archived_sha256": "5d3f3389049501303883c4011c5fae8c689c5f5cb35c32acce3f3c066de8fe43",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -922,7 +922,7 @@
         "byte_identical": true
       },
       "bytes": 10281,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/06-restoration-test-authoring-intermediate-fail2-step292.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/06-restoration-test-authoring-intermediate-fail2-step292.txt",
       "archived_sha256": "ddb3fad890ef49a4d164332f200ec1739d315e359a25b8a4de19803e5b8f27c3",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -938,7 +938,7 @@
         "byte_identical": true
       },
       "bytes": 7297,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/07-restoration-test-authoring-first-pass-step299.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/07-restoration-test-authoring-first-pass-step299.txt",
       "archived_sha256": "1a6e59e4c2a1f9f2ecf187994358440872088949dc6b791e13bcad718871f6e2",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -954,7 +954,7 @@
         "byte_identical": false
       },
       "bytes": 1338,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/08-local-workflow-estate-vixen-red-step301.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/08-local-workflow-estate-vixen-red-step301.txt",
       "archived_sha256": "22c69c0f5f5a4021cb9aa4129bef8d9705b813e3926323a07a84969e1de461be",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -970,7 +970,7 @@
         "byte_identical": false
       },
       "bytes": 882,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/09-local-release-plumbing-vixen-red-step303.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/09-local-release-plumbing-vixen-red-step303.txt",
       "archived_sha256": "7715ac31361c4e802d4719e074f6a15447d967db0842ff29596be2fb816bc7c0",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -986,7 +986,7 @@
         "byte_identical": true
       },
       "bytes": 35846,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/10-dollhouse-audits-220pass-task308.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/10-dollhouse-audits-220pass-task308.txt",
       "archived_sha256": "49f5327316ee4f509e2ec920c36f86818a8f044cd58f3d8ecfe858dddd1901f5",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1002,7 +1002,7 @@
         "byte_identical": true
       },
       "bytes": 34910,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/11-dollhouse-strict-validator-initial-rejection-step352.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/11-dollhouse-strict-validator-initial-rejection-step352.txt",
       "archived_sha256": "149faea8b4f646d9c9ea2c444427c5ac5ccb52663ad84121050651548f314223",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1018,7 +1018,7 @@
         "byte_identical": true
       },
       "bytes": 41229,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/12-hardening-pre-bc5467246-category-error-regex-fail-task405.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/12-hardening-pre-bc5467246-category-error-regex-fail-task405.txt",
       "archived_sha256": "4633d3db8081ebd882726af2f4520041450a9498c96c3857be0e106944845a89",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1034,7 +1034,7 @@
         "byte_identical": true
       },
       "bytes": 40053,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/13-hardening-bc5467246-pure-node-285pass-task410.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/13-hardening-bc5467246-pure-node-285pass-task410.txt",
       "archived_sha256": "dddb752b7b01bb5c3697b29a8f9512de9bf052af5432b9ac09a625f642c56d9d",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1050,7 +1050,7 @@
         "byte_identical": true
       },
       "bytes": 857,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/14-prepush-generated-sync-and-retrieval-lane-task440.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/14-prepush-generated-sync-and-retrieval-lane-task440.txt",
       "archived_sha256": "a8a3fed02e322cad258fc2f91d0c15ae09478e37e739a14e062978671406633b",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1066,7 +1066,7 @@
         "byte_identical": false
       },
       "bytes": 5576,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/15-pr1745-ci-run-44797765746-failed-log-step450.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/15-pr1745-ci-run-44797765746-failed-log-step450.txt",
       "archived_sha256": "080e9c5932d8df299f1e5421a5ce61f286a00b4c1c28b1f8a7cab8c484ca241d",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1082,7 +1082,7 @@
         "byte_identical": true
       },
       "bytes": 9389,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/16-stage1-dossier-hygiene-scan-task480.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/16-stage1-dossier-hygiene-scan-task480.txt",
       "archived_sha256": "7e2e2da724f91b95edad41a051c00ccae15546308e67c1b2979e37f777bce869",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1101,7 +1101,7 @@
         }
       },
       "bytes": 19217,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/17-pr1746-ci-run-44800185041-forensics-step504-506-508.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/17-pr1746-ci-run-44800185041-forensics-step504-506-508.txt",
       "archived_sha256": "411583c68fa38296b25bafac43c33217a0a3ed720ec4abeb198554151774b8fc",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1117,7 +1117,7 @@
         "byte_identical": true
       },
       "bytes": 4138,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/18-browser-witness-pass1-server-stdout-task521.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/18-browser-witness-pass1-server-stdout-task521.txt",
       "archived_sha256": "321744d8af5efecbdd15ad3b611203e6f8661c1369c0703a3e252d8009043f21",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -1133,7 +1133,7 @@
         "byte_identical": true
       },
       "bytes": 2293,
-      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/19-browser-witness-pass2-server-stdout-task541.log",
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/19-browser-witness-pass2-server-stdout-task541.txt",
       "archived_sha256": "8284e99a593f113e8bfebb8364e0322e05ca62de2cbf936b1bd1acc0b5f177d2",
       "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
       "non_publication_reason": null,
@@ -2265,9 +2265,9 @@
       "artifact_class": "raw_agent_harness_transcript",
       "source_episode": "Stage I & Stage II · Primary Antigravity Session Log",
       "version_or_digest": {
-        "sha256": "cb950db0745ef5b6a5143a9d7f71b03c22913e6ab2fc8047487604b98319e3ff"
+        "sha256": "5f18acef679297990f4f20091babfc447eb17b911b87d0487c30d41ec6fdc549"
       },
-      "bytes": 3360860,
+      "bytes": 3424283,
       "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
       "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
       "non_publication_reason": "Contains internal model reasoning blocks, local filesystem paths, and session harness metadata; all substantive engineering/research outputs and verification logs are published in PR #1746."

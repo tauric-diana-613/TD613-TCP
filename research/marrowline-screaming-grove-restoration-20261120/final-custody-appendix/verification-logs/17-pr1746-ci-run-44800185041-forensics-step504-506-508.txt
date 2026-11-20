@@ -1,0 +1,190 @@
+================ STEP 504 ================
+Created At: 2026-11-20T16:38:11-05:00
+Completed At: 2026-11-20T16:38:19-05:00
+Command exited with code 0.
+
+Command output:
+=== GIT LOG OF VIXEN WORKFLOW ON MAIN ===
+2f0fa5944b142f574d65bd86772dbd194d8fb996 2026-11-16 02:09:47 -0500 ci(vixen): owner-gated exact-PR A0 seven-free index regeneration with read-only comparator custody
+=== WORKFLOW HEAD STATUS ===
+git : fatal: path '.github/workflows/vixen-a0-corpus-rebuild.yml' exists on disk, but not in 
+'origin/research/vixen-dual-estate-encyclopedia-20261108'
+At line:1 char:391
++ ... TATUS ==="; git -C C:/td613-worktrees/marrowline-screaming-grove-emer ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: path '.g...pedia-20261108':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+PR1730_HAS_WORKFLOW_EXIT=128
+=== VIXEN WORKFLOW RUNS ===
+[{"conclusion":"skipped","createdAt":"2026-11-20T17:22:13Z","databaseId":44782632675,"displayTitle":"𝌋 Vixen · RGI10-B Theatre of Consequence · Glinda Cybergoth Opera & Research Atelier (DRAFT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T17:19:41Z","databaseId":44782214940,"displayTitle":"𝌋 VIXEN PREVIEW · Permanent GitHub Operator-Gesture Release Gate (PR #1730 · Antigravity / ChatGPT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T17:18:48Z","databaseId":44782073120,"displayTitle":"𝌋 VIXEN PREVIEW · Permanent GitHub Operator-Gesture Release Gate (PR #1730 · Antigravity / ChatGPT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T16:12:09Z","databaseId":44770953550,"displayTitle":"𝌋 Vixen · RGI10-B Theatre of Consequence · Glinda Cybergoth Opera & Research Atelier (DRAFT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:55:21Z","databaseId":44698518776,"displayTitle":"𝌋 Vixen · RGI10-B Theatre of Consequence · Glinda Cybergoth Opera & Research Atelier (DRAFT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:52:48Z","databaseId":44698206446,"displayTitle":"𝌋 VIXEN PREVIEW · Permanent GitHub Operator-Gesture Release Gate (PR #1730 · Antigravity / ChatGPT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:51:45Z","databaseId":44698082210,"displayTitle":"𝌋 VIXEN PREVIEW · Permanent GitHub Operator-Gesture Release Gate (PR #1730 · Antigravity / ChatGPT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:51:44Z","databaseId":44698079666,"displayTitle":"𝌋 Vixen · RGI10-B Theatre of Consequence · Glinda Cybergoth Opera & Research Atelier (DRAFT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:23:49Z","databaseId":44694652586,"displayTitle":"𝌋 Vixen · RGI10-B Theatre of Consequence · Glinda Cybergoth Opera & Research Atelier (DRAFT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:20:51Z","databaseId":44694289742,"displayTitle":"𝌋 VIXEN PREVIEW · Permanent GitHub Operator-Gesture Release Gate (PR #1730 · Antigravity / ChatGPT)","headBranch":"main","headSha":"363b5b4aeaec33ad380c5f1124f0fe96e3d7975e","status":"completed"}]
+=== VIXEN WORKFLOW TOP 60 LINES ===
+name: Vixen A0 Seven-Free Corpus Rebuilder
+on:
+  issue_comment:
+permissions:
+  contents: write
+  pull-requests: read
+concurrency:
+  group: vixen-a0-rebuild-pr1730
+  cancel-in-progress: false
+jobs:
+  rebuild:
+    if: ${{ github.event.issue.pull_request && github.actor == 'tauric-diana-613' && startsWith(github.event.comment.body, '/td613-vixen-a0-rebuild ') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Verify owner command and exact PR source
+        id: gate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.comment?.body?.trim() || '';
+            const match = body.match(/^\/td613-vixen-a0-rebuild ([a-f0-9]{40})$/);
+            if (!match || context.issue.number !== 1730 || context.actor !== 'tauric-diana-613') {
+              core.setFailed('OWNER_PR_EXACT_SHA_AUTHORITY_REQUIRED'); return;
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo, pull_number: 1730
+            });
+            if (pr.state !== 'open' || pr.merged || pr.base.ref !== 'main' ||
+                pr.head.ref !== 'research/vixen-dual-estate-encyclopedia-20261108' ||
+                pr.head.sha !== match[1] ||
+                pr.head.repo.full_name !== 'tauric-diana-613/TD613-TCP') {
+              core.setFailed('VIXEN_PR_SOURCE_CHANGED_OR_SCOPE_INVALID'); return;
+            }
+            core.setOutput('source_sha', match[1]);
+      - name: Checkout exact authorized PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/vixen-dual-estate-encyclopedia-20261108
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: true
+      - name: Verify source, preserve comparator read-only
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ steps.gate.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git fetch origin research/em-e00-1a-comparator-wiring-20261106
+          git worktree add --detach ../em-e00-1a-comparator-wiring origin/research/em-e00-1a-comparator-wiring-20261106
+          test -d ../em-e00-1a-comparator-wiring/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/02-ORIGINALS
+          test -f scripts/build-vixen-experiment-a-corpus.mjs
+      - name: Regenerate full Vixen corpus and numeric fused index
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          node scripts/build-vixen-experiment-a-corpus.mjs --em-root ../em-e00-1a-comparator-wiring/packages/dome_world_exact/fixtures/a15-r0/EMSTD613 | tee "$RUNNER_TEMP/a0-rebuild.log"
+      - name: Verify A0 quarantine and generated index seals before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+
+================ STEP 506 ================
+Created At: 2026-11-20T16:38:13-05:00
+Completed At: 2026-11-20T16:38:25-05:00
+Command exited with code 0.
+
+Command output:
+RUN 44800185041 JOBS:
+  success  Classify exact-head browser witness scope
+  skipped  Explicit self-hosted calibration
+  skipped  D2/D3 theatrical eight original SSE exact-main activation (credential-free)
+  skipped  Full Marrowline theatrical twelve original SSE exact-main activation (credential-free)
+  skipped  Explicit full-repository validation
+  skipped  D1/D2 section boundary sixteen SSE exact-main activation (credential-free)
+  skipped  Explicit credential-scoped Gemini model observation
+  skipped  Explicit synthetic Hush custody pilot
+  skipped  D1/D2 fresh sixteen SSE episode two exact-main activation (credential-free)
+  skipped  Marrowline eight original SSE exact-main activation (credential-free)
+  failure  Static, constitutional, and release contracts
+  success  Offline Marrowline layout regression
+  success  Neon budget deployment ZIP startup
+  skipped  Giving/practice exact-head Chromium Firefox WebKit witness
+  skipped  Front-line exact-head browser shard · ${{ matrix.browser }}
+  skipped  Marrowline historical prosody eight original Google SSE max
+  skipped  D1/D2 fresh sixteen Google SSE episode two maximum (main only)
+  skipped  D2/D3 theatrical original Google SSE eight returns maximum (main only)
+  skipped  D1/D2 four-arm original Google SSE sixteen calls maximum (main only)
+  skipped  Original Google SSE full Marrowline twelve returns max (main only)
+  skipped  Full-product exact-head Chromium Firefox WebKit witness
+
+STEPS IN Static, constitutional, and release contracts (47):
+   1 success  Set up job
+   2 success  Run actions/checkout@v4
+   3 success  Run actions/setup-node@v4
+   4 success  Run actions/setup-python@v5
+   5 success  Install repository dependencies once
+   6 failure  Enforce the four-workflow estate and release membrane
+   7 skipped  Validate bounded Dollhouse role upgrades and source-only export kit
+   8 skipped  Validate Loom Instrument Lab, held gates, advisory minimization, and declared service resolution
+   9 skipped  Validate Dome-World runtime weather and hash regression
+  10 skipped  Validate restored 5-role Dollhouse specialist suites and native skill
+  11 skipped  Validate Experiment B Flight Launchbridge, Security Battery, and Discovery Controls
+  12 skipped  Execute clean exact-head Dollhouse browser witness
+  13 skipped  Upload clean Dollhouse browser witness receipt
+  14 skipped  Validate COV-M3 25-probe negative validation matrix and synthetic scenarios
+  15 skipped  Verify native-prosody permission, focused relay API and editorial contracts, and offline atlas
+  16 skipped  Validate Giving and Campaign Deputy import contracts
+  17 skipped  Bounded portable Loom transport, conformance, SQL ledger, and n02 alignment checks
+  18 skipped  Materialize same-run scientific observation custody when O1 surface is under test
+  19 skipped  Validate Dome-World static surfaces
+  20 skipped  Validate Holonomy Loom causal theater
+  21 skipped  Validate Phase IV static surfaces
+  22 skipped  Validate Ash core and ingress surfaces
+  23 skipped  Validate Ash A2-A8 surfaces
+  24 skipped  Validate Ash A9 Work
+  25 skipped  Validate Ash A10 Choir
+  26 skipped  Validate Ash A11 Capsule
+  27 skipped  Validate Ash A12 command rationalization
+  28 skipped  Validate Ash A13 unified registry and workflow collapse
+  29 skipped  Validate Ash A14 Archive accession
+  30 skipped  Validate Ash A15 empirical profile journeys and A15-R0 research field
+  31 skipped  Validate Ash demo hydration surfaces
+  32 skipped  Validate Ash production-closure surfaces
+  33 skipped  Validate Flow-Core P0-P7 seam closure
+  34 skipped  Validate Flow-Core P0-P10 completion
+  35 skipped  Flow-Core claim · exact-head matrix placement
+  36 skipped  Flow-Core claim · bounded production confirmation
+  37 skipped  Flow-Core claim · empirical authority separation
+  38 skipped  Flow-Core claim · executable dependency closure
+  39 skipped  Flow-Core claim · static rewrite parity
+  40 skipped  Flow-Core claim · concurrent station packages
+  41 skipped  Validate Flow-Core runtime browser contract
+  42 success  Preserve diagnostics only when held
+  43 skipped  Preserve scientific observation custody when present
+  84 skipped  Post Run actions/setup-python@v5
+  85 skipped  Post Run actions/setup-node@v4
+  86 success  Post Run actions/checkout@v4
+  87 success  Complete job
+
+
+================ STEP 508 ================
+Created At: 2026-11-20T16:38:36-05:00
+Completed At: 2026-11-20T16:38:42-05:00
+Command exited with code 0.
+
+Command output:
+[{"conclusion":"skipped","createdAt":"2026-11-20T17:22:13Z","databaseId":44782632675,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T17:19:41Z","databaseId":44782214940,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T17:18:48Z","databaseId":44782073120,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T16:12:09Z","databaseId":44770953550,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:55:21Z","databaseId":44698518776,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:52:48Z","databaseId":44698206446,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:51:45Z","databaseId":44698082210,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:51:44Z","databaseId":44698079666,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:23:49Z","databaseId":44694652586,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:20:51Z","databaseId":44694289742,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:20:01Z","databaseId":44694185046,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T07:18:04Z","databaseId":44693950818,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T06:22:09Z","databaseId":44687298697,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T06:21:17Z","databaseId":44687197686,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T06:21:15Z","databaseId":44687195160,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T05:13:34Z","databaseId":44679597732,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T05:12:58Z","databaseId":44679527687,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T05:12:56Z","databaseId":44679524215,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T04:26:31Z","databaseId":44674420792,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T04:25:45Z","databaseId":44674332980,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T04:19:57Z","databaseId":44673683189,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T04:01:55Z","databaseId":44671649455,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T04:01:19Z","databaseId":44671579820,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T03:56:11Z","databaseId":44671025941,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T03:38:14Z","databaseId":44669074257,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T03:37:17Z","databaseId":44668968083,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T02:10:14Z","databaseId":44658858055,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T02:09:17Z","databaseId":44658744154,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T01:14:16Z","databaseId":44652100970,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T01:04:25Z","databaseId":44650836656,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T01:03:22Z","databaseId":44650700040,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T00:56:37Z","databaseId":44649837962,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T00:03:31Z","databaseId":44642715409,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-20T00:00:31Z","databaseId":44642295311,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T23:59:32Z","databaseId":44642161101,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T22:26:52Z","databaseId":44628701228,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T22:18:09Z","databaseId":44627305623,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T20:19:35Z","databaseId":44607506854,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T20:13:48Z","databaseId":44606489826,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T16:57:30Z","databaseId":44571884082,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T16:57:10Z","databaseId":44571825969,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T16:57:05Z","databaseId":44571811479,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T16:56:52Z","databaseId":44571771392,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T16:56:30Z","databaseId":44571705793,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T16:56:05Z","databaseId":44571630513,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T15:59:09Z","databaseId":44560936232,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T15:57:47Z","databaseId":44560687417,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T03:41:32Z","databaseId":44453197798,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-19T03:40:36Z","databaseId":44453093940,"event":"issue_comment","status":"completed"},{"conclusion":"skipped","createdAt":"2026-11-17T21:04:52Z","databaseId":44176012877,"event":"issue_comment","status":"completed"}]
+=== COMMIT 2f0fa5944 ===
+commit 2f0fa5944b142f574d65bd86772dbd194d8fb996
+Author: tauric-diana-613 <timstephencello@gmail.com>
+Date:   Mon Nov 16 02:09:47 2026 -0500
+
+    ci(vixen): owner-gated exact-PR A0 seven-free index regeneration with read-only comparator custody
+
+ .github/workflows/vixen-a0-corpus-rebuild.yml | 124 ++++++++++++++++++++++++++
+ 1 file changed, 124 insertions(+)
+=== DID PR1730 RECEIVE A0 REBUILD COMMIT ===
+=== CHECK MAIN COMMITS AFTER 2f0fa5944 ===
+363b5b4ae 2026-11-16 22:36:14 -0500 docs(vixen): establish #1744 canonical Antigravity/ChatGPT preview operator gate and correct stale provider history
+a9bcf4613 2026-11-16 22:35:28 -0500 test(vixen): assert issue #1744 has live PREPARE and owner-only DEPLOY triggers separate from #405
+c8773b788 2026-11-16 22:34:58 -0500 release(vixen): bind permanent issue #1744 to existing PREPARE/DEPLOY preview jobs, retain PR #1730 and owner-only deploy
+b31ad3d07 2026-11-16 04:16:41 -0500 ci(vixen): distinguish additive Vercel preview injection from genuine served-byte drift
+2f0fa5944 2026-11-16 02:09:47 -0500 ci(vixen): owner-gated exact-PR A0 seven-free index regeneration with read-only comparator custody

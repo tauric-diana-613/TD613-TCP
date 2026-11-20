@@ -32,7 +32,7 @@
 
 ### Second Constitutional Violation Hidden Immediately Below Line 1 of Step 6
 
-Local verification (archived verbatim in `verification-logs/08-local-workflow-estate-vixen-red-step301.log` and `verification-logs/09-local-release-plumbing-vixen-red-step303.log`) confirmed that even if `tests/workflow-estate.test.mjs` were bypassed, the same file `.github/workflows/vixen-a0-corpus-rebuild.yml` ALSO fails `node tests/release-plumbing.test.mjs` (Line 20 of Step 6) because `vixen-a0-corpus-rebuild.yml` contains an executable `git push` command, violating `tests/release-plumbing.test.mjs:32`.
+Local verification (archived verbatim in `verification-logs/08-local-workflow-estate-vixen-red-step301.txt` and `verification-logs/09-local-release-plumbing-vixen-red-step303.txt`) confirmed that even if `tests/workflow-estate.test.mjs` were bypassed, the same file `.github/workflows/vixen-a0-corpus-rebuild.yml` ALSO fails `node tests/release-plumbing.test.mjs` (Line 20 of Step 6) because `vixen-a0-corpus-rebuild.yml` contains an executable `git push` command, violating `tests/release-plumbing.test.mjs:32`.
 
 ---
 

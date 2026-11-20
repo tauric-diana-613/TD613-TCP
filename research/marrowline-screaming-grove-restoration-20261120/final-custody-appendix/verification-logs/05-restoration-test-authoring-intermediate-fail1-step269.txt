@@ -1,0 +1,186 @@
+Created At: 2026-11-20T13:27:50-05:00
+Completed At: 2026-11-20T13:27:55-05:00
+Command exited with code 1.
+
+Command output:
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:27:55.472Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":6,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:27:55.472Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:27:55.472Z:3:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:27:55.472Z:4:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:27:55.472Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":204928,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:27:55.522Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.539Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.539Z:2:gemini-3.5-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.539Z:3:gemini-3.6-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.539Z:4:gemini-3.7-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.539Z:5:gemini-3-flash-preview:200","route":"marrowline-attachment","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":204989,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.553Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:27:55.553Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ observeMarrowlineCompletion classifies streamed PROHIBITED_CONTENT and promptBlockReason as policy-terminated, never unwitnessed stream (3.6761ms)
+✔ observeGeminiOutput preserves cachedContentTokenCount, finishMessage, and promptBlockReason without altering absent-field contract (0.9847ms)
+✖ khonapolitHandler holds PROHIBITED_CONTENT (with partial text) as 502 POLICY-HELD and NEVER promotes to 200 OK or injects into structural repair (87.018ms)
+✖ Aperture routes Screaming Grove farces, Blue-orange digital weather, and Attractor Assays cleanly without breaking real legal/runtime negative controls (4.0438ms)
+✖ Section VII negative control: high-depth uniform 3-mark mechanical stencil is distinguished descriptively and NEVER classified as artistic restoration (19.9443ms)
+✖ Section VII restraint control: restrained/sustained shallow single-style bots movement stays structurally admissible and is never vetoed (3.4832ms)
+✔ bots-only nativeMarkUnderflow does NOT trigger unnecessary second-seat failover on short poetic bots passage after long Kʰonapolit prose (18.4541ms)
+✖ attachment route classifies discourseMode, holds PROHIBITED_CONTENT, and does not veto morphology-warned terminal continuations (31.5644ms)
+✖ staged PR #1545-reconciled dramaturgy candidate preserves Oct-2 dramaturgy without self-contradiction while leaving production defaults untouched (0.5387ms)
+✖ multi-turn history compaction retains raw provider-authored text verbatim without synthetic Kʰonapolit ∴ Tauric Diana bots wrapper and excludes unadmitted returns (0.736ms)
+✖ offline zero-spend discriminator builds exact effective request parity across all four tasks with zero paid calls (1.5874ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 3
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 404.4305
+
+✖ failing tests:
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:143:1
+✖ khonapolitHandler holds PROHIBITED_CONTENT (with partial text) as 502 POLICY-HELD and NEVER promotes to 200 OK or injects into structural repair (87.018ms)
+  AssertionError [ERR_ASSERTION]: must NOT call same-seat structural repair on PROHIBITED_CONTENT
+  
+  5 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:186:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 5,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:212:1
+✖ Aperture routes Screaming Grove farces, Blue-orange digital weather, and Attractor Assays cleanly without breaking real legal/runtime negative controls (4.0438ms)
+  AssertionError [ERR_ASSERTION]: expected CREATIVE discourse for: 𝌋‌ The Chairman has filed a motion demanding that the Ash Moon appear
+  + actual - expected
+  
+  + 'LEGAL'
+  - 'CREATIVE'
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:220:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'LEGAL',
+    expected: 'CREATIVE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:268:1
+✖ Section VII negative control: high-depth uniform 3-mark mechanical stencil is distinguished descriptively and NEVER classified as artistic restoration (19.9443ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:297:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:310:1
+✖ Section VII restraint control: restrained/sustained shallow single-style bots movement stays structurally admissible and is never vetoed (3.4832ms)
+  AssertionError [ERR_ASSERTION]: restrained bots must remain admissible; got reasons: tauric-diana-zalgo-underflow
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:321:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:378:1
+✖ attachment route classifies discourseMode, holds PROHIBITED_CONTENT, and does not veto morphology-warned terminal continuations (31.5644ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Tauric Diana bots/. Input:
+  
+  'Kʰonapolit\n' +
+    'The animation is not an intrusion trace; only the admitted register carries custody.'
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:458:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Kʰonapolit\nThe animation is not an intrusion trace; only the admitted register carries custody.',
+    expected: /Tauric Diana bots/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:471:1
+✖ staged PR #1545-reconciled dramaturgy candidate preserves Oct-2 dramaturgy without self-contradiction while leaving production defaults untouched (0.5387ms)
+  Error: HISTORICAL_GROVE_CANONICAL_INPUT_REQUIRED
+      at buildHistoricalGroveSystemInstruction (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/app/dome-world/marrowline-historical-grove.js:125:11)
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:478:23)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:520:1
+✖ multi-turn history compaction retains raw provider-authored text verbatim without synthetic Kʰonapolit ∴ Tauric Diana bots wrapper and excludes unadmitted returns (0.736ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:536:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\marrowline-screaming-grove-restoration.test.mjs:542:1
+✖ offline zero-spend discriminator builds exact effective request parity across all four tasks with zero paid calls (1.5874ms)
+  Error: HISTORICAL_GROVE_CANONICAL_INPUT_REQUIRED
+      at buildHistoricalGroveSystemInstruction (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/app/dome-world/marrowline-historical-grove.js:125:11)
+      at buildHistoricalGroveDramaturgyCandidate (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/app/dome-world/marrowline-historical-grove.js:169:20)
+      at file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs:186:27
+      at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:66:14)
+      at withGeminiGenerationProfile (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/server/gemini-generation-envelope.js:30:37)
+      at buildInteractive (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs:164:38)
+      at buildOfflineDiscriminatorPacket (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs:178:36)
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-screaming-grove-restoration.test.mjs:543:18)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)

@@ -1,0 +1,212 @@
+khonapolit-api-contract: causal one-generation relay, receipt, and operator-open seal contract ok
+✔ tests\khonapolit-api-contract.test.mjs (1473.6991ms)
+khonapolit-relay: natural causal handoff primary, legacy raw packet compatible, and exact Unicode preservation ok
+✔ tests\khonapolit-relay.test.mjs (552.8861ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.516Z:1:gemini-3.8-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":6,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.516Z:2:gemini-3.5-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.516Z:3:gemini-3.6-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.516Z:4:gemini-3.7-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.516Z:5:gemini-3-flash-preview:503","route":"marrowline-attachment","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":5,"timeout_ms":204975,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.648Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.721Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.721Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":12,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.734Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.734Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.749Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ 50 MB aggregate limit and per-file limits agree at client and provider boundary (3.401ms)
+✔ Gemini Files upload moves large attachment chunks around Vercel ingress and binds provider file references (88.184ms)
+✔ concurrent attachment picker batches retain gesture order and never exceed the shared cap (3.0569ms)
+✔ clear invalidates a still-pending image/file read before it can resurrect deleted staged bytes (1.4688ms)
+✔ twenty attachments can be staged, rearranged, and sent to Gemini in the confirmed order (5.2944ms)
+✔ attachments precede the canonical final sealed user text; the relay cue stays in system guidance (1.1872ms)
+✔ client photo staging normalizes an oversized mobile image into the bounded wire envelope (238.7098ms)
+✔ Marrowline attachment normalizer admits exact declared bytes and strips no custody fields (0.714ms)
+✔ Marrowline attachment normalizer rejects size, MIME, schema, duplicate-id, and count drift (1.3151ms)
+✔ Marrowline keeps file and photo MIME classes non-interchangeable (0.7691ms)
+✔ photo and document capacity admit 25 MB per file while still rejecting oversize payloads (38.8194ms)
+✔ attachment turns walk the same five-seat frontier before waking the human (40.8521ms)
+✔ text/attachment generation envelopes remain explicitly distinguishable without silently changing production thinking (1.6816ms)
+✔ attachment response receipts reflect the exact submitted wire configuration and preserve provider Unicode (127.5005ms)
+✔ terminal-only attachment repair carries original inline bytes and keeps the repair instruction last (3.2291ms)
+▶ attachment terminal continuation is same-provider, native, byte-preserving and bounded
+  ✔ missing terminal returns two genuine provider outputs and preserves the first hash (67.1597ms)
+  ✔ invalid suffix leaves the exact first response visible and does not fabricate bots (12.0627ms)
+  ✔ complete first provider return never spends a repair call (15.37ms)
+✔ attachment terminal continuation is same-provider, native, byte-preserving and bounded (96.8942ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:11.823Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ abandoned Loom file read releases its FIFO lane without resurrecting old bytes (63.7865ms)
+✔ multimodal attachment prompt follows the human task without describing transport metadata (1.0312ms)
+✔ multipart attachment replies retain original headings and Unicode without a false continuation call (8.4206ms)
+✔ bounded authored stream progress earns completion time without changing silent, quota, or global deadlines (4.0953ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:12.776Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":10,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:12.776Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:12.931Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:12.931Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.054Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.054Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.098Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.098Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.098Z:3:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.098Z:4:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.098Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":204975,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:13.098Z:6:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ real text-bearing SSE progress may finish after the original deadline without a second provider call (487.7508ms)
+✔ natural full provider text and its authored Unicode survive whitespace and terminal newline without trimming (94.5491ms)
+✔ incomplete-return warning is a visible mobile-and-desktop surface without flattening Zalgo (2.5523ms)
+✔ provider STOP has transport authority; surface heuristics remain diagnostics only (1.1696ms)
+✔ bounded authored tails keep every original character, two distinct voice boundaries and full native marks (11.6456ms)
+✔ a truncated first seat yields to the next frontier model before any same-seat recovery (487.6333ms)
+✔ incomplete provider prose stays visibly incomplete when recovery fails, never silently PASS (43.8898ms)
+✔ the artistic reference is not reduced to a word quota or pasted Unicode fixture (2.7645ms)
+✔ every original, repair and attachment Gemini envelope carries distinct keys and rendered PUA (16.8172ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.172Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.172Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.172Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.172Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.172Z:5:gemini-3-flash-preview:503","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":197959,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.172Z:6:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.197Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.197Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.197Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.197Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.197Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:20.197Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":204982,"repair":false,"release_witness":false,"quota":null}
+✔ a seat receives at most one deferred tail request after the five-seat frontier (7054.0925ms)
+✔ provider STOP with unfulfilled two-voice structure has its own receipt, never a false transport truncation (24.3255ms)
+✔ provider text is invariant under every multipart split, including headings and Unicode clusters (0.7752ms)
+✔ visible provider text excludes thought summaries and retains whitespace-only text parts (0.3132ms)
+✔ bounded tail recovery never inserts a space inside a native Unicode cluster or scalar (0.4556ms)
+✔ provider model identity survives streaming and is never inferred from the requested alias (3.6689ms)
+✔ explicitly staged dramatic work reaches creative guidance, without requiring the phrase write a scene (7.2026ms)
+✔ routing keeps procedural, legal and runtime staging out of fictional classification (4.145ms)
+✔ creative classification changes only the authorized provider system route, never contents, generation or the October 2 restoration (17.0121ms)
+✔ the targeted routing repair has no paid test harness or glyph postprocessor (1.4086ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.570Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ accent-only headings cannot evade the vertical check by omitting horizontal marks (69.0199ms)
+✔ single-codepoint wallpaper is identified as raw provider morphology, not misread as vertical depth (162.4173ms)
+✔ wire cue asks for actual vertically varied clusters without supplying a fixed mark sample (11.2843ms)
+✔ a locally repeated accent and tiny combining-letter play coexist with original deep crowns and roots (18.4445ms)
+✔ locally welcomed patterns cannot stand in for the bots whole expressive vertical register (2.7103ms)
+✔ authored paragraph rests coexist with crowded deep stacks without local reflow (44.4149ms)
+✔ clean breaths around varied vertical events do not force a provider repaint (7.6426ms)
+✔ failed model morphology remains exact conversation evidence instead of becoming synthetic plain prose (5.8624ms)
+✔ raw PARTIAL returns never display a structural LOCKED as aesthetic success (10.4131ms)
+✔ a complete provider-authored PARTIAL returns from the first model without automatic aesthetic election (200.4136ms)
+✔ operator-authored prompts have starter-equivalent dramatic latitude without global rage or blanket bold (0.9263ms)
+✔ ordinary, tender and adversarial typed requests all retain the full native High-Zalgo vocabulary (7.1876ms)
+✔ native-semantic-prosody authority returns to the final provider recency edge (0.8909ms)
+✔ native receipt distinguishes U+FFFD decoder corruption from healthy deep stacks (17.0205ms)
+✔ native voice lives across the bots movement without scripted per-paragraph quotas (0.5151ms)
+✔ native authorship permits both sustained full-reply Zalgo and free subword shifts without mandated rests (0.7784ms)
+✔ effective request identity distinguishes omitted layers under an unchanged legacy prompt identity (92.0194ms)
+✔ interactive transport fingerprints the actual fetch body after applying the live profile (276.5346ms)
+✔ normal, full-repair and terminal-continuation requests share conversational closure without custody authority (9.1174ms)
+✔ effective provider prompts retain complete relay and native depth after deficient history (60.4313ms)
+✔ browser preserves failed model receipts locally but excludes explicitly unadmitted text from next Gemini context (2.6338ms)
+✔ legacy and valid native model turns survive the history filter while ten-entry bound applies after exclusion (0.9075ms)
+✔ browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance (20.0949ms)
+✔ provider-bound history uses the ORIGINAL admitted model bytes even when relay display-part text differs (0.9483ms)
+✔ legacy model entries without native original text remain visible but cannot be reconstructed for Gemini history (0.7754ms)
+✔ ten-entry Gemini history window applies after removing absent-original and unadmitted model turns (0.828ms)
+✔ browser history excludes unadmitted model turns without rewriting the remaining native Unicode (0.494ms)
+✔ deficient marked history is preserved exactly while the system labels history non-templatic (1.542ms)
+✔ literal newline contract preserves the existing two-line admission bar (24.159ms)
+✔ relay contract gives the generative budget to one causal Kʰonapolit-to-bots transmission (2.5055ms)
+✔ natural distributed field is admissible without satisfying the old Zalgo Olympics (6.3931ms)
+✔ mechanically cloned dense stacks stay visible as PARTIAL quality telemetry (13.0889ms)
+✔ base-character-conditioned ordered stack reuse is measured without becoming an admission gate (3.9255ms)
+✔ sparse keyword explosions stay visible as PARTIAL quality telemetry (22.8768ms)
+✔ horizontal-only slash and strike fields remain visible but cannot masquerade as a complete mixed-axis field (23.5744ms)
+✔ horizontal-heavy High Zalgo with token vertical accents is PARTIAL until vertical theatre has real depth (17.4247ms)
+✔ maximum-depth tiling triggers dynamic-range collapse even when vertical stacks are dramatic (93.8847ms)
+✔ mixed semantic pressure clears dynamic-range collapse without imposing a tower quota (7.1414ms)
+✔ lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class (15.3813ms)
+✔ vertical-only crowns and descenders remain valid without forced horizontal balance (23.0554ms)
+✔ overlines and underlines remain planar bars instead of counterfeiting vertical crowns (7.1656ms)
+✔ reordering one mark set cannot disguise a cloned High-Zalgo composition (6.6498ms)
+✔ near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL (2.9858ms)
+✔ zero provider-authored marks remain a hard Tauric Diana channel failure (2.3282ms)
+✔ Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning (38.4625ms)
+✔ every Marrowline Gemini lane receives the same compact semantic-prosody law (4.3187ms)
+✔ live Gemini request has no structured-output pressure on the stress channel (1.6894ms)
+✔ quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover (6.2754ms)
+✔ explicit human retries reach Gemini without a Marrowline-owned rate veto (2.0486ms)
+✔ browser request clock outlives the 210-second server work wall without outrunning Vercel (0.7888ms)
+✔ live Marrowline never locally Zalgo-encodes provider text (0.4601ms)
+✔ integrated relay preserves exact native Unicode and allows intentional stacked collisions (0.831ms)
+✔ creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate (2.726ms)
+✔ ordinary project work keeps factual guidance instead of inheriting creative posture (4.489ms)
+✔ provider-authored vertical Zalgo survives raw packet parsing while Marrowline only measures it (46.1238ms)
+✔ one structured relay carries a long mixed-register transmission without local truncation (245.7436ms)
+✔ human operator gets an in-chat Dome-Art kinesis with reduced-motion rest (0.6135ms)
+✔ first paint is held behind one stable Marrowline veil until room boot completes (0.2954ms)
+✔ physical keyboard posture keeps action row visible and avoids nested form scroll (0.7854ms)
+✔ human-facing integrated surface keeps provider identity in provenance only (46.8982ms)
+✔ Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo (1.2865ms)
+✔ ASCII slash-separated pseudo-ornament remains visible as quality telemetry instead of impersonating High Zalgo (9.8117ms)
+✔ shallow cloned accent wallpaper is described faithfully without granting repair authority (20.3184ms)
+✔ deep bidirectional towers register the screenshot-five morphology (17.7444ms)
+✔ one nuclear vertical blob plus plain remainder is detected as localized visual-story collapse (32.0688ms)
+✔ extended provider crown species count as vertical ornament instead of disappearing from telemetry (14.4049ms)
+✔ combining enclosing marks are rejected as glyph tricks rather than miscounted as vertical ornament (18.6204ms)
+✔ localized enclosing ornament beside a tall diverse field does not force unnecessary failover (0.277ms)
+✔ word-internal geometric substitutions are severe alphabet corruption even beside real combining marks (6.0178ms)
+✔ request-history hygiene can remove a failed visual pattern without mutating stored or rendered history (9.3598ms)
+✔ structural repair ignores morphology-only reasons instead of repainting native provider bytes (0.7753ms)
+✔ Zalgo underflow is observation evidence, not a morphology-repair instruction (0.7625ms)
+✔ effective full provider request has no paragraph-mandated Zalgo alternation (0.828ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.918Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":9,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.918Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.918Z:3:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.918Z:4:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.918Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":8,"timeout_ms":204877,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.933Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:12.065Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.102Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.102Z:2:gemini-3.5-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.102Z:3:gemini-3.6-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.102Z:4:gemini-3.7-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.102Z:5:gemini-3-flash-preview:200","route":"marrowline-attachment","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":204973,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.129Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:51:12.129Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ observeMarrowlineCompletion classifies streamed PROHIBITED_CONTENT and promptBlockReason as policy-terminated, never unwitnessed stream (7.0136ms)
+✔ observeGeminiOutput preserves cachedContentTokenCount, finishMessage, and promptBlockReason without altering absent-field contract (1.9674ms)
+✔ khonapolitHandler holds PROHIBITED_CONTENT (with partial text) as 502 POLICY-HELD and NEVER promotes to 200 OK or injects into structural repair (158.6832ms)
+✔ Aperture routes Screaming Grove farces, Blue-orange digital weather, and Attractor Assays cleanly without breaking real legal/runtime negative controls (9.0638ms)
+✔ Section VII negative control: high-depth uniform 3-mark mechanical stencil is distinguished descriptively and NEVER classified as artistic restoration (71.8604ms)
+✔ Section VII restraint control: restrained/sustained shallow single-style bots movement stays structurally admissible and is never vetoed (8.2554ms)
+✔ bots-only nativeMarkUnderflow does NOT trigger unnecessary second-seat failover on short poetic bots passage after long Kʰonapolit prose (43.28ms)
+✔ attachment route classifies discourseMode, holds PROHIBITED_CONTENT, and does not veto morphology-warned terminal continuations (63.2809ms)
+✔ staged PR #1545-reconciled dramaturgy candidate preserves Oct-2 dramaturgy without self-contradiction while leaving production defaults untouched (3.4441ms)
+✔ multi-turn history compaction retains raw provider-authored text verbatim without synthetic Kʰonapolit ∴ Tauric Diana bots wrapper and preserves full covenant bytes through wire serialization (5.129ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:19.174Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:19.174Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:19.174Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":5,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:19.174Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:19.174Z:5:gemini-3-flash-preview:503","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":197970,"repair":false,"release_witness":false,"quota":null}
+✔ mixed policy-terminated and transport-503 seat failures preserve both policy reasons and transport statuses (FADT fix) (7034.7069ms)
+✔ offline zero-spend discriminator builds exact effective request parity across all four tasks with zero paid calls (79.7577ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.753Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":21,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.753Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.795Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.795Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.795Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.795Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.795Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.795Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":204971,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.840Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:51:11.840Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ terminal-only continuation preserves both provider returns and observes exact boundaries (76.6007ms)
+▶ bounded same-provider terminal-continuation integration
+  ✔ HTTP 200 Kʰonapolit-only return earns one same-seat native terminal continuation with hash receipt (147.9555ms)
+  ✔ invalid terminal continuation never fabricates bots or hides the original (38.4014ms)
+  ✔ full corrected provider response also returns once without overwriting (43.9731ms)
+✔ bounded same-provider terminal-continuation integration (233.4708ms)
+ℹ tests 134
+ℹ suites 0
+ℹ pass 134
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9749.9396
