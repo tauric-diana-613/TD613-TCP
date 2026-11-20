@@ -100,6 +100,11 @@ try{
  await page.waitForFunction(()=>window.VixenSourceChallenge.status().phase==='FIELDWORK');
  const form=panel.locator('form.ve-form');
  await fillEvidence(page,form);
+ // Redraw must not throw away the visitor's unsubmitted redpen.
+ await page.evaluate(()=>window.dispatchEvent(new CustomEvent('vixen-maestro-session-state',
+  {detail:{active:true,role:'MAESTRO'}})));
+ assert.match(await form.locator('[name=next_source_action]').inputValue(),/original equation definitions/);
+ assert.equal(await page.evaluate(()=>window.VixenSourceChallenge.draftStatus().has_unsent_draft),true);
  await form.locator('[name=excerpt_0]').fill('Fabricated passage. This exact text is absent from the original source.');
  await form.getByRole('button',{name:'Record the redpen and prepare local receipt'}).click();
  await page.waitForFunction(()=>document.querySelector('#vmaSourceChallenge .ve-status')?.textContent?.includes('HELD_CHALLENGE_EXCERPT_NOT_IN_VERIFIED_SOURCE'),
@@ -151,6 +156,12 @@ try{
  const measure=await panel.evaluate(x=>({scroll:x.scrollWidth,client:x.clientWidth,width:x.getBoundingClientRect().width}));
  assert(measure.scroll<=measure.client+2,'Mobile source challenge overflow '+JSON.stringify(measure));
  await panel.locator('input.ve-control').fill('My unsubmitted research question should be cleared on exit');
+ assert.equal(await phone.evaluate(()=>window.VixenSourceChallenge.draftStatus().has_unsent_draft),true);
+ phone.once('dialog',async dialog=>{assert.match(dialog.message(),/unsent drafts/i);await dialog.dismiss();});
+ await phone.locator('#vmaEnd').click();
+ assert.equal(await phone.evaluate(()=>window.VixenAIModes.status().result.active),true,
+  'Visitor dismissal must keep the draft in the same role');
+ phone.once('dialog',dialog=>dialog.accept());
  await phone.locator('#vmaEnd').click();
  await role(phone);
  assert.equal(await panel.locator('input.ve-control').inputValue(),'');
