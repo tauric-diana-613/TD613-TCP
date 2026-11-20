@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
-import {execFileSync} from 'node:child_process';
+import {execFileSync,spawnSync} from 'node:child_process';
 import {createVixenAiSession} from '../app/encyclopedia/vixen-estate/vixen-ai-session.mjs';
 import {
   auditTypedEpistemicDeficit,validateCovarianceMatrix
@@ -175,4 +175,22 @@ test('MATH-C: native Dollhouse specialist preserves typed covariance veto',async
   assert.equal(run.exit_code,1,'Native mathematical veto must fail closed');
   assert.equal(run.machine_receipt.git_commit_verified,true);
   assert.equal(run.machine_receipt.is_exact_checkout_match,true);
+});
+
+test('MATH-D: authentic native /dollhouse-audit CLI preserves exact HEAD and veto',()=>{
+  const result=spawnSync(process.execPath,[
+    'scripts/run-dollhouse-skill-audit.mjs',
+    '--input','tests/fixtures/vixen-braid-g1-aperture-invalid-covariance.json',
+    '--strict-provenance','--format','json'
+  ],{encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});
+  assert.equal(result.status,1,result.stderr||'Invalid geometry must produce a native HELD exit');
+  const receipt=JSON.parse(result.stdout);
+  assert.equal(receipt.source_revision,execFileSync('git',['rev-parse','HEAD'],
+    {encoding:'utf8'}).trim());
+  assert.equal(receipt.git_commit_verified,true);
+  assert.equal(receipt.is_exact_checkout_match,true);
+  const finding=receipt.specialist_findings.find(x=>x.role==='APERTURE');
+  assert.equal(finding.verdict,'HELD');
+  assert(finding.infractions.includes('INDEFINITE_NOISE_COVARIANCE'));
+  assert(!finding.infractions.includes('URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED'));
 });
