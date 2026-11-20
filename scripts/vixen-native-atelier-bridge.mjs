@@ -133,6 +133,16 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,data:execute(repo,script,args)};
     },
     WENDBINE_ATELIER:({operation,payload={}})=>{
+      if(operation==='wendbine_observed_evidence_routes'){
+       const script=safePublicRoot(repo,['scripts','wendbine-evidence-routes-v1.py']);
+       const sourceId=nonempty(payload.source_id,80);
+       if(!/^reddit:t3_[a-z0-9]{5,12}$/.test(sourceId))HOLD('HELD_NATIVE_WENDBINE_EXACT_SOURCE_ID');
+       return {estate:'WENDBINE',kind:'TD613_CAPTURE_BOUND_OBSERVATION_ENGINE',
+        original_poster_authorship_of_instrument:false,source_bound:true,read_only:true,
+        native_src_parity:'UNTESTED',causal_relation_promotion:false,scientific_credit:0,
+        data:execute(repo,script,['--wendbine-db',privateFile(repo,payload.index_path),
+         sourceId,'--limit',String(bounded(payload.limit??40,100))])};
+      }
       // Host-only derived research methods execute the preserved original public compiler
       // and a separately attributed TD613 assay. They never enter Vixen's public bundle.
       if(['wendbine_public_reconstruction','wendbine_public_research_journey','wendbine_public_inventory','wendbine_public_sweep'].includes(operation)){
