@@ -1,0 +1,48 @@
+/* Optional Maestro human field comparison; neutral chrome / flaxen-gold, no novelty promotion. */
+#vixenAiJourney #vmaComparativeFieldLab{margin-top:14px!important;padding:clamp(14px,2vw,24px)!important;
+ background:linear-gradient(135deg,#0b1920,#10232a 66%,#151b1e)!important;
+ border:1px solid #cbb39188!important;color:#f3e7d5!important}
+#vmaComparativeFieldLab[hidden]{display:none!important}
+#vmaComparativeFieldLab .vf-kicker{font:800 10px/1.4 system-ui,sans-serif;color:#f2d4aa!important;
+ letter-spacing:.15em;margin:0 0 5px!important}
+#vmaComparativeFieldLab .vf-title{font:italic 400 clamp(23px,2vw,32px)/1.15 Georgia,serif;
+ color:#f7dfb9!important;letter-spacing:-.025em;margin:0 0 8px!important}
+#vmaComparativeFieldLab h4{font:600 16px/1.25 Georgia,serif;color:#f3dcbc!important;margin:4px 0 8px!important}
+#vmaComparativeFieldLab .vf-muted,#vmaComparativeFieldLab .vf-caption{
+ font:400 12px/1.53 system-ui,sans-serif;color:#d5d5d0!important;margin:4px 0 12px!important}
+#vmaComparativeFieldLab .vf-caption{color:#f5dba9!important}
+#vmaComparativeFieldLab .vf-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:9px 0!important}
+#vmaComparativeFieldLab .vf-field{display:grid;gap:5px;min-width:0;margin:12px 0!important;
+ font:500 12px/1.45 system-ui,sans-serif;color:#e7d7c5!important}
+#vmaComparativeFieldLab .vf-label{font-weight:650;color:#f2debe!important}
+#vmaComparativeFieldLab .vf-input{display:block;width:100%;min-width:0;max-width:100%;
+ background:#0c151b!important;color:#f9eee4!important;border:1px solid #a4a0a0a0!important;
+ border-radius:2px!important;padding:9px 11px!important;
+ font:400 13px/1.5 system-ui,sans-serif!important}
+#vmaComparativeFieldLab textarea.vf-input{resize:vertical;min-height:68px!important}
+#vmaComparativeFieldLab .vf-input:focus-visible,#vmaComparativeFieldLab .vf-btn:focus-visible{
+ outline:2px solid #f1d5a8!important;outline-offset:3px!important}
+#vmaComparativeFieldLab .vf-btn{border:1px solid #c5a780a0!important;
+ background:#172b35!important;color:#f4dfca!important;font:650 12px/1.35 system-ui,sans-serif!important;
+ padding:9px 13px!important;cursor:pointer;border-radius:2px!important}
+#vmaComparativeFieldLab .vf-primary{background:#e7c591!important;color:#11191b!important}
+#vmaComparativeFieldLab .vf-btn:hover{border-color:#ffe7bc!important}
+#vmaComparativeFieldLab .vf-sources,#vmaComparativeFieldLab .vf-methods{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:11px 0!important}
+#vmaComparativeFieldLab .vf-source,#vmaComparativeFieldLab .vf-method{
+ padding:12px!important;background:#0d1b23!important;border:1px solid #6e828780!important;min-width:0;
+ overflow-wrap:anywhere}
+#vmaComparativeFieldLab .vf-method-label{font:750 9px/1.4 system-ui,sans-serif;
+ letter-spacing:.12em;color:#d8cfb4!important;margin-bottom:6px}
+#vmaComparativeFieldLab .vf-rankings{background:#132530;border-left:2px solid #d6b78b;
+ padding:9px 10px;margin:9px 0}
+#vmaComparativeFieldLab .vf-rankings p{font:500 12px/1.45 system-ui,sans-serif;margin:5px 0!important;color:#f5e7d1!important}
+#vmaComparativeFieldLab .vf-rankings p.vf-muted{color:#bfcfd1!important;font-size:11px!important}
+#vmaComparativeFieldLab .vf-form{padding-top:9px;border-top:1px solid #8c9a9970;margin-top:15px}
+#vmaComparativeFieldLab .vf-error{color:#ffb3af!important;font-weight:650}
+#vmaComparativeFieldLab .vf-good{color:#e8dca9!important;font-weight:650}
+#vmaComparativeFieldLab .vf-status{border-top:1px solid #64767d70;padding-top:9px;margin:15px 0 0!important;
+ font:450 11px/1.5 system-ui,sans-serif;color:#c8d4d1!important}
+@media(max-width:700px){#vmaComparativeFieldLab .vf-sources,#vmaComparativeFieldLab .vf-methods{
+ grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){#vmaComparativeFieldLab *{transition:none!important;animation:none!important}}
