@@ -146,6 +146,20 @@ test('captured evidence routes execute from a real synthetic SQLite source but r
   assert.equal(receipt.data.native_src_heterostratigraphic_parity,'UNTESTED');
   assert.equal(receipt.scientific_credit,0);
   assert.ok(receipt.data.observed_routes.every(x=>x.direct_relation_promotion===false));
+  const prior=native.WENDBINE_ATELIER({operation:'wendbine_local_bitemporal_capture',
+   payload:{index_path:db,source_id:'reddit:t3_abcde1',cutoff_utc:'2026-09-30T00:00:00Z'}});
+  assert.equal(prior.kind,'TD613_LOCAL_CAPTURE_CLOCK_LENS');
+  assert.equal(prior.data.state,'HELD_NOT_IN_LOCAL_CAPTURE_BY_CUTOFF');
+  assert.equal(prior.data.selected_capture,null);
+  assert.equal(prior.data.historical_capture_origin_verified,false);
+  const later=native.WENDBINE_ATELIER({operation:'wendbine_local_bitemporal_capture',
+   payload:{index_path:db,source_id:'reddit:t3_abcde1',cutoff_utc:'2026-10-02T00:00:00Z'}});
+  assert.equal(later.data.selected_capture.capture_id,'capture-1');
+  assert.equal(later.data.scientific_credit,0);
+  assert.equal(later.data.private_source_bodies_returned,false);
+  assert.throws(()=>native.WENDBINE_ATELIER({operation:'wendbine_local_bitemporal_capture',
+   payload:{index_path:db,source_id:'reddit:t3_abcde1',cutoff_utc:'2026-10-02T00:00:00-04:00'}}),
+   /HELD_NATIVE_UTC_CAPTURE_CUTOFF_REQUIRED/);
  }finally{rmSync(scratch,{recursive:true,force:true});}
 });
 
