@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
-import {mkdir} from 'node:fs/promises';
+import {mkdir,readFile} from 'node:fs/promises';
 
 const dest='artifacts/vixen-browser-witness';
 await mkdir(dest,{recursive:true});
@@ -135,6 +135,15 @@ try{
   animations:'disabled',fullPage:false});
  await page.locator('#vmaEnd').click();
  assert.equal(await panel.isVisible(),false);
+ const localArchiveDownload=page.waitForEvent('download');
+ await page.locator('#vmaSaveFinal').click();
+ const localArchiveFile=await localArchiveDownload;
+ const preserved=JSON.parse(await readFile(await localArchiveFile.path(),'utf8'));
+ assert.equal(preserved.operator_side_receipts.completed_receipts.source_challenge.schema,
+  'td613.vixen.visitor-hostile-source-challenge-receipt/v1');
+ assert.equal(preserved.operator_side_receipts.scientific_credit,0);
+ assert.equal(preserved.auto_restore_notes_permission,false);
+ assert.equal(preserved.operator_side_receipts.unsent_drafts.length,0);
  await page.locator('[data-vma-role="COMPOSER"]').click();
  await page.locator('#vmaStart').click();
  assert.equal(await panel.isVisible(),false);
