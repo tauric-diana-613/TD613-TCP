@@ -77,7 +77,7 @@ async function witness(){
   {choice_id:'source',source_work_id:workIds[0],
    question:'Revisit the first source after the contextual descent and identify what changed'}
  ];
- const turns=[start.result.opening_turn],route=[];
+ const turns=[start.result.opening_turn],route=[],phase2Hops=[];
  for(const next of path){
   const out=await podium.dispatch(task('vixen.ai.choose',next));
   assert.equal(out.status,'SUPPORTED','Chosen route must really execute: '+next.choice_id);
@@ -86,7 +86,74 @@ async function witness(){
   assert.equal(out.result.step.evidence_class,'USER_CHOSEN_ROUTE_NOT_INDEPENDENT_OBSERVATION');
   route.push(out.result.step);
   turns.push(out.result.narrative);
+  // On the visitor's context choice and later return, invoke ORIGINAL SRC Python
+  // through the authorized host. This is separate from the catalogue read above.
+  const contextTurn=next.choice_id==='context';
+  const revisitTurn=next.choice_id==='source'&&phase2Hops.length>0;
+  if(contextTurn||revisitTurn){
+   const question=contextTurn
+    ?'Explore recorded identities and proposed contextual reading roles'
+    :'Explore whether revisiting the Work changes its documentary evidence';
+   const executed=await podium.dispatch(task('engine.invoke',{
+    engine:'SRC_ATELIER',
+    operation:'src_verified_vixen_original_phase2',
+    payload:{work_ids:workIds,query:question}
+   }));
+   assert.equal(executed.status,'HELD');
+   assert.equal(executed.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+   const phase2=executed.result.output;
+   assert.equal(phase2.native_python_executed,true);
+   assert.deepEqual(phase2.source_proofs.map(x=>x.work_id),workIds);
+   const original=phase2.original_native_phase2;
+   assert.equal(original.original_src_historical_registries_used,false);
+   assert.equal(original.original_historical_compilation_proven,false);
+   assert.equal(original.contextual_roles.length,6);
+   assert.equal(original.compilation_passes.length,2);
+   assert.ok(original.contextual_roles.every(x=>
+    x.role_normalized==='CANDIDATE_INPUT'&&x.adjudication_status==='UNRESOLVED'));
+   assert.ok(original.tomography.every(x=>
+    x.delta_evidence==='UNKNOWN'&&x.delta_asserted_authority==='UNKNOWN'&&x.composite_score===null));
+   assert.equal(original.controls.withdraw_hypothetical_comparison_context.role_count,4);
+   assert.equal(original.controls.withdraw_hypothetical_comparison_context.compiler_count,1);
+   assert.equal(phase2.scientific_credit,0);
+   if(revisitTurn){
+    assert.equal(phase2Hops.length,1,'A source return must refer to one earlier context witness');
+    assert.deepEqual(original.source_proofs,phase2Hops[0].source_proofs);
+    assert.deepEqual(original.ephemeral_registry_sha256,phase2Hops[0].ephemeral_registry_sha256);
+   }
+   phase2Hops.push({
+    step:out.result.step.sequence,
+    visitor_selected_work_id:next.source_work_id,
+    path:next.choice_id,
+    proposed_question:question,
+    observed_catalogue_reads:(out.result.narrative.observed_reads||[])
+     .filter(r=>r.status==='OBSERVED_READ_ONLY')
+     .map(r=>({intent:r.intent,work_id:r.record?.work_id||null})),
+    source_proofs:original.source_proofs,
+    original_phase2_sha256:original.original_method_sha256,
+    ephemeral_registry_sha256:original.ephemeral_registry_sha256,
+    original_functions:original.executed_original_functions,
+    original_context_role_count:original.contextual_roles.length,
+    original_compilation_pass_count:original.compilation_passes.length,
+    tomography_observations:original.tomography.map(t=>({
+     transformation_id:t.transformation_id,delta_scope:t.delta_scope,
+     delta_evidence:t.delta_evidence,delta_asserted_authority:t.delta_asserted_authority,
+     composite_score:t.composite_score
+    })),
+    context_withdrawal_control:original.controls.withdraw_hypothetical_comparison_context.compiler_count,
+    historical_compiler_proven:false,
+    inferred_cross_work_scholarly_relation:false,
+    user_question_is_source_evidence:false,
+    next_action:contextTurn
+     ?'Revisit the selected Work and compare the original source coordinates'
+     :'Seek external historical compiler or representation evidence before claiming lineage'
+   });
+  }
  }
+ assert.equal(phase2Hops.length,2,'Context and return both require actual original Python execution');
+ assert.equal(phase2Hops[0].path,'context');
+ assert.equal(phase2Hops[1].path,'source');
+ assert.equal(phase2Hops[0].original_phase2_sha256,phase2Hops[1].original_phase2_sha256);
  const alignments=route.map((step,i)=>{
   const boundary=turns[i+1].selection_execution_boundary;
   assert.equal(boundary.selected_work_id,step.source_work_id,
@@ -218,6 +285,15 @@ async function witness(){
    typed_query_as_document_content:false,
    full_native_parity:'HELD_ADAPTED_INPUT_AND_UNTESTED_READER_ROUTES',
    engine_output_automatically_endorsed:false
+  },
+  source_context_return_phase2:{
+   schema:'td613.vixen.maestro-phase2-context-return-witness/v1',
+   engine_exec_at_visitor_transition:true,
+   original_python_context_and_return_hops:phase2Hops,
+   matched_source_provenance_on_return:true,
+   any_new_historical_compiler_evidence:false,
+   adapted_reader_contexts_not_historical_compilers:true,
+   scientific_promotion:false
   },
   no_full_index_fusion_claim:true,
   vixen_catalogue_sha256_before:before,
