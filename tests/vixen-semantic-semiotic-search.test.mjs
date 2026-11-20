@@ -13,7 +13,7 @@ import {
   deriveSynthesisHeadline,
   scoreUnifiedSynthesisCandidates
 } from '../app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs';
-import { createVixenPodium, PODIUM_SCHEMA } from '../app/encyclopedia/reference/vixen-podium.mjs';
+import { createVixenPodium, PODIUM_SCHEMA, PODIUM_ROUTES } from '../app/encyclopedia/reference/vixen-podium.mjs';
 
 const estateDir = new URL('../app/encyclopedia/vixen-estate/', import.meta.url);
 const vixHtmlUrl = new URL('../app/encyclopedia/vix-cyb.html', import.meta.url);
@@ -677,9 +677,19 @@ test('SRC Atelier native engines & untypical-input projective/signature retrieva
     lagTicks: 36,
     operatorQuestion: 'Explore structural simulation narrative: Tú puedes clonarme, pero no tienes mis genes.'
   });
-  const srcCand = srcPromptRanked.candidates.find((c) => c.id === 'cand-src-projective-tomography');
-  assert.ok(srcCand);
-  assert.ok(srcCand.breakdown.src_projective_tomography >= 0.9);
+  // The old SRC-styled candidate was replaced by source-qualified TD613
+  // documentary-route analysis. Requiring its old score >=0.9 would promote
+  // relevance into unwitnessed original-method parity.
+  const srcCand = srcPromptRanked.candidates.find((c) => c.id === 'cand-vixen-documentary-route');
+  assert.ok(srcCand,'The real TD613 documentary-route candidate must survive');
+  assert.equal(srcCand.methodology_origin,'TD613');
+  assert.equal(srcCand.kind,'contextual_documentary_route_analysis');
+  assert.equal(srcCand.fadtExact,false);
+  assert.equal(srcCand.wPlaneGrounded,false);
+  assert.ok(srcCand.breakdown.src_projective_tomography>=0 &&
+    srcCand.breakdown.src_projective_tomography<=0.4,
+    'Computed SRC relevance is bounded, not an original-method execution or scientific proof');
+  assert.equal(srcCand.breakdown.src_witnessed_compiler_executions,0);
 });
 
 
@@ -734,7 +744,13 @@ test('RGI16 fusion and machine control surfaces remain co-versioned and actually
   assert.ok(page.includes('fusion:currentVixenFusionControls()'));
   assert.ok(page.includes('vixen.fusion.compare'));
   assert.ok(page.includes('vixen.fusion.search'));
-  assert.equal(podManifest.routes.length,16);
+  // The 16-route expectation predates real Maestro/Composer and native engines.
+  // Pin the current 27-route source contract and assert a one-to-one manifest
+  // correspondence instead of silently treating new governed routes as a defect.
+  assert.equal(podManifest.routes.length,27);
+  assert.equal(podManifest.counts.routes,27);
+  assert.deepEqual(new Set(podManifest.routes.map(x=>x.id)),new Set(PODIUM_ROUTES));
+  assert.equal(new Set(podManifest.routes.map(x=>x.id)).size,27);
   assert.equal(podManifest.aix_conducting.semantic_semiotic_search_integration.fusion_controls.channels.length,4);
   assert.ok(page.includes('fusion-console.css'));
 });
