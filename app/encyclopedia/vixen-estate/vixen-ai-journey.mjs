@@ -56,7 +56,8 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   by('vmaEndSummary').hidden=!lastArchive||active;
   by('vmaChapter').textContent='CHAPTER '+String(item?.history_length||0).padStart(2,'0');
   by('vmaCurrentRole').textContent=role?role+' · ROLE LOCKED':'CHOOSE YOUR ROLE';
-  resumeDock();if(!active)return;
+  resumeDock();window.dispatchEvent(new CustomEvent('vixen-maestro-session-state',
+   {detail:{active,role}}));if(!active)return;
   const story=by('vmaStory');
   story.replaceChildren(node('span','vma-kicker',role==='MAESTRO'?'THE RESEARCH ADVENTURE':'THE INTERPRETIVE STUDIO'));
   story.append(node('h3','vma-story',handoff?.narrative?.opening||
