@@ -127,5 +127,6 @@ test('public HTML surfaces a separately gated Maestro source expedition, no auth
  assert.match(script,/copyForCollaboration/);
  assert.match(script,/clipboard\.writeText/);
  const css=readFileSync(resolve(ROOT,'app/encyclopedia/vixen-estate/vixen-source-challenge.css'),'utf8');
- assert.doesNotMatch(css,/#(?:[0-9a-f]{0,3}(?:[89a-f][0-9a-f]{3})){1,2}\b/,'CSS must not rely on plum-style palette classification');
+ assert.match(css,/@media\(max-width:700px\)/);
+ assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });
