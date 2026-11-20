@@ -1469,3 +1469,100 @@ html:root[data-loom-cue-paused="true"] #khonapolitSend[data-loom-attention="true
 /* Physical-device safeguard: a local staged attachment has no provider in
    flight. In particular the vesica indicator must not fill the transcript. */
 #khonapolitMessages #marrowlineChatKinesis[hidden]{display:none!important}
+
+
+/* Mobile-only Focus / Capture reader: optical and layout controls only.
+   The original #khonapolitMessages nodes, Unicode and existing text renderer
+   remain untouched. The utility rail stays in its normal five-button order. */
+#marrowlineReaderToolbar[hidden]{display:none!important}
+@media(min-width:861px){
+  html:root body #speakingPanel #khonapolitForm #marrowlineReaderToggle{display:none!important}
+}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] .living-masthead,
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] .aperture-ribbon,
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] .mobile-dock{
+    display:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] #speakingPanel{
+    position:fixed!important;inset:0!important;z-index:1000!important;
+    display:grid!important;box-sizing:border-box!important;
+    width:100vw!important;height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    max-height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    margin:0!important;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)!important;
+    grid-template-rows:auto minmax(0,1fr) auto!important;
+    border:0!important;border-radius:0!important;overflow:hidden!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] #speakingPanel .vessel-head,
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] #speakingPanel .marrowline-thread-drawer{
+    display:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] #marrowlineReaderToolbar:not([hidden]){
+    display:flex!important;align-items:center;gap:12px;flex:0 0 auto;
+    min-height:43px;box-sizing:border-box;padding:5px 12px;
+    color:#e9e4f4;background:rgba(18,14,40,.98);
+    border-bottom:1px solid rgba(143,230,231,.27);
+  }
+  html:root.marrowline-mobile-shell #marrowlineReaderToolbar .marrowline-reader-title{
+    flex:1 1 auto;min-width:0;color:#dfd5c5;
+    font:550 12px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+    letter-spacing:.025em;
+  }
+  html:root.marrowline-mobile-shell #marrowlineReaderToolbar button{
+    appearance:none;-webkit-appearance:none;flex:0 0 auto;min-height:34px;
+    padding:5px 12px;border-radius:9px;border:1px solid rgba(143,230,231,.36);
+    color:#e8e2f1;background:rgba(61,50,102,.62);
+    font:600 11px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);
+    cursor:pointer;
+  }
+  html:root.marrowline-mobile-shell #marrowlineReaderToolbar button:focus-visible{
+    outline:2px solid #91f5f4;outline-offset:2px;
+  }
+  html:root.marrowline-mobile-shell #marrowlineReaderExit{
+    min-width:37px;padding-inline:8px;font-size:17px;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader] #khonapolitMessages{
+    box-sizing:border-box!important;grid-row:2!important;align-self:stretch!important;
+    width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;
+    overflow-x:hidden!important;overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;
+    scroll-padding-block:14px 30px;
+  }
+  /* Focus retains one short writable field and the native Send control.
+     Attachment/utility state is never mutated; Exit restores the ordinary UI. */
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm{
+    box-sizing:border-box!important;grid-row:3!important;min-height:0!important;
+    height:auto!important;max-height:none!important;margin:0!important;
+    padding:5px 10px 6px!important;
+    overflow:visible!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm .marrowline-composer-input-row{
+    display:grid!important;grid-template-columns:40px minmax(0,1fr)!important;
+    grid-template-rows:44px!important;align-items:center!important;gap:7px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm .marrowline-composer-control-stack{
+    grid-template-rows:40px!important;width:40px!important;
+    height:40px!important;align-content:center!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #marrowlineComposerPlus,
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm .composer-actions,
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm .marrowline-composer-attachments{
+    display:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm #khonapolitSend{
+    width:40px!important;height:40px!important;min-width:40px!important;
+    min-height:40px!important;max-width:40px!important;max-height:40px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm .prompt-label textarea{
+    box-sizing:border-box!important;width:100%!important;height:43px!important;
+    min-height:43px!important;max-height:43px!important;resize:none!important;
+    margin:0!important;padding:9px 11px!important;font-size:16px!important;
+  }
+  /* Capture is genuinely transcript-first: no composer or dock intrudes. */
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="capture"] #speakingPanel{
+    grid-template-rows:auto minmax(0,1fr) 0px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="capture"] #khonapolitForm{
+    display:none!important;
+  }
+}

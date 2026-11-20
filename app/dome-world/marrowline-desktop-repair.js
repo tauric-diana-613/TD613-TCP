@@ -5,6 +5,7 @@ import {
   stageMarrowlineAttachments
 } from './marrowline-attachments.js';
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
+import { installMarrowlineMobileReader } from './marrowline-mobile-reader.js';
 import { MARROWLINE_MISSION_ASSAYS } from './marrowline-mission-assays.js';
 
 export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v8-two-attachment-controls';
@@ -492,6 +493,7 @@ function installConversationUtilityRail(doc, root) {
   };
 
   const retry = utility('marrowlineRetryLast', '↻', 'Replace previous exchange and retry prompt');
+  const reader = utility('marrowlineReaderToggle', '⛶', 'Open mobile reading mode');
   const copy = utility('marrowlineCopyConversation', '⧉', 'Copy conversation as plain text');
   const clear = utility('marrowlineSessionClear', '✕', 'Delete conversation from this browser');
   const home = utility('marrowlineHomeLanding', '𖠿', 'Return to The speaking grove');
@@ -555,7 +557,7 @@ function installConversationUtilityRail(doc, root) {
     if (event.key === 'Escape' && !confirm.hidden) closeConfirm({ focus: true });
   });
 
-  rail.append(retry, copy, clear, home);
+  rail.append(retry, reader, copy, clear, home);
   composer.append(rail);
   doc.body.append(backdrop, confirm);
 
@@ -656,6 +658,7 @@ export function installMarrowlineDesktopRepair(doc = document, root = window) {
   installUniversalContextPlus(doc, root);
   installConversationActionDismissal(doc, root);
   installConversationUtilityRail(doc, root);
+  installMarrowlineMobileReader(doc, root);
   installTranscriptCustody(doc, root);
   installDesktopInstrumentTabs(doc, root);
   doc.documentElement.dataset.marrowlineDesktopRepair = MARROWLINE_DESKTOP_REPAIR_VERSION;

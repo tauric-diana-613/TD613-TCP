@@ -463,6 +463,23 @@
       "✕",
       "𖠿"
     ],
+    "mobileUtilityGlyphs": [
+      "↻",
+      "⛶",
+      "⧉",
+      "✕",
+      "𖠿"
+    ],
+    "mobileReader": {
+      "scope": "mobile-speaking-chamber-only",
+      "entry": "second-utility-button",
+      "focus": "original-transcript-plus-compact-input-and-send",
+      "capture": "original-transcript-plus-exit-toolbar-only",
+      "providerTextMutation": false,
+      "providerCalls": 0,
+      "scrollRestoration": "visible-anchor-with-scrolltop-fallback",
+      "releaseAuthority": false
+    },
     "copyFeedback": "center-screen-tiny-green-Copied-1500ms",
     "clearConfirmation": "center-screen-modal-Delete-conversation-and-branches-Yes-No-with-backdrop",
     "clearCompletionStatus": "empty-hidden-no-visible-session-cleared-strip",
