@@ -87,6 +87,7 @@ def observed_capture_at(db_path,source_id,cutoff_utc):
                 raise ValueError("CAPTURE_BEFORE_PUBLICATION_TIME_ANOMALY")
             observed.append({"capture_id":row["capture_id"],"captured_at":captured,
               "title_sha256":row["title_sha256"],"body_sha256":row["body_sha256"]})
+        observed.sort(key=lambda r:(r["captured_at"],r["capture_id"]))
         eligible=[r for r in observed if r["captured_at"]<=cutoff]
         selected=eligible[-1] if eligible else None
         return {
