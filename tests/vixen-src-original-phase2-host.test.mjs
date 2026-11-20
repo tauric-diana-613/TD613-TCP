@@ -7,6 +7,7 @@ import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createVixenPodium,PODIUM_SCHEMA,BOUNDED_ENGINE_OPERATIONS} from '../app/encyclopedia/reference/vixen-podium.mjs';
 import {createPodiumNativeReadAdapters} from '../scripts/vixen-podium-native-adapters.mjs';
+import {runSrcPhase2ContextRoles} from '../app/encyclopedia/vixen-estate/src-atelier-engines.mjs';
 const repo=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const python=process.env.TD613_NATIVE_PYTHON||(process.platform==='win32'?'python':'python3');
 const htmlPath=resolve(repo,'app/encyclopedia/vix-cyb.html');
@@ -142,4 +143,26 @@ test('host authorization, foreign Work and source-hash forgery fail closed',asyn
  env:{...process.env,PYTHONDONTWRITEBYTECODE:'1',PYTHONUTF8:'1'}});
  assert.notEqual(collision.status,0);
  assert.match(collision.stderr,/HELD_PHASE2_SOURCE_IDENTITY/);
+});
+
+test('adapted JS contextual compiler refuses missing witness status and phantom identities',()=>{
+ const inputs=[
+  {compiler_id:'vixen:reader:source',input_id:ids[0]},
+  {compiler_id:'',input_id:ids[1]},
+  {compiler_id:'vixen:reader:source',input_id:''},
+  {compiler_id:'vixen:reader:compare',input_id:ids[1],role_in_context:'CANDIDATE_INPUT'}
+ ];
+ const result=runSrcPhase2ContextRoles(inputs,[]);
+ assert.equal(result.role_count,2,'Missing compiler or subject coordinates must remain excluded');
+ assert.equal(result.pass_count,2);
+ assert.ok(result.roles.every(x=>x.adjudication_status==='UNRESOLVED'));
+ assert.ok(result.roles.every(x=>x.contextual_role==='CANDIDATE_INPUT'));
+ assert.ok(result.passes.every(x=>x.compiler_status==='WITNESSED_OR_CANDIDATE_AS_RECORDED_PER_INPUT'));
+ const explicit=runSrcPhase2ContextRoles([
+  {compiler_id:'vixen:reader:source',input_id:ids[0],adjudication_status:'WITNESSED',
+   role_in_context:'RECORDED_TEST_FIXTURE'}
+ ],[]);
+ assert.equal(explicit.roles[0].adjudication_status,'WITNESSED',
+  'Explicitly labeled synthetic witness data must not be erased by the candidate default');
+ assert.equal(explicit.roles[0].contextual_role,'RECORDED_TEST_FIXTURE');
 });
