@@ -7,6 +7,7 @@ import {loadExperimentABodyBySourceId,shardForWorkIndex,computeSha256HexAsync} f
 import {scoreUnifiedSynthesisCandidates} from './synthesis-salon-engine.mjs';
 
 export const WORK_MATH_SCHEMA='emstd613.vixen.original-work-math/v1';
+export const WORK_MATH_READ_PARALLELISM=4;
 // Issue immutable source-backed entries; a caller's cloned receipt cannot
 // promote an arbitrary snippet into an admitted scholarly manifestation.
 const ISSUED_WORK_MATH_ENTRIES=new WeakSet();
@@ -101,8 +102,9 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
 }={}){
  if(!Array.isArray(corpus?.works))throw new TypeError('WORKS_SOURCE_ROSTER_REQUIRED');
  const seen=new Set(),entries=[],unavailable=[],empty=[];
- for(let i=0;i<corpus.works.length;i++){
-  const work=corpus.works[i];
+ // Verify each independent Work with bounded concurrency; aggregate in roster order.
+ const inspect=async(work,i)=>{
+  const sourceRefusals=[];
   if(!work||!/^emwork_[0-9a-f]{24}$/.test(work.work_id)||seen.has(work.work_id))
    throw new TypeError('ORIGINAL_WORK_COORDINATE_INVALID');
   seen.add(work.work_id);
@@ -114,14 +116,14 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
   for(const source of sorted){
    let verified;
    try{verified=await readSource(source.source_file_id,{hintShard:shardForWorkIndex(i)});}
-   catch(error){unavailable.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
+   catch(error){sourceRefusals.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
      reason:'SOURCE_LOAD_OR_SHA_VERIFICATION_FAILED'}));continue;}
    if(!verified||verified.source_file_id!==source.source_file_id ||
       (verified.work_id&&verified.work_id!==work.work_id)||
       verified.body_sha256_verified!==true||verified.readable===false||
       typeof verified.text_body!=='string'||
       !/^[0-9a-f]{64}$/i.test(source.sha256||'')){
-    unavailable.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
+    sourceRefusals.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
       reason:'BODY_UNAVAILABLE_OR_UNVERIFIED'}));continue;
    }
    // Independently rehash even when a plugged-in source reader asserts a
@@ -130,7 +132,7 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
    const expected=verified.derivative_sha256||verified.body_sha256||null;
    if(!/^[0-9a-f]{64}$/i.test(expected||'')||
       (await computeSha256HexAsync(verified.text_body))!==expected){
-     unavailable.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
+     sourceRefusals.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
        reason:'DERIVATIVE_BODY_SHA256_MISMATCH_OR_ABSENT'}));continue;
    }
    const passages=extractOriginalMathPassages(verified.text_body,{max:maxPassagesPerWork});
@@ -147,7 +149,15 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
    ISSUED_WORK_MATH_ENTRIES.add(selected);
    break;
   }
-  if(selected)entries.push(selected);else empty.push(work.work_id);
+  return {selected,work_id:work.work_id,source_refusals:sourceRefusals};
+ };
+ for(let start=0;start<corpus.works.length;start+=WORK_MATH_READ_PARALLELISM){
+  const batch=await Promise.all(corpus.works.slice(start,start+WORK_MATH_READ_PARALLELISM)
+   .map((work,j)=>inspect(work,start+j)));
+  for(const r of batch){
+   if(r.selected)entries.push(r.selected);else empty.push(r.work_id);
+   unavailable.push(...r.source_refusals);
+  }
  }
  return Object.freeze({
   schema:WORK_MATH_SCHEMA,source_register:'ORIGINAL_EXPERIMENT_A_WORKS',
