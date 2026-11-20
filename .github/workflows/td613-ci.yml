@@ -94,7 +94,9 @@ jobs:
       github.event_name == 'pull_request' &&
       github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108'
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    # GitHub apt/Chromium provisioning can exceed eight minutes without test failure.
+    # Keep the source-bound witness mandatory; extend only its runner budget.
+    timeout-minutes: 16
     permissions:
       contents: read
     steps:
