@@ -176,6 +176,7 @@ jobs:
           node tests/vixen-public-copy-browser.test.mjs
           node tests/vixen-ai-journey-browser.test.mjs
           node tests/vixen-human-comparative-field-browser.test.mjs
+          node tests/vixen-maestro-source-challenge-browser.test.mjs
           node tests/vixen-browser-visual-witness.mjs
           node tests/vixen-observatory-open-form-browser.test.mjs
           node tests/vixen-foundry-webgl-canary.mjs
@@ -267,6 +268,9 @@ jobs:
           node --test tests/vixen-human-comparative-field.test.mjs
           node --test tests/vixen-em-atelier-proscenium.test.mjs
           node --test tests/vixen-em-hostile-method-expedition.test.mjs
+          node --test tests/vixen-maestro-source-challenge.test.mjs
+          node --check app/encyclopedia/vixen-estate/em-source-challenge-probes.mjs
+          node --check app/encyclopedia/vixen-estate/vixen-source-challenge.mjs
           node --check app/encyclopedia/vixen-estate/comparative-field-probes.mjs
           node --check app/encyclopedia/vixen-estate/vixen-comparative-field-trial.mjs
           node --test tests/vixen-observatory-throughput.test.mjs
