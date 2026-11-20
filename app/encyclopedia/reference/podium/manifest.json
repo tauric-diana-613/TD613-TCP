@@ -322,11 +322,41 @@
     ],
     "SRC_ATELIER": [
       "src_projective_routing",
+      "src_verified_vixen_work_pair",
+      "src_verified_vixen_original_projective_differential",
+      "src_verified_vixen_original_typed_traversal",
+      "src_verified_vixen_original_phase2",
       "src_phase2_tomography",
       "src_phase2_context_roles",
       "src_rabbit_hole_traversal",
       "src_untypical_retrieval",
-      "src_heterostratigraphic_audit"
+      "src_heterostratigraphic_audit",
+      "src_native_epoch_query",
+      "src_native_text",
+      "src_native_semantic",
+      "src_native_projective_assay",
+      "src_native_evidence_traverse",
+      "src_native_research_journey"
+    ],
+    "WENDBINE_ATELIER": [
+      "wendbine_private_status",
+      "wendbine_private_search",
+      "wendbine_public_query",
+      "wendbine_sealed_epoch_query",
+      "wendbine_public_inventory",
+      "wendbine_public_reconstruction",
+      "wendbine_public_research_journey",
+      "wendbine_public_sweep"
+    ],
+    "EM_ATELIER": [
+      "em_native_text",
+      "em_native_semantic",
+      "em_native_work_route",
+      "em_native_research_journey"
+    ],
+    "CROSS_ATELIER": [
+      "cross_atelier_lexical",
+      "cross_atelier_semantic"
     ]
   },
   "aix_conducting": {
