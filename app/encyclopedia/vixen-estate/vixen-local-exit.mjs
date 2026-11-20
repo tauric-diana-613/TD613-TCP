@@ -31,7 +31,8 @@ export function collectVixenLocalExitBoundary(interfaces={}){
    const report=api.copyLocalReceipt?.();
    if(report!==null&&report!==undefined){
     if(report.schema!==method.receipt_schema ||
-       report.scientific_credit!==0 ||
+       (method.name==='source_challenge'?report.scientific_credit:
+         report.independent_empirical_replication_credit)!==0 ||
        (method.name==='source_challenge'&&report.composer_publication_authority!==false)||
        (method.name==='comparative_field'&&report.composer_publication_authority!==false))
      throw Error('UNVERIFIED_OR_PROMOTED_SIDE_RECEIPT');
