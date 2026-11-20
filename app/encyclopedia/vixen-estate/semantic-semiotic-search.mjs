@@ -228,7 +228,13 @@ export function hestenesJacobiSvd(matrixRows, nCols, maxSweeps = 12, tol = 1e-10
       singularValues: [],
       sweeps: 0,
       condition_number_kappa: 1,
+      condition_number_nonzero_spectrum: 1,
       effective_rank: 0,
+      spectral_effective_rank: 0,
+      matrix_rows:nRows,matrix_columns:nCols,algebraic_rank:0,nullity:nCols,
+      rank_tolerance_absolute:1e-10,
+      full_column_identifiability_established:false,
+      noise_geometry_identifiability:'UNKNOWN_NOT_MEASURED',
       top_mode_energy_e1: 0,
       residual: 0
     };
@@ -306,7 +312,13 @@ export function hestenesJacobiSvd(matrixRows, nCols, maxSweeps = 12, tol = 1e-10
     singularValues: nonZero.slice(0, 8).map((v) => +v.toFixed(6)),
     sweeps,
     condition_number_kappa: kappa,
+    condition_number_nonzero_spectrum: kappa,
     effective_rank: rEff,
+    spectral_effective_rank: rEff,
+    matrix_rows:nRows,matrix_columns:nCols,algebraic_rank:sVals.length,
+    nullity:Math.max(0,nCols-sVals.length),rank_tolerance_absolute:1e-10,
+    full_column_identifiability_established:false,
+    noise_geometry_identifiability:'UNKNOWN_NOT_MEASURED',
     top_mode_energy_e1: e1,
     residual: +offMax.toExponential(3)
   };
@@ -1249,6 +1261,7 @@ export class SemanticSemioticSearchEngine {
 
     const candidates = [];
     let excludedByNegativeCount = 0;
+    let unverifiedPhraseCandidates = 0;
     const hasNegatives = parsed.excludes.length > 0 || parsed.excludePhrases.length > 0;
 
     for (let i = 0; i < this.N; i++) {
@@ -1293,7 +1306,8 @@ export class SemanticSemioticSearchEngine {
         }
       }
 
-      // Required phrase verification (quoted "..." or mode === 'phrase')
+      // A phrase claim requires the ordered literal sequence in an attached body.
+      // A title/snippet or BM25F co-occurrence is only an unverified candidate.
       let phraseMatchBoost = 0;
       let matchedPhraseLabel = null;
       if (parsed.phrases.length > 0) {
@@ -1301,25 +1315,19 @@ export class SemanticSemioticSearchEngine {
         for (let pIdx = 0; pIdx < parsed.phrases.length; pIdx++) {
           const phr = parsed.phrases[pIdx];
           const pToks = parsed.phraseTokenLists[pIdx] || [];
-          if (fullHayLow.includes(phr)) {
+          if (rawChunkSlice && rawChunkSlice.toLowerCase().includes(phr)) {
             matchedPhraseLabel = phr;
             continue;
           }
-          if (rawChunkSlice) {
-            // Chunk body is attached and exact phrase does NOT appear anywhere in this chunk!
-            allPhrasesSatisfied = false;
-            break;
+          if (!rawChunkSlice && pToks.length > 0 &&
+              pToks.every(pt => docMatchedTerms?.has(pt))) {
+            unverifiedPhraseCandidates++;
           }
-          // When running synchronously without attached shard bodies, require ALL phrase tokens in BM25F postings
-          const tokensPresent = pToks.length > 0 && pToks.every((pt) => docMatchedTerms?.has(pt));
-          if (!tokensPresent) {
-            allPhrasesSatisfied = false;
-            break;
-          }
-          matchedPhraseLabel = `${phr} [all-tokens]`;
+          allPhrasesSatisfied = false;
+          break;
         }
         if (!allPhrasesSatisfied) continue;
-        phraseMatchBoost = 0.22;
+        phraseMatchBoost = 0.22; // body-verified adjacency only
       }
 
       // Channel 3: Semiotic Plane/Cluster/Protocol/Tag Affinity + Rung Cap
@@ -1497,6 +1505,7 @@ export class SemanticSemioticSearchEngine {
         protocol_ids: m.protocol_ids || [],
         semiotic_tags: tags,
         highest_rung: highestRung,
+        phrase_verification_status: parsed.phrases.length > 0 ? 'BODY_VERIFIED_PHRASE' : 'NOT_APPLICABLE',
         score_total: +total.toFixed(4),
         fusion_contributions:fusionScore.effective_contributions,
         fusion_normalization_factor:fusionScore.normalization_factor,
@@ -1597,7 +1606,8 @@ export class SemanticSemioticSearchEngine {
       ? 'SEARCH_OK'
       : (totalHits > 0
         ? 'PAGE_OUT_OF_RANGE'
-        : (excludedByNegativeCount > 0 ? 'EXCLUDED_BY_NEGATIVE_FILTER' : 'NO_MATCHING_WITNESSES'));
+        : (excludedByNegativeCount > 0 ? 'EXCLUDED_BY_NEGATIVE_FILTER'
+          : (unverifiedPhraseCandidates > 0 ? 'UNVERIFIED_COOCCURRENCE' : 'NO_MATCHING_WITNESSES')));
 
     return {
       status,
@@ -1608,6 +1618,11 @@ export class SemanticSemioticSearchEngine {
       phrases: parsed.phrases,
       excludes: parsed.excludes,
       excluded_by_negative_count: excludedByNegativeCount,
+      unverified_phrase_candidates:unverifiedPhraseCandidates,
+      phrase_evidence_status: parsed.phrases.length > 0
+        ? (sanitizedHits.length > 0 ? 'BODY_VERIFIED_PHRASE' :
+          (unverifiedPhraseCandidates > 0 ? 'UNVERIFIED_COOCCURRENCE' : 'NO_BODY_VERIFIED_PHRASE'))
+        : 'NOT_APPLICABLE',
       all_candidate_chunks: candidates.length,
       fusion_controls:fusionControls,
       fusion_state:'FULL_INDEX_FUSION',
@@ -1649,7 +1664,14 @@ export class SemanticSemioticSearchEngine {
         spd_covariance_valid: this.spdCovValid,
         background_z_max: +bgZMax.toFixed(3),
         condition_number_kappa: qSvdAudit.condition_number_kappa,
+        condition_number_nonzero_spectrum:qSvdAudit.condition_number_nonzero_spectrum,
         effective_rank: qSvdAudit.effective_rank,
+        spectral_effective_rank:qSvdAudit.spectral_effective_rank,
+        matrix_rows:qSvdAudit.matrix_rows,matrix_columns:qSvdAudit.matrix_columns,
+        algebraic_rank:qSvdAudit.algebraic_rank,nullity:qSvdAudit.nullity,
+        rank_tolerance_absolute:qSvdAudit.rank_tolerance_absolute,
+        full_column_identifiability_established:false,
+        noise_geometry_identifiability:'UNKNOWN_NOT_MEASURED',
         top_mode_energy_e1: qSvdAudit.top_mode_energy_e1,
         jacobi_sweeps: qSvdAudit.sweeps,
         jacobi_residual: qSvdAudit.residual
@@ -1937,6 +1959,7 @@ export function createInlineFallbackEngine(corpusBundle = {}) {
       const srcWeights = srcCond.weights;
       const scored = [];
       let excludedCount = 0;
+      let unverifiedPhraseCandidates = 0;
 
       for (const r of records) {
         if (unitKindFilter && r.unit_kind !== unitKindFilter) continue;
@@ -1976,8 +1999,11 @@ export function createInlineFallbackEngine(corpusBundle = {}) {
         }
 
         if (parsed.phrases.length > 0) {
-          const allPhr = parsed.phrases.every((phr) => cleanHay.includes(phr));
-          if (!allPhr) continue;
+          // The inline fallback has no source-body witness for ordered adjacency.
+          // Keep the candidate count, never report a verified phrase hit.
+          if (parsed.phrases.every(phr => cleanHay.includes(phr)))
+            unverifiedPhraseCandidates++;
+          continue;
         }
 
         const sLex = +(hitsCount / Math.max(1, parsed.tokens.length)).toFixed(4);
@@ -2021,7 +2047,8 @@ export function createInlineFallbackEngine(corpusBundle = {}) {
       return {
         status: pageHits.length
           ? 'INLINE_FALLBACK_OK'
-          : (excludedCount > 0 ? 'EXCLUDED_BY_NEGATIVE_FILTER' : 'OOV_ALPHABETIC_CANARY_ABSTENTION'),
+          : (excludedCount > 0 ? 'EXCLUDED_BY_NEGATIVE_FILTER'
+            : (unverifiedPhraseCandidates > 0 ? 'UNVERIFIED_COOCCURRENCE' : 'OOV_ALPHABETIC_CANARY_ABSTENTION')),
         engine_version: `${SEARCH_ENGINE_VERSION}-inline-fallback`,
         mode: parsed.mode,
         query: parsed.rawNfc,
@@ -2032,6 +2059,10 @@ export function createInlineFallbackEngine(corpusBundle = {}) {
           matched_signatures: srcCond.analysis.matchedSignatures
         },
         excluded_by_negative_count: excludedCount,
+        unverified_phrase_candidates:unverifiedPhraseCandidates,
+        phrase_evidence_status: parsed.phrases.length > 0
+          ? (unverifiedPhraseCandidates > 0 ? 'UNVERIFIED_COOCCURRENCE' : 'NO_BODY_VERIFIED_PHRASE')
+          : 'NOT_APPLICABLE',
         total_hits: finalList.length,
         returned_hits: pageHits.length,
         pagination: {
