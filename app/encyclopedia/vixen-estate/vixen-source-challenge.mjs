@@ -47,13 +47,15 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
   validateSourceChallengeCatalogue(corpus);
  }catch(_){host.textContent='Source challenge held · original source register unqualified.';return Object.freeze({mounted:false})}
  const state={phase:'SETUP',epoch:0,busy:false,sourceA:0,sourceB:1,
-  question:'',focus:null,documents:null,result:null,report:null,receipt:null,error:null};
+  question:'',focus:null,documents:null,result:null,report:null,receipt:null,error:null,
+  draft:Object.create(null),draftRevision:0,receiptExportRequested:false};
  const authorized=()=>maestro()&&!host.closest('#vmaPlayPanel')?.hidden;
  const showStatus=msg=>{const x=host.querySelector('.ve-status');if(x)x.textContent=msg};
  const wipe=()=>{
   state.epoch++;state.phase='SETUP';state.busy=false;
   state.sourceA=0;state.sourceB=1;state.question='';state.focus=null;
   state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;state.focus=null;
+  state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
  };
  const redraw=()=>{
   host.hidden=!maestro();
@@ -173,7 +175,7 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
    const form=make('form','ve-form');form.addEventListener('submit',e=>{e.preventDefault();submit(form)});
    for(const [i,d]of state.documents.entries()){
     const x=area('Copy an exact passage of at least 16 characters from this original Work.',500);
-    x.name='excerpt_'+i;x.required=true;
+    x.name='excerpt_'+i;x.required=true;x.value=state.draft[x.name]||'';
     form.append(field('Source '+(i+1)+' · '+d.title,x));
     form.append(button('Open source '+(i+1)+' for reading',()=>window.VixenReference?.openWork?.(d.work_id)));
    }
@@ -181,7 +183,7 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
     ['MOTIF_ONLY','Only source-local motif evidence'],
     ['STRUCTURAL_CANDIDATE_UNPROVEN','Possible structural relation, still unproven'],
     ['NO_RELATION_EARNED','No relation earned']], 'Your provisional judgment');
-   choices.name='judgment';
+   choices.name='judgment';if(state.draft.judgment)choices.value=state.draft.judgment;
    form.append(field('What level of claim survived?',choices));
    const sections=[
     ['entities','What distinct entities and source objects are involved?','Specify the entities and how both texts name them.'],
@@ -194,9 +196,15 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
     ['next_source_action','What should we verify next and where?','A locatable source, original operator, matched control, or evidence acquisition.']
    ];
    for(const [key,label,placeholder]of sections){
-    const control=area(placeholder,1800);control.name=key;control.required=true;
+    const control=area(placeholder,1800);control.name=key;control.required=true;control.value=state.draft[key]||'';
     form.append(field(label,control));
    }
+   // Rerenders replace controls. Keep unsent values only within this local role session.
+   const remember=e=>{
+    const ctl=e.target;if(!ctl?.name||!form.elements.namedItem(ctl.name))return;
+    state.draft[ctl.name]=String(ctl.value||'');state.draftRevision++;
+   };
+   form.addEventListener('input',remember);form.addEventListener('change',remember);
    const commit=make('button','ve-btn ve-primary','Record the redpen and prepare local receipt');commit.type='submit';
    form.append(actionRow(button('Back to adverse controls',()=>advance('FIELDWORK','COUNTERTEST')),commit));
    host.append(form);
@@ -204,9 +212,13 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
    host.append(make('p','ve-success','The browser matched both of your passages to SHA-verified Vixen derivatives. Your structural interpretation remains an unverified human account; scientific credit = 0.'),
     make('p','ve-muted','Local digest: '+state.receipt.browser_untrusted_sha256+
      '. This checksum is not a trusted timestamp, identity proof, or authorization to publish.'));
-   host.append(actionRow(button('Save my complete research receipt ↓',()=>exportReceipt(state.receipt),'ve-btn ve-primary'),
+   host.append(actionRow(button('Save my complete research receipt ↓',()=>{
+     exportReceipt(state.receipt);state.receiptExportRequested=true;state.draftRevision++;
+    },'ve-btn ve-primary'),
     button('Copy a source-bounded AI handoff',async()=>{
-     try{await copyForCollaboration(state.receipt);showStatus('Research handoff copied by your direct choice.')}
+     try{await copyForCollaboration(state.receipt);
+     state.receiptExportRequested=true;state.draftRevision++;
+     showStatus('Research handoff copied by your direct choice.')}
      catch(_){showStatus('Clipboard permission was unavailable. Save the local JSON receipt instead.')}
     }),button('Begin another challenge',()=>reset())));
   }
@@ -217,6 +229,7 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
   state.phase=to;redraw()};
  const reset=()=>{state.epoch++;state.phase='SETUP';state.busy=false;
   state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;state.focus=null;
+  state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
   redraw()};
  const begin=async()=>{
   if(!authorized()||state.busy||state.phase!=='SETUP')return;
@@ -285,6 +298,7 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
    const sha=await computeSha256HexAsync(JSON.stringify(plain));
    if(token!==state.epoch||!authorized()||state.phase!=='FIELDWORK')return;
    state.report=review;state.receipt={...plain,browser_untrusted_sha256:sha};
+   state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
    state.phase='RECEIPT';redraw();
   }catch(e){if(token===state.epoch&&authorized())showStatus('Source challenge held · '+safe(e));}
   finally{if(token===state.epoch)state.busy=false}
@@ -297,7 +311,16 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
   original_python_executed:false,source_census:32,scientific_credit:0,
   human_closure_required:true,
   motif_candidate:state.result?.source_derived_candidate||null}),
-  copyLocalReceipt:()=>state.receipt?JSON.parse(JSON.stringify(state.receipt)):null});
+  copyLocalReceipt:()=>state.receipt?JSON.parse(JSON.stringify(state.receipt)):null,
+  draftStatus:()=>Object.freeze({
+   schema:'td613.vixen.unsent-draft-status/v1',role:'MAESTRO',phase:state.phase,
+   revision:state.draftRevision,
+   unsent_characters:Object.values(state.draft).reduce((n,v)=>n+String(v||'').length,0),
+   has_unsent_draft:Object.values(state.draft).some(v=>String(v||'').trim().length>0),
+   has_local_receipt:!!state.receipt,receipt_export_requested:state.receiptExportRequested,
+   unexported_receipt:!!state.receipt&&!state.receiptExportRequested,
+   no_automatic_persistence:true
+  })});
  window.VixenSourceChallenge=api;
  return api;
 }
