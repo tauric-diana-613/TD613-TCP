@@ -79,6 +79,10 @@ try{
  await page.locator('[name=rationale]').fill('The documentary method provided a useful route, but both are only proposals requiring original-text evidence.');
  await page.locator('[name=contradiction]').fill('One inferred source relation fails when the actual manuscript passage is inspected closely.');
  await page.locator('[name=next_action]').fill('Find the independent text passage and test the conflicting explanation against the same source anchor.');
+ await page.evaluate(()=>window.dispatchEvent(new CustomEvent('vixen-maestro-session-state',
+  {detail:{active:true,role:'MAESTRO'}})));
+ assert.match(await page.locator('[name=next_action]').inputValue(),/independent text passage/);
+ assert.equal(await page.evaluate(()=>window.VixenComparativeFieldTrial.draftStatus().has_unsent_draft),true);
  await page.getByRole('button',{name:'Record my comparison and export receipt'}).click();
  await page.waitForFunction(()=>document.querySelector('#vmaComparativeFieldLab .vf-status')?.textContent?.includes('HELD_JUDGMENT_PASSAGE_NOT_IN_VERIFIED_BODY'),null,{timeout:15000});
  assert.equal(await page.evaluate(()=>window.VixenComparativeFieldTrial.status().report_recorded),false);
@@ -117,6 +121,11 @@ try{
  await setup.locator('input.vf-input').fill('Private unsent source question should disappear on role exit');
  await setup.locator('select.vf-input').nth(0).selectOption(
   originalSources[0]===ids[0]?ids[1]:ids[0]);
+ assert.equal(await page.evaluate(()=>window.VixenComparativeFieldTrial.draftStatus().has_unsent_draft),true);
+ page.once('dialog',async dialog=>{assert.match(dialog.message(),/unsent drafts/i);await dialog.dismiss();});
+ await page.locator('#vmaEnd').click();
+ assert.equal(await page.evaluate(()=>window.VixenAIModes.status().result.active),true);
+ page.once('dialog',dialog=>dialog.accept());
  await page.locator('#vmaEnd').click();
  assert.equal(await setup.isVisible(),false);
  await page.locator('[data-vma-role="MAESTRO"]').click();
