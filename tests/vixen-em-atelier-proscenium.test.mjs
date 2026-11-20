@@ -26,7 +26,7 @@ test('EM source protocol matrix refuses historical estate into Vixen and identif
  assert.equal(m.vixen_documented_performer_source_identity.works,32);
  assert.equal(m.vixen_documented_performer_source_identity.manifestations,53);
  assert.equal(m.vixen_documented_performer_source_identity.gated_supported_identity_groups,8);
- assert.equal(m.native_methods_with_named_podium_operations,5);
+ assert.equal(m.native_methods_with_named_podium_operations,6);
  assert.equal(m.historical_archive_github_read_observation.historical_external_bytes_reverified_by_this_local_run,false);
  assert.equal(m.original_historical_author_programs_authenticated,0);
  assert.equal(m.public_vixen_em_browser_native_method_consumer,false);
