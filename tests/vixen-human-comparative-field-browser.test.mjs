@@ -42,6 +42,10 @@ try{
  await page.waitForFunction(()=>window.VixenComparativeFieldTrial.status().phase==='REVIEW',null,{timeout:50000});
  assert.equal(await page.locator('#vmaComparativeFieldLab .vf-method').count(),2);
  assert.equal(await page.locator('#vmaComparativeFieldLab .vf-source').count(),2);
+ assert.equal(await page.locator('[name=trustworthy] option[value=TIE]').textContent(),
+  'Equally trustworthy');
+ assert.equal(await page.locator('[name=trustworthy] option[value=NEITHER]').textContent(),
+  'Neither was trustworthy');
  assert.doesNotMatch(await page.locator('#vmaComparativeFieldLab').innerText(),/\b(?:Wendbine|SignalRupture|SRC_ATELIER)\b/,
   'Machine method names cannot leak into visitor presentation');
  const userView=await page.evaluate(()=>window.VixenComparativeFieldTrial.status());
@@ -103,6 +107,23 @@ try{
  assert.equal(await page.locator('#vmaComparativeFieldLab').isVisible(),false);
  assert.equal(await page.evaluate(()=>window.VixenComparativeFieldTrial.status().report_recorded),false,
   'Field trial must zeroize browser state when the role terminates');
+ // Privacy regression: an unsent question in SETUP must be forgotten on exit.
+ await page.locator('#vmaEnd').click();
+ await page.locator('[data-vma-role="MAESTRO"]').click();
+ await page.locator('#vmaStart').click();
+ await page.locator('#vmaComparativeFieldLab').waitFor({state:'visible',timeout:15000});
+ const setup=page.locator('#vmaComparativeFieldLab');
+ const originalSources=await setup.locator('select.vf-input').evaluateAll(xs=>xs.map(x=>x.value));
+ await setup.locator('input.vf-input').fill('Private unsent source question should disappear on role exit');
+ await setup.locator('select.vf-input').nth(0).selectOption(ids[1]);
+ await page.locator('#vmaEnd').click();
+ assert.equal(await setup.isVisible(),false);
+ await page.locator('[data-vma-role="MAESTRO"]').click();
+ await page.locator('#vmaStart').click();
+ await setup.waitFor({state:'visible',timeout:15000});
+ assert.equal(await setup.locator('input.vf-input').inputValue(),'');
+ assert.deepEqual(await setup.locator('select.vf-input').evaluateAll(xs=>xs.map(x=>x.value)),
+  originalSources,'Role exit must revoke unsent source selections');
  assert.deepEqual(jsErrors,[]);
  await ctx.close();
  const mobile=await browser.newContext({viewport:{width:390,height:844},
