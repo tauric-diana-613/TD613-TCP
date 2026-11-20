@@ -92,6 +92,11 @@ try{
  assert.match(await panel.innerText(),/Common vocabulary/);
  assert.match(await panel.innerText(),/Scientific classification: HELD/);
  await panel.getByRole('button',{name:'Investigate the actual structural claim'}).click();
+ await page.waitForFunction(()=>document.querySelector('#vmaSourceChallenge .ve-status')?.textContent?.includes('Choose an investigation route'),null,{timeout:15000});
+ assert.equal(await page.evaluate(()=>window.VixenSourceChallenge.status().phase),'COUNTERTEST');
+ await panel.getByRole('button',{name:'Follow the actual operators'}).click();
+ assert.equal(await panel.getByRole('button',{name:'Follow the actual operators'}).getAttribute('aria-pressed'),'true');
+ await panel.getByRole('button',{name:'Investigate the actual structural claim'}).click();
  await page.waitForFunction(()=>window.VixenSourceChallenge.status().phase==='FIELDWORK');
  const form=panel.locator('form.ve-form');
  await fillEvidence(page,form);
@@ -112,6 +117,8 @@ try{
  assert.equal(result.verified_source_challenge.original_native_method_executed_in_browser,false);
  assert.equal(result.visitor_review.passage_provenance.length,2);
  assert.equal(result.visitor_review.judgment,'STRUCTURAL_CANDIDATE_UNPROVEN');
+ assert.equal(result.operator_selected_investigation_route,'OPERATORS');
+ assert.equal(result.verified_source_challenge.original_documentary_protocols_executed_in_browser,0);
  assert.equal(result.scientific_credit,0);
  assert.equal(result.composer_publication_authority,false);
  assert.equal(result.network_submission_performed,false);
