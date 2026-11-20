@@ -44,7 +44,8 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
    throw Error('CENSUS_DRIFT');
  }catch(_){host.textContent='Research comparison held · source catalogue could not be qualified.';return {mounted:false}}
  const state={phase:'SETUP',busy:false,round:0,run:null,documents:null,
-  receipt:null,calibration:null,error:null,viewOrder:[],sourceA:0,sourceB:1,query:'',epoch:0};
+  receipt:null,calibration:null,error:null,viewOrder:[],sourceA:0,sourceB:1,query:'',epoch:0,
+  draft:Object.create(null),draftRevision:0,receiptExportRequested:false};
  const showStatus=message=>{
   const x=host.querySelector('.vf-status');if(x)x.textContent=message;
  };
@@ -88,6 +89,7 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
    if(token!==state.epoch)return;
    state.run=probes;state.documents=docs;state.receipt=null;
    state.viewOrder=state.round%2===0?['DOCUMENTARY','RELATIONAL']:['RELATIONAL','DOCUMENTARY'];
+   state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
    state.round++;state.phase='REVIEW';render();
   }catch(e){
    if(token!==state.epoch)return;
@@ -95,6 +97,9 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
   }finally{if(token===state.epoch){state.busy=false}}
  };
  const reset=()=>{
+  if(state.receipt&&!state.receiptExportRequested &&
+     !window.confirm('The completed local comparison receipt has not been exported. Discard it and begin another trial?'))return;
+  state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
   state.epoch++;state.busy=false;state.phase='SETUP';state.run=null;
   state.documents=null;state.receipt=null;state.error=null;render();
  };
@@ -132,6 +137,7 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
    // Source reset or role exit can revoke the report while digesting.
    if(token!==state.epoch||!authorized()||state.phase!=='REVIEW')return;
    state.receipt={...payload,browser_untrusted_sha256:digest};
+   state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
    state.phase='RECEIPT';render();
   }catch(e){if(token===state.epoch&&authorized())showStatus('Please complete the evidence fields: '+safeError(e));}
   finally{if(token===state.epoch)state.busy=false}
@@ -201,13 +207,13 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
     el('p','vf-muted','Copy one exact passage from each manuscript. Exact text must be found in its locally verified derivative. Your judgment is a real browser-submitted field report, not an independently verified scholarly finding.'));
    for(const [i,d]of state.documents.entries()){
     const input=textArea('Copy at least 12 characters of an exact passage from this Work.',400);
-    input.name='excerpt_'+i;input.required=true;
+    input.name='excerpt_'+i;input.required=true;input.value=state.draft[input.name]||'';
     form.append(field('Source passage '+(i+1)+' · '+d.title,input));
    }
    const usefulOptions=Object.entries(usefulLabels).map(([k,v])=>[k,v]);
    const trustworthyOptions=Object.entries(trustworthyLabels).map(([k,v])=>[k,v]);
-   const u=select(usefulOptions,'Which route was more useful?');u.name='useful';
-   const t=select(trustworthyOptions,'Which route was more trustworthy?');t.name='trustworthy';
+   const u=select(usefulOptions,'Which route was more useful?');u.name='useful';if(state.draft.useful)u.value=state.draft.useful;
+   const t=select(trustworthyOptions,'Which route was more trustworthy?');t.name='trustworthy';if(state.draft.trustworthy)t.value=state.draft.trustworthy;
    form.append(field('Which route produced the more useful lead?',u),
     field('Which route made the more defensible claims?',t));
    for(const [key,labelText,placeholder,max] of [
@@ -215,9 +221,14 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
     ['contradiction','Your disconfirming observation','Name one concrete way a promising inference failed, overreached, or could be falsified.',1600],
     ['next_action','A specific next move','What should the next operator or research engine inspect to discriminate the rival explanations?',1200]
    ]){
-    const area=textArea(placeholder,max);area.name=key;area.required=true;
+    const area=textArea(placeholder,max);area.name=key;area.required=true;area.value=state.draft[key]||'';
     form.append(field(labelText,area));
    }
+   const remember=e=>{
+    const ctl=e.target;if(!ctl?.name||!form.elements.namedItem(ctl.name))return;
+    state.draft[ctl.name]=String(ctl.value||'');state.draftRevision++;
+   };
+   form.addEventListener('input',remember);form.addEventListener('change',remember);
    form.append(row(btn('Back to source selection',reset),
     (()=>{const b=el('button','vf-btn vf-primary','Record my comparison and export receipt');b.type='submit';return b})()));
    host.append(form);
@@ -225,7 +236,9 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
    host.append(el('p','vf-good','Your report is recorded locally. Both manuscript passage excerpts matched source-verified text. Scientific credit remains 0.'),
     el('p','vf-muted','Browser SHA-256: '+state.receipt.browser_untrusted_sha256+
      '. This integrity digest is not an external timestamp, identity witness, or permission to publish.'),
-    row(btn('Save the complete research receipt ↓',()=>download(state.receipt),'vf-btn vf-primary'),
+    row(btn('Save the complete research receipt ↓',()=>{
+      download(state.receipt);state.receiptExportRequested=true;state.draftRevision++;
+     },'vf-btn vf-primary'),
      btn('Start another paired trial',reset)));
   }
   const status=el('p','vf-status','Original source custody and all human judgments stay distinct.');
@@ -240,6 +253,7 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
    state.run=null;state.documents=null;state.receipt=null;state.calibration=null;
    state.error=null;state.sourceA=0;state.sourceB=1;state.query='';
    state.round=0;state.viewOrder=[];
+   state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
   }
   render();
  };
@@ -250,7 +264,17 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
    report_recorded:state.receipt!==null,
    original_python_host_executed:false,method_parity:'HELD_UNPROVEN'}),
   // Returning the submitted browser receipt is intentionally a local, untrusted assertion.
-  copyLocalReceipt:()=>state.receipt?JSON.parse(JSON.stringify(state.receipt)):null});
+  copyLocalReceipt:()=>state.receipt?JSON.parse(JSON.stringify(state.receipt)):null,
+  draftStatus:()=>Object.freeze({
+   schema:'td613.vixen.unsent-draft-status/v1',role:'MAESTRO',
+   phase:state.phase,revision:state.draftRevision,
+   unsent_characters:Object.values(state.draft).reduce((n,v)=>n+String(v||'').length,0),
+   has_unsent_draft:Object.values(state.draft).some(v=>String(v||'').trim().length>0)||
+     (state.phase==='SETUP'&&state.query.trim().length>0),
+   has_local_receipt:!!state.receipt,receipt_export_requested:state.receiptExportRequested,
+   unexported_receipt:!!state.receipt&&!state.receiptExportRequested,
+   no_automatic_persistence:true
+  })});
  window.VixenComparativeFieldTrial=api;
  return api;
 }
