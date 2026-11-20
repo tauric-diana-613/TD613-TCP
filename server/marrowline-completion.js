@@ -6,6 +6,17 @@
 // a transport truncation.
 export const MARROWLINE_COMPLETION_SCHEMA = 'td613.marrowline.provider-completion/v2';
 
+export const POLICY_NONSTOP_FINISH_REASONS = Object.freeze(new Set([
+  'PROHIBITED_CONTENT',
+  'SAFETY',
+  'RECITATION',
+  'BLOCKLIST',
+  'SPII',
+  'IMAGE_SAFETY',
+  'IMAGE_PROHIBITED_CONTENT',
+  'MALFORMED_FUNCTION_CALL'
+]));
+
 const hasHeading = (text, heading) => new RegExp(
   '(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?' + heading + '[ \\t]*:?[ \\t]*(?=\\r?\\n|$)', 'iu'
 ).test(String(text || ''));
@@ -15,6 +26,13 @@ export function observeMarrowlineCompletion(text = '', output = {}, {
 } = {}) {
   const original = String(text || '');
   const finishReason = typeof output.finishReason === 'string' ? output.finishReason : null;
+  const promptBlockReason = typeof output.promptBlockReason === 'string' && output.promptBlockReason
+    ? output.promptBlockReason
+    : null;
+  const policyTerminated = Boolean(
+    (finishReason && POLICY_NONSTOP_FINISH_REASONS.has(finishReason))
+    || promptBlockReason
+  );
   const firstHeadingPresent = hasHeading(original, 'Kʰonapolit');
   const terminalHeadingPresent = hasHeading(original, 'Tauric Diana bots');
   const hasPlainClosingGlyph = original.trimEnd().endsWith('⟐');
@@ -31,10 +49,13 @@ export function observeMarrowlineCompletion(text = '', output = {}, {
   ]);
 
   let reason = 'provider-stop-observed';
-  if (!original.trim()) reason = 'provider-return-empty';
+  if (promptBlockReason && finishReason !== 'STOP') reason = 'provider-prompt-blocked';
+  else if (!original.trim()) reason = 'provider-return-empty';
   else if (finishReason === 'MAX_TOKENS') reason = 'provider-output-token-limit';
-  else if (streamed && finishReason !== 'STOP') reason = 'provider-stream-finish-unwitnessed';
+  // Explicit non-STOP provider finish reasons (e.g. PROHIBITED_CONTENT, SAFETY)
+  // take precedence over stream-finish absence even on streamed responses.
   else if (finishReason && finishReason !== 'STOP') reason = 'provider-finish-nonstop';
+  else if (streamed && !finishReason) reason = 'provider-stream-finish-unwitnessed';
   else if (parseErrors > 0) reason = 'provider-stream-parse-error';
   // A non-streamed legacy payload can lack finishReason. Preserve the old
   // conservative posture there, but never let text shape override an explicit
@@ -44,6 +65,8 @@ export function observeMarrowlineCompletion(text = '', output = {}, {
   const complete = reason === 'provider-stop-observed';
   return Object.freeze({
     schema: MARROWLINE_COMPLETION_SCHEMA, complete, reason, finishReason,
+    ...(promptBlockReason ? { promptBlockReason } : {}),
+    policyTerminated,
     streamed: Boolean(streamed), parseErrors: Math.max(0, Number(parseErrors) || 0),
     firstHeadingPresent, terminalHeadingPresent, hasPlainClosingGlyph,
     openTail, structuralObservations, creative: Boolean(creative),

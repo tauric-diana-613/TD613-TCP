@@ -2,8 +2,9 @@ import crypto from 'node:crypto';
 import { verifyMarrowlineUploadProof } from './marrowline-attachment-upload.js';
 import { buildInvocationPacket, KHONAPOLIT_REQUEST_MAX_UTF8_BYTES } from '../app/dome-world/khonapolit-covenant.js';
 import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';
-import { buildApertureV3InvocationReceipt } from '../app/engine/aperture-v3-task-intent.js';
+import { buildApertureV3InvocationReceipt, classifyApertureDiscourseMode } from '../app/engine/aperture-v3-task-intent.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
+import { POLICY_NONSTOP_FINISH_REASONS } from './marrowline-completion.js';
 import {
   GEMINI_MODEL_POLICY_VERSION,
   recordGeminiModelOutcome,
@@ -26,8 +27,7 @@ import {
   serializeGeminiRequest,
   selectKhonapolitProviderModelsFromPlan,
   terminalContinuationEligible,
-  assembleProviderTerminalContinuation,
-  severeMorphologyRepairWarnings
+  assembleProviderTerminalContinuation
 } from './khonapolit-quality.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
@@ -260,12 +260,15 @@ export default async function marrowlineAttachmentHandler(req, res) {
   const startedAt = Date.now();
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
   const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
     invocationMode: packet.mode,
     issuanceState: packet.issuance.state,
     apertureEgress,
-    modelPlan: plan
+    modelPlan: plan,
+    discourseMode,
+    contentScanned: true
   });
   const models = selectKhonapolitProviderModelsFromPlan(plan);
   const attempts = [];
@@ -276,7 +279,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
+    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true, model });
     const attemptStartedAt = Date.now();
     const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
@@ -292,6 +295,21 @@ export default async function marrowlineAttachmentHandler(req, res) {
     });
     attempts.push({ model, ok: Boolean(result.response.ok), status: Number(result.response.status || 0), timedOut: result.timedOut, timeoutMs, elapsedMs: Date.now() - attemptStartedAt, transportClass: transport.class, error, output: providerOutput, cooldown: outcome });
 
+    const policyTerminated = Boolean(
+      (providerOutput.finishReason && POLICY_NONSTOP_FINISH_REASONS.has(providerOutput.finishReason))
+      || providerOutput.promptBlockReason
+    );
+    if (result.response.ok && policyTerminated) {
+      attempts.at(-1).policyTermination = Object.freeze({
+        finishReason: providerOutput.finishReason,
+        ...(providerOutput.promptBlockReason ? { promptBlockReason: providerOutput.promptBlockReason } : {}),
+        ...(providerOutput.finishMessage ? { finishMessage: providerOutput.finishMessage } : {}),
+        providerTextSha256: result.text ? sha256(result.text) : null,
+        admittedAsIncompleteDraft: false,
+        fedToStructuralRepair: false
+      });
+      continue;
+    }
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
       attempts.at(-1).outputAdmission = Object.freeze({
         admissible: false,
@@ -358,15 +376,27 @@ export default async function marrowlineAttachmentHandler(req, res) {
           transportClass: repairTransport.class, error: repairError, output: repairOutput, cooldown: repairOutcome
         };
         attempts.push(repairAttempt);
-        if (repairResult.response.ok && repairResult.text && !repairOutput.outputTokenLimitReached) {
+        const repairPolicyTerminated = Boolean(
+          (repairOutput.finishReason && POLICY_NONSTOP_FINISH_REASONS.has(repairOutput.finishReason))
+          || repairOutput.promptBlockReason
+        );
+        if (repairResult.response.ok && repairPolicyTerminated) {
+          repairAttempt.policyTermination = Object.freeze({
+            finishReason: repairOutput.finishReason,
+            ...(repairOutput.promptBlockReason ? { promptBlockReason: repairOutput.promptBlockReason } : {}),
+            ...(repairOutput.finishMessage ? { finishMessage: repairOutput.finishMessage } : {}),
+            providerTextSha256: repairResult.text ? sha256(repairResult.text) : null,
+            admittedAsIncompleteDraft: false,
+            fedToStructuralRepair: false
+          });
+        } else if (repairResult.response.ok && repairResult.text && !repairOutput.outputTokenLimitReached) {
           // Only a genuine terminal suffix is eligible. Reject a rewritten
           // Kʰonapolit draft or malformed suffix and preserve the initial bytes.
           const joined = assembleProviderTerminalContinuation(result.text, repairResult.text);
           if (joined) {
             const joinedRelay = parseRelayEnvelope(joined.text, { model, apertureReceipt });
             repairAttempt.outputAdmission = joinedRelay.admission || null;
-            if (joinedRelay.admission?.admissible
-              && severeMorphologyRepairWarnings(joinedRelay.admission?.qualityWarnings || []).length === 0) {
+            if (joinedRelay.admission?.admissible) {
               selectedText = joined.text;
               selectedRelay = joinedRelay;
               selectedProviderOutput = repairOutput;
@@ -450,5 +480,25 @@ export default async function marrowlineAttachmentHandler(req, res) {
     });
   }
 
+  const policyTerminatedAttempts = attempts.filter((attempt) => attempt.policyTermination);
+  if (policyTerminatedAttempts.length > 0) {
+    return send(res, 502, {
+      ok: false,
+      status: 'HELD',
+      error: 'gemini-provider-policy-held',
+      diagnostic: {
+        stage: 'provider-termination',
+        code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+        finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
+        promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into terminal continuation.'
+      },
+      attempts,
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    }, { 'X-TD613-Completion-State': 'POLICY-HELD' });
+  }
   return send(res, 502, { ok: false, error: 'gemini-provider-unavailable', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 }
