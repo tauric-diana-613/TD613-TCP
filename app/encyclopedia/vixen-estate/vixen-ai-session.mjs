@@ -111,7 +111,25 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
  const works=new Set(corpus.works.map(x=>x.work_id));
  const methods=new Set(corpus.instruments.map(x=>x.instrument_id));
  const allowedIds=new Set([...works,...methods,...(corpus.giveback_tracks||[]).map(x=>x.id)]);
- let current=null,sequence=0;
+ let current=null,sequence=0,generation=0,requestSequence=0;
+ // Every async operation is bound to the initiating session/role/request/permission epoch.
+ const token=(session,initiated_action,request_id)=>Object.freeze({
+  session_id:session.id,generation:session.generation,role:session.role,request_id,
+  permission_epoch:session.permissionEpoch,revocation_epoch:session.revocationEpoch,
+  initiated_action
+ });
+ const check=(session,op)=>{
+  if(current!==session||!session.active||session.id!==op.session_id||
+     session.generation!==op.generation||session.role!==op.role)return 'STALE_OPERATION';
+  if(session.revocationEpoch!==op.revocation_epoch)return 'CONSENT_REVOKED';
+  if(session.permissionEpoch!==op.permission_epoch)return 'STALE_OPERATION';
+  const request=op.initiated_action==='GRANT'?session.permissionRequestId:session.turnRequestId;
+  return request===op.request_id?null:'STALE_OPERATION';
+ };
+ const held=code=>receipt('HELD',stateError(code));
+ const guard=(session,op)=>{const code=check(session,op);return code?held(code):null};
+ const nextTurn=(session,action)=>token(session,action,
+  session.turnRequestId=++requestSequence);
  const receipt=(status,result)=>Object.freeze({schema:VIXEN_AI_SESSION_SCHEMA,status,
    result,read_only:true,changes_to_corpus:0,authorship_claim:false,
    independent_external_witness:false,release_authority:false});
@@ -120,16 +138,16 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
   try{values=readCart()}catch(_){}
   return Array.isArray(values)?[...new Set(values.filter(x=>allowedIds.has(x)))].slice(0,100):[];
  };
- const enrichWithVerifiedHost=async(turn)=>{
+ const enrichWithVerifiedHost=async(turn,session)=>{
   if(!turn||typeof hostNarrate!=='function')return turn;
   const eligible=new Set((turn.source_candidates||[]).flatMap(x=>
    [x.work_id,...(x.manifestations||[]).map(y=>y.source_file_id)]));
   let generated;
   try{generated=await hostNarrate({
-   schema:'vixen.ai.host-narration-request/v1',role:current?.role,
-   visitor_goal:current?.goal,source_candidates:turn.source_candidates,
-   observed_reads:turn.observed_reads,visitor_reports:current?.questReports||[],
-   route_history:current?.path||[],quests:turn.quests,
+   schema:'vixen.ai.host-narration-request/v1',role:session.role,
+   visitor_goal:session.goal,source_candidates:turn.source_candidates,
+   observed_reads:turn.observed_reads,visitor_reports:session.questReports.slice(),
+   route_history:session.path.slice(),quests:turn.quests,
    claim_ceiling:'NARRATIVE_NOT_SCIENTIFIC_PROOF'
   })}catch(_){generated=null;}
   const citations=generated?.cited_source_ids;
@@ -151,24 +169,31 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
    quests:current.latestTurn?.quests||[],quest_reports:current.questReports.slice(),
    narrative:current.latestTurn?.narrative||null,possible_next_moves:current.latestTurn?.choices||[]});
  const start=async({role,goal=''}={})=>{
-  if(!VIXEN_AI_ROLES.includes(role))return receipt('HELD',stateError('EXPLICIT_MAESTRO_OR_COMPOSER_SELECTION_REQUIRED'));
-  if(current?.active)return receipt('HELD',stateError('ROLE_IMMUTABLE_END_SESSION_BEFORE_STARTING_ANOTHER'));
-  sequence++;
-  current={id:'vixen-ai-session-'+String(sequence).padStart(4,'0'),role,goal:safe(goal,300),
-   active:true,current:null,path:[],cartSnapshot:getCart(),latestTurn:null,turns:[],
-   questReports:[],notesAllowed:false,notesEverAllowed:false,
-   notesPermission:'NOT_REQUESTED',notes:[],notesRequest:false};
+  if(!VIXEN_AI_ROLES.includes(role))return held('EXPLICIT_MAESTRO_OR_COMPOSER_SELECTION_REQUIRED');
+  if(current?.active)return held('ROLE_IMMUTABLE_END_SESSION_BEFORE_STARTING_ANOTHER');
+  const session={id:'vixen-ai-session-'+String(++sequence).padStart(4,'0'),
+   generation:++generation,permissionEpoch:0,revocationEpoch:0,
+   permissionRequestId:0,turnRequestId:0,
+   role,goal:safe(goal,300),active:true,current:null,path:[],
+   cartSnapshot:getCart(),latestTurn:null,turns:[],questReports:[],
+   notesAllowed:false,notesEverAllowed:false,notesPermission:'NOT_REQUESTED',
+   notes:[],notesRequest:false};
+  current=session;
+  const op=nextTurn(session,'START');
+  let opening=null;
   try{
-   current.latestTurn=await conductVixenNarrativeTurn({corpus,role,
-    goal:current.goal,choice_id:role==='MAESTRO'?'source':'question',
+   opening=await conductVixenNarrativeTurn({corpus,role,
+    goal:session.goal,choice_id:role==='MAESTRO'?'source':'question',
     trail:[],cart:getCart(),hostRead,
     max_read_calls:typeof hostRead==='function'?2:0,step_number:0});
-   current.latestTurn=await enrichWithVerifiedHost(current.latestTurn);
-   if(current.latestTurn)current.turns.push({kind:'OPENING_RESEARCH_ROUTE',narrative:current.latestTurn});
-  }catch(_){current.latestTurn=null;}
-  return receipt('SUPPORTED',{role,session_id:current.id,
-   chat_card:publicCard(current),opening_turn:current.latestTurn,
-   notes_permission:'NOT_REQUESTED',read_only:true});
+   if(guard(session,op))return guard(session,op);
+   opening=await enrichWithVerifiedHost(opening,session);
+  }catch(_){opening=null;}
+  if(guard(session,op))return guard(session,op);
+  session.latestTurn=opening;
+  if(opening)session.turns.push({kind:'OPENING_RESEARCH_ROUTE',narrative:opening});
+  return receipt('SUPPORTED',{role,session_id:session.id,chat_card:publicCard(session),
+   opening_turn:session.latestTurn,notes_permission:'NOT_REQUESTED',read_only:true});
  };
  const choose=async({choice_id,source_work_id=null,question=''}={})=>{
   if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
@@ -295,25 +320,35 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
    no_automatic_crosswalk:true,no_invented_full_text:true});
  };
  const permission=async({phase,proof=null}={})=>{
-  if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
+  const session=current;
+  if(!session?.active)return held('SESSION_NOT_STARTED');
   if(phase==='request'){
-   current.notesRequest=true;current.notesPermission='AWAITING_HUMAN_PERMISSION';
+   session.permissionEpoch++;session.permissionRequestId++;
+   session.notesRequest=true;session.notesPermission='AWAITING_HUMAN_PERMISSION';
    return receipt('HELD',{reason:'HUMAN_OPT_IN_REQUIRED_BEFORE_AUTHORING',
     request:'May I begin drafting Program Notes for future route selections? No earlier steps will be retroactively narrated.',
     notes_generated:0});
   }
   if(phase==='revoke'){
-   current.notesAllowed=false;current.notesRequest=false;current.notesPermission='REVOKED';
-   return receipt('SUPPORTED',{program_notes:'OFF',existing_drafts:current.notes.length,
+   session.permissionEpoch++;session.revocationEpoch++;
+   session.permissionRequestId++;session.turnRequestId=++requestSequence;
+   session.notesAllowed=false;session.notesRequest=false;session.notesPermission='REVOKED';
+   return receipt('SUPPORTED',{program_notes:'OFF',existing_drafts:session.notes.length,
     message:'No new notes will be authored. You may discard the session archive.'});
   }
-  if(phase!=='grant'||!current.notesRequest)return receipt('HELD',stateError('NOTES_PERMISSION_REQUEST_REQUIRED'));
+  if(phase!=='grant'||!session.notesRequest)return held('NOTES_PERMISSION_REQUEST_REQUIRED');
   if(typeof verifyProgramNotesConsent!=='function')
-   return receipt('HELD',stateError('INDEPENDENT_HUMAN_CONSENT_VERIFIER_NOT_ATTACHED'));
+   return held('INDEPENDENT_HUMAN_CONSENT_VERIFIER_NOT_ATTACHED');
+  const op=token(session,'GRANT',++session.permissionRequestId);
   let verified=false;
-  try{verified=await verifyProgramNotesConsent({proof,session_id:current.id,role:current.role})===true}catch(_){}
-  if(!verified)return receipt('HELD',stateError('HUMAN_PERMISSION_NOT_VERIFIED'));
-  current.notesAllowed=true;current.notesEverAllowed=true;current.notesRequest=false;current.notesPermission='GRANTED';
+  try{verified=await verifyProgramNotesConsent({proof,session_id:session.id,
+   role:session.role,generation:session.generation,request_id:op.request_id,
+   permission_epoch:op.permission_epoch,revocation_epoch:op.revocation_epoch})===true;}catch(_){}
+  if(guard(session,op))return guard(session,op);
+  if(!session.notesRequest)return held('STALE_OPERATION');
+  if(!verified)return held('HUMAN_PERMISSION_NOT_VERIFIED');
+  session.permissionEpoch++;session.notesAllowed=true;session.notesEverAllowed=true;
+  session.notesRequest=false;session.notesPermission='GRANTED';
   return receipt('SUPPORTED',{program_notes:'ON',retroactive_authoring:false,
    message:'Only subsequent steps will receive draft Program Notes.'});
  };
@@ -342,7 +377,10 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
  };
  const finish=()=>{
   if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
-  current.active=false;const saved=archive();
+  current.active=false;current.turnRequestId=++requestSequence;
+  current.permissionRequestId++;current.permissionEpoch++;current.revocationEpoch++;
+  current.notesAllowed=false;current.notesRequest=false;
+  const saved=archive();
   return receipt('SUPPORTED',{archive:saved.result,message:'Session ended. Choose a new role to begin a separate session.'});
  };
  return Object.freeze({start,choose,report,handoff,permission,notes,archive,finish,status:currentStatus,
