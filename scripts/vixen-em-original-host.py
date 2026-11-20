@@ -166,7 +166,7 @@ def run(packet):
             "exact_source_locator_not_operator_citation":True
         })
         observed[sid]=True
-    identity_result=sensitivity.qualify(works,occurrence=observed,minimum_support=2)
+    identity_result=sensitivity.qualify(works,occurrence=observed,minimum_support=3)
     need(identity_result["partition_count"]==256 and
          identity_result["work_count_lower"]==32 and
          identity_result["work_count_upper"]==40 and
