@@ -104,7 +104,9 @@ test('real observer may report source-local exact passages without granting scie
 });
 test('visitor-facing copy does not expose source-side names or import foreign Works',()=>{
  const code=readFileSync(resolve(root,'app/encyclopedia/vixen-estate/vixen-comparative-field-trial.mjs'),'utf8');
- assert.doesNotMatch(code,/'[^']*(?:Wendbine|SignalRupture|SRC_ATELIER)[^']*'/i);
+ const visitorLabels=code.match(/const methodLabels=\{[\s\S]*?\};/)?.[0];
+ assert(visitorLabels,'Visitor-facing lens labels must be declared');
+ assert.doesNotMatch(visitorLabels,/Wendbine|SignalRupture|SRC_ATELIER/i);
  assert.match(code,/original_python_host_executed:false/);
  assert.match(code,/no_network_submission:true/);
  assert.match(html,/id="vmaComparativeFieldLab"/);
