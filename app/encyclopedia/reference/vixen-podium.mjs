@@ -79,7 +79,7 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'wendbine_maestro_research_step','wendbine_public_frequency_null',
   'wendbine_public_topology_rewire','wendbine_public_directed_walk','wendbine_public_open_world_ceiling']),
  EM_ATELIER:Object.freeze(['em_native_text','em_native_semantic','em_native_work_route','em_native_research_journey',
-  'em_verified_vixen_native_span_identity']),
+  'em_verified_vixen_native_span_identity','em_hostile_method_expedition']),
  CROSS_ATELIER:Object.freeze(['cross_atelier_lexical','cross_atelier_semantic'])
 });
 const RX_SHA=/^[a-f0-9]{64}$/;
