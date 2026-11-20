@@ -25,16 +25,18 @@ The held-out target's **technical title is disclosed as a query**, making this a
 
 ## III. Controls, counterfactuals, and stopping
 
-C0 is a prior-day-only title query over the fixed public registry. C1 shuffles source order; the classifier deliberately sorts ties by source ID, making equality a deterministic implementation check **not evidence of reconstruction**. C2 permutes concept labels in the admitted earlier-day training surface. C3 removes typed relation edges from the predictor. C4 uses a preregistered unrelated-topic decoy query. Every run reports prediction, held-out scoring, source-ID receipts and no scientific credit. Future dated or same-day posts are excluded, including from controls.
+C0 is a prior-day-only title query over the fixed public registry. C1 shuffles source order; the classifier deliberately sorts ties by source ID, making equality a deterministic implementation check **not evidence of reconstruction**. C2 permutes concept labels in the admitted earlier-day training surface. C3 removes typed relation edges from the predictor. C4 selects the actual earlier registered public technical post having minimum title-token overlap with the held-out query (deterministic source-ID tie break). C4 is a source-bound topical decoy, **not a certified semantically independent document**. Every run reports the decoy source ID, prediction, held-out scoring, earlier source-ID witnesses and no scientific credit. Future dated or same-day posts are excluded, including from controls.
 
 The algorithm is a simple deterministic comparator, not an attempt to synthesize an entire authored methodology. Its narrowness is an intentional experimental control, establishing a baseline a richer implementation must beat rather than claiming parity by tool naming.
+
+The finite graph families and the five observed source-evidence classes are now whitelisted. Fabricated graph families and forged evidence classes fail closed before the original compiler executes. The newly available public sweep evaluates every admitted target with at least one strictly earlier publication day and aggregates C0/C2/C3/C4 counts with explicit abstentions. It is labelled HELD_EXPLORATORY_SWEEP_NOT_PREREGISTERED, provides no significance test, and cannot be rebranded as a historical or causal discovery. Its denominator comes from eligible source records, never an arbitrary stage count.
 
 The host journey operation offers a hypothesis, rival hypotheses, bound source IDs, a negative-control alert and next human/research tasks. It cannot recursively manufacture new evidence or promote a manuscript. If no new observation becomes available, the loop stops at WAITING_FOR_NEW_OPERATOR_OR_INDEPENDENT_EVIDENCE.
 
 ## IV. Evidence grades
 
 - **Computational execution:** exact native compiler and derived classifier execute, with source digest receipts.
-- **Methodological reconstruction:** HELD pending multi-target preregistration and independently witnessed outcomes.
+- **Methodological reconstruction:** exploratory multi-target diagnostic implemented; methodological establishment HELD pending independently witnessed outcomes and an independently preregistered test (the retrospective sweep does not retroactively preregister itself).
 - **True bitemporal replay:** HELD pending contemporaneous capture/observation timestamps; metadata recorded later cannot retroactively evidence earlier observation.
 - **Native-to-Vixen full method equivalence:** HELD. Browser receives no public Wendbine bodies, and no foreign Work is minted as a Vixen Performer.
 - **Scientific author intent, hidden memory, causal connection, and original source person's identity:** outside claim authority.
