@@ -24,8 +24,8 @@ const role=async page=>{
  await page.locator('#vmaStart').click();
  await page.locator('#vmaSourceChallenge').waitFor({state:'visible',timeout:18000});
 };
-async function fillEvidence(form){
- const snippets=await form.page().evaluate(async ids=>{
+async function fillEvidence(page,form){
+ const snippets=await page.evaluate(async ids=>{
   const catalogue=JSON.parse(document.getElementById('vixen-corpus-bundle').textContent);
   const m=await import('./vixen-estate/corpus-experiment-a.mjs');
   const out=[];
