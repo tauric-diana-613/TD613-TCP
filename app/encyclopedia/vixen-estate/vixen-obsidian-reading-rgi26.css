@@ -306,3 +306,14 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
  column-fill:balance!important;column-gap:normal!important;
  writing-mode:horizontal-tb!important;overflow-x:hidden!important;overflow-y:auto!important
 }
+
+/* Stage III.5: RGI18's longer .vix-reader-heading.vix-pdf-source-title
+   selector still imposed near-black ink on the later obsidian folio.
+   Match that specificity explicitly: the illuminated initial remains the
+   diva, while its full title takes on a restrained antique-gold cousin. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre
+.vix-reader-heading.vix-pdf-source-title{
+ color:#e8c895!important;
+ text-shadow:0 1px 12px rgba(232,200,149,.11)!important;
+}
