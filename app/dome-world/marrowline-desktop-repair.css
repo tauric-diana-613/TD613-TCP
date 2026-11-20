@@ -1532,8 +1532,8 @@ html:root[data-loom-cue-paused="true"] #khonapolitSend[data-loom-attention="true
      Attachment/utility state is never mutated; Exit restores the ordinary UI. */
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm{
     box-sizing:border-box!important;grid-row:3!important;min-height:0!important;
-    height:auto!important;max-height:72px!important;margin:0!important;
-    padding:5px 10px calc(6px + env(safe-area-inset-bottom,0px))!important;
+    height:auto!important;max-height:none!important;margin:0!important;
+    padding:5px 10px 6px!important;
     overflow:visible!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"][data-marrowline-reader="focus"] #khonapolitForm .marrowline-composer-input-row{
