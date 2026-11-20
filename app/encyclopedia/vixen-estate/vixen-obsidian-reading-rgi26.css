@@ -314,6 +314,6 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
 #worksExperimentAReaderMount #expaCompanionBodyPre
 .vix-reader-heading.vix-pdf-source-title{
- color:#e8c895!important;
- text-shadow:0 1px 12px rgba(232,200,149,.11)!important;
+ color:#efd18a!important;
+ text-shadow:0 1px 12px rgba(239,209,138,.11)!important;
 }
