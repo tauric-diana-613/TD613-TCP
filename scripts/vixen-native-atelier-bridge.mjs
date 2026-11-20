@@ -133,6 +133,13 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCh
       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,data:execute(repo,script,args)};
     },
     WENDBINE_ATELIER:({operation,payload={}})=>{
+      if(operation==='wendbine_public_directed_walk'){
+       const script=safePublicRoot(repo,['scripts','wendbine-directed-walk-falsification.mjs']);
+       return {estate:'WENDBINE',kind:'TD613_DERIVED_DIRECTED_WALK_FALSIFICATION',
+        read_only:true,private_index_accessed:false,source_estate_immutable:true,
+        experimental_model:'POST_HOC_EXPLORATORY',authorship_promotion:false,
+        scientific_credit:0,data:executeNode(repo,script,[])};
+      }
       if(operation==='wendbine_public_topology_rewire'){
        const script=safePublicRoot(repo,['scripts','wendbine-topology-rewire-challenge.mjs']);
        return {estate:'WENDBINE',kind:'TD613_DERIVED_TOPOLOGY_REWIRE_NEGATIVE_CONTROL',
