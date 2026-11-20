@@ -117,7 +117,7 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
   extracted.every(x=>boundIds.has(x.source_file_id)&&x.derivative_relative_path)&&
   excluded.every(x=>!boundIds.has(x.source_file_id)&&x.derivative_relative_path==null),
   'HELD_EM_METADATA_COMPANION_OR_CONTAINER_PROMOTED_TO_WORK');
- let verifiedOriginalBytes=0,excluded=0;
+ let verifiedOriginalBytes=0;
  for(const file of s.rows){
   const name=file.archive_relative_path;
   need(typeof name==='string'&&!name.startsWith('/')&&!name.includes('..')&&
