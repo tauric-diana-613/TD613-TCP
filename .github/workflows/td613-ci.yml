@@ -261,6 +261,7 @@ jobs:
           node --test tests/wendbine-frequency-null-challenge.test.mjs
           node --test tests/wendbine-topology-rewire-challenge.test.mjs
           node --test tests/wendbine-directed-walk-falsification.test.mjs
+          node --test tests/wendbine-open-world-ceiling.test.mjs
           node --test tests/vixen-observatory-throughput.test.mjs
           # Execute the original Python SRC typed traverser against real verified Vixen derivatives.
           node --test tests/vixen-src-original-typed-traversal.test.mjs
