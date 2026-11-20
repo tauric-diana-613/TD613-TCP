@@ -115,7 +115,8 @@ try{
  const setup=page.locator('#vmaComparativeFieldLab');
  const originalSources=await setup.locator('select.vf-input').evaluateAll(xs=>xs.map(x=>x.value));
  await setup.locator('input.vf-input').fill('Private unsent source question should disappear on role exit');
- await setup.locator('select.vf-input').nth(0).selectOption(ids[1]);
+ await setup.locator('select.vf-input').nth(0).selectOption(
+  originalSources[0]===ids[0]?ids[1]:ids[0]);
  await page.locator('#vmaEnd').click();
  assert.equal(await setup.isVisible(),false);
  await page.locator('[data-vma-role="MAESTRO"]').click();
