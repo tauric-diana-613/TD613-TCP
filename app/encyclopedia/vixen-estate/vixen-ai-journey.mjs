@@ -4,6 +4,7 @@
  * not pretend to have a remote model attached.
  */
 import {createVixenAiSession,formatVixenChatCard} from './vixen-ai-session.mjs';
+import {collectVixenLocalExitBoundary,attachVixenLocalExitToArchive} from './vixen-local-exit.mjs';
 const by=id=>document.getElementById(id);
 const node=(tag,cls='',text='')=>{const e=document.createElement(tag);e.className=cls;e.textContent=text;return e};
 const button=(label,fn,cls='vma-btn')=>{const e=node('button',cls,label);e.type='button';e.onclick=fn;return e};
@@ -27,6 +28,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
  }catch(_){host.replaceChildren(node('p','vma-failure','The local catalogue is unavailable; research guidance is held.'));return {mounted:false}}
  const directConsent=Symbol('DIRECT_VISITOR_NOTES_OPT_IN');
  let podiumPromise=null,role=null,active=false,busy=false,pendingQuest=null,lastArchive=null,lastNotes=null;
+ let finalExportRequested=false;
  const read=async({intent,params})=>{
   if(!window.VixenReference?.podium)return {status:'HELD',result:{state:'READER_NOT_ATTACHED'}};
   try{
@@ -173,8 +175,13 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
  }));
  by('vmaStart').addEventListener('click',()=>lock(async()=>{
   if(!role)return;
-  const v=await session.start({role,goal:by('vmaGoal').value.slice(0,300)});
-  if(v.status==='SUPPORTED'){active=true;announce('Your ontological role is locked for this session.');render();}
+  if(lastArchive&&!finalExportRequested&&
+    lastArchive.operator_side_receipts?.has_completed_receipts&&
+    !window.confirm('The last session archive contains completed local field receipts and has not been exported. Discard it and begin a new role session?'))return;
+   const v=await session.start({role,goal:by('vmaGoal').value.slice(0,300)});
+  if(v.status==='SUPPORTED'){
+   lastArchive=null;lastNotes=null;finalExportRequested=false;
+   active=true;announce('Your ontological role is locked for this session.');render();}
   else announce('Held · '+(v.result?.reason||'session unavailable'));
  }));
  by('vmaReportSubmit').addEventListener('click',()=>lock(async()=>{
@@ -222,17 +229,39 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   download(text,'vixen-program-notes.md','text/markdown;charset=utf-8');
  });
  by('vmaEnd').addEventListener('click',()=>{
+  // Capture completed optional reports BEFORE the role-change event erases
+  // their local state. Unsent draft bytes never join any exported archive.
+  const boundary=collectVixenLocalExitBoundary({
+   source_challenge:window.VixenSourceChallenge,
+   comparative_field:window.VixenComparativeFieldTrial
+  });
+  if(boundary.has_unsent_drafts &&
+      !window.confirm('Unsubmitted research fields remain in this Maestro session. End the session and discard those unsent drafts?')) {
+   announce('Role exit canceled. Your unsent browser fields remain available.');return;
+  }
+  if(Object.values(boundary.observations).some(x=>x==='HELD_SIDE_RECEIPT_OR_DRAFT_STATUS_INVALID')){
+   announce('Role exit held: a local source-receipt interface could not be verified.');return;
+  }
   lastNotes=session.notes().status==='SUPPORTED'?session.notes().result:null;
-  const ended=session.finish();lastArchive=ended.status==='SUPPORTED'?ended.result.archive:null;
+  const ended=session.finish();
+  if(ended.status!=='SUPPORTED'){
+   announce('Role exit held · '+(ended.result?.reason||'archive unavailable'));return;
+  }
+  lastArchive=attachVixenLocalExitToArchive(ended.result.archive,boundary);
+  finalExportRequested=false;
   active=false;role=null;pendingQuest=null;
   by('vmaStart').disabled=true;reportPanel.hidden=true;
   host.querySelectorAll('[data-vma-role]').forEach(x=>x.setAttribute('aria-pressed','false'));
-  announce('Session ended. Begin a new session to select a different role.');render();
+  announce(boundary.has_completed_receipts?
+   'Session ended. Completed browser field receipts are included in the final local archive. Download it before starting another session.':
+   'Session ended. Your final archive is available for local download; no role or notes consent will auto-restore.');
+  render();
  });
  by('vmaSaveFinal').addEventListener('click',()=>{
    if(!lastArchive)return;
    download(JSON.stringify(lastArchive,null,2)+'\n','vixen-completed-research-journey.json');
-   announce('Final research journey saved locally. No upload occurred.');
+   finalExportRequested=true;
+   announce('Final archive download requested; local side receipts, if any, remain marked browser-untrusted. No upload or restoration occurred.');
  });
  by('vmaDownloadFinalNotes').addEventListener('click',()=>{
    if(!lastNotes){announce('No Program Notes were authorized for that journey.');return}
