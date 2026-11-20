@@ -48,7 +48,7 @@ export function buildVixenEmAtelierMatrix(){
    sha256:sh(bytes),method_authority:classification,real_execution_grade:grade,
    public_browser_executes_original_python:false,
    em_public_original_text_imported:false,source_historical_author_authored_this_executable:false,
-   verified_vixen_derivative_consumer:operation==='em_verified_vixen_native_span_identity'?
+   verified_vixen_derivative_consumer:['em_verified_vixen_native_span_identity','em_hostile_method_expedition'].includes(operation)?
     'scripts/vixen-em-native-work-transfer.mjs':null,
    full_native_method_equivalence:'HELD_UNPROVEN',
    external_empirical_credit:0};
