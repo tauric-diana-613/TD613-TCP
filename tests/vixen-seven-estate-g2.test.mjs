@@ -11,7 +11,12 @@ const idx=JSON.parse(await readFile(new URL('semantic-semiotic-index.v1.json',ba
 const p1=JSON.parse(await readFile(new URL('corpus-experiment-a-part1.json',base),'utf8'));
 const p2=JSON.parse(await readFile(new URL('corpus-experiment-a-part2.json',base),'utf8'));
 const html=readFileSync(fileURLToPath(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url)),'utf8');
-const corpus=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\\s\\S]*?)<\\/script>/)[1]);
+const scriptAt=html.indexOf('id="vixen-corpus-bundle"');
+assert(scriptAt>=0,'Vixen corpus script absent');
+const scriptBodyBegin=html.indexOf('>',scriptAt);
+const scriptBodyEnd=html.indexOf('</script>',scriptBodyBegin);
+assert(scriptBodyBegin>scriptAt && scriptBodyEnd>scriptBodyBegin);
+const corpus=JSON.parse(html.slice(scriptBodyBegin+1,scriptBodyEnd));
 const empty=()=>new SemanticSemioticSearchEngine(idx);
 test('OBS-A: 12x48 diagnostic distinguishes algebraic rank, nullity, nonzero kappa and fractional effective rank',()=>{
  const e=empty(),q=e.search('algedonic bypass viability',{limit:12});
