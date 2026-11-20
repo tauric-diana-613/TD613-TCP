@@ -57,10 +57,9 @@ function pinnedNativeRoots(repo,estate,config){
  // cross-estate loaders take <checkout> and append the estate subtree.
  // Resolve both explicitly rather than forwarding the same untyped path.
  const checkoutRoot=config?privateDirectory(repo,config.path):repo;
- const estateRoot=resolve(checkoutRoot,'packages','dome_world_exact','fixtures','a15-r0',estate);
- if(!inside(checkoutRoot,estateRoot)||!existsSync(estateRoot)||
-    !lstatSync(estateRoot).isDirectory()||lstatSync(estateRoot).isSymbolicLink())
-  HOLD('HELD_NATIVE_ESTATE_ROOT_MISSING');
+ // Validate checkout identity before probing estate contents: a caller who
+ // passes an estate directory must receive the checkout-root contract HOLD,
+ // not a misleading "missing estate" HOLD from a nested invented path.
  let gitTop=null,observed=null;
  try{
   gitTop=realpathSync(execFileSync('git',['-C',checkoutRoot,'rev-parse','--show-toplevel'],
@@ -69,6 +68,10 @@ function pinnedNativeRoots(repo,estate,config){
     {encoding:'utf8',timeout:5000}).trim();
  }catch(_){HOLD('HELD_NATIVE_SOURCE_CHECKOUT_INVALID')}
  if(gitTop!==checkoutRoot)HOLD('HELD_NATIVE_CHECKOUT_ROOT_CONTRACT_REQUIRED');
+ const estateRoot=resolve(checkoutRoot,'packages','dome_world_exact','fixtures','a15-r0',estate);
+ if(!inside(checkoutRoot,estateRoot)||!existsSync(estateRoot)||
+    !lstatSync(estateRoot).isDirectory()||lstatSync(estateRoot).isSymbolicLink())
+  HOLD('HELD_NATIVE_ESTATE_ROOT_MISSING');
  if(config){
   const wanted=nonempty(config.git_head,40);
   if(!/^[0-9a-f]{40}$/.test(wanted))HOLD('HELD_NATIVE_PINNED_HEAD_REQUIRED');
