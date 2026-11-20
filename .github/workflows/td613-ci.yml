@@ -283,6 +283,8 @@ jobs:
           node --test tests/vixen-public-copy.test.mjs
           node --test tests/vixen-ai-session.test.mjs
           node --test tests/vixen-seven-estate-g1.test.mjs
+          node --test tests/vixen-seven-estate-g2.test.mjs
+          node --test tests/vixen-semantic-semiotic-search.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
           for source_bound_suite in \
             tests/vixen-podium-compose-score-custody.test.mjs \
