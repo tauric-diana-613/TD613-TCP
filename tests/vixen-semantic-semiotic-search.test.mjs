@@ -748,7 +748,7 @@ test('RGI16 fusion and machine control surfaces remain co-versioned and actually
   // Pin the current 27-route source contract and assert a one-to-one manifest
   // correspondence instead of silently treating new governed routes as a defect.
   assert.equal(podManifest.routes.length,27);
-  assert.equal(podManifest.counts.routes,27);
+  assert.equal(podManifest.protocol.routes,27);
   assert.deepEqual(new Set(podManifest.routes.map(x=>x.id)),new Set(PODIUM_ROUTES));
   assert.equal(new Set(podManifest.routes.map(x=>x.id)).size,27);
   assert.equal(podManifest.aix_conducting.semantic_semiotic_search_integration.fusion_controls.channels.length,4);
