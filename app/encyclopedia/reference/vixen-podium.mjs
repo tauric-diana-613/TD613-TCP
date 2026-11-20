@@ -72,7 +72,8 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'src_native_semantic','src_native_projective_assay','src_native_evidence_traverse','src_native_research_journey'
  ]),
  WENDBINE_ATELIER:Object.freeze(['wendbine_private_status','wendbine_private_search',
-  'wendbine_public_query','wendbine_sealed_epoch_query']),
+  'wendbine_public_query','wendbine_sealed_epoch_query',
+  'wendbine_public_inventory','wendbine_public_reconstruction','wendbine_public_research_journey']),
  EM_ATELIER:Object.freeze(['em_native_text','em_native_semantic','em_native_work_route','em_native_research_journey']),
  CROSS_ATELIER:Object.freeze(['cross_atelier_lexical','cross_atelier_semantic'])
 });
