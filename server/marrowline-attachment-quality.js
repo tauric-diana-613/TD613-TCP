@@ -331,9 +331,26 @@ export default async function marrowlineAttachmentHandler(req, res) {
     if (!result.response.ok || !result.text) continue;
 
     const initialRelay = parseRelayEnvelope(result.text, { model, apertureReceipt });
-    attempts.at(-1).outputAdmission = initialRelay.admission || null;
+    attempts.at(-1).outputAdmission = providerOutput.outputTokenLimitReached
+      ? Object.freeze({
+          ...(initialRelay.admission || {}),
+          admissible: false,
+          quality: 'PARTIAL',
+          reasons: Object.freeze(['provider-output-token-limit', ...(initialRelay.admission?.reasons || []).filter((r) => r !== 'provider-output-token-limit')])
+        })
+      : (initialRelay.admission || null);
     let selectedText = result.text;
-    let selectedRelay = initialRelay;
+    let selectedRelay = providerOutput.outputTokenLimitReached
+      ? Object.freeze({
+          ...initialRelay,
+          signal: Object.freeze({
+            ...initialRelay.signal,
+            state: 'NOT_LOCKED',
+            downstreamAdmitted: false,
+            notes: [initialRelay.signal?.notes, 'Provider MAX_TOKENS reached; preserved partial text is not downstream-admitted.'].filter(Boolean).join(' ')
+          })
+        })
+      : initialRelay;
     let selectedProviderOutput = providerOutput;
     let continuation = null;
     let repairAttempted = false;
@@ -389,7 +406,12 @@ export default async function marrowlineAttachmentHandler(req, res) {
             admittedAsIncompleteDraft: false,
             fedToStructuralRepair: false
           });
-        } else if (repairResult.response.ok && repairResult.text && !repairOutput.outputTokenLimitReached) {
+        } else if (
+          repairResult.response.ok
+          && repairResult.text
+          && !repairOutput.outputTokenLimitReached
+          && (!repairOutput.finishReason || repairOutput.finishReason === 'STOP')
+        ) {
           // Only a genuine terminal suffix is eligible. Reject a rewritten
           // Kʰonapolit draft or malformed suffix and preserve the initial bytes.
           const joined = assembleProviderTerminalContinuation(result.text, repairResult.text);
@@ -491,7 +513,11 @@ export default async function marrowlineAttachmentHandler(req, res) {
         code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
         finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
         promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
-        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into terminal continuation.'
+        policyTerminatedSeatCount: policyTerminatedAttempts.length,
+        transportFailedSeatCount: attempts.filter((attempt) => !attempt.ok).length,
+        hasMixedTransportFailure: attempts.some((attempt) => !attempt.ok),
+        observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into terminal continuation. Any mixed transport seat failures are preserved alongside policy counts.'
       },
       attempts,
       modelPolicy: plan,

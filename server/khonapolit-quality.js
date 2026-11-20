@@ -954,12 +954,15 @@ function mergeGeminiStreamPayload(chunks = []) {
         : null;
       if (blockReason || blockReasonMessage) {
         promptFeedback = {
+          ...(promptFeedback || {}),
           ...(blockReason ? { blockReason } : {}),
           ...(blockReasonMessage ? { blockReasonMessage } : {})
         };
       }
     }
-    if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') usageMetadata = payload.usageMetadata;
+    if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') {
+      usageMetadata = { ...(usageMetadata || {}), ...payload.usageMetadata };
+    }
     if (typeof payload?.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)) modelVersion = payload.modelVersion;
   }
   const candidate = {
@@ -2245,7 +2248,12 @@ export default async function handler(req, res) {
               code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
               finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
               promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
-              note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into structural repair.'
+              policyTerminatedSeatCount: policyTerminatedAttempts.length,
+              transportFailedSeatCount: attempts.filter((attempt) => !attempt.ok).length,
+              hasMixedTransportFailure: attempts.some((attempt) => !attempt.ok),
+              observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+              rateLimitWindowsOnPriorAttempts: rateWindowClasses,
+              note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into structural repair. Any mixed transport/rate-limit seat failures are preserved alongside policy counts.'
             }
           : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE',
             observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],

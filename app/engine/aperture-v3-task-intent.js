@@ -13,9 +13,11 @@ const CREATIVE_ACTION = /\b(tell|write|compose|create|draft|invent|imagine|conti
 // generic staged deployment, legal filing, or forensic audit.
 const EXPLICIT_STAGED_FICTION = /^\s*(?:stage|dramatize|play\s+out)\b[\s\S]{0,420}\b(?:farce|scene|dialogue|theatrical\s+performance|fictional\s+reunion)\b/i;
 const EXPLICIT_THEATRICAL_FICTION = /\b(?:(?:develop|stage|dramatize|play\s+out|perform|write|compose|conduct|make)\b[\s\S]{0,240}\b(?:escalating\s+(?:theatrical\s+)?farce|theatrical\s+farce|horror-comedy\s+register|systems\s+hearing|fictional\s+reunion|theatrical\s+performance)|wholly\s+fictional\b[\s\S]{0,280}\b(?:theatrical|farce|systems\s+hearing|comedy|drama|scene)|horror-comedy\s+register)\b/i;
-const NON_INVENTION_AUDIT = /\bwithout\s+inventing\s+a\s+scene\b/i;
+const NON_INVENTION_AUDIT = /\b(?:without\s+inventing|do\s+not\s+invent|don't\s+invent)\b/i;
+const REAL_LEGAL_DOCUMENT = /\b(?:legal\s+brief|case\s+law|statutory|precedent|jurisdiction|contract\s+dispute|legal\s+summary)\b/i;
+const DECLARED_FICTION_ANCHOR = /\b(?:wholly\s+fictional|fictional\s+town\s+hall|fictional\s+reunion|ash\s+moon|malnframe|rex\s+nemorensis|red\s+deer|tauric\s+diana)\b/i;
 const LEGAL_CUE = /\b(legal|law|lawsuit|statute|regulation|case\s+law|court|contract|attorney|jurisdiction|complaint|motion|brief)\b/i;
-const RUNTIME_CUE = /\b(runtime|stack\s*trace|traceback|http\s+status|api\s+error|deployment|build\s+failure|ci\s+failure|debug|diagnos(?:e|is|tic)\s+(?:the\s+)?(?:runtime|api|server|http|build|ci|deploy(?:ment)?|transport|stream|endpoint|crash|timeout|failure|error|bug))\b/i;
+const RUNTIME_CUE = /\b(runtime|stack\s*trace|traceback|http\s+status|api\s+error|deployment|build\s+failure|ci\s+failure|debug|diagnos(?:e|is|tic)[\s\S]{0,60}\b(?:runtime|api|server|http|vercel|50\d|40\d|429|receipt|latency|build|ci|deploy(?:ment)?|transport|stream|endpoint|crash|timeout|failure|(?<!category\s+)error|bug))\b/i;
 const SPECULATIVE_CUE = /\b(hypothetical|speculat(?:e|ion|ive)|what\s+if|theor(?:y|ize)|possibilit(?:y|ies)|counterfactual)\b/i;
 
 function normalize(value, allowed, fallback) {
@@ -26,7 +28,8 @@ function normalize(value, allowed, fallback) {
 export function classifyApertureDiscourseMode(message = '') {
   const text = String(message || '').trim();
   if (!text) return 'GENERAL';
-  if (!NON_INVENTION_AUDIT.test(text)) {
+  const nonFictionLegalLock = REAL_LEGAL_DOCUMENT.test(text) && !DECLARED_FICTION_ANCHOR.test(text);
+  if (!NON_INVENTION_AUDIT.test(text) && !nonFictionLegalLock) {
     if (CREATIVE_FORM.test(text) && CREATIVE_ACTION.test(text)) return 'CREATIVE';
     if (EXPLICIT_STAGED_FICTION.test(text)) return 'CREATIVE';
     if (EXPLICIT_THEATRICAL_FICTION.test(text)) return 'CREATIVE';

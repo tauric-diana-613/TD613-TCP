@@ -49,7 +49,7 @@ export function observeMarrowlineCompletion(text = '', output = {}, {
   ]);
 
   let reason = 'provider-stop-observed';
-  if (promptBlockReason && finishReason !== 'STOP') reason = 'provider-prompt-blocked';
+  if (promptBlockReason) reason = 'provider-prompt-blocked';
   else if (!original.trim()) reason = 'provider-return-empty';
   else if (finishReason === 'MAX_TOKENS') reason = 'provider-output-token-limit';
   // Explicit non-STOP provider finish reasons (e.g. PROHIBITED_CONTENT, SAFETY)

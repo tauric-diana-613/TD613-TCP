@@ -56,4 +56,7 @@ Execution **must halt immediately** (recording an explicit terminal `HELD` recei
 
 ## 5. Activation Boundary
 
-No script in this worktree can spend a Gemini API call automatically. Execution requires a **new, explicit contemporaneous Operator authorization gesture** specifying the exact commit SHA, exact budget cap (`8` or `10` calls), and chosen model (`gemini-3.8-flash` or `gemini-4-argon`).
+No script in this worktree can spend a Gemini API call automatically. Execution requires a **new, explicit contemporaneous Operator authorization gesture** specifying:
+- the exact predecessor commit SHA on `research/marrowline-screaming-grove-restoration-20261120` (e.g., baseline `6cf64d17d82f727bb918be6869f313a3342e530c` or its verified successor head, preventing `UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION` per Temporal Custodian law),
+- the exact budget cap (`8` or `10` calls), and
+- the chosen model (`gemini-3.8-flash` or `gemini-4-argon`).

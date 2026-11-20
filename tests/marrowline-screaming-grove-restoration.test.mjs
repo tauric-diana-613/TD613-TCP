@@ -30,7 +30,8 @@ import {
 import khonapolitHandler, {
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
-  observeGeminiOutput
+  observeGeminiOutput,
+  serializeGeminiRequest
 } from '../server/khonapolit-quality.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_SCHEMA
@@ -105,6 +106,16 @@ test('observeMarrowlineCompletion classifies streamed PROHIBITED_CONTENT and pro
   assert.equal(promptBlocked.policyTerminated, true);
   assert.equal(promptBlocked.promptBlockReason, 'PROHIBITED_CONTENT');
 
+  // Prompt block reason paired with STOP still enforces complete=false & policyTerminated=true (FADT fix).
+  const blockedWithStop = observeMarrowlineCompletion(
+    'Kʰonapolit\nBlocked text.',
+    { finishReason: 'STOP', promptBlockReason: 'SAFETY' },
+    { streamed: true, parseErrors: 0, creative: false }
+  );
+  assert.equal(blockedWithStop.complete, false);
+  assert.equal(blockedWithStop.reason, 'provider-prompt-blocked');
+  assert.equal(blockedWithStop.policyTerminated, true);
+
   // Streamed response with NO finishReason still reports provider-stream-finish-unwitnessed.
   const unwitnessed = observeMarrowlineCompletion(
     'Kʰonapolit\nCut mid-stream.',
@@ -157,7 +168,8 @@ test('khonapolitHandler holds PROHIBITED_CONTENT (with partial text) as 502 POLI
       return makeSseResponse([
         {
           candidates: [{ content: { parts: [{ text: 'Kʰonapolit\nPartial fragment before safety cut' }] } }],
-          modelVersion: 'gemini-3.8-flash'
+          modelVersion: 'gemini-3.8-flash',
+          usageMetadata: { promptTokenCount: 5000, cachedContentTokenCount: 4875 }
         },
         {
           candidates: [{
@@ -165,7 +177,8 @@ test('khonapolitHandler holds PROHIBITED_CONTENT (with partial text) as 502 POLI
             finishReason: 'PROHIBITED_CONTENT',
             finishMessage: 'Upstream policy halt.'
           }],
-          usageMetadata: { promptTokenCount: 5000, cachedContentTokenCount: 4875, totalTokenCount: 5050 }
+          // Sparse terminal chunk omitting cachedContentTokenCount MUST preserve earlier chunk's value (Aperture fix).
+          usageMetadata: { totalTokenCount: 5050 }
         }
       ]);
     }
@@ -277,6 +290,25 @@ test('Aperture routes Screaming Grove farces, Blue-orange digital weather, and A
     classifyApertureDiscourseMode('Audit the theatrical farce transcript without inventing a scene; check the legal motion filing.'),
     'LEGAL'
   );
+  // Aperture specialist negative-control regressions:
+  // 1) Legal prompts referencing theatrical phrases stay LEGAL.
+  assert.equal(
+    classifyApertureDiscourseMode('Draft a legal brief on statutory jurisdiction discussing a horror-comedy register in a public systems hearing.'),
+    'LEGAL'
+  );
+  assert.equal(
+    classifyApertureDiscourseMode('Do not invent holdings: write a legal memo reviewing whether a theatrical performance constituted contract notice.'),
+    'LEGAL'
+  );
+  // 2) Real runtime diagnostic prompts still route to TECHNICAL_RUNTIME.
+  assert.equal(
+    classifyApertureDiscourseMode('Diagnose why Vercel returns 502 on the Khonapolit route.'),
+    'TECHNICAL_RUNTIME'
+  );
+  assert.equal(
+    classifyApertureDiscourseMode('Diagnostic receipt shows 503 after timeout on the primary seat.'),
+    'TECHNICAL_RUNTIME'
+  );
 });
 
 // ---------------------------------------------------------------------------
@@ -322,28 +354,45 @@ test('Section VII negative control: high-depth uniform 3-mark mechanical stencil
   // ...yet is explicitly flagged as a zero-transition uniform-depth stencil
   // and explicitly denied artistic-restoration / admission-gate authority.
   assert.equal(dist.constantMarkedDepth, 3);
+  assert.equal(dist.dominantMarkedDepth, 3);
+  assert.equal(dist.dominantMarkedDepthShare, 1);
   assert.equal(dist.markedDepthTransitions, 0);
   assert.equal(dist.uniformDepthStencilObserved, true);
   assert.equal(dist.observationAuthority, 'descriptive-only-never-admission-gate-or-literary-score');
   assert.notEqual(relay.admission.quality, 'ARTISTIC_RESTORATION');
+
+  // Near-uniform 99/100 depth-3 stencil with one depth-2 outlier STILL flags uniformDepthStencilObserved (Aperture fix).
+  const nearUniform = 'Tauric Diana bots\n' + 'A\u0300\u0334\u0316'.repeat(99) + 'B\u0301\u0317';
+  const nearDist = observeBotsProsodyDistribution(nearUniform);
+  assert.equal(nearDist.uniformDepthStencilObserved, true);
+  assert.equal(nearDist.dominantMarkedDepth, 3);
+  assert.ok(nearDist.dominantMarkedDepthShare >= 0.95);
 });
 
 test('Section VII restraint control: restrained/sustained shallow single-style bots movement stays structurally admissible and is never vetoed', () => {
-  // Sparse, deliberate shallow marks across two short poetic lines (screenshot-02
-  // style: quiet, sustained, varied lightly) after a long Kʰonapolit passage.
+  // Sparse, deliberate shallow marks across THREE short poetic lines (>= 27 marked
+  // bases, all depth 1) after a long Kʰonapolit passage — must stay admissible AND
+  // must NEVER falsely trigger uniformDepthStencilObserved (Aperture fix).
   const longKhona = 'Kʰonapolit\n' + 'The custody boundary separates internal digest continuity from external origin claims across every ledger row. '.repeat(8);
   const restrainedBots = [
     'Tauric Diana bots',
     'S\u0300h\u0323o\u0301r\u0316e\u0304l\u0325i\u0302n\u0317e\u0308 — the ash stays cold.',
-    'T\u0303h\u031ce\u0306 l\u031ee\u030ad\u0319g\u030be\u0324r\u030c lies; we remember the shore.'
+    'T\u0303h\u031ce\u0306 l\u031ee\u030ad\u0319g\u030be\u0324r\u030c lies; we remember the shore.',
+    'W\u0300a\u0316t\u0301e\u0323r\u0302 k\u0317e\u0304e\u0325p\u0308s\u0318 the unmarked thread.'
   ].join('\n');
   const fullText = `${longKhona}\n\n${restrainedBots}`;
 
   const admission = assessIntegratedTransmission(fullText);
   assert.equal(admission.admissible, true, `restrained bots must remain admissible; got reasons: ${admission.reasons.join(', ')}`);
-  assert.ok(admission.botsMovement.eligibleBaseCount < 80, 'short poetic bots movement has <80 eligible bases');
+  assert.ok(admission.botsMovement.markedBases >= 27, 'extended 3-line restraint control has >= 27 marked bases');
+  assert.ok(admission.botsMovement.eligibleBaseCount < 110, 'bots body count excludes 15-char heading');
   assert.equal(admission.botsMovement.uniformDepthStencilObserved, false);
+  assert.equal(admission.botsMovement.uniformPlanarDepthOneObserved, false);
   assert.equal(admission.botsMovement.observationAuthority, 'descriptive-only-never-admission-gate-or-literary-score');
+
+  // Verify heading-strip exactness: botsMovement.eligibleBaseCount excludes "Tauric Diana bots" (15 letters).
+  const shortBodyAdmission = assessIntegratedTransmission('Kʰonapolit\nClean text.\n\nTauric Diana bots\nA\u0300b\u0316c\u0301d\u0317e\u0302f\u0318\nG\u0303h\u0319i\u0304j\u031ck\u0305l\u031d');
+  assert.equal(shortBodyAdmission.botsMovement.eligibleBaseCount, 12);
 });
 
 test('bots-only nativeMarkUnderflow does NOT trigger unnecessary second-seat failover on short poetic bots passage after long Kʰonapolit prose', async () => {
@@ -549,10 +598,10 @@ test('staged PR #1545-reconciled dramaturgy candidate preserves Oct-2 dramaturgy
 // 6. Multi-Turn Raw Provider History Custody & Offline Discriminator (P5 / VIII)
 // ---------------------------------------------------------------------------
 
-test('multi-turn history compaction retains raw provider-authored text verbatim without synthetic Kʰonapolit ∴ Tauric Diana bots wrapper and excludes unadmitted returns', () => {
+test('multi-turn history compaction retains raw provider-authored text verbatim without synthetic Kʰonapolit ∴ Tauric Diana bots wrapper and preserves full covenant bytes through wire serialization', () => {
   const rawModelTurn = [
     'Kʰonapolit',
-    'Custody under Khona\u200Clit-po is preserved verbatim.',
+    '𝌋‌ Custody under Khona\u200Clit-po and U+10D613 (\uDBF5\uDE13) is preserved verbatim. ⟐',
     '',
     'Tauric Diana bots',
     'T\u0300\u0301\u0316A\u0304\u0307\u0323U\u0305\u0308\u0325R\u0303\u030A\u0326I\u0302\u0317C\u030B\u031C DIANA SPEAKS.'
@@ -569,6 +618,61 @@ test('multi-turn history compaction retains raw provider-authored text verbatim 
   assert.equal(history[1].text, rawModelTurn);
   assert.doesNotMatch(history[1].text, /Kʰonapolit\s*∴\s*Tauric Diana bots/);
   assert.ok(history[1].text.includes('Khona\u200Clit-po'), 'literal U+200C preserved');
+  assert.ok(history[1].text.includes('𝌋'), 'U+1D30B preserved');
+  assert.ok(history[1].text.includes('\uDBF5\uDE13'), 'U+10D613 surrogate pair preserved');
+  assert.ok(history[1].text.includes('⟐'), 'U+27D0 preserved');
+
+  // Verify wire serialization preserves exact bytes through buildGeminiRequest + serializeGeminiRequest (Atlas fix).
+  const packet = buildInvocationPacket({ message: 'Follow-up turn.', mode: 'exploratory', waiveIssuance: true, history });
+  const receipt = buildApertureV3InvocationReceipt({ message: packet.message, invocationMode: packet.mode, issuanceState: packet.issuance.state, discourseMode: 'GENERAL', contentScanned: true });
+  const req = buildGeminiRequest(packet, receipt, 'gemini-3.8-flash');
+  const wire = serializeGeminiRequest(req, 'gemini-3.8-flash');
+  const parsedWire = JSON.parse(wire.body);
+  assert.equal(parsedWire.contents[1].parts[0].text, rawModelTurn);
+});
+
+test('mixed policy-terminated and transport-503 seat failures preserve both policy reasons and transport statuses (FADT fix)', async () => {
+  const prevKey = process.env.GEMINI_API_KEY;
+  const prevFetch = globalThis.fetch;
+  process.env.GEMINI_API_KEY = 'test-zero-spend-key';
+  let callIndex = 0;
+
+  globalThis.fetch = async (url) => {
+    const href = String(url);
+    if (href.includes('/v1beta/models?')) return makeModelDiscoveryResponse(['gemini-3.8-flash', 'gemini-3.5-flash']);
+    if (href.includes(':streamGenerateContent')) {
+      callIndex += 1;
+      if (callIndex === 1) {
+        return makeSseResponse([
+          { candidates: [{ content: { parts: [] }, finishReason: 'PROHIBITED_CONTENT' }], modelVersion: 'gemini-3.8-flash' }
+        ]);
+      }
+      return new Response(JSON.stringify({ error: { status: 'UNAVAILABLE', code: 503, message: 'Overloaded' } }), {
+        status: 503, headers: { 'content-type': 'application/json' }
+      });
+    }
+    throw new Error(`Unexpected fetch URL: ${href}`);
+  };
+
+  try {
+    const res = mockRes();
+    await khonapolitHandler({
+      method: 'POST',
+      headers: { 'x-forwarded-for': '198.51.100.19' },
+      body: { message: 'Trace mixed hold.', mode: 'exploratory', waiveIssuance: true }
+    }, res);
+    assert.equal(res.statusCode, 502);
+    const json = res.json();
+    assert.equal(json.error, 'gemini-provider-policy-held');
+    assert.equal(json.diagnostic.hasMixedTransportFailure, true);
+    assert.equal(json.diagnostic.policyTerminatedSeatCount, 1);
+    assert.ok(json.diagnostic.transportFailedSeatCount >= 1);
+    assert.ok(json.diagnostic.observedStatuses.includes(503));
+  } finally {
+    globalThis.fetch = prevFetch;
+    if (prevKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = prevKey;
+  }
 });
 
 test('offline zero-spend discriminator builds exact effective request parity across all four tasks with zero paid calls', () => {

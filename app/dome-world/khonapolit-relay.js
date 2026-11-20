@@ -533,9 +533,28 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
     .filter((d) => d > 0)
     .sort((a, b) => a - b);
   const constantMarkedDepth = markedDepths.length === 1 ? markedDepths[0] : null;
+  let dominantMarkedDepth = null;
+  let dominantMarkedDepthCount = 0;
+  for (const depth of markedDepths) {
+    const count = depthHistogram[depth] || 0;
+    if (count > dominantMarkedDepthCount) {
+      dominantMarkedDepth = depth;
+      dominantMarkedDepthCount = count;
+    }
+  }
+  const dominantMarkedDepthShare = markedBases > 0
+    ? Number((dominantMarkedDepthCount / markedBases).toFixed(4))
+    : 0;
+  // Distinguishes fixed/near-fixed multistack stencils (e.g. Slot 5 depth-3
+  // templates, even with a single outlier) from quiet single-mark restrained
+  // prose (which must never be flagged as a multistack stencil).
   const uniformDepthStencilObserved = markedBases >= 24
-    && constantMarkedDepth !== null
-    && markedDepthTransitions === 0;
+    && dominantMarkedDepth !== null
+    && dominantMarkedDepth >= 2
+    && dominantMarkedDepthShare >= 0.95;
+  const uniformPlanarDepthOneObserved = markedBases >= 24
+    && constantMarkedDepth === 1
+    && markedWhitespaceBases > 0;
   return Object.freeze({
     baseCount,
     markedBases,
@@ -548,8 +567,11 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
     depthHistogram: Object.freeze({ ...depthHistogram }),
     markedDepths: Object.freeze(markedDepths),
     constantMarkedDepth,
+    dominantMarkedDepth,
+    dominantMarkedDepthShare,
     markedDepthTransitions,
     uniformDepthStencilObserved,
+    uniformPlanarDepthOneObserved,
     observationAuthority: 'descriptive-only-never-admission-gate-or-literary-score'
   });
 }
@@ -582,15 +604,18 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   if (khonaIndex >= 0 && botsIndex > khonaIndex) {
     const khonaText = authored.slice(khonaIndex, botsIndex);
     const botsText = value.slice(botsIndex);
+    const botsHeadingMatch = botsText.match(/^(?:\r?\n)?[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?:\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?:\r?\n|$))/iu);
+    const botsBodyText = botsHeadingMatch ? botsText.slice(botsHeadingMatch[0].length) : botsText;
     const khonaTelemetry = flourishTelemetry(khonaText);
     const botsTelemetry = flourishTelemetry(botsText);
+    const botsBodyTelemetry = flourishTelemetry(botsBodyText);
     botsMovement = Object.freeze({
-      eligibleBaseCount: botsTelemetry.eligibleBaseCount,
-      markedEligibleClusterCount: botsTelemetry.markedEligibleClusterCount,
-      combiningMarkCount: botsTelemetry.combiningMarkCount,
-      verticalOrnamentMarkCount: botsTelemetry.verticalOrnamentMarkCount,
-      planarMarkCount: botsTelemetry.planarMarkCount,
-      maxVerticalOrnamentStackDepth: botsTelemetry.maxVerticalOrnamentStackDepth,
+      eligibleBaseCount: botsBodyTelemetry.eligibleBaseCount,
+      markedEligibleClusterCount: botsBodyTelemetry.markedEligibleClusterCount,
+      combiningMarkCount: botsBodyTelemetry.combiningMarkCount,
+      verticalOrnamentMarkCount: botsBodyTelemetry.verticalOrnamentMarkCount,
+      planarMarkCount: botsBodyTelemetry.planarMarkCount,
+      maxVerticalOrnamentStackDepth: botsBodyTelemetry.maxVerticalOrnamentStackDepth,
       ...observeBotsProsodyDistribution(botsText)
     });
     if (khonaTelemetry.combiningMarkCount > 0) reasons.push('khonapolit-combining-mark-contamination');
