@@ -4,6 +4,7 @@
  * provider synchronization, human permission, publication or Experiment B.
  */
 import test from 'node:test';
+import {spawnSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
@@ -173,4 +174,40 @@ test('G6-G fake original authority, wrong estate and rights promotions fail clos
  assert.equal(r.original_authorship_inferred,false);
  assert.throws(()=>createG6HostReadReturn({sourceRevision:'invalid'}),
   /HELD_G6_EXACT_SOURCE_SHA_REQUIRED/);
+});
+
+
+test('G6-H Podium CLI refuses unverified host lane rather than trusting an in-band native request',()=>{
+ const cli=fileURLToPath(new URL('../scripts/vixen-podium.mjs',import.meta.url));
+ const request=JSON.stringify({estate:'EM_ATELIER',operation:'em_native_work_route',
+  payload:{work_id:workIds[0]}});
+ const attempted=spawnSync(process.execPath,[cli,'--native-read-tools',
+  '--g6-readonly-return',request],{cwd:fileURLToPath(new URL('../',import.meta.url)),
+  env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'0'},
+  encoding:'utf8',timeout:25000});
+ assert.equal(attempted.status,2,attempted.stderr);
+ assert.match(attempted.stderr,/HELD_G6_EXPLICIT_HOST_NATIVE_LANE_REQUIRED/);
+ assert.doesNotMatch(attempted.stdout,/ORIGINAL_NATIVE_EXECUTABLE|SOURCE_BOUND_HOST_RETURN_PROSPECTIVE/);
+});
+test('G6-I direct native EM source route can reach a typed body-free CLI return without browser activation',()=>{
+ const cli=fileURLToPath(new URL('../scripts/vixen-podium.mjs',import.meta.url));
+ const request=JSON.stringify({estate:'EM_ATELIER',operation:'em_native_work_route',
+  payload:{work_id:'emwork_074ccf9ad783c9c9047d73a8'}});
+ const run=spawnSync(process.execPath,[cli,'--native-read-tools',
+  '--g6-readonly-return',request],{cwd:fileURLToPath(new URL('../',import.meta.url)),
+  env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'},
+  encoding:'utf8',timeout:80000,maxBuffer:1024*1024});
+ assert.equal(run.status,0,run.stderr);
+ const result=JSON.parse(run.stdout);
+ assert.equal(result.schema,'td613.vixen.g6.cli-read-return/v1');
+ assert.equal(result.result.status,'SOURCE_BOUND_HOST_RETURN_PROSPECTIVE');
+ assert.equal(result.result.method.estate,'EM_ATELIER');
+ assert.equal(result.result.method.original_method_kind,'ORIGINAL_NATIVE_EXECUTABLE');
+ assert.equal(result.result.projection.source_bodies_included,false);
+ assert.equal(result.result.private_index_exported,false);
+ assert.equal(result.result.method.source_revision.length,40);
+ assert.equal(result.human_session_observed,false);
+ assert.equal(result.canonical_writes,0);
+ assert.equal(result.release_authority,false);
+ assert.doesNotMatch(run.stdout,/original_full_text|private_source_body|BEGIN PRIVATE KEY/);
 });
