@@ -171,9 +171,19 @@ if(options.includes('--g6-readonly-return')){
   }).trim();
   if(!/^[a-f0-9]{40}$/.test(sourceRevision))
    throw Error('HELD_G6_PINNED_LOCAL_SOURCE_REQUIRED');
+  // The Vixen host checkout is not the historical original EM corpus.
+  // Require the same exact original source revision established by Gate 3.
+  const originalEMHead='70b5a0f9e94626cba6068f41c6117e7978800bbd';
+  if(request.estate!=='EM_ATELIER'||request.operation!=='em_native_work_route')
+   throw Error('HELD_G6_OTHER_ORIGINAL_METHODS_REQUIRE_PINNED_SOURCE_QUALIFICATION');
+  const emCheckout=getFlag('--g6-em-original-checkout');
+  if(!emCheckout)throw Error('HELD_G6_ORIGINAL_EM_CHECKOUT_REQUIRED');
   const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
   const g6Module=await import(pathToFileURL(resolve(directory,'scripts','vixen-g6-research-return.mjs')).href);
-  const nativeAdapters=await adapterModule.createPodiumNativeReadAdapters({repoRoot:directory,sourceRoot});
+  const nativeAdapters=await adapterModule.createPodiumNativeReadAdapters({
+   repoRoot:directory,sourceRoot,
+   nativeSourceCheckouts:{EMSTD613:{path:emCheckout,git_head:originalEMHead}}
+  });
   const bridge=g6Module.createG6HostReadReturn({
    sourceRevision,
    hostAdapter:async({estate,operation,payload})=>{
@@ -193,6 +203,8 @@ if(options.includes('--g6-readonly-return')){
    result:outcome,
    native_host_lane:'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF',
    human_session_observed:false,
+   native_em_checkout_git_head:originalEMHead,
+   native_checkout_identity:'GIT_HEAD_MATCH_CHECKOUT_CONTRACT_NOT_INDEPENDENT_ORIGIN',
    private_source_bodies_included:false,canonical_writes:0,
    scientific_promotion_authority:false,release_authority:false
   },null,2));
