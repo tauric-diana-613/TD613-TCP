@@ -426,6 +426,10 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
  const dest=get('--output-root')||ROOT;
  const encrypted=get('--encrypted-output');
  const fixture=get('--fixture');
+ const leaseFile=get('--gesture-lease-file');
+ const runIdentity=leaseFile?JSON.parse(fs.readFileSync(leaseFile,'utf8')):null;
+ if(encrypted&&!runIdentity)
+  throw new Error('HELD_ENCRYPTED_SYNC_REQUIRES_DURABLE_ISSUE_GESTURE_LEASE');
  const observedAt=stamp();
  const fetched=fixture?(()=>{
   const posts=JSON.parse(fs.readFileSync(fixture,'utf8'));
@@ -439,7 +443,8 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   posts:fetched.posts,raw_batches:fetched.batches,claim_ceiling:'ARCHIVE_OBSERVED_NOT_LIVE_REDDIT'};
  const r=writeProjection({compiled,outRoot:dest,observedAt,
   encryptedPayload:encrypted?privatePayload:null,
-  publicPem:encrypted?fs.readFileSync(KEY,'utf8'):null,artifactPath:encrypted});
+  publicPem:encrypted?fs.readFileSync(KEY,'utf8'):null,artifactPath:encrypted,
+  sourceRevision:runIdentity?.source_revision||null,runIdentity});
  // Deliberately no title, selftext, snippets or raw response bytes in logs.
  process.stdout.write(json({atelier_snapshot_id:r.snapshot,seal_id:r.seal.seal_id,
   observed:r.receipt.discovery_total,new:r.receipt.new_source_ids.length,
