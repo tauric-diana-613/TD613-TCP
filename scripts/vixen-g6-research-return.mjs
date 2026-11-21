@@ -63,9 +63,11 @@ function summarizePublicResult(result){
   return id&&/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$/.test(id)&&
    !id.toLowerCase().startsWith('file:')?id:null;
  };
- const ids=items.slice(0,12).map(item=>
-  safeId(item?.source_id||item?.record_id||item?.work_id||item?.id)
- ).filter(Boolean);
+ const ids=[safeId(d.source_id||d.record_id||d.work_id||d.id),
+  ...items.slice(0,12).map(item=>
+   safeId(item?.source_id||item?.record_id||item?.work_id||item?.id))
+ ].filter(Boolean);
+ const uniqueIds=[...new Set(ids)].slice(0,12);
  const schema=text(d.schema,120);
  const status=text(d.status,120)||text(d.state,120);
  return Object.freeze({
@@ -73,7 +75,7 @@ function summarizePublicResult(result){
    !schema.includes('..')?schema:null,
   reported_count:Number.isSafeInteger(d.total)&&d.total>=0?d.total:
    Number.isSafeInteger(d.count)&&d.count>=0?d.count:null,
-  visible_reference_ids:ids,
+  visible_reference_ids:uniqueIds,
   original_method_status:status&&/^[A-Z][A-Z0-9_]{0,79}$/.test(status)?
    status:'UNCLASSIFIED',
   source_bodies_included:false,
