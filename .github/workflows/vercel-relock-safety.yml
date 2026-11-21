@@ -467,7 +467,14 @@ jobs:
       VERCEL_CLI_VERSION: '65.16.0'
 
     steps:
-      - name: Qualify request, exact PR HEAD and all consolidated CI jobs
+      - name: Check out trusted qualification policy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: preview-governance
+          persist-credentials: false
+
+      - name: Qualify request, exact PR HEAD and named execution witnesses
         id: qualify
         shell: bash
         env:
@@ -486,15 +493,8 @@ jobs:
              .head.ref == "research/vixen-dual-estate-encyclopedia-20261108" and
              .head.repo.full_name == $repo and .base.ref == "main"' \
             <<< "$PR" >/dev/null || { echo 'PR #1730 head mismatch.' >&2; exit 1; }
-          RUNS="$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/td613-ci.yml/runs" \
-            -f head_sha="$INPUT_SHA" -f per_page=30)"
-          CI_RUN="$(jq -r --arg sha "$INPUT_SHA" \
-            '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed" and .conclusion == "success")][0].id // empty' \
-            <<< "$RUNS")"
-          [[ -n "$CI_RUN" ]] || { echo 'No exact-HEAD GREEN consolidated CI.' >&2; exit 1; }
-          JOBS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CI_RUN/jobs?per_page=100")"
-          jq -e '([.jobs[] | select(.conclusion != "skipped")] | length) >= 5 and ([.jobs[] | select(.conclusion != "skipped") | .conclusion] | all(. == "success"))' \
-            <<< "$JOBS" >/dev/null || { echo 'Consolidated validation incomplete.' >&2; exit 1; }
+          RECEIPT="$(node preview-governance/scripts/verify-vixen-preview-qualification.mjs "$INPUT_SHA")"
+          CI_RUN="$(jq -er '.run_id' <<< "$RECEIPT")"
           echo "sha=$INPUT_SHA" >> "$GITHUB_OUTPUT"
           echo "ci_run=$CI_RUN" >> "$GITHUB_OUTPUT"
 
@@ -678,7 +678,14 @@ jobs:
           echo "sha=$APPROVED_SHA" >> "$GITHUB_OUTPUT"
           echo 'Human-authorized preview path accepted; production remains prohibited.'
 
-      - name: Authorize exact PR head and completed consolidated CI
+      - name: Check out trusted qualification policy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: preview-governance
+          persist-credentials: false
+
+      - name: Authorize exact PR head and named execution witnesses
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -693,16 +700,7 @@ jobs:
              .head.repo.full_name == $repo and .base.ref == "main"' \
             <<< "$PR" >/dev/null || { echo 'SHA is not the current, same-repository PR #1730 HEAD.' >&2; exit 1; }
 
-          RUNS="$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/td613-ci.yml/runs" \
-            -f head_sha="$INPUT_SHA" -f per_page=30)"
-          RUN_ID="$(jq -r --arg sha "$INPUT_SHA" \
-            '[.workflow_runs[] | select(.head_sha == $sha and .status == "completed" and .conclusion == "success")][0].id // empty' \
-            <<< "$RUNS")"
-          [[ -n "$RUN_ID" ]] || { echo 'No successful exact-head consolidated validation was found.' >&2; exit 1; }
-          JOBS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100")"
-          jq -e '([.jobs[] | select(.conclusion != "skipped")] | length) >= 5 and ([.jobs[] | select(.conclusion != "skipped") | .conclusion] | all(. == "success"))' \
-            <<< "$JOBS" >/dev/null || { echo 'Expected all consolidated validation jobs to pass.' >&2; exit 1; }
-          echo "Authorized PR #1730 SHA=$INPUT_SHA with consolidated CI run $RUN_ID"
+          node preview-governance/scripts/verify-vixen-preview-qualification.mjs "$INPUT_SHA"
 
       - name: Checkout the authorized immutable source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
