@@ -222,7 +222,7 @@ test('G6-I genuine historical EM route returns a body-free host receipt at its p
   // lacks the exact historical registries required by this native route.
   const wrong=invoke(['--g6-em-original-checkout',root]);
   assert.equal(wrong.status,2);
-  assert.match(wrong.stderr,/HELD_PRIVATE_MODEL_OUTSIDE_REPO_REQUIRED/);
+  assert.match(wrong.stderr,/HELD_G6_ORIGINAL_CHECKOUT_MUST_BE_OUTSIDE_HOST/);
   const run=invoke(['--g6-em-original-checkout',original]);
   assert.equal(run.status,0,run.stderr);
   const result=JSON.parse(run.stdout);
