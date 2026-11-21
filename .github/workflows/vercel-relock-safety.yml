@@ -115,6 +115,9 @@ jobs:
       contents: write
       issues: write
       pull-requests: read
+    concurrency:
+      group: src-zenodo-sync-${{ github.repository }}-${{ github.event.issue.number }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -133,7 +136,7 @@ jobs:
           set -euo pipefail
           gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
-          𝌋 SRC Zenodo sync gesture accepted.
+          𝌋 SRC Zenodo sync event received; durable claim pending.
 
           \`\`\`text
           command = /src-zenodo-sync ATELIER
@@ -160,6 +163,25 @@ jobs:
           [[ "$STATE" == 'open' ]] || { echo "Atelier PR #$ATELIER_PR is not open." >&2; exit 1; }
           [[ "$MERGED" == 'false' ]] || { echo "Atelier PR #$ATELIER_PR is merged; rotate the gate target." >&2; exit 1; }
           [[ "$HEAD_REF" == "$ATELIER_BRANCH" ]] || { echo "Atelier branch mismatch: $HEAD_REF != $ATELIER_BRANCH" >&2; exit 1; }
+
+      - name: Pin G7 guard to the triggering workflow revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: .g7-workflow-source
+          sparse-checkout: |
+            scripts/vixen-g7-live-gesture-guard.mjs
+            packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/vixen-g7-epoch-custody.mjs
+      - name: Retain pinned guard outside mutable Atelier checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/g7-workflow/scripts" \
+            "$RUNNER_TEMP/g7-workflow/packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN"
+          cp .g7-workflow-source/scripts/vixen-g7-live-gesture-guard.mjs \
+            "$RUNNER_TEMP/g7-workflow/scripts/"
+          cp .g7-workflow-source/packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/vixen-g7-epoch-custody.mjs \
+            "$RUNNER_TEMP/g7-workflow/packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/"
 
       - name: Check out live Atelier branch
         uses: actions/checkout@v4
@@ -336,7 +358,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync accepted. command=/wendbine-sync ATELIER; gesture=${{ github.event.comment.id }}; run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; scope=one bounded archival discovery; gate=RUNNING. No merge, deployment, scientific promotion or automatic retry. ⟐"
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync event received; durable claim pending. command=/wendbine-sync ATELIER; gesture=${{ github.event.comment.id }}; run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; scope=one bounded archival discovery; gate=RUNNING. No merge, deployment, scientific promotion or automatic retry. ⟐"
       - name: Verify exact research branch and PR state
         id: before
         shell: bash
@@ -347,6 +369,25 @@ jobs:
           [[ "$(jq -r '.merged' <<<"$data")" == false ]]
           [[ "$(jq -r '.head.ref' <<<"$data")" == "$ATELIER_BRANCH" ]]
           echo "head=$(jq -r '.head.sha' <<<"$data")" >> "$GITHUB_OUTPUT"
+      - name: Pin G7 guard to the triggering workflow revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: .g7-workflow-source
+          sparse-checkout: |
+            scripts/vixen-g7-live-gesture-guard.mjs
+            packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/vixen-g7-epoch-custody.mjs
+      - name: Retain pinned guard outside mutable Atelier checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/g7-workflow/scripts" \
+            "$RUNNER_TEMP/g7-workflow/packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN"
+          cp .g7-workflow-source/scripts/vixen-g7-live-gesture-guard.mjs \
+            "$RUNNER_TEMP/g7-workflow/scripts/"
+          cp .g7-workflow-source/packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/vixen-g7-epoch-custody.mjs \
+            "$RUNNER_TEMP/g7-workflow/packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/"
+
       - name: Checkout exact inspected Atelier head
         uses: actions/checkout@v4
         with:
