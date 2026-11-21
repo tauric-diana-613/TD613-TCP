@@ -108,7 +108,7 @@ export async function inspectVixenPortableFidelity({
  try{declared=JSON.parse(decoder.decode(toBytes(found.get('encyclopedia/reference/manifest.json')?.data)))}catch(_){}
  try{graph=JSON.parse(decoder.decode(toBytes(found.get('encyclopedia/reference/graph.json')?.data)))}catch(_){}
  const validRows=index.length===1141 && index.every(row=>
-  typeof row?.id==='string' && /^[A-Z][A-Z0-9]*-[A-Z0-9_-]{1,95}$/.test(row.id) &&
+  typeof row?.id==='string' && (row.id==='EDITION'||/^[A-Z][A-Z0-9]*-[A-Z0-9_-]{1,95}$/.test(row.id)) &&
   row.record_path==='reference/records/'+row.id+'.json' &&
   /^[a-f0-9]{64}$/.test(String(row.record_sha256||'')));
  const byId=new Map(index.map(row=>[row.id,row]));
