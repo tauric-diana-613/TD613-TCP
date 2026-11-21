@@ -4,7 +4,7 @@ import {mkdtemp,writeFile,rm} from 'node:fs/promises';
 import {join,sep} from 'node:path';
 import {tmpdir} from 'node:os';
 import {pathToFileURL} from 'node:url';
-import {buildOriginalWorkMathWardrobe,WORK_MATH_READ_PARALLELISM}
+import {buildSyntheticWorkMathWardrobe,WORK_MATH_READ_PARALLELISM}
  from '../app/encyclopedia/vixen-estate/observatory-work-mathematics.mjs';
 import {computeSha256HexAsync,loadJsonSibling}
  from '../app/encyclopedia/vixen-estate/corpus-experiment-a.mjs';
@@ -31,11 +31,13 @@ test('four-way bounded source verification overlaps reads and keeps original Wor
     derivative_sha256:hash,readable:true,text_body:body};
   }finally{active--}
  };
- const r=await buildOriginalWorkMathWardrobe({works},{readSource});
+ const r=await buildSyntheticWorkMathWardrobe({works},{readSource});
  assert.equal(WORK_MATH_READ_PARALLELISM,4);
  assert.equal(maximum,4);
  assert.equal(r.examined_work_count,8);
  assert.equal(r.entries.length,8);
+ assert.equal(r.source_register,'SYNTHETIC_TEST_MATERIAL');
+ assert(r.entries.every(e=>e.source_role==='SYNTHETIC_TEST_MATERIAL'));
  assert.deepEqual(r.entries.map(x=>x.work_id),works.map(w=>w.work_id));
  assert.equal(r.technical_formula_promotions,0);
  assert.equal(r.source_refusals.length,0);
@@ -51,7 +53,7 @@ test('parallel reads preserve fail-closed source SHA checks and stable refusal o
   source_file_id:id,work_id:works.find(w=>w.linked_sources[0].source_file_id===id).work_id,
   body_sha256_verified:true,derivative_sha256:'0'.repeat(64),
   readable:true,text_body:'x = y + z\n'});
- const result=await buildOriginalWorkMathWardrobe({works},{readSource});
+ const result=await buildSyntheticWorkMathWardrobe({works},{readSource});
  assert.equal(result.entries.length,0);
  assert.deepEqual(result.no_verified_math_excerpt_count,4);
  assert.deepEqual(result.source_refusals.map(x=>x.source_file_id),works.map(w=>w.linked_sources[0].source_file_id));

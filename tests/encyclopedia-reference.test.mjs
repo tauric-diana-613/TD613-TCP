@@ -1,3 +1,4 @@
+import {sourceWitness} from './fixtures/vixen/source-witness.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -379,8 +380,7 @@ test('Operator-led two-estate encounter verifies independently and leaves relati
  const corpus=JSON.parse(html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
  const ref=JSON.parse(await readFile(new URL('reference/records/G-101.json',root),'utf8'));
  const raw=(await readFile(new URL('reference/records/G-101.json',root))).toString('utf8').trimEnd();
- const witness={id:'G-101',record:ref,verified_at_interaction:true,authorization:'READ_ONLY',
-  record_sha256:sha(raw),served_file_sha256:sha(raw+'\n')};
+ const witness=await sourceWitness('G-101');
  const mock={
   open:async()=>({state:'CENSUS_MATCHED',edition:'1.4',records:1141,edges:2131}),
   search:()=>[{id:'G-101',label:ref.label,kind:ref.kind}],

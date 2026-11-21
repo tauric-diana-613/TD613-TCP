@@ -24,7 +24,9 @@ test('phone typography and frontispiece stay scoped to presentation', () => {
   assert.match(css, /#worksLexiconLayout\.has-mobile-reader #worksReaderPanel/);
   assert.match(css, /#worksExperimentAReaderMount \.vix-couture-reader\.vix-manuscript/);
   assert.match(css, /#worksExperimentAReaderMount \.vix-manuscript \.vix-reader-paragraph/);
-  assert.match(page, /COMPANION MANUSCRIPT · COMPLETE TEXT/);
+  assert.match(page, /aria-label="Complete companion manuscript"/);
+  assert.match(page,/THE OBSIDIAN READING ROOM · EDITORIAL EDITION/);
+  assert.match(page,/DOCUMENTARY SOURCE · MANUSCRIPT/);
   assert.match(page, /mountVixenManuscript\(coutureReader,/);
   assert.doesNotMatch(page, /expaToggleFullBtn|readerFullView/);
 });

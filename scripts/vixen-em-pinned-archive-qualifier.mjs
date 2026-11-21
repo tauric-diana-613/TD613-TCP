@@ -10,6 +10,7 @@ import {resolve,relative,dirname,isAbsolute,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
+import {assertLocalVixenSourceRoster} from '../app/encyclopedia/vixen-estate/vixen-performer-source-roster.mjs';
 import {createNativeAtelierReadAdapters} from './vixen-native-atelier-bridge.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -22,28 +23,39 @@ const digest=x=>createHash('sha256').update(x).digest('hex');
 const gitblob=x=>{const b=Buffer.from(x);return createHash('sha1').update(Buffer.concat([Buffer.from('blob '+b.length+'\0'),b])).digest('hex')};
 const inside=(root,p)=>{const r=relative(root,p);return r===''||(r!=='..'&&!r.startsWith('..'+sep)&&!isAbsolute(r));};
 function parseJsonl(path,max=300000){
+ need(existsSync(path)&&realpathSync(path)===path&&!lstatSync(path).isSymbolicLink(),'HELD_EM_HISTORICAL_MANIFEST_PATH_ESCAPE');
  const data=readFileSync(path);
  need(data.length<max,'HELD_EM_HISTORICAL_MANIFEST_TOO_LARGE');
  return {rows:data.toString('utf8').split(/\r?\n/).filter(Boolean).map(s=>JSON.parse(s)),gitblob:gitblob(data),sha256:digest(data)};
 }
-function originalCheckout(archivePath){
+export function resolveHistoricalEmCoordinates({checkoutRoot,estateRoot,originalManifestRoot,historicalGitHead=PIN}={}){
+ const archivePath=checkoutRoot;
  need(typeof archivePath==='string'&&isAbsolute(archivePath)&&existsSync(archivePath) &&
   !lstatSync(archivePath).isSymbolicLink(),'HELD_EM_OUT_OF_TREE_ARCHIVE_REQUIRED');
  const em=realpathSync(archivePath);
  need(!inside(ROOT,em)&&!inside(em,ROOT),'HELD_EM_HISTORICAL_ARCHIVE_INSIDE_VIXEN');
  const observed=execFileSync('git',['-C',em,'rev-parse','HEAD'],{encoding:'utf8',timeout:8000}).trim();
- need(observed===PIN,'HELD_EM_HISTORICAL_EXACT_HEAD_DRIFT');
- need(existsSync(resolve(em,'ATELIER_PROFILE.json')),'HELD_EM_HISTORICAL_PROFILE_MISSING');
- return em;
+ need(observed===PIN&&historicalGitHead===PIN,'HELD_EM_HISTORICAL_EXACT_HEAD_DRIFT');
+ const top=realpathSync(execFileSync('git',['-C',em,'rev-parse','--show-toplevel'],{encoding:'utf8'}).trim());
+ need(top===em,'HELD_EM_CHECKOUT_ROOT_CONTRACT_REQUIRED');
+ const estate=resolve(em,sourceRel),manifests=resolve(estate,'01-MANIFESTS');
+ need(!estateRoot||resolve(estateRoot)===estate,'HELD_EM_ESTATE_ROOT_CONTRACT_REQUIRED');
+ need(!originalManifestRoot||resolve(originalManifestRoot)===manifests,'HELD_EM_MANIFEST_ROOT_CONTRACT_REQUIRED');
+ for(const path of [estate,manifests])need(existsSync(path)&&realpathSync(path)===path&&inside(em,path),'HELD_EM_HISTORICAL_PATH_ESCAPE');
+ need(existsSync(resolve(estate,'ATELIER_PROFILE.json')),'HELD_EM_HISTORICAL_PROFILE_MISSING');
+ const dirty=execFileSync('git',['-C',em,'status','--porcelain=v1','--untracked-files=no'],{encoding:'utf8',timeout:15000}).trim();
+ need(!dirty,'HELD_EM_ORIGINAL_INSTRUMENT_CHECKOUT_MODIFIED');
+ return Object.freeze({checkoutRoot:em,estateRoot:estate,originalManifestRoot:manifests,historicalGitHead:PIN});
 }
 function currentVixen(){
  const body=readFileSync(resolve(ROOT,'app/encyclopedia/vix-cyb.html'),'utf8');
  const m=body.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
  need(m,'HELD_EM_VIXEN_CATALOGUE');
- return JSON.parse(m[1]).works;
+ const corpus=JSON.parse(m[1]);assertLocalVixenSourceRoster(corpus);return corpus.works;
 }
-export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHIVE_CHECKOUT||''}={}){
- const em=originalCheckout(archivePath);
+export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHIVE_CHECKOUT||'',checkoutRoot=archivePath,...coordinates}={}){
+ const roots=resolveHistoricalEmCoordinates({checkoutRoot,...coordinates});
+ const em=roots.estateRoot;
  const workPath=resolve(em,'01-MANIFESTS/work-index.jsonl');
  const sourcePath=resolve(em,'01-MANIFESTS/source-files.jsonl');
  const relatedPath=resolve(em,'01-MANIFESTS/work-manifestations.jsonl');
@@ -89,7 +101,7 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
  let instrumentBytesVerified=0;
  for(const file of instrumentFiles){
   const pathname=resolve(documentaryDir,file);
-  need(existsSync(pathname)&&!lstatSync(pathname).isSymbolicLink()&&
+  need(existsSync(pathname)&&realpathSync(pathname)===pathname&&!lstatSync(pathname).isSymbolicLink()&&
    readFileSync(pathname).length>100,'HELD_EM_ORIGINAL_PROTOCOL_BYTES_UNAVAILABLE');
   instrumentBytesVerified++;
  }
@@ -117,20 +129,28 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
   extracted.every(x=>boundIds.has(x.source_file_id)&&x.derivative_relative_path)&&
   excluded.every(x=>!boundIds.has(x.source_file_id)&&x.derivative_relative_path==null),
   'HELD_EM_METADATA_COMPANION_OR_CONTAINER_PROMOTED_TO_WORK');
+ let verifiedDerivatives=0;
+ for(const derivative of extracted){
+  const file=sourceMap.get(derivative.source_file_id);
+  const path=resolve(em,derivative.derivative_relative_path);
+  need(inside(em,path)&&existsSync(path)&&realpathSync(path)===path&&!lstatSync(path).isSymbolicLink(),'HELD_EM_DERIVATIVE_PATH_ESCAPE');
+  need(file?.sha256===derivative.parent_sha256&&digest(readFileSync(path))===derivative.derivative_sha256,'HELD_EM_DERIVATIVE_DIGEST_MISMATCH');
+  verifiedDerivatives++;
+ }
  let verifiedOriginalBytes=0;
  for(const file of s.rows){
   const name=file.archive_relative_path;
   need(typeof name==='string'&&!name.startsWith('/')&&!name.includes('..')&&
    !name.includes('\\'),'HELD_EM_HISTORICAL_SOURCE_PATH_UNSAFE');
   const full=resolve(em,name);
-  need(inside(em,full)&&existsSync(full)&&!lstatSync(full).isSymbolicLink(),
+  need(inside(em,full)&&existsSync(full)&&realpathSync(full)===full&&!lstatSync(full).isSymbolicLink(),
    'HELD_EM_HISTORICAL_SOURCE_BYTES_UNAVAILABLE');
   const buf=readFileSync(full);
   need(digest(buf)===file.sha256,'HELD_EM_HISTORICAL_ORIGINAL_BYTES_SHA_MISMATCH');
   verifiedOriginalBytes++;
  }
  const native=createNativeAtelierReadAdapters({repoRoot:ROOT,
-  sourceCheckouts:{EMSTD613:{path:em,git_head:PIN}}});
+  sourceCheckouts:{EMSTD613:{checkoutRoot:roots.checkoutRoot,estateRoot:em,historicalGitHead:PIN,originalManifestRoot:roots.originalManifestRoot}}});
  const route=native.EM_ATELIER({operation:'em_native_work_route',
   payload:{work_id:'emwork_085223e721130117f5510975'}});
  need(route.kind==='ORIGINAL_NATIVE_EXECUTABLE'&&
@@ -162,8 +182,8 @@ export function qualifyEmOriginalArchive({archivePath=process.env.TD613_EM_ARCHI
  }finally{rmSync(scratch,{recursive:true,force:true});}
  return {
   schema:'td613.vixen.em-original-pinned-archive-qualification/v1',
-  original_archive_head:PIN,original_source_files_sha256_verified:verifiedOriginalBytes,
-  historical_source_population:s.rows.length,
+  original_archive_head:PIN,root_contract:'CHECKOUT_AND_ESTATE_DISTINCT',original_source_files_sha256_verified:verifiedOriginalBytes,
+  historical_source_population:s.rows.length,original_derivatives_sha256_verified:verifiedDerivatives,
   archive_manifestation_crosswalk_verified:observedManifestations,
   historical_work_count:w.rows.length,unresolved_identity_groups:8,
   substantive_work_manifestations_extracted:53,

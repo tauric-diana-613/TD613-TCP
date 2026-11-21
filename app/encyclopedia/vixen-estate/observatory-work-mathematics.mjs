@@ -3,7 +3,8 @@
  * from custody-verified Experiment-A Work bodies (NOT the TCC/RC host catalogue).
  * It assigns no new folio IDs, theorem status, research subjects or empirical credit.
  */
-import {loadExperimentABodyBySourceId,shardForWorkIndex,computeSha256HexAsync} from './corpus-experiment-a.mjs';
+import {loadExperimentABodyBySourceId,loadCanonicalExperimentABodyBySourceId,shardForWorkIndex,computeSha256HexAsync} from './corpus-experiment-a.mjs';
+import {assertLocalVixenWorkCoordinate} from './vixen-performer-source-roster.mjs';
 import {scoreUnifiedSynthesisCandidates} from './synthesis-salon-engine.mjs';
 
 export const WORK_MATH_SCHEMA='emstd613.vixen.original-work-math/v1';
@@ -97,8 +98,8 @@ export function extractOriginalMathPassages(text,{max=4}={}){
  }
  return Object.freeze(unique);
 }
-export async function buildOriginalWorkMathWardrobe(corpus,{
- readSource=loadExperimentABodyBySourceId,maxPassagesPerWork=4
+async function buildWorkMathWardrobe(corpus,{
+ readSource=loadExperimentABodyBySourceId,maxPassagesPerWork=4,synthetic=false
 }={}){
  if(!Array.isArray(corpus?.works))throw new TypeError('WORKS_SOURCE_ROSTER_REQUIRED');
  const seen=new Set(),entries=[],unavailable=[],empty=[];
@@ -107,6 +108,7 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
   const sourceRefusals=[];
   if(!work||!/^emwork_[0-9a-f]{24}$/.test(work.work_id)||seen.has(work.work_id))
    throw new TypeError('ORIGINAL_WORK_COORDINATE_INVALID');
+  if(!synthetic)assertLocalVixenWorkCoordinate(work);
   seen.add(work.work_id);
   const linked=Array.isArray(work.linked_sources)?work.linked_sources:[];
   const sorted=[...linked].filter(s=>s&&typeof s.source_file_id==='string')
@@ -135,6 +137,15 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
      sourceRefusals.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
        reason:'DERIVATIVE_BODY_SHA256_MISMATCH_OR_ABSENT'}));continue;
    }
+   if(!synthetic){
+    let canonical;
+    try{canonical=await loadCanonicalExperimentABodyBySourceId(source.source_file_id);}catch(_){canonical=null;}
+    if(!canonical||canonical.readable===false||canonical.work_id!==work.work_id||
+       canonical.declared_source_sha256!==source.sha256||
+       (canonical.derivative_sha256||canonical.body_sha256)!==expected){
+     sourceRefusals.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,reason:'CANONICAL_DERIVATIVE_BINDING_REQUIRED'}));continue;
+    }
+   }
    const passages=extractOriginalMathPassages(verified.text_body,{max:maxPassagesPerWork});
    if(!passages.length)continue;
    selected=Object.freeze({
@@ -142,11 +153,11 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
     source_file_id:source.source_file_id,original_filename:source.original_filename||null,
     declared_source_sha256:source.sha256||null,
     derivative_sha256:verified.derivative_sha256||verified.body_sha256||null,
-    source_body_sha256_verified:true,source_role:'PERFORMER_WORK_MANIFESTATION',
+    source_body_sha256_verified:true,source_role:synthetic?'SYNTHETIC_TEST_MATERIAL':'PERFORMER_WORK_MANIFESTATION',
     source_excerpts:passages,
     empirical_credit:0,host_instrument_authorship:false
    });
-   ISSUED_WORK_MATH_ENTRIES.add(selected);
+   if(!synthetic)ISSUED_WORK_MATH_ENTRIES.add(selected);
    break;
   }
   return {selected,work_id:work.work_id,source_refusals:sourceRefusals};
@@ -160,13 +171,19 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
   }
  }
  return Object.freeze({
-  schema:WORK_MATH_SCHEMA,source_register:'ORIGINAL_EXPERIMENT_A_WORKS',
-  source_data_kind:'CUSTODY_VERIFIED_MANUSCRIPT_TEXT',entries:Object.freeze(entries),
+  schema:WORK_MATH_SCHEMA,source_register:synthetic?'SYNTHETIC_TEST_MATERIAL':'ORIGINAL_EXPERIMENT_A_WORKS',
+  source_data_kind:synthetic?'SYNTHETIC_TEST_MATERIAL':'CUSTODY_VERIFIED_MANUSCRIPT_TEXT',entries:Object.freeze(entries),
   verified_work_math_count:entries.length,examined_work_count:corpus.works.length,
   no_verified_math_excerpt_count:empty.length,
   source_refusals:Object.freeze(unavailable),technical_formula_promotions:0,
   empirical_credit:0,scientific_conclusions_authorized:false
  });
+}
+export function buildOriginalWorkMathWardrobe(corpus,options={}){
+ return buildWorkMathWardrobe(corpus,{...options,synthetic:false});
+}
+export function buildSyntheticWorkMathWardrobe(corpus,options={}){
+ return buildWorkMathWardrobe(corpus,{...options,synthetic:true});
 }
 export function scoreOriginalWorkMath(corpus,entry,{operatorQuestion=''}={}){
  const work=corpus?.works?.find(w=>w.work_id===entry?.work_id);
@@ -175,6 +192,7 @@ export function scoreOriginalWorkMath(corpus,entry,{operatorQuestion=''}={}){
       s.sha256===entry.declared_source_sha256)||
     !entry.source_excerpts?.length)
    throw new TypeError('UNVERIFIED_OR_FOREIGN_MATHEMATICAL_MANUSCRIPT');
+ assertLocalVixenWorkCoordinate(work);
  const humanQuestion=plain(operatorQuestion).slice(0,240);
  const sourceContext=[work.work_id,work.display_title||work.declared_title||'',
   entry.source_excerpts[0].literal].join(' · ').slice(0,1100);
