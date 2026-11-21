@@ -80,6 +80,18 @@ assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment-guard.py']?.maxDuration, 60);
+// Production Python bundle hygiene: the separately qualified Vixen preview uses
+// these exact exclusions. Guard all four entry points against 225 MB regressions.
+const pythonBundleExcludes = '{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}';
+for (const entry of [
+  'api/dome-world-engine.py',
+  'api/dome-world-engine-guard.py',
+  'api/ash-local-commitment.py',
+  'api/ash-local-commitment-guard.py'
+]) {
+  assert.equal(vercel.functions?.[entry]?.excludeFiles, pythonBundleExcludes,
+    `${entry}: preserve preview-parity Python bundle exclusions for production`);
+}
 for (const [name, config] of Object.entries(vercel.functions || {})) {
   if ('includeFiles' in config) assert.equal(typeof config.includeFiles, 'string', `${name}.includeFiles must be a string`);
   if ('includeFiles' in config) assert.ok(config.includeFiles.length<=256, `${name}.includeFiles must not exceed Vercel's 256-character schema ceiling`);
