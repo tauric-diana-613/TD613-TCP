@@ -12,6 +12,8 @@
  * empirical replication credit, or remote source admission.
  */
 
+import {inspectVixenPortableFidelity} from './vixen-portable-fidelity.mjs';
+
 export const SESSION_ZIP_SCHEMA = 'emstd613.vixen.session-zip/v1';
 
 const TEXT_ENCODER = new TextEncoder();
@@ -180,6 +182,7 @@ export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'vixen-ai-conductor.mjs',
   'vixen-ai-journey.mjs',
   'vixen-local-exit.mjs',
+  'vixen-portable-fidelity.mjs',
   'vixen-ai-journey.css',
   'vixen-opera-public-copy.mjs',
   'vixen-obsidian-reading-rgi26.css',
@@ -385,14 +388,26 @@ export async function collectVixenSessionFiles({
     mtime: nowDate
   });
 
-  return { entries, omitted, exportedAt };
+  const closure=await inspectVixenPortableFidelity({
+    entries,omitted,baseHref,fetcher,exportedAt,
+    cryptoProvider:globalThis.crypto
+  });
+  return {...closure,exportedAt};
 }
 
 export async function downloadVixenSessionZip(options = {}) {
   const exportedAt = options.exportedAt || new Date().toISOString();
   const dateTag = exportedAt.slice(0, 10);
   const filename = options.filename || `vixen-cybernetics-session-${dateTag}.zip`;
-  const { entries, omitted } = await collectVixenSessionFiles({ ...options, exportedAt });
+  const { entries, omitted, fidelity, manifest, requiredMissing } = await collectVixenSessionFiles({ ...options, exportedAt });
+  // Refuse a broken boot-critical archive rather than offering a success-like ZIP.
+  // An intact index with unbundled record bodies remains explicitly online dependent.
+  if(fidelity==='EXPORT_PARTIAL_HELD')return {
+    schema:SESSION_ZIP_SCHEMA,ok:false,fidelity,
+    filename,file_count:entries.length,omitted_count:omitted.length,
+    required_missing_paths:requiredMissing,manifest,
+    triggered_download:false,exported_at:exportedAt
+  };
   const zipBytes = buildVixenSessionZipBytes(entries);
 
   let triggered = false;
@@ -414,7 +429,11 @@ export async function downloadVixenSessionZip(options = {}) {
 
   return {
     schema: SESSION_ZIP_SCHEMA,
-    ok: true,
+    ok: fidelity==='FULL_OFFLINE_VERIFIED',
+    fidelity,
+    required_missing_paths:requiredMissing,
+    online_reference_required:fidelity==='ONLINE_REFERENCE_REQUIRED',
+    extracted_boot_verified:false,
     filename,
     file_count: entries.length,
     omitted_count: omitted.length,

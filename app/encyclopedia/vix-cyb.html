@@ -6488,9 +6488,17 @@ import {
           gate_posture: 'DEFAULT_UNADJUDICATED_PAIR_256_STATES'
         }
       });
-      if (btn) btn.textContent = `Saved (${res.file_count} files) ✓`;
+      // G5 truth boundary: source index references without bundled record bodies
+      // and missing boot-critical modules never receive a complete-offline label.
+      if (btn) btn.textContent = !res.triggered_download
+        ? 'Export held · missing required files'
+        : res.online_reference_required
+          ? `Saved reference-only archive (${res.file_count} files)`
+          : `Saved (${res.file_count} files)`;
       const status = document.getElementById('ciStatusLine');
-      if (status) status.textContent = `EXPORTED PORTABLE SESSION ZIP: ${res.filename} (${res.file_count} files, ${res.total_bytes} bytes).`;
+      if (status) status.textContent = !res.triggered_download
+        ? `PORTABLE EXPORT HELD: ${res.required_missing_paths?.length || 0} required dependencies missing, or integrity unverified.`
+        : `PORTABLE ARCHIVE: ${res.fidelity}. Records not bundled require online access; extracted browser boot has not been verified. ${res.filename} (${res.file_count} files, ${res.total_bytes} bytes).`;
     } catch (err) {
       if (btn) btn.textContent = 'Export held (check console)';
     } finally {

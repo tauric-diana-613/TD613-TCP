@@ -287,6 +287,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_vixen_braid_g3.py' -v
           node --test tests/vixen-seven-estate-g3.test.mjs
           node --test tests/vixen-seven-estate-g4.test.mjs
+          node --test tests/vixen-seven-estate-g5.test.mjs
           node --test tests/vixen-semantic-semiotic-search.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
           for source_bound_suite in \
