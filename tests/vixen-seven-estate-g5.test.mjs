@@ -23,6 +23,20 @@ const net=(resources)=>{
  };
  return {fetcher,requests};
 };
+const syntheticReferenceIndex=()=>{
+ const rows=Array.from({length:1141},(_,i)=>{
+  const id='G-'+String(i+1).padStart(4,'0');
+  return {id,record_path:'reference/records/'+id+'.json',record_sha256:'a'.repeat(64)};
+ });
+ const edges=Array.from({length:2131},()=>({source:'G-0001',target:'G-0002',type:'synthetic-link'}));
+ return [
+  entry('encyclopedia/reference/directory.json',JSON.stringify(rows)),
+  entry('encyclopedia/reference/graph.json',JSON.stringify({edges})),
+  entry('encyclopedia/reference/manifest.json',JSON.stringify({
+   schema:'td613.encyclopedia.reference/v1',edition_version:'1.4',record_count:1141
+  }))
+ ];
+};
 const audit=({entries,fetcher,omitted=[]})=>inspectVixenPortableFidelity({
  entries,omitted,baseHref:base,fetcher,exportedAt:stamp,cryptoProvider:webcrypto
 });
@@ -41,7 +55,8 @@ test('G5-A: recursive static module, CSS font and dynamic-literal closure keeps 
  };
  const {fetcher,requests}=net(resources);
  const result=await audit({entries:[entry('encyclopedia/vix-cyb.html',
-  '<script type="module" src="./vixen-estate/main.mjs"></script><link rel="stylesheet" href="./vixen-estate/main.css">')],fetcher});
+  '<script type="module" src="./vixen-estate/main.mjs"></script><link rel="stylesheet" href="./vixen-estate/main.css">'),
+  ...syntheticReferenceIndex()],fetcher});
  assert.equal(result.manifest.schema,PORTABLE_FIDELITY_SCHEMA);
  assert.equal(result.fidelity,'ONLINE_REFERENCE_REQUIRED');
  assert.deepEqual(result.requiredMissing,[]);
@@ -54,6 +69,8 @@ test('G5-A: recursive static module, CSS font and dynamic-literal closure keeps 
  assert(requests.every(r=>r.options.credentials==='omit'));
  assert.equal(result.manifest.rendered_extracted_boot,'NOT_EVALUATED');
  assert.equal(result.manifest.reference.offline_record_readback_all,false);
+ assert.equal(result.manifest.reference.index_census_verified,true);
+ assert.equal(result.manifest.reference.indexed_records,1141);
  assert.equal(result.manifest.rights_and_original_authority,'NOT_INFERRED_FROM_BUNDLE');
 });
 
@@ -92,7 +109,8 @@ test('G5-D: exact permitted record body is hash-checked but never upgrades whole
  assert.equal(result.manifest.reference.bundled_verified_record_bodies,1);
  assert.deepEqual(result.manifest.reference.bad_or_unverified_record_ids,[]);
  assert.equal(result.manifest.reference.offline_record_readback_all,false);
- assert.equal(result.fidelity,'ONLINE_REFERENCE_REQUIRED');
+ assert.equal(result.fidelity,'EXPORT_PARTIAL_HELD','One verified body cannot establish a fabricated one-record edition');
+ assert.equal(result.manifest.reference.index_census_verified,false);
 });
 
 test('G5-E: all-fetch-failure exports are refused before ZIP download',async()=>{

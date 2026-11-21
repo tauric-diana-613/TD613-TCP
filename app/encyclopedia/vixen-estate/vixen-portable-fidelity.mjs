@@ -104,7 +104,18 @@ export async function inspectVixenPortableFidelity({
  const directory=found.get('encyclopedia/reference/directory.json');
  let index=[];
  try{index=JSON.parse(decoder.decode(toBytes(directory?.data)));if(!Array.isArray(index))index=[]}catch(_){}
+ let declared=null,graph=null;
+ try{declared=JSON.parse(decoder.decode(toBytes(found.get('encyclopedia/reference/manifest.json')?.data)))}catch(_){}
+ try{graph=JSON.parse(decoder.decode(toBytes(found.get('encyclopedia/reference/graph.json')?.data)))}catch(_){}
+ const validRows=index.length===1141 && index.every(row=>
+  typeof row?.id==='string' && /^[A-Z][A-Z0-9]*-[A-Z0-9_-]{1,95}$/.test(row.id) &&
+  row.record_path==='reference/records/'+row.id+'.json' &&
+  /^[a-f0-9]{64}$/.test(String(row.record_sha256||'')));
  const byId=new Map(index.map(row=>[row.id,row]));
+ const indexCensusVerified=validRows&&byId.size===1141&&
+  declared?.schema==='td613.encyclopedia.reference/v1' &&
+  declared.edition_version==='1.4'&&declared.record_count===1141&&
+  Array.isArray(graph?.edges)&&graph.edges.length===2131;
  for(const [path,item] of found){
   if(!path.startsWith(RECORD_ROOT)||!path.endsWith('.json'))continue;
   const id=path.slice(RECORD_ROOT.length,-5),row=byId.get(id),raw=toBytes(item.data);
@@ -117,7 +128,7 @@ export async function inspectVixenPortableFidelity({
  const digestAvailable=Object.keys(hashes).length===found.size;
  const missingPaths=[...missing].sort();
  const blocked=missingPaths.length>0||decodeFailures.length>0||failedRecords.length>0||
-  !digestAvailable||externals.length>0||!found.has('encyclopedia/vix-cyb.html');
+  !digestAvailable||!indexCensusVerified||externals.length>0||!found.has('encyclopedia/vix-cyb.html');
  // Never promote a statically scanned collection to fully booted offline.
  const fidelity=blocked?'EXPORT_PARTIAL_HELD':'ONLINE_REFERENCE_REQUIRED';
  const manifest={
@@ -129,7 +140,9 @@ export async function inspectVixenPortableFidelity({
   optional_missing_paths:[...new Set(omitted)].filter(p=>!required.has(p)).sort(),
   undecodable_dependency_sources:decodeFailures,
   external_resource_dependencies:externals,
-  reference:{indexed_records:index.length,bundled_verified_record_bodies:verifiedRecords.length,
+  reference:{indexed_records:index.length,index_census_verified:indexCensusVerified,
+   expected_records:1141,expected_edges:2131,
+   bundled_verified_record_bodies:verifiedRecords.length,
    offline_record_readback_all:false,required_online_record_count:Math.max(0,index.length-verifiedRecords.length),
    bad_or_unverified_record_ids:failedRecords,availability:'ONLINE_REFERENCE_REQUIRED'},
   file_digests_sha256:hashes,
