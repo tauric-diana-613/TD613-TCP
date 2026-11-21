@@ -15,9 +15,11 @@
  * itself can never authorize native tools or turn read-only into mutation.
  */
 import {readFile,stat,writeFile} from 'node:fs/promises';
+import {realpathSync,lstatSync} from 'node:fs';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {dirname,resolve,join,sep,relative} from 'node:path';
+import {dirname,resolve,join,sep,relative,isAbsolute} from 'node:path';
 // Native module imports are resolved below from the verified public asset root.
 // This supports both the repository layout and the exact-head preview ZIP.
 
@@ -152,6 +154,85 @@ async function syncSynthesisHtmlSlots(doc){
 if(options.includes('--manifest')){
  console.log(await readFile(manifestPath,'utf8'));process.exit(0);
 }
+// G6 research-only CLI return: a separate host-injected native read adapter.
+// Never executed by the browser or by an in-band Podium task permission flag.
+// The output is a narrow, typed metadata projection; no raw method body.
+if(options.includes('--g6-readonly-return')){
+ try{
+  const wantsNative=options.includes('--native-read-tools');
+  const hostDirect=process.env.TD613_PODIUM_OPERATOR_DIRECT==='1';
+  if(!wantsNative||!hostDirect)
+   throw Error('HELD_G6_EXPLICIT_HOST_NATIVE_LANE_REQUIRED');
+  const raw=getFlag('--g6-readonly-return');
+  if(!raw||raw.length>8192||!raw.trim().startsWith('{'))
+   throw Error('HELD_G6_BOUNDED_INLINE_JSON_REQUIRED');
+  const request=JSON.parse(raw);
+  const sourceRevision=execFileSync('git',['rev-parse','HEAD'],{
+   cwd:directory,encoding:'utf8',timeout:5000
+  }).trim();
+  if(!/^[a-f0-9]{40}$/.test(sourceRevision))
+   throw Error('HELD_G6_PINNED_LOCAL_SOURCE_REQUIRED');
+  // The Vixen host checkout is not the historical original EM corpus.
+  // Require the same exact original source revision established by Gate 3.
+  const originalEMHead='70b5a0f9e94626cba6068f41c6117e7978800bbd';
+  if(request.estate!=='EM_ATELIER'||request.operation!=='em_native_work_route')
+   throw Error('HELD_G6_OTHER_ORIGINAL_METHODS_REQUIRE_PINNED_SOURCE_QUALIFICATION');
+  const emCheckout=getFlag('--g6-em-original-checkout');
+  if(!emCheckout)throw Error('HELD_G6_ORIGINAL_EM_CHECKOUT_REQUIRED');
+  if(!isAbsolute(emCheckout)||lstatSync(emCheckout).isSymbolicLink())
+   throw Error('HELD_G6_ORIGINAL_EM_CHECKOUT_ABSOLUTE_REAL_DIRECTORY_REQUIRED');
+  const emRoot=realpathSync(emCheckout);
+  const hostRoot=realpathSync(directory);
+  const distance=relative(hostRoot,emRoot);
+  if(distance===''||(distance!=='..'&&!distance.startsWith('..'+sep)&&!isAbsolute(distance)))
+   throw Error('HELD_G6_ORIGINAL_CHECKOUT_MUST_BE_OUTSIDE_HOST');
+  const checkedRoot=realpathSync(execFileSync('git',['-C',emRoot,'rev-parse','--show-toplevel'],
+   {encoding:'utf8',timeout:5000}).trim());
+  if(checkedRoot!==emRoot)throw Error('HELD_G6_ORIGINAL_CHECKOUT_ROOT_IDENTITY');
+  const checkedHead=execFileSync('git',['-C',emRoot,'rev-parse','HEAD'],
+   {encoding:'utf8',timeout:5000}).trim();
+  if(checkedHead!==originalEMHead)throw Error('HELD_G6_ORIGINAL_EM_HEAD_DRIFT');
+  const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
+  const g6Module=await import(pathToFileURL(resolve(directory,'scripts','vixen-g6-research-return.mjs')).href);
+  const nativeAdapters=await adapterModule.createPodiumNativeReadAdapters({
+   repoRoot:directory,sourceRoot,
+   nativeSourceCheckouts:{EMSTD613:{path:emRoot,git_head:originalEMHead}}
+  });
+  const bridge=g6Module.createG6HostReadReturn({
+   sourceRevision,
+   hostAdapter:async({estate,operation,payload})=>{
+    if(typeof nativeAdapters[estate]!=='function')
+     throw Error('HELD_G6_SOURCE_NATIVE_ADAPTER_UNAVAILABLE');
+    return nativeAdapters[estate]({operation,payload});
+   },
+   // This is CLI-host attestation ONLY, not a historical human session,
+   // runtime browser consent or an independent source-origin witness.
+   hostPermission:()=>({session_id:'g6-direct-local-cli-unattested',
+    generation:1,permission_epoch:0,role:'MAESTRO',
+    read_only:true,authorized:true})
+  });
+  const outcome=await bridge.read(request);
+  console.log(JSON.stringify({
+   schema:'td613.vixen.g6.cli-read-return/v1',
+   result:outcome,
+   native_host_lane:'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF',
+   human_session_observed:false,
+   native_em_checkout_git_head:originalEMHead,
+   native_checkout_identity:'GIT_HEAD_MATCH_CHECKOUT_CONTRACT_NOT_INDEPENDENT_ORIGIN',
+   private_source_bodies_included:false,canonical_writes:0,
+   scientific_promotion_authority:false,release_authority:false
+  },null,2));
+  process.exit(outcome.status==='HELD'?2:0);
+ }catch(e){
+  console.error(JSON.stringify({
+   schema:'td613.vixen.g6.cli-read-return/v1',status:'HELD',
+   reason:String(e?.message||'HELD_G6_LOCAL_HOST_RETURN').slice(0,180),
+   native_execution_authority:false,release_authority:false
+  }));
+  process.exit(2);
+ }
+}
+
 if(options.includes('--score-candidates')){
  try{
   const rawLag=getFlag('--lag');
