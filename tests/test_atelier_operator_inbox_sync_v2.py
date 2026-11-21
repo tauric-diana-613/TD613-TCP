@@ -160,6 +160,8 @@ class OperatorInboxV2(unittest.TestCase):
             m.sync("SRC",1675,self.vault,gesture,operator_approved=True)
         with self.assertRaisesRegex(ValueError,"EXPLICIT_OPERATOR"):
             m.recover_receipt(self.vault,"SRC",1675,gesture)
+        with self.assertRaisesRegex(ValueError,"RECEIPT_ESTATE_ISSUE_MISMATCH"):
+            m.recover_receipt(self.vault,"SRC",1676,gesture,operator_approved=True)
         fixed=m.recover_receipt(self.vault,"SRC",1675,gesture,operator_approved=True)
         self.assertEqual(fixed["state"],"COMMITTED_RECEIPT_MATERIALIZED")
         self.assertFalse(fixed["new_gesture_consumed"])
