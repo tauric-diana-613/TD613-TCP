@@ -215,3 +215,22 @@ test('G7-J source-pinned live comment claim is locally one-use across workflow a
    /HELD_G7_GESTURE_ESTATE_ISSUE_MISMATCH/);
  }finally{tidy(root)}
 });
+
+
+test('G7-K both existing issue listeners stage durable claims before source acquisition',()=>{
+ const workflow=fs.readFileSync(new URL('../.github/workflows/vercel-relock-safety.yml',import.meta.url),'utf8');
+ assert.equal(workflow.match(/Persist one-use G7 comment claim before any source operation/g)?.length,2);
+ assert.equal(workflow.match(/Pin G7 guard to the triggering workflow revision/g)?.length,2);
+ const src=workflow.slice(workflow.indexOf('  src-zenodo-sync:'),workflow.indexOf('  wendbine-operator-sync:'));
+ const wend=workflow.slice(workflow.indexOf('  wendbine-operator-sync:'));
+ assert.ok(src.indexOf('Persist one-use G7 comment claim')<src.indexOf('Run exact-creator Zenodo delta sync'));
+ assert.ok(wend.indexOf('Persist one-use G7 comment claim')<wend.indexOf('Acquire bounded archive'));
+ assert.ok(wend.indexOf('Require G7-capable target writer')<wend.indexOf('Persist one-use G7 comment claim'));
+ for(const section of [src,wend]){
+  assert.match(section,/git push origin "HEAD:\$ATELIER_BRANCH"/);
+  assert.match(section,/--comment "\$G7_COMMENT_ID"/);
+  assert.match(section,/--attempt "\$G7_RUN_ATTEMPT"/);
+  assert.match(section,/github\.workflow_sha/);
+ }
+ assert.match(wend,/--gesture-lease-file "\$RUNNER_TEMP\/g7-workflow\/lease\.json"/);
+});
