@@ -56,15 +56,26 @@ function summarizePublicResult(result){
  const d=isObject(result?.data)?result.data:isObject(result)?result:{};
  const items=Array.isArray(d.ranked)?d.ranked:
   Array.isArray(d.hits)?d.hits:Array.isArray(d.results)?d.results:[];
+ const safeId=(value)=>{
+  const id=text(value,160);
+  // A provider could label a private path or secret as an ID. Refuse it
+  // rather than faithfully serializing it into a visitor-visible receipt.
+  return id&&/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$/.test(id)&&
+   !id.toLowerCase().startsWith('file:')?id:null;
+ };
  const ids=items.slice(0,12).map(item=>
-  text(item?.source_id||item?.record_id||item?.work_id||item?.id,160)
+  safeId(item?.source_id||item?.record_id||item?.work_id||item?.id)
  ).filter(Boolean);
+ const schema=text(d.schema,120);
+ const status=text(d.status,120)||text(d.state,120);
  return Object.freeze({
-  method_schema:text(d.schema,120),
+  method_schema:schema&&/^[A-Za-z][A-Za-z0-9.\/-]{0,119}$/.test(schema)&&
+   !schema.includes('..')?schema:null,
   reported_count:Number.isSafeInteger(d.total)&&d.total>=0?d.total:
    Number.isSafeInteger(d.count)&&d.count>=0?d.count:null,
   visible_reference_ids:ids,
-  original_method_status:text(d.status,120)||text(d.state,120)||'UNCLASSIFIED',
+  original_method_status:status&&/^[A-Z][A-Z0-9_]{0,79}$/.test(status)?
+   status:'UNCLASSIFIED',
   source_bodies_included:false,
   source_excerpt_included:false
  });
