@@ -83,6 +83,44 @@ try{
    assert.equal(pre.result.role,'MAESTRO');
    assert.equal(pre.result.note_count,0);
    assert.notEqual(pre.result.program_notes_permission,'GRANTED');
+   // QA03 same-episode source excursion: navigate to the original recorded
+   // Work through the real visitor control, then return to the same session.
+   // A selected Work is neither an independent body read nor a native host
+   // proof; keep those observations explicitly separate in the receipt.
+   const selectedWork=await page.evaluate(()=>
+    window.VixenAIModes.session.handoff().result.source_candidates[0]?.work_id);
+   assert.match(selectedWork||'',/^emwork_[a-f0-9]+$/);
+   const priorSessionId=pre.result.session_id;
+   const sourceJump=page.locator('#vmaSources .vma-source .vma-small').first();
+   await sourceJump.waitFor({state:'visible',timeout:15000});
+   await sourceJump.scrollIntoViewIfNeeded();
+   await sourceJump.click();
+   await page.locator('#view-works:not([hidden])').waitFor({timeout:18000});
+   const mountedWork=await page.locator('#worksExperimentAReaderMount').getAttribute('data-work-id');
+   assert.equal(mountedWork,selectedWork,'Real Work route must match selected source ID');
+   const readerScroll=await page.locator('#worksExperimentAReaderMount').evaluate(el=>({
+    scroll_width:el.scrollWidth,client_width:el.clientWidth,
+    viewport_scroll_y:window.scrollY
+   }));
+   const dock=page.locator('#vmaJourneyDock');
+   await dock.waitFor({state:'visible',timeout:15000});
+   await dock.scrollIntoViewIfNeeded();
+   await dock.click();
+   await page.locator('#view-collection:not([hidden])').waitFor({timeout:18000});
+   const returned=await page.evaluate(()=>{
+    const session=window.VixenAIModes.status();
+    return {session_id:session.result?.session_id,
+     role:session.result?.role,active:session.result?.active,
+     note_count:session.result?.note_count,
+     original_native_connected:window.VixenAIModes.model_connected}
+   });
+   assert.deepEqual(returned,{session_id:priorSessionId,role:'MAESTRO',
+    active:true,note_count:0,original_native_connected:false});
+   rec.source_excursion={selected_work_id:selectedWork,
+    mounted_work_id:mountedWork,returned_session_id:priorSessionId,
+    same_session_return:true,reader_scroll:readerScroll,
+    original_host_native_return_observed:false,
+    original_document_body_witness_not_inferred:true};
    await page.locator('#vmaNotesRequest').click();
    await page.locator('#vmaNotesApprove').waitFor({state:'visible',timeout:14000});
    assert.equal(await page.evaluate(()=>window.VixenAIModes.status().result.note_count),0);
@@ -183,9 +221,31 @@ try{
    assert.equal(fresh.active,false);
    assert.equal(fresh.selected_role,null);
    assert.equal(fresh.start_disabled,true);
+   // Fresh role selection is required before a post-reload permission state
+   // can be inspected. Merely finding no selected role proves less.
+   await page.locator('#vixenRoomRail [data-view="collection"]').first().click();
+   await page.locator('#view-collection:not([hidden])').waitFor({timeout:15000});
+   await page.locator('[data-vma-role="MAESTRO"]').click();
+   await page.locator('#vmaStart').click();
+   await page.waitForFunction(()=>
+    window.VixenAIModes.status().result?.active===true,
+    null,{timeout:30000});
+   const restarted=await page.evaluate(()=>{
+    const state=window.VixenAIModes.status().result;
+    return {role:state.role,notes_permission:state.program_notes_permission,
+     note_count:state.note_count,active:state.active,
+     model_connected:window.VixenAIModes.model_connected}
+   });
+   assert.equal(restarted.role,'MAESTRO');
+   assert.equal(restarted.active,true);
+   assert.equal(restarted.notes_permission,'NOT_REQUESTED',
+    'Prior approval/revocation cannot restore notes authorization');
+   assert.equal(restarted.note_count,0);
+   assert.equal(restarted.model_connected,false);
    rec.consent.reload_permission_restored=false;
    rec.reload={fresh_role_selection_required:true,role_restored:false,
-    note_permission_restored:false,original_native_connected:false};
+    note_permission_restored:false,notes_permission_reobserved_after_start:'NOT_REQUESTED',
+    original_native_connected:false};
    assert.deepEqual(errors,[],'Uncaught JavaScript errors in the rendered route');
    rec.status='BOUNDED_RENDERED_ROUTE_PASS';
   }catch(e){
