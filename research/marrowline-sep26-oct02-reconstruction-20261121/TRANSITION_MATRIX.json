@@ -253,5 +253,35 @@
     "No Q1 model-seat routing contrast exists"
   ],
   "next_research_file": "NEXT_ASSAY_DESIGN.md",
-  "human_approval_required_before_paid_calls": true
+  "human_approval_required_before_paid_calls": true,
+  "proven_production_deployments": [
+    {
+      "id": "pre_mission_post_1346",
+      "merge_commit": "eeda59df2fd1efa183d6a31e654e3bcc0f3bb856",
+      "success_receipt_utc": "2026-09-26T02:27:43Z",
+      "success_comment_id": 5842370849,
+      "relock_commit": "46f3e1ff9f1f5bc6d6d11a01da590051b8d81e74",
+      "deployments": 1,
+      "automatic_live_provider_calls": 0
+    },
+    {
+      "id": "mission_v1_1347",
+      "merge_commit": "20c2cc1d9be7ecaa56a9972ea2b4db4a0f1764f1",
+      "success_receipt_utc": "2026-09-26T04:24:34Z",
+      "success_comment_id": 5843139689,
+      "relock_commit": "3736c74a01232316953336d91f1d90a4946c1491",
+      "deployments": 1,
+      "automatic_live_provider_calls": 0
+    },
+    {
+      "id": "mission_v3_1348",
+      "merge_commit": "e371c335260f535ea036da3440c6e05090dcea97",
+      "success_receipt_utc": "2026-09-26T04:59:09Z",
+      "success_comment_id": 5843354496,
+      "relock_commit": "7c2eded0cd9d03a79b3f95e7cc74fbb59dbde44e",
+      "deployments": 1,
+      "automatic_live_provider_calls": 0
+    }
+  ],
+  "production_release_claim_ceiling": "Verified exact-source deployment time is neither authenticated subsequent Gemini output nor proof of source-to-human-observation causal association."
 }
