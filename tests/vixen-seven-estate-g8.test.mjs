@@ -9,6 +9,9 @@ const viewport=width=>({
  viewport:{width,height:width===390?844:900},
  status:'BOUNDED_RENDERED_ROUTE_PASS',
  consent:{future_only:true,reload_permission_restored:false},
+ source_excursion:{same_session_return:true,selected_work_id:'emwork_abc',
+  mounted_work_id:'emwork_abc',original_host_native_return_observed:false},
+ reload:{notes_permission_reobserved_after_start:'NOT_REQUESTED'},
  privacy:{unsent_draft_bytes_exported:false,exit_requires_choice:true},
  source_return:{original_native_method_in_browser:false,model_connected:false},
  archive:{local_only:true,release_authority:false,auto_restore_notes_permission:false},
@@ -63,6 +66,15 @@ test('G8-C: stale HEAD, missing width and source-body promotion fail exact QA03 
   browser:{...browser,viewports:[viewport(1440)]},portable});
  assert.equal(missing.qa03.live_rendered_route,false);
  assert.equal(missing.candidate_ready_for_human_review,false);
+ const badReturn=adjudicateG8({exactHead:head,
+  browser:{...browser,viewports:[{...viewport(1440),
+   source_excursion:{...viewport(1440).source_excursion,
+    mounted_work_id:'emwork_different'}},viewport(390)]},portable});
+ assert.equal(badReturn.qa03.live_rendered_route,false);
+ const badConsent=adjudicateG8({exactHead:head,
+  browser:{...browser,viewports:[viewport(1440),{...viewport(390),
+   reload:{notes_permission_reobserved_after_start:'GRANTED'}}]},portable});
+ assert.equal(badConsent.qa03.live_rendered_route,false);
  const leak=adjudicateG8({exactHead:head,
   browser:{...browser,viewports:[{...viewport(1440),
    privacy:{exit_requires_choice:true,unsent_draft_bytes_exported:true}},
@@ -84,6 +96,8 @@ test('G8-D: exact-head browser test and evidence register remain browser-source 
  assert.match(source,/dialog\.accept/);
  assert.match(source,/vmaSaveFinal/);
  assert.match(source,/page\.reload/);
+ assert.match(source,/same_session_return:true/);
+ assert.match(source,/notes_permission_reobserved_after_start:'NOT_REQUESTED'/);
  assert.match(source,/model_connected/);
  assert.match(source,/human_operator_observed:false/);
  assert.match(cli,/g8-separate-evidence-adjudication\.json/);
