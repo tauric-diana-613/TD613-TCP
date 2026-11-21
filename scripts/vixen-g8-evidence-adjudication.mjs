@@ -23,6 +23,10 @@ export function adjudicateG8({exactHead,browser=null,portable=null,
    x.viewport?.width===w&&x.status==='BOUNDED_RENDERED_ROUTE_PASS'&&
    x.consent?.future_only===true&&
    x.consent?.reload_permission_restored===false&&
+   x.source_excursion?.same_session_return===true&&
+   x.source_excursion?.selected_work_id===x.source_excursion?.mounted_work_id&&
+   x.source_excursion?.original_host_native_return_observed===false&&
+   x.reload?.notes_permission_reobserved_after_start==='NOT_REQUESTED'&&
    x.privacy?.unsent_draft_bytes_exported===false&&
    x.privacy?.exit_requires_choice===true &&
    x.source_return?.original_native_method_in_browser===false&&
