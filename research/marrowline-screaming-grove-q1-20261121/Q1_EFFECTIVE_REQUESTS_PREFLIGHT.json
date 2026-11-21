@@ -1,12 +1,18 @@
 {
-  "schema": "td613.marrowline.q1-preflight/v1.0",
-  "generated_at_utc": "2026-11-21T19:44:20.804Z",
-  "source_head_sha": "026ac4636eba782364eab46404dfcadd9414e9e0",
+  "schema": "td613.marrowline.q1-preflight/v2.0",
+  "generated_at_utc": "2026-11-21T20:13:02.250Z",
+  "source_head_sha": "67339318d5a430541a572c19833817271d69c5f3",
+  "predecessor_pr_1764_preflight_head": "67339318d5a430541a572c19833817271d69c5f3",
   "predecessor_pr_1759_head": "026ac4636eba782364eab46404dfcadd9414e9e0",
   "deterministic_repair_ancestor": "bc5467246f12b0598f89d681e4a4450c4733eace",
   "historical_comparator": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
   "execution_mode": "DRY_RUN_PREFLIGHT_ONLY",
   "paid_provider_calls_executed": 0,
+  "request_equivalence_verified": {
+    "ok": true,
+    "checkedSlots": 8,
+    "violations": []
+  },
   "live_provider_catalog_verified": {
     "checked_via": "Read-only GET https://generativelanguage.googleapis.com/v1beta/models?pageSize=200 (HTTP 200; 0 paid calls)",
     "target_model": "models/gemini-3.8-flash",
@@ -21,25 +27,46 @@
       "batchGenerateContent"
     ]
   },
-  "hard_execution_guarantees": {
-    "max_calls": 8,
+  "financial_and_token_policy": {
+    "dollar_spending_ceiling": "NONE_PER_OPERATOR_REVIEW_6007792790",
+    "aggregate_token_budget_ceiling": "NONE_PER_OPERATOR_REVIEW_6007792790",
+    "per_call_max_output_tokens": 65536,
+    "per_call_max_output_tokens_role": "MATCHED_PROVIDER_GENERATION_PROFILE_NOT_ECONOMY_CAP",
+    "operator_correction_reference": "GitHub Review #6007792790 (supersedes dollar-cap portion of Review #6007790469)"
+  },
+  "experimental_design_guards": {
+    "registered_q1_slots": 8,
+    "rationale": "SCIENTIFIC_SAMPLING_AND_FIRST_RETURN_INTEGRITY_CONTRACT_NOT_COST_CAP",
     "calls_per_slot": 1,
     "automatic_retries": 0,
     "second_seat_fallbacks": 0,
     "structural_repair_calls": 0,
     "morphology_chasing_reruns": 0,
     "q2_multi_turn_included": false,
+    "independent_sse_verification": "DUAL_PARSER_PRODUCTION_READGEMINISSE_VS_STRICT_WHATWG_STATE_MACHINE",
+    "outcome_classes": [
+      "COMPLETED_STOP",
+      "POLICY_TERMINATED",
+      "INCOMPLETE_NONSTOP",
+      "UNWITNESSED_COMPLETION",
+      "TRANSPORT_FAILURE",
+      "MALFORMED_OR_UNRECONSTRUCTABLE_SSE",
+      "MODEL_IDENTITY_MISMATCH"
+    ],
     "stop_rules": [
-      "STOP_1: Halt immediately on modelVersion mismatch or generationConfig drift.",
+      "STOP_1: Halt immediately on missing/unexpected modelVersion or generationConfig/request-digest drift.",
       "STOP_2: Halt immediately on PROHIBITED_CONTENT, SAFETY, RECITATION, BLOCKLIST, SPII, or promptFeedback.blockReason; preserve raw SSE without retry.",
-      "STOP_3: Halt immediately on 2 consecutive 429/503 transport rejections or any spending-cap error.",
-      "STOP_4: Halt immediately on any SSE-to-text reconstruction mismatch."
+      "STOP_3: Halt immediately on 2 consecutive 429/503 transport rejections or unrecoverable provider rejection (401/402/403/404); no arbitrary dollar-cap halt.",
+      "STOP_4: Halt immediately on malformed SSE, invalid UTF-8, parser exception, or canonical-vs-independent SSE reconstruction mismatch; preserve raw SSE bytes and terminal failure receipt."
     ]
   },
-  "pricing_and_cost_estimate": {
+  "descriptive_pricing_reference_only": {
+    "note": "Descriptive estimates only; NOT enforced as a runtime spending or token cap per Operator Review #6007792790.",
     "pricing_source": "Google Gemini Developer API official pricing (ai.google.dev), verified 2026-11-21",
     "rates_usd_per_1m": {
       "model": "gemini-3.8-flash",
+      "enforcement": "DESCRIPTIVE_REFERENCE_ONLY_NO_RUNTIME_SPENDING_CAP",
+      "operator_authority_reference": "GitHub Review #6007792790 (superseding financial cap portion of #6007790469)",
       "intro_through_2026_12_31": {
         "input": 0.75,
         "cached_input": 0.075,
@@ -52,21 +79,22 @@
       }
     },
     "assembled_8_slot_prompt_tokens_conservative_est": 79768,
-    "preregistered_budget_tokens": {
-      "prompt": 79768,
-      "output_and_thinking": 40000
-    },
-    "estimated_cost_intro_rate_prereg_budget": {
+    "descriptive_typical_estimate_intro_rate": {
       "input_usd": 0.05983,
       "output_and_thinking_usd": 0.15,
       "total_usd": 0.20983
     },
-    "estimated_cost_intro_rate_2x_headroom": {
+    "descriptive_2x_headroom_intro_rate": {
       "input_usd": 0.075,
       "output_and_thinking_usd": 0.3,
       "total_usd": 0.375
     },
-    "estimated_cost_standard_2027_rate_prereg_budget": {
+    "descriptive_full_8x65536_theoretical_output_max_intro_rate": {
+      "input_usd": 0.05983,
+      "output_and_thinking_usd": 1.96608,
+      "total_usd": 2.02591
+    },
+    "descriptive_standard_2027_rate_reference": {
       "input_usd": 0.11965,
       "output_and_thinking_usd": 0.3,
       "total_usd": 0.41965

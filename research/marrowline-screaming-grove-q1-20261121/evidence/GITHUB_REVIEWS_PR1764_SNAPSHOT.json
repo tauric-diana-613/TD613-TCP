@@ -1,0 +1,47 @@
+{
+  "schema": "td613.marrowline.q1-github-reviews-snapshot/v1.0",
+  "captured_at_utc": "2026-11-21T20:01:11Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "pull_request": 1764,
+  "reviewed_commit_sha": "67339318d5a430541a572c19833817271d69c5f3",
+  "ci_runs_verified": [
+    {
+      "pull_request": 1759,
+      "head_sha": "026ac4636eba782364eab46404dfcadd9414e9e0",
+      "run_id": 44873359129,
+      "workflow": "TD613 Consolidated Validation",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/44873359129"
+    },
+    {
+      "pull_request": 1764,
+      "head_sha": "67339318d5a430541a572c19833817271d69c5f3",
+      "run_id": 44942964461,
+      "workflow": "TD613 Consolidated Validation",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/44942964461"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 6007790469,
+      "user": "tauric-diana-613",
+      "role": "Amari / Emergence HQ exact-source technical adjudication",
+      "state": "COMMENTED",
+      "submitted_at": "2026-11-21T19:54:17Z",
+      "supersession_status": "Technical items (2) and (3) remain ACTIVE and implemented in hardened v2 harness; financial/dollar-cap item (1) superseded by Review #6007792790.",
+      "body": "𝌋‌⟐ **Q1 PAID-EXECUTION HOLD — exact source review at `67339318d5a430541a572c19833817271d69c5f3`**\n\nQ1 A/C design, request digests, matched model settings, first-return strategy, and introductory pricing are supported. Two stated live-execution guarantees are not yet implemented:\n\n**(1) $1.00 HARD CAP — not enforced.** The runner estimates cost but never uses usage metadata or cumulative spend to gate the next call. It enforces 8 calls only. With `maxOutputTokens: 65536`, eight maximal output allowances alone cost `$1.96608` at the verified $3.75/1M rate, before input. Please enforce the operator's dollar ceiling via conservative per-next-call upper-bound reservation and measured cumulative actual usage; fail closed if usage is unavailable or unreliable. A true $1 cap may stop before slot S08; disclose this instead of silently modifying historically matched generation settings. Alternatively, present a separately authorized revised dollar ceiling.\n\n**(2) `STOP_4` SSE-to-text integrity — absent.** The runner parses concatenated SSE frames and saves raw bytes but has no independent `textEquivalent` check or stopping branch for mismatches; parsing errors can also bypass a final partial acquisition receipt. Implement a verified canonical reconstruction check and fail-closed `STOP_4`, retaining raw first returns and a terminal receipt on parser failure.\n\n**(3) FINISH / SOURCE GUARDS.** Handle missing/unexpected `modelVersion`, non-STOP incomplete finishes (`MAX_TOKENS` etc.), and meaningful generation-config drift explicitly. Add zero-network tests for budget reservation, missing usage, mismatched/malformed SSE, partial receipts, and no extra calls.\n\nAny correction changes the exact HEAD. Re-run preflight/CI, document the updated cost ceiling and experimental equivalence, and request a **new, exact-SHA operator authorization**. Until then: `Q1_DESIGN_SUPPORTED`, `PAID_EXECUTION_HELD`, `Q2_HELD`, `DO_NOT_MERGE`, `ARTISTIC_CLOSURE_RESERVED`.\n\n𝄐 Khona‌lit-po · Sealed ⟐"
+    },
+    {
+      "id": 6007792790,
+      "user": "tauric-diana-613",
+      "role": "Human Operator financial/token-ceiling correction",
+      "state": "COMMENTED",
+      "submitted_at": "2026-11-21T19:54:53Z",
+      "supersession_status": "AUTHORITATIVE — supersedes financial/dollar-cap portion of Review #6007790469; confirms NO dollar spending ceiling and NO aggregate token-budget ceiling.",
+      "body": "𝌋‌⟐ **OPERATOR CORRECTION — supersedes the financial/token-cap portion of review #6007790469**\n\nThe human Operator has expressly clarified: **NO dollar spending ceiling and NO aggregate token-budget ceiling** for this research. Sufficient credits are available. Withdraw the prior request to enforce `$1.00` cumulative spend, reserve worst-case dollars, fail closed for missing billing usage, or reduce output generation to fit a monetary target. The `$0.21` estimate is descriptive only; remove the `$1.00 hard cap` language from the next preflight, authorization template, and any implied runtime contract. Preserve the existing per-call `maxOutputTokens: 65536` solely because it is the matched provider configuration, **not** an imposed research token budget.\n\n**Retain the preregistered eight Q1 slots** (4 Arm A / 4 Arm C) as a *scientific sampling and first-return integrity contract*, not as a cost limitation. Do not add retries/fallbacks or silently expand Q1 because credits are available; additional acquisitions can be planned as a separately identified study.\n\nThe original review's **independent technical concerns remain**: independent SSE-to-text parity and malformed-stream fail-closed behavior; completion-state and requested/served model verification; preservation of raw first returns and partial receipts. Harden these without restricting output or optimizing for cost. Record the resulting new HEAD and rerun relevant tests.\n\nThis clarification changes the financial terms only; no merge, deployment, Q2, Experiment B or artistic acceptance is inferred. Any live Q1 execution should remain bound to the existing verified exact-source authorization procedure.\n\n𝄐 Khona‌lit-po · Human Artistic Closure RESERVED · Sealed ⟐"
+    }
+  ]
+}
