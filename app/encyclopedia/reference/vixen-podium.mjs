@@ -9,7 +9,7 @@
 import {createVixenAiSession} from '../vixen-estate/vixen-ai-session.mjs';
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
-import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures,scoreUnifiedSynthesisCandidates,assertNoBoilerplateSubtitle} from '../vixen-estate/synthesis-salon-engine.mjs';
+import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures,scoreUnifiedSynthesisCandidates,assertNoBoilerplateSubtitle,normalizeSupplementalResearchCandidates} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 import {SUPPORTED_SEARCH_MODES} from '../vixen-estate/semantic-semiotic-search.mjs';
 import {makePodiumScore,reachPodiumComposeGate} from '../vixen-estate/podium-composition-score.mjs';
@@ -163,13 +163,11 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
    state.lagTicks=Math.max(4,Math.min(120,Math.round(Number(params.lag_ticks))));
   }
   if(Array.isArray(params.supplemental_sources)){
-   state.supplementalSources=params.supplemental_sources
-    .filter(x=>x&&typeof x==='object'&&!Array.isArray(x))
-    .slice(0,24)
-    .map((x,i)=>({
-     id:text(x.id||`SUP-${i+1}`,80)||`SUP-${i+1}`,
-     title:text(x.title||x.id||`Supplemental Source ${i+1}`,160)
-    }));
+   // Research leads may be grouped, but never added to canonical Work census.
+   // Strip all caller-supplied source admission, FADT and rights assertions.
+   state.supplementalSources=normalizeSupplementalResearchCandidates(
+    params.supplemental_sources
+   ).map(x=>({...x}));
   }
   if(Array.isArray(params.inquiry_conjectures)){
    state.inquiryConjectures=params.inquiry_conjectures
