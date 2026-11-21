@@ -15,10 +15,11 @@
  * itself can never authorize native tools or turn read-only into mutation.
  */
 import {readFile,stat,writeFile} from 'node:fs/promises';
+import {realpathSync,lstatSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {dirname,resolve,join,sep,relative} from 'node:path';
+import {dirname,resolve,join,sep,relative,isAbsolute} from 'node:path';
 // Native module imports are resolved below from the verified public asset root.
 // This supports both the repository layout and the exact-head preview ZIP.
 
@@ -178,11 +179,24 @@ if(options.includes('--g6-readonly-return')){
    throw Error('HELD_G6_OTHER_ORIGINAL_METHODS_REQUIRE_PINNED_SOURCE_QUALIFICATION');
   const emCheckout=getFlag('--g6-em-original-checkout');
   if(!emCheckout)throw Error('HELD_G6_ORIGINAL_EM_CHECKOUT_REQUIRED');
+  if(!isAbsolute(emCheckout)||lstatSync(emCheckout).isSymbolicLink())
+   throw Error('HELD_G6_ORIGINAL_EM_CHECKOUT_ABSOLUTE_REAL_DIRECTORY_REQUIRED');
+  const emRoot=realpathSync(emCheckout);
+  const hostRoot=realpathSync(directory);
+  const distance=relative(hostRoot,emRoot);
+  if(distance===''||(distance!=='..'&&!distance.startsWith('..'+sep)&&!isAbsolute(distance)))
+   throw Error('HELD_G6_ORIGINAL_CHECKOUT_MUST_BE_OUTSIDE_HOST');
+  const checkedRoot=realpathSync(execFileSync('git',['-C',emRoot,'rev-parse','--show-toplevel'],
+   {encoding:'utf8',timeout:5000}).trim());
+  if(checkedRoot!==emRoot)throw Error('HELD_G6_ORIGINAL_CHECKOUT_ROOT_IDENTITY');
+  const checkedHead=execFileSync('git',['-C',emRoot,'rev-parse','HEAD'],
+   {encoding:'utf8',timeout:5000}).trim();
+  if(checkedHead!==originalEMHead)throw Error('HELD_G6_ORIGINAL_EM_HEAD_DRIFT');
   const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
   const g6Module=await import(pathToFileURL(resolve(directory,'scripts','vixen-g6-research-return.mjs')).href);
   const nativeAdapters=await adapterModule.createPodiumNativeReadAdapters({
    repoRoot:directory,sourceRoot,
-   nativeSourceCheckouts:{EMSTD613:{path:emCheckout,git_head:originalEMHead}}
+   nativeSourceCheckouts:{EMSTD613:{path:emRoot,git_head:originalEMHead}}
   });
   const bridge=g6Module.createG6HostReadReturn({
    sourceRevision,
