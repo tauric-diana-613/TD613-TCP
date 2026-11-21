@@ -126,7 +126,7 @@ export function createG6HostReadReturn({sourceRevision,hostAdapter=null,hostPerm
   source_revision:sourceRevision,connected:Boolean(hostAdapter&&hostPermission),
   live_activation_authority:false});
 }
-export function createG6ResearchCart({canonicalWorkIds=[]}={}){
+export function createG6ResearchCart({canonicalWorkIds=[],verifyHumanSelection=null}={}){
  if(!Array.isArray(canonicalWorkIds)||canonicalWorkIds.length!==32||
   new Set(canonicalWorkIds).size!==32||!canonicalWorkIds.every(x=>text(x,160)))
   throw Error('HELD_G6_PINNED_32_WORK_CENSUS_REQUIRED');
@@ -140,9 +140,14 @@ export function createG6ResearchCart({canonicalWorkIds=[]}={}){
   provider_synced:false,admission_authority:false,
   human_review_required:true
  });
- const add=({provider,source_id,original_title='',selectedByHuman=false,
+ const add=({provider,source_id,original_title='',selectionProof=null,
   source_sha256=null}={})=>{
-  if(selectedByHuman!==true)return held('HELD_G6_HUMAN_SELECTION_REQUIRED');
+  // The host verifier must be injected independently of the research task.
+  // In-band selectedByHuman flags have zero authority.
+  let selected=false;
+  try{selected=typeof verifyHumanSelection==='function'&&
+   verifyHumanSelection({proof:selectionProof,provider,source_id})===true;}catch{}
+  if(!selected)return held('HELD_G6_HUMAN_SELECTION_REQUIRED');
   const policy=G6_PROVIDER_BOUNDARIES[provider];
   if(!policy)return held('HELD_G6_PROVIDER_NOT_ATTESTED');
   const id=text(source_id,180);
@@ -163,7 +168,8 @@ export function createG6ResearchCart({canonicalWorkIds=[]}={}){
    source_authentication:'UNVERIFIED_OR_HOST_LOCAL_ONLY',
    canonical_work_id:null,canonical_work_admission:false,
    original_work_count_contribution:0,scientific_credit:0,
-   authorial_origin_inferred:false,human_selected:true
+   authorial_origin_inferred:false,human_selection_verified_by_host:true,
+   host_selection_is_external_identity_proof:false
   });
   entries.set(key,rec);
   return Object.freeze({status:'ADDED_RESEARCH_CANDIDATE',candidate:rec,
