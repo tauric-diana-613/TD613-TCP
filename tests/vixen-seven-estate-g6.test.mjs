@@ -4,9 +4,11 @@
  * provider synchronization, human permission, publication or Experiment B.
  */
 import test from 'node:test';
-import {spawnSync} from 'node:child_process';
+import {spawnSync,execFileSync} from 'node:child_process';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {
  deriveSynthesisHeadline,scoreUnifiedSynthesisCandidates,
@@ -189,25 +191,59 @@ test('G6-H Podium CLI refuses unverified host lane rather than trusting an in-ba
  assert.match(attempted.stderr,/HELD_G6_EXPLICIT_HOST_NATIVE_LANE_REQUIRED/);
  assert.doesNotMatch(attempted.stdout,/ORIGINAL_NATIVE_EXECUTABLE|SOURCE_BOUND_HOST_RETURN_PROSPECTIVE/);
 });
-test('G6-I direct native EM source route can reach a typed body-free CLI return without browser activation',()=>{
+test('G6-I genuine historical EM route returns a body-free host receipt at its pinned source checkout',()=>{
+ const root=fileURLToPath(new URL('../',import.meta.url));
  const cli=fileURLToPath(new URL('../scripts/vixen-podium.mjs',import.meta.url));
+ const head='70b5a0f9e94626cba6068f41c6117e7978800bbd';
  const request=JSON.stringify({estate:'EM_ATELIER',operation:'em_native_work_route',
   payload:{work_id:'emwork_074ccf9ad783c9c9047d73a8'}});
- const run=spawnSync(process.execPath,[cli,'--native-read-tools',
-  '--g6-readonly-return',request],{cwd:fileURLToPath(new URL('../',import.meta.url)),
-  env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'},
+ const invoke=(extra=[])=>spawnSync(process.execPath,[cli,'--native-read-tools',
+  '--g6-readonly-return',request,...extra],{cwd:root,
+  env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1',
+   PYTHONDONTWRITEBYTECODE:'1'},
   encoding:'utf8',timeout:80000,maxBuffer:1024*1024});
- assert.equal(run.status,0,run.stderr);
- const result=JSON.parse(run.stdout);
- assert.equal(result.schema,'td613.vixen.g6.cli-read-return/v1');
- assert.equal(result.result.status,'SOURCE_BOUND_HOST_RETURN_PROSPECTIVE');
- assert.equal(result.result.method.estate,'EM_ATELIER');
- assert.equal(result.result.method.original_method_kind,'ORIGINAL_NATIVE_EXECUTABLE');
- assert.equal(result.result.projection.source_bodies_included,false);
- assert.equal(result.result.private_index_exported,false);
- assert.equal(result.result.method.source_revision.length,40);
- assert.equal(result.human_session_observed,false);
- assert.equal(result.canonical_writes,0);
- assert.equal(result.release_authority,false);
- assert.doesNotMatch(run.stdout,/original_full_text|private_source_body|BEGIN PRIVATE KEY/);
+ const missing=invoke();
+ assert.equal(missing.status,2);
+ assert.match(missing.stderr,/HELD_G6_ORIGINAL_EM_CHECKOUT_REQUIRED/);
+ assert.doesNotMatch(missing.stdout,/SOURCE_BOUND_HOST_RETURN_PROSPECTIVE/);
+ // The earlier G3 witness verifies this historical source exists. A missing
+ // source is a genuine qualification RED, never license to substitute Vixen.
+ execFileSync('git',['cat-file','-e',head+'^{commit}'],{cwd:root,timeout:15000});
+ const temp=mkdtempSync(join(tmpdir(),'td613-g6-original-em-'));
+ const original=join(temp,'pinned-em-checkout');
+ let mounted=false;
+ try{
+  execFileSync('git',['worktree','add','--detach',original,head],{
+   cwd:root,timeout:80000,stdio:'pipe'});mounted=true;
+  const observed=execFileSync('git',['rev-parse','HEAD'],{
+   cwd:original,encoding:'utf8',timeout:5000}).trim();
+  assert.equal(observed,head,'Original EM source revision must be independently inspected');
+  // Reject the current host checkout: it is not the original source and
+  // lacks the exact historical registries required by this native route.
+  const wrong=invoke(['--g6-em-original-checkout',root]);
+  assert.equal(wrong.status,2);
+  assert.match(wrong.stderr,/HELD_PRIVATE_MODEL_OUTSIDE_REPO_REQUIRED/);
+  const run=invoke(['--g6-em-original-checkout',original]);
+  assert.equal(run.status,0,run.stderr);
+  const result=JSON.parse(run.stdout);
+  assert.equal(result.schema,'td613.vixen.g6.cli-read-return/v1');
+  assert.equal(result.result.status,'SOURCE_BOUND_HOST_RETURN_PROSPECTIVE');
+  assert.equal(result.result.method.estate,'EM_ATELIER');
+  assert.equal(result.result.method.original_method_kind,'ORIGINAL_NATIVE_EXECUTABLE');
+  assert.equal(result.result.projection.method_schema,'td613.em.work-route/v1');
+  assert.equal(result.result.projection.source_bodies_included,false);
+  assert.equal(result.result.private_index_exported,false);
+  assert.equal(result.result.method.source_revision.length,40);
+  assert.equal(result.native_em_checkout_git_head,head);
+  assert.equal(result.native_checkout_identity,
+   'GIT_HEAD_MATCH_CHECKOUT_CONTRACT_NOT_INDEPENDENT_ORIGIN');
+  assert.equal(result.human_session_observed,false);
+  assert.equal(result.canonical_writes,0);
+  assert.equal(result.release_authority,false);
+  assert.doesNotMatch(run.stdout,/original_full_text|private_source_body|BEGIN PRIVATE KEY/);
+ }finally{
+  if(mounted)execFileSync('git',['worktree','remove','--force',original],{
+   cwd:root,timeout:80000,stdio:'pipe'});
+  rmSync(temp,{recursive:true,force:true});
+ }
 });
