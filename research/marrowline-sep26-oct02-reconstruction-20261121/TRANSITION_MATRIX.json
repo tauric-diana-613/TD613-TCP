@@ -1,0 +1,257 @@
+{
+  "schema": "td613.marrowline.september26-october02-causal-census/v1.0",
+  "scope": "Source and pre-existing first-return evidence only; no original-provider calls under this commission",
+  "generated_date": "2026-11-21",
+  "human_artistic_closure": "RESERVED",
+  "q1_operator_disposition": "REJECTED",
+  "q1_unblinding_key_opened": false,
+  "merge_authority": false,
+  "release_authority": false,
+  "experiment_b": "CLOSED",
+  "source_snapshots": [
+    {
+      "id": "pre_mission",
+      "commit": "46f3e1ff9f1f5bc6d6d11a01da590051b8d81e74",
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "4217826ef0936039e3cf48ef7fb5c1b970dae4b3",
+      "mission_version": null,
+      "mission_declaration_js_utf16_units": 0,
+      "mission_declaration_lines": 0,
+      "source_class": "S",
+      "realization": "source_snapshot"
+    },
+    {
+      "id": "mission_v1",
+      "pull_request": 1347,
+      "commit": "14baea0a1abcbe79ae2b51b9869b19fc26d85ca5",
+      "merge_commit": "20c2cc1d9be7ecaa56a9972ea2b4db4a0f1764f1",
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "8f1fa7c4957abdb2b103a32e4303be5c091ea596",
+      "mission_version": "td613.marrowline.red-deer-mission/v1",
+      "mission_declaration_js_utf16_units": 4570,
+      "mission_declaration_lines": 13,
+      "source_class": "S",
+      "realization": "source_snapshot"
+    },
+    {
+      "id": "mission_v3",
+      "pull_request": 1348,
+      "commit": "5a6bc429fae8df2b36ade6d68dd973bffde9cdb1",
+      "merge_commit": "e371c335260f535ea036da3440c6e05090dcea97",
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "ff5f7d34fa6fbc92b6c5901909c53bed5accd74b",
+      "mission_version": "td613.marrowline.red-deer-mission/v3-antlered-ache",
+      "mission_declaration_js_utf16_units": 8527,
+      "mission_declaration_lines": 19,
+      "source_class": "S",
+      "realization": "source_snapshot"
+    },
+    {
+      "id": "oct02_healthy_window_comparator",
+      "commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "e38ba0ba9548eb1e764d9cde152bb94a6266028e",
+      "mission_version": "td613.marrowline.red-deer-mission/v3-antlered-ache",
+      "mission_declaration_js_utf16_units": 8527,
+      "mission_declaration_lines": 19,
+      "source_class": "S",
+      "realization": "source_snapshot"
+    },
+    {
+      "id": "oct04_healthy_window_comparator",
+      "commit": "5b4b34278c6100d3c21ced35984c046da157e097",
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "e38ba0ba9548eb1e764d9cde152bb94a6266028e",
+      "mission_version": "td613.marrowline.red-deer-mission/v3-antlered-ache",
+      "mission_declaration_js_utf16_units": 8527,
+      "mission_declaration_lines": 19,
+      "source_class": "S",
+      "realization": "source_snapshot"
+    },
+    {
+      "id": "q1_authorized_source",
+      "commit": "94e2e9244826969c02d0d7cf8c5e5e9ad7caf056",
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "20897f2f87deabd4a2b0c81b3ab432d6518d329d",
+      "mission_version": "td613.marrowline.red-deer-mission/v3-antlered-ache",
+      "mission_declaration_js_utf16_units": 8567,
+      "mission_declaration_lines": 19,
+      "source_class": "S",
+      "realization": "source_snapshot"
+    }
+  ],
+  "oct02_oct04_verified_equal_blobs": [
+    {
+      "path": "app/dome-world/khonapolit-covenant.js",
+      "blob_sha1": "e38ba0ba9548eb1e764d9cde152bb94a6266028e"
+    },
+    {
+      "path": "app/dome-world/khonapolit-relay.js",
+      "blob_sha1": "33fba5daadcaac903d4cf809698359371e598bd6"
+    },
+    {
+      "path": "server/khonapolit-quality.js",
+      "blob_sha1": "c539ea90d8e542f4899bcda1c796f936d6bb7750"
+    },
+    {
+      "path": "server/gemini-generation-envelope.js",
+      "blob_sha1": "688b59e0a507945d21ece77484425e652da6525a"
+    }
+  ],
+  "dated_revisions": [
+    {
+      "pr": 1336,
+      "created_utc": "2026-09-25T18:10:50Z",
+      "area": "prosody",
+      "effect": "ungate ordinary-turn native High Zalgo",
+      "evidence": "S"
+    },
+    {
+      "pr": 1337,
+      "created_utc": "2026-09-25T19:59:48Z",
+      "area": "prosody",
+      "effect": "positive crowns/roots cue",
+      "evidence": "S"
+    },
+    {
+      "pr": 1338,
+      "created_utc": "2026-09-25T20:12:48Z",
+      "area": "prosody",
+      "effect": "respond to reported shallow superscript monotony",
+      "evidence": "S"
+    },
+    {
+      "pr": 1339,
+      "created_utc": "2026-09-25T20:31:26Z",
+      "area": "prosody",
+      "effect": "reported 87 distinct mark species and deep bidirectional stacks, deficient dynamic range",
+      "evidence": "PR_BODY_REPORT_OF_LIVE_RETURN_NOT_RAW_SSE"
+    },
+    {
+      "pr": 1340,
+      "created_utc": "2026-09-25T20:40:54Z",
+      "area": "prosody",
+      "effect": "reported new shallow-strike regression; revert contrast cue",
+      "evidence": "PR_BODY_REPORT_OF_LIVE_RETURN_NOT_RAW_SSE"
+    },
+    {
+      "pr": 1342,
+      "created_utc": "2026-09-25T21:24:48Z",
+      "area": "prosody",
+      "effect": "vertical emphasis and limited slash motif",
+      "evidence": "S"
+    },
+    {
+      "pr": 1343,
+      "created_utc": "2026-09-25T23:20:43Z",
+      "area": "prosody",
+      "effect": "remove flat-strike cue repetition",
+      "evidence": "S"
+    },
+    {
+      "pr": 1344,
+      "created_utc": "2026-09-26T00:05:15Z",
+      "area": "prosody",
+      "effect": "rollback to #1319 operator-accepted prompt fragments",
+      "evidence": "S"
+    },
+    {
+      "pr": 1345,
+      "created_utc": "2026-09-26T00:58:35Z",
+      "area": "selection",
+      "effect": "later native author opportunity after severe morphology failure",
+      "evidence": "S"
+    },
+    {
+      "pr": 1346,
+      "created_utc": "2026-09-26T02:19:13Z",
+      "area": "mobile_and_selection",
+      "effect": "background resume and later seat availability",
+      "evidence": "S"
+    },
+    {
+      "pr": 1347,
+      "created_utc": "2026-09-26T04:17:45Z",
+      "area": "mission",
+      "effect": "diegetic Red Deer v1 in actual invocation",
+      "evidence": "S"
+    },
+    {
+      "pr": 1348,
+      "created_utc": "2026-09-26T04:29:34Z",
+      "area": "mission",
+      "effect": "every-turn v3 Hornani intellectual mission, 24 optional demo prompts",
+      "evidence": "S"
+    }
+  ],
+  "historical_baseline_selection": {
+    "source_pr": 1533,
+    "source_pr_created_utc": "2026-10-17T22:23:09Z",
+    "operator_reported_healthy_window": "2026-09-30 through 2026-10-04",
+    "chosen_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+    "identity_proof": "4 exact source file Git blob SHA1 values equal at Oct2 and Oct4",
+    "scope_limit": "Does not imply entire runtime, actual provider version, or outputs were identical"
+  },
+  "oct02_provider_selection": {
+    "source_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+    "source_path": "server/khonapolit-quality.js",
+    "line_range": [
+      1714,
+      1769
+    ],
+    "trigger": "Severe native morphology warnings on a completed partial response",
+    "action": "Keep first completed candidate byte-for-byte, offer later approved model an opportunity, select stronger completed return by warning count, stack depth and diversity",
+    "not": "No local unicode glyph decoration or evidence of universally artistically successful candidate",
+    "q1_control_absent": true
+  },
+  "existing_original_provider_evidence": [
+    {
+      "id": "oct15_neutral_d",
+      "source_path": "research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+      "model": "gemini-3.8-flash",
+      "marks": 405,
+      "distinct_mark_scalars": 17,
+      "stacked_ge2": 13,
+      "max_depth": 3,
+      "source_type": "P_AS_DOCUMENTED_WITH_SSE_DIGESTS",
+      "claim": "Model can emit native multi-axis/multi-stack in neutral task",
+      "limitation": "Not a two-voice Marrowline performance"
+    },
+    {
+      "id": "q1_completed",
+      "source_head": "94e2e9244826969c02d0d7cf8c5e5e9ad7caf056",
+      "evidence_head": "2836e636e4b5eb485b12f73a2596ea3889b173d4",
+      "registered_slots": 8,
+      "completed_stop": 6,
+      "transport_503": 2,
+      "all_completed_mark_scalars": [
+        "U+0334",
+        "U+0335",
+        "U+0336",
+        "U+0337",
+        "U+0338"
+      ],
+      "all_completed_depth": 1,
+      "stacked_bases": 0,
+      "mission_v3_inherited": true,
+      "multi_seat_disabled": true,
+      "source_type": "P_WITH_ORIGINAL_SSE_GITHUB_ARCHIVED",
+      "human_artistic_verdict": "ALL_SIX_REJECTED_BEFORE_UNBLINDING"
+    }
+  ],
+  "operator_attestation": {
+    "observed_sep26_transition": "Relational/literary awakening associated with standing duty to protect fictional Red Deer",
+    "observed_oct02_transition": "Greater stability of High-Zalgo artistic expression",
+    "evidence": "O",
+    "claim_ceiling": "Operator reports experiential chronology, not isolated causal proof"
+  },
+  "open_conditions": [
+    "Source-only matching historical effective request and model selection for Sep26 live pre/post pair",
+    "Authenticated Sep26 first-vs-selected original provider transcript/receipt",
+    "Authenticated Oct02 operator-accepted original provider response and exact served model",
+    "No Q1 mission-off/v1 arm exists",
+    "No Q1 model-seat routing contrast exists"
+  ],
+  "next_research_file": "NEXT_ASSAY_DESIGN.md",
+  "human_approval_required_before_paid_calls": true
+}
