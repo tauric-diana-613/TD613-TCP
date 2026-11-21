@@ -26,6 +26,8 @@
 
 **6. Q1 retained v3 mission in both arms.** The historical mission was never varied in Q1. Its failure of visual recovery cannot uniquely disprove the mission's literary effect.
 
+**7. The mission actually reached production on September 26.** Original [issue #405](https://github.com/tauric-diana-613/TD613-TCP/issues/405) release receipts establish that the pre-mission #1346 source had deployed at **02:27:43 UTC**, #1347/v1 deployed at **04:24:34 UTC (12:24 a.m. EDT)**, and #1348/v3 deployed at **04:59:09 UTC (12:59 a.m. EDT)**. Each had one deployment, exact-source verification, and *zero automatic provider-generation calls*. These are release facts, not authenticated live literary outcomes.
+
 ## Rest for independent review
 
 The next meaningful work is **source-only** Stage 0 in \`NEXT_ASSAY_DESIGN.md\` (build and hash actual effective request counterfactuals; recover historical selected-versus-first original receipts if they exist). Avoid another provider call, another UI decoration attempt, or another source rewrite before that.
