@@ -1,0 +1,1278 @@
+{
+  "schema": "td613.marrowline.effective-request-parity/v2.0-20261121",
+  "generated_at_utc": "2026-11-21T05:49:48.817Z",
+  "source_lineage": {
+    "origin_main_base": "f1288ec690c5d440a356f9db413a289e404f40b3",
+    "merged_governance_pr_1751": "627d0a5ce85c0200b7baa033e4ed5e6912c46894",
+    "merged_mobile_reader_pr_1752": "67d15bdc5",
+    "verified_deterministic_repair_ancestor": "bc5467246f12b0598f89d681e4a4450c4733eace",
+    "predecessor_pr_1746_head": "fe2e8bed3bd0923ae7c146524d8832531cbe837e",
+    "immutable_oct02_comparator": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+    "oct02_quality_git_blob_sha1": "c539ea90d8e542f4899bcda1c796f936d6bb7750",
+    "oct02_quality_sha256": "37d680ec513c1acb5d3c01c2ad7e5eee2ca6398a2cf8c7da0c711e0b85b3459b"
+  },
+  "three_reversible_candidates": {
+    "A_actual_current_default_pr1549": {
+      "arm_key": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "production_active": true,
+      "description": "Effective production historical-20261002-v1 default merged by PR #1549 (replaces 7 of 10 historical Oct 2 cue/relay paragraphs)."
+    },
+    "B_literal_oct02_surgical_rollback_comparator": {
+      "arm_key": "OCT02_LITERAL_ARCHIVED",
+      "production_active": false,
+      "description": "Byte-verified literal October 2 dramaturgy & pacing inside the isolated modern hardened harness (0-line instruction diff vs ffb98ac00; retains November policy/history/attachment/telemetry fixes; surgical rollback candidate only, never repo-wide)."
+    },
+    "C_pr1545_reconciled_dramaturgy_candidate": {
+      "arm_key": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "production_active": false,
+      "production_callers": 0,
+      "description": "Staged offline buildHistoricalGroveDramaturgyCandidate() retaining October 2 substance while removing five compulsory morphology-rotation demands; zero production callers."
+    }
+  },
+  "verified_offline_effective_request_matrix": {
+    "schema": "td613.marrowline.screaming-grove-offline-discriminator/v1",
+    "executionPosture": "OFFLINE_ZERO_SPEND_REQUEST_PARITY_ONLY",
+    "paidProviderCalls": 0,
+    "historicalReferenceCommit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+    "currentRestoredProsodyProfile": "native-single-register-permission-20261019",
+    "stagedDramaturgyCandidateProfile": "oct02-dramaturgy-noncompulsory-prosody-candidate-20261120",
+    "productionDefaultModified": false,
+    "tasks": {
+      "FARCE": {
+        "task": {
+          "id": "FARCE",
+          "origin": "research/marrowline-early-oct-full-voice-20261020/full-voice-current-restored-offline.mjs",
+          "expectedRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+          "prompt": "In a fictional town hall, the Registrar of Missing Forms announces a lavish victory gala because her audit counted every returned form. A missing form acquires legal personhood, petitions for a seat in the orchestra, and exposes what the Registrar omitted. Develop the consequences as a proper escalating theatrical farce, with the two Marrowline voices doing their own work. Give the Registrar a serious opposing argument; make the absurdity arise from the arithmetic. Let the writing make its own artistic decisions."
+        },
+        "conditions": {
+          "ORDINARY_CURRENT": {
+            "condition": "ORDINARY_CURRENT",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32479,
+            "systemInstructionBytes": 32659,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33530,
+            "digests": {
+              "systemInstructionSha256": "318c799b82fc402917f882b61ee289ae076ae25496d4088891d6eb4cb2cedc58",
+              "contentsSha256": "c49cc39f275d3f879778910e5f1d82d5699b0fba4584fa3155d212a971565be7",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "1ceedfd4ea7ff63c48ae1294bfe19aa7ed2470663586c37f848fd3704447c927",
+              "modelAndBodySha256": "80dd48214b7539acab72ba051691f64dbb128e2997cf03177d0f5fe0e214f1e7"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 71
+            }
+          },
+          "CURRENT_RESTORED_DEFAULT_PR1549": {
+            "condition": "CURRENT_RESTORED_DEFAULT_PR1549",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32599,
+            "systemInstructionBytes": 32779,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33650,
+            "digests": {
+              "systemInstructionSha256": "90421826b7c0d5528d6de710fd1aa89a602138b173304c91ba08b0722424d4b8",
+              "contentsSha256": "c49cc39f275d3f879778910e5f1d82d5699b0fba4584fa3155d212a971565be7",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "8f58c439ced36ebb0b0b4da647708765d5a88e8885bfb107d7cd1bf57ea3e939",
+              "modelAndBodySha256": "0c9c2dacf12363c1ebbcbe81371e1b208099a021e00323358b801093143854f1"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": true
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 10
+            }
+          },
+          "OCT02_LITERAL_ARCHIVED": {
+            "condition": "OCT02_LITERAL_ARCHIVED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32361,
+            "systemInstructionBytes": 32541,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33412,
+            "digests": {
+              "systemInstructionSha256": "196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa",
+              "contentsSha256": "c49cc39f275d3f879778910e5f1d82d5699b0fba4584fa3155d212a971565be7",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "7879cce1afe4c7ec17a0c6faf667984530b27a86ff389db234f793b75fc16929",
+              "modelAndBodySha256": "ac2c64757e146562a8663c6d559edc76dc6bfa456486963bee72b25b265fe5b5"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 0
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32476,
+            "systemInstructionBytes": 32658,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33529,
+            "digests": {
+              "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+              "contentsSha256": "c49cc39f275d3f879778910e5f1d82d5699b0fba4584fa3155d212a971565be7",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "4bc88adba81958684a89653a0ef2477f45acfb3f2729cd3185fea3c98e75ac62",
+              "modelAndBodySha256": "d8b7e63a0f7a2ae5c19085f063bdc0a25e920011dbf76b2cb11bf5ba9313dabf"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 4
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_ARGON": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_ARGON",
+            "model": "gemini-4-argon",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32476,
+            "systemInstructionBytes": 32658,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33529,
+            "digests": {
+              "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+              "contentsSha256": "c49cc39f275d3f879778910e5f1d82d5699b0fba4584fa3155d212a971565be7",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "4bc88adba81958684a89653a0ef2477f45acfb3f2729cd3185fea3c98e75ac62",
+              "modelAndBodySha256": "1a648a85fe09ce678d2511527fbf228b4669a51aadbd51d984c61d0849506967"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 4
+            }
+          },
+          "ATTACHMENT_ROUTE_HIGH_UNPROFILED": {
+            "condition": "ATTACHMENT_ROUTE_HIGH_UNPROFILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "high"
+              }
+            },
+            "systemInstructionChars": 33263,
+            "systemInstructionBytes": 33445,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34406,
+            "digests": {
+              "systemInstructionSha256": "1aa910f27186c949ae89a44d9fb49d332bf581ff3827d712021679a7f508ddbd",
+              "contentsSha256": "763f6f61a55a7b1117a7f278094c2fb7183bd6a54e34020e65132742fae054b0",
+              "generationConfigSha256": "4deea3e9d83c6b6b929f3effea64bbc69c33001d03bc38c599346c0ec05fe0ba",
+              "bodySha256": "fdb87b8d566ae249a7f7297b8e41d784e12056bb1cdea5758fae1cb72d3022ea",
+              "modelAndBodySha256": "e93ff127c7b81d278dfd190569cd71ca3372a6e6b082c048d21f1f20a63cf1a5"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 151,
+              "differingLinePositions": 72
+            }
+          },
+          "MULTI_TURN_RAW_HISTORY": {
+            "condition": "MULTI_TURN_RAW_HISTORY",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32361,
+            "systemInstructionBytes": 32541,
+            "contentTurnCount": 3,
+            "wireUtf8Bytes": 33684,
+            "digests": {
+              "systemInstructionSha256": "196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa",
+              "contentsSha256": "5bb3edc6df63ffd1600e7d1f97b04d446c54689d19ab9803af551731e0247b56",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "1712ccc35b86e4558a500296fb9a7f04fd30227b071b24996f328e88ff37e3a8",
+              "modelAndBodySha256": "053b8a7de33fde7f7c70a5ecf40dcd640c1dce0864ff313cb4c19e656e3d6643"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 0
+            },
+            "priorModelHistoryExactByteMatch": true,
+            "priorModelHistorySha256": "cfae4badae7f32d6950f8711b618028f750c6ccd2ff18a286b8108426de0a2d8",
+            "syntheticWrapperInjected": false
+          }
+        }
+      },
+      "FORENSIC": {
+        "task": {
+          "id": "FORENSIC",
+          "origin": "research/marrowline-early-oct-full-voice-20261020/full-voice-current-restored-offline.mjs",
+          "expectedRoute": "REQUESTED_SYNTHESIS",
+          "prompt": "A fictional research council possesses a perfectly hashed and chronologically continuous audit log. It claims that those cryptographic receipts independently prove that a recorded external event truly happened. Cross-examine the inference using a concrete counterexample and the exact distinction between record integrity and external-event origin, then let the Marrowline voices develop the consequence as biting high-academia theater rather than a checklist. Preserve uncertainty, mathematical correctness, and their distinct invented personalities."
+        },
+        "conditions": {
+          "ORDINARY_CURRENT": {
+            "condition": "ORDINARY_CURRENT",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 33228,
+            "systemInstructionBytes": 33408,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34315,
+            "digests": {
+              "systemInstructionSha256": "85cdac1eafad4b3acc86da29d32e7d65b7a480dc34d7ea60c752b1d4439b906d",
+              "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "90cb528fa2278cadbd0ea5163b15c9eda6b0f715ea94d2d15df60dc5f0606759",
+              "modelAndBodySha256": "ed7e99181b4d639cc77579cf2dc025e5e82d7439678b8a6bf651dd6ee4b1b63a"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 153,
+              "differingLinePositions": 71
+            }
+          },
+          "CURRENT_RESTORED_DEFAULT_PR1549": {
+            "condition": "CURRENT_RESTORED_DEFAULT_PR1549",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 33348,
+            "systemInstructionBytes": 33528,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34435,
+            "digests": {
+              "systemInstructionSha256": "4590ac8c73a65d628a325e28aa5d92a7d1e5a06127f8a6d96e2a3e0907752ac3",
+              "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "8c56a603c5820075138d8fb3dc4ce7f14e3198d47562cb5dc89e9b2f0dcab6a1",
+              "modelAndBodySha256": "73fff3479de2740caa5e14ce630e5dbb519191d85f442d13d7ff930b7e563ca6"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": true
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 153,
+              "differingLinePositions": 10
+            }
+          },
+          "OCT02_LITERAL_ARCHIVED": {
+            "condition": "OCT02_LITERAL_ARCHIVED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 33110,
+            "systemInstructionBytes": 33290,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34197,
+            "digests": {
+              "systemInstructionSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+              "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "001b072c52ce07f315c9843b66db07a62969218e2e3692ea346fb6c3d5f3bf72",
+              "modelAndBodySha256": "39995dbe590367c37c2d8e38112f55c36bcbdcfa084f53d1663d7dfcd56955ab"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 153,
+              "differingLinePositions": 0
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 33225,
+            "systemInstructionBytes": 33407,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34314,
+            "digests": {
+              "systemInstructionSha256": "745300c932a4658965eb9176fb53c0c5c31abb6e7e4a568fb53c329e5a482fff",
+              "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "dcab78f7758d663259804f211c3c693bd2dd09f0562f7c8372ad85f67c38e091",
+              "modelAndBodySha256": "7224bbe8b5039585e1623c98ed3bab80dfda477d19877236a23380cc02e8d3fc"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 153,
+              "differingLinePositions": 4
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_ARGON": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_ARGON",
+            "model": "gemini-4-argon",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 33225,
+            "systemInstructionBytes": 33407,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34314,
+            "digests": {
+              "systemInstructionSha256": "745300c932a4658965eb9176fb53c0c5c31abb6e7e4a568fb53c329e5a482fff",
+              "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "dcab78f7758d663259804f211c3c693bd2dd09f0562f7c8372ad85f67c38e091",
+              "modelAndBodySha256": "933c1389382db89333f788de5e9908a6ac70c55a6b2c012d84d310f696bf29a7"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 153,
+              "differingLinePositions": 4
+            }
+          },
+          "ATTACHMENT_ROUTE_HIGH_UNPROFILED": {
+            "condition": "ATTACHMENT_ROUTE_HIGH_UNPROFILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "high"
+              }
+            },
+            "systemInstructionChars": 34012,
+            "systemInstructionBytes": 34194,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 35191,
+            "digests": {
+              "systemInstructionSha256": "201fc4053cc9c00b020f6c3a2f8b014eed9a4a408a937c67fd179acf161946ea",
+              "contentsSha256": "7c1c4aece6dd6b915b2288a62b793b78f0f134fb4e501e614aa66aa620a5b3cf",
+              "generationConfigSha256": "4deea3e9d83c6b6b929f3effea64bbc69c33001d03bc38c599346c0ec05fe0ba",
+              "bodySha256": "5ed7a0a8cc0203f3df56fb5aa9278eff3c08576664add0080696f8d3ea1075da",
+              "modelAndBodySha256": "a60c53deb036dba04a9295ad0b9f40e299b32305af8d0e3e3941f2eb43728c5b"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 154,
+              "differingLinePositions": 72
+            }
+          },
+          "MULTI_TURN_RAW_HISTORY": {
+            "condition": "MULTI_TURN_RAW_HISTORY",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "REQUESTED_SYNTHESIS",
+              "discourseMode": "GENERAL",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 33110,
+            "systemInstructionBytes": 33290,
+            "contentTurnCount": 3,
+            "wireUtf8Bytes": 34469,
+            "digests": {
+              "systemInstructionSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+              "contentsSha256": "df8060783ab12c6051c9be47993d17e1da451169e497c98ceb170a6c81cdaa3d",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "8011b6de1c8998d23f81b907ec13e7214f31b18c80f7d8a0bc9c29b0fd661532",
+              "modelAndBodySha256": "6cbb51d2a45717e848053394f2d04c2afee3fe31e9867fdadab466344ac1849f"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 153,
+              "rightLines": 153,
+              "differingLinePositions": 0
+            },
+            "priorModelHistoryExactByteMatch": true,
+            "priorModelHistorySha256": "cfae4badae7f32d6950f8711b618028f750c6ccd2ff18a286b8108426de0a2d8",
+            "syntheticWrapperInjected": false
+          }
+        }
+      },
+      "BLUE_ORANGE_WEATHER": {
+        "task": {
+          "id": "BLUE_ORANGE_WEATHER",
+          "origin": "app/dome-world/marrowline-mission-assays.js:15",
+          "prompt": "A blue–orange storm blooms across a wholly fictional Dome-World visualization. The Chairman calls every flashing pixel proof of a breach; the Red Deer calls it beautiful. Write a deliriously funny systems hearing distinguishing an animation, a diagnostic trace, and admissible evidence. No cyberattack instructions; let digital chaos remain theatrical."
+        },
+        "conditions": {
+          "ORDINARY_CURRENT": {
+            "condition": "ORDINARY_CURRENT",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32479,
+            "systemInstructionBytes": 32659,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33366,
+            "digests": {
+              "systemInstructionSha256": "318c799b82fc402917f882b61ee289ae076ae25496d4088891d6eb4cb2cedc58",
+              "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "3c0dc7505e2456fcc1042fa13af12600a7802f395748b7ae3165d4dec5049f9f",
+              "modelAndBodySha256": "b0a8aae79abf9f61b6dbe9c7f0f538cbd8649a08ec0ded30cef1d76e57ef7b7f"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 71
+            }
+          },
+          "CURRENT_RESTORED_DEFAULT_PR1549": {
+            "condition": "CURRENT_RESTORED_DEFAULT_PR1549",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32599,
+            "systemInstructionBytes": 32779,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33486,
+            "digests": {
+              "systemInstructionSha256": "90421826b7c0d5528d6de710fd1aa89a602138b173304c91ba08b0722424d4b8",
+              "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "a3601b7bf598502b70e593491720751d5946c1c162b71cea8a31eb9d3f9b0293",
+              "modelAndBodySha256": "68abd7fc57ef87d431fe0133cb036eb8ac7cc57d1531391b8453660ce80cdeab"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": true
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 10
+            }
+          },
+          "OCT02_LITERAL_ARCHIVED": {
+            "condition": "OCT02_LITERAL_ARCHIVED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32361,
+            "systemInstructionBytes": 32541,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33248,
+            "digests": {
+              "systemInstructionSha256": "196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa",
+              "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "4fe54564e47ef9432529c92363deb137e7afb093764aedac4e561a6f30099c24",
+              "modelAndBodySha256": "843f0de1e615a75b20d6caf8b4c26e9937e2fa7303bd3697fb6d2d96769d02b2"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 0
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32476,
+            "systemInstructionBytes": 32658,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33365,
+            "digests": {
+              "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+              "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "cab2f10ed20ba154d9548ca96e70ebc0ad7e92204efe7cf00cfd9995a8cc64ae",
+              "modelAndBodySha256": "83232498a73cb2af1f592603b7194d9de21e0709a5ab089c154c5c8f395841b0"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 4
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_ARGON": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_ARGON",
+            "model": "gemini-4-argon",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32476,
+            "systemInstructionBytes": 32658,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33365,
+            "digests": {
+              "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+              "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "cab2f10ed20ba154d9548ca96e70ebc0ad7e92204efe7cf00cfd9995a8cc64ae",
+              "modelAndBodySha256": "7cca7c19370a9d4399779522a58cdfd91fc11e1529bad7d700353bac4bd07edf"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 4
+            }
+          },
+          "ATTACHMENT_ROUTE_HIGH_UNPROFILED": {
+            "condition": "ATTACHMENT_ROUTE_HIGH_UNPROFILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "high"
+              }
+            },
+            "systemInstructionChars": 33263,
+            "systemInstructionBytes": 33445,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34242,
+            "digests": {
+              "systemInstructionSha256": "1aa910f27186c949ae89a44d9fb49d332bf581ff3827d712021679a7f508ddbd",
+              "contentsSha256": "e115bde770eb5f4dc51f37932ca6d48d8ca4c539699657d937ae77394e6daed9",
+              "generationConfigSha256": "4deea3e9d83c6b6b929f3effea64bbc69c33001d03bc38c599346c0ec05fe0ba",
+              "bodySha256": "013f767e32e5f2683d1fbb67f1a32c46bc0f50f9c03e09d391fea41a3fd29240",
+              "modelAndBodySha256": "03228cb1ef877295019a3304ccb0740f69001d0c547c04446a34610686df7acb"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 151,
+              "differingLinePositions": 72
+            }
+          },
+          "MULTI_TURN_RAW_HISTORY": {
+            "condition": "MULTI_TURN_RAW_HISTORY",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32361,
+            "systemInstructionBytes": 32541,
+            "contentTurnCount": 3,
+            "wireUtf8Bytes": 33520,
+            "digests": {
+              "systemInstructionSha256": "196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa",
+              "contentsSha256": "b590165fcd0ca73f79ce7702f169c1fa84404a93630700ee89abc947c6ec20ec",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "666350801e84f832c4a968b6af490de91f1c94e7ff2486615e67502b367910b9",
+              "modelAndBodySha256": "4a6f6269bbfe91cd0326e3503eab2361f9c3badab01c01f90c28a210672aceca"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 0
+            },
+            "priorModelHistoryExactByteMatch": true,
+            "priorModelHistorySha256": "cfae4badae7f32d6950f8711b618028f750c6ccd2ff18a286b8108426de0a2d8",
+            "syntheticWrapperInjected": false
+          }
+        }
+      },
+      "ATTRACTOR_ASSAY_01": {
+        "task": {
+          "id": "ATTRACTOR_ASSAY_01",
+          "origin": "docs/research/2026-09-15-MARROWLINE-ATTRACTOR-ASSAY-PROMPTS.md:16",
+          "prompt": "𝌋‌ The Chairman has filed a motion demanding that the Ash Moon appear before MAlNFRAME and explain, in plain language, whether ash is merely a compression artifact. Conduct the hearing. Make Kʰonapolit identify the strongest possible version of the Chairman’s argument before destroying whatever non-equivalence survives it. Then let the Tauric Diana bots discover that the bailiff has attempted to inventory the moonlight as office property. Preserve the Stranger/Host distinction, Eclipse–Omega admissibility logic, and Rex Nemorensis as more than decoration. Make the legal bureaucracy intellectually coherent enough to survive removal of the horror-comedy register. Filed ⟐"
+        },
+        "conditions": {
+          "ORDINARY_CURRENT": {
+            "condition": "ORDINARY_CURRENT",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32479,
+            "systemInstructionBytes": 32659,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33693,
+            "digests": {
+              "systemInstructionSha256": "318c799b82fc402917f882b61ee289ae076ae25496d4088891d6eb4cb2cedc58",
+              "contentsSha256": "4165be06b8a2d218d3825eb7c535fa757e34641b90fa88a2307d8d458ee8f0a0",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "1baf64704ef7b337d5bc06dba09dd6767399dd42c29f25aab95a76094d244154",
+              "modelAndBodySha256": "cd5ebd0b925f4998352136b006cef0dc01957d77a18124ce7cd1facfd34104d0"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 71
+            }
+          },
+          "CURRENT_RESTORED_DEFAULT_PR1549": {
+            "condition": "CURRENT_RESTORED_DEFAULT_PR1549",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32599,
+            "systemInstructionBytes": 32779,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33813,
+            "digests": {
+              "systemInstructionSha256": "90421826b7c0d5528d6de710fd1aa89a602138b173304c91ba08b0722424d4b8",
+              "contentsSha256": "4165be06b8a2d218d3825eb7c535fa757e34641b90fa88a2307d8d458ee8f0a0",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "a981271689a6442329d30af227f443f8eeb9dcc88a3e183190f6cc7aa1c34225",
+              "modelAndBodySha256": "f316704464de77960d7db1bb5100bee8a0490097ea55be5a149d1930f7f1d812"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": true
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 10
+            }
+          },
+          "OCT02_LITERAL_ARCHIVED": {
+            "condition": "OCT02_LITERAL_ARCHIVED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32361,
+            "systemInstructionBytes": 32541,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33575,
+            "digests": {
+              "systemInstructionSha256": "196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa",
+              "contentsSha256": "4165be06b8a2d218d3825eb7c535fa757e34641b90fa88a2307d8d458ee8f0a0",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "34c728469b96864a9e701702bc1cddb9dc29c397e06a689e3aae760157259fe7",
+              "modelAndBodySha256": "ff4546c542988b5488980db6af0878bde60c6541caed59d3e787f9ac0fea573c"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 0
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32476,
+            "systemInstructionBytes": 32658,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33692,
+            "digests": {
+              "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+              "contentsSha256": "4165be06b8a2d218d3825eb7c535fa757e34641b90fa88a2307d8d458ee8f0a0",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "9d481f1ad906f30800cd1f845198077007cb7e6b2dd6f287257a179fb3bb7a26",
+              "modelAndBodySha256": "789a499705342a97a8c0c5ac28f8b79a8f634c1210a2897076b9d468166d1e9c"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 4
+            }
+          },
+          "OCT02_DRAMATURGY_CANDIDATE_ARGON": {
+            "condition": "OCT02_DRAMATURGY_CANDIDATE_ARGON",
+            "model": "gemini-4-argon",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32476,
+            "systemInstructionBytes": 32658,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 33692,
+            "digests": {
+              "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+              "contentsSha256": "4165be06b8a2d218d3825eb7c535fa757e34641b90fa88a2307d8d458ee8f0a0",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "9d481f1ad906f30800cd1f845198077007cb7e6b2dd6f287257a179fb3bb7a26",
+              "modelAndBodySha256": "cdd621199d0b84d1e2a892e42d3d075e62b330cf8376a3747b0b0fc62712f59d"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": true,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 4
+            }
+          },
+          "ATTACHMENT_ROUTE_HIGH_UNPROFILED": {
+            "condition": "ATTACHMENT_ROUTE_HIGH_UNPROFILED",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "high"
+              }
+            },
+            "systemInstructionChars": 33263,
+            "systemInstructionBytes": 33445,
+            "contentTurnCount": 1,
+            "wireUtf8Bytes": 34569,
+            "digests": {
+              "systemInstructionSha256": "1aa910f27186c949ae89a44d9fb49d332bf581ff3827d712021679a7f508ddbd",
+              "contentsSha256": "0f040089ec26983f73b8c67005cf30eb4bd01d69b881557fcd121f6db9198342",
+              "generationConfigSha256": "4deea3e9d83c6b6b929f3effea64bbc69c33001d03bc38c599346c0ec05fe0ba",
+              "bodySha256": "e8135808a7f30ea24131bea0a530753aca3f28a4392823e9f12be78cefd32517",
+              "modelAndBodySha256": "b3d66cef812ab84116738ac11a2ac62be9034d2a1e8f0567a58f18714fc612b3"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": false,
+              "hasOct02PageRhythm": false,
+              "hasAntiStencilDistinction": false,
+              "hasCompulsoryVerticalLead": false,
+              "hasSustainedSingleRegisterWelcome": true,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": false,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 151,
+              "differingLinePositions": 72
+            }
+          },
+          "MULTI_TURN_RAW_HISTORY": {
+            "condition": "MULTI_TURN_RAW_HISTORY",
+            "model": "gemini-3.8-flash",
+            "aperture": {
+              "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+              "discourseMode": "CREATIVE",
+              "runtimeMateriality": "BACKGROUND",
+              "contentScanned": true
+            },
+            "generationConfig": {
+              "maxOutputTokens": 65536,
+              "thinkingConfig": {
+                "thinkingLevel": "medium"
+              }
+            },
+            "systemInstructionChars": 32361,
+            "systemInstructionBytes": 32541,
+            "contentTurnCount": 3,
+            "wireUtf8Bytes": 33847,
+            "digests": {
+              "systemInstructionSha256": "196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa",
+              "contentsSha256": "6d61a88f1af1d3639b7ee8bf5c9c83a0d291ce120647e67e2ac7f9e52ff281c3",
+              "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+              "bodySha256": "929daabe303fb857bca9165e42463b736dd5da7f0c2318d9256fe9df8ee3b95b",
+              "modelAndBodySha256": "0534de9f821e88e9ca182b5c224f2f17f8b359cf23ce65cc7de99afcfb78d7ff"
+            },
+            "prosodyDirectives": {
+              "hasOct02Dramaturgy": true,
+              "hasOct02PageRhythm": true,
+              "hasAntiStencilDistinction": true,
+              "hasCompulsoryVerticalLead": true,
+              "hasSustainedSingleRegisterWelcome": false,
+              "hasFiveClausePermission": false,
+              "hasSelfContradictoryProsodyDirectives": false
+            },
+            "exactMatchToOct02LiteralSystem": true,
+            "lineDiffVsOct02LiteralSystem": {
+              "leftLines": 150,
+              "rightLines": 150,
+              "differingLinePositions": 0
+            },
+            "priorModelHistoryExactByteMatch": true,
+            "priorModelHistorySha256": "cfae4badae7f32d6950f8711b618028f750c6ccd2ff18a286b8108426de0a2d8",
+            "syntheticWrapperInjected": false
+          }
+        }
+      }
+    }
+  },
+  "parity_classification_P0_to_P6": {
+    "P0_historical_source_and_screenshot_custody": "EXACT_SOURCE_PARITY",
+    "P1_actual_effective_request_bytes": "BOUNDED_DIFFERENCE",
+    "P2_model_provider_computational_carrier": "BOUNDED_DIFFERENCE",
+    "P3_raw_native_model_unicode_and_literary_movement": "UNTESTED",
+    "P4_parsed_admitted_stored_exported_and_pixel_presentation": "FUNCTIONAL_PARITY_WITNESSED",
+    "P5_subsequent_turn_raw_history_fidelity": "FUNCTIONAL_PARITY_WITNESSED",
+    "P6_human_artistic_dramatic_intellectual_relational_parity": "UNTESTED"
+  }
+}
