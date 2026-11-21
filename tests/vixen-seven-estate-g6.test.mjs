@@ -64,7 +64,7 @@ test('G6-B witnessed canonical candidate data remain untouched, duplicate leads 
   before.candidates.find(c=>c.id==='cand-quotient-holonomy').breakdown.fadt_exact);
  assert.equal(normalizeSupplementalResearchCandidates([{id:'x',title:'Distinct One'},
   {id:'y',title:'Distinct Two'}]).length,2);
- assert.equal(normalizeSupplementalResearchCandidates([null,{},'untrusted']),0);
+ assert.equal(normalizeSupplementalResearchCandidates([null,{},'untrusted']).length,0);
 });
 test('G6-C separate research candidate cart deduplicates source coordinates, not canonical Works',()=>{
  const cart=createG6ResearchCart({canonicalWorkIds:workIds,
