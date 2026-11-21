@@ -42,7 +42,7 @@ jobs:
       (github.event_name == 'pull_request' &&
        (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-'))) ||
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
           set -euo pipefail
           # Obtain the historical checkout outside product; absence is a failed
           # required witness, never a successful skipped qualification.
-          gh repo clone "$GITHUB_REPOSITORY" "$RUNNER_TEMP/vixen-historical" -- --no-checkout --filter=blob:none
+          gh repo clone "$GITHUB_REPOSITORY" "$RUNNER_TEMP/vixen-historical" -- --no-checkout --depth=1 --single-branch --filter=blob:none
           git -C "$RUNNER_TEMP/vixen-historical" fetch origin 70b5a0f9e94626cba6068f41c6117e7978800bbd
           git -C "$RUNNER_TEMP/vixen-historical" checkout --detach 70b5a0f9e94626cba6068f41c6117e7978800bbd
           TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/vixen-em-pinned-archive-qualifier.mjs > "$RUNNER_TEMP/vixen-original-receipt.json"
