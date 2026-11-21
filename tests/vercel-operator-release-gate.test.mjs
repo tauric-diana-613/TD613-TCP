@@ -43,13 +43,13 @@ assert.match(workflow, /VERCEL_PROJECT: td-613-tcp/);
 assert.match(workflow, /VERCEL_SCOPE: tauric-diana-s-projects/);
 // Regression: Vercel's Python builder needs uv in the direct-token Actions
 // environment. The fallback route must retain its existing separate authority.
-const uvInstall = workflow.match(/- name: Install pinned uv for Python Vercel production functions[\\s\\S]*?(?=\\n\\s+- name:)/)?.[0] || '';
-const uvConfirm = workflow.match(/- name: Confirm pinned uv executable before production build[\\s\\S]*?(?=\\n\\s+- name:)/)?.[0] || '';
-assert.match(uvInstall, /if: steps\\.mode\\.outputs\\.mode == 'direct-token'/);
-assert.match(uvInstall, /uses: astral-sh\\/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2/);
-assert.match(uvInstall, /version: '0\\.13\\.7'/);
+const uvInstall = workflow.match(/- name: Install pinned uv for Python Vercel production functions[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
+const uvConfirm = workflow.match(/- name: Confirm pinned uv executable before production build[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
+assert.match(uvInstall, /if: steps\.mode\.outputs\.mode == 'direct-token'/);
+assert.match(uvInstall, /uses: astral-sh\/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2/);
+assert.match(uvInstall, /version: '0\.13\.7'/);
 assert.match(uvInstall, /enable-cache: false/);
-assert.match(uvConfirm, /if: steps\\.mode\\.outputs\\.mode == 'direct-token'/);
+assert.match(uvConfirm, /if: steps\.mode\.outputs\.mode == 'direct-token'/);
 assert.match(uvConfirm, /run: uv --version/);
 assert.ok(workflow.indexOf('- name: Install pinned uv for Python Vercel production functions') < workflow.indexOf('- name: Confirm pinned uv executable before production build'));
 assert.ok(workflow.indexOf('- name: Confirm pinned uv executable before production build') < workflow.indexOf('- name: Pull production environment and build once'));
