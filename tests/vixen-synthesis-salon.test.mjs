@@ -223,9 +223,14 @@ test('unified synthesis headline engine reacts deterministically across Podium, 
 
  const suppH=deriveSynthesisHeadline({corpus,supplementalSources:[{id:'SUP-1'},{id:'SUP-2'}]});
  assert.equal(suppH.regime,'SUPPLEMENTAL_CORPUS_SYNTHESIS');
- assert.equal(suppH.provenance.work_census,corpus.works.length+2);
+ // G6/FADT-02: two labels are research leads, never 2 newly admitted
+ // Works, FADT exact descent or independently witnessed W-plane support.
+ assert.equal(suppH.provenance.work_census,corpus.works.length);
+ assert.equal(suppH.provenance.supplemental_sources,2);
+ assert.equal(suppH.provenance.supplemental_count_class,'NONCANONICAL_RESEARCH_LEADS');
  assert.equal(ANTI_BOILERPLATE_SUBTITLE_RE.test(suppH.patternSubtitle),false);
- assert.match(suppH.patternSubtitle,/WIDENED QUOTIENT SUPPORT/);
+ assert.match(suppH.patternSubtitle,/LEADS HELD/);
+ assert.doesNotMatch(JSON.stringify(suppH),/34 (?:canonical )?Works/);
 
  const benchTombstone=deriveSynthesisHeadline({corpus,withdrawnCount:1});
  assert.equal(benchTombstone.regime,'TOMBSTONE_BOUNDED_SYNTHESIS');
