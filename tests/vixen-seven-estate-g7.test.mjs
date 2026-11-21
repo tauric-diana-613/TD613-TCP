@@ -234,3 +234,33 @@ test('G7-K both existing issue listeners stage durable claims before source acqu
  }
  assert.match(wend,/--gesture-lease-file "\$RUNNER_TEMP\/g7-workflow\/lease\.json"/);
 });
+
+
+test('G7-L encrypted handoff authority fails before public mutation, then exact ciphertext readback succeeds',()=>{
+ const {root,second}=fixture();
+ const outside=root+'-ciphertext.sealed.json';
+ try{
+  const oldSeal=fs.readFileSync(path.join(root,'04-RECEIPTS/phase2/current-seal.json'));
+  const arg={compiled:second,outRoot:root,observedAt:t2,
+   encryptedPayload:{body:'synthetic secret only'},publicPem:'invalid',artifactPath:outside};
+  assert.throws(()=>writeProjection({...arg,artifactPath:path.join(root,'leak.json')}),
+   /HELD_ENCRYPTED_HANDOFF_MUST_REMAIN_OUTSIDE_PUBLIC_PROJECTION/);
+  assert.throws(()=>writeProjection(arg));
+  assert.deepEqual(fs.readFileSync(path.join(root,'04-RECEIPTS/phase2/current-seal.json')),oldSeal);
+  assert.equal(fs.existsSync(outside),false);
+  fs.writeFileSync(outside,'other data');
+  assert.throws(()=>writeProjection(arg),/HELD_ENCRYPTED_HANDOFF_DESTINATION_ALREADY_EXISTS/);
+  assert.equal(fs.readFileSync(outside,'utf8'),'other data');
+  fs.unlinkSync(outside);
+  const {publicKey}=crypto.generateKeyPairSync('rsa',{modulusLength:2048,
+   publicKeyEncoding:{type:'spki',format:'pem'},privateKeyEncoding:{type:'pkcs8',format:'pem'}});
+  const result=writeProjection({...arg,publicPem:publicKey});
+  assert.equal(result.receipt.encrypted_handoff_created,true);
+  assert.equal(fs.existsSync(outside),true);
+  const ciphertext=fs.readFileSync(outside,'utf8');
+  assert.doesNotMatch(ciphertext,/synthetic secret only/);
+  assert.equal(JSON.parse(ciphertext).schema,'wendbine-src-autosync/v0.1');
+  assert.equal(result.seal.atelier_snapshot_id,result.snapshot);
+  assert.ok(loadState(root).captures.length>0);
+ }finally{tidy(root);fs.rmSync(outside,{force:true})}
+});
