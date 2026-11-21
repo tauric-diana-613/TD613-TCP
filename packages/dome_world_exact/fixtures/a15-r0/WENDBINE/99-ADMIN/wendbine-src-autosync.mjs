@@ -271,6 +271,14 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
  if(a.observed_at!==observedAt)throw new Error('HELD_OBSERVED_AT_AUDIT_MISMATCH');
  if(encryptedPayload&&!publicPem)throw new Error('PUBLIC_KEY_REQUIRED_FOR_PRIVATE_HANDOFF');
  if(encryptedPayload&&!artifactPath)throw new Error('ENCRYPTED_ARTIFACT_PATH_REQUIRED');
+ if(encryptedPayload&&(
+   path.resolve(artifactPath)===path.resolve(outRoot)||
+   path.resolve(artifactPath).startsWith(path.resolve(outRoot)+path.sep)))
+  throw new Error('HELD_ENCRYPTED_HANDOFF_MUST_REMAIN_OUTSIDE_PUBLIC_PROJECTION');
+ if(encryptedPayload&&fs.existsSync(artifactPath))
+  throw new Error('HELD_ENCRYPTED_HANDOFF_DESTINATION_ALREADY_EXISTS');
+ // A bad public key must fail BEFORE any archive or mutable-state mutation.
+ const preparedPrivateEnvelope=encryptedPayload?sealPayload(encryptedPayload,publicPem):null;
  const created=[],projected=[];
  // Build all proposed public bytes before any mutable-state write.
  for(const [key,rel] of Object.entries(outputFiles)){
@@ -370,6 +378,15 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
  const epoch=retainG7PublicEpoch({outRoot,snapshot,observedAt,files:projected,
   predecessorSnapshot:predecessor?.atelier_snapshot_id||null,
   predecessorSealSha256,sourceRevision,runIdentity});
+ // Confirm private ciphertext exists and reads back before the public
+ // receipt can truthfully advertise encrypted_handoff_created=true.
+ if(preparedPrivateEnvelope){
+  const encryptedBytes=json(preparedPrivateEnvelope);
+  fs.mkdirSync(path.dirname(artifactPath),{recursive:true,mode:0o700});
+  fs.writeFileSync(artifactPath,encryptedBytes,{flag:'wx',mode:0o600});
+  if(sha(fs.readFileSync(artifactPath))!==sha(Buffer.from(encryptedBytes,'utf8')))
+   throw new Error('HELD_ENCRYPTED_HANDOFF_READBACK_FAILED');
+ }
  // All proposed public bytes exist in an independently hash-verifiable
  // immutable epoch before mutable current records can be changed.
  for(const file of projected){
@@ -390,11 +407,6 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
   fs.writeFileSync(sealStage,json(sealData),{flag:'wx',mode:0o644});
   fs.renameSync(sealStage,currentSeal);
  }finally{if(fs.existsSync(sealStage))fs.rmSync(sealStage,{force:true})}
- if(encryptedPayload){
-  const envelope=sealPayload(encryptedPayload,publicPem);
-  fs.mkdirSync(path.dirname(artifactPath),{recursive:true,mode:0o700});
-  fs.writeFileSync(artifactPath,json(envelope),{flag:'wx',mode:0o600});
- }
  return {snapshot,seal:sealData,receipt,epoch,
   authority:'LOCAL_PUBLIC_PROJECTION_ONLY',
   historical_first_epoch_reconstruction_claim:false};
