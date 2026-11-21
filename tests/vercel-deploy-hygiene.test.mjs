@@ -3,6 +3,17 @@ import fs from 'fs';
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const gitignore = fs.readFileSync('.gitignore', 'utf8');
+// Vercel CLI 66.6.0 --prebuilt preserves Python traced-source symlinks
+// inside .vercel/output. Excluding their targets from the *upload* causes
+// ENOENT even after an otherwise successful local production build.
+const vercelignore = fs.readFileSync('.vercelignore', 'utf8');
+const prebuiltUploadIgnoreRules = vercelignore.split(/\r?\n/)
+  .map(line => line.trim())
+  .filter(line => line && !line.startsWith('#'));
+assert.deepEqual(prebuiltUploadIgnoreRules, ['.venv-dome/', '**/__pycache__/'],
+  'Keep prebuilt Python source targets uploadable; prune Lambda bundles through the per-function vercel.json excludeFiles law instead');
+assert.ok(fs.existsSync('packages/dome_world_exact/bridge/__init__.py'),
+  'The exact Python bridge file referenced by the production prebuilt trace must exist in source');
 const configuredFunctions = Object.keys(vercel.functions || {}).sort();
 const deployedApiFiles = [];
 function collectApiFiles(directory, prefix = '') {
