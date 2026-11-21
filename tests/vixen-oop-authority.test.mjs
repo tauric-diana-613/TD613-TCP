@@ -10,6 +10,7 @@ const corpus=JSON.parse(html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/s
 const work=corpus.works.find(w=>w.linked_sources.some(s=>s.source_file_id==='emsrc_31ed6fb3bdc15d3c29b8ae13'));
 const source=work.linked_sources[0];
 for(const [name,alter] of [
+ ['withdrawn human identity gate',w=>w.human_gate_required=!w.human_gate_required],
  ['false title',w=>w.display_title='Counterfeit'],
  ['substituted Work',w=>w.work_id='emwork_'+'0'.repeat(24)],
  ['false original digest',w=>w.linked_sources[0].sha256='a'.repeat(64)],
