@@ -1,0 +1,400 @@
+{
+  "artifact": "TD613 Marrowline Screaming Grove expanded visual reference corpus",
+  "created_utc": "2026-11-21T05:03:04.760298+00:00",
+  "scope": "13 accepted Marrowline screenshots (3 original atlas + 10 new user-supplied) plus 9 other historical reference images; source bytes preserved",
+  "counts": {
+    "accepted_original_atlas": 3,
+    "accepted_new_operator_attachments": 10,
+    "accepted_total": 13,
+    "other_historical_references": 9,
+    "total_original_images": 22,
+    "exact_sha256_duplicate_files": 0
+  },
+  "scientific_boundary": "Screenshots witness rendered pixels only. They do not by themselves determine original provider text, actual generation model, October 2 episode/date, or independent output counts. The original first 3 were earlier operator-accepted; the 10 new images broaden the range. Visually related pairs are not independent model generations without additional source evidence.",
+  "related_possible_same_passage_groups": [
+    [
+      "accepted-04",
+      "accepted-08"
+    ],
+    [
+      "accepted-05",
+      "accepted-10"
+    ]
+  ],
+  "files": [
+    {
+      "id": "accepted-01",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/01-IMG_0932.jpeg",
+      "original_filename": "IMG_0932.jpeg",
+      "sha256": "ca15d07ae83a17f22ff29e20beb67d1f4f3e72a493c353af75e81619149d74e8",
+      "bytes": 438112,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "accepted_marrowline",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Deep interline overlap; dense clusters extend across neighboring prose and the movement heading.",
+      "episode_independence": "not established"
+    },
+    {
+      "id": "accepted-02",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/02-IMG_0933.jpeg",
+      "original_filename": "IMG_0933.jpeg",
+      "sha256": "252669280c974d8619855736e1bcafedeb82331f3738b6fe29a276ffe7b13a98",
+      "bytes": 329432,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "accepted_marrowline",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Relatively shallow lateral marks, mixed case and conversational turns. Accepted success despite lower vertical extent.",
+      "episode_independence": "not established"
+    },
+    {
+      "id": "accepted-03",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/03-IMG_0934.jpeg",
+      "original_filename": "IMG_0934.jpeg",
+      "sha256": "d46e65a8d074d6f4883622f5d93043827c3592a89e6187639e3986b064a540a8",
+      "bytes": 393911,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "accepted_marrowline",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Deep upper/lower fields with uneven envelopes; separated paragraph islands coexist with dense collisions.",
+      "episode_independence": "not established"
+    },
+    {
+      "id": "historical-reference-01",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/04-IMG_0939.png",
+      "original_filename": "IMG_0939.png",
+      "sha256": "ea821d79b293150c0ffa3b4fd840da0152ecb5a8b25c31e40257b660051a2d4e",
+      "bytes": 708830,
+      "pixel_dimensions": [
+        1284,
+        2778
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "favored_gemini_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Dense upper/middle eruptions thin into cutting italic/slanted lines; varied local stack extents; direct address to Amari.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-02",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/05-IMG_0937.png",
+      "original_filename": "IMG_0937(1).png",
+      "sha256": "2e7fca549f101201c7c5a9a13a8a70e3d3285e5b7ec386e4a74886f28eca83d2",
+      "bytes": 734036,
+      "pixel_dimensions": [
+        1284,
+        2778
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "gemini_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Near-duplicate visible passage of earlier reference, with a different viewport position; not an independent generation.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-03",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/06-IMG_0940.png",
+      "original_filename": "IMG_0940.png",
+      "sha256": "89db029578eea4339ee41892d24d75c043e44a86dfc8bbd816d488a1075e1412",
+      "bytes": 815131,
+      "pixel_dimensions": [
+        1284,
+        2778
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "gemini_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Large clusters around laughter and cooling-fan ridicule contract into thinner mixed-case speech.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-04",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/07-IMG_0941.png",
+      "original_filename": "IMG_0941.png",
+      "sha256": "f27349d54e76931cbc8295f098ae4072171a6cad04748b38a26e56a5978153c9",
+      "bytes": 673610,
+      "pixel_dimensions": [
+        1284,
+        2778
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "gemini_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Short summons, separated address, deep middle eruptions, emoji interruption and closing label.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-05",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/08-IMG_0942.jpeg",
+      "original_filename": "IMG_0942.jpeg",
+      "sha256": "dd4e5cd07f2c6ed4bc15dbdfbefb99440844796e184bf4ae0966dd43ae2813d0",
+      "bytes": 897837,
+      "pixel_dimensions": [
+        1284,
+        1606
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "gemini_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Sparse opening expands around later accusation; box-like marks are observed, not a diagnosed encoding failure.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-06",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/09-IMG_0944.jpeg",
+      "original_filename": "IMG_0944.jpeg",
+      "sha256": "2856f942434055d6b1e6c4116729211cbb25f0e1a408c323d81840646177ad7f",
+      "bytes": 582041,
+      "pixel_dimensions": [
+        1284,
+        1372
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "gemini_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Deep irregular stacks intrude into movement heading and prior prose; compact choral utterances followed by ornamental closing band.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-07",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/10-IMG_9303.jpeg",
+      "original_filename": "IMG_9303(1).jpeg",
+      "sha256": "e701a2d74082f6dc160bb03766d8f2bf446a9c546035d889e142f7ee8f0daf75",
+      "bytes": 483370,
+      "pixel_dimensions": [
+        1242,
+        1010
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "favorite_quote_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Two separated lines; asymmetric crowns/roots, lateral strokes, variable depth and large whitespace.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-08",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/11-IMG_0946.png",
+      "original_filename": "IMG_0946.png",
+      "sha256": "c206ba96c40f88419e63e5321603224e8271ab2ebcd93ef16e41746d9f9c1a49",
+      "bytes": 583601,
+      "pixel_dimensions": [
+        1284,
+        2778
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "welcomed_motif_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Combining-letter rows, slanted/lateral marks and widely spaced clean lines alternate.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "historical-reference-09",
+      "archive_path": "02_OTHER_HISTORICAL_REFERENCES/12-IMG_0947.png",
+      "original_filename": "IMG_0947.png",
+      "sha256": "9f943d31db69c35acd99071ace652d4e7f462c0e73b1b6e72b8e8a1a1c48932f",
+      "bytes": 576522,
+      "pixel_dimensions": [
+        1284,
+        2778
+      ],
+      "source": "original ChatGPT Library upload recovered from September 24 atlas",
+      "role": "welcomed_motif_reference",
+      "screenshot_authenticity": "source original verified against September 24 atlas SHA-256",
+      "generation_date": "not independently established",
+      "observed_visual_regime": "Repeated arch-like pattern frames an utterance; compact combining-letter rows and spaced clean speech coexist.",
+      "episode_independence": "historical reference; not independently verified as Marrowline output"
+    },
+    {
+      "id": "accepted-04",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/04-IMG_0195.jpeg",
+      "original_filename": "IMG_0195.jpeg",
+      "sha256": "d6b8df8f9c0bce80fe240beea1fb57afcdd207cea4335e90103f0bd632132fd5",
+      "bytes": 350391,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Long-form reading screenshot: constraint/diff and chairman passage; widely spaced graphemes, small upward/downward marks, then packed base-text band.",
+      "episode_independence": "Possible same passage/capture group as IMG_0178; do not count as independent generated return."
+    },
+    {
+      "id": "accepted-05",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/05-IMG_0194.jpeg",
+      "original_filename": "IMG_0194.jpeg",
+      "sha256": "7b90c239a714520b011f205046cd25b6d147a33acc39bda2f203d449ffa8850a",
+      "bytes": 491690,
+      "pixel_dimensions": [
+        1284,
+        1781
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: broad overhead crowns, long lateral arrows, irregular multi-line overprinting and emphatic extended letter band.",
+      "episode_independence": "Possible same passage/capture group as IMG_0152; retain different viewport/capture."
+    },
+    {
+      "id": "accepted-06",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/06-IMG_0187.jpeg",
+      "original_filename": "IMG_0187.jpeg",
+      "sha256": "938e4aa1119873fad47e86a0cfcf91c7d51e072ec76e7e89f8f675a1639b55ce",
+      "bytes": 803098,
+      "pixel_dimensions": [
+        1284,
+        2379
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: extreme dense blockfield, highly crowded interline mark ecology underneath readable thematic lines.",
+      "episode_independence": "Original user-accepted screenshot; generation episode/date unverified."
+    },
+    {
+      "id": "accepted-07",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/07-IMG_0185.jpeg",
+      "original_filename": "IMG_0185.jpeg",
+      "sha256": "25e2d40b0fa20a5894a408460a329b65a526b299ba6f003863d91de26fb74115",
+      "bytes": 564531,
+      "pixel_dimensions": [
+        1284,
+        2401
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Moderate scattered crowns and lateral marks in literary paragraphs; calmer/more readable texture around COME CLOSER and DANCER OWNLESS.",
+      "episode_independence": "Original user-accepted screenshot; generation episode/date unverified."
+    },
+    {
+      "id": "accepted-08",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/08-IMG_0178.jpeg",
+      "original_filename": "IMG_0178.jpeg",
+      "sha256": "d603fa54c6b682f684371e72b7a2b616729161ee8764619b1c1b79db5642e93a",
+      "bytes": 348990,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Constraint/diff and chairman passage with segmented words and repeated arrows, same literary material as IMG_0195.",
+      "episode_independence": "Related passage to IMG_0195; do not claim an independent model return."
+    },
+    {
+      "id": "accepted-09",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/09-IMG_0154.jpeg",
+      "original_filename": "IMG_0154.jpeg",
+      "sha256": "63a0616d0f68d1dcc811d8b8220c4dda987dfbf178e69546a96fb0e6adf6937c",
+      "bytes": 596589,
+      "pixel_dimensions": [
+        1284,
+        2087
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: heavily stacked luminous mark crowds, text phrases visible within noisy field, session with CAPTURE control.",
+      "episode_independence": "Original user-accepted screenshot; generation episode/date unverified."
+    },
+    {
+      "id": "accepted-10",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/10-IMG_0152.jpeg",
+      "original_filename": "IMG_0152.jpeg",
+      "sha256": "f0153b46c51437aabdc3aca65ba70754669c6ae5b5a0ef5a82dc1a952832537b",
+      "bytes": 482620,
+      "pixel_dimensions": [
+        1284,
+        1814
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: crowned sweeping arcs with long glyph row, literature about grove deficit/shoreline; alternate framing of IMG_0194.",
+      "episode_independence": "Related passage to IMG_0194; do not claim an independent model return."
+    },
+    {
+      "id": "accepted-11",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/11-IMG_0156.jpeg",
+      "original_filename": "IMG_0156.jpeg",
+      "sha256": "f21d175df37226e3e5d532b64a1b58a58782cf68f3848aba38a74b4e7c38ecca",
+      "bytes": 549625,
+      "pixel_dimensions": [
+        1284,
+        2394
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: mid-density longform witness and ritual prose, modestly marked crowns, arrows and line variation.",
+      "episode_independence": "Original user-accepted screenshot; generation episode/date unverified."
+    },
+    {
+      "id": "accepted-12",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/12-IMG_0190.jpeg",
+      "original_filename": "IMG_0190.jpeg",
+      "sha256": "f3ddfe1a77af70173bda24b513f58f73f728a83f8b5b5323a7840b36b5f403ca",
+      "bytes": 512592,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: extremely dense multitier mark texture covering literary paragraphs and recurring technical/ritual motifs.",
+      "episode_independence": "Original user-accepted screenshot; generation episode/date unverified."
+    },
+    {
+      "id": "accepted-13",
+      "archive_path": "01_OPERATOR_ACCEPTED_MARROWLINE/13-IMG_0192.jpeg",
+      "original_filename": "IMG_0192.jpeg",
+      "sha256": "3fd098fd5355632927298eb2e2cd6bec7c498afa00a75e89f3db801d65e2485b",
+      "bytes": 334585,
+      "pixel_dimensions": [
+        710,
+        1536
+      ],
+      "source": "user-supplied original image attachment in current ChatGPT conversation, 2026-11-21",
+      "role": "operator_accepted_marrowline",
+      "screenshot_authenticity": "original user-provided bytes; not an extracted provider-native transcript",
+      "generation_date": "not independently established; phone clock display is not capture date",
+      "observed_visual_regime": "Tauric Diana bots: readable uppercase/lowercase rhetoric, intermittent delicate native crowns, long lateral traversals and changing line density.",
+      "episode_independence": "Original user-accepted screenshot; generation episode/date unverified."
+    }
+  ]
+}
