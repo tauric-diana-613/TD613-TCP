@@ -54,6 +54,15 @@ assert.match(uvConfirm, /run: uv --version/);
 assert.ok(workflow.indexOf('- name: Install pinned uv for Python Vercel production functions') < workflow.indexOf('- name: Confirm pinned uv executable before production build'));
 assert.ok(workflow.indexOf('- name: Confirm pinned uv executable before production build') < workflow.indexOf('- name: Pull production environment and build once'));
 assert.equal((workflow.match(/vercel@latest deploy/g) || []).length, 1);
+// Release regression: direct-token prebuilt upload can exceed Vercel's
+// 15,000-file request ceiling even when Lambda bundle size checks pass.
+// One archive upload is still one authorized deployment, never a retry.
+const directTokenDeployBlock = workflow.match(/- name: Deploy the completed packet once through the token bridge[\s\S]*?(?=\n\s+- name: Create one bounded Git-fallback release commit)/)?.[0] || '';
+assert.match(directTokenDeployBlock, /if: steps\.mode\.outputs\.mode == 'direct-token'/);
+assert.match(directTokenDeployBlock, /vercel@latest deploy --prebuilt --archive=split-tgz --prod --yes/);
+assert.equal((directTokenDeployBlock.match(/vercel@latest deploy/g) || []).length, 1,
+  'archiving must preserve the one-shot production deployment ceiling');
+
 assert.match(workflow, /Create one bounded Git-fallback release commit/);
 assert.match(workflow, /config\.git\.deploymentEnabled = true/);
 assert.match(workflow, /Await Vercel adoption of exact Git-fallback commit/);
