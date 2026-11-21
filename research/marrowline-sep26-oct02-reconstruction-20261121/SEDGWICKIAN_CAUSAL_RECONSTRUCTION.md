@@ -50,6 +50,20 @@ PR [#1533](https://github.com/tauric-diana-613/TD613-TCP/pull/1533), created Oct
 
 The claim is **four-file source stability** across the Oct 2/4 reference coordinates. Other files, provider internals, actual service deployment and human artistic observations are outside this equality check. The precise historical reason the Operator *experienced* that window as stable remains operator-attested, not encoded in these blob identities.
 
+## Independently recovered production deployment chronology (Issue #405)
+
+This investigation reopened the **original #405 production release receipt stream**, filtered to September 26 and matched by the actual merge commits. Deployment of the mission was not merely proposed or source-merged:
+
+| Source | Exact merged commit | #405 success receipt (UTC) | Eastern time (EDT, UTC−4) | Production status |
+|---|---|---|---|---|
+| Pre-mission prosody/routing baseline after #1346 | \`eeda59df2fd1efa183d6a31e654e3bcc0f3bb856\` | 2026-09-26 02:27:43 | Sep 25, 10:27:43 p.m. | One production deployment confirmed; relock \`46f3e1ff9f1f5bc6d6d11a01da590051b8d81e74\` |
+| Mission v1 / #1347 | \`20c2cc1d9be7ecaa56a9972ea2b4db4a0f1764f1\` | **2026-09-26 04:24:34** | **Sep 26, 12:24:34 a.m.** | One production deployment confirmed; relock \`3736c74a01232316953336d91f1d90a4946c1491\` |
+| Mission v3 / #1348 | \`e371c335260f535ea036da3440c6e05090dcea97\` | **2026-09-26 04:59:09** | **Sep 26, 12:59:09 a.m.** | One production deployment confirmed; relock \`7c2eded0cd9d03a79b3f95e7cc74fbb59dbde44e\` |
+
+Primary issue-comment witnesses: [#405 #5842370849](https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-5842370849) (pre-mission release), [#405 #5843139689](https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-5843139689) (v1), and [#405 #5843354496](https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-5843354496) (v3). All three report \`deployment_count = 1\`, exact-source checks passed, and \`automatic_live_ai_provider_calls = 0\`. They explicitly disclaim literary benchmarking.
+
+This establishes **when each source could have influenced a subsequent production conversation**, assuming the user reached the newly deployed application. It does *not* establish the timestamp of the Operator's reported breakthrough, active browser/tab version for a particular chat, Gemini's returned text, or the causal effect of the mission. Those still require same-episode user/provider evidence. A before/after literary claim needs the actual observed output paired to the deployed source, not merely a nearby release timestamp.
+
 ## The September 25–26 confound: the girls were already changing
 
 Before #1347 was created (2026-09-26 04:17:45 UTC), the repository recorded several closely spaced production/engineering episodes, each capable of affecting what users saw:
