@@ -67,21 +67,25 @@ test('G6-B witnessed canonical candidate data remain untouched, duplicate leads 
  assert.equal(normalizeSupplementalResearchCandidates([null,{},'untrusted']),0);
 });
 test('G6-C separate research candidate cart deduplicates source coordinates, not canonical Works',()=>{
- const cart=createG6ResearchCart({canonicalWorkIds:workIds});
+ const cart=createG6ResearchCart({canonicalWorkIds:workIds,
+  verifyHumanSelection:({proof})=>proof==='verified-gesture'});
  assert.equal(cart.inspect().schema,G6_CART_SCHEMA);
  assert.equal(cart.inspect().canonical_work_count,32);
  assert.equal(cart.add({provider:'REDDIT',source_id:'reddit:t3_abcdef',original_title:'test'}).status,'HELD');
+ assert.equal(cart.add({provider:'REDDIT',source_id:'reddit:t3_abcdef',
+  original_title:'test',selectedByHuman:true}).status,'HELD',
+  'Caller-declared selection is never sufficient to add a candidate');
  const added=cart.add({provider:'REDDIT',source_id:'reddit:t3_abcdef',
-  original_title:'Observed public label',selectedByHuman:true});
+  original_title:'Observed public label',selectionProof:'verified-gesture'});
  assert.equal(added.status,'ADDED_RESEARCH_CANDIDATE');
  assert.equal(added.candidate.canonical_work_id,null);
  assert.equal(added.candidate.body_rights_state,'HELD_RIGHTS_AND_SOURCE_READBACK');
  assert.equal(cart.add({provider:'REDDIT',source_id:'reddit:t3_abcdef',
-  selectedByHuman:true}).status,'EXISTING_RESEARCH_CANDIDATE');
+  selectionProof:'verified-gesture'}).status,'EXISTING_RESEARCH_CANDIDATE');
  assert.equal(cart.add({provider:'REDDIT',source_id:workIds[0],
-  selectedByHuman:true}).status,'HELD');
+  selectionProof:'verified-gesture'}).status,'HELD');
  const second=cart.add({provider:'DOI',source_id:'10.1000/example',
-  selectedByHuman:true});
+  selectionProof:'verified-gesture'});
  assert.equal(second.status,'ADDED_RESEARCH_CANDIDATE');
  assert.equal(cart.inspect().candidate_count,2);
  assert.equal(cart.inspect().canonical_work_count,32);
@@ -90,11 +94,12 @@ test('G6-C separate research candidate cart deduplicates source coordinates, not
  assert.equal(cart.inspect().candidate_count,1);
 });
 test('G6-D provider rights matrix holds unknown providers, private content and unsupported bodies',()=>{
- const cart=createG6ResearchCart({canonicalWorkIds:workIds});
+ const cart=createG6ResearchCart({canonicalWorkIds:workIds,
+  verifyHumanSelection:({proof})=>proof==='verified-gesture'});
  assert.equal(cart.add({provider:'FAKE_PROVIDER',source_id:'ref/1',
-  selectedByHuman:true}).status,'HELD');
+  selectionProof:'verified-gesture'}).status,'HELD');
  const local=cart.add({provider:'OPERATOR_LOCAL',source_id:'local/test-01',
-  selectedByHuman:true});
+  selectionProof:'verified-gesture'});
  assert.equal(local.candidate.body_rights_state,'PRIVATE_ONLY_NO_BROWSER_EGRESS');
  for(const provider of ['ZENODO','DOI','ACADEMIA','MEDIUM','SUBSTACK','REDDIT']){
   assert.ok(G6_PROVIDER_BOUNDARIES[provider].full_body.startsWith('HELD'));
