@@ -12,6 +12,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {assertG7Chronology,retainG7PublicEpoch,verifyG7EpochDirectory} from './vixen-g7-epoch-custody.mjs';
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const ROOT=path.resolve(HERE,'..');
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
@@ -255,55 +256,142 @@ function sealPayload(payload,publicPem){
   tag_b64:cipher.getAuthTag().toString('base64'),sealed_key_b64:wrapped.toString('base64'),
   ciphertext_b64:ciphertext.toString('base64')};
 }
-export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=null,publicPem=null,artifactPath=null}){
- const s=compiled.state,a=compiled.audit;
- if(a.unexplained_remainder!==0)throw new Error('FAILED_CAPTURE_RECONCILIATION');
+/**
+ * G7 writer: first qualify predecessor bytes and clock; then retain a full
+ * immutable public epoch before replacing the mutable current projection.
+ *
+ * This is prospective retention. A backfilled copy of an earlier *current*
+ * state remains explicitly classified as boundary recovery, never the lost
+ * independent original Temporal first epoch.
+ */
+export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=null,publicPem=null,
+ artifactPath=null,sourceRevision=null,runIdentity=null}){
+ const s=compiled?.state,a=compiled?.audit;
+ if(!s||!a||a.unexplained_remainder!==0)throw new Error('FAILED_CAPTURE_RECONCILIATION');
+ if(a.observed_at!==observedAt)throw new Error('HELD_OBSERVED_AT_AUDIT_MISMATCH');
  if(encryptedPayload&&!publicPem)throw new Error('PUBLIC_KEY_REQUIRED_FOR_PRIVATE_HANDOFF');
  if(encryptedPayload&&!artifactPath)throw new Error('ENCRYPTED_ARTIFACT_PATH_REQUIRED');
- const created=[];
+ const created=[],projected=[];
+ // Build all proposed public bytes before any mutable-state write.
  for(const [key,rel] of Object.entries(outputFiles)){
   if(key==='seal')continue;
-  const file=path.join(outRoot,rel);fs.mkdirSync(path.dirname(file),{recursive:true});
   const primary={manifestations:'manifestation_id',captures:'capture_id',blobs:'blob_id',
    derivatives:'derivative_id',rights:'decision_id',resolver:'entity_id',versions:'version_event_id',relations:'edge_id'}[key];
+  if(!Array.isArray(s[key]))throw new Error('HELD_PROJECTION_ARRAY_REQUIRED_'+key);
   const data=sortJsonl(s[key],primary);
-  fs.writeFileSync(file,data,{mode:0o644});created.push({path:rel,sha256:sha(utf8(data)),count:s[key].length});
+  projected.push({path:rel,data});
+  created.push({path:rel,sha256:sha(utf8(data)),count:s[key].length});
  }
  const seal=sha(utf8(JSON.stringify(created)));
  const snapshot='wendbine-'+observedAt.replace(/[^0-9]/g,'').slice(0,14)+'-'+seal.slice(0,12);
  const runPath='07-ARCHIVE-LEDGER/syncs/'+snapshot+'.json';
+ const runFile=path.join(outRoot,runPath);
+ // Preserve the original duplicate-run refusal before interpreting an exact
+ // repeated command as a disputed zero-distance temporal transition.
+ if(fs.existsSync(runFile))throw new Error('REFUSE_OVERWRITE_ARCHIVE_RUN');
+ const predecessorPath=path.join(outRoot,outputFiles.seal);
+ let predecessor=null,predecessorSealSha256=null;
+ if(fs.existsSync(predecessorPath)){
+  loadState(outRoot); // verify current files BEFORE touching any projection byte
+  const original=fs.readFileSync(predecessorPath);
+  predecessorSealSha256=sha(original);
+  predecessor=JSON.parse(original.toString('utf8'));
+ }
+ const chrono=assertG7Chronology({observedAt,predecessorSeal:predecessor});
+ if(runIdentity&&runIdentity.predecessor_snapshot_id!==(predecessor?.atelier_snapshot_id||'GENESIS'))
+  throw new Error('HELD_GESTURE_PREDECESSOR_IDENTITY_MISMATCH');
  const registry={schema_version:'wendbine-src-interface-registry/v1',portable_source_of_truth:'JSONL_AND_MARKDOWN',
    sqlite_role:'RESUMABLE_WORK_JOURNAL_OR_PRIVATE_DERIVATIVE_ONLY',
    src_reference:'SRC/01-MANIFESTS/phase2/interface-registry.json',
    interfaces:created.map(x=>({path:x.path,count:x.count,sha256:x.sha256})),
    epoch_path:outputFiles.seal,
    non_collapse:'work != edition != manifestation != capture != blob != derivative != authority'};
- const interfacePath=path.join(outRoot,'01-MANIFESTS/phase2/interface-registry.json');
- fs.writeFileSync(interfacePath,json(registry));
+ const registryPath='01-MANIFESTS/phase2/interface-registry.json';
+ const registryBytes=json(registry);
  const index={schema_version:'connector-registry-index/v1',atelier:'WENDBINE',snapshot_id:snapshot,
    current_seal:outputFiles.seal,entity_resolver:outputFiles.resolver,
    evidence_resolver:outputFiles.captures,
    registries:created.map(x=>({path:x.path,count:x.count,sha256:x.sha256}))};
- fs.writeFileSync(path.join(outRoot,'01-MANIFESTS/registry-index.json'),json(index));
+ const indexPath='01-MANIFESTS/registry-index.json';
+ const indexBytes=json(index);
+ const epochPath='07-ARCHIVE-LEDGER/epochs/'+snapshot;
  const receipt={...a,atelier_snapshot_id:snapshot,seal_id:'wendbine-seal:'+seal,
-  public_projection_files:created,encrypted_handoff_created:!!encryptedPayload};
- const runFile=path.join(outRoot,runPath);fs.mkdirSync(path.dirname(runFile),{recursive:true});
- if(fs.existsSync(runFile))throw new Error('REFUSE_OVERWRITE_ARCHIVE_RUN');
- fs.writeFileSync(runFile,json(receipt));
+  public_projection_files:created,encrypted_handoff_created:!!encryptedPayload,
+  predecessor_snapshot_id:predecessor?.atelier_snapshot_id||null,
+  predecessor_seal_sha256:predecessorSealSha256,
+  full_public_epoch_retained:true,
+  exact_attempt_lineage:runIdentity||null,
+  source_epoch_origin:'LOCAL_PUBLIC_WRITER_NOT_INDEPENDENT_EXTERNAL_ORIGIN'};
  const sealData={schema:'wendbine-src-seal/v1',atelier_snapshot_id:snapshot,seal_id:'wendbine-seal:'+seal,
   path:runPath,created_at:observedAt,projection:'PUBLIC_METADATA_ONLY',file_hashes:created,
-  interface_registry_sha256:sha(fs.readFileSync(interfacePath)),
-  registry_index_sha256:sha(fs.readFileSync(path.join(outRoot,'01-MANIFESTS/registry-index.json'))),
+  interface_registry_sha256:sha(utf8(registryBytes)),
+  registry_index_sha256:sha(utf8(indexBytes)),
+  predecessor_snapshot_id:predecessor?.atelier_snapshot_id||null,
+  predecessor_seal_sha256:predecessorSealSha256,
+  retained_full_public_epoch:epochPath,
+  clock_order_policy:chrono.policy,
+  human_equal_timestamp_policy:'UNADJUDICATED_HOLD',
   private_source_fields_available_to_public_connector:false,
   source_count:s.manifestations.length,capture_count:s.captures.length};
- const sealFile=path.join(outRoot,outputFiles.seal);
- fs.mkdirSync(path.dirname(sealFile),{recursive:true});fs.writeFileSync(sealFile,json(sealData));
+ // Existing legacy source may have a valid current seal but no retained epoch.
+ // Copy that exact surviving current state into an explicitly boundary-labeled
+ // archive. This is not restoration of an earlier missing Temporal projection.
+ if(predecessor){
+  const parent=path.join(outRoot,'07-ARCHIVE-LEDGER/epochs',predecessor.atelier_snapshot_id);
+  if(fs.existsSync(parent)){
+   verifyG7EpochDirectory(parent,{expectedSnapshot:predecessor.atelier_snapshot_id});
+   const pinned=fs.readFileSync(path.join(parent,outputFiles.seal));
+   if(sha(pinned)!==predecessorSealSha256)
+    throw new Error('HELD_PREDECESSOR_ARCHIVE_CURRENT_SEAL_DIVERGES');
+  }else{
+   const prevPaths=[...predecessor.file_hashes.map(x=>x.path),
+    registryPath,indexPath,predecessor.path,outputFiles.seal];
+   const paths=new Set();
+   const previousFiles=[];
+   for(const rel of prevPaths){
+    if(typeof rel!=='string'||paths.has(rel))throw new Error('HELD_PREDECESSOR_DUPLICATE_OR_INVALID_PATH');
+    paths.add(rel);
+    const abs=path.resolve(outRoot,rel);
+    if(!abs.startsWith(path.resolve(outRoot)+path.sep)||!fs.existsSync(abs))
+     throw new Error('HELD_PREDECESSOR_PUBLIC_BYTES_UNAVAILABLE');
+    previousFiles.push({path:rel,data:fs.readFileSync(abs)});
+   }
+   retainG7PublicEpoch({outRoot,snapshot:predecessor.atelier_snapshot_id,
+    observedAt:predecessor.created_at,files:previousFiles,
+    predecessorSnapshot:predecessor.predecessor_snapshot_id||null,
+    predecessorSealSha256:predecessor.predecessor_seal_sha256||null,
+    provenanceClass:'BOUNDARY_COPY_OF_PREEXISTING_MUTABLE_STATE_NOT_ORIGINAL_FIRST_EPOCH'});
+  }
+ }
+ projected.push({path:registryPath,data:registryBytes});
+ projected.push({path:indexPath,data:indexBytes});
+ projected.push({path:runPath,data:json(receipt)});
+ projected.push({path:outputFiles.seal,data:json(sealData)});
+ const epoch=retainG7PublicEpoch({outRoot,snapshot,observedAt,files:projected,
+  predecessorSnapshot:predecessor?.atelier_snapshot_id||null,
+  predecessorSealSha256,sourceRevision,runIdentity});
+ // All proposed public bytes exist in an independently hash-verifiable
+ // immutable epoch before mutable current records can be changed.
+ for(const file of projected){
+  if(file.path===outputFiles.seal)continue; // current seal ALWAYS final
+  const dst=path.resolve(outRoot,file.path);
+  if(!dst.startsWith(path.resolve(outRoot)+path.sep))
+   throw new Error('HELD_WRITER_CURRENT_PATH_OUTSIDE_ROOT');
+  fs.mkdirSync(path.dirname(dst),{recursive:true});
+  // Receipts stay create-only; mutable projection files remain canonical mirrors.
+  fs.writeFileSync(dst,file.data,{flag:file.path===runPath?'wx':'w',mode:0o644});
+ }
+ const currentSeal=path.join(outRoot,outputFiles.seal);
+ fs.mkdirSync(path.dirname(currentSeal),{recursive:true});
+ fs.writeFileSync(currentSeal,json(sealData),{mode:0o644});
  if(encryptedPayload){
   const envelope=sealPayload(encryptedPayload,publicPem);
   fs.mkdirSync(path.dirname(artifactPath),{recursive:true,mode:0o700});
   fs.writeFileSync(artifactPath,json(envelope),{flag:'wx',mode:0o600});
  }
- return {snapshot,seal:sealData,receipt};
+ return {snapshot,seal:sealData,receipt,epoch,
+  authority:'LOCAL_PUBLIC_PROJECTION_ONLY',
+  historical_first_epoch_reconstruction_claim:false};
 }
 export function loadState(root=ROOT){
  const manifestPath=path.join(root,outputFiles.manifestations);

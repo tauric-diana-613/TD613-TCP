@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main, research/vixen-seven-estate-braid-g4-20261120]
+    branches: [main, research/vixen-seven-estate-braid-g4-20261120, research/vixen-seven-estate-braid-g5-20261120]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -339,6 +339,7 @@ jobs:
           node --test tests/vixen-seven-estate-g3.test.mjs
           node --test tests/vixen-seven-estate-g4.test.mjs
           node --test tests/vixen-seven-estate-g5.test.mjs
+          node --test tests/vixen-seven-estate-g7.test.mjs
           node --test tests/vixen-semantic-semiotic-search.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
           for source_bound_suite in \

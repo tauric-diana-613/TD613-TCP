@@ -388,7 +388,8 @@ jobs:
           import subprocess
           prefix='packages/dome_world_exact/fixtures/a15-r0/WENDBINE/'
           allowed_dirs=('01-MANIFESTS/phase2/', '04-RECEIPTS/phase2/',
-             '05-OPERATIONS/phase2/', '07-ARCHIVE-LEDGER/syncs/')
+             '05-OPERATIONS/phase2/', '07-ARCHIVE-LEDGER/syncs/',
+             '07-ARCHIVE-LEDGER/epochs/')
           allowed_files=('01-MANIFESTS/registry-index.json',
              '05-OPERATIONS/relations/typed-edges.jsonl')
           raw=subprocess.check_output(['git','status','--porcelain=v1','-z','--untracked-files=all'])
@@ -405,6 +406,11 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # G7: full public epoch ledger is source-typed, append-only and
+          # never includes private capture bytes or provider synchronization.
+          if [[ -d "$WENDBINE_ROOT/07-ARCHIVE-LEDGER/epochs" ]]; then
+            git add -- "$WENDBINE_ROOT/07-ARCHIVE-LEDGER/epochs"
+          fi
           git add -- "$WENDBINE_ROOT/01-MANIFESTS/phase2" \
             "$WENDBINE_ROOT/01-MANIFESTS/registry-index.json" \
             "$WENDBINE_ROOT/04-RECEIPTS/phase2" \
