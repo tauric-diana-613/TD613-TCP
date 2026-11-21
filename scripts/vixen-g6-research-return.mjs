@@ -103,7 +103,8 @@ export function createG6HostReadReturn({sourceRevision,hostAdapter=null,hostPerm
   if(!isObject(result)||result.read_only!==true||result.scientific_credit!==0||
     !['ORIGINAL_NATIVE_EXECUTABLE','ORIGINAL_COMPILER_PLUS_TD613_DERIVED_ASSAY'].includes(result.kind)||
     (typeof result.estate==='string'&&![
-       request.estate,request.estate.replace('_ATELIER','')
+       request.estate,
+       request.estate==='EM_ATELIER'?'EMSTD613':request.estate.replace('_ATELIER','')
      ].includes(result.estate)))
    return held('HELD_G6_NATIVE_RECEIPT_TYPE_UNVERIFIED');
   const projection=summarizePublicResult(result);
