@@ -157,6 +157,10 @@ def open_db(vault):
       CREATE TABLE IF NOT EXISTS gestures (
        gesture_id TEXT PRIMARY KEY,estate TEXT NOT NULL,issue_number INTEGER NOT NULL,
        run_at TEXT NOT NULL,receipt_sha256 TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS receipt_outbox (
+       gesture_id TEXT PRIMARY KEY,estate TEXT NOT NULL,issue_number INTEGER NOT NULL,
+       receipt_sha256 TEXT NOT NULL,receipt_payload BLOB NOT NULL,
+       FOREIGN KEY(gesture_id) REFERENCES gestures(gesture_id));
     """)
     return con
 
@@ -178,6 +182,69 @@ def save_blob(vault,raw,hashhex):
     if digest(target.read_bytes())!=hashhex:
         raise ValueError("POST_COPY_BLOB_READBACK_FAILED")
     return target
+
+
+def materialize_receipt(vault,estate,issue,gesture):
+    """Reify a committed receipt without reading sources or consuming another gesture."""
+    if estate not in ESTATES or issue!=ESTATES[estate]:
+        raise ValueError("RECEIPT_ESTATE_ISSUE_MISMATCH")
+    if not isinstance(gesture,str) or not 8<=len(gesture)<=160 or any(c.isspace() for c in gesture):
+        raise ValueError("RECEIPT_GESTURE_INVALID")
+    vault=ensure_outside_repository(vault)
+    db=checked_local(vault/"atelier-index.sqlite")
+    if not db.is_file():raise ValueError("RECEIPT_PRIVATE_INDEX_MISSING")
+    con=sqlite3.connect(db.as_uri()+"?mode=ro",uri=True)
+    try:
+        row=con.execute(
+          "SELECT o.receipt_sha256,o.receipt_payload,g.receipt_sha256 "
+          "FROM receipt_outbox o JOIN gestures g ON g.gesture_id=o.gesture_id "
+          "WHERE o.gesture_id=? AND o.estate=? AND o.issue_number=? "
+          "AND g.estate=? AND g.issue_number=?",
+          (gesture,estate,issue,estate,issue)).fetchone()
+        if not row:raise ValueError("RECEIPT_COMMITTED_OUTBOX_NOT_FOUND")
+        expected,payload,gesture_digest=row
+        if expected!=gesture_digest or digest(payload)!=expected:
+            raise ValueError("RECEIPT_COMMITTED_OUTBOX_HASH_MISMATCH")
+        parsed=json.loads(payload.decode("utf8"))
+        if (parsed.get("gesture_id")!=gesture or parsed.get("estate")!=estate
+                or parsed.get("issue_number")!=issue
+                or parsed.get("provider_remote_sync_performed") is not False):
+            raise ValueError("RECEIPT_COMMITTED_OUTBOX_CONTEXT_MISMATCH")
+    finally:con.close()
+    receipts=vault/"receipts"
+    receipts.mkdir(parents=True,exist_ok=True)
+    target=checked_local(receipts/("sync-"+digest(gesture.encode("utf8"))[:18]+".json"))
+    if target.exists():
+        if not target.is_file() or target.read_bytes()!=payload:
+            raise ValueError("RECEIPT_EXISTING_BYTES_CONFLICT_NO_OVERWRITE")
+        status="EXISTING_RECEIPT_VERIFIED"
+    else:
+        # Fsync temporary bytes before create-only materialization. Hardlink
+        # refuses replacing a competing receipt and avoids partial final files.
+        temp=receipts/(".candidate-"+uuid.uuid4().hex+".json")
+        try:
+            with temp.open("xb") as stream:
+                stream.write(payload)
+                stream.flush()
+                os.fsync(stream.fileno())
+            try:os.link(temp,target)
+            except FileExistsError:
+                if target.read_bytes()!=payload:
+                    raise ValueError("RECEIPT_CONCURRENT_CONFLICT_NO_OVERWRITE")
+            if target.read_bytes()!=payload:
+                raise ValueError("RECEIPT_MATERIALIZATION_READBACK_FAILED")
+        finally:temp.unlink(missing_ok=True)
+        status="COMMITTED_RECEIPT_MATERIALIZED"
+    return {"state":status,"estate":estate,"issue":issue,
+            "gesture_id":gesture,"receipt_path":str(target),
+            "receipt_sha256":expected,"source_reingested":False,
+            "new_gesture_consumed":False,"provider_origin_authenticated":False,
+            "canonical_admission":False}
+
+def recover_receipt(vault,estate,issue,gesture,*,operator_approved=False):
+    if not operator_approved:
+        raise ValueError("EXPLICIT_OPERATOR_RECEIPT_RECOVERY_APPROVAL_REQUIRED")
+    return materialize_receipt(vault,estate,issue,gesture)
 
 def sync(estate,issue,vault,gesture,*,operator_approved=False,dry_run=False):
     if estate not in ESTATES or issue!=ESTATES[estate]:
@@ -272,19 +339,20 @@ def sync(estate,issue,vault,gesture,*,operator_approved=False,dry_run=False):
         payload=json.dumps(receipt,ensure_ascii=False,sort_keys=True,indent=2).encode("utf8")
         con.execute("INSERT INTO gestures VALUES(?,?,?,?,?)",
                     (gesture,estate,issue,receipt["run_at"],digest(payload)))
+        # Gesture, private index and full receipt payload commit together.
+        # If receipt creation fails AFTER this commit, the gesture stays
+        # consumed and a separate explicit outbox recovery is required.
+        con.execute("INSERT INTO receipt_outbox VALUES(?,?,?,?,?)",
+                    (gesture,estate,issue,digest(payload),payload))
         con.commit()
-        receipts=vault/"receipts"
-        receipts.mkdir(parents=True,exist_ok=True)
-        file=receipts/("sync-"+digest(gesture.encode("utf8"))[:18]+".json")
-        if file.exists():
-            raise ValueError("RECEIPT_ALREADY_EXISTS_CONFLICT")
-        with file.open("xb") as stream:stream.write(payload)
+        committed=materialize_receipt(vault,estate,issue,gesture)
         return {"state":"LOCAL_BYTES_INDEXED_AND_VERIFIED_NOT_NATIVE_SCIENTIFIC_PARITY",
                 "estate":estate,"issue":issue,
                 "new_entries":inserted,"unchanged_entries":unchanged,
-                "receipt_path":str(file),"receipt_sha256":digest(payload),
-                "local_query_ready":True,
-                "provider_authenticity":"UNTESTED",
+                "receipt_path":committed["receipt_path"],
+                "receipt_sha256":committed["receipt_sha256"],
+                "receipt_state":committed["state"],
+                "local_query_ready":True,"provider_authenticity":"UNTESTED",
                 "scientific_promotion":False}
     except BaseException:
         con.rollback()
@@ -347,7 +415,7 @@ def verify(vault,estate):
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument("command",choices=["sync","query","verify"])
+    parser.add_argument("command",choices=["sync","query","verify","recover-receipt"])
     parser.add_argument("--estate",choices=tuple(ESTATES),required=True)
     parser.add_argument("--vault",type=Path,required=True)
     parser.add_argument("--issue",type=int)
@@ -361,6 +429,9 @@ def main():
         result=sync(a.estate,a.issue,a.vault,a.gesture,
                 operator_approved=a.operator_approved_this_run,dry_run=a.dry_run)
     elif a.command=="query":result=query(a.vault,a.estate,a.phrase or "",limit=a.limit)
+    elif a.command=="recover-receipt":
+        result=recover_receipt(a.vault,a.estate,a.issue,a.gesture,
+               operator_approved=a.operator_approved_this_run)
     else:result=verify(a.vault,a.estate)
     print(json.dumps(result,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
