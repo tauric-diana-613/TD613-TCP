@@ -965,6 +965,35 @@ function buildBaselineUnifiedCatalog(fadt,totalWorks,baseWorks){
  ];
 }
 
+/**
+ * G6/FADT-02: source-label supplementation never increases the canonical Work
+ * census and never constitutes independently witnessed FADT or W-plane support.
+ * These are grouped research leads, not demonstrated source identities.
+ */
+export function normalizeSupplementalResearchCandidates(input=[]){
+ if(!Array.isArray(input))return Object.freeze([]);
+ const seen=new Set(),rows=[];
+ for(const x of input.slice(0,24)){
+  if(!x||typeof x!=='object'||Array.isArray(x))continue;
+  const id=cleanText(x.id||'',80).trim(),title=cleanText(x.title||'',160).trim();
+  if(!id&&!title)continue;
+  const hash=/^[a-f0-9]{64}$/.test(String(x.source_sha256||''))
+   ?String(x.source_sha256):null;
+  const key=hash?'claimed-digest:'+hash:
+   'unverified-label:'+(title||id).normalize('NFKC').trim().toLowerCase();
+  if(seen.has(key))continue;
+  seen.add(key);
+  rows.push(Object.freeze({id:id||'unverified-lead-'+String(rows.length+1),
+   title:title||id,source_sha256_claimed:hash,
+   source_class:'NONCANONICAL_RESEARCH_CANDIDATE',
+   source_authentication:'UNVERIFIED_LABEL_OR_CLAIMED_HASH',
+   canonical_work_admission:false,scientific_credit:0,
+   fadt_exact:false,w_plane_grounded:false,
+   independent_empirical_observation:false}));
+ }
+ return Object.freeze(rows);
+}
+
 export function generateUnifiedSynthesisCandidates(corpus=null,{
  activePlan=null,refraction=null,
  benchPair=null,benchSnapshots=[],withdrawnCount=0,
@@ -973,8 +1002,8 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
  lagTicks=36
 }={}){
  const baseWorks=Array.isArray(corpus?.works)?corpus.works.length:32;
- const extras=Array.isArray(supplementalSources)?supplementalSources.filter(Boolean):[];
- const totalWorks=baseWorks+extras.length;
+ const extras=normalizeSupplementalResearchCandidates(supplementalSources);
+ const totalWorks=baseWorks; // Original canon remains fixed.
  const snapshots=Array.isArray(benchSnapshots)?benchSnapshots:[];
  const events=Array.isArray(podiumEvents)?podiumEvents:[];
  const fadt=computeFadtCorpusFiberProfile(corpus);
@@ -1020,7 +1049,7 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
    ?'SUPPLEMENTAL_SALON_SYNTHESIS'
    :(refracted?'SALON_REFRACTED_SYNTHESIS':'SALON_COMPOSED_SYNTHESIS');
   const headerTagline=extras.length>0
-   ?`Extended Constitutive Synthesis (${totalWorks} Works · ${routeOrder})`
+   ?`Supplemental Research (${extras.length} leads · ${baseWorks} Works · ${routeOrder})`
    :(refracted
     ?`Refracted Holonomy Synthesis · ${routeOrder}`
     :`Ordered Synthesis · ${clusterText} · ${routeOrder}`);
@@ -1033,8 +1062,8 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
    clockPair:cPair,
    mirrorVector:[1,0.46,0.14],
    xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
-   fadtExact:clusters.includes('C3'),
-   wPlaneGrounded:wGrounded,
+   fadtExact:extras.length===0&&clusters.includes('C3'),
+   wPlaneGrounded:extras.length===0&&wGrounded,
    contextPriority:10,
    headerTagline,
    patternSubtitle:refracted
@@ -1055,26 +1084,26 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
   });
  }
  if(extras.length>0){
-  const headerTagline=`Extended Constitutive Synthesis (${totalWorks} Works)`;
+  const headerTagline=`Noncanonical Research Leads (${extras.length} · ${baseWorks} Works)`;
   candidates.push({
    id:'cand-widened-corpus',
    regime:'SUPPLEMENTAL_CORPUS_SYNTHESIS',
-   title:`Widened ${totalWorks}-Work Quotient Support`,
+   title:`Research leads beside ${baseWorks} canonical Works`,
    lens:'Intake Expansion × Witness Boundary',
    clusters:['C1','C2','C3','C4','C5'],
    clockPair:['wall','plant'],
    mirrorVector:[1,0.52,0.18],
    xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
-   fadtExact:true,
-   wPlaneGrounded:true,
+   fadtExact:false,
+   wPlaneGrounded:false,
    contextPriority:9,
    headerTagline,
-   patternSubtitle:`${totalWorks} WORKS · WIDENED QUOTIENT SUPPORT.`,
-   heroStatement:`Across ${totalWorks} indexed sources,\nwidened intake refines the question\nwithout granting automatic proof.`,
-   leftSpine:`S ≠ W ≠ A · ${totalWorks} WORKS · P-CLOSURE HELD`,
-   researchQuestionMeta:`WIDENED CORPUS QUESTION · ${totalWorks} WORKS · UNRATIFIED`,
-   researchQuestion:`“With ${extras.length} supplemental source(s) joined to the ${baseWorks}-work constellation (${totalWorks} total), which typed control-plane boundaries hold and where does widened intake demand fresh empirical witnesses?”`,
-   falsifier:'Re-compute FADT cluster quotient U \\ I after supplemental intake; confirm widened support does not manufacture rank or proof.'
+   patternSubtitle:`${baseWorks} WORKS · ${extras.length} LEADS HELD.`,
+   heroStatement:`Beside ${baseWorks} canonical Works,\n${extras.length} provisional leads remain separate\nfrom quotient proof or external witnesses.`,
+   leftSpine:`S ≠ W ≠ A · ${baseWorks} WORKS · LEADS HELD`,
+   researchQuestionMeta:`RESEARCH LEADS · ${baseWorks} WORKS · UNRATIFIED`,
+   researchQuestion:`“With ${extras.length} unverified research leads beside ${baseWorks} canonical Works, what rights, source-body and independent W-plane evidence must precede any new FADT support claim?”`,
+   falsifier:'Demand independent source custody and W-plane evidence; refuse label counts as new Works or quotient measurements.'
   });
  }
  if(Number(withdrawnCount)>0){
@@ -1304,10 +1333,11 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   const sMirror=mirror.projection_orthogonal_to_111
    ?+Math.min(1,0.45+0.55*mirror.nullspace_ratio).toFixed(4)
    :0;
-  const sSyn=+Math.min(1,0.55*Math.min(1,xor.synergy_bits)+0.45*(cand.fadtExact?1:0.64)).toFixed(4);
+  const unverifiedSupplement=['SUPPLEMENTAL_CORPUS_SYNTHESIS','SUPPLEMENTAL_SALON_SYNTHESIS'].includes(cand.regime);
+  const sSyn=unverifiedSupplement?0:+Math.min(1,0.55*Math.min(1,xor.synergy_bits)+0.45*(cand.fadtExact?1:0.64)).toFixed(4);
   const spanScore=Math.min(1,(cand.clusters.length>=5?0.46:0.32+0.07*cand.clusters.length));
   const wScore=cand.wPlaneGrounded?0.40:0.14;
-  const sBridge=+Math.min(1,spanScore+wScore).toFixed(4);
+  const sBridge=unverifiedSupplement?0:+Math.min(1,spanScore+wScore).toFixed(4);
   const noLeak=!/Khona|Research Atelier|COMPARATIVE LINEAGE|METHOD V0\.1/i.test(cand.patternSubtitle+' '+cand.researchQuestion);
   const noBoilerplate=!ANTI_BOILERPLATE_SUBTITLE_RE.test(cand.patternSubtitle);
   const hasFalsifier=typeof cand.falsifier==='string'&&cand.falsifier.length>12;
@@ -1357,8 +1387,9 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
    vernier_l1_delta:vernier.tick_l1_delta,
    mirror_nullspace_ratio:mirror.nullspace_ratio,
    xor_synergy_bits:xor.synergy_bits,
-   w_plane_grounded:cand.wPlaneGrounded,
-   fadt_exact:cand.fadtExact
+   w_plane_grounded:unverifiedSupplement?false:cand.wPlaneGrounded,
+   fadt_exact:unverifiedSupplement?false:cand.fadtExact,
+   supplemental_claim_support:unverifiedSupplement?'HELD_NO_FADT_OR_W_PLANE':'CANONICAL_CORPUS_PROFILE_ONLY'
   };
   const hdr=cand.headerTagline;
   const axiomMarginalia=[
@@ -1420,8 +1451,8 @@ export function deriveSynthesisHeadline({
  lagTicks=36,measurementOperator=null
 }={}){
  const baseWorks=Array.isArray(corpus?.works)?corpus.works.length:32;
- const extras=Array.isArray(supplementalSources)?supplementalSources.filter(Boolean):[];
- const totalWorks=baseWorks+extras.length;
+ const extras=normalizeSupplementalResearchCandidates(supplementalSources);
+ const totalWorks=baseWorks; // Original canon remains fixed.
  const snapshots=Array.isArray(benchSnapshots)?benchSnapshots:[];
  const events=Array.isArray(podiumEvents)?podiumEvents:[];
  const customQ=cleanText(operatorQuestion,600);
@@ -1503,8 +1534,10 @@ export function deriveSynthesisHeadline({
    svd_condition_number:chosen.breakdown.svd_kappa,
    mirror_nullspace_ratio:chosen.breakdown.mirror_nullspace_ratio,
    xor_synergy_bits:chosen.breakdown.xor_synergy_bits,
-   work_census:totalWorks,
+   work_census:baseWorks,
    supplemental_sources:extras.length,
+   supplemental_count_class:'NONCANONICAL_RESEARCH_LEADS',
+   supplemental_evidence_class:'UNVERIFIED_NOT_FADT_SUPPORT',
    snapshot_count:snapshots.length,
    podium_event_count:events.length,
    withdrawn_count:Number(withdrawnCount)||0,
