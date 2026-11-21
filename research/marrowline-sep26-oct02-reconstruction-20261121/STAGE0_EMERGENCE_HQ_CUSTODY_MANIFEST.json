@@ -1,0 +1,256 @@
+{
+  "schema": "td613.marrowline.sep26-oct02-stage0-custody-manifest/v1.0",
+  "generated_at_utc": "2026-11-21T22:31:29.939Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+  "base_activation_commit": "01c3b9e48391a79472369695b64481b19614f9fa",
+  "parent_q1_evidence_commit": "2836e636e4b5eb485b12f73a2596ea3889b173d4",
+  "generated_against_git_head": "01c3b9e48391a79472369695b64481b19614f9fa",
+  "new_paid_provider_calls_executed": 0,
+  "q1_operator_artistic_verdict": "REJECTED_PRIOR_TO_UNBLINDING",
+  "q1_unblinding_key_opened": false,
+  "q2_status": "HELD",
+  "experiment_b_status": "CLOSED",
+  "merge_and_release_authority": false,
+  "human_artistic_closure": "RESERVED",
+  "summary_counts": {
+    "stage0_directory_files": 17,
+    "linked_repository_files": 9,
+    "total_published_in_git_entries": 26,
+    "excluded_with_safe_custody_entries": 2
+  },
+  "published_in_git": {
+    "stage0_estate": [
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/ANTIGRAVITY_SOURCE_ONLY_HANDOFF.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/ANTIGRAVITY_SOURCE_ONLY_HANDOFF.md",
+        "bytes": 6679,
+        "sha256": "1346b92feac410be415a943881dc3dbf1a28ea1831383acb5620fb9abe23f5f6"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/HISTORICAL_MULTISEAT_SELECTION_ARCHAEOLOGY.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/HISTORICAL_MULTISEAT_SELECTION_ARCHAEOLOGY.md",
+        "bytes": 8964,
+        "sha256": "7dcb372ee6ac2c2ff5786ea28d74285a62738e800462e144ad3687fb0dc7e2b0"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/KENOUGH_STAGE0_ACTIVATION.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/KENOUGH_STAGE0_ACTIVATION.md",
+        "bytes": 8496,
+        "sha256": "a50658efe1c06dc43f960ac575a72fd2dcfb2c03b2d94cc2147d3eb50f8064d4"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/MISSING_WITNESS_AND_CONTRADICTION_REGISTER.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/MISSING_WITNESS_AND_CONTRADICTION_REGISTER.md",
+        "bytes": 8810,
+        "sha256": "8c6bdb846c62e630d1b9011eed0a1f07aa567efc7329ab81511be2ded312a5eb"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/MISSION_ENVELOPE_EFFECTIVE_REQUEST_MATRIX.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/MISSION_ENVELOPE_EFFECTIVE_REQUEST_MATRIX.json",
+        "bytes": 151461,
+        "sha256": "d0d6b15f67b0e7c454cc5ec801f9e6cd0d54b9ae81b54bd937449dc7bc3fa8db"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/NEXT_ASSAY_DESIGN.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/NEXT_ASSAY_DESIGN.md",
+        "bytes": 12677,
+        "sha256": "b21ab0aa4f1ecc14fb409bf88207c4c46d7b277abd47dd86e844150f8016c4a8"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/ORIGINAL_EVIDENCE_SEARCH_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/ORIGINAL_EVIDENCE_SEARCH_RECEIPT.json",
+        "bytes": 5350,
+        "sha256": "825c65fe1bfc38ba5eb2fd6fc31de5f8a76fe4dfd41d3d22ea74f96e7dcb6cb8"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/README.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/README.md",
+        "bytes": 4604,
+        "sha256": "a2c3ccc83249b178089c59247ef1bbf0ba3c085c3edd74be735d4967b4b6292a"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/READ_FIRST_ANTIGRAVITY_REMOTE_ACTIVATION.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/READ_FIRST_ANTIGRAVITY_REMOTE_ACTIVATION.md",
+        "bytes": 8453,
+        "sha256": "68a894dd832c3c5e43abcd6b691c0815f0381438fcf3166f54d9d76a088d7b8d"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/RELEASE_AND_AUTHORSHIP_RETIREMENT_ADDENDUM.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/RELEASE_AND_AUTHORSHIP_RETIREMENT_ADDENDUM.md",
+        "bytes": 6109,
+        "sha256": "3f27b6f89aba694037f9e103ca855b20295d3722b64dfc725f75d43a2a3e2f37"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/SEDGWICKIAN_CAUSAL_RECONSTRUCTION.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/SEDGWICKIAN_CAUSAL_RECONSTRUCTION.md",
+        "bytes": 19588,
+        "sha256": "f6c28171696b8fb94aeecfbf097b8f681c230d569e0fe28c146bbfb66d982c9f"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "bytes": 9825,
+        "sha256": "91d75ccad7e748bc3a7e1c18416113445d92e14fdc5e8d6c668bcb87cd2bf09a"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_PREREGISTERED_DISCRIMINATOR_PROPOSAL.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_PREREGISTERED_DISCRIMINATOR_PROPOSAL.md",
+        "bytes": 6794,
+        "sha256": "0f097f735ad5b1ada8b001fb8995ae0cfe4568ced1bd0251048a0b2491ae8466"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_TEST_AND_INTERMEDIATE_FAILURE_RECEIPTS.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_TEST_AND_INTERMEDIATE_FAILURE_RECEIPTS.md",
+        "bytes": 6799,
+        "sha256": "047e9cb85788f4e0f8d2db6fa1ad72697203b0324b86e0f61e57f2ece575866a"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/TRANSITION_MATRIX.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/TRANSITION_MATRIX.json",
+        "bytes": 10654,
+        "sha256": "7aa4dd8a89cf4a6250a95f11ee23fb5b3a5e06230e70b2619fa891f3bd57ed0a"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/build-sep26-oct02-effective-request-matrix.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/build-sep26-oct02-effective-request-matrix.mjs",
+        "bytes": 35485,
+        "sha256": "ba770d681656c9bb92f62467144dd75cc15e179207e38c392d833bb993774a92"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/verify-stage0-custody.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-sep26-oct02-reconstruction-20261121/verify-stage0-custody.mjs",
+        "bytes": 8906,
+        "sha256": "937038d83bd4a56546b67cf63bbdc87b68139ee9addea1c37f916257d5fa71d9"
+      }
+    ],
+    "linked_repository_witnesses_and_tests": [
+      {
+        "path": "tests/marrowline-sep26-oct02-stage0.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/tests/marrowline-sep26-oct02-stage0.test.mjs",
+        "bytes": 12773,
+        "sha256": "aac96fa39e2cc7192d78db4a26ba043ebf161668635d16ab7215f21502d83a0d"
+      },
+      {
+        "path": "tests/marrowline-q1-live-discriminator.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/tests/marrowline-q1-live-discriminator.test.mjs",
+        "bytes": 21187,
+        "sha256": "a2bdbd99d884381bf164a67415e3617460c10a183a66430ad3435eda9c34637c"
+      },
+      {
+        "path": "research/marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs",
+        "bytes": 55414,
+        "sha256": "7b06241a366d2a3816e3300cfb54c8234d5ae1cf68f3f1d8fdd68b725de49f05"
+      },
+      {
+        "path": "research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+        "bytes": 40831,
+        "sha256": "bc3a9e9c942d2130e65ad8e9fd2831bbc88039da5f93f5d856946c40f6d29f65"
+      },
+      {
+        "path": "research/marrowline-native-authorship-rest-20261014/README.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-native-authorship-rest-20261014/README.md",
+        "bytes": 3806,
+        "sha256": "e46e48d5cac9ae24ec73720c50d8f738c07aefc571dd78a8c1a0693af3849077"
+      },
+      {
+        "path": "research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+        "bytes": 5783,
+        "sha256": "1305668237d6f6d32caef1bb6c17656896db2962825a5cd63557d6ac52636c16"
+      },
+      {
+        "path": "docs/research/2026-09-24-native-prosody-atlas/atlas.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/docs/research/2026-09-24-native-prosody-atlas/atlas.json",
+        "bytes": 12494,
+        "sha256": "f6b271d4d030ec5cd856643efee263ad56a4489c30fafbf26ecba5ec57570869"
+      },
+      {
+        "path": "docs/research/2026-09-26-marrowline-red-deer-mission/PROVENANCE-AND-ASSAY.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/docs/research/2026-09-26-marrowline-red-deer-mission/PROVENANCE-AND-ASSAY.md",
+        "bytes": 18119,
+        "sha256": "d37903c1d77ddba02ea689063b14f354ff022f1d58df48b8dad95caa16c2246f"
+      },
+      {
+        "path": "docs/research/2026-09-26-marrowline-red-deer-mission/HORNANI-0613-42-SOURCE-NOTE.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-sep26-oct02-stage0-reconstruction-20261121",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-sep26-oct02-stage0-reconstruction-20261121/docs/research/2026-09-26-marrowline-red-deer-mission/HORNANI-0613-42-SOURCE-NOTE.md",
+        "bytes": 5973,
+        "sha256": "df13228971adc678cb63e625e5dbb7351cd2507713206fd998482307a04b277d"
+      }
+    ]
+  },
+  "excluded_artifacts_with_safe_custody": [
+    {
+      "custody_status": "EXCLUDED_WITH_SAFE_CUSTODY_RECORD",
+      "original_identity_and_purpose": "Local operator .env credential file (unused in Stage 0; zero paid calls executed).",
+      "source_episode": "TD613-MARROWLINE-SEP26-OCT02-STAGE0 (2026-11-21)",
+      "reason_for_exclusion": "Secret API credential; prohibited from repository custody.",
+      "safe_digest_or_reference": "REDACTED_CREDENTIAL_REF:env:GEMINI_API_KEY (not loaded during Stage 0)",
+      "recoverable": true,
+      "authorized_retrieval_route": "Local operator environment custody only; never exported to GitHub."
+    },
+    {
+      "custody_status": "EXCLUDED_WITH_SAFE_CUSTODY_RECORD",
+      "original_identity_and_purpose": "Ephemeral scratch copies of PR #1765 activation markdowns and Antigravity agent internal logs.",
+      "source_episode": "TD613-MARROWLINE-SEP26-OCT02-STAGE0 (2026-11-21)",
+      "reason_for_exclusion": "Scratch copies are exact duplicates of committed 01c3b9e48 files; internal agent logs contain private host harness metadata.",
+      "safe_digest_or_reference": "COMMIT_SOURCE_REF:01c3b9e48391a79472369695b64481b19614f9fa",
+      "recoverable": true,
+      "authorized_retrieval_route": "https://github.com/tauric-diana-613/TD613-TCP/tree/01c3b9e48391a79472369695b64481b19614f9fa/research/marrowline-sep26-oct02-reconstruction-20261121"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "td613.marrowline.sep26-oct02-original-evidence-search-receipt/v1.0",
+  "executed_at_utc": "2026-11-21T22:18:00Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "new_paid_provider_calls": 0,
+  "search_scope": {
+    "git_history_sse_glob": "git log --all --stat -- \"*.sse\" \"*sse*\"",
+    "repo_directories_searched": [
+      "research/",
+      "docs/research/",
+      "docs/research/2026-09-23-marrowline-expressive-regression/",
+      "docs/research/2026-09-24-native-prosody-atlas/",
+      "docs/research/2026-09-26-marrowline-red-deer-mission/",
+      "research/marrowline-native-authorship-rest-20261014/",
+      "research/marrowline-unicode-capability-20261015/"
+    ],
+    "pull_requests_inspected": [1319, 1336, 1337, 1338, 1339, 1340, 1342, 1343, 1344, 1345, 1346, 1347, 1348, 1498, 1533],
+    "issue_405_receipts_verified": [5841390525, 5841793470, 5842370849, 5843139689, 5843354496],
+    "github_actions_total_repo_artifacts": 7250,
+    "github_actions_recent_artifacts_scanned": 500,
+    "github_actions_exact_name_queries": {
+      "sse": 0,
+      "marrowline": 0,
+      "prosody": 0,
+      "khonapolit": 0,
+      "gemini": 0
+    },
+    "github_actions_exact_commit_runs_audited": [
+      { "label": "PR1339_head", "sha": "d9ae35880fa1353256df31a15550d9d9d107dff3", "run_ids": [36186282915], "artifacts_found": 0 },
+      { "label": "PR1339_merge", "sha": "83e259549fa7ec73c38cdd11f203bcefe56fc277", "run_ids": [36186500739, 36186513664, 36186513704, 36186513775], "artifacts_found": 0, "ai_observation_workflow": "skipped" },
+      { "label": "PR1345_merge", "sha": "a7731037e86dbfb1f64bdbdb8eac5c91a85034c3", "run_ids": [36206962850, 36206993280, 36206993392, 36206993489], "artifacts_found": 0, "ai_observation_workflow": "skipped" },
+      { "label": "PR1346_merge", "sha": "eeda59df2fd1efa183d6a31e654e3bcc0f3bb856", "run_ids": [36211456285, 36211468981, 36211468983, 36211468989, 36211515300, 36211515321, 36211515332], "artifacts_found": 0, "ai_observation_workflow": "skipped" },
+      { "label": "PR1347_merge", "sha": "20c2cc1d9be7ecaa56a9972ea2b4db4a0f1764f1", "run_ids": [36217521895, 36217539049, 36217539110, 36217539127], "artifacts_found": 0, "ai_observation_workflow": "skipped" },
+      { "label": "PR1348_merge", "sha": "e371c335260f535ea036da3440c6e05090dcea97", "run_ids": [36219195182, 36219225300, 36219225317, 36219225337], "artifacts_found": 0, "ai_observation_workflow": "skipped" },
+      { "label": "OCT02_literal", "sha": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a", "run_ids": [37079769468, 37079769491, 37081814308, 37081814327, 37086645609, 37086645641], "artifacts_found": 0 },
+      { "label": "OCT04_control", "sha": "5b4b34278c6100d3c21ced35984c046da157e097", "run_ids": [37220819064], "artifacts_found": 0 }
+    ]
+  },
+  "target_witness_verdicts": [
+    {
+      "id": "sep25_pr1339_87_distinct_marks_raw_sse",
+      "status": "UNRECOVERABLE_FROM_CHECKED_ARCHIVE",
+      "strongest_recoverable_provenance": "PR #1339 body prose (head d9ae35880f / merge 83e259549f); zero raw SSE or UTF-8 file archived.",
+      "epistemic_limit": "Absence in checked archive does not prove the session did not occur; PR prose cannot be upgraded to authenticated raw SSE."
+    },
+    {
+      "id": "sep26_pre_post_1347_1348_matched_provider_returns",
+      "status": "UNRECOVERABLE_FROM_CHECKED_ARCHIVE",
+      "strongest_recoverable_provenance": "Issue #405 exact-source deployment receipts (#5842370849, #5843139689, #5843354496; automatic_live_ai_provider_calls = 0) and HORNANI-0613-42-SOURCE-NOTE.md (operator-supplied Gemini-app canon without provider SHA).",
+      "epistemic_limit": "Deployment chronology verified; matched before/after live Marrowline provider outputs absent."
+    },
+    {
+      "id": "oct02_operator_accepted_live_provider_return_with_model_and_selector",
+      "status": "UNRECOVERABLE_FROM_CHECKED_ARCHIVE",
+      "strongest_recoverable_provenance": "Exact 4-file & 6-file Git blob equality Oct 2 <-> Oct 4 plus 13 operator-accepted screenshots in PR #1759.",
+      "epistemic_limit": "Visual reference corpus is authoritative artistic evidence (O), not raw SSE / served-model telemetry (P)."
+    },
+    {
+      "id": "sep25_oct04_paired_first_vs_selected_multiseat_candidates",
+      "status": "UNRECOVERABLE_FROM_CHECKED_ARCHIVE",
+      "strongest_recoverable_provenance": "Source-verified selector code in server/khonapolit-quality.js (#1345 -> #1346 -> ffb98ac005) and mocked router tests; Oct 14 README explicitly confirms no production paired first/selected payloads were archived.",
+      "epistemic_limit": "Selector mechanism proven in source; historical production firing rate and candidate delta unmeasured."
+    }
+  ],
+  "surviving_original_provider_archives_in_repo": [
+    {
+      "id": "oct15_neutral_capability_d",
+      "path": "research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+      "date": "2026-10-15",
+      "evidence_class": "P_AS_DOCUMENTED_WITH_SSE_DIGESTS"
+    },
+    {
+      "id": "nov21_q1_live_acquisition",
+      "path": "research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+      "commit": "2836e636e4b5eb485b12f73a2596ea3889b173d4",
+      "date": "2026-11-21",
+      "evidence_class": "P_WITH_ORIGINAL_SSE_COMMITTED_IN_GIT",
+      "raw_sse_files_in_git": 8
+    }
+  ]
+}
