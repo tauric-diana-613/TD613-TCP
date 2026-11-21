@@ -350,7 +350,10 @@ jobs:
           }
           git worktree add --detach "$RUNNER_TEMP/g7-v2-private-local" "$V2_SOURCE_SHA"
           (cd "$RUNNER_TEMP/g7-v2-private-local" && \
-            python -m unittest discover -s tests -p 'test_atelier_operator_inbox_sync_v2.py' -v)
+            PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p 'test_atelier_operator_inbox_sync_v2.py' -v)
+          # Source-free tests may create only Python bytecode caches; remove
+          # those isolated disposable caches, never the source evidence tree.
+          find "$RUNNER_TEMP/g7-v2-private-local" -type d -name '__pycache__' -prune -exec rm -rf -- {} +
           git worktree remove "$RUNNER_TEMP/g7-v2-private-local"
           node --test tests/vixen-semantic-semiotic-search.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
