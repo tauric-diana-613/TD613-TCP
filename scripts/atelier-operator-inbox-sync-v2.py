@@ -408,8 +408,25 @@ def verify(vault,estate):
             if (extracted and (not fts or fts[0]!=extracted)) or (not extracted and fts):
                 raise ValueError("PRIVATE_FTS_READBACK_MISSING_OR_CHANGED")
             if extracted:searchable+=1
-        return {"state":"LOCAL_SOURCE_AND_FTS_INDEX_INTEGRITY_VERIFIED",
+        outboxes=con.execute(
+          "SELECT gesture_id,receipt_sha256,receipt_payload FROM receipt_outbox "
+          "WHERE estate=?",(estate,)).fetchall()
+        pending=0;verified=0
+        for gesture,expected,payload in outboxes:
+            if digest(payload)!=expected:
+                raise ValueError("RECEIPT_OUTBOX_INTEGRITY_FAILED")
+            target=checked_local(vault/"receipts"/(
+                    "sync-"+digest(gesture.encode("utf8"))[:18]+".json"))
+            if not target.exists():
+                pending+=1
+            elif not target.is_file() or target.read_bytes()!=payload:
+                raise ValueError("RECEIPT_MATERIALIZED_HASH_CONFLICT")
+            else:verified+=1
+        return {"state":("LOCAL_SOURCE_AND_FTS_VERIFIED_RECEIPTS_HELD"
+                          if pending else "LOCAL_SOURCE_AND_FTS_INDEX_INTEGRITY_VERIFIED"),
                 "estate":estate,"entries":len(rows),"searchable_derivatives":searchable,
+                "receipt_outboxes":len(outboxes),"receipt_files_verified":verified,
+                "receipt_materializations_pending":pending,
                 "provider_origin_authenticated":False,"research_synthesis_verified":False}
     finally:con.close()
 
