@@ -87,12 +87,19 @@ try{
    // Work through the real visitor control, then return to the same session.
    // A selected Work is neither an independent body read nor a native host
    // proof; keep those observations explicitly separate in the receipt.
+   // Session.active becomes true before the asynchronous source-grounded
+   // narrative and its source cards have committed. Wait on the rendered
+   // reader control, not merely the session's early active flag.
+   const sourceJump=page.locator('#vmaSources article.vma-source .vma-small').first();
+   await sourceJump.waitFor({state:'visible',timeout:30000});
+   await page.waitForFunction(()=>
+    window.VixenAIModes.session.handoff().result?.source_candidates?.[0]?.work_id
+      ?.startsWith('emwork_')===true,
+    null,{timeout:30000});
    const selectedWork=await page.evaluate(()=>
-    window.VixenAIModes.session.handoff().result.source_candidates[0]?.work_id);
-   assert.match(selectedWork||'',/^emwork_[a-f0-9]+$/);
+    window.VixenAIModes.session.handoff().result.source_candidates[0].work_id);
+   assert.match(selectedWork,/^emwork_[a-f0-9]+$/);
    const priorSessionId=pre.result.session_id;
-   const sourceJump=page.locator('#vmaSources .vma-source .vma-small').first();
-   await sourceJump.waitFor({state:'visible',timeout:15000});
    await sourceJump.scrollIntoViewIfNeeded();
    await sourceJump.click();
    await page.locator('#view-works:not([hidden])').waitFor({timeout:18000});
