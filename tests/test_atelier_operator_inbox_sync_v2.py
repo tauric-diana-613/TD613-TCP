@@ -140,5 +140,55 @@ class OperatorInboxV2(unittest.TestCase):
         done=m.sync("SRC",1675,self.vault,"gesture-SRC-preview",operator_approved=True)
         self.assertEqual(done["new_entries"],1)
 
+
+    def test_committed_outbox_recovers_receipt_after_injected_post_commit_crash(self):
+        self.drop("SRC","packet.md","Private test source remains local")
+        gesture="gesture-SRC-commit-first"
+        # Crash after SQLite COMMIT but before exclusive final receipt creation.
+        with patch.object(m,"materialize_receipt",side_effect=OSError("FAULT_AFTER_COMMIT")):
+            with self.assertRaisesRegex(OSError,"FAULT_AFTER_COMMIT"):
+                m.sync("SRC",1675,self.vault,gesture,operator_approved=True)
+        db=sqlite3.connect(self.vault/"atelier-index.sqlite")
+        try:
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM gestures").fetchone()[0],1)
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM receipt_outbox").fetchone()[0],1)
+        finally:db.close()
+        health=m.verify(self.vault,"SRC")
+        self.assertEqual(health["receipt_materializations_pending"],1)
+        self.assertEqual(health["state"],"LOCAL_SOURCE_AND_FTS_VERIFIED_RECEIPTS_HELD")
+        with self.assertRaisesRegex(ValueError,"GESTURE_ALREADY_CONSUMED"):
+            m.sync("SRC",1675,self.vault,gesture,operator_approved=True)
+        with self.assertRaisesRegex(ValueError,"EXPLICIT_OPERATOR"):
+            m.recover_receipt(self.vault,"SRC",1675,gesture)
+        fixed=m.recover_receipt(self.vault,"SRC",1675,gesture,operator_approved=True)
+        self.assertEqual(fixed["state"],"COMMITTED_RECEIPT_MATERIALIZED")
+        self.assertFalse(fixed["new_gesture_consumed"])
+        self.assertFalse(fixed["source_reingested"])
+        self.assertEqual(m.verify(self.vault,"SRC")["receipt_files_verified"],1)
+        repeated=m.recover_receipt(self.vault,"SRC",1675,gesture,operator_approved=True)
+        self.assertEqual(repeated["state"],"EXISTING_RECEIPT_VERIFIED")
+        self.assertEqual(m.verify(self.vault,"SRC")["entries"],1)
+    def test_conflicting_receipt_and_outbox_tampering_refused_without_overwrite(self):
+        self.drop("WENDBINE","p.md","Synthetic lineage only")
+        gesture="gesture-WENDBINE-receipt"
+        done=m.sync("WENDBINE",1676,self.vault,gesture,operator_approved=True)
+        path=pathlib.Path(done["receipt_path"])
+        path.write_bytes(b"CORRUPTED_RECEIPT")
+        with self.assertRaisesRegex(ValueError,"RECEIPT_EXISTING_BYTES_CONFLICT"):
+            m.recover_receipt(self.vault,"WENDBINE",1676,gesture,operator_approved=True)
+        self.assertEqual(path.read_bytes(),b"CORRUPTED_RECEIPT")
+        with self.assertRaisesRegex(ValueError,"RECEIPT_MATERIALIZED_HASH_CONFLICT"):
+            m.verify(self.vault,"WENDBINE")
+        path.unlink()
+        db=sqlite3.connect(self.vault/"atelier-index.sqlite")
+        try:
+            db.execute("UPDATE receipt_outbox SET receipt_payload=? WHERE gesture_id=?",
+                       (b"FAKE",gesture))
+            db.commit()
+        finally:db.close()
+        with self.assertRaisesRegex(ValueError,"RECEIPT_COMMITTED_OUTBOX_HASH_MISMATCH"):
+            m.recover_receipt(self.vault,"WENDBINE",1676,gesture,operator_approved=True)
+        self.assertFalse(path.exists())
+
 if __name__=="__main__":
     unittest.main()
