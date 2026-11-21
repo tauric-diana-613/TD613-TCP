@@ -172,3 +172,98 @@ export function retainG7PublicEpoch({
   return Object.freeze({...receipt,path:final});
  }catch(e){fs.rmSync(stage,{recursive:true,force:true});throw e}
 }
+
+
+/**
+ * Prospective interruption repair for the PUBLIC current projection only.
+ * An interrupted candidate has already retained its own independently
+ * verifiable epoch bytes, but is never promoted to "completed publication".
+ * Recovery explicitly restores the immutable predecessor; it cannot invent
+ * a missing historical first epoch, private bytes or external provenance.
+ *
+ * There is deliberately no automatic recovery inside writeProjection().
+ * The operator must select the expected candidate and approve the rollback.
+ * The old current seal must still equal its predecessor archive verbatim,
+ * preventing recovery over a later successfully published state.
+ */
+export function recoverG7InterruptedPublication({
+ outRoot,candidateSnapshot,predecessorSnapshot,operatorApproved=false
+}={}){
+ if(!outRoot||!SNAP.test(candidateSnapshot||'')||
+    !SNAP.test(predecessorSnapshot||'')||
+    candidateSnapshot===predecessorSnapshot)
+  throw Error('HELD_G7_RECOVERY_COORDINATES_REQUIRED');
+ const parent=path.resolve(outRoot,'07-ARCHIVE-LEDGER/epochs');
+ const candDir=path.join(parent,candidateSnapshot);
+ const predDir=path.join(parent,predecessorSnapshot);
+ verifyG7EpochDirectory(candDir,{expectedSnapshot:candidateSnapshot});
+ verifyG7EpochDirectory(predDir,{expectedSnapshot:predecessorSnapshot});
+ const candManifest=JSON.parse(fs.readFileSync(path.join(candDir,'EPOCH_MANIFEST.json'),'utf8'));
+ if(candManifest.predecessor_snapshot_id!==predecessorSnapshot)
+  throw Error('HELD_G7_RECOVERY_PREDECESSOR_MISMATCH');
+ const sealRel='04-RECEIPTS/phase2/current-seal.json';
+ const savedSeal=fs.readFileSync(path.join(predDir,sealRel));
+ const savedDigest=sha(savedSeal);
+ if(savedDigest!==candManifest.predecessor_seal_sha256)
+  throw Error('HELD_G7_RECOVERY_PREDECESSOR_DIGEST_MISMATCH');
+ const predecessor=JSON.parse(savedSeal.toString('utf8'));
+ if(predecessor.atelier_snapshot_id!==predecessorSnapshot||
+    !Array.isArray(predecessor.file_hashes))
+  throw Error('HELD_G7_RECOVERY_SEAL_INVALID');
+ const currentSealPath=path.resolve(outRoot,sealRel);
+ if(!fs.existsSync(currentSealPath)||sha(fs.readFileSync(currentSealPath))!==savedDigest)
+  throw Error('HELD_G7_RECOVERY_CURRENT_SEAL_IS_NOT_PREDECESSOR');
+ // Restore only the exact public files bound by the original predecessor
+ // seal and its two public registries. Never replay a candidate run receipt.
+ const rels=[...predecessor.file_hashes.map(x=>x.path),
+  '01-MANIFESTS/phase2/interface-registry.json','01-MANIFESTS/registry-index.json'];
+ if(new Set(rels).size!==rels.length||rels.length>64)
+  throw Error('HELD_G7_RECOVERY_DUPLICATE_OR_EXCESS_FILES');
+ const prevManifest=JSON.parse(fs.readFileSync(path.join(predDir,'EPOCH_MANIFEST.json'),'utf8'));
+ const covered=new Set(prevManifest.files.map(x=>x.path));
+ const candidateCovered=new Set(candManifest.files.map(x=>x.path));
+ const restore=rels.map(rel=>{
+  safePublicEntry({path:rel,data:''});
+  if(!covered.has(rel)||!candidateCovered.has(rel))
+   throw Error('HELD_G7_RECOVERY_UNMATCHED_PUBLIC_ENTRY');
+  const file=path.resolve(predDir,rel);
+  if(!file.startsWith(predDir+path.sep))throw Error('HELD_G7_RECOVERY_PATH_ESCAPE');
+  return {rel,bytes:fs.readFileSync(file)};
+ });
+ // Validate all immutable inputs before the first mutable write.
+ const state=Object.freeze({state:'INTERRUPTED_CANDIDATE_PREDECESSOR_ROLLBACK_AVAILABLE',
+  candidate_snapshot_id:candidateSnapshot,
+  restored_predecessor_snapshot_id:predecessorSnapshot,
+  candidate_promoted:false,historical_epoch_reconstructed:false,
+  private_source_recovery:false,external_origin_authenticated:false,
+  restored_public_file_count:restore.length,human_approval_required:true});
+ if(!operatorApproved)return state;
+ const receiptDir=path.resolve(outRoot,'07-ARCHIVE-LEDGER/recoveries');
+ const receiptPath=path.join(receiptDir,candidateSnapshot+'.json');
+ if(fs.existsSync(receiptPath))throw Error('HELD_G7_RECOVERY_ALREADY_RECORDED');
+ for(const {rel,bytes} of restore){
+  const dst=path.resolve(outRoot,rel);
+  if(!dst.startsWith(path.resolve(outRoot)+path.sep))
+   throw Error('HELD_G7_RECOVERY_DESTINATION_PATH_ESCAPE');
+  fs.mkdirSync(path.dirname(dst),{recursive:true});
+  const stage=dst+'.g7-restore-'+crypto.randomBytes(8).toString('hex');
+  try{
+   fs.writeFileSync(stage,bytes,{flag:'wx',mode:0o644});
+   fs.renameSync(stage,dst);
+  }finally{if(fs.existsSync(stage))fs.rmSync(stage,{force:true})}
+ }
+ // The current seal remains the ORIGINAL predecessor's unchanged seal.
+ // A crash during rollback remains retryable; this receipt comes after all
+ // public members verify against the predecessor's immutable manifest.
+ for(const {rel,bytes} of restore)
+  if(sha(fs.readFileSync(path.resolve(outRoot,rel)))!==sha(bytes))
+   throw Error('HELD_G7_RECOVERY_POSTWRITE_HASH_MISMATCH');
+ const record={schema:'td613.vixen.g7.interrupted-publication-recovery/v1',
+  ...state,state:'PUBLIC_PROJECTION_RESTORED_FROM_PINNED_PREDECESSOR',
+  operator_declared_local_recovery:true,
+  orphan_candidate_epoch_preserved:true,
+  candidate_may_not_be_counted_as_published:true};
+ fs.mkdirSync(receiptDir,{recursive:true});
+ fs.writeFileSync(receiptPath,json(record),{flag:'wx',mode:0o644});
+ return Object.freeze({...record,receipt_path:receiptPath});
+}
