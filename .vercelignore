@@ -1,7 +1,5 @@
+# Vercel's prebuilt Python functions can retain traced source symlinks.
+# Keep those paths uploadable; exclude non-runtime files from *function
+# bundles* via vercel.json functions.*.excludeFiles, not this upload filter.
 .venv-dome/
 **/__pycache__/
-packages/dome_world_exact/bridge/
-packages/dome_world_exact/fixtures/
-packages/dome_world_exact/schemas/
-packages/dome_world_exact/tests/
-packages/dome_world_exact/verification/
