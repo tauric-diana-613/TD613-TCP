@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main, research/vixen-seven-estate-braid-g4-20261120]
+    branches: [main, research/vixen-seven-estate-braid-g4-20261120, research/vixen-seven-estate-braid-g5-20261120]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -339,6 +339,22 @@ jobs:
           node --test tests/vixen-seven-estate-g3.test.mjs
           node --test tests/vixen-seven-estate-g4.test.mjs
           node --test tests/vixen-seven-estate-g5.test.mjs
+          node --test tests/vixen-seven-estate-g7.test.mjs
+          # TMP-06 stays a separate, source-pinned private-local candidate.
+          # Only synthetic tests run; never ingest operator/provider records.
+          V2_SOURCE_SHA="c1d51e47bcc1f488eb47cdf77286aa2d8d90a6e8"
+          V2_BRANCH="research/atelier-sync-v2-g7-receipt-recovery-20261121"
+          git fetch --no-tags origin "refs/heads/$V2_BRANCH"
+          [[ "$(git rev-parse FETCH_HEAD)" == "$V2_SOURCE_SHA" ]] || {
+            echo "HELD_G7_V2_SOURCE_REVISION_CHANGED" >&2; exit 1;
+          }
+          git worktree add --detach "$RUNNER_TEMP/g7-v2-private-local" "$V2_SOURCE_SHA"
+          (cd "$RUNNER_TEMP/g7-v2-private-local" && \
+            PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p 'test_atelier_operator_inbox_sync_v2.py' -v)
+          # Source-free tests may create only Python bytecode caches; remove
+          # those isolated disposable caches, never the source evidence tree.
+          find "$RUNNER_TEMP/g7-v2-private-local" -type d -name '__pycache__' -prune -exec rm -rf -- {} +
+          git worktree remove "$RUNNER_TEMP/g7-v2-private-local"
           node --test tests/vixen-semantic-semiotic-search.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
           for source_bound_suite in \
