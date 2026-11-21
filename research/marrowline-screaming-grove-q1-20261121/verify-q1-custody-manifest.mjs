@@ -59,9 +59,15 @@ function buildManifest() {
     .map((absPath) => {
       const rp = relRepo(absPath);
       const stats = sha256File(absPath);
+      let category = 'Q1_PRIMARY_ARTIFACT';
+      if (rp.includes('/live-acquisition/raw-sse/')) category = 'Q1_LIVE_RAW_SSE_WIRE_BYTES';
+      else if (rp.includes('/live-acquisition/raw-text/')) category = 'Q1_LIVE_RAW_UTF8_TEXT';
+      else if (rp.includes('/live-acquisition/browser-witness/') && rp.endsWith('.png')) category = 'Q1_LIVE_CHROME_VISUAL_WITNESS_PNG';
+      else if (rp.includes('/live-acquisition/')) category = 'Q1_LIVE_ACQUISITION_REPORT_OR_INDEX';
+      else if (rp.includes('/evidence/')) category = 'Q1_EVIDENCE_RECEIPT';
       return {
         path: rp,
-        category: rp.includes('/evidence/') ? 'Q1_EVIDENCE_RECEIPT' : 'Q1_PRIMARY_ARTIFACT',
+        category,
         custody_status: 'PUBLISHED_IN_GIT',
         branch: BRANCH,
         github_blob_url: `${REPO_URL}/blob/${BRANCH}/${rp}`,
@@ -155,41 +161,18 @@ function buildManifest() {
     }
   ];
 
-  const deferredLiveAcquisitionArtifacts = [
+  const liveReceiptPath = path.join(Q1_DIR, 'live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json');
+  const liveReceiptExists = fs.existsSync(liveReceiptPath);
+  const liveReceiptObj = liveReceiptExists ? JSON.parse(fs.readFileSync(liveReceiptPath, 'utf8')) : null;
+  const paidCallsExecuted = liveReceiptObj ? Number(liveReceiptObj.calls_executed || 0) : 0;
+
+  const deferredLiveAcquisitionArtifacts = liveReceiptExists ? [] : [
     {
       planned_path: 'research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json',
       custody_status: 'DEFERRED_PENDING_EXACT_HEAD_LIVE_AUTH',
       generated: false,
       reason: 'PAID_EXECUTION_HELD_PENDING_EXACT_HEAD_AUTHORIZATION',
-      description: 'Master 8-slot live acquisition receipt (slots S01-S08, dual-parser SSE integrity, 7-class outcome classification, measured tokens, exact raw SSE/text SHA-256 digests).'
-    },
-    {
-      planned_path: 'research/marrowline-screaming-grove-q1-20261121/live-acquisition/raw-sse/S01.sse..S08.sse',
-      custody_status: 'DEFERRED_PENDING_EXACT_HEAD_LIVE_AUTH',
-      generated: false,
-      reason: 'PAID_EXECUTION_HELD_PENDING_EXACT_HEAD_AUTHORIZATION',
-      description: 'Original unmodified raw SSE wire bytes returned by models/gemini-3.8-flash:streamGenerateContent?alt=sse for each registered slot.'
-    },
-    {
-      planned_path: 'research/marrowline-screaming-grove-q1-20261121/live-acquisition/raw-text/S01.txt..S08.txt',
-      custody_status: 'DEFERRED_PENDING_EXACT_HEAD_LIVE_AUTH',
-      generated: false,
-      reason: 'PAID_EXECUTION_HELD_PENDING_EXACT_HEAD_AUTHORIZATION',
-      description: 'Original unmodified provider-authored UTF-8 visible text reconstructed and independently verified against raw SSE for each registered slot.'
-    },
-    {
-      planned_path: 'research/marrowline-screaming-grove-q1-20261121/live-acquisition/browser-witness/desktop-and-mobile/*.png',
-      custody_status: 'DEFERRED_PENDING_EXACT_HEAD_LIVE_AUTH',
-      generated: false,
-      reason: 'PAID_EXECUTION_HELD_PENDING_EXACT_HEAD_AUTHORIZATION',
-      description: 'Complete original desktop and mobile (390x844) Chrome browser screenshots rendering every eligible (and weak/flat/plain) live Q1 specimen.'
-    },
-    {
-      planned_path: 'research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_BLINDED_OPERATOR_ARTISTIC_REVIEW_PACKET.md',
-      custody_status: 'DEFERRED_PENDING_EXACT_HEAD_LIVE_AUTH',
-      generated: false,
-      reason: 'PAID_EXECUTION_HELD_PENDING_EXACT_HEAD_AUTHORIZATION',
-      description: 'Genuinely blinded 8-specimen artistic review packet preserving full unmodified literary passages with arm labels and morphology statistics sealed in a separate unblinding key.'
+      description: 'Master 8-slot live acquisition receipt.'
     }
   ];
 
@@ -239,7 +222,11 @@ function buildManifest() {
     active_pr: 1764,
     active_branch: BRANCH,
     generated_against_git_head: headSha,
-    paid_provider_calls_executed: 0,
+    authorized_live_execution_source_head: liveReceiptObj?.source_head_sha || null,
+    paid_provider_calls_executed: paidCallsExecuted,
+    q2_status: 'HELD',
+    experiment_b_status: 'CLOSED',
+    human_artistic_closure: 'RESERVED',
     summary_counts: {
       q1_estate_files_published_in_git: q1Files.length,
       core_runtime_and_test_files_verified: coreEntries.length,
@@ -354,12 +341,33 @@ function verifyManifest() {
     /C:[\\/\\\\]Users[\\/\\\\]/i,
     new RegExp('\\u0040' + 'codex\\b', 'i')
   ];
-  const scanPaths = [...listFilesRecursive(Q1_DIR), path.join(REPO_ROOT, 'tests/marrowline-q1-live-discriminator.test.mjs')];
+  const scanPaths = [...listFilesRecursive(Q1_DIR), path.join(REPO_ROOT, 'tests/marrowline-q1-live-discriminator.test.mjs')]
+    .filter((p) => !p.toLowerCase().endsWith('.png'));
   for (const abs of scanPaths) {
     const txt = fs.readFileSync(abs, 'utf8');
     for (const re of secretPatterns) {
       if (re.test(txt)) {
         errors.push(`HYGIENE_VIOLATION: ${relRepo(abs)} matched ${re}`);
+      }
+    }
+  }
+
+  // Verify blinding integrity of Q1_BLINDED_OPERATOR_ARTISTIC_REVIEW_PACKET.md when present
+  const blindedPath = path.join(Q1_DIR, 'live-acquisition/Q1_BLINDED_OPERATOR_ARTISTIC_REVIEW_PACKET.md');
+  if (fs.existsSync(blindedPath)) {
+    const blindedText = fs.readFileSync(blindedPath, 'utf8');
+    const specimenSections = blindedText.split(/^## SPECIMEN-/m).slice(1).join('\n');
+    const leakChecks = [
+      /\bS0[1-8]\b/,
+      /CURRENT_RESTORED_DEFAULT_PR1549/,
+      /OCT02_DRAMATURGY_CANDIDATE/,
+      /\bArm [AC]\b/,
+      /uniformPlanarDepthOne/,
+      /combiningMarks/
+    ];
+    for (const re of leakChecks) {
+      if (re.test(specimenSections)) {
+        errors.push(`BLINDING_LEAK_IN_REVIEW_PACKET: matched ${re}`);
       }
     }
   }
