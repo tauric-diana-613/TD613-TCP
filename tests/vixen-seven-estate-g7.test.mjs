@@ -13,6 +13,7 @@ import {checkPost,compileSync,writeProjection,loadState}
 import {EPOCH_SCHEMA,assertG7Chronology,verifyG7EpochDirectory,
  normalizeG7Gesture,claimG7GestureLocal,recoverG7InterruptedPublication} from
  '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/vixen-g7-epoch-custody.mjs';
+import {parseG7WorkflowGesture,claimG7WorkflowGesture} from '../scripts/vixen-g7-live-gesture-guard.mjs';
 import {auditServiceJourneyChronology,runTemporalCustodianAudit,TEMPORAL_CUSTODIAN_SCHEMA}
  from '../app/engine/dollhouse-temporal-custodian.js';
 const t1='2026-11-20T20:00:00Z',t2='2026-11-20T21:00:00Z';
@@ -188,5 +189,29 @@ test('G7-I rollback refuses predecessor mismatch and overwriting an already comm
   fs.writeFileSync(candidateManifestPath,JSON.stringify(payload));
   assert.throws(()=>recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:b.snapshot,
    predecessorSnapshot:a.snapshot}),/HELD_G7_RECOVERY_PREDECESSOR_DIGEST_MISMATCH/);
+ }finally{tidy(root)}
+});
+
+
+test('G7-J source-pinned live comment claim is locally one-use across workflow attempts',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'td613-g7-workflow-'));
+ try{
+  const args={root,out:path.join(root,'temp/lease.json'),
+   estate:'WENDBINE',sourceRevision:'a'.repeat(40),issue:1308,
+   comment:98123,author:'tauric-diana-613',
+   command:'/wendbine-sync ATELIER',run:75318,attempt:1,predecessor:'GENESIS'};
+  const preflight=parseG7WorkflowGesture(args);
+  assert.equal(preflight.comment_id,98123);
+  const claimed=claimG7WorkflowGesture(args);
+  assert.equal(claimed.persisted_remotely,false);
+  assert.equal(claimed.requires_atomic_remote_fast_forward,true);
+  assert.equal(fs.existsSync(path.join(root,'07-ARCHIVE-LEDGER','gestures',
+   preflight.event_key+'.json')),true);
+  assert.throws(()=>claimG7WorkflowGesture({...args,attempt:2,
+   out:path.join(root,'temp/rerun-lease.json')}),/HELD_GESTURE_ALREADY_CONSUMED/);
+  assert.throws(()=>parseG7WorkflowGesture({...args,issue:758}),
+   /HELD_GESTURE_ISSUE_COMMAND_MISMATCH/);
+  assert.throws(()=>parseG7WorkflowGesture({...args,estate:'SRC'}),
+   /HELD_G7_GESTURE_ESTATE_ISSUE_MISMATCH/);
  }finally{tidy(root)}
 });
