@@ -189,6 +189,38 @@ jobs:
           ref: ${{ env.ATELIER_BRANCH }}
           fetch-depth: 0
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Persist one-use G7 comment claim before any source operation
+        id: g7_claim
+        shell: bash
+        env:
+          G7_COMMENT_ID: ${{ github.event.comment.id }}
+          G7_COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          G7_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          PREDECESSOR="$(git rev-parse "HEAD:$SRC_ROOT/04-RECEIPTS/phase2")"
+          LEASE="$RUNNER_TEMP/g7-workflow/lease.json"
+          node "$RUNNER_TEMP/g7-workflow/scripts/vixen-g7-live-gesture-guard.mjs" \
+            --root "$GITHUB_WORKSPACE/$SRC_ROOT" --out "$LEASE" \
+            --estate "SRC" --source-revision "$SOURCE_SHA" \
+            --issue "$GATE_ISSUE" --comment "$G7_COMMENT_ID" \
+            --author "$G7_COMMENT_AUTHOR" --command "/src-zenodo-sync ATELIER" \
+            --run "$GITHUB_RUN_ID" --attempt "$G7_RUN_ATTEMPT" \
+            --predecessor "$PREDECESSOR"
+          git add -- "$SRC_ROOT/07-ARCHIVE-LEDGER/gestures"
+          git diff --cached --quiet && { echo 'G7_COMMENT_CLAIM_NOT_STAGED' >&2; exit 1; }
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m "custody: claim issue comment $G7_COMMENT_ID attempt $G7_RUN_ATTEMPT"
+          # Only a successful remote fast-forward consumes the gesture.
+          # Failure prevents all subsequent acquisition or provider steps.
+          git push origin "HEAD:$ATELIER_BRANCH"
+          echo "claim_head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -396,6 +428,45 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Require G7-capable target writer before consuming a gesture
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$WENDBINE_ROOT/99-ADMIN/vixen-g7-epoch-custody.mjs" || {
+            echo 'HELD_TARGET_G7_EPOCH_WRITER_NOT_ADMITTED' >&2; exit 1;
+          }
+          grep -Fq -- '--gesture-lease-file' "$WENDBINE_ROOT/99-ADMIN/wendbine-src-autosync.mjs" || {
+            echo 'HELD_TARGET_G7_GESTURE_LEASE_MISSING' >&2; exit 1;
+          }
+      - name: Persist one-use G7 comment claim before any source operation
+        id: g7_claim
+        shell: bash
+        env:
+          G7_COMMENT_ID: ${{ github.event.comment.id }}
+          G7_COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          G7_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          PREDECESSOR="$(node -e 'const fs=require("fs");const p=process.env.WENDBINE_ROOT+"/04-RECEIPTS/phase2/current-seal.json";process.stdout.write(fs.existsSync(p)?JSON.parse(fs.readFileSync(p,"utf8")).atelier_snapshot_id:"GENESIS")')"
+          LEASE="$RUNNER_TEMP/g7-workflow/lease.json"
+          node "$RUNNER_TEMP/g7-workflow/scripts/vixen-g7-live-gesture-guard.mjs" \
+            --root "$GITHUB_WORKSPACE/$WENDBINE_ROOT" --out "$LEASE" \
+            --estate "WENDBINE" --source-revision "$SOURCE_SHA" \
+            --issue "$GATE_ISSUE" --comment "$G7_COMMENT_ID" \
+            --author "$G7_COMMENT_AUTHOR" --command "/wendbine-sync ATELIER" \
+            --run "$GITHUB_RUN_ID" --attempt "$G7_RUN_ATTEMPT" \
+            --predecessor "$PREDECESSOR"
+          git add -- "$WENDBINE_ROOT/07-ARCHIVE-LEDGER/gestures"
+          git diff --cached --quiet && { echo 'G7_COMMENT_CLAIM_NOT_STAGED' >&2; exit 1; }
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m "custody: claim issue comment $G7_COMMENT_ID attempt $G7_RUN_ATTEMPT"
+          # Only a successful remote fast-forward consumes the gesture.
+          # Failure prevents all subsequent acquisition or provider steps.
+          git push origin "HEAD:$ATELIER_BRANCH"
+          echo "claim_head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Validate Wendbine sync and sealed-query contract
         shell: bash
         run: |
@@ -411,6 +482,7 @@ jobs:
           node "$WENDBINE_ROOT/99-ADMIN/wendbine-src-autosync.mjs" \
             --output-root "$WENDBINE_ROOT" \
             --encrypted-output "$RUNNER_TEMP/wendbine-private/source-capture.sealed.json" \
+            --gesture-lease-file "$RUNNER_TEMP/g7-workflow/lease.json" \
             > "$SYNC_RECEIPT"
           test -s "$RUNNER_TEMP/wendbine-private/source-capture.sealed.json"
           jq '{atelier_snapshot_id,seal_id,observed,new,changed,unchanged,not_seen_prior,held,encrypted_handoff_created}' "$SYNC_RECEIPT"
