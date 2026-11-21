@@ -124,6 +124,23 @@ test('G5-E: all-fetch-failure exports are refused before ZIP download',async()=>
  assert.equal(res.manifest.reference.offline_record_readback_all,false);
 });
 
+test('G5-G: a multiline original named import is retained for actual browser boot',async()=>{
+ const modules={
+  'encyclopedia/vixen-estate/entry.mjs':
+   "import {probe,\n original} from './em-source-challenge-probes.mjs';\nexport const seen=probe;",
+  'encyclopedia/vixen-estate/em-source-challenge-probes.mjs':
+   "export const probe='SOURCE_BOUND';export const original=true;"
+ };
+ const {fetcher}=net(modules);
+ const result=await audit({entries:[entry('encyclopedia/vix-cyb.html',
+  '<script type="module" src="./vixen-estate/entry.mjs"></script>'),
+  ...syntheticReferenceIndex()],fetcher});
+ assert.equal(result.fidelity,'ONLINE_REFERENCE_REQUIRED');
+ assert.deepEqual(result.requiredMissing,[]);
+ assert(result.entries.some(x=>x.path==='encyclopedia/vixen-estate/em-source-challenge-probes.mjs'));
+ assert.equal(result.manifest.reference.index_census_verified,true);
+});
+
 test('G5-F: PKZIP retained CRC protection, no integrity certification from member count',()=>{
  const data=buildVixenSessionZipBytes([entry('SESSION_START_HERE.md','offline-held')]);
  assert.equal(new DataView(data.buffer).getUint32(0,true),0x04034b50);

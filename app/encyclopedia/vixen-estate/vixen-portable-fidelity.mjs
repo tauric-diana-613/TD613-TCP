@@ -37,7 +37,9 @@ function refs(path,value){
   push(/\burl\(\s*["']?([^"')]+)["']?\s*\)/gi);
  }
  if(/\.(?:mjs|js|html?)$/i.test(path)){
-  push(/\b(?:import|export)\s+(?:[^;\n]{0,260}?\s+from\s*)?["']([^"']+)["']/g);
+  // Multi-line named imports from original source (e.g. a two-line import
+  // of em-source-challenge-probes.mjs) must survive ZIP closure.
+  push(/\b(?:import|export)\s+(?:[^;]{0,1000}?\s+from\s*)?["']([^"']+)["']/g);
   push(/\bimport\s*\(\s*["']([^"']+)["']\s*\)/g);
   push(/\bnew\s+URL\s*\(\s*["']([^"']+)["']/g);
  }
