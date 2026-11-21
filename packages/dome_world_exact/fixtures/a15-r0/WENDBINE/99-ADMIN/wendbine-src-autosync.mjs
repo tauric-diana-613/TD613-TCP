@@ -383,7 +383,13 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
  }
  const currentSeal=path.join(outRoot,outputFiles.seal);
  fs.mkdirSync(path.dirname(currentSeal),{recursive:true});
- fs.writeFileSync(currentSeal,json(sealData),{mode:0o644});
+ // Atomic final seal: never replace the predecessor with a partial JSON.
+ // Interrupted mutable copies remain HELD until explicit local recovery.
+ const sealStage=currentSeal+'.g7-next-'+crypto.randomBytes(8).toString('hex');
+ try{
+  fs.writeFileSync(sealStage,json(sealData),{flag:'wx',mode:0o644});
+  fs.renameSync(sealStage,currentSeal);
+ }finally{if(fs.existsSync(sealStage))fs.rmSync(sealStage,{force:true})}
  if(encryptedPayload){
   const envelope=sealPayload(encryptedPayload,publicPem);
   fs.mkdirSync(path.dirname(artifactPath),{recursive:true,mode:0o700});
