@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main, research/vixen-seven-estate-braid-g4-20261120, research/vixen-seven-estate-braid-g5-20261120, research/vixen-seven-estate-braid-g7-20261120, research/vixen-seven-estate-braid-g6-20261121]
+    branches: [main, research/vixen-seven-estate-braid-g4-20261120, research/vixen-seven-estate-braid-g5-20261120, research/vixen-seven-estate-braid-g7-20261120, research/vixen-seven-estate-braid-g6-20261121, research/vixen-dual-estate-encyclopedia-20261108]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -78,6 +78,7 @@ jobs:
           git -C "$RUNNER_TEMP/vixen-historical" fetch origin 70b5a0f9e94626cba6068f41c6117e7978800bbd
           git -C "$RUNNER_TEMP/vixen-historical" checkout --detach 70b5a0f9e94626cba6068f41c6117e7978800bbd
           TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/vixen-em-pinned-archive-qualifier.mjs > "$RUNNER_TEMP/vixen-original-receipt.json"
+          TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/verify-vixen-historical-negative-controls.mjs > "$RUNNER_TEMP/vixen-historical-negatives.json"
       - name: Source-first desktop geometry
         run: npm run test:vixen:browser
       - name: Dedicated iPhone first frame
@@ -101,6 +102,7 @@ jobs:
             artifacts/vixen-oop
             artifacts/vixen-*
             ${{ runner.temp }}/vixen-original-receipt.json
+            ${{ runner.temp }}/vixen-historical-negatives.json
             ${{ runner.temp }}/vixen-preview.zip
           if-no-files-found: error
 

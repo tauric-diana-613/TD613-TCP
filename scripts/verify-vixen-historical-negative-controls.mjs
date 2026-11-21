@@ -18,6 +18,10 @@ try{
  const estate=resolve(checkout,'packages/dome_world_exact/fixtures/a15-r0/EMSTD613');
  rejects('estate supplied as checkout',()=>resolveHistoricalEmCoordinates({checkoutRoot:estate}));
  rejects('checkout supplied as manifest root',()=>resolveHistoricalEmCoordinates({checkoutRoot:checkout,originalManifestRoot:checkout}));
+ const otherHead=exec('-C',original,'rev-parse','origin/main').trim();
+ exec('-C',checkout,'update-ref','--no-deref','HEAD',otherHead);
+ try{rejects('wrong observed historical HEAD',()=>resolveHistoricalEmCoordinates({checkoutRoot:checkout}));}
+ finally{exec('-C',checkout,'update-ref','--no-deref','HEAD',roots.historicalGitHead);}
  rejects('wrong historical SHA',()=>resolveHistoricalEmCoordinates({checkoutRoot:checkout,historicalGitHead:'a'.repeat(40)}));
  const modify=(relative,change)=>{const path=resolve(estate,relative),bytes=readFileSync(path);try{writeFileSync(path,change(bytes));qualifyEmOriginalArchive({checkoutRoot:checkout});}finally{writeFileSync(path,bytes);}};
  const profile=resolve(estate,'ATELIER_PROFILE.json');
@@ -27,12 +31,15 @@ try{
  rejects('tampered Work title',()=>modify('01-MANIFESTS/work-index.jsonl',b=>Buffer.from(b.toString().replace('Architecture','Counterfeit Architecture'))));
  const sources=readFileSync(resolve(estate,'01-MANIFESTS/source-files.jsonl'),'utf8').trim().split('\n').map(JSON.parse);
  rejects('modified manifestation',()=>modify(sources[0].archive_relative_path,b=>Buffer.concat([b,Buffer.from('altered')])));
+ const absent=resolve(estate,sources[0].archive_relative_path);renameSync(absent,absent+'.held');
+ try{rejects('missing manifestation',()=>qualifyEmOriginalArchive({checkoutRoot:checkout}));}finally{renameSync(absent+'.held',absent);}
  const derivatives=readFileSync(resolve(estate,'03-DERIVATIVES/derivative-index.jsonl'),'utf8').trim().split('\n').map(JSON.parse);
  const derivative=derivatives.find(d=>d.derivative_relative_path);
  rejects('altered derivative digest',()=>modify(derivative.derivative_relative_path,b=>Buffer.concat([b,Buffer.from('altered')])));
  rejects('metadata companion promoted to manifestation',()=>modify('01-MANIFESTS/work-manifestations.jsonl',b=>Buffer.from(b.toString().replace('METADATA_COMPANION','MANIFESTATION_OF'))));
  const source=resolve(estate,sources[0].archive_relative_path);
- renameSync(source,source+'.held');symlinkSync(source+'.held',source);
+ const outside=resolve(temp,'outside-source');writeFileSync(outside,readFileSync(source));
+ renameSync(source,source+'.held');symlinkSync(outside,source);
  try{rejects('source symlink escape',()=>qualifyEmOriginalArchive({checkoutRoot:checkout}));}finally{rmSync(source);renameSync(source+'.held',source);}
  // Native success is never accepted as an injected input; the qualifier executes
  // the pinned route itself and checks its actual return and indexed source census.
