@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, research/vixen-seven-estate-braid-g4-20261120]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -189,6 +189,57 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+  vixen_g5_extracted_browser:
+    name: Vixen G5 extracted ZIP Chromium source-and-replay witness
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'research/vixen-seven-estate-braid-g5-20261120' &&
+      github.event.pull_request.base.ref == 'research/vixen-seven-estate-braid-g4-20261120'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install bounded original-source Chromium test dependencies
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Download, extract, serve, verify and render source-bound G5 archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tests/vixen-g5-extracted-archive-browser.mjs
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-g5-source-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 40); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          node tests/vixen-g5-extracted-archive-browser.mjs
+      - name: Save exact-head export ZIP, SHA-256 receipt, missing-resource diagnostics and browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-g5-extracted-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-g5-extracted/
+          retention-days: 14
+          if-no-files-found: warn
+
   budget_bundle:
     name: Neon budget deployment ZIP startup
     needs: scope
@@ -287,6 +338,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_vixen_braid_g3.py' -v
           node --test tests/vixen-seven-estate-g3.test.mjs
           node --test tests/vixen-seven-estate-g4.test.mjs
+          node --test tests/vixen-seven-estate-g5.test.mjs
           node --test tests/vixen-semantic-semiotic-search.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
           for source_bound_suite in \
