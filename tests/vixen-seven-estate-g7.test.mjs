@@ -11,7 +11,7 @@ import crypto from 'node:crypto';
 import {checkPost,compileSync,writeProjection,loadState}
  from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-src-autosync.mjs';
 import {EPOCH_SCHEMA,assertG7Chronology,verifyG7EpochDirectory,
- normalizeG7Gesture,claimG7GestureLocal} from
+ normalizeG7Gesture,claimG7GestureLocal,recoverG7InterruptedPublication} from
  '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/vixen-g7-epoch-custody.mjs';
 import {auditServiceJourneyChronology,runTemporalCustodianAudit,TEMPORAL_CUSTODIAN_SCHEMA}
  from '../app/engine/dollhouse-temporal-custodian.js';
@@ -139,4 +139,54 @@ test('G7-G phase-status PASS is only PHASE_STATUS_COMPLETENESS; missing ledger s
  assert.equal(result.verdict,'HELD');
  assert.equal(result.authority.execute,false);
  assert.equal(result.evidence_posture.provider_origin_authenticated,false);
+});
+
+
+test('G7-H interrupted mutable publication is HELD until explicit predecessor-pinned rollback',()=>{
+ const {root,a,second}=fixture();
+ try{
+  const predecessorSeal=fs.readFileSync(path.join(root,'04-RECEIPTS/phase2/current-seal.json'));
+  const b=writeProjection({compiled:second,outRoot:root,observedAt:t2});
+  // Fault injection models interruption after candidate member writes but
+  // before final atomic seal: candidate bytes and run receipt may exist, while
+  // the current seal still refers to its predecessor.
+  fs.writeFileSync(path.join(root,'04-RECEIPTS/phase2/current-seal.json'),predecessorSeal);
+  assert.throws(()=>loadState(root),/PREVIOUS_PROJECTION_HASH_MISMATCH/);
+  const before=fs.readFileSync(path.join(root,'01-MANIFESTS/phase2/capture-v2.jsonl'));
+  const preview=recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:b.snapshot,
+   predecessorSnapshot:a.snapshot});
+  assert.equal(preview.state,'INTERRUPTED_CANDIDATE_PREDECESSOR_ROLLBACK_AVAILABLE');
+  assert.equal(preview.candidate_promoted,false);
+  assert.deepEqual(fs.readFileSync(path.join(root,'01-MANIFESTS/phase2/capture-v2.jsonl')),before,
+   'Default is read-only, never silent recovery');
+  const repaired=recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:b.snapshot,
+   predecessorSnapshot:a.snapshot,operatorApproved:true});
+  assert.equal(repaired.state,'PUBLIC_PROJECTION_RESTORED_FROM_PINNED_PREDECESSOR');
+  assert.equal(repaired.orphan_candidate_epoch_preserved,true);
+  assert.deepEqual(fs.readFileSync(path.join(root,'01-MANIFESTS/phase2/capture-v2.jsonl')),
+   fs.readFileSync(path.join(dir(root,a.snapshot),'01-MANIFESTS/phase2/capture-v2.jsonl')));
+  assert.equal(loadState(root).captures.length>0,true);
+  assert.equal(verifyG7EpochDirectory(dir(root,b.snapshot)).state,'LOCAL_IMMUTABLE_EPOCH_BYTES_MATCH');
+  assert.throws(()=>recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:b.snapshot,
+   predecessorSnapshot:a.snapshot,operatorApproved:true}),/HELD_G7_RECOVERY_ALREADY_RECORDED/);
+ }finally{tidy(root)}
+});
+test('G7-I rollback refuses predecessor mismatch and overwriting an already committed newer seal',()=>{
+ const {root,a,second}=fixture();
+ try{
+  const b=writeProjection({compiled:second,outRoot:root,observedAt:t2});
+  assert.throws(()=>recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:b.snapshot,
+   predecessorSnapshot:a.snapshot,operatorApproved:true}),
+   /HELD_G7_RECOVERY_CURRENT_SEAL_IS_NOT_PREDECESSOR/);
+  assert.throws(()=>recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:a.snapshot,
+   predecessorSnapshot:b.snapshot}),
+   /HELD_G7_RECOVERY_PREDECESSOR_MISMATCH/);
+  const candidateManifestPath=path.join(dir(root,b.snapshot),'EPOCH_MANIFEST.json');
+  const saved=fs.readFileSync(candidateManifestPath,'utf8');
+  const payload=JSON.parse(saved);
+  payload.predecessor_seal_sha256='0'.repeat(64);
+  fs.writeFileSync(candidateManifestPath,JSON.stringify(payload));
+  assert.throws(()=>recoverG7InterruptedPublication({outRoot:root,candidateSnapshot:b.snapshot,
+   predecessorSnapshot:a.snapshot}),/HELD_G7_RECOVERY_PREDECESSOR_DIGEST_MISMATCH/);
+ }finally{tidy(root)}
 });
