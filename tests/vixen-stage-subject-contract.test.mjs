@@ -102,15 +102,12 @@ test('Historical TCC-08 diagnostics remain original source semantics without exp
 
 test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
  const guide=readFileSync(new URL('../app/encyclopedia/vix-cyb/llms.txt',import.meta.url),'utf8');
- assert.match(guide,/8.*historically recorded OPERA folio entries/);
- assert.match(guide,/14.*OPERAHOUSE technical\/optical records/);
- assert.match(guide,/TCC-06.*TCC-03.*TCC-07/);
- assert.match(guide,/RC records remain OPERAHOUSE technical optics/);
- assert.match(guide,/LAB_RC-##/);
- assert.match(guide,/TCC-08.*TITLE_LOCUS_ORNAMENT.*BRANDING_ORNAMENT_ONLY/);
- assert.match(guide,/browser-isomorphic/);
- assert.match(guide,/sourceContext/);
- assert.match(guide,/operatorQuestion/);
- assert.match(guide,/separately gated Podium/);
+ assert.match(guide,/Eight historically recorded Vixen research folio entries remain distinct from fourteen technical\/optical host records/);
+ assert.match(guide,/technical records are not publicly cast as original Works|never inherit Performer identity/i);
+ assert.match(guide,/branding ornament retains its original non-theorem status/);
+ assert.match(guide,/machine identifiers and original manuscript names remain exact/i);
+ assert.match(guide,/A valid digest establishes internal bytes, not external origin/i);
+ assert.match(guide,/27 machine routes|27 declared typed routes/i);
+ assert.doesNotMatch(guide,/LAB_RC-##|TCC-08.*TITLE_LOCUS_ORNAMENT/);
  assert.doesNotMatch(guide,/dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`/);
 });

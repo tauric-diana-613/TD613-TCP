@@ -1,263 +1,65 @@
-# TD613 · Vixen Cybernetics (`/encyclopedia/vix-cyb.html`) — AI & Operator Podium Guide
+# Vixen Cybernetics — AI Research Guide
+## A source-bound research invitation, not a laboratory control panel
 
-Hosted canonical path: `/encyclopedia/vix-cyb/llms.txt`
-Companion Universal index guide: `/encyclopedia/llms.txt`
-Podium machine manifest: `/encyclopedia/reference/podium/manifest.json`
-Podium CLI entrypoint: `scripts/vixen-podium.mjs`
+**Public work:** /encyclopedia/vix-cyb.html  
+**Original Work access:** Works, Manuscripts, Observatory, Salon, Folios and Methods  
+**Separate source encounter:** Independent Reading Room, only after the visitor deliberately opens it  
+**Machine task index:** /encyclopedia/reference/podium/manifest.json  
+**Machine research instructions:** /encyclopedia/reference/podium/AGENTS.md  
+**Repository:** tauric-diana-613/TD613-TCP · canonical Vixen development PR #1730
 
-This document is the comprehensive operational manual for AI assistants and researchers interacting with the **Vixen Cybernetics** research estate (`EMSTD613`), its 32 historical Works, its 5-clock computational machinery, its interactive **Constitutive Inquiry Observatory** (`#constitutiveInquiry`), its machine **Podium** CLI, and its **Zero-Dependency Portable Session ZIP** workflow.
+This guide is intended for a human-directed AI research collaborator. It describes the presently installed Vixen Opera without importing other researchers' private programs, origin stories, internal laboratory terminology or tools into its scholarship. The archive's machine identifiers and original manuscript names remain exact within code and source records.
 
-Reading this guide or dispatching Podium read routes never grants merge authority, release authority, deployment authority, authorship resolution, or empirical replication credit (`empirical_replication_credit: 0`, `release_authority: false`, `human_closure_required: true`).
+## First: preserve the three distinct roles
 
----
+**OPERAHOUSE ≠ OPERA ≠ PERFORMER**
 
-## 1. Fundamental Stage Law: `OPERAHOUSE ≠ OPERA ≠ PERFORMER`
+- **Operahouse:** Hosting, transfer, indexing, read-only reference transport and authorization controls. It can carry a source without becoming its author.
+- **Opera:** Vixen Cybernetics' own questions, visible instruments, recorded inquiry and prospective interpretations.
+- **Performer:** A specific preserved original Work and its documented manifestations, with authorship and uncertain identity left as historically recorded.
 
-Vixen Cybernetics separates three distinct authority layers that must never be conflated:
+An independent index result or adjacent research method cannot silently become one of Vixen's Works. A valid digest establishes internal bytes, not external origin, human authorship or a scientific result.
 
-1. **OPERAHOUSE (Host Infrastructure):** `TD613` / `td613-tcp` read-only reference gateway (`reference/vixen-read-gateway.mjs`), stage separator (`reference/vixen-stage-boundary.mjs`), and Universal Edition 1.4 retrieval mirror (`1,141` records; `2,131` typed graph edges). It holds **zero** authorship or source-reclassification authority over the Opera.
-2. **OPERA (Creative & Theoretical Constellation):** The Vixen Cybernetics work itself (`/encyclopedia/vix-cyb.html` + `vixen-estate/`). It houses **32** canonical Works, **53** linked `emsrc_*` manifestations (+7 unpaired Batch-B PDFs), **8** split-plane dual `.md`/`.pdf` human gates (`[32, 40]`, 256 states defaulting to `UNADJUDICATED_PAIR`), **21** documentary protocols (`6 + 7 + 4 + 4` in `06-instruments`), and **22** archival formula records, comprising **8** historically recorded OPERA folio entries (`TCC-01`–`TCC-08`), including `TCC-08` as an original title-locus ornament rather than a research-programme theorem, and **14** OPERAHOUSE technical/optical records (`RC-01`–`RC-14`). An archive census never converts fourteen engineering methods into authored Vixen research or thirty-two primary Works.
-3. **PERFORMER (Historical Authored Works):** The individual stated authors (`Em / Vix / Cass / Cassie` and cited contributors) and original source coordinates (`emwork_*`, `emsrc_*`).
+## What is actually here
 
-### Three-role constitutional routing: mandatory for AI-assisted Vixen edits
+- 32 canonical original Works and 53 linked readable source manifestations.
+- Eight unresolved author/manifestation identity questions.
+- Twenty-one historical documentary methods.
+- Eight historically recorded Vixen research folio entries remain distinct from fourteen technical/optical host records; the latter may inform a demonstration, but never inherit Performer identity or headline as original Works. One historical branding ornament retains its original non-theorem status.
+- A source-first manuscript reader with original source identity and attribution.
+- A mathematical Observatory and a two-Work Synthesis Salon, whose models remain illustrative.
+- Semantic–semiotic search with independent channels and explicit bounded comparisons.
+- Maestro for evidence-led exploration and Composer for unratified synthesis proposals.
+- A separate read-only reference room; cross-source relationships require a separate ratified warrant.
+- A portable, locally exportable session. This is not a hidden background agent.
 
-The historical `vixen-corpus-bundle` retains **22 secondary formula records** unchanged; these are not 22 original mathematical Works. The **public wardrobe derives mathematics from SHA-256-verified original Work manifestations** via `observatory-work-mathematics.mjs` and `corpus-experiment-a.mjs`, never from the TCC/RC host catalogue. TCC records remain documentary archive coordinates, RC records remain OPERAHOUSE technical optics, and both are prohibited from impersonating authored primary Works. The separate Electric Foundry still offers bounded TCC source-model demonstrations; RC methods cannot headline or be publicly selected through `LAB_RC-##`.
+The next corpus expansion (seven previously missing PDFs plus one separately selected blind-archive document) has not yet been executed or admitted. Missing source bodies, native-method parity, physical-device review and independent empirical observations must be reported accurately as unobserved.
 
-An RC source record may be analyzed by technical engines and indexed under its own archival custody, but must never be relabelled a Vixen Performer or an original Work. A prospective giveback track remains an unexecuted proposal: an RC-based visual optic never becomes its authorship or theorem. TCC-08 is classified as `TITLE_LOCUS_ORNAMENT` because its source status is `BRANDING_ORNAMENT_ONLY`, never a research-programme theorem. This source limit does not bar its own TOROID optical probe, source-conditioned ranking, direct `selectLab('LAB_TCC-08')` staging, or shared eight-folio inquiry workflow. Computation stays synthetic and unratified with empirical credit zero.
+## How to conduct a useful encounter
 
-Source titles, manuscript text, file names and machine receipts must be preserved literally; the public-copy alias filter cannot rewrite source provenance. Keep OPERAHOUSE ≠ OPERA ≠ PERFORMER legible on the public stage. Attribute original Works through declared source IDs and retain unresolved authorship where present.
+1. **Receive the operator question.** Ask which original Work, passage, research problem or potential relationship matters. Do not invent a research objective.
+2. **Locate originals.** Inspect Work and manifestation IDs; inspect the actual manuscript where available. Cite title, source ID, digest or exact passage. Preserve source-body limitations.
+3. **Choose an explicit method.** Document whether the answer uses lexical search, semantic retrieval, semiotic structure, order-dependent comparison or illustrative mathematical modeling.
+4. **Challenge the initial interpretation.** Return at least one rival account, a relevant negative control and a meaningful falsifier or missing witness.
+5. **Return a bounded research proposal.** Distinguish recorded evidence, constructed mathematics, operator judgments, source uncertainty and speculative implications.
+6. **Stop at human approval.** The assistant must never infer approval, reclassify a Work, publish a cross-source mapping, change the original corpus or initiate deployment.
 
-The **public mathematical wardrobe** loads original `emwork_*` Work bodies through the Experiment-A read gate, independently verifies their derivative SHA-256, extracts exact mathematical passages with source offsets, and calls `scoreOriginalWorkMath` only on module-issued verified entries. This invokes `scoreUnifiedSynthesisCandidates` with the **actual passage** as `sourceContext`, not `operatorQuestion`; the algorithm is **browser-isomorphic**, and it does **not** invoke host-native Python/CLI executables. The legacy `observatory-math-wardrobe.mjs` remains an internal secondary TCC source-record diagnostic, not the visitor's manuscript wardrobe. SRC metadata routing provides no invented chronology, injected cues, first-four transformations, or witnessed compiler passes: it reports zero observed transformation/execution receipts when none exist, and null tomography gives no positive score credit. Native tools remain the **separately gated Podium** lane. No ranking establishes authorship, empirical evidence, or an experiment; Batch-B hydration remains distinct and HELD. Regression witnesses: `tests/vixen-math-wardrobe.test.mjs`, `tests/vixen-original-work-mathematics.test.mjs`, `tests/vixen-synthesis-salon.test.mjs`, `tests/vixen-browser-visual-witness.mjs`, `tests/vixen-stage-subject-contract.test.mjs`. 
+### A safe starter task
 
-**Operator Privacy & Identity Boundary:**
-- Keep private/internal covenant keys completely out of human-facing UI prose and generated headlines.
-- Do not fabricate authorship resolution or collapse independent works onto host queries. Every researcher's Opera authors its own Constitutive Inquiry Question and Method in `#constitutiveInquiry` (or via Podium `synthesis.propose`), preserving autonomy across researchers.
-
----
-
-## 2. File & Cascade Architecture (`app/encyclopedia/`)
-
-### Primary Entry Points & Static Bundles
-- `vix-cyb.html` — Complete page containing inline immutable `<script type="application/json" id="vixen-corpus-bundle">` and `<script type="application/json" id="vixen-estate-manifest">`. Zero external network requests (`STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`).
-- `vix-cyb/llms.txt` — This Podium AI & operator instruction guide.
-- `vixen-estate/podium-synthesis.json` — Live persisted synthesis headline, active inquiry question/method, conjectures, monotonic append-only `synthesis_log`, and `rollback_snapshots`.
-
-### CSS Design Stack & Palette Contract
-The active presentation stack inside `vixen-estate/` enforces strict palette separation (**zero purple or violet hues in `235..327` deg** across all stylesheets and optical engines; strictly Baker-Miller Pink `#FF91AF` / `#ff65aa`, Arc Flash `#FFF2A9` / `#FFF0A8`, Warm Porcelain `#F6F4F0` / `#fff9f5`, Obsidian Graphite `#060708` / `#0f1418` / `#12181d`, and Ice Silver `#9DBCC1` / `#d2dde0`):
-- `glinda-cybergoth-rgi10.css` (structural layout, `#vixenRoomRail`, `.footer`, `.footer-end-controls`)
-- `vixen-stage-architecture-rgi10b.css`
-- `glinda-spectacle-rgi11.css`
-- `glinda-luminous-proscenium-rgi12.css`
-- `vixen-electrical-breath-rgi13.css`
-- `vixen-opaline-couture-rgi14.css` (`#cover` full-bleed dark `#000000` frontispiece framing with Didone display type, `.hero-art picture` flex constraint so bottom V-apex never clips, and `#constitutiveInquiry` obsidian command deck)
-- `vixen-foyer.css`, `vixen-motion.css`, `observatory-electric-foundry.css`, `synthesis-salon.css`, `research-chamber.css`
-
-### Optical, WebGL2 & Stage Engines (`vixen-estate/`)
-- `observatory-foundry.frag` (`#version 300 es`, `39` visual carriers: `6` near / `13` mid / `20` far), `observatory-foundry-renderer.mjs`, `observatory-foundry-kernel.mjs`, `observatory-electric-foundry.mjs` (WebGL2 proscenium + dial cabinet for exactly six onstage Vixen inquiry models: `TCC-01`, `TCC-04`, `TCC-05`, `TCC-06`, `TCC-03`, `TCC-07`). Archived RC computational models remain available to backstage machine analysis but cannot enter the Opera through public `selectLab`.
-- `observatory-vixen-corpus.mjs` — `buildVixenLaboratories(corpus)`, `completeVixenSourceCensus(corpus)`, `assessVixenLab(corpus, id, controls, probe)`; historical container custody and role-labelled source are separately recorded.
-- `vixen-stage-subject-contract.mjs` — `classifyVixenFolio`, `auditVixenFolioCensus`, `canStageVixenFolio`, `VIXEN_OPERA_HEADLINERS`: role checks grounded in the original TCC records, including the title-locus ornament, and separate RC technical instrumentation; synthetic source inspection neither chooses a study nor confers a Compose warrant. RC methods remain backstage and prospective tracks stay held.
-- `observatory-work-mathematics.mjs` — **public original Work mathematical wardrobe**: source-body hashes, exact excerpt offsets, independent Work/source IDs, verified module-issued entries and browser-native synthesis. `observatory-math-wardrobe.mjs` is a legacy *secondary* TCC archive diagnostic, including TCC-08's non-theorem title-locus ornament. Neither route demonstrates comprehensive native Atelier parity or empirical credit.
-- `observatory-computational-score.mjs` — Interactive constellation canvas & visual instrumentation.
-- `vixen-live-mesh-rgi13.mjs`, `vixen-folded-cuirass.mjs`, `vixen-beat-radiometry-rgi15.mjs`, `vixen-motion-governor.mjs`, `vixen-salon-ambient-field.mjs`, `vixen-salon-light.mjs` — Ambient kinetic & optical renderers (host-controlled pause/still compliance).
-- `vixen-opaline-couture-rgi14.mjs`, `vixen-foyer.mjs`, `fox-house-dock.mjs`.
-
-### Constitutive Inquiry, Synthesis & Custody Engines (`vixen-estate/`)
-- `synthesis-salon-engine.mjs`:
-  - `CLOCKS` & `computeClockVernier` — 5 non-commutative clocks (`fast`/`TCC-01`, `tok`/`TCC-02`, `k`/`TCC-03`, `wall`/`TCC-04`, `plant`/`TCC-05`), arrival inversions & tick L1 drift.
-  - `computeMatrixSvdUnified` / `hestenesJacobiSvd` (`computeMatrixSvd2x2` alias preserved) — One-sided Hestenes-Jacobi SVD (`sigma_max`, `sigma_min`, condition number `condition`, `rank`, `classification`).
-  - `project111Mirror` — Decomposition along `[1, 1, 1]^T` vs orthogonal nullspace (`nullspace_ratio`, `residual`, `projection_orthogonal_to_111`).
-  - `computeDiscreteXorSynergy` — Joint vs marginal mutual information (`I_XY_Z_bits`, `synergy_bits`, `synergistic_emergence`).
-  - `computeFadtCorpusFiberProfile` — Scans all 32 Works across `C1–C5` for quotient exactness (`C3` = exact `{A-PLANE, W-PLANE}` descent; `C1, C2, C4, C5` = `HOLD_IRREDUCIBLE_GAP`).
-  - `scoreUnifiedSynthesisCandidates` & `generateUnifiedSynthesisCandidates` — Multi-criteria mathematical candidate scoring ($S_{\text{spec}}, S_\Delta, S_{\perp 111}, S_{\text{syn/fadt}}, S_{\text{bridge}}, S_{\text{ceil}}$) across candidate cybernetic theorems (`ANTI_BOILERPLATE_SUBTITLE_RE` forbids generic `"THE ARCHITECTURE OF ..."` templates).
-  - `computeSalonObservatoryDiagnostics` — Unified diagnostic packet combining Vernier, SVD, `[111]` mirror, XOR synergy, and `epistemic_ceiling` (`empirical_credit: 0`, `experiment_b_flight: "HELD"`).
-  - `synthesizeOutsidePerspectiveConjectures(corpus, { lagTicks, filterCluster, limit })` — Generates 7 structured cross-domain conjectures across `C1–C5`, `A-01`..`A-09` Atlas domains, Aperture SVD conditioning, and `NOW / WHY / EXACT` falsifier predicates.
-  - `deriveSynthesisHeadline` — Deterministic state machine + candidate selector (`selectedCandidateId`) powering `window.VixenSynthesisHeadlines` (`#synthHeaderTagline`, `#synthPatternSubtitle`, `#synthResearchQuestion`, `#synthAxiomMarginalia`, `#synthHeroStatement`, `#synthLeftSpine`).
-  - `composeSalonPlan` & `refractSalonPlan` — Pairwise A→B vs B→A encounter refraction preserving terminal Work identity while proving path dependence.
-- `synthesis-salon.mjs` — Interactive Salon DOM orchestrator.
-- `research-chamber.mjs` — Research Cart / study tray & Work comparison without foreign record leak.
-- `role-boundary.mjs` — `STAGE_ROLES`, `castVixenPerformer`, `stageVixenOperaEvent`, `readOperahouseStatus`, `assertStageRoleSeparation`.
-  - Original Performers require exact object membership in the admitted 32-Work source roster and an issued, immutable module-branded identity. Opera events accept only declared observation/navigation actions; verbs such as `RELEASE`, `ADMIT`, `DEPLOY` and `CONFIRM_AUTHORSHIP` are rejected regardless of an omitted authority flag. Caller-made `role:PERFORMER` objects, cloned Work objects and arbitrary `emwork_*` assertions cannot generate Opera events. Podium `RULEFIELD/assess_roles` reads the original local Vixen roster regardless of a supplied `payload.corpus`; explicitly unknown Work IDs return `HELD_UNKNOWN_VIXEN_WORK` with `staged_opera_event: null`. Opera event detail maps may never override `action`, `opera`, `authority`, `role`, `estate`, `layer` or `performer`; an attempted override is rejected before output. Explicit empty/null/technical `work_id` targets return held rather than defaulting to the first Work. Other synthetic analytic tasks have separate, non-authorship semantics. These checks establish local roster custody, not human authorship or exterior provenance.
-- `cross-opera-warrant.mjs` — `ADMITTED_VIXEN_CROSSWALKS`, `inspectVixenCrossOperaWarrant`, `assertNoAutomaticCrossOperaEntry` (default fail-closed).
-- `session-zip.mjs` — Pure-JS zero-dependency PKZIP Store CRC-32 exporter (`collectVixenSessionFiles`, `buildVixenSessionZipBytes`, `downloadVixenSessionZip`), wired to `#footerSaveSessionBtn` (`Save current session ⭳`).
-
----
-
-## 3. Podium Machine Contract (`reference/vixen-podium.mjs` & `reference/podium/manifest.json`)
-
-The Podium is the typed machine-collaboration interface (`schema: "td613.vixen.podium.task/v1"` -> receipt `schema: "td613.vixen.podium.receipt/v1"`).
-
-### All 12 Declared Routes (`PODIUM_ROUTES`)
-1. `podium.describe` — Returns Vixen Podium schema, current synthesis headline, and read-only status.
-2. `vixen.work.inspect` — Inspects one of the 32 canonical Vixen Works (`work_id`) and its manifestations.
-3. `vixen.gates.inspect` — Inspects the 8 `[32, 40]` split-plane dual `.md`/`.pdf` human gates (`DEFAULT_UNADJUDICATED_PAIR`).
-4. `universal.open` — Explicitly opens the Universal Edition 1.4 read-only index (requires operator directive or `params.auto_open: true`).
-5. `universal.search` — Lexical token search across 1,141 Universal records.
-6. `universal.get` — Reads & SHA-256-verifies a single Universal record (`reference/records/{ID}.json`).
-7. `universal.related` — Lists outgoing & incoming typed citations from `reference/graph.json`.
-8. `synthesis.propose` — Applies custom inquiry question, method, headline/subtitle overrides, Salon plan, or conjectures to `podium.synthesisState()` (supports `auto_open`, `auto_verify_record`, `reset_to_baseline`, and `synthesize_conjectures` under expressed operator directive).
-9. `vixen.salon.compose` — Runs `composeSalonPlan` / `refractSalonPlan` for two distinct Vixen Works, a giveback track, and a documentary protocol.
-10. `experiment_b.preregister` — Generates a held four-arm Experiment B competent-union preregistration proposal (`experiment_b_flight: "HELD"`).
-11. `engine.capabilities` — Declares bound vs unconnected native engine operations for the current session.
-12. `engine.invoke` — Invokes one of the five bound native engines (`BOUNDED_ENGINE_OPERATIONS`), strictly returning `UNVERIFIED_ENGINE_ADAPTER_RETURN` (`endorsement: false`, `scientific_credit: 0`).
-
-### Expressed Operator Directive Auto-Lift vs Fail-Closed Hold
-- **Unauthorized callers** still fail closed (`HELD_INDEX_NOT_OPEN`, `HELD_TASK_CONTRACT`, `HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED`).
-- When the human operator explicitly expresses intent (`operatorAuthorized === true`, or explicit task params `auto_open: true` / `operator_directive: true`), gratuitous intermediate holds are lifted cleanly (`ensureReferenceOpened()`, `auto_verify_record` in `synthesis.propose`) without fabricating empirical credit or bypassing identity contracts.
-
-### All 5 Native Engine Adapters (`scripts/vixen-podium-native-adapters.mjs`)
-Requires BOTH `TD613_PODIUM_OPERATOR_DIRECT=1` in the host environment AND `--native-read-tools` on the CLI:
-
-- **`APERTURE`**:
-  - `audit_epistemic_deficit` -> `app/engine/aperture-v32-typed-epistemic-deficit.js#auditTypedEpistemicDeficit`
-  - `evaluate_probe_stability` -> `evaluateCandidateProbeStability`
-  - `compute_matrix_svd` -> `computeMatrixSvd` (one-sided Hestenes-Jacobi SVD)
-  - `td613_governed_exposure` -> `app/engine/td613-aperture.js#buildTD613GovernedExposureSchema` / `reviewTD613ApertureTransfer`
-  - `observatory_diagnostics` -> `vixen-estate/synthesis-salon-engine.mjs#computeSalonObservatoryDiagnostics`
-- **`ATLAS`**:
-  - `compare_routes` -> `app/engine/dollhouse-atlas-relational-custody.js#auditAtlasHolonomyHistoryParity`
-  - `trace_relations` -> `classifyAtlasRelationIdentity`
-  - `atlas_math_dispatch` -> `app/engine/atlas-mathematical-engine.js#dispatchAtlasMathematicalOperation` (`A-01`..`A-09`)
-  - `fadt_fiber_audit` -> `app/engine/dollhouse-fadt-reparative-assistance.js#computeFadtFiberBounds`
-  - `fadt_coordinate_recovery` -> `evaluateFadtCoordinateRecovery`
-  - `fadt_discrepancy` -> `evaluateFadtDiscrepancyIdentity`
-  - `vixen_semantic_search` -> `vixen-estate/semantic-semiotic-search.mjs` (`hybrid`, `lexical`, `phrase`, `exact`, `src_projective`)
-- **`DOLLHOUSE`**:
-  - `audit` -> `app/engine/dollhouse-skill-dispatcher.js#runDollhouseSkillAudit` (`PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`, + `ORCHESTRATOR`)
-  - `fadt_reparative_packet` -> `compileFadtReparativePacket`
-  - `temporal_non_retroactivity` -> `app/engine/dollhouse-temporal-custodian.js#auditTemporalLedgerNonRetroactivity`
-- **`RULEFIELD`**:
-  - `assess_roles` -> `role-boundary.mjs` + `cross-opera-warrant.mjs` + `observatory-vixen-corpus.mjs#completeVixenSourceCensus`
-  - `propose_rulefield` -> `composeSalonPlan` + `synthesizeOutsidePerspectiveConjectures` + `deriveSynthesisHeadline`
-  - `score_unified_candidates` -> `scoreUnifiedSynthesisCandidates` + native `computeFadtFiberBounds` + native `computeMatrixSvd`
-  - `pedagogue_cadence` -> `app/engine/dollhouse-pedagogue-dromological.js#auditDollhouseDromologicalCadence`
-  - `pedagogue_institutional_time` -> `auditDollhouseInstitutionalTime`
-- **`UNIVERSAL_ATELIER`** (Read-only SHA-256-verified mirror; zero write/import admissions):
-  - `search`, `get`, `cite`, `neighbors`, `route` (max BFS depth 5), `context`, `verify`
-
----
-
-## 4. Podium CLI, Append-Only Synthesis Log & Rollback Recipes
-
-### Inspect Manifest, Score Mathematical Candidates & History
-```bash
-node scripts/vixen-podium.mjs --manifest
-node scripts/vixen-podium.mjs --list-syntheses
-TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --score-candidates
-```
-
-### Commit / Promote a Scored Candidate to `podium-synthesis.json` & Sync `vix-cyb.html`
-`--write-synthesis` preserves prior entries in `vixen-estate/podium-synthesis.json`, increments monotonic `synthesis_seq`, links `predecessor_entry_id` + `predecessor_sha256` from the true monotonic log tip (`last_log_entry_id`), records `state_sha256`, and saves a restorable snapshot inside `rollback_snapshots`. Add `--select-candidate <id>` to promote a ranked mathematical candidate and `--sync-html` to render the SSR headline slots into `vix-cyb.html` without touching `#vixen-corpus-bundle`:
-```bash
-TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --select-candidate cand-visibility-svd --sync-html
-TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --sync-html --input task.json
-```
-Example `task.json`:
 ```json
-{
-  "schema": "td613.vixen.podium.task/v1",
-  "intent": "synthesis.propose",
-  "params": {
-    "operator_directive": true,
-    "operator_question": "Which clock coupling preserves non-commutative lag across C2 ring buffers and C3 piezo arrays?",
-    "operator_method": "A-01 Temporal Fiber + A-05 Dynamical Morphism",
-    "synthesize_conjectures": true,
-    "lag_ticks": 36
-  }
-}
+{"schema":"td613.vixen.podium.task/v1","intent":"podium.describe","params":{}}
 ```
 
-### Roll Back Cleanly to Any Prior Entry
-```bash
-node scripts/vixen-podium.mjs --rollback syn-0000-baseline
-```
-Rollback restores the active presentation snapshot (`active_entry_id`) while appending a monotonic `ROLLBACK` log entry pointing to its immediate predecessor (`UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION` prevention).
+The currently declared 27 machine routes are enumerated in the manifest rather than replicated in this guide. A host must separately authorize connected native tools. Public documentation is not a credential and a task payload cannot self-authorize privileged operations. Absent connections return held conditions.
 
-### Zero-Dependency Portable Session ZIP Workflow
-1. From the footer (`Save current session ⭳`, `#footerSaveSessionBtn`), the operator downloads `vixen-cybernetics-session-YYYY-MM-DD.zip` built locally in-browser by `vixen-estate/session-zip.mjs` (zero CDN calls).
-2. Unpack locally and inspect `SESSION_START_HERE.md`, `encyclopedia/vix-cyb/llms.txt`, `encyclopedia/vixen-estate/podium-synthesis.json`, and `encyclopedia/vixen-estate/session-state.json`.
-3. AI collaborator assists in exploring works, composing conjectures via Podium CLI or `#constitutiveInquiry`, committing via `--write-synthesis`, or reverting via `--rollback <entry_id>`.
-4. Serve extracted directory locally over HTTP (`npx serve .` or `python -m http.server 6130`) and open `/encyclopedia/vix-cyb.html` to view updated synthesis headlines live.
+### Recommended answer format for the AI collaborator
 
----
+**Question** · **Original Works and citations** · **Method and retrieval scope** · **Observed evidence** · **Provisional interpretation** · **Rival explanation** · **Necessary falsifier** · **What remains HELD**.
 
-## 5. Verification & Visual Witness Commands
+Keep manuscript quotations verbatim and distinctly attributed. Do not substitute copied host method text for a source quotation.
 
-```bash
-node scripts/verify-vixen-rgi08-fidelity.mjs
-node scripts/verify-vixen-podium-source-audit.mjs
-node scripts/verify-vixen-podium-dollhouse.mjs
-node --test tests/vixen-*.test.mjs tests/encyclopedia-*.test.mjs
-python3 scripts/package-vixen-preview.py --out artifacts/vixen-preview/Vixen_Encyclopedia_PR1730.zip
-```
+## Current authority and review ceiling
 
-All generated analyses remain unratified research proposals until human review closes the active gate. ⟐
+This is a qualified preview of a research candidate, pending human edits and separate evaluation. Its machine-observed success does not imply aesthetic acceptance, historical authorship resolution, physical-iPhone inspection, external empirical replication, production release, publication approval, or a subsequent research flight. All such decisions remain human-reserved.
 
-
-### SRC_ATELIER (`SignalRupture Canon`) Bounded Engine & Heterostratigraphic Method
-- `SRC_ATELIER` implements **SignalRupture Canon (SRC)** OG heterostratigraphic methods (`vixen-estate/src-atelier-engines.mjs`) strictly over the `EMSTD613` subject corpus (zero foreign SRC body leakage; `empirical_replication_credit: 0`, `human_closure_required: true`):
-  - **Six bounded operations (`BOUNDED_ENGINE_OPERATIONS.SRC_ATELIER`):**
-    - `src_projective_routing` — 13 `FIELD_MARKERS` + `Explore X.` projective routing with dual numeral-stripped/raw keys and chronological `LATER`/`PREEXISTING_OR_CONTEMPORANEOUS` tags (`NO_SEMANTIC_OR_CAUSAL_PROMOTION`).
-    - `src_phase2_tomography` — Multidimensional claim-evidence & lift deltas; strictly enforces `composite_score: null`.
-    - `src_phase2_context_roles` — `rho(work | architecture, scope, time)` (`CONTEXTUAL_NOT_INTRINSIC`).
-    - `src_rabbit_hole_traversal` — Depth-bounded `0..4` typed strata walk + 6-state Shadow Graph separating `ATTEMPTED_REJECTED`.
-    - `src_untypical_retrieval` — Signature coordinates (including negative slogan control `"SR, THE LAB."`), query-conditioned regimes (`Q_place`/`Q_type`/`Q_history`/`Q_bridge`/`Q_reader`/`BASELINE_HYBRID`), F/N/G projection (`CROSS_OPERA_QUARANTINED` preserved).
-    - `src_heterostratigraphic_audit` — Full heterostratigraphic audit across 3 corpus rooms (`FORMAL_SR`, `FICTIONAL_SR`, `GOVERNANCE_PROVENANCE_SR`), 4 strata (`ROUTE`, `TEMPORAL`, `PROJECTIVE_ROUTING`, `TOMOGRAPHY_OBSERVABILITY`), Authority 5-tuple $A_t(o)=(G,C,E,F,K)$, non-implication Epistemic State 6-tuple $X_t(o)=(E,V,R,P,L,A)$ (`composite_state_score: null`), `rejectSrcUniversalizer`, dual `H_L_LATENT_ARCHITECTURE` vs `H_R_RETROSPECTIVE_ARCHITECTURE`, and `clone_genes_decoded: false`.
-
-### AIx Conducting & Semantic-Semiotic Search Integration (`podium.conduct` / `window.VixenReference.conduct`)
-- **First-class Podium conductor methods:** `podium.conduct(taskOrBatch)`, `podium.search(query, { mode })`, `podium.exactSearch(query)`, `podium.neighbors(id)`, `podium.route(fromId, toId)`, and `podium.heterostratigraphicAudit({ operatorQuestion })`.
-- **Separated Cross-Opera Search in `universal.search`:** Passing `params.include_vixen_search: true` (with `mode: "hybrid" | "lexical" | "phrase" | "exact" | "src_projective"`) returns EMSTD613 results under `result.vixen_search` (`cross_opera_merged: false`) without merging into Universal Edition 1.4 `result.hits`.
-- **Browser Conductor API:** `window.VixenReference.podium(opts)`, `window.VixenReference.conduct(taskOrBatch, opts)`, and `window.VixenReference.heterostratigraphicAudit(opts)` expose live read-only Podium + Semantic-Semiotic conducting in-page.
-- **CLI AIx Conductor Flags** (require `TD613_PODIUM_OPERATOR_DIRECT=1` + `--native-read-tools`, failing closed otherwise with `HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED`):
-  ```bash
-  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --search "Explore Aperture" --mode src_projective
-  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --src-audit --question "Which heterostratigraphic boundary holds?"
-  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --conduct '{"search":"vernier clock","mode":"src_projective"}'
-  ```
-
-
----
-
-## Research Adventure · Maestro and Composer (AI Session v1)
-
-The visitor explicitly chooses exactly one ontological role per research session. A role is immutable until the visitor ends that session.
-
-**MAESTRO**: active documentary conductor. Investigate leads, pursue rabbit holes, inspect source boundaries, propose several specific next scenes, surface hidden features and offer meaningful visitor excursions. Carry the intellectual work. Do not reduce the experience to a passive list of jargon.
-
-**COMPOSER**: active interpretive partner. Use read-only research tools to develop competing explanations, provisional synthesis and falsification questions. This creative role does not grant Podium Compose authorization; publication and corpus mutation remain independently gated.
-
-The next task can belong to AI, HUMAN or COLLABORATIVE. Offer human excursions such as reading a passage, testing an interactive dial, examining a manuscript manifestation, inspecting a reference or curating the study cart. Make every excursion optional, narratively meaningful, with a clear task and a way to report the result. Human testimony is recorded as USER_REPORT_UNVERIFIED, not scientific proof.
-
-The original research cart remains the only cart state owner. An AI can suggest saving an identified source; only an explicit visitor gesture can add or remove it. The shopping metaphor means curated intellectual exploration, never a commercial transaction.
-
-Program Notes start OFF. Before any bot-authored notes, request separate permission; verify the visitor's direct gesture through an independently injected host callback. No task JSON boolean, implied consent, or prior chat supplies that authority. Notes begin prospectively after permission; revoked permission stops future authoring. HOST_AI_DRAFT is allowed only when an actual AI host authored the text, otherwise the stored output is labeled LOCAL_STRUCTURED_OUTLINE.
-
-The browser presents source-grounded local guidance with exact real corpus work IDs. It does not claim to have a live remote model connected. The visitor may use the AI handoff to carry a machine-readable source and route packet into an actual LLM chat. A connected model should perform authorized bounded reads, narrate what it actually learned, identify an alternative, propose two to four substantive next moves and consider an optional visitor task.
-
-### Typed session routes
-
-- vixen.ai.start: role MAESTRO or COMPOSER, and optional goal. Starts a source-bound opening turn.
-- vixen.ai.choose: choice_id, optional source_work_id and question. Conducts a bounded source-grounded next scene.
-- vixen.ai.report: quest_id plus observation or skip:true. Holds user testimony separately and can trigger a counterexample-oriented follow-up.
-- vixen.ai.status: reports active immutable role, route trail, missions and permission state.
-- vixen.ai.notes: request, grant, revoke or view. Grant requires real host verification independent of task JSON.
-- vixen.ai.handoff: returns recorded source IDs, actual read receipts and holds, route and visitor-report history, AI instructions, available branches, and consent ceiling.
-- vixen.ai.archive: returns a session-local portable metadata snapshot.
-- vixen.ai.finish: ends that role and returns the final archive for explicit export.
-
-### Example machine input
-
-    [
-      {"schema":"td613.vixen.podium.task/v1","intent":"vixen.ai.start","params":{"role":"MAESTRO","goal":"Why do clock synchronization and human oversight intersect?"}},
-      {"schema":"td613.vixen.podium.task/v1","intent":"vixen.ai.choose","params":{"choice_id":"compare"}},
-      {"schema":"td613.vixen.podium.task/v1","intent":"vixen.ai.handoff","params":{}}
-    ]
-
-No route admits foreign source bodies to Vixen, rewrites manuscripts, establishes authorship, verifies scientific externality, grants private index access, deploys, publishes, or merges. A self-reported visitor field task remains a self-report. Original engine names are legal machine metadata only; do not surface them as visitor labels.
-
-### Experiment separation: hydration 7 + 1 vs eight TCC source folios
-
-The planned **Batch-B hydration 7 + 1** protocol means seven historical PDFs against the frozen A0 baseline followed by a genuinely blind eighth document for comparison and human adjudication. It is a separate, unexecuted experiment and SHALL NOT be used as a classification, stage-eligibility or candidate-count rule for the Vixen theoretical wardrobe.
-
-The independent TCC-01 through TCC-08 collection already had eight source-bound computational receipts and direct Foundry staging at pre-audit baseline a5753d88127b35b48eb1caf2debf924e2ad29379. Preserve that design. The original TCC-08 source-specific notation and its pre-audit metrics `signature` and `arithmetic_or_empirical_operator` remain intact, with no new theorem or empirical inference. Do not add invented TCC-08 metrics or condition scientific exploration on a display/branding label.
-
-RC-03, RC-07, and RC-10 have no right to headline an original Vixen Work, mathematical theorem, or Performer. They are archived technical methods of the host. The public mathematical wardrobe uses only verified original Work manuscripts, with separate source custody and synthesis receipts.
+**No Mirrors at the Kiki. OPERAHOUSE ≠ OPERA ≠ PERFORMER.**

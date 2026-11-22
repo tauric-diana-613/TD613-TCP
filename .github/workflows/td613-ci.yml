@@ -40,10 +40,10 @@ jobs:
     name: Vixen source-bound engineering qualification
     if: >-
       (github.event_name == 'pull_request' &&
-       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-'))) ||
+       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-') || startsWith(github.head_ref, 'fix/vixen-prehydration-redpens-'))) ||
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification')
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 85
     steps:
       - uses: actions/checkout@v4
         with:
@@ -87,6 +87,12 @@ jobs:
         run: |
           node scripts/run-vixen-browser-tests.mjs tests/vixen-g8-integrated-browser-witness.mjs tests/vixen-g5-extracted-archive-browser.mjs
           python scripts/package-vixen-preview.py --out "$RUNNER_TEMP/vixen-preview.zip"
+      - name: Prepare complete scoped Vixen stack ZIP for human inspection
+        run: |
+          mkdir -p artifacts/vixen-review-stack
+          python3 scripts/package-vixen-review-stack.py --out artifacts/vixen-review-stack/Vixen_Cybernetics_Full_Stack.zip
+      - name: Capture complete desktop and mobile scroll witnesses
+        run: node scripts/run-vixen-browser-tests.mjs tests/vixen-full-surface-witness.mjs
       - name: QA04 human acceptance remains HELD
         run: |
           mkdir -p artifacts/vixen-oop
@@ -101,10 +107,28 @@ jobs:
           path: |
             artifacts/vixen-oop
             artifacts/vixen-*
+            !artifacts/vixen-full-surface/**
+            !artifacts/vixen-review-stack/**
             ${{ runner.temp }}/vixen-original-receipt.json
             ${{ runner.temp }}/vixen-historical-negatives.json
             ${{ runner.temp }}/vixen-preview.zip
           if-no-files-found: error
+      - name: Publish full-scroll visual witness ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-full-surface-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/vixen-full-surface/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish complete Vixen stack ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-full-stack-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/vixen-review-stack/Vixen_Cybernetics_Full_Stack.zip
+          if-no-files-found: warn
+          retention-days: 30
 
   scope:
     name: Classify exact-head browser witness scope

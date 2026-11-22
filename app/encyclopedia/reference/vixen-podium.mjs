@@ -311,7 +311,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
      source_revision:sourceRevision,external_engine_connection:'EXPLICIT_ADAPTER_ONLY',
      route_memory:'SESSION_LOCAL_ONLY',
      synthesis_headline:buildHeadline(),
-     aix_conductor:{
+     aix_conductor:operatorAuthorized===true?{
       canon_name:'SignalRupture Canon (SRC)',
       heterostratigraphic_strata:SRC_HETEROSTRATIGRAPHIC_STRATA,
       corpus_rooms:SRC_CORPUS_ROOMS,
@@ -330,6 +330,17 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
       semantic_search_attached:Boolean(attachedSemantic),
       src_adapter_connected:typeof boundAdapters.SRC_ATELIER==='function',
       atlas_adapter_connected:typeof boundAdapters.ATLAS==='function'
+     }:{
+      canon_name:'Source-bound documentary conducting',
+      semantic_search_modes:SUPPORTED_SEARCH_MODES,
+      semantic_search_attached:Boolean(attachedSemantic),
+      fusion_controls:{
+       channels:FUSION_CHANNEL_KEYS,profiles:FUSION_PROFILE_IDS,
+       weight_policies:FUSION_WEIGHT_POLICIES,
+       finite_comparison_limit:6,finite_hit_limit:24,
+       no_implicit_external_engine_connection:true
+      },
+      native_tool_contract:'UNAVAILABLE_WITHOUT_EXPLICIT_HOST_AUTHORITY'
      }
     });
    }
@@ -552,7 +563,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
     event('VIXEN_WORK_LOOKUP',{work_id:id,found:Boolean(w)});
     return receipt(intent,w?'SUPPORTED':'HELD',w? {
       ...safeRecord(w),
-      src_heterostratigraphic_context:{
+      src_heterostratigraphic_context:operatorAuthorized===true?{
        canon_name:'SignalRupture Canon (SRC)',
        corpus_rooms:SRC_CORPUS_ROOMS,
        strata:SRC_HETEROSTRATIGRAPHIC_STRATA,
@@ -560,7 +571,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
        authority_model:'A_t=(G,C,E,F,K)',
        composite_state_score:null,
        path_lifts_to_direct_edge:false
-      }
+      }:{label:'Contextual documentary routes',composite_state_score:null,
+         path_lifts_to_direct_edge:false}
      }:
       rejection('HELD_WORK_NOT_FOUND','No such historical Vixen Work'));
    }
@@ -729,8 +741,10 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
    if(intent==='engine.capabilities'){
     event('ENGINE_CAPABILITIES_INSPECTED');
     return receipt(intent,'SUPPORTED',{
-     adapters:Object.fromEntries(Object.entries(BOUNDED_ENGINE_OPERATIONS).map(([k,ops])=>
-      [k,{connected:typeof boundAdapters[k]==='function',allowed_operations:ops}])),
+     adapters:operatorAuthorized===true
+      ? Object.fromEntries(Object.entries(BOUNDED_ENGINE_OPERATIONS).map(([k,ops])=>
+         [k,{connected:typeof boundAdapters[k]==='function',allowed_operations:ops}]))
+      : {},adapter_details:'HOST_PRIVATE_UNAVAILABLE_WITHOUT_AUTHORIZATION',
      semantic_search_attached:Boolean(attachedSemantic),
      native_receiver_status:typeof boundAdapters.WENDBINE_ATELIER==='function' &&
       typeof boundAdapters.EM_ATELIER==='function' && typeof boundAdapters.CROSS_ATELIER==='function'
@@ -924,7 +938,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
    for(const item of taskOrBatch)steps.push(await conductSingle(item));
    return Object.freeze({
     schema:'td613.vixen.podium.conduct-batch/v1',
-    canon_name:'SignalRupture Canon (SRC)',
+    canon_name:operatorAuthorized===true?'SignalRupture Canon (SRC)':'Source-bound documentary conducting',
     step_count:steps.length,
     steps,
     synthesis_headline:buildHeadline(),

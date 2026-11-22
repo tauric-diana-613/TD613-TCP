@@ -1063,11 +1063,14 @@ try {
 
     // RGI13 acceptance: verify an actually painted, responsive, route-aware
     // electrical mesh. An image or declared CSS color cannot satisfy this.
-    await page.waitForFunction(()=>
-      window.VixenLivingMesh?.status()?.route==='collection'
-      &&window.VixenLivingMesh.status().host_driven_frames>=1
-      &&document.getElementById('vixenLivingMesh')?.width>100,
-      null,{timeout:15000,polling:250});
+    const scrollCompositedMobile=width<=740;
+    await page.waitForFunction(mobile=>{
+      const mesh=window.VixenLivingMesh?.status();
+      const local=document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-motion-canvas');
+      return mesh?.route==='collection'&&document.getElementById('vixenLivingMesh')?.width>100
+        &&(mobile?(mesh.motion==='PARKED'&&local?.width>100)
+          :mesh.host_driven_frames>=1);
+    },scrollCompositedMobile,{timeout:15000,polling:250});
     const meshWitness=await page.evaluate(()=>{
       const c=document.getElementById('vixenLivingMesh');
       const state=window.VixenLivingMesh.status();
@@ -1082,6 +1085,8 @@ try {
        route:state.route,frames:state.rendered_frames,
        meshCarriers:state.model_carriers,px:colored,hostDriven:state.host_driven_frames,
        pointer:getComputedStyle(c).pointerEvents,
+       localCanvasWidth:document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-motion-canvas')?.width||0,
+       localCanvasDisplay:getComputedStyle(document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-motion-canvas')).display,
        moduleLoaded:[...document.scripts].some(x=>x.src?.includes('vixen-live-mesh-rgi13.mjs')),
        styleLoaded:[...document.styleSheets].some(x=>x.href?.includes('vixen-electrical-breath-rgi13.css'))
       };
@@ -1090,15 +1095,23 @@ try {
     assert.equal(meshWitness.role,'VIXEN_OPERA_VISUAL_ONLY');
     assert.equal(meshWitness.route,'collection');
     assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().motion),
-      motion==='reduce'?'STILL':'HOST_FRAME',
-      'Global Living Mesh should inherit its active Salon couture clock');
-    assert.equal(meshWitness.meshCarriers,39);
-    if(motion!=='reduce')assert(meshWitness.hostDriven>0,
-      'Salon visual mesh must be painted by the existing primary clock');
+      scrollCompositedMobile?'PARKED':motion==='reduce'?'STILL':'HOST_FRAME',
+      'Mobile fixed layer must park; desktop inherits the Salon host clock');
+    if(!scrollCompositedMobile){
+      assert.equal(meshWitness.meshCarriers,39);
+      if(motion!=='reduce')assert(meshWitness.hostDriven>0,
+        'Desktop Salon field must be painted by the primary clock');
+    }else{
+      assert(meshWitness.localCanvasWidth>100&&meshWitness.localCanvasDisplay!=='none',
+        'A live Salon local light canvas must replace the fixed mobile field');
+    }
     assert.equal(meshWitness.pointer,'none','The electric mesh cannot steal source controls');
     assert.equal(meshWitness.moduleLoaded,true);
     assert.equal(meshWitness.styleLoaded,true);
-    assert(meshWitness.px>200,'The page complement must visibly paint model-derived electrical light: '+JSON.stringify(meshWitness));
+    if(!scrollCompositedMobile)
+      assert(meshWitness.px>200,'Desktop page complement must visibly paint model-derived light: '+JSON.stringify(meshWitness));
+    else assert.equal(meshWitness.px,0,
+      'The fixed viewport mesh must be cleared and parked during mobile Salon scrolling');
     // DD-02 source-bound folded chrome supersedes the old RGI14 canvas.
     // Qualify real Canvas2D pixels and prepaint geometry without weakening the
     // legacy renderer's separately retained rollback tests.
@@ -1256,8 +1269,9 @@ try {
     // Existing Still button must pause our new animation as well as the
     // historical Observatory; never add a redundant motion authority control.
     await page.evaluate(()=>document.getElementById('motionBtn').click());
-    await page.waitForFunction(()=>
-      window.VixenLivingMesh?.status()?.motion==='STILL',null,{timeout:5000});
+    await page.waitForFunction(mobile=>
+      window.VixenLivingMesh?.status()?.motion===(mobile?'PARKED':'STILL'),
+      scrollCompositedMobile,{timeout:5000});
     assert.equal(await salon.getAttribute('data-optical-contract'),
       'td613.vixen.folded-cuirass/v1',
       'Still must preserve the active folded compositor without reverting to the old canvas');
@@ -1268,7 +1282,7 @@ try {
     await page.evaluate(()=>document.getElementById('motionBtn').click());
     // OS-reduced-motion remains STILL after the operator releases the
     // in-page Still switch; only a motion-capable browser may go LIVE.
-    const resumedMotion=motion==='reduce'?'STILL':'HOST_FRAME';
+    const resumedMotion=scrollCompositedMobile?'PARKED':motion==='reduce'?'STILL':'HOST_FRAME';
     await page.waitForFunction(expected=>
       window.VixenLivingMesh?.status()?.motion===expected,resumedMotion,{timeout:5000});
 
@@ -1384,7 +1398,10 @@ try {
     await salon.getByRole('button',{name:/Compose an unratified theory/}).click();
     await salon.locator('.vs-result').waitFor();
     assert.equal(await salon.locator('.vs-result').getAttribute('data-claim-class'),'OPEN_FIELD_UNRATIFIED_QUESTION');
-    assert.match(await salon.locator('.vs-result').innerText(),/Experiment B/);
+    const proposalCopy=await salon.locator('.vs-result').innerText();
+    assert.match(proposalCopy,/prospective comparison/i);
+    assert.doesNotMatch(proposalCopy,/\bExperiment B\b/i,
+      'Historical experiment token must not leak through the visitor rendering');
     assert.match(await salon.locator('.vs-result').innerText(),/HELD/);
     const theoremContrast=await salon.locator('.vs-result .vs-note').first().evaluate(node=>{
       const styles=getComputedStyle(node);
