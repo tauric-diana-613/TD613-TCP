@@ -52,6 +52,13 @@ export function meshFrameIntervalMs(_viewportWidth){
  return 1000/MESH_ANIMATION_TARGET_FPS;
 }
 export const MOBILE_STACKING_ONLY_MAX_WIDTH=740;
+/** iOS scrolls fixed wallpaper and document-attached canvases in different compositor epochs.
+ * Mobile Salon therefore uses only its local, scroll-attached folded-cuirass field.
+ * No new RAF, no phase resampling, no source or custody mutation. */
+export function meshScrollCoherencePolicy({view,viewportWidth}={}){
+ return view==='collection'&&Number.isFinite(viewportWidth)&&viewportWidth<=MOBILE_STACKING_ONLY_MAX_WIDTH
+   ? 'LOCAL_STAGE_ONLY' : 'SHARED_VIEWPORT_FIELD';
+}
 // Foreground stacking now handles panel coverage on ALL viewport widths.
 // Desktop DOM-rectangle mask recomputations previously forced layout while
 // painting; avoiding that scroll-epoch race also reduces compositor stalls.
@@ -221,7 +228,8 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   const btn=doc.getElementById('motionBtn')||motion;
   return mq.matches||doc.body.dataset.vixenMotion==='still'||btn?.getAttribute('aria-pressed')==='true';
  };
- const enabled=()=>!outsideOpera()&&(view()!=='observatory'||doc.body.dataset.vixenOpticalMeshObservatory!=='off');
+ const enabled=()=>!outsideOpera()&&meshScrollCoherencePolicy({view:view(),viewportWidth:width()})!=='LOCAL_STAGE_ONLY'&&
+   (view()!=='observatory'||doc.body.dataset.vixenOpticalMeshObservatory!=='off');
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
   .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
  function readExclusions(force=false){
@@ -351,7 +359,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  schedule();
  return Object.freeze({mounted:true,contract:MESH_CONTRACT,
   status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
-   occlusion_mode:meshOcclusionMode(width()),exclusion_count:exclusions.length,
+   occlusion_mode:meshOcclusionMode(width()),scroll_coherence:meshScrollCoherencePolicy({view:view(),viewportWidth:width()}),exclusion_count:exclusions.length,
    raster_detail_stride:rasterQuality.stride,quality_slow_frames:rasterQuality.slow,
    raster_backing_scale:dpr,
    phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
