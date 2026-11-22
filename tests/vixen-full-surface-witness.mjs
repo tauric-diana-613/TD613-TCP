@@ -39,7 +39,7 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
  const yPositions=new Set([0,travel]);
  for(let y=0;y<travel;y+=step)yPositions.add(Math.min(travel,y));
  const positions=[...yPositions].sort((a,b)=>a-b);
- if(positions.length>125)throw Error('UNBOUNDED_DOCUMENT_HEIGHT '+surface+' '+dom.scrollHeight+' tiles='+positions.length);
+ if(positions.length>400)throw Error('UNBOUNDED_DOCUMENT_HEIGHT '+surface+' '+dom.scrollHeight+' tiles='+positions.length);
  let last=-1;
  for(const [i,y] of positions.entries()){
   await page.evaluate(v=>window.scrollTo({top:v,behavior:'instant'}),y);
@@ -62,17 +62,19 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
    const st=getComputedStyle(el),r=el.getBoundingClientRect();
    return r.width>=125&&r.height>=130&&el.scrollHeight-el.clientHeight>=200&&
     /auto|scroll/.test(st.overflowY)&&st.display!=='none';
-  }).slice(0,12).map(el=>{
+  }).map(el=>{
    if(!el.dataset.vixenWitnessPane)el.dataset.vixenWitnessPane='witness-'+Math.random().toString(16).slice(2,10);
    return {key:el.dataset.vixenWitnessPane,max:el.scrollHeight-el.clientHeight,height:el.clientHeight};
   });
  });
+ if(panes.length>50)throw Error('TOO_MANY_NESTED_SCROLLPORTS '+surface+' '+panes.length);
  for(const pane of panes){
   await page.evaluate(key=>{
    const node=document.querySelector('[data-vixen-witness-pane="'+key+'"]');
    node?.scrollIntoView({block:'center',behavior:'instant'});
   },pane.key);
-  const steps=Math.min(20,Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.82))+1));
+  const steps=Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.82))+1);
+  if(steps>400)throw Error('UNBOUNDED_NESTED_PANE '+surface+' '+pane.key+' '+steps);
   for(let i=0;i<steps;i++){
    const target=i===steps-1?pane.max:Math.round(i*pane.max/(steps-1));
    const observed=await page.evaluate(({key,y})=>{
@@ -88,6 +90,8 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
     observed_scroll:observed.scrollTop,pane_max_scroll:observed.max
    });
   }
+  const bottom=await page.evaluate(key=>{const n=document.querySelector('[data-vixen-witness-pane="'+key+'"]');return n?{y:n.scrollTop,max:n.scrollHeight-n.clientHeight}:null;},pane.key);
+  if(!bottom||bottom.max-bottom.y>2)throw Error('NESTED_SCROLL_BOTTOM_NOT_COVERED '+surface+' '+pane.key);
  }
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  return {route:surface,scrollHeight:dom.scrollHeight,tiles:positions.length,nestedPanes:panes.length,covered_bottom:true};
@@ -141,7 +145,7 @@ try{
    });
    await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true});
    await page.locator('#worksListContainer button[data-select-work]').first().click({force:true,timeout:12000});
-   await page.waitForTimeout(250);
+   await page.waitForFunction(()=>document.querySelector('#worksExperimentAReaderMount [data-select-manifestation]')?.getClientRects().length>0,null,{timeout:20000});
    matrix.push({profile:profile.name,...await scrollCapture(page,profile,'works-original-reader')});
   }catch(e){failure.push({profile:profile.name,route:'works-original-reader',error:String(e)});}
   try{
