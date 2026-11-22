@@ -8,6 +8,7 @@
 const PUBLIC_TERMS=Object.freeze([
   // Scholarly-development phase labels belong in release records, never public copy.
   [/\bEmergence[\s-]*HQ\b/gi,'research workspace'],
+  [/\bPaul\b/gi,'external research contributor'],
   [/\bExperiment[\s-]*A\b/gi,'current research preview'],
   [/\bExperiment[\s-]*B\b/gi,'future controlled study'],
   [/\bExperiment[\s-]*C\b/gi,'future publication review'],
