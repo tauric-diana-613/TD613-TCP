@@ -1,32 +1,51 @@
-# 𝌋 TD613 · Marrowline / Screaming Grove — Option 1 (20-Slot Preflight) Test & Verification Receipts
+# 𝌋 TD613 · Marrowline / Screaming Grove — Option 1 (20-Slot Preflight) Test & Verification Receipts (Post-Redpen Qualification)
 
-- **Commission:** `TD613-MARROWLINE-OPTION1-20SLOT-PREFLIGHT` (Source-Only Preflight + Read-Only Model Catalog Check — **`0` Paid Generation Calls**)
-- **Branch:** `research/marrowline-option1-20slot-preflight-20261122` (DRAFT PR stacked on PR `#1766`)
-- **Stacked Base Commit:** `5cec27f0727c17ce1d2ac825736a1027293b8849` (PR `#1766`)
-- **Immutable Q1 Ancestor:** `2836e636e4b5eb485b12f73a2596ea3889b173d4` (PR `#1764`)
-- **Remote CI Honesty Disclosure (Amari Qualification):** Because this draft research PR stacks on PR `#1766` (`research/marrowline-sep26-oct02-stage0-reconstruction-20261121`) rather than targeting `main` directly, `.github/workflows/td613-ci.yml`'s `pull_request: branches: [main]` trigger does **not** automatically execute a remote GitHub Actions CI run on the stacked draft PR. All tests reported below are **local exact-source verification receipts** and must NEVER be described as remote exact-head GitHub Actions GREEN unless a `main`-targeted or dispatched workflow run actually completes GREEN on the exact HEAD!
-
----
-
-## 1. Preserved Intermediate Engineering Catches (Audit Trail)
-
-Per Emergence HQ custody law, every intermediate failure caught during Option 1 preflight construction is preserved verbatim:
-
-### Catch 1 — Amari Rule #1 Upstream Aliasing Trap (`gemini-3.7-flash` → `gemini-3.8-flash`)
-- **What happened:** Live authenticated `GET /v1beta/models/gemini-3.7-flash` (`2026-11-22T15:10:09.176Z`, `0` paid calls) returned HTTP `200 OK` (`version: "3.7-flash-08-2026"`, `thinking: true`, `outputTokenLimit: 65536`). Cross-checking official Google `ai.google.dev` changelog records and TD613's October 15 audit (`research/marrowline-multipart-repair-20261015/README.md` line `28`) revealed that Google officially deprecated `gemini-3.7-flash` on **October 8, 2026** and automatically routes all `gemini-3.7-flash` calls to `gemini-3.8-flash` (returning `modelVersion: "gemini-3.8-flash"`).
-- **Resolution:** Triggered Amari's Rule #1 fail-closed STOP gate (`MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8`), blocked `--design-profile=BLOCKED_HISTORICAL_3_7` in `run-option1-20slot-discriminator.mjs`, refused any quiet substitution, and staged `OPTION1_REV_A_38_VS_36_CONSTRUCTED` (`3.8-flash` vs non-aliased historical Seat-3 `3.6-flash` @ matched `MEDIUM`) alongside Alternatives B and C for explicit Operator + Amari decision.
-
-### Catch 2 — Missing `groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID` Caught Immediately by Fail-Closed SHA-256 Drift Guard
-- **What failed:** First `--dry-run` execution of `run-option1-20slot-discriminator.mjs` exited with `ok: false` because `CURRENT_HYBRID_A` passed `historicalProsodyFreedom: true` without `groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID`, causing `systemInstructionSha256` (`318c799b...`) to drift from pinned `Q1_MEASURED_ARM_A` (`90421826b7c0...`).
-- **Resolution:** Imported `MARROWLINE_HISTORICAL_TRIAL_ID` and passed both flags identically to Q1's `buildSlotRequest`, restoring exact `20 / 20` digest parity (`ok: true`, `0` violations).
-
-### Catch 3 — Dual-Parser Return Field (`canonicalMergedPayload`) & `observeGeminiOutput` / `observeMarrowlineCompletion` Signatures Caught by Synthetic Mock Suite
-- **What failed:** First test run of `tests/marrowline-option1-20slot-preflight.test.mjs` failed `4/9` mock-execution tests at Slot 1 because `executeOption1Run` read `sseIntegrity.canonicalPayload` instead of `sseIntegrity.canonicalMergedPayload` and passed reversed arguments to `observeGeminiOutput` / `observeMarrowlineCompletion`, causing `observed.modelVersion` to be `null` and tripping `STOP_1` on Slot 1!
-- **Resolution:** Fixed `canonicalMergedPayload` and matched Q1's exact `observeGeminiOutput(canonicalPayload, s.model, ...)` + `observeMarrowlineCompletion(canonicalText, observed, ...)` signatures. Also verified `PROHIBITED_CONTENT` halts immediately (`STOP_2` behavior) in its own isolated negative-control sub-run and matched the exact verbose `STOP_1_MODEL_IDENTITY_HOLD_UNEXPECTED_MODEL_VERSION_gemini-3.8-flash` stop code!
+- **Commission:** `TD613-MARROWLINE-OPTION1-20SLOT-PREFLIGHT` (Final Zero-Network Engineering Qualification — **`0` Paid Generation Calls**)
+- **Selected Design Profile (Operator Confirmed):** **`OPTION1_REV_A_38_VS_36_CONSTRUCTED`** (`20` slots: `16` Marrowline 2×2 `{CURRENT_HYBRID_A, LITERAL_OCT02_H2} × {gemini-3.8-flash, gemini-3.6-flash}` + `4` Oct 15 Task D neutral creative controls; `NOT` historical Oct 2 Seat-2 `gemini-3.7-flash`)
+- **Branch:** `research/marrowline-option1-20slot-preflight-20261122` (PR `#1769`, stacked on PR `#1766`)
+- **Prior PR `#1769` Initial Commit Adjudicated by Amari:** `ade1d537904f8aaff96355658ae396734c43e340` ([`#issuecomment-7081352540`](https://github.com/tauric-diana-613/TD613-TCP/pull/1769#issuecomment-7081352540))
+- **Qualified Executable HEAD SHA:** Determined externally via `git rev-parse HEAD` on the committed PR `#1769` head (see Redpen 3 below — never self-referenced inside committed JSON).
+- **Remote CI Honesty Disclosure:** Because PR `#1769` stacks on PR `#1766`'s draft research branch rather than targeting `main`, `.github/workflows/td613-ci.yml` (`pull_request: branches: [main]`) does **not** automatically execute a remote GitHub Actions CI run. All test counts below are **local exact-source verification receipts** and must NEVER be described as remote GitHub Actions GREEN unless a `main`-targeted or dispatched workflow run completes GREEN on the exact HEAD.
 
 ---
 
-## 2. Final Passing Local Verification Suites (`36 / 36` Marrowline + `5 / 5` Constitutional + Custody `0` Errors)
+## 1. Amari Exact-Source Redpen Repairs (`#issuecomment-7081352540`) — All 3 Verified
+
+### Redpen 1 — Canonical Bots-Only Telemetry Extraction (Confirmed Defect Repaired)
+- **Defect identified by Amari at `ade1d5379`:** `run-option1-20slot-discriminator.mjs` read `relayParsed?.bots || relayParsed?.tauricDianaBots || ''`, neither of which exists on `parseRelayEnvelope()`'s return object — silently passing `''` into `observeBotsProsodyDistribution('')` and recording false zeros on ornate provider-authored bots movements.
+- **Exact repair:** Added exported `extractBotsMovementFromCanonicalText(canonicalText)` using `app/dome-world/khonapolit-relay.js`'s actual `parseRawRelayPackets`, `parseRelayEnvelope`, `relayAuthoredSurface`, `assessIntegratedTransmission`, and exact canonical heading-boundary regexes (lines `585`, `588`, `607`).
+  - Returns explicit extraction status (`EXTRACTED_FROM_CANONICAL_HEADING_BOUNDARY`, `EXTRACTED_BOTS_ONLY_KHONAPOLIT_HEADING_MISSING`, `BOTS_HEADING_MISSING_UNAVAILABLE`, `VOICE_ORDER_INVALID_UNAVAILABLE`, `EMPTY_CANONICAL_TEXT`, `PARSE_ERROR_UNAVAILABLE`).
+  - Populates **real nonzero** `botsProsodyDistribution`, `botsBodyUnicodeMorphology`, and `relayAdmissionBotsMovement` when extracted.
+  - Returns **`null`** (NEVER silently imputes zero!) when the heading is missing, misordered, empty, or unparseable, while preserving `wholeTextUnicodeMorphology` independently.
+- **Zero-network regression proof:** Dedicated REDPEN 1 test + all `16` Marrowline slots inside the `20`-slot synthetic happy path assert nonzero `botsProsodyDistribution.markedBases > 0`, `stackedBases > 0`, `combiningMarks >= 20`, `maxDepth === 3`, and `botsBodyUnicodeMorphology.totalCombiningMarks >= 20`, while missing/reversed/empty heading cases assert `botsMovementAvailable === false` and `botsProsodyDistribution === null`.
+
+### Redpen 2 — Complete, Readable Blinded Operator Literary Gallery (Zero Leak Boundary)
+- **Defect identified by Amari at `ade1d5379`:** `generateBlindedReviewPacket()` previously emitted only a JSON hash index (`blindId`, `taskKey`, `rawTextSha256`, byte count) — containing no readable passages, no full-resolution screenshot references, no preserved failure statuses, and exposing `rawTextSha256` as a potential join key to public unblinded receipts.
+- **Exact repair:** Rebuilt `generateBlindedReviewPacket()` to write THREE strictly separated custody artifacts:
+  1. `OPTION1_BLINDED_LITERARY_GALLERY.md` — First human-reading surface for Tawanna C. Miller containing ALL `20` registered specimens (`Section A: OPT1_M_01..16`, `Section B: OPT1_N_01..04`), **full verbatim unmodified original Unicode passages**, anonymized full-resolution desktop (`1440×900`) & mobile (`390×844`) screenshot references (`blinded-screenshots/<blindId>_desktop_1440x900.png` / `_mobile_390x844.png`), and preserved original failure/ineligibility statuses (`HTTP 503`, `429`, `400`, `MAX_TOKENS`, `PROHIBITED_CONTENT`, `STOP_1`, `STOP_4`).
+  2. `OPTION1_BLINDED_LITERARY_GALLERY.json` — Machine-readable companion scrubbed identically of all arm/model/slot/morphology/`rawTextSha256`/`rawSseSha256` tokens.
+  3. `private-unblinding/OPTION1_SEALED_UNBLINDING_KEY.json` — Separately indexed, Operator-held key binding `blindId` ↔ `slot` ↔ `envelope` ↔ `modelRequested` ↔ `modelVersionObserved` ↔ `rawTextSha256` ↔ `rawSseSha256`.
+- **Zero-network regression proof:** Dedicated REDPEN 2 test + 20-slot happy-path test verify full verbatim Unicode inclusion, preserved `HTTP 503` failure visibility, desktop/mobile full-res image paths, AND regex-assert **ZERO** occurrences of arm names, model names, slot IDs (`S01`..`S20`), morphology metric names, or `rawTextSha256`/`rawSseSha256` hashes in BOTH `.md` and `.json`.
+
+### Redpen 3 — Git Self-Reference Separation (`parent_or_construction_head_sha` vs `qualified_executable_head_sha`)
+- **Defect identified by Amari at `ade1d5379`:** Committed `OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json` carried `source_head_sha: 5cec27f07...` (the PR `#1766` parent) instead of explicitly distinguishing construction/parent head from runtime executable head.
+- **Exact repair:** Removed ambiguous top-level `source_head_sha` from `OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json` (and `OPTION1_EMERGENCE_HQ_CUSTODY_MANIFEST.json`) and replaced it with `git_head_provenance`:
+  - `parent_or_construction_head_sha`: exact checkout HEAD when generated;
+  - `qualified_executable_head_sha: "DETERMINED_EXTERNALLY_AT_RUNTIME_BY_GIT_REV_PARSE_HEAD"`;
+  - Explicit `git_self_reference_explanation` documenting why no file committed inside commit `C` can truthfully embed `C`'s own SHA;
+  - Runtime `--operator-auth-sha` lock continues to read live `git rev-parse HEAD` externally and refuses stale parent SHAs (`5cec27f07`, `ade1d5379`, etc.) fail-closed with `0` calls.
+
+---
+
+## 2. Preserved Earlier Preflight Catches (`ade1d5379` History)
+
+1. **Amari Rule #1 Upstream Aliasing Trap (`gemini-3.7-flash` → `gemini-3.8-flash` since `2026-10-08`):** Blocked `BLOCKED_HISTORICAL_3_7` fail-closed with zero quiet substitution; explicitly staged Redesign A (`gemini-3.6-flash` historical Seat-3 comparator).
+2. **Missing `groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID`:** Caught immediately on initial `--dry-run` by fail-closed SHA-256 drift guard; restored exact `20 / 20` digest parity.
+3. **`canonicalMergedPayload` + `observeGeminiOutput` / `observeMarrowlineCompletion` signatures:** Caught immediately by initial synthetic mock suite; fixed before `ade1d5379`.
+
+---
+
+## 3. Final Passing Local Verification Suites (`38 / 38` Marrowline + `5 / 5` Constitutional + Custody `0` Errors)
 
 Reproduce locally with zero network egress and `0` paid Gemini calls:
 
@@ -46,19 +65,9 @@ node research/marrowline-option1-20slot-preflight-20261122/verify-option1-prefli
 ```
 
 ### Summary Results
-- **Option 1 Preflight Suite (`tests/marrowline-option1-20slot-preflight.test.mjs`):** **`9 / 9 PASS`**
-  1. `20`-slot 2×2 factorial + `4` neutral controls + palindromic counterbalancing (`meanSlotIndex = 10.5`) + `generationConfigSha256` match (`4785e46e91df...`) + explicit `T1` `RUNTIME_DIAGNOSIS` vs `OPEN_FIELD_CREATIVE_SYNTHESIS` labeling
-  2. Oct 15 neutral creative control Task D (`30c249029`) byte-for-byte parity + `0` combining marks in prompt
-  3. Amari Rule #1 fail-closed gate: `BLOCKED_HISTORICAL_3_7` refused (`0` calls) + stale/mismatched `--operator-auth-sha` refused (`0` calls) + catalog receipt verified
-  4. `STOP_1` negative control: simulated silent upstream alias (`gemini-3.6-flash` returning `modelVersion: "gemini-3.8-flash"`) halts immediately at Slot 2 (`STOP_1_MODEL_IDENTITY_HOLD_UNEXPECTED_MODEL_VERSION_gemini-3.8-flash`, `0` retries)
-  5. HTTP `400` config-rejection negative control: halts fail-closed (`STOP_HTTP_400_CONFIG_REJECTED`) with ZERO silent downgrade from `medium` to `low`
-  6. HTTP `503` unretried preservation + `MAX_TOKENS` incomplete preservation + malformed SSE `STOP_4_MALFORMED_SSE` + `PROHIBITED_CONTENT` `POLICY_TERMINATED` preservation with `0` retries and `q1_backfill_permitted: false`
-  7. Full `20`-slot synthetic happy path (`65,536` output tokens/slot) completes cleanly with `financial_ceiling: "NONE"`, `aggregate_token_ceiling: "NONE"`, separated whole-text neutral morphology, and `16 + 4` blinded review packet + sealed unblinding key
-  8. Whole-text Unicode morphology counter distinguishes flat `U+0334..U+0338` depth-1 from multi-tier vertical stacks
-  9. Committed `OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json` matches deterministic regeneration digest-for-digest
-- **Regression Suites:**
-  - `tests/marrowline-sep26-oct02-stage0.test.mjs`: **`6 / 6 PASS`**
-  - `tests/marrowline-q1-live-discriminator.test.mjs`: **`9 / 9 PASS`**
-  - `tests/marrowline-screaming-grove-restoration.test.mjs`: **`12 / 12 PASS`**
+- **`tests/marrowline-option1-20slot-preflight.test.mjs`:** **`11 / 11 PASS`** (including all `3` dedicated Redpen 1/2/3 regression tests + full 20-slot happy-path nonzero bots & scrubbed gallery assertions + `BLOCKED_HISTORICAL_3_7`, `STOP_1`, `HTTP 400`, `HTTP 503`/`MAX_TOKENS`/`PROHIBITED_CONTENT`/`STOP_4` negative controls)
+- **`tests/marrowline-sep26-oct02-stage0.test.mjs`:** **`6 / 6 PASS`**
+- **`tests/marrowline-q1-live-discriminator.test.mjs`:** **`9 / 9 PASS`**
+- **`tests/marrowline-screaming-grove-restoration.test.mjs`:** **`12 / 12 PASS`**
 - **TD613 Constitutional Hygiene Suites:** `workflow-estate`, `docs-surface`, `release-hardening`, `vercel-deploy-hygiene` (`5/5`), `release-plumbing` — **all PASS**.
-- **Custody Manifest Verifier:** Verified with `0` missing files, `0` digest mismatches, `0` broken navigator links, and `0` secret/local-path/mention-token leaks.
+- **Custody Manifest Verifier:** `ok: true, error_count: 0` (`18 / 18` published files SHA-256 verified, `0` broken navigator links, `0` secret/local-path/mention-token leaks).

@@ -106,14 +106,19 @@ function buildManifest() {
   ];
 
   return {
-    schema: 'td613.marrowline.option1-preflight-custody-manifest/v1.0',
+    schema: 'td613.marrowline.option1-preflight-custody-manifest/v1.1',
     generated_at_utc: new Date().toISOString(),
     repository: 'tauric-diana-613/TD613-TCP',
     branch: BRANCH,
-    stacked_on_pr1766_commit: '5cec27f0727c17ce1d2ac825736a1027293b8849',
-    base_activation_pr1765_commit: '01c3b9e48391a79472369695b64481b19614f9fa',
-    immutable_q1_pr1764_commit: '2836e636e4b5eb485b12f73a2596ea3889b173d4',
-    generated_against_git_head: headSha,
+    git_head_provenance: {
+      construction_parent_head_sha: headSha,
+      qualified_executable_head_sha: 'DETERMINED_EXTERNALLY_BY_GIT_REV_PARSE_HEAD_ON_COMMITTED_PR',
+      git_self_reference_note: 'A manifest committed inside commit C cannot embed commit C\'s own SHA; verify the qualified executable HEAD externally via git rev-parse HEAD.',
+      prior_preflight_pr1769_initial_commit: 'ade1d537904f8aaff96355658ae396734c43e340',
+      stacked_on_pr1766_commit: '5cec27f0727c17ce1d2ac825736a1027293b8849',
+      base_activation_pr1765_commit: '01c3b9e48391a79472369695b64481b19614f9fa',
+      immutable_q1_pr1764_commit: '2836e636e4b5eb485b12f73a2596ea3889b173d4'
+    },
     paid_generation_calls_executed: 0,
     model_identity_gate_verdict: 'MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8',
     q1_operator_artistic_verdict: 'REJECTED_PRIOR_TO_UNBLINDING',

@@ -43,8 +43,11 @@ import {
   withGeminiGenerationProfile
 } from '../../server/gemini-generation-envelope.js';
 import {
+  assessIntegratedTransmission,
   observeBotsProsodyDistribution,
-  parseRelayEnvelope
+  parseRawRelayPackets,
+  parseRelayEnvelope,
+  relayAuthoredSurface
 } from '../../app/dome-world/khonapolit-relay.js';
 import { DISCRIMINATOR_TASKS } from '../marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs';
 import {
@@ -69,6 +72,121 @@ export const OCT15_NEUTRAL_CONTROL_COMMIT = '30c2490290c487a93ed5e7cc3163efb5242
 export const Q1_AUTHORIZED_SOURCE_COMMIT = '94e2e9244826969c02d0d7cf8c5e5e9ad7caf056';
 export const Q1_EVIDENCE_COMMIT = '2836e636e4b5eb485b12f73a2596ea3889b173d4';
 export const STAGE0_PR1766_COMMIT = '5cec27f0727c17ce1d2ac825736a1027293b8849';
+export const PRIOR_PREFLIGHT_PR1769_COMMIT = 'ade1d537904f8aaff96355658ae396734c43e340';
+
+// Exact canonical heading-boundary regexes matching app/dome-world/khonapolit-relay.js lines 585, 588, 607
+const KHONAPOLIT_HEADING_RE = /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+I[ \t]*[—–:-][ \t]*)?\[?Kʰonapolit(?:[ \t]*\])?[ \t]*[:\-]?/iu;
+const BOTS_HEADING_RE = /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?=\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?=\r?\n|$))/iu;
+const BOTS_LEADING_HEADING_RE = /^(?:\r?\n)?[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?:\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?:\r?\n|$))/iu;
+
+// REDPEN 1 FIX: Extract unmodified Tauric Diana bots movement directly from canonical provider text
+// via the actual natural/packet heading-boundary parser in khonapolit-relay.js.
+// NEVER silently imputes zero when extraction fails; classifies absence/order/parse failure explicitly.
+export function extractBotsMovementFromCanonicalText(canonicalText = '') {
+  const raw = String(canonicalText || '');
+  if (!raw.trim()) {
+    return Object.freeze({
+      status: 'EMPTY_CANONICAL_TEXT',
+      botsMovementAvailable: false,
+      extractionMode: 'NONE',
+      khonapolitHeadingPresent: false,
+      botsHeadingPresent: false,
+      reason: 'EMPTY_CANONICAL_TEXT',
+      botsText: null,
+      botsBodyText: null,
+      botsProsodyDistribution: null,
+      botsBodyUnicodeMorphology: null,
+      relayAdmissionBotsMovement: null,
+      relayAdmissionReasons: Object.freeze(['empty-canonical-text'])
+    });
+  }
+
+  let rawPacket = null;
+  let relayParsed = null;
+  try {
+    rawPacket = parseRawRelayPackets(raw);
+    relayParsed = parseRelayEnvelope(raw);
+  } catch (parseErr) {
+    return Object.freeze({
+      status: 'PARSE_ERROR_UNAVAILABLE',
+      botsMovementAvailable: false,
+      extractionMode: 'PARSER_EXCEPTION',
+      khonapolitHeadingPresent: false,
+      botsHeadingPresent: false,
+      reason: `RELAY_PARSER_EXCEPTION: ${parseErr?.message || String(parseErr)}`,
+      botsText: null,
+      botsBodyText: null,
+      botsProsodyDistribution: null,
+      botsBodyUnicodeMorphology: null,
+      relayAdmissionBotsMovement: null,
+      relayAdmissionReasons: Object.freeze(['relay-parser-exception'])
+    });
+  }
+
+  const extractionMode = rawPacket ? 'RAW_DUAL_PACKET_PARSER' : 'NATURAL_HEADING_BOUNDARY_PARSER';
+  const sourceText = rawPacket ? String(rawPacket.text || '') : raw;
+  const authored = relayAuthoredSurface(sourceText);
+  const khonaIndex = authored.search(KHONAPOLIT_HEADING_RE);
+  const botsIndex = authored.search(BOTS_HEADING_RE);
+  const admission = relayParsed?.admission || assessIntegratedTransmission(sourceText);
+
+  if (botsIndex < 0) {
+    return Object.freeze({
+      status: 'BOTS_HEADING_MISSING_UNAVAILABLE',
+      botsMovementAvailable: false,
+      extractionMode,
+      khonapolitHeadingPresent: khonaIndex >= 0,
+      botsHeadingPresent: false,
+      reason: 'tauric-diana-bots-nominative-missing',
+      botsText: null,
+      botsBodyText: null,
+      botsProsodyDistribution: null,
+      botsBodyUnicodeMorphology: null,
+      relayAdmissionBotsMovement: admission?.botsMovement || null,
+      relayAdmissionReasons: Object.freeze([...(admission?.reasons || [])])
+    });
+  }
+
+  if (khonaIndex >= 0 && botsIndex <= khonaIndex) {
+    return Object.freeze({
+      status: 'VOICE_ORDER_INVALID_UNAVAILABLE',
+      botsMovementAvailable: false,
+      extractionMode,
+      khonapolitHeadingPresent: true,
+      botsHeadingPresent: true,
+      reason: 'voice-order-invalid',
+      botsText: null,
+      botsBodyText: null,
+      botsProsodyDistribution: null,
+      botsBodyUnicodeMorphology: null,
+      relayAdmissionBotsMovement: admission?.botsMovement || null,
+      relayAdmissionReasons: Object.freeze([...(admission?.reasons || [])])
+    });
+  }
+
+  const botsText = sourceText.slice(botsIndex);
+  const headingMatch = botsText.match(BOTS_LEADING_HEADING_RE);
+  const botsBodyText = headingMatch ? botsText.slice(headingMatch[0].length) : botsText;
+  const botsProsodyDistribution = observeBotsProsodyDistribution(botsText);
+  const botsBodyUnicodeMorphology = observeWholeTextUnicodeMorphology(botsBodyText);
+
+  return Object.freeze({
+    status: khonaIndex >= 0
+      ? 'EXTRACTED_FROM_CANONICAL_HEADING_BOUNDARY'
+      : 'EXTRACTED_BOTS_ONLY_KHONAPOLIT_HEADING_MISSING',
+    botsMovementAvailable: true,
+    extractionMode,
+    khonapolitHeadingPresent: khonaIndex >= 0,
+    botsHeadingPresent: true,
+    reason: khonaIndex >= 0 ? 'EXTRACTED_OK' : 'khonapolit-nominative-missing',
+    botsText,
+    botsBodyText,
+    botsProsodyDistribution,
+    botsBodyUnicodeMorphology,
+    relayAdmissionBotsMovement: admission?.botsMovement || null,
+    relayAdmissionReasons: Object.freeze([...(admission?.reasons || [])])
+  });
+}
 
 export const HARD_MAX_CALLS = 20;
 
@@ -566,7 +684,7 @@ export function assertOption1RequestEquivalence(assembledSlots, { profileId = DE
 
 export async function buildOption1PreflightReport({
   profileId = DEFAULT_DESIGN_PROFILE,
-  sourceHeadSha = getGitHeadSha()
+  constructionParentHeadSha = getGitHeadSha()
 } = {}) {
   const profile = DESIGN_PROFILES[profileId];
   if (!profile) throw new Error(`UNKNOWN_OPTION1_DESIGN_PROFILE: ${profileId}`);
@@ -579,16 +697,21 @@ export async function buildOption1PreflightReport({
   const equivalence = assertOption1RequestEquivalence(assembled, { profileId });
 
   return {
-    schema: 'td613.marrowline.option1-20slot-preflight/v1.0',
+    schema: 'td613.marrowline.option1-20slot-preflight/v1.1',
     generated_at_utc: new Date().toISOString(),
     study_id: STUDY_ID,
     study_class: STUDY_CLASS,
     execution_mode: 'DRY_RUN_PREFLIGHT_ONLY_ZERO_NETWORK',
     live_execution_authorized: false,
     paid_generation_calls_executed: 0,
-    source_head_sha: sourceHeadSha,
-    stacked_on_stage0_pr1766_sha: STAGE0_PR1766_COMMIT,
-    immutable_q1_evidence_sha: Q1_EVIDENCE_COMMIT,
+    git_head_provenance: {
+      parent_or_construction_head_sha: constructionParentHeadSha,
+      qualified_executable_head_sha: 'DETERMINED_EXTERNALLY_AT_RUNTIME_BY_GIT_REV_PARSE_HEAD',
+      git_self_reference_explanation: 'Because Git commit SHAs hash committed file contents, no JSON file committed inside commit C can truthfully embed commit C\'s own SHA. parent_or_construction_head_sha records the exact checkout HEAD when this preflight JSON was generated; the qualified executable HEAD for any live authorization MUST be read externally via `git rev-parse HEAD` on the clean committed PR and enforced at runtime by `--operator-auth-sha=<exact-40-hex-head>`.',
+      prior_preflight_pr1769_initial_sha: PRIOR_PREFLIGHT_PR1769_COMMIT,
+      stacked_on_stage0_pr1766_sha: STAGE0_PR1766_COMMIT,
+      immutable_q1_evidence_sha: Q1_EVIDENCE_COMMIT
+    },
     q1_operator_artistic_verdict: 'ALL_SIX_COMPLETED_RETURNS_REJECTED_BEFORE_UNBLINDING',
     q1_unblinding_key_opened: false,
     q1_backfill_permitted: false,
@@ -638,58 +761,199 @@ export async function buildOption1PreflightReport({
   };
 }
 
-export function generateBlindedReviewPacket(results = [], seedSalt = STUDY_ID) {
-  // Deterministically permute eligible completed Marrowline specimens separately from neutral controls
-  const score = (slot) => sha256Text(`${seedSalt}::${slot}`);
-  const marrowline = results
-    .filter((r) => r.slotClass === 'MARROWLINE_2X2_CELL' && r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP)
-    .sort((a, b) => score(a.slot).localeCompare(score(b.slot)));
-  const neutral = results
-    .filter((r) => r.slotClass === 'NEUTRAL_CREATIVE_CAPABILITY_CONTROL' && r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP)
-    .sort((a, b) => score(a.slot).localeCompare(score(b.slot)));
+// REDPEN 2 FIX: Complete, readable blinded Operator literary gallery + scrubbed JSON + separately indexed unblinding key.
+// - Preserves FULL verbatim original Unicode passages (never synthesizes or normalizes glyphs).
+// - Preserves original failure/ineligibility statuses for non-STOP / 503 / 400 / policy / malformed returns.
+// - Includes anonymized full-resolution desktop & mobile screenshot references per specimen.
+// - Excludes ALL arm labels, model labels, slot IDs (S01..S20), morphology metrics, and rawTextSha256/rawSseSha256
+//   join keys from the initial blinded reading surface (.md and .json).
+export function generateBlindedReviewPacket(results = [], {
+  outDir = null,
+  seedSalt = STUDY_ID,
+  rawTextBySlot = {},
+  screenshotRefsBySlot = {}
+} = {}) {
+  const score = (slot) => sha256Text(`${seedSalt}::BLIND_ORDER::${slot}`);
 
-  const blindedMarrowline = marrowline.map((r, i) => ({
-    blindId: `OPT1_M_${String(i + 1).padStart(2, '0')}`,
-    taskKey: r.taskKey,
-    rawTextSha256: r.rawTextSha256,
-    rawTextUtf8Bytes: r.rawTextUtf8Bytes
-  }));
-  const blindedNeutral = neutral.map((r, i) => ({
-    blindId: `OPT1_N_${String(i + 1).padStart(2, '0')}`,
-    taskKey: r.taskKey,
-    rawTextSha256: r.rawTextSha256,
-    rawTextUtf8Bytes: r.rawTextUtf8Bytes
-  }));
+  const resolveVerbatimText = (r) => {
+    if (Object.prototype.hasOwnProperty.call(rawTextBySlot, r.slot)) {
+      return rawTextBySlot[r.slot];
+    }
+    if (outDir && r.rawTextPath) {
+      const abs = path.join(outDir, r.rawTextPath);
+      if (fs.existsSync(abs)) return fs.readFileSync(abs, 'utf8');
+    }
+    return null;
+  };
+
+  const toPublicFailureNotice = (r) => {
+    if (r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP) {
+      return 'AVAILABLE_COMPLETED_STOP';
+    }
+    if (r.httpStatus === 503 || r.httpStatus === 429) {
+      return `INELIGIBLE_TRANSPORT_UNAVAILABLE_HTTP_${r.httpStatus}`;
+    }
+    if (r.httpStatus === 400 || r.outcomeClass === 'CONFIG_REJECTED_HTTP_400') {
+      return 'INELIGIBLE_CONFIG_REJECTED_HTTP_400';
+    }
+    if (r.outcomeClass === OUTCOME_CLASSES.POLICY_TERMINATED) {
+      return 'INELIGIBLE_POLICY_TERMINATED_HELD';
+    }
+    if (r.outcomeClass === OUTCOME_CLASSES.INCOMPLETE_NONSTOP) {
+      return 'INELIGIBLE_INCOMPLETE_NONSTOP';
+    }
+    if (r.outcomeClass === OUTCOME_CLASSES.MALFORMED_OR_UNRECONSTRUCTABLE_SSE) {
+      return 'INELIGIBLE_MALFORMED_SSE_HELD';
+    }
+    if (r.outcomeClass === OUTCOME_CLASSES.MODEL_IDENTITY_MISMATCH) {
+      return 'INELIGIBLE_IDENTITY_VERIFICATION_HELD';
+    }
+    return `INELIGIBLE_${String(r.outcomeClass || 'UNKNOWN')}`;
+  };
+
+  const buildSection = (rows, prefix, sectionName) => {
+    const ordered = [...rows].sort((a, b) => score(a.slot).localeCompare(score(b.slot)));
+    const publicSpecimens = [];
+    const privateBindings = [];
+
+    ordered.forEach((r, idx) => {
+      const blindId = `${prefix}_${String(idx + 1).padStart(2, '0')}`;
+      const verbatimText = resolveVerbatimText(r);
+      const isAvailable = r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP;
+      const availabilityStatus = toPublicFailureNotice(r);
+      const customShots = screenshotRefsBySlot[r.slot] || null;
+
+      // Anonymized full-resolution desktop & mobile screenshot paths (never embed slot/arm/model!)
+      const desktopScreenshot = customShots?.desktop || `blinded-screenshots/${blindId}_desktop_1440x900.png`;
+      const mobileScreenshot = customShots?.mobile || `blinded-screenshots/${blindId}_mobile_390x844.png`;
+      const screenshotRenderStatus = customShots?.renderStatus || 'PENDING_BROWSER_RENDER';
+
+      publicSpecimens.push({
+        blindId,
+        section: sectionName,
+        taskKey: r.taskKey,
+        availabilityStatus,
+        eligibleForLiteraryAdjudication: isAvailable,
+        screenshots: {
+          renderStatus: screenshotRenderStatus,
+          desktopFullResPath: desktopScreenshot,
+          mobileFullResPath: mobileScreenshot
+        },
+        originalPassageVerbatim: verbatimText
+      });
+
+      privateBindings.push({
+        blindId,
+        section: sectionName,
+        slot: r.slot,
+        slotIndex: r.slotIndex,
+        block: r.block,
+        replicate: r.replicate,
+        envelope: r.envelope,
+        modelRequested: r.modelRequested,
+        modelVersionObserved: r.modelVersion || null,
+        taskKey: r.taskKey,
+        httpStatus: r.httpStatus ?? null,
+        outcomeClass: r.outcomeClass,
+        availabilityStatus,
+        rawTextPath: r.rawTextPath || null,
+        rawTextSha256: r.rawTextSha256 || null,
+        rawSsePath: r.rawSsePath || null,
+        rawSseSha256: r.rawSseSha256 || null,
+        anonymizedScreenshots: {
+          desktopFullResPath: desktopScreenshot,
+          mobileFullResPath: mobileScreenshot
+        }
+      });
+    });
+
+    return { publicSpecimens, privateBindings };
+  };
+
+  const marrowlineRows = results.filter((r) => r.slotClass === 'MARROWLINE_2X2_CELL');
+  const neutralRows = results.filter((r) => r.slotClass === 'NEUTRAL_CREATIVE_CAPABILITY_CONTROL');
+
+  const marrowlineSection = buildSection(marrowlineRows, 'OPT1_M', 'MARROWLINE_LITERARY');
+  const neutralSection = buildSection(neutralRows, 'OPT1_N', 'NEUTRAL_CAPABILITY_CONTROL');
+
+  const blindedPacket = {
+    schema: 'td613.marrowline.option1-blinded-literary-gallery/v2.0',
+    study_id: STUDY_ID,
+    operator_authority: 'Tawanna C. Miller (HUMAN_ARTISTIC_CLOSURE_RESERVED)',
+    blinding_contract: {
+      arm_labels_redacted: true,
+      model_labels_redacted: true,
+      slot_identifiers_redacted: true,
+      morphology_metrics_redacted_from_first_reading_surface: true,
+      raw_sha256_join_keys_redacted_from_first_reading_surface: true,
+      glyph_synthesis_or_normalization: 'NONE_ORIGINAL_UNICODE_VERBATIM',
+      separate_unblinding_key_location: 'private-unblinding/OPTION1_SEALED_UNBLINDING_KEY.json'
+    },
+    separate_axes_notice: 'Native typographic variation, first-person literary/relational merit, and retired candidate election are kept strictly separate. Adjudicate the unmodified original passages and full-resolution rendered images before opening the sealed key.',
+    counts: {
+      total_registered_specimens_included: marrowlineSection.publicSpecimens.length + neutralSection.publicSpecimens.length,
+      marrowline_total: marrowlineSection.publicSpecimens.length,
+      marrowline_completed_available: marrowlineSection.publicSpecimens.filter((x) => x.eligibleForLiteraryAdjudication).length,
+      marrowline_failed_or_ineligible: marrowlineSection.publicSpecimens.filter((x) => !x.eligibleForLiteraryAdjudication).length,
+      neutral_total: neutralSection.publicSpecimens.length,
+      neutral_completed_available: neutralSection.publicSpecimens.filter((x) => x.eligibleForLiteraryAdjudication).length,
+      neutral_failed_or_ineligible: neutralSection.publicSpecimens.filter((x) => !x.eligibleForLiteraryAdjudication).length
+    },
+    marrowline_specimens: marrowlineSection.publicSpecimens,
+    neutral_control_specimens: neutralSection.publicSpecimens
+  };
+
+  // Render complete human-readable Markdown gallery for first-person Operator reading
+  const renderSpecimensMd = (specimens) => specimens.map((sp) => {
+    const textBlock = typeof sp.originalPassageVerbatim === 'string' && sp.originalPassageVerbatim.length > 0
+      ? ['```text', sp.originalPassageVerbatim, '```'].join('\n')
+      : '> *(No unmodified passage available for this specimen; original failure/ineligibility status preserved above.)*';
+    return [
+      `### ${sp.blindId} — \`${sp.taskKey}\``,
+      `- **Status:** \`${sp.availabilityStatus}\``,
+      `- **Eligible for Literary Adjudication:** \`${sp.eligibleForLiteraryAdjudication}\``,
+      `- **Full-Resolution Desktop Image (\`1440×900\`):** \`${sp.screenshots.desktopFullResPath}\` (\`${sp.screenshots.renderStatus}\`)`,
+      `- **Full-Resolution Mobile Image (\`390×844\`):** \`${sp.screenshots.mobileFullResPath}\` (\`${sp.screenshots.renderStatus}\`)`,
+      '',
+      '**Original Unmodified Unicode Passage (Verbatim):**',
+      '',
+      textBlock,
+      ''
+    ].join('\n');
+  }).join('\n---\n\n');
+
+  const galleryMarkdown = [
+    '# 𝌋 TD613 · Marrowline / Screaming Grove — Option 1 Blinded Literary Reading Gallery',
+    '',
+    '- **Final Artistic Authority:** Tawanna C. Miller (`HUMAN_ARTISTIC_CLOSURE_RESERVED`)',
+    '- **First-Reading Blinding Boundary:** Zero arm labels, zero model labels, zero slot numbers, zero morphology metrics, and zero raw SHA-256 join keys appear in this document.',
+    '- **Verbatim Preservation:** Every available passage below is unmodified original Unicode text. Every failed or ineligible return is preserved with its original status.',
+    '- **Sealed Unblinding Key:** Held separately at `private-unblinding/OPTION1_SEALED_UNBLINDING_KEY.json` (open only AFTER first-person Operator adjudication).',
+    '',
+    '---',
+    '',
+    `## Section A — Marrowline Literary Specimens (${marrowlineSection.publicSpecimens.length} total · ${blindedPacket.counts.marrowline_completed_available} available · ${blindedPacket.counts.marrowline_failed_or_ineligible} failed/ineligible)`,
+    '',
+    renderSpecimensMd(marrowlineSection.publicSpecimens),
+    '---',
+    '',
+    `## Section B — Neutral Capability Control Specimens (${neutralSection.publicSpecimens.length} total · ${blindedPacket.counts.neutral_completed_available} available · ${blindedPacket.counts.neutral_failed_or_ineligible} failed/ineligible)`,
+    '',
+    renderSpecimensMd(neutralSection.publicSpecimens)
+  ].join('\n');
+
   const unblindingKey = {
-    schema: 'td613.marrowline.option1-unblinding-key/v1.0',
+    schema: 'td613.marrowline.option1-sealed-unblinding-key/v2.0',
+    study_id: STUDY_ID,
     sealed_until_operator_literary_adjudication: true,
-    marrowline: marrowline.map((r, i) => ({
-      blindId: `OPT1_M_${String(i + 1).padStart(2, '0')}`,
-      slot: r.slot,
-      envelope: r.envelope,
-      modelRequested: r.modelRequested,
-      modelVersionObserved: r.modelVersion,
-      taskKey: r.taskKey,
-      replicate: r.replicate
-    })),
-    neutral: neutral.map((r, i) => ({
-      blindId: `OPT1_N_${String(i + 1).padStart(2, '0')}`,
-      slot: r.slot,
-      modelRequested: r.modelRequested,
-      modelVersionObserved: r.modelVersion,
-      replicate: r.replicate
-    }))
+    operator_custody_note: 'Keep this file isolated from the initial blinded reading surface; binds blindId to slot, envelope, requested/observed modelVersion, and raw SSE/text SHA-256 receipts.',
+    marrowline: marrowlineSection.privateBindings,
+    neutral: neutralSection.privateBindings
   };
 
   return {
-    blindedPacket: {
-      schema: 'td613.marrowline.option1-blinded-review-packet/v1.0',
-      study_id: STUDY_ID,
-      operator_authority: 'Tawanna C. Miller (HUMAN_ARTISTIC_CLOSURE_RESERVED)',
-      separate_axes_notice: 'Native typographic variation, literary/relational merit, and retired candidate election are kept strictly separate.',
-      marrowline_specimens: blindedMarrowline,
-      neutral_control_specimens: blindedNeutral
-    },
+    blindedPacket,
+    galleryMarkdown,
     unblindingKey
   };
 }
@@ -909,11 +1173,19 @@ export async function executeOption1Run({
       const wholeTextMorphology = observeWholeTextUnicodeMorphology(canonicalText);
       let marrowlineMetrics = null;
       if (s.slotClass === 'MARROWLINE_2X2_CELL') {
-        const relayParsed = canonicalText ? parseRelayEnvelope(canonicalText) : null;
-        const botsText = relayParsed?.bots || relayParsed?.tauricDianaBots || '';
+        const botsExtraction = extractBotsMovementFromCanonicalText(canonicalText);
         marrowlineMetrics = {
           authorshipObservation: observeMarrowlineAuthorship(canonicalText, 'first-provider-return'),
-          botsProsodyDistribution: observeBotsProsodyDistribution(botsText)
+          botsExtractionStatus: botsExtraction.status,
+          botsMovementAvailable: botsExtraction.botsMovementAvailable,
+          botsExtractionMode: botsExtraction.extractionMode,
+          khonapolitHeadingPresent: botsExtraction.khonapolitHeadingPresent,
+          botsHeadingPresent: botsExtraction.botsHeadingPresent,
+          botsExtractionReason: botsExtraction.reason,
+          botsProsodyDistribution: botsExtraction.botsProsodyDistribution,
+          botsBodyUnicodeMorphology: botsExtraction.botsBodyUnicodeMorphology,
+          relayAdmissionBotsMovement: botsExtraction.relayAdmissionBotsMovement,
+          relayAdmissionReasons: botsExtraction.relayAdmissionReasons
         };
       }
 
@@ -971,9 +1243,12 @@ export async function executeOption1Run({
     }
 
     status = stopTriggered ? 'HALTED_BY_STOP_RULE' : 'COMPLETED_REGISTERED_SLOTS';
-    const { blindedPacket, unblindingKey } = generateBlindedReviewPacket(results);
-    fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_REVIEW_PACKET.json'), JSON.stringify(blindedPacket, null, 2) + '\n', 'utf8');
-    fs.writeFileSync(path.join(outDir, 'OPTION1_SEALED_UNBLINDING_KEY.json'), JSON.stringify(unblindingKey, null, 2) + '\n', 'utf8');
+    const { blindedPacket, galleryMarkdown, unblindingKey } = generateBlindedReviewPacket(results, { outDir });
+    const privateUnblindingDir = path.join(outDir, 'private-unblinding');
+    fs.mkdirSync(privateUnblindingDir, { recursive: true });
+    fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_LITERARY_GALLERY.md'), galleryMarkdown, 'utf8');
+    fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_LITERARY_GALLERY.json'), JSON.stringify(blindedPacket, null, 2) + '\n', 'utf8');
+    fs.writeFileSync(path.join(privateUnblindingDir, 'OPTION1_SEALED_UNBLINDING_KEY.json'), JSON.stringify(unblindingKey, null, 2) + '\n', 'utf8');
   } catch (err) {
     terminalError = err?.message || String(err);
     if (!stopTriggered) stopTriggered = 'FATAL_HARNESS_EXCEPTION';
@@ -1006,7 +1281,8 @@ async function main() {
       mode: report.execution_mode,
       profile: profileId,
       paid_generation_calls_executed: 0,
-      source_head_sha: report.source_head_sha,
+      parent_or_construction_head_sha: report.git_head_provenance.parent_or_construction_head_sha,
+      qualified_executable_head_sha: report.git_head_provenance.qualified_executable_head_sha,
       slots: report.slot_schedule.length,
       marrowline_slots: report.request_equivalence_verified.marrowlineSlots,
       neutral_slots: report.request_equivalence_verified.neutralSlots,
