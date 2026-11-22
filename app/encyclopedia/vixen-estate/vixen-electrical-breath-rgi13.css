@@ -157,6 +157,16 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
  }
 }
 
+/* Redpen: iOS momentum scroll rasterizes the Salon's scrolling corset separately
+ * from a fixed page field. Retain the live, host-owned 60 Hz local charge and
+ * park the viewport-fixed layer on mobile so the sides cannot sputter or drift.
+ * Desktop keeps the global field, driven by the same 60 Hz Salon RAF. */
+@media (max-width:740px){
+ body[data-view="collection"] #vixenLivingMesh.vixen-living-mesh{
+  display:none!important;
+ }
+}
+
 /* The Observatory mesh starts on and can be switched off. */
 body[data-view="observatory"][data-vixen-optical-mesh-observatory="off"]
  #vixenLivingMesh.vixen-living-mesh{display:none!important;}
