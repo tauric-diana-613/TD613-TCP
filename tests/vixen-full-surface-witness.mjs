@@ -56,8 +56,33 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
    mesh_status:observed.mesh?.motion??null
   });
  }
- const end=await page.evaluate(()=>({y:Math.round(window.scrollY),max:Math.max(0,Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)-innerHeight)}));
- if(end.max-end.y>2)throw Error('SCROLL_BOTTOM_NOT_COVERED '+surface+' '+JSON.stringify(end));
+ // Live Observatory and other panels may increase height while images
+ // are captured. Extend coverage at the original overlap until two stable
+ // bottom observations agree; bounded failure preserves any missing evidence.
+ let end=null,correctionTiles=0,stableBottomObservations=0;
+ while(correctionTiles<80){
+  await page.waitForTimeout(90);
+  end=await page.evaluate(()=>({y:Math.round(window.scrollY),max:Math.max(0,Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)-innerHeight)}));
+  if(end.max-end.y<=2){
+   stableBottomObservations++;
+   if(stableBottomObservations>=2)break;
+   continue;
+  }
+  stableBottomObservations=0;
+  const next=Math.min(end.max,end.y+step);
+  await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),next);
+  await page.waitForTimeout(75);
+  const observed=await page.evaluate(()=>({y:Math.round(window.scrollY),total:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight),viewport:innerHeight,mesh:window.VixenLivingMesh?.status?.()??null}));
+  if(observed.y<=end.y)throw Error('SCROLL_EXPANSION_STALLED '+surface+' '+JSON.stringify({end,observed}));
+  await capture(page,path.join(profile.name,slug(surface),'document-'+String(positions.length+correctionTiles).padStart(3,'0')+'-y'+observed.y+'.jpg'),{
+   profile:profile.name,surface,kind:'document_scroll_tile',tile:positions.length+correctionTiles,
+   requested_y:next,observed_y:observed.y,document_height:observed.total,
+   viewport_height:observed.viewport,room:observed.mesh?.route??null,mesh_status:observed.mesh?.motion??null,
+   adaptive_growth:true
+  });
+  correctionTiles++;
+ }
+ if(stableBottomObservations<2)throw Error('SCROLL_BOTTOM_NOT_COVERED '+surface+' '+JSON.stringify(end));
  // Probe contained scroll panes independently: manuscripts, inspector, dialogue and reading cards.
  const panes=await page.evaluate(()=>{
   const scope=document.querySelector('.view:not([hidden])')||document.body;
@@ -73,7 +98,7 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
  if(panes.length>50)throw Error('TOO_MANY_NESTED_SCROLLPORTS '+surface+' '+panes.length);
  for(const pane of panes){
   const steps=Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.58))+1);
-  if(steps>175)throw Error('NESTED_SCROLL_COVERAGE_EXCEEDS_BOUND '+surface+' '+pane.key+' tiles='+steps);
+  if(steps>650)throw Error('NESTED_SCROLL_COVERAGE_EXCEEDS_BOUND '+surface+' '+pane.key+' tiles='+steps);
   for(let i=0;i<steps;i++){
    const target=i===steps-1?pane.max:Math.round(i*pane.max/(steps-1));
    const observed=await page.evaluate(({key,y})=>{
@@ -96,7 +121,7 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
   if(!bottom||bottom.max-bottom.y>2)throw Error('NESTED_SCROLL_BOTTOM_NOT_COVERED '+surface+' '+pane.key);
  }
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
- return {route:surface,scrollHeight:dom.scrollHeight,tiles:positions.length,nestedPanes:panes.length,covered_bottom:true};
+ return {route:surface,scrollHeight:dom.scrollHeight,tiles:positions.length+correctionTiles,nestedPanes:panes.length,covered_bottom:true};
 }
 const browser=await chromium.launch({headless:true});
 const matrix=[];
