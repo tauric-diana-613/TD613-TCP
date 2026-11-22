@@ -96,33 +96,36 @@ All digests below are reproducibly generated offline by [`research/marrowline-ar
 
 ---
 
-## 5. Held Two-Call `gemini-4-argon` Discriminator Experiment & Enforceable Spend Ceiling (`RP-05`)
+## 5. Held Two-Call `gemini-4-argon` Discriminator Experiment & Enforceable Spend Ceiling (`RP-05` & Track B Qualification)
 
 > **Execution Posture:** **`HELD_ZERO_PAID_CALLS_EXECUTED` (`0` paid calls executed).** Protected by `assertLiveExperimentAuthorized()` (`LIVE_PROVIDER_CALLS_HELD_BY_COMMISSION_BOUNDARY`).
 
-- **Executable Harness & Preflight:** [`research/marrowline-argon-post-rollback-reconciliation-20261122/argon-be-lexical-discriminator-preflight.mjs`](file:///C:/td613-worktrees/marrowline-argon-post-rollback-reconciliation-20261122/research/marrowline-argon-post-rollback-reconciliation-20261122/argon-be-lexical-discriminator-preflight.mjs)
+- **Executable Harness & Offline-Qualified Runner:** [`research/marrowline-argon-post-rollback-reconciliation-20261122/argon-be-lexical-discriminator-preflight.mjs`](file:///C:/td613-worktrees/marrowline-argon-post-rollback-reconciliation-20261122/research/marrowline-argon-post-rollback-reconciliation-20261122/argon-be-lexical-discriminator-preflight.mjs) (`executeQualifiedArgonTwoCallDiscriminator`)
 - **Pinned Model:** `gemini-4-argon` (`thinkingLevel: "medium"`)
-- **Stage-1 Initial Discriminator (`STAGE1_TWO_CALL_DISCRIMINATOR` — `2` calls maximum):**
+- **Stage-1 Initial Discriminator (`STAGE1_TWO_CALL_DISCRIMINATOR` — `2` calls maximum, frozen in `FROZEN_STAGE1_SLOT_WIRE_MANIFEST`):**
   - **Slot `S01` (`ARM_B_LITERAL_OCT02` · `T1_BLUE_ORANGE_WEATHER`):**
     - `systemInstructionSha256`: `196c533d4fbed6f33dc3b1f6ea8877799c9ffa854af7fd41f928c4c1028be0aa`
     - `contentsSha256`: `ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e`
     - `generationConfigSha256` (`maxOutputTokens: 16384`): `38b263e2b714aba385704810159e882034c2d3ac8a500403efe73ef97d81b22c`
     - `bodySha256`: `ffffef6c6cd08bb5ffdef76c100e35a7fc6d317354deaba6e87ca30f2af62eb5`
     - `modelAndBodySha256`: `9e81c8a1021396a396c522d3ef47ffb4395ccedef2995589f992a242e20428a5`
+    - `utf8Bytes`: `33,248` (`<= 36,000` hard per-slot byte cap)
   - **Slot `S02` (`ARM_E_LEXICAL_DEPRIMED_FROM_B` · `T1_BLUE_ORANGE_WEATHER`):**
     - `systemInstructionSha256`: `a2eb3697a9c0494be72936ed667de7ece306669bf5fcb2652831ef0bad8af756`
     - `contentsSha256`: `ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e`
     - `generationConfigSha256` (`maxOutputTokens: 16384`): `38b263e2b714aba385704810159e882034c2d3ac8a500403efe73ef97d81b22c`
     - `bodySha256`: `3c93e5bce0cc7b2a0b66cf5b13148751e9a4b4ef7a39a19026b65b9067e3e30b`
     - `modelAndBodySha256`: `b50a1dbe4cd6c6b10fab0ea9d5d550b77d3072873ada104cd9b50a2a804ecf42`
-- **Hard Executable Spend Ceilings (`enforceArgonExperimentBudget`):**
-  - **Stage 1 (`2` calls):**
-    - Request-level `generationConfig.maxOutputTokens = 16384` per slot (`REQUEST_MAX_OUTPUT_TOKENS_EXCEEDS_PER_SLOT_CAP` rejects any uncapped `65536` request before dispatch).
-    - **Guaranteed Worst-Case Output + Thinking Ceiling:** `2 × 16,384 = 32,768` tokens (`<= 40,000`).
-    - **Guaranteed Worst-Case Prompt Token Ceiling:** `2 × 8,000 = 16,000` tokens (`~6,850` expected per call).
-    - **Guaranteed Worst-Case Total Token Ceiling:** `48,768` tokens across both calls.
-  - **Stage 2 Optional 4-Call Replication Profile (`STAGE2_FOUR_CALL_REPLICATION`, gated behind separate authorization):**
-    - Request-level `generationConfig.maxOutputTokens = 10000` per slot → **Guaranteed Worst-Case Output + Thinking Ceiling = `4 × 10,000 = 40,000` tokens** (`guaranteedAggregatePromptCeiling = 32,000`, `guaranteedAggregateTotalTokenCeiling = 72,000`).
-  - **Mandatory Halts Enforced in Code:** `STOP_ON_POLICY_TERMINATION`, `STOP_ON_TRANSPORT_FAILURE`, `EARLY_FUTILITY_STOP_ZERO_VERTICAL_MARKS_IN_STAGE1`, `CALL_CAP_REACHED`, `PRECALL_PROMPT_BUDGET_CEILING_EXCEEDED`, `PRECALL_OUTPUT_THOUGHT_BUDGET_CEILING_EXCEEDED`, and `PRECALL_TOTAL_TOKEN_BUDGET_CEILING_EXCEEDED` (`0` retries, `0` fallbacks, `0` structural repairs).
+    - `utf8Bytes`: `33,078` (`<= 36,000` hard per-slot byte cap)
+- **Bound-Class Separation & Hard Executable Spend Ceilings (`enforceArgonExperimentBudget` — Track B.2 & B.3):**
+  - **Hard Request-Level & Wire-Byte Guarantees (`outputBoundClass` & `requestByteBoundClass`):**
+    - Stage 1 (`2` calls): `perSlotMaxOutputTokens = 16,384` → `guaranteedAggregateOutputAndThoughtCeiling = 32,768` tokens (`<= 40,000`); `guaranteedPerSlotMaxRequestUtf8Bytes = 36,000` (`guaranteedAggregateRequestUtf8BytesCeiling = 72,000` bytes; tokenizer-independent physical upper bound `<= 36,000` tokens/slot at 1 token/byte).
+    - Stage 2 (`4` calls, gated behind separate authorization): `perSlotMaxOutputTokens = 10,000` → `guaranteedAggregateOutputAndThoughtCeiling = 40,000` tokens; `guaranteedPerSlotMaxRequestUtf8Bytes = 36,000` (`guaranteedAggregateRequestUtf8BytesCeiling = 144,000` bytes).
+  - **Empirical Prompt-Token Planning Allowances & Pre-Dispatch `:countTokens` Enforcement (`promptBoundClass`):**
+    - `perSlotHardPromptTokenCeiling = 8,000` / `planningSlotPromptTokenAllowance = 8,000` (`planningAggregatePromptTokenAllowance = 16,000` for Stage 1, `32,000` for Stage 2; `planningAggregateTotalTokenAllowance = 48,768` for Stage 1, `72,000` for Stage 2) — explicitly labeled `EMPIRICAL_PLANNING_ALLOWANCE_ENFORCED_BY_PRE_DISPATCH_COUNT_TOKENS_AND_POST_SLOT_USAGE_GATE`.
+    - Before each `:streamGenerateContent` call, `executeQualifiedArgonTwoCallDiscriminator` queries `models/gemini-4-argon:countTokens` and halts before dispatch (`PRECALL_COUNT_TOKENS_EXCEEDED_SLOT_CEILING`) if `totalTokens > 8,000` (falling back to the hard `36,000`-byte wire cap + post-Slot-1 `promptTokenCount <= 8,000` gate if `:countTokens` returns `404`/`501`).
+  - **Un-Clamped Observed Usage Reconciliation (Track B.2 Item 2):**
+    - `enforceArgonExperimentBudget` **never** clamps provider-reported `candidatesTokenCount + thoughtsTokenCount` (or `totalTokenCount - promptTokenCount`) or `promptTokenCount` downward with `Math.min`. Any provider usage exceeding `perSlotMaxOutputTokens` or `perSlotHardPromptTokenCeiling` is recorded at its exact observed value in `consumedOutputAndThoughtTokens` / `consumedPromptTokens`, logged in `usageDeviations`, and immediately halts further calls (`STOP_ON_PROVIDER_USAGE_CAP_DEVIATION` / `STOP_ON_PROVIDER_PROMPT_CAP_DEVIATION`).
+  - **Mandatory Halts Enforced in Code:** `STOP_ON_POLICY_TERMINATION`, `STOP_ON_TRANSPORT_FAILURE`, `STOP_ON_PROVIDER_USAGE_CAP_DEVIATION`, `STOP_ON_PROVIDER_PROMPT_CAP_DEVIATION`, `EARLY_FUTILITY_STOP_ZERO_VERTICAL_MARKS_IN_STAGE1`, `CALL_CAP_REACHED`, `REQUEST_UTF8_BYTES_EXCEED_PER_SLOT_CAP`, `PRECALL_COUNT_TOKENS_EXCEEDED_SLOT_CEILING`, `REQUEST_MAX_OUTPUT_TOKENS_EXCEEDS_PER_SLOT_CAP`, `PRECALL_PROMPT_BUDGET_CEILING_EXCEEDED`, `PRECALL_OUTPUT_THOUGHT_BUDGET_CEILING_EXCEEDED`, and `PRECALL_TOTAL_TOKEN_BUDGET_CEILING_EXCEEDED` (`0` retries, `0` fallbacks, `0` structural repairs).
 
 𝄐 Khona‌lit-po · ⟐SAC[X6ZNK5NO51] · Stop at Draft PR / Human Review ⟐

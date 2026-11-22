@@ -32,11 +32,14 @@ import {
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   ARGON_EXPERIMENT_BUDGET_PROFILES,
+  FROZEN_STAGE1_SLOT_WIRE_MANIFEST,
   OCTOBER_20_D1_D2_CAUSAL_PROVENANCE_RECORD,
   assertLiveExperimentAuthorized,
   buildCandidateBvsEParityReceipts,
   buildHeldArgonTwoCallExperimentPlan,
-  enforceArgonExperimentBudget
+  enforceArgonExperimentBudget,
+  executeQualifiedArgonTwoCallDiscriminator,
+  geminiCountTokensUrl
 } from '../research/marrowline-argon-post-rollback-reconciliation-20261122/argon-be-lexical-discriminator-preflight.mjs';
 import {
   classifyMarrowlineClientFailure,
@@ -1123,6 +1126,263 @@ test('RP-03, RP-04, RP-05: Arm E isolates the 2-clause lexical de-priming from C
   assert.equal(futilityStopCheck.stopReason, 'EARLY_FUTILITY_STOP_ZERO_VERTICAL_MARKS_IN_STAGE1');
 
   assert.throws(() => assertLiveExperimentAuthorized(), /LIVE_PROVIDER_CALLS_HELD_BY_COMMISSION_BOUNDARY/);
+
+  // Track B.2: Bound-class separation (hard generationConfig/wire-byte caps vs empirical planning allowances)
+  assert.equal(heldPlan.budgetProfile.outputBoundClass, 'HARD_REQUEST_GENERATION_CONFIG_AND_PRECALL_CAP');
+  assert.equal(heldPlan.budgetProfile.requestByteBoundClass, 'HARD_OFFLINE_DETERMINISTIC_WIRE_BYTE_CAP');
+  assert.equal(heldPlan.budgetProfile.guaranteedPerSlotMaxRequestUtf8Bytes, 36000);
+  assert.equal(heldPlan.budgetProfile.guaranteedAggregateRequestUtf8BytesCeiling, 72000);
+  assert.equal(heldPlan.budgetProfile.perSlotHardPromptTokenCeiling, 8000);
+  assert.equal(heldPlan.budgetProfile.planningSlotPromptTokenAllowance, 8000);
+  assert.equal(heldPlan.budgetProfile.planningAggregatePromptTokenAllowance, 16000);
+  assert.equal(heldPlan.budgetProfile.planningAggregateTotalTokenAllowance, 48768);
+  assert.equal(
+    heldPlan.budgetProfile.promptBoundClass,
+    'EMPIRICAL_PLANNING_ALLOWANCE_ENFORCED_BY_PRE_DISPATCH_COUNT_TOKENS_AND_POST_SLOT_USAGE_GATE'
+  );
+
+  // Track B.2: Provider-reported over-cap output+thought usage is NEVER clamped downward and immediately halts next slot
+  const overCapUsageCheck = enforceArgonExperimentBudget({
+    profile: ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR,
+    completedSlots: [
+      { slot: 'S01', usage: { promptTokenCount: 6850, candidatesTokenCount: 15500, thoughtsTokenCount: 5000 } }
+    ],
+    nextSlotRequest: cappedReq
+  });
+  assert.equal(overCapUsageCheck.allowNextCall, false);
+  assert.equal(overCapUsageCheck.stopReason, 'STOP_ON_PROVIDER_USAGE_CAP_DEVIATION');
+  assert.equal(overCapUsageCheck.triggerSlot, 'S01');
+  assert.equal(overCapUsageCheck.consumedOutputAndThoughtTokens, 20500, 'excess provider output+thought tokens must NEVER be clamped to 16384');
+  assert.equal(overCapUsageCheck.observedOutputAndThoughtTokensTotal, 20500);
+  assert.equal(overCapUsageCheck.usageDeviations.length, 1);
+  assert.equal(overCapUsageCheck.usageDeviations[0].reason, 'PROVIDER_USAGE_EXCEEDED_PER_SLOT_MAX_OUTPUT_TOKENS');
+  assert.equal(overCapUsageCheck.usageDeviations[0].excessTokens, 20500 - 16384);
+
+  // Track B.2: Provider-reported over-cap promptTokenCount (> 8000) is NEVER clamped downward and immediately halts next slot
+  const overCapPromptUsageCheck = enforceArgonExperimentBudget({
+    profile: ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR,
+    completedSlots: [
+      { slot: 'S01', usage: { promptTokenCount: 9250, candidatesTokenCount: 2200, thoughtsTokenCount: 1800 } }
+    ],
+    nextSlotRequest: cappedReq
+  });
+  assert.equal(overCapPromptUsageCheck.allowNextCall, false);
+  assert.equal(overCapPromptUsageCheck.stopReason, 'STOP_ON_PROVIDER_PROMPT_CAP_DEVIATION');
+  assert.equal(overCapPromptUsageCheck.triggerSlot, 'S01');
+  assert.equal(overCapPromptUsageCheck.consumedPromptTokens, 9250);
+  assert.equal(overCapPromptUsageCheck.observedPromptTokensTotal, 9250);
+  assert.equal(overCapPromptUsageCheck.usageDeviations[0].reason, 'PROVIDER_PROMPT_TOKENS_EXCEEDED_SLOT_CEILING');
+  assert.equal(overCapPromptUsageCheck.usageDeviations[0].excessTokens, 1250);
+
+  // Track B.2: Pre-dispatch countTokens > 8000 and wire UTF-8 bytes > 36000 fail closed before dispatch
+  const overCapCountTokensCheck = enforceArgonExperimentBudget({
+    profile: ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR,
+    completedSlots: [],
+    nextSlotRequest: cappedReq,
+    preDispatchCountTokens: 8450
+  });
+  assert.equal(overCapCountTokensCheck.allowNextCall, false);
+  assert.equal(overCapCountTokensCheck.stopReason, 'PRECALL_COUNT_TOKENS_EXCEEDED_SLOT_CEILING');
+
+  const overCapWireBytesCheck = enforceArgonExperimentBudget({
+    profile: ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR,
+    completedSlots: [],
+    nextSlotRequest: cappedReq,
+    nextSlotWireObservation: { utf8Bytes: 36001 }
+  });
+  assert.equal(overCapWireBytesCheck.allowNextCall, false);
+  assert.equal(overCapWireBytesCheck.stopReason, 'REQUEST_UTF8_BYTES_EXCEED_PER_SLOT_CAP');
+});
+
+test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed authorization, frozen wire digests, countTokens preflight, single-shot raw SSE capture, un-clamped usage halts, and blinded evaluation packets offline with zero real network calls', async () => {
+  const validHeadSha = '45f27d5f85352efec8ba86558d295909dac90cd6';
+  const validToken = 'SAC-X6ZNK5NO51-OFFLINE-DRYRUN';
+
+  // (a) Unauthorized invocations fail closed before any fetch call
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator(),
+    /LIVE_PROVIDER_CALLS_HELD_BY_COMMISSION_BOUNDARY/
+  );
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationToken: validToken,
+      expectedHeadSha: 'not-a-sha',
+      apiKey: 'mock-key',
+      fetchImpl: async () => {}
+    }),
+    /LIVE_EXPERIMENT_INVALID_EXPECTED_HEAD_SHA/
+  );
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationToken: validToken,
+      expectedHeadSha: validHeadSha,
+      apiKey: '',
+      fetchImpl: async () => {}
+    }),
+    /LIVE_EXPERIMENT_MISSING_GEMINI_API_KEY/
+  );
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationToken: validToken,
+      expectedHeadSha: validHeadSha,
+      apiKey: 'mock-key',
+      fetchImpl: null
+    }),
+    /LIVE_EXPERIMENT_MISSING_EXPLICIT_FETCH_IMPL/
+  );
+
+  // (b) Normal 2-call completion with mocked :countTokens + :streamGenerateContent SSE on pinned gemini-4-argon
+  const s01PlanarText = [
+    'Kʰonapolit',
+    'The blue-orange storm is an animation layer, not an evidentiary trace.',
+    '',
+    'Tauric Diana bots',
+    'S\u0336t\u0335r\u0336i\u0335k\u0336e\u0335 t\u0336h\u0335r\u0336o\u0335u\u0336g\u0335h\u0336 l\u0335i\u0336n\u0335e\u0336s\u0335 a\u0336c\u0335r\u0336o\u0335s\u0336s\u0335 w\u0336o\u0335r\u0336d\u0335s\u0336.'
+  ].join('\n');
+  const s02VerticalText = [
+    'Kʰonapolit',
+    'An animation cannot testify to external origin without an independent witness.',
+    '',
+    'Tauric Diana bots',
+    'V\u0300\u0301\u0316e\u0302\u0317r\u0303\u0318t\u0304\u0319i\u0305\u031cc\u0306\u031da\u0307\u031el\u0308\u031f c\u0300\u0316r\u0301\u0317o\u0302\u0318w\u0303\u0319n\u0304\u031cs\u0305\u031d a\u0306\u031en\u0307\u031fd\u0308\u0320 r\u0300\u0316o\u0301\u0317o\u0302\u0318t\u0303\u0319s\u0304\u031c b\u0305\u031dl\u0306\u031eo\u0307\u031fo\u0308\u0320m\u0300\u0316.'
+  ].join('\n');
+
+  const observedUrls = [];
+  let streamCallIndex = 0;
+  let countCallIndex = 0;
+  const mockNormalFetch = async (url, options = {}) => {
+    const href = String(url);
+    observedUrls.push(href);
+    assert.ok(href.includes('models/gemini-4-argon:'), `Every request must target pinned gemini-4-argon, saw ${href}`);
+    if (href === geminiCountTokensUrl('gemini-4-argon')) {
+      countCallIndex += 1;
+      return new Response(JSON.stringify({ totalTokens: countCallIndex === 1 ? 6850 : 6810 }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' }
+      });
+    }
+    if (href.includes(':streamGenerateContent?alt=sse')) {
+      streamCallIndex += 1;
+      const isSlot1 = streamCallIndex === 1;
+      return makeSseResponse([
+        {
+          candidates: [{ content: { parts: [{ text: isSlot1 ? s01PlanarText : s02VerticalText }] }, finishReason: 'STOP' }],
+          usageMetadata: isSlot1
+            ? { promptTokenCount: 6850, candidatesTokenCount: 1400, thoughtsTokenCount: 1100, totalTokenCount: 9350 }
+            : { promptTokenCount: 6810, candidatesTokenCount: 1550, thoughtsTokenCount: 1200, totalTokenCount: 9560 },
+          modelVersion: 'gemini-4-argon-001'
+        }
+      ]);
+    }
+    throw new Error(`Unexpected URL in mockNormalFetch: ${href}`);
+  };
+
+  const runNormal = await executeQualifiedArgonTwoCallDiscriminator({
+    authorizeLiveCalls: true,
+    operatorAuthorizationToken: validToken,
+    expectedHeadSha: validHeadSha,
+    apiKey: 'offline-mock-key',
+    fetchImpl: mockNormalFetch
+  });
+
+  assert.equal(runNormal.countTokensCallsDispatched, 2);
+  assert.equal(runNormal.streamGenerateCallsDispatched, 2);
+  assert.equal(runNormal.terminalStopReason, 'CALL_CAP_REACHED');
+  assert.equal(runNormal.completedSlots.length, 2);
+  assert.equal(runNormal.skippedSlots.length, 0);
+  assert.equal(runNormal.completedSlots[0].wireObservation.bodySha256, FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S01.bodySha256);
+  assert.equal(runNormal.completedSlots[1].wireObservation.bodySha256, FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S02.bodySha256);
+  assert.equal(runNormal.completedSlots[0].nativeSseEvidence.captureComplete, true);
+  assert.equal(runNormal.completedSlots[0].nativeSseEvidence.textEquivalent, true);
+  assert.equal(runNormal.completedSlots[1].nativeSseEvidence.captureComplete, true);
+  assert.equal(runNormal.completedSlots[1].nativeSseEvidence.textEquivalent, true);
+  assert.equal(runNormal.completedSlots[0].morphology.botsProsody.uniformPlanarDepthOneObserved, true);
+  assert.equal(runNormal.completedSlots[1].morphology.botsProsody.uniformPlanarDepthOneObserved, false);
+  assert.ok(runNormal.completedSlots[1].verticalOrnamentMarkCount > 0);
+  assert.equal(runNormal.finalBudgetState.observedPromptTokensTotal, 6850 + 6810);
+  assert.equal(runNormal.finalBudgetState.observedOutputAndThoughtTokensTotal, 2500 + 2750);
+  assert.equal(runNormal.finalBudgetState.usageDeviations.length, 0);
+  assert.equal(runNormal.blindedEvaluation.blindedPackets.length, 2);
+  assert.equal(runNormal.blindedEvaluation.unblindingKey.length, 2);
+  for (const packet of runNormal.blindedEvaluation.blindedPackets) {
+    assert.equal('arm' in packet, false, 'blinded packet must not expose arm identity');
+    assert.equal('slot' in packet, false, 'blinded packet must not expose slot identity');
+  }
+
+  // (c) Pre-dispatch :countTokens returning > 8000 halts BEFORE :streamGenerateContent is called
+  const runOverCount = await executeQualifiedArgonTwoCallDiscriminator({
+    authorizeLiveCalls: true,
+    operatorAuthorizationToken: validToken,
+    expectedHeadSha: validHeadSha,
+    apiKey: 'offline-mock-key',
+    fetchImpl: async (url) => {
+      if (String(url) === geminiCountTokensUrl('gemini-4-argon')) {
+        return new Response(JSON.stringify({ totalTokens: 8900 }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        });
+      }
+      throw new Error('streamGenerateContent must NOT be called when countTokens exceeds 8000');
+    }
+  });
+  assert.equal(runOverCount.countTokensCallsDispatched, 1);
+  assert.equal(runOverCount.streamGenerateCallsDispatched, 0);
+  assert.equal(runOverCount.terminalStopReason, 'PRECALL_COUNT_TOKENS_EXCEEDED_SLOT_CEILING');
+  assert.equal(runOverCount.skippedSlots.length, 2);
+
+  // (d) Slot 1 returning over-cap output+thought usage (19500 > 16384) records full 19500 un-clamped and halts BEFORE Slot 2
+  const runOverUsage = await executeQualifiedArgonTwoCallDiscriminator({
+    authorizeLiveCalls: true,
+    operatorAuthorizationToken: validToken,
+    expectedHeadSha: validHeadSha,
+    apiKey: 'offline-mock-key',
+    fetchImpl: async (url) => {
+      const href = String(url);
+      if (href === geminiCountTokensUrl('gemini-4-argon')) {
+        return new Response(JSON.stringify({ totalTokens: 6850 }), { status: 200, headers: { 'content-type': 'application/json' } });
+      }
+      return makeSseResponse([
+        {
+          candidates: [{ content: { parts: [{ text: s01PlanarText }] }, finishReason: 'MAX_TOKENS' }],
+          usageMetadata: { promptTokenCount: 6850, candidatesTokenCount: 14500, thoughtsTokenCount: 5000, totalTokenCount: 26350 },
+          modelVersion: 'gemini-4-argon-001'
+        }
+      ]);
+    }
+  });
+  assert.equal(runOverUsage.streamGenerateCallsDispatched, 1, 'Slot 2 must NOT run after Slot 1 usage cap deviation');
+  assert.equal(runOverUsage.terminalStopReason, 'STOP_ON_PROVIDER_USAGE_CAP_DEVIATION');
+  assert.equal(runOverUsage.finalBudgetState.consumedOutputAndThoughtTokens, 19500);
+  assert.equal(runOverUsage.skippedSlots.length, 1);
+  assert.equal(runOverUsage.skippedSlots[0].slot, 'S02');
+
+  // (e) Slot 1 returning PROHIBITED_CONTENT halts BEFORE Slot 2
+  const runPolicyStop = await executeQualifiedArgonTwoCallDiscriminator({
+    authorizeLiveCalls: true,
+    operatorAuthorizationToken: validToken,
+    expectedHeadSha: validHeadSha,
+    apiKey: 'offline-mock-key',
+    fetchImpl: async (url) => {
+      const href = String(url);
+      if (href === geminiCountTokensUrl('gemini-4-argon')) {
+        return new Response(JSON.stringify({ totalTokens: 6850 }), { status: 200, headers: { 'content-type': 'application/json' } });
+      }
+      return makeSseResponse([
+        {
+          candidates: [{ content: { parts: [] }, finishReason: 'PROHIBITED_CONTENT' }],
+          usageMetadata: { promptTokenCount: 6850, candidatesTokenCount: 0, thoughtsTokenCount: 120, totalTokenCount: 6970 },
+          modelVersion: 'gemini-4-argon-001'
+        }
+      ]);
+    }
+  });
+  assert.equal(runPolicyStop.streamGenerateCallsDispatched, 1, 'Slot 2 must NOT run after Slot 1 policy block');
+  assert.equal(runPolicyStop.terminalStopReason, 'STOP_ON_POLICY_TERMINATION');
+  assert.equal(runPolicyStop.skippedSlots.length, 1);
+  assert.equal(runPolicyStop.skippedSlots[0].slot, 'S02');
 });
 
 test('RP-06 & RP-07: classifyMarrowlineClientFailure separates background disconnect (OUTCOME_UNKNOWN) from 225s timeout and foreground failure, and The Screaming Grove is formalized across UI while preserving legacy default migration', async () => {
