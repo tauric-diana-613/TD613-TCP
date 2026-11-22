@@ -9,6 +9,8 @@
   - PR `#1766` (Stage 0 Reconstruction): `5cec27f0727c17ce1d2ac825736a1027293b8849`
   - PR `#1765` (Activation & Sedgwickian Design): `01c3b9e48391a79472369695b64481b19614f9fa`
   - PR `#1764` (Immutable Q1 Evidence Archive): `2836e636e4b5eb485b12f73a2596ea3889b173d4` (`94e2e9244` authorized source)
+- **Authorized Executable HEAD SHA (Live Episode 1):** `c67e64363a436607722f1a943311c5ed9a73a906`
+- **Live Acquisition Episode 1 Outcome (`2026-11-22T18:23:59Z` → `18:29:00Z`):** **`FAILED_WITH_TERMINAL_ERROR` (`UND_ERR_HEADERS_TIMEOUT` after `300,000 ms` on Slot `S01`; `1` attempted, `19` unattempted `S02`–`S20`; `0` recoverable specimens; `0` retries)** — see [`live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.md`](./live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.md) · [`live-acquisition/OPTION1_LIVE_ACQUISITION_RECEIPT.json`](./live-acquisition/OPTION1_LIVE_ACQUISITION_RECEIPT.json) · [`live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.json`](./live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.json)
 - **Model-Identity Gate Verdict:** **`MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8`** *(Amari Rule #1 triggered fail-closed before any live generation! Zero quiet substitution for historical `gemini-3.7-flash`.)*
 - **Paid Gemini Generation Calls Executed:** **`0`**
 - **Q1 Artistic Verdict:** **PRESERVED** (all `6` completed Q1 returns rejected by Operator prior to unblinding; Q1 unblinding key sealed; zero Q1 backfilling)

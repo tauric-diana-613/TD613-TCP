@@ -1,18 +1,29 @@
 {
   "schema": "td613.marrowline.option1-preflight-custody-manifest/v1.1",
-  "generated_at_utc": "2026-11-22T15:44:18.960Z",
+  "generated_at_utc": "2026-11-22T18:32:09.856Z",
   "repository": "tauric-diana-613/TD613-TCP",
   "branch": "research/marrowline-option1-20slot-preflight-20261122",
   "git_head_provenance": {
-    "construction_parent_head_sha": "ade1d537904f8aaff96355658ae396734c43e340",
-    "qualified_executable_head_sha": "DETERMINED_EXTERNALLY_BY_GIT_REV_PARSE_HEAD_ON_COMMITTED_PR",
-    "git_self_reference_note": "A manifest committed inside commit C cannot embed commit C's own SHA; verify the qualified executable HEAD externally via git rev-parse HEAD.",
+    "authorized_executable_head_sha": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "construction_parent_head_sha": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "evidence_publication_head_sha": "DETERMINED_EXTERNALLY_BY_GIT_REV_PARSE_HEAD_ON_COMMITTED_PR",
+    "git_self_reference_note": "A manifest committed inside commit C cannot embed commit C's own SHA; authorized executable HEAD (c67e64363a436607722f1a943311c5ed9a73a906) is preserved distinctly from the subsequent evidence-publication HEAD verified externally via git rev-parse HEAD.",
     "prior_preflight_pr1769_initial_commit": "ade1d537904f8aaff96355658ae396734c43e340",
     "stacked_on_pr1766_commit": "5cec27f0727c17ce1d2ac825736a1027293b8849",
     "base_activation_pr1765_commit": "01c3b9e48391a79472369695b64481b19614f9fa",
     "immutable_q1_pr1764_commit": "2836e636e4b5eb485b12f73a2596ea3889b173d4"
   },
-  "paid_generation_calls_executed": 0,
+  "live_episode1_execution_summary": {
+    "authorized_executable_head_sha": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "calls_planned": 20,
+    "calls_attempted": 1,
+    "calls_unattempted": 19,
+    "calls_completed_stop": 0,
+    "recoverable_specimens": 0,
+    "terminal_status": "FAILED_WITH_TERMINAL_ERROR",
+    "stop_triggered": "FATAL_HARNESS_EXCEPTION",
+    "cause_code": "UND_ERR_HEADERS_TIMEOUT"
+  },
   "model_identity_gate_verdict": "MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8",
   "q1_operator_artistic_verdict": "REJECTED_PRIOR_TO_UNBLINDING",
   "q1_unblinding_key_opened": false,
@@ -21,9 +32,9 @@
   "merge_and_release_authority": false,
   "human_artistic_closure": "RESERVED",
   "summary_counts": {
-    "option1_directory_files": 8,
+    "option1_directory_files": 11,
     "linked_repository_files": 10,
-    "total_published_in_git_entries": 18,
+    "total_published_in_git_entries": 21,
     "excluded_with_safe_custody_entries": 2
   },
   "published_in_git": {
@@ -57,8 +68,8 @@
         "custody_status": "PUBLISHED_IN_GIT",
         "branch": "research/marrowline-option1-20slot-preflight-20261122",
         "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
-        "bytes": 9299,
-        "sha256": "813ff577499b807d52b30bafd6d540373640f8550d3b5641b6e15eb7158e9ea3"
+        "bytes": 10074,
+        "sha256": "9648a043e4aa89639d696fe6ed5c02f3060877860b3e0335fbda68638238be26"
       },
       {
         "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
@@ -77,6 +88,30 @@
         "sha256": "2252451bbe6b514a8440f58446ece9159483055ee256b833937eaa17483277f4"
       },
       {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_RECEIPT.json",
+        "bytes": 1211,
+        "sha256": "1a178da55c62296fce233be8b217aad2486c01a55170090ea525e712343f12eb"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.json",
+        "bytes": 13922,
+        "sha256": "4ec24fb49e7545b220bb2b7de74f3c58a820238ec65d7026099f699e6cfb3df8"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.md",
+        "bytes": 8988,
+        "sha256": "2be87cbc02ea2055fd08c9a195e202a3aaf3f4eccc501f45f50e4ec23697efae"
+      },
+      {
         "path": "research/marrowline-option1-20slot-preflight-20261122/run-option1-20slot-discriminator.mjs",
         "custody_status": "PUBLISHED_IN_GIT",
         "branch": "research/marrowline-option1-20slot-preflight-20261122",
@@ -89,8 +124,8 @@
         "custody_status": "PUBLISHED_IN_GIT",
         "branch": "research/marrowline-option1-20slot-preflight-20261122",
         "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs",
-        "bytes": 9548,
-        "sha256": "a8261bfa53d07e754a9f849158b961f6c004e40560fa0abb11ea927084475208"
+        "bytes": 10120,
+        "sha256": "a68f43ef68c63ebb708e89697725a870add3e942f332640cbf65d9fb7b82e5f8"
       }
     ],
     "linked_repository_witnesses_and_tests": [
