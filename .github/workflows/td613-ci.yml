@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, research/vixen-seven-estate-braid-g4-20261120, research/vixen-seven-estate-braid-g5-20261120, research/vixen-seven-estate-braid-g7-20261120, research/vixen-seven-estate-braid-g6-20261121, research/vixen-dual-estate-encyclopedia-20261108]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -15,6 +15,7 @@ on:
         type: choice
         options:
           - standard
+          - vixen-qualification
           - full-browser
           - giving-browser
           - full-repository
@@ -35,6 +36,77 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  vixen_qualification:
+    name: Vixen source-bound engineering qualification
+    if: >-
+      (github.event_name == 'pull_request' &&
+       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-'))) ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded runner prerequisites
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+          python -m pip install --disable-pip-version-check sympy
+      - name: Source and constitutional contracts
+        run: |
+          test "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha || github.sha }}'
+          npm run test:vixen:source
+          node --test tests/vixen-preview-qualification.test.mjs
+          node tests/workflow-estate.test.mjs
+      - name: Historical original source and native route
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Obtain the historical checkout outside product; absence is a failed
+          # required witness, never a successful skipped qualification.
+          gh repo clone "$GITHUB_REPOSITORY" "$RUNNER_TEMP/vixen-historical" -- --no-checkout --depth=1 --single-branch --filter=blob:none
+          git -C "$RUNNER_TEMP/vixen-historical" fetch origin 70b5a0f9e94626cba6068f41c6117e7978800bbd
+          git -C "$RUNNER_TEMP/vixen-historical" checkout --detach 70b5a0f9e94626cba6068f41c6117e7978800bbd
+          TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/vixen-em-pinned-archive-qualifier.mjs > "$RUNNER_TEMP/vixen-original-receipt.json"
+          TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/verify-vixen-historical-negative-controls.mjs > "$RUNNER_TEMP/vixen-historical-negatives.json"
+      - name: Source-first desktop geometry
+        run: npm run test:vixen:browser
+      - name: Dedicated iPhone first frame
+        run: node scripts/run-vixen-browser-tests.mjs tests/vixen-mobile-frontispiece-witness.mjs
+      - name: G1-G8 integration and portable extracted replay
+        run: |
+          node scripts/run-vixen-browser-tests.mjs tests/vixen-g8-integrated-browser-witness.mjs tests/vixen-g5-extracted-archive-browser.mjs
+          python scripts/package-vixen-preview.py --out "$RUNNER_TEMP/vixen-preview.zip"
+      - name: QA04 human acceptance remains HELD
+        run: |
+          mkdir -p artifacts/vixen-oop
+          node -e 'const fs=require("fs");fs.writeFileSync("artifacts/vixen-oop/qa04.json",JSON.stringify({source_sha:process.env.SOURCE_SHA,QA04:"HELD",physical_device_observation:false,human_acceptance:false,scientific_credit:0}))'
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Preserve executed evidence and explicit holds
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-oop-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            artifacts/vixen-oop
+            artifacts/vixen-*
+            ${{ runner.temp }}/vixen-original-receipt.json
+            ${{ runner.temp }}/vixen-historical-negatives.json
+            ${{ runner.temp }}/vixen-preview.zip
+          if-no-files-found: error
+
   scope:
     name: Classify exact-head browser witness scope
     if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
