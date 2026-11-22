@@ -1398,7 +1398,10 @@ try {
     await salon.getByRole('button',{name:/Compose an unratified theory/}).click();
     await salon.locator('.vs-result').waitFor();
     assert.equal(await salon.locator('.vs-result').getAttribute('data-claim-class'),'OPEN_FIELD_UNRATIFIED_QUESTION');
-    assert.match(await salon.locator('.vs-result').innerText(),/Experiment B/);
+    const proposalCopy=await salon.locator('.vs-result').innerText();
+    assert.match(proposalCopy,/prospective comparison/i);
+    assert.doesNotMatch(proposalCopy,/\bExperiment B\b/i,
+      'Historical experiment token must not leak through the visitor rendering');
     assert.match(await salon.locator('.vs-result').innerText(),/HELD/);
     const theoremContrast=await salon.locator('.vs-result .vs-note').first().evaluate(node=>{
       const styles=getComputedStyle(node);
