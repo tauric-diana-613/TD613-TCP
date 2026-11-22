@@ -662,7 +662,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     mk('strong','',a.role.replaceAll('_',' ')),mk('small','','DESIGN ONLY · HELD'));
    arm.append(cell)
   }
-  append(box,mk('h4','','Experiment B · Unexecuted competent-union comparison'),arm);
+  append(box,mk('h4','','Future controlled comparison · unexecuted design'),arm);
   const quad=mk('div','vs-confrontation-quadrant');
   const qHeader=mk('div','vs-quad-head','FADT QUOTIENT DESCENT · FOUR-ARM CONFRONTATION MATRIX');
   const qCells=mk('div','vs-quad-grid');
@@ -698,7 +698,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   if(state.refraction)box.append(details('Internal refraction: identical sources, distinct route history',
    pre(state.refraction)));
   const recordField=mk('label','vs-field vs-podium-bridge');
-  recordField.append(mk('span','vs-field-label','Optional Universal Reference Record ID (e.g. G-101) for Cross-Atelier Podium Task Preview'));
+  recordField.append(mk('span','vs-field-label','Optional independent reference record for a separate, unratified research question'));
   const recordInput=mk('input','vs-input');
   recordInput.type='text';recordInput.placeholder='Leave empty for Opera-only tasks, or enter e.g. G-101';
   recordInput.value=state.podiumRecordId;
@@ -711,7 +711,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const machine=mk('div','vs-machine');
   machine.append(details('Inspect the complete, typed question receipt',pre(p)));
   const podiumDetails=details('Inspect machine task batch (never auto-executed)',
-   append(recordField,taskPre,mk('p','vs-custody','The Conductor must be explicitly invoked by its host.')));
+   append(recordField,taskPre,mk('p','vs-custody','Copied research tasks are inert; separate human direction is required before any machine execution.')));
   podiumDetails.id='vixenSalonPodiumTasks';
   machine.append(podiumDetails);
   box.append(machine);
