@@ -20,7 +20,12 @@ try{
   await page.waitForFunction(()=>document.body.dataset.vixenPublicCopyMounted==='true',null,{timeout:15000});
   await page.waitForFunction(()=>!!window.VIXEN_FOX_HOUSE?.mounted,null,{timeout:15000});
   for(const route of routes){
-   await page.locator('#vixenRoomRail button[data-view="'+route+'"]').click({timeout:10000});
+   if(route==='operator'){
+    // Settings is reached through the documented header/menu, not the room rail.
+    await page.locator('nav.menu-dropdown button[data-view="operator"], .menu-dropdown button[data-view="operator"], .main-menu button[data-view="operator"], button[data-view="operator"]').first().evaluate(button=>button.click());
+   }else{
+    await page.locator('#vixenRoomRail button[data-view="'+route+'"]').click({timeout:10000});
+   }
    await page.waitForFunction(key=>document.body.dataset.view===key,route,{timeout:10000});
    await page.waitForTimeout(110);
    const leakage=await page.evaluate(()=>{
