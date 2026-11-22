@@ -100,17 +100,20 @@ test('Historical TCC-08 diagnostics remain original source semantics without exp
  assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
 });
 
-test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
+test('public AI guide preserves Vixen provenance while exact technical folio roles stay in separate machine-only guidance',()=>{
  const guide=readFileSync(new URL('../app/encyclopedia/vix-cyb/llms.txt',import.meta.url),'utf8');
+ const machine=readFileSync(new URL('../app/encyclopedia/reference/podium/AGENTS.md',import.meta.url),'utf8');
  assert.match(guide,/8.*historically recorded OPERA folio entries/);
  assert.match(guide,/14.*OPERAHOUSE technical\/optical records/);
- assert.match(guide,/TCC-06.*TCC-03.*TCC-07/);
- assert.match(guide,/RC records remain OPERAHOUSE technical optics/);
- assert.match(guide,/LAB_RC-##/);
- assert.match(guide,/TCC-08.*TITLE_LOCUS_ORNAMENT.*BRANDING_ORNAMENT_ONLY/);
- assert.match(guide,/browser-isomorphic/);
- assert.match(guide,/sourceContext/);
- assert.match(guide,/operatorQuestion/);
- assert.match(guide,/separately gated Podium/);
- assert.doesNotMatch(guide,/dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`/);
+ assert.match(guide,/OPERAHOUSE ≠ OPERA ≠ PERFORMER/);
+ assert.doesNotMatch(guide,/LAB_RC-##|TD613_PODIUM_OPERATOR_DIRECT|SignalRupture|Wendbine|EMSTD613|Atelier/i);
+ assert.match(machine,/TCC-06.*TCC-03.*TCC-07/);
+ assert.match(machine,/RC records remain OPERAHOUSE technical optics/);
+ assert.match(machine,/LAB_RC-##/);
+ assert.match(machine,/TCC-08.*TITLE_LOCUS_ORNAMENT.*BRANDING_ORNAMENT_ONLY/);
+ assert.match(machine,/browser-isomorphic/);
+ assert.match(machine,/sourceContext/);
+ assert.match(machine,/operatorQuestion/);
+ assert.match(machine,/separately gated Podium/);
+ assert.doesNotMatch(machine,/dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`/);
 });
