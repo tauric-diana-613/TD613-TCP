@@ -6,6 +6,12 @@
  * The internal names in THIS FILE are deliberately confined to machine code.
  */
 const PUBLIC_TERMS=Object.freeze([
+  // Scholarly-development phase labels belong in release records, never public copy.
+  [/\bEmergence[\s-]*HQ\b/gi,'research workspace'],
+  [/\bExperiment[\s-]*A\b/gi,'current research preview'],
+  [/\bExperiment[\s-]*B\b/gi,'future controlled study'],
+  [/\bExperiment[\s-]*C\b/gi,'future publication review'],
+  [/\bEclipse[\s\u2013\u2014-]*Omega\b/gi,'independent research program'],
   [/\bEMSTD613\s+Atelier\b/gi,'Vixen manuscript research'],
   [/\bSRC\s+Atelier\b/gi,'documentary evidence research'],
   [/\bWendbine\s+Atelier\b/gi,'external-source research'],
