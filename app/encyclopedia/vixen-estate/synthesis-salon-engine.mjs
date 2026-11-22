@@ -399,7 +399,7 @@ export function composeSalonPlan(corpus,input={}){
  const seq=input.route_order==='B_A'?'B_A':'A_B';
  const route=seq==='A_B'?[left.source_file_id,right.source_file_id]:[right.source_file_id,left.source_file_id];
  const deficits=[
-  'Batch-A source texts are authorized for Experiment-A Vercel preview and Em volunteer-client inspection; production releases will lock personal corpora behind an operator secret (like TD613 Giving).',
+  'Original recorded manuscript text may be inspected in the current research preview. Future publication, source acquisition, and release require separate human review and source-specific authorization.',
   'Future supplemental research requires independently verified body hydration before scoring.',
   'No independent external witness has established any cross-Work causal relationship.',
   'No human ratification has closed the eight bilateral source-identity gates.',
