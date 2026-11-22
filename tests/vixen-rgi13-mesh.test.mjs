@@ -144,7 +144,7 @@ test('iPhone scroll uses permanent foreground compositing, never time-lagged rec
  assert.match(section,/exclusions=\[\];layoutDirty=false/);
  const scrollHandler=meshSource.slice(meshSource.indexOf('const onOuterScroll='),meshSource.indexOf('win.addEventListener(\x27pointermove\x27'));
  assert.match(scrollHandler,/if\(meshOcclusionMode\(width\(\)\)===\x27STACKING_ONLY_NO_SCROLL_RECT_MASKS\x27\)return/);
- assert.match(meshSource,/occlusion_mode:meshOcclusionMode\(width\(\)\),exclusion_count:exclusions.length/);
+ assert.match(meshSource,/occlusion_mode:meshOcclusionMode\(width\(\)\),scroll_coherence:meshScrollCoherencePolicy\(\{view:view\(\),viewportWidth:width\(\)\}\),exclusion_count:exclusions.length/);
  const seam=await readFile(new URL('./vixen-estate/vixen-proscenium-seam.css',root),'utf8');
  assert.match(seam,/#view-overview \.vix-entrance-research-door\s*\{\s*position:relative;z-index:2;isolation:isolate;/);
  const light=await readFile(new URL('./vixen-estate/vixen-opaline-couture-rgi14.css',root),'utf8');
