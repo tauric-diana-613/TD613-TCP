@@ -1,0 +1,194 @@
+{
+  "schema": "td613.marrowline.option1-preflight-custody-manifest/v1.0",
+  "generated_at_utc": "2026-11-22T15:23:38.457Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "research/marrowline-option1-20slot-preflight-20261122",
+  "stacked_on_pr1766_commit": "5cec27f0727c17ce1d2ac825736a1027293b8849",
+  "base_activation_pr1765_commit": "01c3b9e48391a79472369695b64481b19614f9fa",
+  "immutable_q1_pr1764_commit": "2836e636e4b5eb485b12f73a2596ea3889b173d4",
+  "generated_against_git_head": "5cec27f0727c17ce1d2ac825736a1027293b8849",
+  "paid_generation_calls_executed": 0,
+  "model_identity_gate_verdict": "MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8",
+  "q1_operator_artistic_verdict": "REJECTED_PRIOR_TO_UNBLINDING",
+  "q1_unblinding_key_opened": false,
+  "q2_status": "HELD",
+  "experiment_b_status": "CLOSED",
+  "merge_and_release_authority": false,
+  "human_artistic_closure": "RESERVED",
+  "summary_counts": {
+    "option1_directory_files": 8,
+    "linked_repository_files": 10,
+    "total_published_in_git_entries": 18,
+    "excluded_with_safe_custody_entries": 2
+  },
+  "published_in_git": {
+    "option1_preflight_estate": [
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/MODEL_IDENTITY_REDESIGN_GATE.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/MODEL_IDENTITY_REDESIGN_GATE.md",
+        "bytes": 7878,
+        "sha256": "8d3218d1ffd2766aaa67883986a4e1441e66c57023d7bbc649d7cc00e296cbdf"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json",
+        "bytes": 41479,
+        "sha256": "7d0c6e83f653eaa7dd1cb832c090170b5349aef1fb861f482b9a33c2d4a45b3c"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_CAUSAL_LIMITS_AND_APERTURE_BOUNDARY.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_CAUSAL_LIMITS_AND_APERTURE_BOUNDARY.md",
+        "bytes": 7600,
+        "sha256": "ab85ccccdd2cefbf5ea0029af4d01c24935cba7c53e2002717184e58887e152e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "bytes": 8931,
+        "sha256": "4b19128efb7d819834ae9e230811d2ede55a20feb60ab6ef5a487c0fa9c50d89"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
+        "bytes": 14769,
+        "sha256": "dcf770bee178a311ced606750d4fc37661df46f5d003cf205f66f207d7a14c97"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_TEST_AND_VERIFICATION_RECEIPTS.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_TEST_AND_VERIFICATION_RECEIPTS.md",
+        "bytes": 7312,
+        "sha256": "b1c5069c0fad3dc3677d0144dc9471dc6689a48d0e5ee819742ebc0b7f1dd972"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/run-option1-20slot-discriminator.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/run-option1-20slot-discriminator.mjs",
+        "bytes": 47319,
+        "sha256": "0f01c7618c9e93d3bdc63d9c46f870ffdbcb029d004e8205be8ef7909e989bed"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs",
+        "bytes": 9139,
+        "sha256": "2f482cac4912d7a67b6b19c5999fa88568490d02f2a1293062a4e7f45ea77ff9"
+      }
+    ],
+    "linked_repository_witnesses_and_tests": [
+      {
+        "path": "tests/marrowline-option1-20slot-preflight.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/tests/marrowline-option1-20slot-preflight.test.mjs",
+        "bytes": 17323,
+        "sha256": "892b95e9b3e3596744da398b19bfbf8dae1d858a8ad3861f3b2fc334e318a90c"
+      },
+      {
+        "path": "tests/marrowline-sep26-oct02-stage0.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/tests/marrowline-sep26-oct02-stage0.test.mjs",
+        "bytes": 12773,
+        "sha256": "aac96fa39e2cc7192d78db4a26ba043ebf161668635d16ab7215f21502d83a0d"
+      },
+      {
+        "path": "tests/marrowline-q1-live-discriminator.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/tests/marrowline-q1-live-discriminator.test.mjs",
+        "bytes": 21187,
+        "sha256": "a2bdbd99d884381bf164a67415e3617460c10a183a66430ad3435eda9c34637c"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/MISSION_ENVELOPE_EFFECTIVE_REQUEST_MATRIX.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-sep26-oct02-reconstruction-20261121/MISSION_ENVELOPE_EFFECTIVE_REQUEST_MATRIX.json",
+        "bytes": 151461,
+        "sha256": "d0d6b15f67b0e7c454cc5ec801f9e6cd0d54b9ae81b54bd937449dc7bc3fa8db"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "bytes": 9825,
+        "sha256": "91d75ccad7e748bc3a7e1c18416113445d92e14fdc5e8d6c668bcb87cd2bf09a"
+      },
+      {
+        "path": "research/marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs",
+        "bytes": 55414,
+        "sha256": "7b06241a366d2a3816e3300cfb54c8234d5ae1cf68f3f1d8fdd68b725de49f05"
+      },
+      {
+        "path": "research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+        "bytes": 40831,
+        "sha256": "bc3a9e9c942d2130e65ad8e9fd2831bbc88039da5f93f5d856946c40f6d29f65"
+      },
+      {
+        "path": "research/marrowline-multipart-repair-20261015/README.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-multipart-repair-20261015/README.md",
+        "bytes": 9532,
+        "sha256": "2dbf79f000f4524bcb6e7518a4a039b6b36fb9ebc1cf2dfed216f05073042e1f"
+      },
+      {
+        "path": "research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+        "bytes": 5783,
+        "sha256": "1305668237d6f6d32caef1bb6c17656896db2962825a5cd63557d6ac52636c16"
+      },
+      {
+        "path": "research/marrowline-native-authorship-rest-20261014/README.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-native-authorship-rest-20261014/README.md",
+        "bytes": 3806,
+        "sha256": "e46e48d5cac9ae24ec73720c50d8f738c07aefc571dd78a8c1a0693af3849077"
+      }
+    ]
+  },
+  "excluded_artifacts_with_safe_custody": [
+    {
+      "custody_status": "EXCLUDED_WITH_SAFE_CUSTODY_RECORD",
+      "original_identity_and_purpose": "Local operator .env Gemini API key used strictly for read-only HTTP GET /v1beta/models catalog check (0 paid generation calls).",
+      "source_episode": "TD613-MARROWLINE-OPTION1-20SLOT-PREFLIGHT (2026-11-22)",
+      "reason_for_exclusion": "Secret API credential; prohibited from repository custody.",
+      "safe_digest_or_reference": "REDACTED_CREDENTIAL_REF:env:GEMINI_API_KEY",
+      "recoverable": true,
+      "authorized_retrieval_route": "Local operator environment custody only; never exported to GitHub."
+    },
+    {
+      "custody_status": "EXCLUDED_WITH_SAFE_CUSTODY_RECORD",
+      "original_identity_and_purpose": "Ephemeral scratch helper script for read-only catalog query and raw Antigravity tool logs.",
+      "source_episode": "TD613-MARROWLINE-OPTION1-20SLOT-PREFLIGHT (2026-11-22)",
+      "reason_for_exclusion": "Scratch helper and harness logs contain private local machine paths; complete sanitized catalog payload is committed in OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json.",
+      "safe_digest_or_reference": "PUBLISHED_REPLACEMENT:research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
+      "recoverable": true,
+      "authorized_retrieval_route": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json"
+    }
+  ]
+}

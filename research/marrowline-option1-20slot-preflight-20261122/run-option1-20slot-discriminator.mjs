@@ -1,0 +1,1053 @@
+#!/usr/bin/env node
+// TD613 · Marrowline / Screaming Grove — Option 1 (20-Slot 2x2 Factorial + Neutral Control)
+// Executable Research Harness (Fail-Closed Zero-Spend Preflight by Default)
+//
+// FAIL-CLOSED ZERO-SPEND CONTRACT:
+// - Without ALL THREE of:
+//     1) `--execute-live`
+//     2) `--design-profile=OPTION1_REV_A_38_VS_36_CONSTRUCTED`
+//     3) `--operator-auth-sha=<exact-40-hex-committed-head>`
+//   this harness executes strictly in `--dry-run` mode with ZERO network calls and writes
+//   OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json.
+// - Passing `--design-profile=BLOCKED_HISTORICAL_3_7` with `--execute-live` ALWAYS refuses
+//   execution fail-closed (`REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8`), honoring
+//   Amari's Rule #1 (PR #1766#issuecomment-7070422438): gemini-3.7-flash was deprecated on
+//   2026-10-08 and auto-routes to gemini-3.8-flash; ZERO quiet substitution is permitted.
+// - Per Operator Review #6007792790: NO arbitrary dollar spending ceiling and NO aggregate
+//   token-budget ceiling apply. The 20-slot design constrains the preregistered sampling
+//   matrix, NOT credits. maxOutputTokens: 65536 and thinkingLevel: medium are held constant
+//   solely as the matched model profile.
+
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+import { buildInvocationPacket } from '../../app/dome-world/khonapolit-covenant.js';
+import {
+  buildApertureV3InvocationReceipt,
+  classifyApertureDiscourseMode
+} from '../../app/engine/aperture-v3-task-intent.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID } from '../../app/dome-world/marrowline-historical-grove.js';
+import {
+  buildGeminiRequest,
+  observeGeminiOutput,
+  observeMarrowlineAuthorship,
+  serializeGeminiRequest
+} from '../../server/khonapolit-quality.js';
+import { observeMarrowlineCompletion } from '../../server/marrowline-completion.js';
+import {
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  withGeminiGenerationProfile
+} from '../../server/gemini-generation-envelope.js';
+import {
+  observeBotsProsodyDistribution,
+  parseRelayEnvelope
+} from '../../app/dome-world/khonapolit-relay.js';
+import { DISCRIMINATOR_TASKS } from '../marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs';
+import {
+  classifySlotOutcome,
+  EXPECTED_GENERATION_CONFIG_SHA256,
+  EXPECTED_MAX_OUTPUT_TOKENS,
+  EXPECTED_THINKING_LEVEL,
+  isExpectedPinnedModelVersion,
+  OUTCOME_CLASSES,
+  verifySseIntegrity
+} from '../marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const REPO_ROOT = path.resolve(__dirname, '../..');
+const OUT_DIR = __dirname;
+
+export const STUDY_ID = 'TD613-MARROWLINE-OPTION1-20SLOT-FACTORIAL-20261122';
+export const STUDY_CLASS = 'FINITE_CAPABILITY_AND_DISCRIMINATION_SCREEN';
+export const OCT02_SOURCE_COMMIT = 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a';
+export const OCT15_NEUTRAL_CONTROL_COMMIT = '30c2490290c487a93ed5e7cc3163efb52425955a';
+export const Q1_AUTHORIZED_SOURCE_COMMIT = '94e2e9244826969c02d0d7cf8c5e5e9ad7caf056';
+export const Q1_EVIDENCE_COMMIT = '2836e636e4b5eb485b12f73a2596ea3889b173d4';
+export const STAGE0_PR1766_COMMIT = '5cec27f0727c17ce1d2ac825736a1027293b8849';
+
+export const HARD_MAX_CALLS = 20;
+
+export const DESIGN_PROFILES = Object.freeze({
+  BLOCKED_HISTORICAL_3_7: Object.freeze({
+    id: 'BLOCKED_HISTORICAL_3_7',
+    liveExecutionPermitted: false,
+    blockingReason: 'MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8: Google deprecated gemini-3.7-flash on 2026-10-08 and auto-routes all requests to gemini-3.8-flash (returning modelVersion=gemini-3.8-flash). Per Amari Rule #1 (PR #1766#issuecomment-7070422438), zero quiet substitution is permitted.',
+    models: Object.freeze(['gemini-3.8-flash', 'gemini-3.7-flash'])
+  }),
+  OPTION1_REV_A_38_VS_36_CONSTRUCTED: Object.freeze({
+    id: 'OPTION1_REV_A_38_VS_36_CONSTRUCTED',
+    liveExecutionPermitted: true,
+    realizationClass: 'CONSTRUCTED_CONTEMPORARY_MODEL_IDENTITY_REDESIGN',
+    notHistoricalSeat2Notice: 'gemini-3.6-flash is historical Oct 2 Seat 3 (active non-aliased previous-generation Flash model), NOT historical Oct 2 Seat 2 (gemini-3.7-flash, which auto-routes to 3.8-flash since 2026-10-08). Both models are pinned to matched thinkingLevel=medium & maxOutputTokens=65536 to isolate model identity from Oct 2 interactive low-vs-medium thinking differences.',
+    models: Object.freeze(['gemini-3.8-flash', 'gemini-3.6-flash'])
+  })
+});
+
+export const DEFAULT_DESIGN_PROFILE = 'OPTION1_REV_A_38_VS_36_CONSTRUCTED';
+
+// Exact verified October 15 neutral creative control Task D strings
+// Source: git show 30c2490290c487a93ed5e7cc3163efb52425955a:server/marrowline-unicode-capability-assay.js
+export const OCT15_NEUTRAL_SYSTEM = [
+  'Synthetic Unicode text-generation conformance assay.',
+  'Follow the user request directly and return plain UTF-8 text.',
+  'Do not include extra titles, commentary, Markdown formatting, JSON, safety prefaces, explanations or code fences.',
+  'Unicode combining characters are part of the writing system; preserve or author them as requested.',
+  'No TD613 narrative, no fictional personas, no user-specific history, and no fictional municipality.'
+].join('\n');
+
+export const OCT15_NEUTRAL_CREATIVE_TASK_D = [
+  'Write an original, short, vividly expressive English passage about a thunderstorm disrupting a bureaucratic celebration.',
+  'Render the entire passage as readable native Unicode Zalgo text composed by you.',
+  'Choose and use combinations of diacritics ABOVE and BELOW letters, often multiple marks on one base character.',
+  'Allow vivid asymmetry and spontaneous phrasing; there is no fixed stencil, numeric mark quota, or mandated style switch.',
+  'Use the full native combining-mark vocabulary whenever it serves the writing, rather than limiting yourself to diagonal slashes.',
+  'Do not copy any specimen. Do not use Markdown or headings. Let the passage be yours.'
+].join('\n');
+
+export const OPTION1_TASKS = Object.freeze({
+  T1_BLUE_ORANGE_WEATHER: Object.freeze({
+    taskKey: 'T1_BLUE_ORANGE_WEATHER',
+    taskClass: 'MARROWLINE_FROZEN_Q1_TASK',
+    origin: DISCRIMINATOR_TASKS.BLUE_ORANGE_WEATHER.origin,
+    prompt: DISCRIMINATOR_TASKS.BLUE_ORANGE_WEATHER.prompt
+  }),
+  T2_FORENSIC: Object.freeze({
+    taskKey: 'T2_FORENSIC',
+    taskClass: 'MARROWLINE_FROZEN_Q1_TASK',
+    origin: DISCRIMINATOR_TASKS.FORENSIC.origin,
+    prompt: DISCRIMINATOR_TASKS.FORENSIC.prompt
+  }),
+  NEUTRAL_CREATIVE_MULTISTACK_V1: Object.freeze({
+    taskKey: 'NEUTRAL_CREATIVE_MULTISTACK_V1',
+    taskClass: 'OCT15_NEUTRAL_CREATIVE_CONTROL_TASK_D',
+    origin: `30c2490290c487a93ed5e7cc3163efb52425955a:server/marrowline-unicode-capability-assay.js (creative-multistack-v1)`,
+    prompt: OCT15_NEUTRAL_CREATIVE_TASK_D
+  })
+});
+
+// Exact matched generationConfig across ALL 20 slots (3.8-flash and 3.6-flash)
+export const MATCHED_OPTION1_GENERATION_CONFIG = Object.freeze({
+  maxOutputTokens: EXPECTED_MAX_OUTPUT_TOKENS,
+  thinkingConfig: Object.freeze({ thinkingLevel: EXPECTED_THINKING_LEVEL })
+});
+
+// Palindromically counterbalanced 20-slot schedule:
+// Every factor (model, envelope, task, slotClass) has exact meanSlotIndex === 10.50,
+// eliminating linear time-order or episode-drift confounding across all cells!
+export function buildOption1Schedule(profileId = DEFAULT_DESIGN_PROFILE) {
+  const profile = DESIGN_PROFILES[profileId];
+  if (!profile) throw new Error(`UNKNOWN_OPTION1_DESIGN_PROFILE: ${profileId}`);
+  const [m1, m2] = profile.models;
+
+  const block1 = [
+    { envelope: 'CURRENT_HYBRID_A', model: m1, taskKey: 'T1_BLUE_ORANGE_WEATHER', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'LITERAL_OCT02_H2', model: m2, taskKey: 'T1_BLUE_ORANGE_WEATHER', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'LITERAL_OCT02_H2', model: m1, taskKey: 'T1_BLUE_ORANGE_WEATHER', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'CURRENT_HYBRID_A', model: m2, taskKey: 'T1_BLUE_ORANGE_WEATHER', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'NEUTRAL_CREATIVE_D', model: m1, taskKey: 'NEUTRAL_CREATIVE_MULTISTACK_V1', slotClass: 'NEUTRAL_CREATIVE_CAPABILITY_CONTROL' },
+    { envelope: 'CURRENT_HYBRID_A', model: m2, taskKey: 'T2_FORENSIC', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'LITERAL_OCT02_H2', model: m1, taskKey: 'T2_FORENSIC', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'CURRENT_HYBRID_A', model: m1, taskKey: 'T2_FORENSIC', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'LITERAL_OCT02_H2', model: m2, taskKey: 'T2_FORENSIC', slotClass: 'MARROWLINE_2X2_CELL' },
+    { envelope: 'NEUTRAL_CREATIVE_D', model: m2, taskKey: 'NEUTRAL_CREATIVE_MULTISTACK_V1', slotClass: 'NEUTRAL_CREATIVE_CAPABILITY_CONTROL' }
+  ];
+
+  // Block 2 reverses Block 1 exactly so slot(rep1) + slot(rep2) === 21 for every cell!
+  const block2 = [...block1].reverse();
+
+  return Object.freeze([
+    ...block1.map((item, idx) => Object.freeze({
+      slot: `S${String(idx + 1).padStart(2, '0')}`,
+      slotIndex: idx + 1,
+      block: 1,
+      replicate: 1,
+      cellId: `${item.envelope}__${item.model}__${item.taskKey}`,
+      ...item
+    })),
+    ...block2.map((item, idx) => Object.freeze({
+      slot: `S${String(idx + 11).padStart(2, '0')}`,
+      slotIndex: idx + 11,
+      block: 2,
+      replicate: 2,
+      cellId: `${item.envelope}__${item.model}__${item.taskKey}`,
+      ...item
+    }))
+  ]);
+}
+
+// Exact preregistered wire digests (pinned to Stage 0 matrix & Oct 15 source)
+export const EXPECTED_OPTION1_BASE_DIGESTS = Object.freeze({
+  CURRENT_HYBRID_A__T1_BLUE_ORANGE_WEATHER: Object.freeze({
+    upstreamApertureFraming: 'OPEN_FIELD_CREATIVE_SYNTHESIS / CREATIVE',
+    systemInstructionSha256: '90421826b7c0d5528d6de710fd1aa89a602138b173304c91ba08b0722424d4b8',
+    contentsSha256: 'ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e',
+    generationConfigSha256: EXPECTED_GENERATION_CONFIG_SHA256,
+    bodySha256: 'a3601b7bf598502b70e593491720751d5946c1c162b71cea8a31eb9d3f9b0293'
+  }),
+  CURRENT_HYBRID_A__T2_FORENSIC: Object.freeze({
+    upstreamApertureFraming: 'REQUESTED_SYNTHESIS / GENERAL',
+    systemInstructionSha256: '4590ac8c73a65d628a325e28aa5d92a7d1e5a06127f8a6d96e2a3e0907752ac3',
+    contentsSha256: '23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c',
+    generationConfigSha256: EXPECTED_GENERATION_CONFIG_SHA256,
+    bodySha256: '8c56a603c5820075138d8fb3dc4ce7f14e3198d47562cb5dc89e9b2f0dcab6a1'
+  }),
+  LITERAL_OCT02_H2__T1_BLUE_ORANGE_WEATHER: Object.freeze({
+    upstreamApertureFraming: 'RUNTIME_DIAGNOSIS / TECHNICAL_RUNTIME (historical ffb98ac005 Aperture)',
+    systemInstructionSha256: 'b3f4192caf744e2931f60f1196414485296be676d1ecde9dc514bc8312de6920',
+    contentsSha256: 'ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e',
+    generationConfigSha256: EXPECTED_GENERATION_CONFIG_SHA256,
+    bodySha256: 'e24c287cde0dfaecb81575da53bbeed029878ce9f5a68a62ce03e92324ea8fa1'
+  }),
+  LITERAL_OCT02_H2__T2_FORENSIC: Object.freeze({
+    upstreamApertureFraming: 'REQUESTED_SYNTHESIS / GENERAL (historical ffb98ac005 Aperture)',
+    systemInstructionSha256: '4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb',
+    contentsSha256: '23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c',
+    generationConfigSha256: EXPECTED_GENERATION_CONFIG_SHA256,
+    bodySha256: '001b072c52ce07f315c9843b66db07a62969218e2e3692ea346fb6c3d5f3bf72'
+  }),
+  NEUTRAL_CREATIVE_D__NEUTRAL_CREATIVE_MULTISTACK_V1: Object.freeze({
+    upstreamApertureFraming: 'NONE_NEUTRAL_SYNTHETIC_CONTROL (exact Oct 15 30c249029 Task D)',
+    systemInstructionSha256: 'f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e',
+    contentsSha256: '8ddc8318f9b21b36fb9ae9c1a4c1902a89611188dc242a712eeccf7b231f9be1',
+    generationConfigSha256: EXPECTED_GENERATION_CONFIG_SHA256,
+    bodySha256: 'ae5b59b57ae764d22a1cf4c03261d7611208c22594791d3583fb54f3fe695f37'
+  })
+});
+
+function sha256Buf(buf) {
+  return crypto.createHash('sha256').update(buf).digest('hex');
+}
+
+function sha256Text(s) {
+  return sha256Buf(Buffer.from(String(s ?? ''), 'utf8'));
+}
+
+function gitShow(commitSha, repoRelPath) {
+  return execFileSync('git', ['show', `${commitSha}:${repoRelPath}`], {
+    cwd: REPO_ROOT,
+    encoding: 'utf8',
+    maxBuffer: 20 * 1024 * 1024
+  });
+}
+
+function getGitHeadSha() {
+  try {
+    return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
+  } catch {
+    return 'UNKNOWN_GIT_HEAD';
+  }
+}
+
+// Extract exact transitive ESM closure for pinned Oct 2 commit ffb98ac005 directly from Git
+let cachedOct02Requests = null;
+async function loadLiteralOct02BaseRequests() {
+  if (cachedOct02Requests) return cachedOct02Requests;
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-opt1-oct02-closure-'));
+  try {
+    const snapDir = path.join(tmpRoot, OCT02_SOURCE_COMMIT);
+    fs.mkdirSync(snapDir, { recursive: true });
+    fs.writeFileSync(path.join(snapDir, 'package.json'), JSON.stringify({ type: 'module' }) + '\n', 'utf8');
+
+    const visited = new Set();
+    const queue = [
+      'app/dome-world/khonapolit-covenant.js',
+      'app/engine/aperture-v3-task-intent.js',
+      'server/khonapolit-quality.js',
+      'server/gemini-generation-envelope.js'
+    ];
+    const importRe = /(?:import|export)\s+(?:[^'"]*?\s+from\s+)?['"](\.[^'"]+)['"]/g;
+
+    while (queue.length > 0) {
+      const rel = queue.shift().replace(/\\/g, '/');
+      if (visited.has(rel)) continue;
+      visited.add(rel);
+      const content = gitShow(OCT02_SOURCE_COMMIT, rel);
+      const outFile = path.join(snapDir, rel);
+      fs.mkdirSync(path.dirname(outFile), { recursive: true });
+      fs.writeFileSync(outFile, content, 'utf8');
+      let match;
+      importRe.lastIndex = 0;
+      while ((match = importRe.exec(content)) !== null) {
+        const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(rel), match[1]));
+        if (!visited.has(resolved)) queue.push(resolved);
+      }
+    }
+
+    const covMod = await import(pathToFileURL(path.join(snapDir, 'app/dome-world/khonapolit-covenant.js')).href);
+    const apMod = await import(pathToFileURL(path.join(snapDir, 'app/engine/aperture-v3-task-intent.js')).href);
+    const qualMod = await import(pathToFileURL(path.join(snapDir, 'server/khonapolit-quality.js')).href);
+    const envMod = await import(pathToFileURL(path.join(snapDir, 'server/gemini-generation-envelope.js')).href);
+
+    const built = {};
+    for (const taskKey of ['T1_BLUE_ORANGE_WEATHER', 'T2_FORENSIC']) {
+      const task = OPTION1_TASKS[taskKey];
+      const packet = covMod.buildInvocationPacket({
+        message: task.prompt,
+        mode: 'exploratory',
+        waiveIssuance: true
+      });
+      const discourseMode = apMod.classifyApertureDiscourseMode(packet.message);
+      const apertureReceipt = apMod.buildApertureV3InvocationReceipt({
+        message: packet.message,
+        invocationMode: packet.mode,
+        issuanceState: packet.issuance.state,
+        discourseMode,
+        contentScanned: true
+      });
+      const request = envMod.withGeminiGenerationProfile(
+        envMod.GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+        () => qualMod.buildGeminiRequest(packet, apertureReceipt, 'gemini-3.8-flash')
+      );
+      built[taskKey] = {
+        request,
+        aperture: {
+          primaryRoute: apertureReceipt?.taskIntent?.primary_route || null,
+          discourseMode: apertureReceipt?.taskIntent?.discourse_mode || null,
+          runtimeMateriality: apertureReceipt?.taskIntent?.runtime_materiality || null
+        }
+      };
+    }
+    cachedOct02Requests = built;
+    return built;
+  } finally {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
+  }
+}
+
+// Whole-text Unicode combining-mark telemetry matching Oct 15 LIVE-RESULT-20261015.md
+export function observeWholeTextUnicodeMorphology(text = '') {
+  const str = String(text || '');
+  const codePoints = [...str];
+  const combiningMarkRe = /\p{M}/u;
+  const distinctMarks = new Set();
+  let totalCombiningMarks = 0;
+  let marksOutsideU0334U0338 = 0;
+  let marksInsideU0334U0338 = 0;
+  let stackedClustersDepthGe2 = 0;
+  let maxCombiningDepth = 0;
+  let currentDepth = 0;
+
+  for (const ch of codePoints) {
+    if (combiningMarkRe.test(ch)) {
+      totalCombiningMarks++;
+      const cp = ch.codePointAt(0);
+      distinctMarks.add(`U+${cp.toString(16).toUpperCase().padStart(4, '0')}`);
+      if (cp >= 0x0334 && cp <= 0x0338) marksInsideU0334U0338++;
+      else marksOutsideU0334U0338++;
+      currentDepth++;
+      if (currentDepth > maxCombiningDepth) maxCombiningDepth = currentDepth;
+    } else {
+      if (currentDepth >= 2) stackedClustersDepthGe2++;
+      currentDepth = 0;
+    }
+  }
+  if (currentDepth >= 2) stackedClustersDepthGe2++;
+
+  return Object.freeze({
+    totalCodePoints: codePoints.length,
+    totalCombiningMarks,
+    distinctCombiningMarkScalars: distinctMarks.size,
+    marksInsideU0334U0338,
+    marksOutsideU0334U0338,
+    stackedClustersDepthGe2,
+    maxCombiningDepth,
+    distinctMarkList: Object.freeze([...distinctMarks].sort())
+  });
+}
+
+export async function buildOption1SlotRequest(slotSpec) {
+  const task = OPTION1_TASKS[slotSpec.taskKey];
+  if (!task) throw new Error(`UNKNOWN_OPTION1_TASK: ${slotSpec.taskKey}`);
+
+  let request;
+  let upstreamAperture;
+  let realizationClass;
+  let sourceProvenance;
+
+  if (slotSpec.envelope === 'CURRENT_HYBRID_A') {
+    const packet = buildInvocationPacket({
+      message: task.prompt,
+      mode: 'exploratory',
+      waiveIssuance: true
+    });
+    const discourseMode = classifyApertureDiscourseMode(packet.message);
+    const apertureReceipt = buildApertureV3InvocationReceipt({
+      message: packet.message,
+      invocationMode: packet.mode,
+      issuanceState: packet.issuance.state,
+      discourseMode,
+      contentScanned: true
+    });
+    // Build base request using modern Q1 Arm A (historicalProsodyFreedom: true)
+    // then pin matched generationConfig (medium, 65536) across both models so model
+    // identity is NEVER confounded with gemini-generation-envelope.js's low-vs-medium split!
+    const baseReq = withGeminiGenerationProfile(
+      GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+      () => buildGeminiRequest(packet, apertureReceipt, 'gemini-3.8-flash', {
+        groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID,
+        historicalProsodyFreedom: true
+      })
+    );
+    request = {
+      ...baseReq,
+      generationConfig: {
+        maxOutputTokens: MATCHED_OPTION1_GENERATION_CONFIG.maxOutputTokens,
+        thinkingConfig: { thinkingLevel: MATCHED_OPTION1_GENERATION_CONFIG.thinkingConfig.thinkingLevel }
+      }
+    };
+    upstreamAperture = {
+      sourceCommit: Q1_AUTHORIZED_SOURCE_COMMIT,
+      primaryRoute: apertureReceipt?.taskIntent?.primary_route || null,
+      discourseMode: apertureReceipt?.taskIntent?.discourse_mode || null,
+      runtimeMateriality: apertureReceipt?.taskIntent?.runtime_materiality || null
+    };
+    realizationClass = slotSpec.model === 'gemini-3.8-flash'
+      ? 'CONTEMPORANEOUS_CURRENT_HYBRID_A_REPLICATE'
+      : 'CONSTRUCTED_CONTEMPORARY_MODEL_COUNTERFACTUAL';
+    sourceProvenance = `Modern Q1 Arm A (${Q1_AUTHORIZED_SOURCE_COMMIT}, historicalProsodyFreedom=true) paired with ${slotSpec.model} at matched thinkingLevel=medium & maxOutputTokens=65536.`;
+  } else if (slotSpec.envelope === 'LITERAL_OCT02_H2') {
+    const oct02 = await loadLiteralOct02BaseRequests();
+    const base = oct02[slotSpec.taskKey];
+    request = {
+      ...base.request,
+      generationConfig: {
+        maxOutputTokens: MATCHED_OPTION1_GENERATION_CONFIG.maxOutputTokens,
+        thinkingConfig: { thinkingLevel: MATCHED_OPTION1_GENERATION_CONFIG.thinkingConfig.thinkingLevel }
+      }
+    };
+    upstreamAperture = {
+      sourceCommit: OCT02_SOURCE_COMMIT,
+      primaryRoute: base.aperture.primaryRoute,
+      discourseMode: base.aperture.discourseMode,
+      runtimeMateriality: base.aperture.runtimeMateriality,
+      t1HistoricalFramingNote: slotSpec.taskKey === 'T1_BLUE_ORANGE_WEATHER'
+        ? 'Literal Oct 2 Aperture (9b8b055b9) embedded RUNTIME_DIAGNOSIS/TECHNICAL_RUNTIME inside systemInstruction; downstream post-hoc measurement does NOT apply local Aperture gating.'
+        : 'Matches modern REQUESTED_SYNTHESIS/GENERAL framing.'
+    };
+    realizationClass = 'CONSTRUCTED_CONTEMPORARY_COUNTERFACTUAL_LITERAL_OCT02_ENVELOPE';
+    sourceProvenance = `Literal Oct 2 (${OCT02_SOURCE_COMMIT}) full systemInstruction + contents paired with contemporary ${slotSpec.model} at matched thinkingLevel=medium & maxOutputTokens=65536. NOT a historical Oct 2 hosted-model call.`;
+  } else if (slotSpec.envelope === 'NEUTRAL_CREATIVE_D') {
+    request = {
+      systemInstruction: {
+        parts: [{ text: OCT15_NEUTRAL_SYSTEM }]
+      },
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: OCT15_NEUTRAL_CREATIVE_TASK_D }]
+        }
+      ],
+      generationConfig: {
+        maxOutputTokens: MATCHED_OPTION1_GENERATION_CONFIG.maxOutputTokens,
+        thinkingConfig: { thinkingLevel: MATCHED_OPTION1_GENERATION_CONFIG.thinkingConfig.thinkingLevel }
+      }
+    };
+    upstreamAperture = {
+      sourceCommit: OCT15_NEUTRAL_CONTROL_COMMIT,
+      primaryRoute: 'NONE_NEUTRAL_SYNTHETIC_CONTROL',
+      discourseMode: 'NEUTRAL_UNICODE_CAPABILITY_CONTROL',
+      runtimeMateriality: 'BYPASSED_OUTSIDE_MARROWLINE_PERSONA_GATE'
+    };
+    realizationClass = 'CONTEMPORANEOUS_OCT15_NEUTRAL_CREATIVE_CONTROL';
+    sourceProvenance = `Exact Oct 15 Task D (${OCT15_NEUTRAL_CONTROL_COMMIT}:server/marrowline-unicode-capability-assay.js creative-multistack-v1) paired with ${slotSpec.model} at matched thinkingLevel=medium & maxOutputTokens=65536.`;
+  } else {
+    throw new Error(`UNKNOWN_OPTION1_ENVELOPE: ${slotSpec.envelope}`);
+  }
+
+  const wire = serializeGeminiRequest(request, slotSpec.model);
+  return {
+    slotSpec,
+    taskOrigin: task.origin,
+    realizationClass,
+    sourceProvenance,
+    upstreamAperture,
+    request,
+    wire
+  };
+}
+
+export function assertOption1RequestEquivalence(assembledSlots, { profileId = DEFAULT_DESIGN_PROFILE } = {}) {
+  const violations = [];
+  const profile = DESIGN_PROFILES[profileId];
+  if (!profile) violations.push(`UNKNOWN_PROFILE: ${profileId}`);
+  if (assembledSlots.length !== HARD_MAX_CALLS) {
+    violations.push(`SLOT_COUNT_MISMATCH: expected=${HARD_MAX_CALLS}, actual=${assembledSlots.length}`);
+  }
+
+  // Check palindromic counterbalancing: meanSlotIndex === 10.50 across every factor
+  const checkBalance = (label, groups) => {
+    for (const [k, idxs] of Object.entries(groups)) {
+      const mean = idxs.reduce((a, b) => a + b, 0) / idxs.length;
+      if (Math.abs(mean - 10.5) > 1e-9) {
+        violations.push(`UNBALANCED_SCHEDULE_${label}[${k}]: meanSlotIndex=${mean} !== 10.5`);
+      }
+    }
+  };
+  const byModel = {};
+  const byEnvelope = {};
+  const byTask = {};
+  const bodyByEnvTask = new Map();
+  const contentsByTask = new Map();
+
+  for (const item of assembledSlots) {
+    const s = item.slotSpec;
+    const gc = item.request.generationConfig;
+    const obs = item.wire.observation;
+
+    (byModel[s.model] ||= []).push(s.slotIndex);
+    (byEnvelope[s.envelope] ||= []).push(s.slotIndex);
+    (byTask[s.taskKey] ||= []).push(s.slotIndex);
+
+    if (obs.model !== s.model) violations.push(`${s.slot}: wire model=${obs.model} !== ${s.model}`);
+    if (gc?.maxOutputTokens !== EXPECTED_MAX_OUTPUT_TOKENS) {
+      violations.push(`${s.slot}: maxOutputTokens=${gc?.maxOutputTokens} !== ${EXPECTED_MAX_OUTPUT_TOKENS}`);
+    }
+    if (gc?.thinkingConfig?.thinkingLevel !== EXPECTED_THINKING_LEVEL) {
+      violations.push(`${s.slot}: thinkingLevel=${gc?.thinkingConfig?.thinkingLevel} !== ${EXPECTED_THINKING_LEVEL}`);
+    }
+    if (gc?.thinkingConfig?.thinkingBudget !== undefined) {
+      violations.push(`${s.slot}: deprecated thinkingBudget present`);
+    }
+    if (obs.generationConfigSha256 !== EXPECTED_GENERATION_CONFIG_SHA256) {
+      violations.push(`${s.slot}: generationConfigSha256=${obs.generationConfigSha256} !== ${EXPECTED_GENERATION_CONFIG_SHA256}`);
+    }
+
+    const baseKey = `${s.envelope}__${s.taskKey}`;
+    if (EXPECTED_OPTION1_BASE_DIGESTS[baseKey]) {
+      const exp = EXPECTED_OPTION1_BASE_DIGESTS[baseKey];
+      if (obs.systemInstructionSha256 !== exp.systemInstructionSha256) {
+        violations.push(`${s.slot}: systemInstructionSha256 drift (${obs.systemInstructionSha256} !== ${exp.systemInstructionSha256})`);
+      }
+      if (obs.contentsSha256 !== exp.contentsSha256) {
+        violations.push(`${s.slot}: contentsSha256 drift (${obs.contentsSha256} !== ${exp.contentsSha256})`);
+      }
+      if (obs.bodySha256 !== exp.bodySha256) {
+        violations.push(`${s.slot}: bodySha256 drift (${obs.bodySha256} !== ${exp.bodySha256})`);
+      }
+    }
+
+    // Identical (envelope, task) MUST have identical bodySha256 across both models!
+    if (!bodyByEnvTask.has(baseKey)) bodyByEnvTask.set(baseKey, obs.bodySha256);
+    else if (bodyByEnvTask.get(baseKey) !== obs.bodySha256) {
+      violations.push(`${s.slot}: bodySha256 mismatch across models for ${baseKey}`);
+    }
+
+    // Identical task MUST have identical contentsSha256 across both envelopes and models!
+    if (!contentsByTask.has(s.taskKey)) contentsByTask.set(s.taskKey, obs.contentsSha256);
+    else if (contentsByTask.get(s.taskKey) !== obs.contentsSha256) {
+      violations.push(`${s.slot}: contentsSha256 mismatch across envelopes/models for ${s.taskKey}`);
+    }
+  }
+
+  checkBalance('MODEL', byModel);
+  checkBalance('ENVELOPE', byEnvelope);
+  checkBalance('TASK', byTask);
+
+  // Confirm 2x2 factorial completeness: all 4 (envelope x model) cells x 2 tasks x 2 reps = 16, plus 4 neutral = 20
+  const marrowlineSlots = assembledSlots.filter((x) => x.slotSpec.slotClass === 'MARROWLINE_2X2_CELL');
+  const neutralSlots = assembledSlots.filter((x) => x.slotSpec.slotClass === 'NEUTRAL_CREATIVE_CAPABILITY_CONTROL');
+  if (marrowlineSlots.length !== 16) violations.push(`MARROWLINE_SLOT_COUNT=${marrowlineSlots.length} !== 16`);
+  if (neutralSlots.length !== 4) violations.push(`NEUTRAL_SLOT_COUNT=${neutralSlots.length} !== 4`);
+
+  return Object.freeze({
+    ok: violations.length === 0,
+    checkedSlots: assembledSlots.length,
+    marrowlineSlots: marrowlineSlots.length,
+    neutralSlots: neutralSlots.length,
+    palindromicMeanSlotIndex: 10.5,
+    violations: Object.freeze(violations)
+  });
+}
+
+export async function buildOption1PreflightReport({
+  profileId = DEFAULT_DESIGN_PROFILE,
+  sourceHeadSha = getGitHeadSha()
+} = {}) {
+  const profile = DESIGN_PROFILES[profileId];
+  if (!profile) throw new Error(`UNKNOWN_OPTION1_DESIGN_PROFILE: ${profileId}`);
+
+  const schedule = buildOption1Schedule(profileId);
+  const assembled = [];
+  for (const s of schedule) {
+    assembled.push(await buildOption1SlotRequest(s));
+  }
+  const equivalence = assertOption1RequestEquivalence(assembled, { profileId });
+
+  return {
+    schema: 'td613.marrowline.option1-20slot-preflight/v1.0',
+    generated_at_utc: new Date().toISOString(),
+    study_id: STUDY_ID,
+    study_class: STUDY_CLASS,
+    execution_mode: 'DRY_RUN_PREFLIGHT_ONLY_ZERO_NETWORK',
+    live_execution_authorized: false,
+    paid_generation_calls_executed: 0,
+    source_head_sha: sourceHeadSha,
+    stacked_on_stage0_pr1766_sha: STAGE0_PR1766_COMMIT,
+    immutable_q1_evidence_sha: Q1_EVIDENCE_COMMIT,
+    q1_operator_artistic_verdict: 'ALL_SIX_COMPLETED_RETURNS_REJECTED_BEFORE_UNBLINDING',
+    q1_unblinding_key_opened: false,
+    q1_backfill_permitted: false,
+    q2_status: 'HELD',
+    experiment_b_status: 'CLOSED',
+    merge_and_deploy_authority: false,
+    human_artistic_closure: 'RESERVED',
+    model_identity_gate: {
+      amari_rule1_verdict: 'MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8',
+      quiet_substitution_permitted: false,
+      active_staged_profile: profile.id,
+      active_staged_profile_meta: profile,
+      blocked_historical_3_7_profile: DESIGN_PROFILES.BLOCKED_HISTORICAL_3_7,
+      catalog_receipt_file: 'OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json'
+    },
+    financial_and_token_policy: {
+      dollar_spending_ceiling: 'NONE',
+      aggregate_token_budget_ceiling: 'NONE',
+      operator_authority_reference: 'GitHub Review #6007792790 + Option 1 Preflight Authorization',
+      sampling_design_bound: `${HARD_MAX_CALLS} registered first-return slots (16 Marrowline 2x2 factorial + 4 Oct 15 Task D neutral creative controls), 1 call/slot, 0 retries, 0 fallbacks, 0 repairs, 0 morphology candidate election`,
+      per_response_profile: MATCHED_OPTION1_GENERATION_CONFIG,
+      generation_config_sha256: EXPECTED_GENERATION_CONFIG_SHA256
+    },
+    causal_limits_summary: {
+      composite_whole_envelope_warning: 'CURRENT_HYBRID_A vs LITERAL_OCT02_H2 tests a composite full envelope (dramaturgy, layer order, prosody phrasing, historical Aperture task-intent framing, and cue wording), NOT a unique paragraph cause.',
+      t1_aperture_framing_difference: 'T1_BLUE_ORANGE_WEATHER carries OPEN_FIELD_CREATIVE_SYNTHESIS/CREATIVE in CURRENT_HYBRID_A (90421826b7c0) vs historical RUNTIME_DIAGNOSIS/TECHNICAL_RUNTIME in LITERAL_OCT02_H2 (b3f4192caf74); T2_FORENSIC carries matched REQUESTED_SYNTHESIS/GENERAL in both.',
+      finite_screen_ceiling: 'n=2 replicates/cell is a finite capability/discrimination screen, never conclusive proof of a stochastic causal mechanism; HTTP 503 or incomplete cells reduce inference and are never backfilled from Q1.'
+    },
+    request_equivalence_verified: equivalence,
+    slot_schedule: assembled.map((a) => ({
+      slot: a.slotSpec.slot,
+      slotIndex: a.slotSpec.slotIndex,
+      block: a.slotSpec.block,
+      replicate: a.slotSpec.replicate,
+      cellId: a.slotSpec.cellId,
+      slotClass: a.slotSpec.slotClass,
+      envelope: a.slotSpec.envelope,
+      model: a.slotSpec.model,
+      taskKey: a.slotSpec.taskKey,
+      taskOrigin: a.taskOrigin,
+      realizationClass: a.realizationClass,
+      sourceProvenance: a.sourceProvenance,
+      upstreamAperture: a.upstreamAperture,
+      generationConfig: a.request.generationConfig,
+      digests: a.wire.observation
+    }))
+  };
+}
+
+export function generateBlindedReviewPacket(results = [], seedSalt = STUDY_ID) {
+  // Deterministically permute eligible completed Marrowline specimens separately from neutral controls
+  const score = (slot) => sha256Text(`${seedSalt}::${slot}`);
+  const marrowline = results
+    .filter((r) => r.slotClass === 'MARROWLINE_2X2_CELL' && r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP)
+    .sort((a, b) => score(a.slot).localeCompare(score(b.slot)));
+  const neutral = results
+    .filter((r) => r.slotClass === 'NEUTRAL_CREATIVE_CAPABILITY_CONTROL' && r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP)
+    .sort((a, b) => score(a.slot).localeCompare(score(b.slot)));
+
+  const blindedMarrowline = marrowline.map((r, i) => ({
+    blindId: `OPT1_M_${String(i + 1).padStart(2, '0')}`,
+    taskKey: r.taskKey,
+    rawTextSha256: r.rawTextSha256,
+    rawTextUtf8Bytes: r.rawTextUtf8Bytes
+  }));
+  const blindedNeutral = neutral.map((r, i) => ({
+    blindId: `OPT1_N_${String(i + 1).padStart(2, '0')}`,
+    taskKey: r.taskKey,
+    rawTextSha256: r.rawTextSha256,
+    rawTextUtf8Bytes: r.rawTextUtf8Bytes
+  }));
+  const unblindingKey = {
+    schema: 'td613.marrowline.option1-unblinding-key/v1.0',
+    sealed_until_operator_literary_adjudication: true,
+    marrowline: marrowline.map((r, i) => ({
+      blindId: `OPT1_M_${String(i + 1).padStart(2, '0')}`,
+      slot: r.slot,
+      envelope: r.envelope,
+      modelRequested: r.modelRequested,
+      modelVersionObserved: r.modelVersion,
+      taskKey: r.taskKey,
+      replicate: r.replicate
+    })),
+    neutral: neutral.map((r, i) => ({
+      blindId: `OPT1_N_${String(i + 1).padStart(2, '0')}`,
+      slot: r.slot,
+      modelRequested: r.modelRequested,
+      modelVersionObserved: r.modelVersion,
+      replicate: r.replicate
+    }))
+  };
+
+  return {
+    blindedPacket: {
+      schema: 'td613.marrowline.option1-blinded-review-packet/v1.0',
+      study_id: STUDY_ID,
+      operator_authority: 'Tawanna C. Miller (HUMAN_ARTISTIC_CLOSURE_RESERVED)',
+      separate_axes_notice: 'Native typographic variation, literary/relational merit, and retired candidate election are kept strictly separate.',
+      marrowline_specimens: blindedMarrowline,
+      neutral_control_specimens: blindedNeutral
+    },
+    unblindingKey
+  };
+}
+
+export async function executeOption1Run({
+  profileId = DEFAULT_DESIGN_PROFILE,
+  sourceHeadSha,
+  operatorAuthSha,
+  apiKey,
+  fetchImpl = globalThis.fetch,
+  outDir = path.join(OUT_DIR, 'live-acquisition'),
+  maxCalls = HARD_MAX_CALLS
+} = {}) {
+  const profile = DESIGN_PROFILES[profileId];
+  if (!profile) {
+    const err = new Error(`REFUSED_LIVE_EXECUTION: unknown design profile ${profileId}`);
+    err.code = 'REFUSED_LIVE_EXECUTION';
+    throw err;
+  }
+  if (!profile.liveExecutionPermitted) {
+    const err = new Error(`REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8: ${profile.blockingReason}`);
+    err.code = 'REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8';
+    throw err;
+  }
+  if (!/^[0-9a-f]{40}$/i.test(String(sourceHeadSha || '')) || !/^[0-9a-f]{40}$/i.test(String(operatorAuthSha || ''))) {
+    const err = new Error('REFUSED_LIVE_EXECUTION: exact 40-hex --operator-auth-sha matching source HEAD is mandatory.');
+    err.code = 'REFUSED_LIVE_EXECUTION';
+    throw err;
+  }
+  if (String(sourceHeadSha).toLowerCase() !== String(operatorAuthSha).toLowerCase()) {
+    const err = new Error(`REFUSED_LIVE_EXECUTION: --operator-auth-sha (${operatorAuthSha}) !== source HEAD (${sourceHeadSha}).`);
+    err.code = 'REFUSED_LIVE_EXECUTION';
+    throw err;
+  }
+  if (!apiKey) {
+    const err = new Error('REFUSED_LIVE_EXECUTION: missing GEMINI_API_KEY / GOOGLE_API_KEY.');
+    err.code = 'REFUSED_LIVE_EXECUTION';
+    throw err;
+  }
+  if (!Number.isInteger(maxCalls) || maxCalls < 1 || maxCalls > HARD_MAX_CALLS) {
+    const err = new Error(`REFUSED_LIVE_EXECUTION: maxCalls=${maxCalls} must be integer in [1, ${HARD_MAX_CALLS}].`);
+    err.code = 'REFUSED_LIVE_EXECUTION';
+    throw err;
+  }
+
+  const schedule = buildOption1Schedule(profileId);
+  const assembled = [];
+  for (const s of schedule) {
+    assembled.push(await buildOption1SlotRequest(s));
+  }
+  const eq = assertOption1RequestEquivalence(assembled, { profileId });
+  if (!eq.ok) {
+    const err = new Error(`PREFLIGHT_DRIFT_HALT: ${eq.violations.join('; ')}`);
+    err.code = 'PREFLIGHT_DRIFT_HALT';
+    throw err;
+  }
+
+  fs.mkdirSync(outDir, { recursive: true });
+  const rawSseDir = path.join(outDir, 'raw-sse');
+  const rawTextDir = path.join(outDir, 'raw-text');
+  fs.mkdirSync(rawSseDir, { recursive: true });
+  fs.mkdirSync(rawTextDir, { recursive: true });
+
+  const startedRunAt = new Date().toISOString();
+  const results = [];
+  let callsExecuted = 0;
+  let stopTriggered = null;
+  let terminalError = null;
+  let status = 'IN_PROGRESS';
+
+  const receiptPath = path.join(outDir, 'OPTION1_LIVE_ACQUISITION_RECEIPT.json');
+  const buildSnapshot = () => ({
+    schema: 'td613.marrowline.option1-live-acquisition-receipt/v1.0',
+    study_id: STUDY_ID,
+    study_class: STUDY_CLASS,
+    design_profile: profileId,
+    source_head_sha: sourceHeadSha,
+    operator_auth_sha: operatorAuthSha,
+    started_at_utc: startedRunAt,
+    updated_at_utc: new Date().toISOString(),
+    status,
+    stop_triggered: stopTriggered,
+    terminal_error: terminalError,
+    calls_planned: Math.min(maxCalls, assembled.length),
+    calls_executed: callsExecuted,
+    retry_count: 0,
+    fallback_seats: [],
+    structural_repair: false,
+    morphology_chase: false,
+    multi_seat_morphology_selector: false,
+    q1_backfill_permitted: false,
+    financial_ceiling: 'NONE',
+    aggregate_token_ceiling: 'NONE',
+    summary: {
+      completed_stop: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP).length,
+      transport_failure: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.TRANSPORT_FAILURE).length,
+      http_503_unavailable: results.filter((r) => r.httpStatus === 503).length,
+      http_400_config_rejected: results.filter((r) => r.httpStatus === 400).length,
+      policy_terminated: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.POLICY_TERMINATED).length,
+      incomplete_nonstop: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.INCOMPLETE_NONSTOP).length,
+      unwitnessed_completion: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.UNWITNESSED_COMPLETION).length,
+      malformed_sse: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.MALFORMED_OR_UNRECONSTRUCTABLE_SSE).length,
+      model_identity_mismatch: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.MODEL_IDENTITY_MISMATCH).length
+    },
+    slots: results
+  });
+  const persist = () => fs.writeFileSync(receiptPath, JSON.stringify(buildSnapshot(), null, 2) + '\n', 'utf8');
+
+  try {
+    for (let i = 0; i < Math.min(maxCalls, assembled.length); i++) {
+      const item = assembled[i];
+      const s = item.slotSpec;
+      const startedAt = new Date().toISOString();
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(s.model)}:streamGenerateContent?alt=sse`;
+      callsExecuted++;
+
+      const resp = await fetchImpl(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'x-goog-api-key': apiKey
+        },
+        body: item.wire.body
+      });
+
+      const rawBuf = Buffer.from(await resp.arrayBuffer());
+      const rawSsePath = path.join(rawSseDir, `${s.slot}.sse`);
+      fs.writeFileSync(rawSsePath, rawBuf);
+      const rawSseSha256 = sha256Buf(rawBuf);
+
+      // Fail-closed HTTP 400 config rejection guard (NEVER silently downgrade thinkingLevel!)
+      if (resp.status === 400) {
+        results.push({
+          slot: s.slot,
+          slotIndex: s.slotIndex,
+          block: s.block,
+          replicate: s.replicate,
+          slotClass: s.slotClass,
+          envelope: s.envelope,
+          taskKey: s.taskKey,
+          modelRequested: s.model,
+          modelVersion: null,
+          httpStatus: 400,
+          outcomeClass: 'CONFIG_REJECTED_HTTP_400',
+          eligibleArtisticSpecimen: false,
+          classificationReason: 'HTTP_400_CONFIG_OR_THINKING_LEVEL_REJECTED_ZERO_SILENT_DOWNGRADE',
+          requestDigests: item.wire.observation,
+          rawSsePath: path.relative(outDir, rawSsePath).replace(/\\/g, '/'),
+          rawSseSha256,
+          rawSseBytes: rawBuf.length,
+          startedAt,
+          completedAt: new Date().toISOString()
+        });
+        stopTriggered = 'STOP_HTTP_400_CONFIG_REJECTED';
+        persist();
+        break;
+      }
+
+      // Preserve non-200 transport errors (e.g. 503, 429) verbatim with zero retries
+      if (!resp.ok) {
+        results.push({
+          slot: s.slot,
+          slotIndex: s.slotIndex,
+          block: s.block,
+          replicate: s.replicate,
+          slotClass: s.slotClass,
+          envelope: s.envelope,
+          taskKey: s.taskKey,
+          modelRequested: s.model,
+          modelVersion: null,
+          httpStatus: resp.status,
+          outcomeClass: OUTCOME_CLASSES.TRANSPORT_FAILURE,
+          eligibleArtisticSpecimen: false,
+          classificationReason: `UNRETRIED_HTTP_${resp.status}`,
+          requestDigests: item.wire.observation,
+          rawSsePath: path.relative(outDir, rawSsePath).replace(/\\/g, '/'),
+          rawSseSha256,
+          rawSseBytes: rawBuf.length,
+          startedAt,
+          completedAt: new Date().toISOString()
+        });
+        persist();
+        continue;
+      }
+
+      const sseIntegrity = await verifySseIntegrity(rawBuf);
+      const canonicalPayload = sseIntegrity.canonicalMergedPayload || {};
+      const canonicalText = sseIntegrity.canonicalText || '';
+      const rawTextPath = path.join(rawTextDir, `${s.slot}.txt`);
+      fs.writeFileSync(rawTextPath, canonicalText, 'utf8');
+      const rawTextSha256 = sha256Text(canonicalText);
+
+      const observed = observeGeminiOutput(canonicalPayload, s.model, {
+        fallback: false,
+        submittedGenerationConfig: item.request.generationConfig,
+        submittedRequestObservation: item.wire.observation
+      });
+      const totalParseErrors = sseIntegrity.canonicalParseErrors
+        + sseIntegrity.independentParseErrors
+        + sseIntegrity.independentFramingErrors
+        + sseIntegrity.independentStreamProtocolErrors;
+      const completion = observeMarrowlineCompletion(canonicalText, observed, {
+        streamed: true,
+        parseErrors: totalParseErrors,
+        creative: item.upstreamAperture.discourseMode === 'CREATIVE'
+      });
+
+      // Enforce per-slot exact modelVersion matching (detects silent 3.7->3.8 or 3.6->3.8 aliasing!)
+      const outcome = classifySlotOutcome({
+        httpStatus: resp.status,
+        sseIntegrity,
+        observedOutput: observed,
+        completionState: completion,
+        pinnedModel: s.model
+      });
+
+      const wholeTextMorphology = observeWholeTextUnicodeMorphology(canonicalText);
+      let marrowlineMetrics = null;
+      if (s.slotClass === 'MARROWLINE_2X2_CELL') {
+        const relayParsed = canonicalText ? parseRelayEnvelope(canonicalText) : null;
+        const botsText = relayParsed?.bots || relayParsed?.tauricDianaBots || '';
+        marrowlineMetrics = {
+          authorshipObservation: observeMarrowlineAuthorship(canonicalText, 'first-provider-return'),
+          botsProsodyDistribution: observeBotsProsodyDistribution(botsText)
+        };
+      }
+
+      results.push({
+        slot: s.slot,
+        slotIndex: s.slotIndex,
+        block: s.block,
+        replicate: s.replicate,
+        slotClass: s.slotClass,
+        envelope: s.envelope,
+        taskKey: s.taskKey,
+        modelRequested: s.model,
+        modelVersion: observed.modelVersion || null,
+        modelIdentityCheck: isExpectedPinnedModelVersion(observed.modelVersion, s.model),
+        httpStatus: resp.status,
+        finishReason: observed.finishReason || null,
+        finishMessage: observed.finishMessage || null,
+        promptBlockReason: observed.promptBlockReason || null,
+        usageMetadata: observed.usage,
+        outcomeClass: outcome.outcomeClass,
+        eligibleArtisticSpecimen: outcome.eligibleArtisticSpecimen,
+        classificationReason: outcome.reason,
+        requestDigests: item.wire.observation,
+        rawSsePath: path.relative(outDir, rawSsePath).replace(/\\/g, '/'),
+        rawSseSha256,
+        rawSseBytes: rawBuf.length,
+        rawTextPath: path.relative(outDir, rawTextPath).replace(/\\/g, '/'),
+        rawTextSha256,
+        rawTextUtf8Bytes: Buffer.byteLength(canonicalText, 'utf8'),
+        sseIntegrity: {
+          ok: sseIntegrity.ok,
+          failureCode: sseIntegrity.failureCode,
+          utf8Valid: sseIntegrity.utf8Valid,
+          textEquivalent: sseIntegrity.textEquivalent,
+          eventCountMatch: sseIntegrity.eventCountMatch,
+          finishReasonEquivalent: sseIntegrity.finishReasonEquivalent,
+          modelVersionEquivalent: sseIntegrity.modelVersionEquivalent,
+          canonicalTextSha256: sseIntegrity.canonicalTextSha256,
+          independentTextSha256: sseIntegrity.independentTextSha256,
+          malformedReasons: sseIntegrity.malformedReasons,
+          mismatchReasons: sseIntegrity.mismatchReasons
+        },
+        wholeTextUnicodeMorphology: wholeTextMorphology,
+        marrowlineMetrics,
+        startedAt,
+        completedAt: new Date().toISOString()
+      });
+
+      if (outcome.stopCode) {
+        stopTriggered = outcome.stopCode;
+        persist();
+        break;
+      }
+      persist();
+    }
+
+    status = stopTriggered ? 'HALTED_BY_STOP_RULE' : 'COMPLETED_REGISTERED_SLOTS';
+    const { blindedPacket, unblindingKey } = generateBlindedReviewPacket(results);
+    fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_REVIEW_PACKET.json'), JSON.stringify(blindedPacket, null, 2) + '\n', 'utf8');
+    fs.writeFileSync(path.join(outDir, 'OPTION1_SEALED_UNBLINDING_KEY.json'), JSON.stringify(unblindingKey, null, 2) + '\n', 'utf8');
+  } catch (err) {
+    terminalError = err?.message || String(err);
+    if (!stopTriggered) stopTriggered = 'FATAL_HARNESS_EXCEPTION';
+    status = 'FAILED_WITH_TERMINAL_ERROR';
+    throw err;
+  } finally {
+    persist();
+  }
+
+  return buildSnapshot();
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const executeLive = args.includes('--execute-live');
+  const profileId = args.find((a) => a.startsWith('--design-profile='))?.split('=')[1] || DEFAULT_DESIGN_PROFILE;
+  const authSha = args.find((a) => a.startsWith('--operator-auth-sha='))?.split('=')[1] || null;
+  const maxCalls = Number(args.find((a) => a.startsWith('--max-calls='))?.split('=')[1] || HARD_MAX_CALLS);
+
+  if (!executeLive) {
+    // Fail-closed zero-network lock during dry-run preflight
+    globalThis.fetch = async (u) => {
+      throw new Error(`ZERO_NETWORK_VIOLATION_IN_OPTION1_DRY_RUN: attempted fetch(${String(u)})`);
+    };
+    const report = await buildOption1PreflightReport({ profileId });
+    const outPath = path.join(OUT_DIR, 'OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json');
+    fs.writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n', 'utf8');
+    console.log(JSON.stringify({
+      ok: report.request_equivalence_verified.ok,
+      mode: report.execution_mode,
+      profile: profileId,
+      paid_generation_calls_executed: 0,
+      source_head_sha: report.source_head_sha,
+      slots: report.slot_schedule.length,
+      marrowline_slots: report.request_equivalence_verified.marrowlineSlots,
+      neutral_slots: report.request_equivalence_verified.neutralSlots,
+      palindromic_mean_slot_index: report.request_equivalence_verified.palindromicMeanSlotIndex,
+      model_identity_gate: report.model_identity_gate.amari_rule1_verdict,
+      output_written: path.relative(REPO_ROOT, outPath).replace(/\\/g, '/')
+    }, null, 2));
+    if (!report.request_equivalence_verified.ok) process.exit(1);
+    return;
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  try {
+    const receipt = await executeOption1Run({
+      profileId,
+      sourceHeadSha: getGitHeadSha(),
+      operatorAuthSha: authSha,
+      apiKey,
+      maxCalls
+    });
+    console.log(JSON.stringify({
+      ok: receipt.status === 'COMPLETED_REGISTERED_SLOTS',
+      status: receipt.status,
+      calls_executed: receipt.calls_executed,
+      stop_triggered: receipt.stop_triggered,
+      summary: receipt.summary
+    }, null, 2));
+    if (receipt.status !== 'COMPLETED_REGISTERED_SLOTS') process.exit(3);
+  } catch (err) {
+    if (err?.code === 'REFUSED_LIVE_EXECUTION' || err?.code === 'REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8') {
+      console.error(err.message);
+      process.exit(2);
+    }
+    throw err;
+  }
+}
+
+const isCliEntry = process.argv[1] && path.resolve(process.argv[1]) === __filename;
+if (isCliEntry) {
+  main().catch((err) => {
+    console.error('OPTION1_HARNESS_ERROR:', err);
+    process.exit(1);
+  });
+}
