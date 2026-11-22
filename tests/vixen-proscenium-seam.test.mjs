@@ -42,7 +42,7 @@ test('Human operator route owns presentation history, diagnostics and machine-bo
   assert.equal(doc.querySelectorAll('#'+id).length,1);
  }
  assert(op.querySelector('#vixOperatorPodium'));
- assert(op.querySelector('a[href="./reference/podium/manifest.json"]'));
+ assert(op.querySelector('a[href="./vix-cyb/llms.txt"]'),'Human Podium should link to source-bound AI research guidance, not advertise host machine adapters');
  assert(op.querySelector('button[data-action="inspector"]'));
  assert.match(op.textContent,/human approval|human authorization/i);
  assert(source.includes("'reference', 'operator'"),'Operator hash must be included in routing whitelist');
