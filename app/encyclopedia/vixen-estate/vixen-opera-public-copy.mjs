@@ -15,7 +15,7 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bEmergence\s+HQ\b/gi,'internal research office'],
   [/\bPaul['’]s\b/gi,"the outside researcher's"],
   [/\bPaul\b/g,'outside researcher'],
-  [/\bAIX\b/g,'AI research conductor'],
+  [/\bAIX\b/gi,'AI research conductor'],
   [/\b(?:LAB_RC-\d{2}|LAB_TCC-\d{2})\b/g,'source-scoped instrument'],
   [/\bEMSTD613\s+Atelier\b/gi,'Vixen manuscript research'],
   [/\bSRC\s+Atelier\b/gi,'documentary evidence research'],
