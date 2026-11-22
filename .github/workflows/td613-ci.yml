@@ -40,10 +40,10 @@ jobs:
     name: Vixen source-bound engineering qualification
     if: >-
       (github.event_name == 'pull_request' &&
-       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-'))) ||
+       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-') || startsWith(github.head_ref, 'fix/vixen-prehydration-redpens-'))) ||
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification')
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 85
     steps:
       - uses: actions/checkout@v4
         with:
