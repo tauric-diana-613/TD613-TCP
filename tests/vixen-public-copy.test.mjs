@@ -21,6 +21,23 @@ test('presentation aliases explain internal names without changing machine ident
   assert.equal(translatePublicCopy('OPERAHOUSE ≠ OPERA ≠ PERFORMER'),'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
 });
 
+test('Program codenames and private researcher aliases stay out of public copy',()=>{
+ const aliases='Experiment A / Experiment B / Emergence HQ / AIX / Paul / Atelier / EMSTD613 / SRC / SignalRupture / Wendbine';
+ const visible=translatePublicCopy(aliases);
+ assert.doesNotMatch(visible,/\\b(?:Experiment[- ]A|Experiment[- ]B|Emergence\\s+HQ|AIX|Paul|Atelier|EMSTD613|SRC|SignalRupture|Wendbine)\\b/i);
+ assert.equal(translatePublicCopy('OPERAHOUSE ≠ OPERA ≠ PERFORMER'),'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
+ assert.equal(translatePublicCopy('The Architecture of Control'),'The Architecture of Control');
+});
+
+test('Human inspector no longer exposes host-private diagnostic benches',()=>{
+ const ix=html.slice(html.indexOf('function renderInspector('),html.indexOf('// Reference & Utility Button Binders'));
+ assert(!ix.includes('ENGINE_DIAGNOSTIC_BENCH'),'engineering-only digest bench escaped into public inspector');
+ assert(!ix.includes('A-PFR0.2 Engine Track'),'host engine inventory escaped into public inspector');
+ assert(!ix.includes('TD613_PODIUM_OPERATOR_DIRECT=1'),'private CLI attestation escaped into visitor inspector');
+ assert(ix.includes('VERIFY A RECORDED WORK'));
+ assert(ix.includes('RESEARCH HANDOFF · ORIGINAL WORKS FIRST'));
+});
+
 test('DOM language boundary covers initial chrome and asynchronous user-facing messages',async()=>{
  const dom=new JSDOM('<!DOCTYPE html><body><nav title="SRC methods"><button aria-label="Wendbine Atelier">SignalRupture scored by FADT</button></nav><script type="application/json" id="data">{"name":"EMSTD613"}</script><div id="dynamic"></div></body>');
  const root=dom.window.document.body;
