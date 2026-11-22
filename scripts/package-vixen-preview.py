@@ -309,7 +309,7 @@ human custody, empirical surplus, or automatic approval.
 ## Scope and limits
 
 Source edition 1.4 is read-only. The separately developed native
-Universal Atelier SQLite backend is NOT wired into production here.
+Universal reference SQLite receiver is NOT wired into production here.
 Authorized preview companion bodies remain readable; missing original binaries
 stay missing. No source mutation, scientific promotion, protected flight or production release.
 The browser witness verifies source bytes and distinct custody loci, not
