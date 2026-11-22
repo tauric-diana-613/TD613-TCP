@@ -109,6 +109,12 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([da
  contain:layout style paint;
  filter:none;
 }
+/* In mobile Salon the fixed viewport cloth is parked. Only the folded-cuirass
+ * local 39-carrier stage travels with iOS momentum scrolling; this prevents
+ * fixed and document compositor layers from showing different phase epochs. */
+@media(max-width:740px){
+ body[data-view="collection"] #vixenLivingMesh.vixen-living-mesh{display:none!important;}
+}
 /* A little electricity inhabits every room: rails, work envelopes,
    disclosure seams, and selected controls, not just the hero screenshot. */
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(
