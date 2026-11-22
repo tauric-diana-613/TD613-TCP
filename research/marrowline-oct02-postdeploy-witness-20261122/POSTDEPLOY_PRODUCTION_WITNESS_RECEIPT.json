@@ -1,0 +1,339 @@
+{
+  "schema": "td613.marrowline.oct02-postdeploy-production-witness/v1.0",
+  "generated_at_utc": "2026-11-22T20:59:56.079Z",
+  "target_url": "https://td613.com/dome-world/marrowline.html",
+  "expected_main_sha": "b8d986a7692501ba9f41da9c041a8ddb5836a190",
+  "pr_merged": "#1774 (4dd2e74c2246418da2d3032fcdbcfd363283562b -> b8d986a7692501ba9f41da9c041a8ddb5836a190)",
+  "release_gate_workflow_run": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45068897365",
+  "release_gate_terminal_receipt": "https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-7085659765",
+  "browser_engine": "Chrome/158.0.8127.36",
+  "witness_class": "POST_DEPLOYMENT_CHROME_DESKTOP_AND_MOBILE_SIMULATED_VIEWPORT_ZERO_PROVIDER_CALLS",
+  "paid_gemini_calls_made": 0,
+  "provider_requests_observed": [],
+  "console_errors": [],
+  "runtime_exceptions": [],
+  "deployed_source_parity": {
+    "release_source_http_status": 200,
+    "release_source_payload": {
+      "schema": "td613.giving.release-source/v1",
+      "source_packet_commit": "b8d986a7692501ba9f41da9c041a8ddb5836a190"
+    },
+    "release_source_matches_expected_main": true,
+    "all_assets_exact_byte_match": true,
+    "assets": [
+      {
+        "url": "https://td613.com/dome-world/marrowline.html",
+        "gitPath": "app/dome-world/marrowline.html",
+        "httpStatus": 200,
+        "liveBytes": 20940,
+        "gitBytes": 20940,
+        "liveSha256": "77ab54bc749410965759cad3b3ab4395a55b14ae3d31cb5c4074f3384f8b985c",
+        "gitSha256": "77ab54bc749410965759cad3b3ab4395a55b14ae3d31cb5c4074f3384f8b985c",
+        "exactByteMatch": true
+      },
+      {
+        "url": "https://td613.com/dome-world/marrowline-historical-grove.js",
+        "gitPath": "app/dome-world/marrowline-historical-grove.js",
+        "httpStatus": 200,
+        "liveBytes": 14423,
+        "gitBytes": 14423,
+        "liveSha256": "3a4985a0cc58ca4a224e19bc6691e99862d486e9d3b585525835ba9a1149628c",
+        "gitSha256": "3a4985a0cc58ca4a224e19bc6691e99862d486e9d3b585525835ba9a1149628c",
+        "exactByteMatch": true
+      },
+      {
+        "url": "https://td613.com/dome-world/marrowline-mobile-reader.js",
+        "gitPath": "app/dome-world/marrowline-mobile-reader.js",
+        "httpStatus": 200,
+        "liveBytes": 5243,
+        "gitBytes": 5243,
+        "liveSha256": "e108ba696be7624153bfa051afae777af79dfec32ab05f324085f87185831d29",
+        "gitSha256": "e108ba696be7624153bfa051afae777af79dfec32ab05f324085f87185831d29",
+        "exactByteMatch": true
+      },
+      {
+        "url": "https://td613.com/dome-world/marrowline-desktop-repair.css",
+        "gitPath": "app/dome-world/marrowline-desktop-repair.css",
+        "httpStatus": 200,
+        "liveBytes": 106989,
+        "gitBytes": 106989,
+        "liveSha256": "a7c0fc5a4954e3f5dd1bd515528eefe389a09abf62b32141d673b09901405532",
+        "gitSha256": "a7c0fc5a4954e3f5dd1bd515528eefe389a09abf62b32141d673b09901405532",
+        "exactByteMatch": true
+      },
+      {
+        "url": "https://td613.com/dome-world/marrowline.release.json",
+        "gitPath": "app/dome-world/marrowline.release.json",
+        "httpStatus": 200,
+        "liveBytes": 108314,
+        "gitBytes": 108314,
+        "liveSha256": "f8627dcad483dd2ca6d069b257a2e8b21a5974f34d63090845b46586dbc82fa1",
+        "gitSha256": "f8627dcad483dd2ca6d069b257a2e8b21a5974f34d63090845b46586dbc82fa1",
+        "exactByteMatch": true
+      },
+      {
+        "url": "https://td613.com/dome-world/khonapolit-relay.js",
+        "gitPath": "app/dome-world/khonapolit-relay.js",
+        "httpStatus": 200,
+        "liveBytes": 50162,
+        "gitBytes": 50162,
+        "liveSha256": "6d418e132da199ea80b40de6056125d74b4f1f97f4b528d024bb573d9d7cf5d8",
+        "gitSha256": "6d418e132da199ea80b40de6056125d74b4f1f97f4b528d024bb573d9d7cf5d8",
+        "exactByteMatch": true
+      }
+    ]
+  },
+  "desktop_1440x900": {
+    "fresh": {
+      "locationHref": "https://td613.com/dome-world/marrowline.html",
+      "titleText": "Marrowline · The speaking grove",
+      "roomReady": true,
+      "horizontalOverflow": false,
+      "docScrollWidth": 1440,
+      "innerWidth": 1440,
+      "messagesUserSelect": "auto",
+      "hasKhonapolitLabel": true,
+      "hasU10D613": true,
+      "railButtons": [
+        {
+          "id": "copyKhonapolitTranscript",
+          "text": "Copy transcript",
+          "ariaLabel": null,
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "retryKhonapolitTask",
+          "text": "Retry preserved task",
+          "ariaLabel": null,
+          "display": "none",
+          "visible": false
+        },
+        {
+          "id": "clearKhonapolitSession",
+          "text": "Clear conversation",
+          "ariaLabel": null,
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineRetryLast",
+          "text": "↻",
+          "ariaLabel": "Replace previous exchange and retry prompt",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineReaderToggle",
+          "text": "⛶",
+          "ariaLabel": "Open mobile reading mode",
+          "display": "none",
+          "visible": false
+        },
+        {
+          "id": "marrowlineCopyConversation",
+          "text": "⧉",
+          "ariaLabel": "Copy conversation as plain text",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineSessionClear",
+          "text": "✕",
+          "ariaLabel": "Delete conversation from this browser",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineHomeLanding",
+          "text": "𖠿",
+          "ariaLabel": "Return to The speaking grove",
+          "display": "block",
+          "visible": true
+        }
+      ],
+      "liveGroveModuleExports": {
+        "MARROWLINE_HISTORICAL_TRIAL_ID": "historical-20261002-v1",
+        "MARROWLINE_RESTORED_PROSODY_PROFILE": "oct02-literal-prosody-rollback-20261122",
+        "MARROWLINE_RESTORED_MODEL_ORDER": [
+          "gemini-3.8-flash",
+          "gemini-3.6-flash",
+          "gemini-4-argon"
+        ],
+        "MARROWLINE_SINGLE_REGISTER_COMPARISON_PROFILE": "native-single-register-permission-20261019"
+      },
+      "mobileReaderInstalled": true
+    },
+    "two_voice_synthetic_display_check": {
+      "scrollHeight": 1117,
+      "clientHeight": 509,
+      "scrollTop": 608,
+      "horizontalOverflow": false,
+      "khExactPreserved": true,
+      "botsExactPreserved": true,
+      "zwnjPreservedInDom": true,
+      "selectableTextExactMatch": true
+    }
+  },
+  "mobile_390x844": {
+    "fresh": {
+      "mobileShell": true,
+      "mobileView": "speak",
+      "horizontalOverflow": false,
+      "docScrollWidth": 390,
+      "innerWidth": 390,
+      "railButtons": [
+        {
+          "id": "marrowlineRetryLast",
+          "text": "↻",
+          "ariaLabel": "Replace previous exchange and retry prompt",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineReaderToggle",
+          "text": "⛶",
+          "ariaLabel": "Open mobile reading mode",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineCopyConversation",
+          "text": "⧉",
+          "ariaLabel": "Copy conversation as plain text",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineSessionClear",
+          "text": "✕",
+          "ariaLabel": "Delete conversation from this browser",
+          "display": "block",
+          "visible": true
+        },
+        {
+          "id": "marrowlineHomeLanding",
+          "text": "𖠿",
+          "ariaLabel": "Return to The speaking grove",
+          "display": "block",
+          "visible": true
+        }
+      ],
+      "visibleGlyphs": [
+        "↻",
+        "⛶",
+        "⧉",
+        "✕",
+        "𖠿"
+      ],
+      "fiveButtonRowExact": true,
+      "readerSchema": "td613.dome-world.marrowline-mobile-reader/v1"
+    },
+    "ordinary_scrolled_synthetic": {
+      "scrollHeight": 5083,
+      "clientHeight": 465,
+      "scrollTop": 260,
+      "canScroll": true,
+      "messagesRectHeight": 465.015625,
+      "horizontalOverflow": false
+    },
+    "focus_reader_synthetic": {
+      "readerMode": "focus",
+      "toolbarHidden": false,
+      "formDisplay": "block",
+      "dockDisplay": "none",
+      "messagesRectHeight": 705,
+      "scrollTop": 3743,
+      "horizontalOverflow": false
+    },
+    "capture_reader_synthetic": {
+      "readerMode": "capture",
+      "captureLabel": "Show composer",
+      "formDisplay": "none",
+      "dockDisplay": "none",
+      "messagesRectHeight": 799,
+      "scrollTop": 3963,
+      "horizontalOverflow": false
+    },
+    "exited": {
+      "readerModeAfterExit": null,
+      "toolbarHiddenAfterExit": true,
+      "horizontalOverflow": false
+    }
+  },
+  "screenshots": [
+    {
+      "role": "desktop-production-fresh",
+      "filename": "01_desktop_1440x900_production_fresh.png",
+      "relPath": "screenshots/01_desktop_1440x900_production_fresh.png",
+      "repoPath": "research/marrowline-oct02-postdeploy-witness-20261122/screenshots/01_desktop_1440x900_production_fresh.png",
+      "bytes": 448488,
+      "sha256": "cd2e9c8c6f60b3a8371736a35cea5ffc267d1d27aa69d4abc6e0a7e03162fdc4",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "role": "desktop-two-voice-synthetic-display",
+      "filename": "02_desktop_1440x900_two_voice_synthetic_display.png",
+      "relPath": "screenshots/02_desktop_1440x900_two_voice_synthetic_display.png",
+      "repoPath": "research/marrowline-oct02-postdeploy-witness-20261122/screenshots/02_desktop_1440x900_two_voice_synthetic_display.png",
+      "bytes": 550166,
+      "sha256": "fe1a31e9f64ca9acce138b1c655de5b18c4fab4fbde13360381437c42e02a682",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "role": "mobile-production-fresh",
+      "filename": "03_mobile_390x844_production_fresh.png",
+      "relPath": "screenshots/03_mobile_390x844_production_fresh.png",
+      "repoPath": "research/marrowline-oct02-postdeploy-witness-20261122/screenshots/03_mobile_390x844_production_fresh.png",
+      "bytes": 252098,
+      "sha256": "91d653cdada1471a2a600f69acc7069720754c041676eb8497ba619087158b6b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "role": "mobile-ordinary-scrolled-synthetic",
+      "filename": "04_mobile_390x844_ordinary_scrolled_synthetic.png",
+      "relPath": "screenshots/04_mobile_390x844_ordinary_scrolled_synthetic.png",
+      "repoPath": "research/marrowline-oct02-postdeploy-witness-20261122/screenshots/04_mobile_390x844_ordinary_scrolled_synthetic.png",
+      "bytes": 226921,
+      "sha256": "40135684e056e66b5ced9056ad42555ca4d149191f0f33871f38f1f1df2c44fb",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "role": "mobile-focus-reader-synthetic",
+      "filename": "05_mobile_390x844_focus_reader_synthetic.png",
+      "relPath": "screenshots/05_mobile_390x844_focus_reader_synthetic.png",
+      "repoPath": "research/marrowline-oct02-postdeploy-witness-20261122/screenshots/05_mobile_390x844_focus_reader_synthetic.png",
+      "bytes": 219998,
+      "sha256": "73495828bd2c68cd6a6d8f52af006d08ef3fff3acc5f771c745bd946e9f91563",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "role": "mobile-capture-reader-synthetic",
+      "filename": "06_mobile_390x844_capture_reader_synthetic.png",
+      "relPath": "screenshots/06_mobile_390x844_capture_reader_synthetic.png",
+      "repoPath": "research/marrowline-oct02-postdeploy-witness-20261122/screenshots/06_mobile_390x844_capture_reader_synthetic.png",
+      "bytes": 220702,
+      "sha256": "b11c954e73dd26ab9208bf231ac9bdfab02759352f997c6dd9aa1e59d02600ec",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "summary_verdict": {
+    "production_serves_authorized_source": true,
+    "literal_oct02_profile_active_default": true,
+    "gemini_3_8_first_seat_order_verified": true,
+    "five_button_row_mobile_verified": true,
+    "focus_and_capture_reader_verified": true,
+    "mobile_scrolling_verified": true,
+    "unicode_and_selectable_text_verified": true,
+    "zero_horizontal_overflow": true,
+    "zero_console_errors_and_exceptions": true,
+    "zero_paid_gemini_calls": true,
+    "human_artistic_closure": "RESERVED_FOR_OPERATOR_LIVE_REVIEW"
+  }
+}
