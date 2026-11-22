@@ -566,7 +566,10 @@ function khonapolitReasoning(model = '', { fallback = false } = {}) {
   };
 }
 
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = true } = {}) {
+// The standard text-only restored Grove re-enters the exact archived October 2
+// instruction body and paragraph order. The Oct 19 softened alternative can
+// still be assembled only through an explicit source-level comparison flag.
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = false } = {}) {
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
   const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
@@ -1257,8 +1260,9 @@ export default async function handler(req, res) {
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { restoredGrove: isHistoricalGrove });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
-  // reorder or suppress the settled human provider frontier. 3.8 remains first;
-  // live Gemini transport decides whether that seat can answer this turn.
+  // reorder or suppress the selected restored source frontier. The October 2
+  // first seat (3.8) is preferred on restored browser turns; provider discovery
+  // and live transport still decide whether that seat can answer this turn.
   const allModels = [...providerModels];
   if (!releaseCanary && clientQuotaCooldown.models.size > 0) {
     res.setHeader('X-TD613-Browser-Cooldown-Policy', 'advisory-telemetry-only');
@@ -1279,7 +1283,7 @@ export default async function handler(req, res) {
     res.__td613GroveTrial = Object.freeze({
       id: MARROWLINE_HISTORICAL_TRIAL_ID,
       source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
-      variant: 'restored-voice-argon-frontier-20261019',
+      variant: 'oct02-literal-prosody-3.8-first-rollback-20261122',
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
