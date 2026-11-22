@@ -1,0 +1,76 @@
+{
+  "schema": "td613.marrowline.q1-provider-catalog-pricing-reference/v2.0",
+  "verified_at_utc": "2026-11-21T19:40:00Z",
+  "paid_generation_calls_used": 0,
+  "catalog_query": {
+    "method": "GET",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/models?pageSize=200",
+    "http_status": 200,
+    "auth_mode": "Local GEMINI_API_KEY in .env (redacted; never logged or committed)",
+    "target_model": {
+      "name": "models/gemini-3.8-flash",
+      "callable": true,
+      "thinking": true,
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    "other_callable_gemini_3_and_4_models_observed": [
+      "models/gemini-3-flash-preview",
+      "models/gemini-3.5-flash",
+      "models/gemini-3.6-flash",
+      "models/gemini-3.7-flash",
+      "models/gemini-3.8-flash",
+      "models/gemini-4-argon",
+      "models/gemini-4-carbon",
+      "models/gemini-4-hydrogen",
+      "models/gemini-4-neon"
+    ],
+    "substitution_required": false,
+    "preregistration_amendment_required": false
+  },
+  "pricing_reference_descriptive_only": {
+    "source": "Google Gemini Developer API official pricing (https://ai.google.dev/gemini-api/docs/pricing), verified 2026-11-21",
+    "enforcement_policy": "DESCRIPTIVE_REFERENCE_ONLY_NO_RUNTIME_SPENDING_CAP",
+    "operator_authority": "GitHub Review #6007792790 — NO dollar spending ceiling and NO aggregate token-budget ceiling imposed on this research.",
+    "rates_usd_per_1m_tokens": {
+      "gemini-3.8-flash_intro_through_2026_12_31": {
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output_including_thinking": 3.75
+      },
+      "gemini-3.8-flash_standard_from_2027_01_01": {
+        "input": 1.50,
+        "cached_input": 0.15,
+        "output_including_thinking": 7.50
+      }
+    },
+    "descriptive_scenarios_8_registered_slots": {
+      "typical_expected_intro_rate": {
+        "prompt_tokens_est": 79768,
+        "output_plus_thinking_tokens_est": 40000,
+        "total_usd_est": 0.20983
+      },
+      "two_x_headroom_intro_rate": {
+        "prompt_tokens_est": 100000,
+        "output_plus_thinking_tokens_est": 80000,
+        "total_usd_est": 0.375
+      },
+      "theoretical_full_8x65536_output_ceiling_intro_rate": {
+        "prompt_tokens_est": 79768,
+        "output_plus_thinking_tokens_est": 524288,
+        "total_usd_est": 2.02591
+      },
+      "typical_expected_standard_2027_rate": {
+        "prompt_tokens_est": 79768,
+        "output_plus_thinking_tokens_est": 40000,
+        "total_usd_est": 0.41965
+      }
+    }
+  }
+}

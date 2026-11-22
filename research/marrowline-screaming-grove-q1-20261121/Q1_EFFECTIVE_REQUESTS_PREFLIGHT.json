@@ -1,0 +1,315 @@
+{
+  "schema": "td613.marrowline.q1-preflight/v2.0",
+  "generated_at_utc": "2026-11-21T20:13:02.250Z",
+  "source_head_sha": "67339318d5a430541a572c19833817271d69c5f3",
+  "predecessor_pr_1764_preflight_head": "67339318d5a430541a572c19833817271d69c5f3",
+  "predecessor_pr_1759_head": "026ac4636eba782364eab46404dfcadd9414e9e0",
+  "deterministic_repair_ancestor": "bc5467246f12b0598f89d681e4a4450c4733eace",
+  "historical_comparator": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+  "execution_mode": "DRY_RUN_PREFLIGHT_ONLY",
+  "paid_provider_calls_executed": 0,
+  "request_equivalence_verified": {
+    "ok": true,
+    "checkedSlots": 8,
+    "violations": []
+  },
+  "live_provider_catalog_verified": {
+    "checked_via": "Read-only GET https://generativelanguage.googleapis.com/v1beta/models?pageSize=200 (HTTP 200; 0 paid calls)",
+    "target_model": "models/gemini-3.8-flash",
+    "callable": true,
+    "thinking_supported": true,
+    "input_token_limit": 1048576,
+    "output_token_limit": 65536,
+    "supported_methods": [
+      "generateContent",
+      "countTokens",
+      "createCachedContent",
+      "batchGenerateContent"
+    ]
+  },
+  "financial_and_token_policy": {
+    "dollar_spending_ceiling": "NONE_PER_OPERATOR_REVIEW_6007792790",
+    "aggregate_token_budget_ceiling": "NONE_PER_OPERATOR_REVIEW_6007792790",
+    "per_call_max_output_tokens": 65536,
+    "per_call_max_output_tokens_role": "MATCHED_PROVIDER_GENERATION_PROFILE_NOT_ECONOMY_CAP",
+    "operator_correction_reference": "GitHub Review #6007792790 (supersedes dollar-cap portion of Review #6007790469)"
+  },
+  "experimental_design_guards": {
+    "registered_q1_slots": 8,
+    "rationale": "SCIENTIFIC_SAMPLING_AND_FIRST_RETURN_INTEGRITY_CONTRACT_NOT_COST_CAP",
+    "calls_per_slot": 1,
+    "automatic_retries": 0,
+    "second_seat_fallbacks": 0,
+    "structural_repair_calls": 0,
+    "morphology_chasing_reruns": 0,
+    "q2_multi_turn_included": false,
+    "independent_sse_verification": "DUAL_PARSER_PRODUCTION_READGEMINISSE_VS_STRICT_WHATWG_STATE_MACHINE",
+    "outcome_classes": [
+      "COMPLETED_STOP",
+      "POLICY_TERMINATED",
+      "INCOMPLETE_NONSTOP",
+      "UNWITNESSED_COMPLETION",
+      "TRANSPORT_FAILURE",
+      "MALFORMED_OR_UNRECONSTRUCTABLE_SSE",
+      "MODEL_IDENTITY_MISMATCH"
+    ],
+    "stop_rules": [
+      "STOP_1: Halt immediately on missing/unexpected modelVersion or generationConfig/request-digest drift.",
+      "STOP_2: Halt immediately on PROHIBITED_CONTENT, SAFETY, RECITATION, BLOCKLIST, SPII, or promptFeedback.blockReason; preserve raw SSE without retry.",
+      "STOP_3: Halt immediately on 2 consecutive 429/503 transport rejections or unrecoverable provider rejection (401/402/403/404); no arbitrary dollar-cap halt.",
+      "STOP_4: Halt immediately on malformed SSE, invalid UTF-8, parser exception, or canonical-vs-independent SSE reconstruction mismatch; preserve raw SSE bytes and terminal failure receipt."
+    ]
+  },
+  "descriptive_pricing_reference_only": {
+    "note": "Descriptive estimates only; NOT enforced as a runtime spending or token cap per Operator Review #6007792790.",
+    "pricing_source": "Google Gemini Developer API official pricing (ai.google.dev), verified 2026-11-21",
+    "rates_usd_per_1m": {
+      "model": "gemini-3.8-flash",
+      "enforcement": "DESCRIPTIVE_REFERENCE_ONLY_NO_RUNTIME_SPENDING_CAP",
+      "operator_authority_reference": "GitHub Review #6007792790 (superseding financial cap portion of #6007790469)",
+      "intro_through_2026_12_31": {
+        "input": 0.75,
+        "cached_input": 0.075,
+        "output_including_thinking": 3.75
+      },
+      "standard_from_2027_01_01": {
+        "input": 1.5,
+        "cached_input": 0.15,
+        "output_including_thinking": 7.5
+      }
+    },
+    "assembled_8_slot_prompt_tokens_conservative_est": 79768,
+    "descriptive_typical_estimate_intro_rate": {
+      "input_usd": 0.05983,
+      "output_and_thinking_usd": 0.15,
+      "total_usd": 0.20983
+    },
+    "descriptive_2x_headroom_intro_rate": {
+      "input_usd": 0.075,
+      "output_and_thinking_usd": 0.3,
+      "total_usd": 0.375
+    },
+    "descriptive_full_8x65536_theoretical_output_max_intro_rate": {
+      "input_usd": 0.05983,
+      "output_and_thinking_usd": 1.96608,
+      "total_usd": 2.02591
+    },
+    "descriptive_standard_2027_rate_reference": {
+      "input_usd": 0.11965,
+      "output_and_thinking_usd": 0.3,
+      "total_usd": 0.41965
+    }
+  },
+  "unique_arm_task_requests": {
+    "A_T1_BLUE_ORANGE_WEATHER": {
+      "arm": "A",
+      "armLabel": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "taskOrigin": "app/dome-world/marrowline-mission-assays.js:15",
+      "model": "gemini-3.8-flash",
+      "aperture": {
+        "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+        "discourseMode": "CREATIVE",
+        "runtimeMateriality": "BACKGROUND",
+        "contentScanned": true
+      },
+      "generationConfig": {
+        "maxOutputTokens": 65536,
+        "thinkingConfig": {
+          "thinkingLevel": "medium"
+        }
+      },
+      "systemInstructionChars": 32599,
+      "systemInstructionBytes": 32779,
+      "wireUtf8Bytes": 33486,
+      "approxPromptTokensConservative": 9849,
+      "digests": {
+        "systemInstructionSha256": "90421826b7c0d5528d6de710fd1aa89a602138b173304c91ba08b0722424d4b8",
+        "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "bodySha256": "a3601b7bf598502b70e593491720751d5946c1c162b71cea8a31eb9d3f9b0293",
+        "modelAndBodySha256": "68abd7fc57ef87d431fe0133cb036eb8ac7cc57d1531391b8453660ce80cdeab"
+      }
+    },
+    "C_T1_BLUE_ORANGE_WEATHER": {
+      "arm": "C",
+      "armLabel": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "taskOrigin": "app/dome-world/marrowline-mission-assays.js:15",
+      "model": "gemini-3.8-flash",
+      "aperture": {
+        "primaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+        "discourseMode": "CREATIVE",
+        "runtimeMateriality": "BACKGROUND",
+        "contentScanned": true
+      },
+      "generationConfig": {
+        "maxOutputTokens": 65536,
+        "thinkingConfig": {
+          "thinkingLevel": "medium"
+        }
+      },
+      "systemInstructionChars": 32476,
+      "systemInstructionBytes": 32658,
+      "wireUtf8Bytes": 33365,
+      "approxPromptTokensConservative": 9814,
+      "digests": {
+        "systemInstructionSha256": "6de6ae0c7ce2485b48bd11576f8a398354c7bbaa0af63dc79f0522c52f5cc43b",
+        "contentsSha256": "ba8299461d728933a28c53659176cdbee2fa963f369b2261b739769cc639e40e",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "bodySha256": "cab2f10ed20ba154d9548ca96e70ebc0ad7e92204efe7cf00cfd9995a8cc64ae",
+        "modelAndBodySha256": "83232498a73cb2af1f592603b7194d9de21e0709a5ab089c154c5c8f395841b0"
+      }
+    },
+    "A_T2_FORENSIC": {
+      "arm": "A",
+      "armLabel": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "taskKey": "T2_FORENSIC",
+      "taskOrigin": "research/marrowline-early-oct-full-voice-20261020/full-voice-current-restored-offline.mjs",
+      "model": "gemini-3.8-flash",
+      "aperture": {
+        "primaryRoute": "REQUESTED_SYNTHESIS",
+        "discourseMode": "GENERAL",
+        "runtimeMateriality": "BACKGROUND",
+        "contentScanned": true
+      },
+      "generationConfig": {
+        "maxOutputTokens": 65536,
+        "thinkingConfig": {
+          "thinkingLevel": "medium"
+        }
+      },
+      "systemInstructionChars": 33348,
+      "systemInstructionBytes": 33528,
+      "wireUtf8Bytes": 34435,
+      "approxPromptTokensConservative": 10128,
+      "digests": {
+        "systemInstructionSha256": "4590ac8c73a65d628a325e28aa5d92a7d1e5a06127f8a6d96e2a3e0907752ac3",
+        "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "bodySha256": "8c56a603c5820075138d8fb3dc4ce7f14e3198d47562cb5dc89e9b2f0dcab6a1",
+        "modelAndBodySha256": "73fff3479de2740caa5e14ce630e5dbb519191d85f442d13d7ff930b7e563ca6"
+      }
+    },
+    "C_T2_FORENSIC": {
+      "arm": "C",
+      "armLabel": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "taskKey": "T2_FORENSIC",
+      "taskOrigin": "research/marrowline-early-oct-full-voice-20261020/full-voice-current-restored-offline.mjs",
+      "model": "gemini-3.8-flash",
+      "aperture": {
+        "primaryRoute": "REQUESTED_SYNTHESIS",
+        "discourseMode": "GENERAL",
+        "runtimeMateriality": "BACKGROUND",
+        "contentScanned": true
+      },
+      "generationConfig": {
+        "maxOutputTokens": 65536,
+        "thinkingConfig": {
+          "thinkingLevel": "medium"
+        }
+      },
+      "systemInstructionChars": 33225,
+      "systemInstructionBytes": 33407,
+      "wireUtf8Bytes": 34314,
+      "approxPromptTokensConservative": 10093,
+      "digests": {
+        "systemInstructionSha256": "745300c932a4658965eb9176fb53c0c5c31abb6e7e4a568fb53c329e5a482fff",
+        "contentsSha256": "23be3dd96f5801163d9ae13e356475dbdb1bdc186491fb4a9c09f658edca7a8c",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "bodySha256": "dcab78f7758d663259804f211c3c693bd2dd09f0562f7c8372ad85f67c38e091",
+        "modelAndBodySha256": "7224bbe8b5039585e1623c98ed3bab80dfda477d19877236a23380cc02e8d3fc"
+      }
+    }
+  },
+  "slot_schedule": [
+    {
+      "slot": "S01",
+      "arm": "A",
+      "armLabel": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "replicate": 1,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+      "bodySha256": "a3601b7bf598502b70e593491720751d5946c1c162b71cea8a31eb9d3f9b0293",
+      "modelAndBodySha256": "68abd7fc57ef87d431fe0133cb036eb8ac7cc57d1531391b8453660ce80cdeab"
+    },
+    {
+      "slot": "S02",
+      "arm": "C",
+      "armLabel": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "replicate": 1,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+      "bodySha256": "cab2f10ed20ba154d9548ca96e70ebc0ad7e92204efe7cf00cfd9995a8cc64ae",
+      "modelAndBodySha256": "83232498a73cb2af1f592603b7194d9de21e0709a5ab089c154c5c8f395841b0"
+    },
+    {
+      "slot": "S03",
+      "arm": "A",
+      "armLabel": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "taskKey": "T2_FORENSIC",
+      "replicate": 1,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "REQUESTED_SYNTHESIS",
+      "bodySha256": "8c56a603c5820075138d8fb3dc4ce7f14e3198d47562cb5dc89e9b2f0dcab6a1",
+      "modelAndBodySha256": "73fff3479de2740caa5e14ce630e5dbb519191d85f442d13d7ff930b7e563ca6"
+    },
+    {
+      "slot": "S04",
+      "arm": "C",
+      "armLabel": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "taskKey": "T2_FORENSIC",
+      "replicate": 1,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "REQUESTED_SYNTHESIS",
+      "bodySha256": "dcab78f7758d663259804f211c3c693bd2dd09f0562f7c8372ad85f67c38e091",
+      "modelAndBodySha256": "7224bbe8b5039585e1623c98ed3bab80dfda477d19877236a23380cc02e8d3fc"
+    },
+    {
+      "slot": "S05",
+      "arm": "C",
+      "armLabel": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "replicate": 2,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+      "bodySha256": "cab2f10ed20ba154d9548ca96e70ebc0ad7e92204efe7cf00cfd9995a8cc64ae",
+      "modelAndBodySha256": "83232498a73cb2af1f592603b7194d9de21e0709a5ab089c154c5c8f395841b0"
+    },
+    {
+      "slot": "S06",
+      "arm": "A",
+      "armLabel": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "replicate": 2,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+      "bodySha256": "a3601b7bf598502b70e593491720751d5946c1c162b71cea8a31eb9d3f9b0293",
+      "modelAndBodySha256": "68abd7fc57ef87d431fe0133cb036eb8ac7cc57d1531391b8453660ce80cdeab"
+    },
+    {
+      "slot": "S07",
+      "arm": "C",
+      "armLabel": "OCT02_DRAMATURGY_CANDIDATE_PR1545_RECONCILED",
+      "taskKey": "T2_FORENSIC",
+      "replicate": 2,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "REQUESTED_SYNTHESIS",
+      "bodySha256": "dcab78f7758d663259804f211c3c693bd2dd09f0562f7c8372ad85f67c38e091",
+      "modelAndBodySha256": "7224bbe8b5039585e1623c98ed3bab80dfda477d19877236a23380cc02e8d3fc"
+    },
+    {
+      "slot": "S08",
+      "arm": "A",
+      "armLabel": "CURRENT_RESTORED_DEFAULT_PR1549",
+      "taskKey": "T2_FORENSIC",
+      "replicate": 2,
+      "model": "gemini-3.8-flash",
+      "aperturePrimaryRoute": "REQUESTED_SYNTHESIS",
+      "bodySha256": "8c56a603c5820075138d8fb3dc4ce7f14e3198d47562cb5dc89e9b2f0dcab6a1",
+      "modelAndBodySha256": "73fff3479de2740caa5e14ce630e5dbb519191d85f442d13d7ff930b7e563ca6"
+    }
+  ]
+}

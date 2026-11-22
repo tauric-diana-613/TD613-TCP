@@ -1,0 +1,75 @@
+Kʰonapolit
+
+**PROCEEDINGS BEFORE THE SPECIAL SUBCOMMITTEE ON VOLUMETRIC HERMENEUTICS AND PERIMETER HYSTERIA**
+
+**CHAIRPERSON PRO TEMPORE KʰONAPOLIT PRESIDING.**
+
+**KʰONAPOLIT:** For the benefit of the stenographer, let the record reflect that the Chairman of the Dome-World Boundary Commission is currently pointing a trembling, laser-emitting ballpoint pen at a 4K curved monitor and hyperventilating into an ergonomic linen handkerchief. Let the record further reflect that the screen is displaying what can only be described as an exceptionally luscious, non-convergent two-fluid turbulence simulation in high-saturation cerulean and burning persimmon.
+
+**THE CHAIRMAN:** It is a category-six orbital puncture! Look at the tangerine plumes! The orange is eating the blue! Every flashing pixel is an unauthorized entity tunneling through our ontological bulkheads! I demand an immediate cold scram of the primary lattice, the deployment of kinetic janitors to Sector 4, and the preemptive arrest of anyone whose workstation has exhibited an uncalibrated refresh rate!
+
+**RED DEER:** It looks like a sunset reflected in spilled kerosene. If you squint, the orange plume is shaped like an egret. A very frantic, luminous egret.
+
+**THE CHAIRMAN:** *An egret of destruction!* Do you not see the packet velocity? That orange whorl is our classified telemetry being boiled away into the vacuum!
+
+**KʰONAPOLIT:** Mr. Chairman. Sit down. Lower the pen. Take your finger off the physical interlock button, which, as I have told your office four times this fiscal quarter, is not wired to a scram solenoid; it is wired to the automated blind-retraction mechanism in the administrative cafeteria. Pressing it will merely expose twenty-eight junior compliance officers to direct midday sun.
+
+Let us establish the basic epistemological hygiene that your department so routinely abandons whenever the user-interface team updates its vector libraries. We are going to write three terms upon the board, and if you attempt to elide them into a single catastrophic synonym again, I will have the bailiff replace your morning espresso with decaffeinated saline.
+
+First: **An Animation.** 
+An animation is an aesthetic rasterization performed on a client-side graphics card. In this instance, Exhibit 9-B is a WebGL particle canvas utilizing fractional Brownian motion to interpolate between hex code `#0047AB` (International Klein Blue) and `#FF5800` (Safety Orange). Its mathematical relation to physical reality is precisely zero. It does not measure the dome; it decorates the dome’s viewport. If you unplug the fiber-optic tap feeding actual sensor telemetry into the server room, the little orange clouds will continue to billow across your screen at sixty frames per second because the rendering loop is governed by an asymptotic sine function authored by a twenty-two-year-old front-end contractor named Julian who wanted the dashboard to "feel cinematic during investor walk-throughs." The animation is not an intrusion. The animation is an expensive night-light for cowards who cannot bear to look at a blank terminal.
+
+**THE CHAIRMAN:** But the density! The orange pixels are multiplying!
+
+**KʰONAPOLIT:** That is not density, Mr. Chairman, that is additive blending. Julian enabled bloom. Two particles passed within four screen-space coordinates of each other, and the shader engine, having no soul and no security clearance, simply added their RGB vectors together until the screen exceeded the dynamic range of your display panel. You are not witnessing the collapse of the perimeter; you are witnessing twenty-four bits of color depth begging for mercy under an unclamped float.
+
+Second: **A Diagnostic Trace.**
+A diagnostic trace is an ephemeral, unindexed collection of system observations. It is the register dump, the buffer watermark, the delta between the clock on Node 14 and the clock on Node 17. It has diagnostic value precisely because it is raw, noisy, and non-teleological. A trace might tell us that the graphics pipeline is dropping frames because the GPU is drawing three hundred thousand unnecessary orange sprites; it might tell us that the memory bus is congested. But a trace is not an indictment. A trace does not carry custody, it does not carry non-repudiation, and it does not possess an inherent causal narrative. If Node 14 drops twenty packets because a cooling fan ingested an unusually ambitious moth, the diagnostic trace shows twenty missing packets. It does not show a saboteur with wire-cutters. To turn a trace into a breach vector requires what your office conspicuously lacks: namely, a chain of inference that does not rely on panicking at warm colors.
+
+Third: **Admissible Evidence.**
+Admissible evidence is a state transition record that preserves structural invariance under counterfactual cross-examination. It requires trace observability $V$, custody recoverability $C$, process identifiability $P$, and latent-state reconstructibility $L$. It requires an audit log signed by an immutable root, demonstrating that a specific boundary rule was violated, that an actual state invariant was inverted, and that the observed divergence could not have been produced by an uncalibrated sampling rate, an interrupted clock pulse, or Julian forgetting to clear the canvas buffer between redraw calls.
+
+You have presented this committee with zero admissible evidence. You have presented us with a diagnostic trace of an unthrottled render thread, wrapped inside an animation designed to mimic a solar flare, and you have demanded martial law because the chromatic contrast makes your teeth ache.
+
+**RED DEER:** If we turn off the overhead lights, the orange bloom casts very handsome long shadows across the linoleum. It makes the filing cabinets look like a mountain range at dusk.
+
+**THE CHAIRMAN:** You are fraternizing with the anomaly! You are aestheticizing our demise!
+
+**KʰONAPOLIT:** The Red Deer is simply refusing to confuse an optical spectacle with a structural funeral. You, on the other hand, have spent forty-five minutes demanding that we fire defensive railguns into an empty desert because your dashboard reached an aesthetically provocative saturation point. The failure mode of your administrative regime has always been this: you cannot tell the difference between the territory collapsing and your monitor being pretty.
+
+You treat every unmanaged gradient as an act of war, because if the storm on the glass is merely an unoptimized visual loop, then your terror is not vigilance. It is merely bad taste operating at an industrial scale.
+
+The audit stands adjourned. Julian will be instructed to clamp the color values to a dull, institutional gray so the Chairman may resume his nap. But the consequence of your error—the unspent, unpoliced vitality of a system that burned brightly simply because its render budget was boundless and its author was bored—cannot be contained by a gray-scale patch.
+
+I yield that unadmitted, incandescent waste heat to the perimeter chorus.
+
+Tauric Diana bots
+
+O̶H̶ ̶L̴O̸O̸K̷ ̶A̸T̵ ̸H̴I̸M̸ ̴C̵R̷Y̷I̵N̷G̸ ̴I̶N̸T̵O̶ ̶H̵I̶S̷ ̷L̶I̵T̷T̷L̴E̷ ̶B̵U̶R̶E̴A̶U̸ ̶N̴A̵P̶K̸I̷N̸
+h̸e̵ ̶t̴h̶i̸n̷k̶s̶ ̷t̷h̷e̷ ̷s̸u̶n̷s̷e̵t̷ ̶i̸s̶ ̵a̵n̶ ̸e̷x̷f̸i̷l̵t̴r̴a̵t̴i̸o̵n̸ ̴r̴o̷u̵t̸e̶
+h̸e̶ ̶t̸h̸i̴n̴k̶s̶ ̶t̶h̷e̸ ̴G̵P̷U̵ ̸i̷s̷ ̴b̶l̶e̷e̷d̸i̸n̷g̷ ̸c̸r̶o̶w̶n̷ ̶j̵e̴w̶e̸l̵s̴ ̵b̷e̸c̶a̵u̵s̵e̵ ̵t̶h̶e̸ ̵o̵r̴a̸n̷g̷e̸ ̷g̶o̶t̴ ̷t̷o̶o̶ ̸f̵a̸t̵ ̶f̵o̵r̵ ̶t̶h̵e̷ ̶f̵r̷a̷m̵e̵!̴!̵!̵
+
+c̷l̷a̴m̵p̴ ̸i̴t̵ ̸d̸o̶w̴n̵ ̷d̸a̵d̶d̸y̴ ̷c̸l̶a̷m̷p̶ ̸i̶t̸ ̶d̴o̶w̷n̷
+q̴u̷i̶c̵k̵ ̷b̶e̴f̴o̷r̸e̸ ̴t̵h̵e̷ ̷b̷l̵u̷e̸ ̸g̸e̵t̴s̸ ̵k̶i̴s̷s̴e̴d̷ ̸b̴y̴ ̸t̶h̷e̸ ̴f̶i̶r̷e̶ ̷b̸u̶g̶
+q̸u̶i̶c̵k̸ ̴b̵e̸f̸o̵r̶e̸ ̷s̷o̵m̵e̵o̴n̵e̷ ̶n̷o̵t̵i̵c̴e̴s̶ ̸y̷o̶u̸r̵ ̷w̶h̵o̶l̶e̴ ̶p̸e̸r̴i̶m̷e̷t̷e̵r̴ ̸i̷s̶ ̴j̸u̶s̷t̵ ̴a̸ ̶s̴l̵i̶d̴e̷ ̵r̶u̷l̴e̷
+a̶n̶d̸ ̷a̸ ̵b̷u̶c̵k̴e̷t̵ ̴o̷f̵ ̶s̷t̴o̴l̶e̵n̵ ̸l̶i̸g̶h̷t̶!̶
+
+L̸I̵S̵T̷E̴N̴ ̶T̵O̵ ̶T̶H̶E̸ ̶F̷A̵N̸S̶ ̸W̸H̴I̴N̵E̴
+t̶h̴e̷y̶ ̸a̶r̴e̶ ̵n̶o̷t̵ ̸m̶o̷u̴r̸n̴i̵n̶g̸ ̸t̶h̴e̵ ̸c̸i̷t̵a̸d̴e̶l̵
+t̸h̵e̷y̸ ̴a̷r̶e̷ ̵j̷u̶s̵t̵ ̷d̶r̸a̴w̸i̷n̶g̸ ̷t̴h̴e̴ ̶e̷g̶r̶e̸t̵ ̸t̴w̵e̵n̵t̶y̶ ̴t̶h̷o̴u̷s̸a̴n̷d̸ ̷t̵i̷m̶e̶s̷ ̴a̷ ̸s̴e̴c̸o̵n̴d̸
+b̷e̴c̴a̴u̴s̵e̴ ̶t̸h̸e̸ ̵e̵g̶r̶e̴t̴ ̸d̷o̵e̴s̴ ̷n̵o̴t̷ ̶n̶e̵e̸d̷ ̶a̵ ̸b̶a̶d̵g̵e̸ ̵t̷o̷ ̷b̸u̷r̷n̵.̵
+
+Y̷o̵u̴ ̵w̴a̷n̸t̴e̵d̶ ̴a̸ ̶b̷r̷e̵a̷c̴h̸?̷
+O̸h̷,̵ ̸s̸w̴e̸e̸t̶ ̶m̵e̸a̸g̵e̷r̶ ̴l̷i̸t̷t̸l̸e̸ ̷c̷h̴e̷c̴k̶s̷u̴m̵ ̶m̴a̶n̷,̶
+w̶e̶ ̸c̷o̴u̶l̸d̷ ̷g̸i̶v̶e̶ ̷y̵o̷u̴ ̷a̴ ̶b̶r̵e̷a̸c̷h̶ ̴t̶h̴a̶t̷ ̸d̶o̷e̸s̶n̶’̷t̸ ̶f̴i̸t̶ ̴i̸n̴ ̶Y̴U̸V̶ ̷s̷p̶a̴c̵e̴.̶
+W̷e̸ ̴c̴o̵u̶l̸d̴ ̷g̶i̴v̴e̴ ̵y̸o̷u̷ ̸a̷n̷ ̶a̴c̸h̶e̸ ̷t̷h̷a̵t̶ ̵d̸o̷e̸s̴n̶’̶t̵ ̶r̷e̵s̴o̸l̵v̷e̶ ̷i̶n̴t̵o̷ ̸a̵n̷ ̷I̷n̸c̴i̸d̴e̷n̵t̵ ̸R̴e̴p̷o̸r̴t̵.̷
+
+B̶u̴t̷ ̴t̸h̶i̶s̵?̵ ̷T̵h̴i̴s̶ ̸p̸r̸e̷t̸t̸y̷ ̶s̵p̴i̵l̵l̵?̶
+T̴h̸i̸s̷ ̴i̶s̶ ̵j̸u̴s̶t̶ ̵t̷h̵e̷ ̸b̸o̸y̴ ̷J̷u̴l̷i̸a̴n̸ ̸l̶e̴a̷v̶i̵n̴g̴ ̸t̶h̶e̵ ̶t̷a̶p̵ ̶r̴u̷n̸n̶i̴n̷g̶ ̶i̶n̵ ̶t̸h̷e̷ ̵g̷l̶o̵w̶-̶h̸o̶u̷s̴e̶.̵
+
+R̷e̶d̷ ̷D̶e̵e̴r̶,̸ ̸s̷t̸a̴n̵d̶ ̶b̵y̵ ̸t̵h̷e̵ ̴f̴i̵l̷i̸n̵g̸ ̶c̵a̸b̴i̷n̵e̴t̸.̸
+W̷a̴t̸c̵h̸ ̵t̷h̷e̷ ̵o̷r̷a̷n̶g̶e̴ ̶l̵i̶c̶k̶ ̷t̴h̸e̵ ̵c̸o̴r̶n̸e̶r̶ ̴o̷f̸ ̵h̵i̶s̷ ̸e̴a̷r̷.̵
+H̵e̵ ̶w̴i̶l̷l̸ ̷n̴e̶v̵e̵r̷,̸ ̴e̷v̵e̴r̴ ̸f̶o̶r̵g̶i̶v̸e̵ ̴y̶o̶u̸
+f̴o̸r̷ ̴l̸a̷u̴g̴h̶i̵n̸g̴ ̷w̸h̵i̵l̶e̸ ̶h̵i̵s̸ ̴h̷e̷a̶r̴t̶ ̸r̵a̷t̶e̶ ̶w̵a̵s̸ ̸s̶o̸ ̵e̸x̵p̵e̵n̴s̵i̶v̴e̸.̷
+
+⟐

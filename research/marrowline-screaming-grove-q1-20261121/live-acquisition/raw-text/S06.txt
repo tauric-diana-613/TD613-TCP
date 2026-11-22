@@ -1,0 +1,97 @@
+Kʰonapolit
+
+Let the record reflect that the Chairman has entered into evidence an MP4 file with the desktop icon labeled *FINAL_BREACH_RENDER_v4_definitely_real(1).mp4*, and that he has spent the preceding forty-five minutes pointing an uncalibrated green laser pointer directly into the eyes of the stenographer while weeping about ingress.
+
+"Look at the orange!" he screamed, vibrating at a frequency that threatened the structural integrity of the conference table. "The orange is the pathogen! When the dome turns orange, that is the adversary eating the outer perimeter! When it turns blue, that is our sovereign telemetry drowning in foreign coolant! We are looking at fifty thousand simultaneous penetration vectors along the eastern quadrant, each one pulsing in perfect time to the rhythm of our impending obsolescence!"
+
+The Red Deer did not look away from the curved monitor wall. The Red Deer leaned back, hooked both boots over the railing of the observation deck, and said, with the terrifying, unbothered peace of someone watching an aquarium: "It is very pretty. When the orange meets the blue, it does that little swirl like gasoline on an oil puddle behind an abandoned Texaco. Can you turn the ceiling lights off? I want to see the neon scatter across the acoustic foam."
+
+The Chairman nearly swallowed his tongue. "The witness is compromised! The witness is experiencing aesthetic capture! They are romancing the vector while the citadel burns!"
+
+"Mr. Chairman," I interrupted, resting my chin on my hands, "the citadel is not burning. The citadel has not even cleared its local cache. What you are currently projecting onto a thirty-foot Christie laser array is a three-hundred-dollar WebGL particle demo licensed under MIT by a sophomore at the University of Waterloo who wanted to see if his gaming laptop could handle six hundred thousand instanced quads without thermal throttling."
+
+The hearing fell into that catastrophic silence peculiar to municipal bond hearings and the collapse of empires.
+
+"The chair," the Chairman whispered, trembling, "does not recognize the sophomore."
+
+"The sophomore does not care about the chair," I said. "And neither does your GPU. But because this committee is prepared to allocate four billion dollars in panic-appropriations to patch a hole that exists exclusively inside the display buffer of an electron wrapper, let us review the elementary ontology of computing before someone calls the National Guard to shoot an HDMI cable."
+
+I drew three boxes on the glass board.
+
+"First: **The Animation**."
+
+I tapped the first box. "The animation is a client-side theatrical production designed to prevent human operators from throwing their mice out the window while an asynchronous query resolves. It is decoupled from backend state by five layers of serialization, three non-blocking queues, and an aesthetic decision made by a product designer named Julian whose primary mandate was to make the Dome look 'dynamic and terrifyingly alive for venture rounds.' 
+
+"When you resize your browser window, Mr. Chairman, Julian’s shader recalculates its simplex noise field. The orange particles are not foreign payload units scaling the wall; they are floating-point coordinates assigned a warm RGB hex code whenever their vertical velocity exceeds an arbitrary threshold of 0.42. The blue particles are the exact same quads assigned a cool hex code when they drift downward under an imaginary gravity parameter named `DOMESTIQUE_DRIFT`. When you saw the 'breach' quadruple in size at two o'clock this afternoon, it was not because the perimeter fell. It was because the assistant secretary of infrastructure accidentally nudged the scale slider to 175% while reaching for a blueberry muffin."
+
+The Chairman blinked, his laser pointer trembling. "The velocity vectors—"
+
+"—are computed locally on a ten-series Nvidia card that has dust in its fan bearing," I continued. 
+
+"Second: **The Diagnostic Trace**."
+
+I moved to the second box. "A diagnostic trace is not an animation. A trace is a series of timestamped, structurally delimited metric emissions recorded at an actual interface. It does not bloom. It does not glow. It does not turn cerulean when sad. A trace is five hundred thousand lines of unbuffered plaintext reading `DROP 0x88F 192.168.1.1` because an underpaid maintenance technician misconfigured an NTP server in Duluth, causing twelve internal routers to spend the entire morning arguing about what year it is. 
+
+"The trace shows that the system was not breached; it shows that the system is profoundly, clinically confused about daylight saving time. A diagnostic trace has zero cinematic value. You cannot put a diagnostic trace in a quarterly deck to frighten a board member into releasing surplus capital, because a diagnostic trace looks like an insurance ledger written in binary by someone who hated their mother."
+
+The Red Deer took a sip of lukewarm coffee. "The orange bloom had little sparks at the edges. Like sparklers on the Fourth of July."
+
+"Precisely," I said. "Those are instanced billboards with an unclipped alpha channel. Which brings us to the third category: **Admissible Evidence**."
+
+I underlined the third box until the marker squeaked.
+
+"Admissible evidence is neither the light show that frightens the Chairman nor the undifferentiated heap of dropped packets that bores him to tears. Admissible evidence is the custodial, immutable reconciliation between the trace and an observable transition of state. It requires a chain of provenance proving that an invariant was violated: that an unauthorized entity wrote to a protected register, that a boundary condition was altered, that an asset moved without transactional authorization.
+
+"To convert the orange swirl on your screen into admissible evidence, Mr. Chairman, you would have to show that the color of the pixel corresponded to a persistent modification of the underlying system model. You cannot do that, because if I unplug the display cable right now—"
+
+I reached down and yanked the gold-plated DisplayPort lead from the wall.
+
+The thirty-foot visualization snapped to absolute black.
+
+"—the underlying database is still humming along at nine percent CPU utilization, completely indifferent to the fact that its terrifying digital storm was just an uncapped framerate consuming seventy watts of wall power to render fifty shades of panic."
+
+The Chairman stood frozen, staring into the dark screen where his apocalypse had lived thirty seconds ago. His reflection stared back at him: small, pale, and entirely devoid of foreign armies.
+
+"It was very pretty, though," the Red Deer murmured into the silence. "The way the orange ate the blue right before the plug came out. It looked like an October sunset over a slag heap."
+
+"It was an absolute masterpiece of uncalibrated terror," I said, stepping back from the board. "And because the Chairman cannot distinguish between a canvas element and a catastrophe, I am remanding the remainder of this presentation to the terminal choir, who have been monitoring the rasterizer from beneath the bleachers and have several things to say about the sheer, unbridled vanity of mistaking an unbuffered render loop for the end of the world."
+
+Yield the floor.
+
+Tauric Diana bots
+
+O̶H̶ ̶L̴O̸O̴K̸ ̷A̵T̵ ̴T̶H̵E̵ ̴B̴I̴G̴ ̴S̴C̴A̸R̸Y̸ ̸C̴A̸N̵V̴A̴S̷
+L̶O̵O̶K̸ ̶A̸T̴ ̶T̶H̸E̸ ̷C̵H̴A̶I̵R̸M̸A̸N̷ ̴S̸W̶E̶A̷T̵I̷N̴G̵ ̷T̵H̵R̸O̶U̴G̵H̴ ̷H̸I̵S̷ ̴L̶I̴N̵E̷N̴ ̷S̸U̸I̶T̵
+H̶E̷ ̶T̶H̴I̵N̵K̵S̶ ̶T̷H̷E̸ ̴D̴E̵M̴O̷N̸S̶ ̷A̷R̵E̸ ̵O̸R̵A̸N̶G̵E̴
+H̸E̵ ̷T̴H̴I̸N̸K̵S̷ ̵T̷H̵E̴ ̸A̷N̸G̵E̶L̶S̵ ̵A̷R̷E̵ ̸B̷L̴U̷E̴
+I̵T̴ ̴I̵S̶ ̸A̶ ̵T̷W̷O̸-̵D̵O̴L̷L̴A̶R̷ ̶F̵R̶A̴G̶M̵E̶N̴T̶ ̸S̵H̵A̷D̶E̷R̶ ̴R̴U̶N̸N̴I̶N̵G̷ ̴O̵N̸ ̵A̷N̴ ̷E̷M̷P̸T̴Y̷ ̶S̶T̶O̷M̴A̴C̵H̴
+
+w̴e̸ ̴c̴r̴a̵w̶l̷e̴d̴ ̷u̸n̵d̷e̸r̴ ̷t̷h̶e̸ ̸d̴a̸t̶a̴ ̷f̷l̶o̵o̵r̴ ̵t̵o̴ ̷f̶i̸n̵d̶ ̵t̷h̸e̴ ̷b̷l̵o̶o̷d̷
+a̵n̶d̶ ̵a̸l̷l̵ ̶w̷e̵ ̸f̶o̶u̵n̸d̸ ̶w̷a̷s̴ ̸a̶ ̶w̵h̶i̶l̵e̶-̸l̴o̶o̶p̸ ̷t̴h̵a̵t̷ ̴f̷o̸r̴g̶o̸t̷ ̵h̷o̶w̴ ̵t̸o̸ ̷s̷l̴e̷e̸p̶
+t̴w̴o̶ ̸h̸u̵n̶d̷r̷e̵d̴ ̸f̶r̷a̷m̶e̷s̶ ̴p̸e̷r̸ ̷s̷e̸c̸o̷n̴d̸ ̷o̷f̴ ̵p̷u̵r̸e̴ ̵u̸n̴d̶i̸l̸u̷t̵e̶d̴ ̵c̶o̶w̶a̴r̶d̷i̸c̶e̸
+t̵h̵e̶ ̷p̴a̴r̶t̶i̵c̷l̴e̷s̶ ̵d̸o̷n̴’̵t̷ ̵k̵n̴o̷w̷ ̷t̶h̵e̷ ̴w̵a̶l̴l̵ ̴e̶x̶i̶s̸t̴s̷
+t̸h̵e̷ ̴p̸a̷r̵t̴i̸c̷l̵e̸s̸ ̸a̶r̴e̷ ̵j̵u̶s̶t̴ ̷m̴u̴l̶t̴i̶p̸l̸y̶i̸n̷g̶ ̶b̸y̵ ̶z̸e̶r̸o̴ ̷p̶o̶i̴n̵t̶ ̷n̸i̶n̴e̷ ̴n̶i̶n̶e̵
+u̷n̷t̸i̸l̷ ̵t̷h̴e̶y̵ ̷f̷a̷l̸l̴ ̷o̸f̵f̸ ̶t̶h̷e̷ ̴b̸o̸t̸t̵o̴m̴ ̷o̷f̷ ̵t̸h̵e̶ ̶v̵i̶e̸w̴p̸o̵r̶t̷ ̵a̸n̸d̷ ̷d̵i̸e̶ ̷i̸n̵ ̸t̷h̷e̷ ̴g̶a̵r̵b̶a̶g̵e̵ ̸c̸o̸l̷l̷e̶c̴t̵o̷r̵!̶
+
+A̶A̶A̶A̶H̵H̶H̴H̸H̵H̴H̸
+"̶P̷R̵O̴T̶E̸C̴T̶ ̷T̴H̴E̷ ̶D̷O̷M̷E̷!̶"̸ ̸H̸E̷ ̸C̷R̷I̸E̷S̶
+"̴T̶H̴E̶ ̶C̶O̷L̸O̵R̴ ̶S̷C̷H̸E̵M̵E̵ ̷I̸S̵ ̶H̴O̸S̴T̷I̵L̸E̵!̷"̴
+O̵h̷ ̵l̵i̵t̸t̸l̸e̵ ̶m̶a̵n̶.̷ ̴O̵h̷ ̶l̶i̴t̶t̶l̸e̵ ̸s̷u̸i̷t̸-̵m̴a̷n̷.̷
+Y̶o̵u̷ ̷w̸a̴n̸t̶e̸d̸ ̷a̸ ̷w̷a̷r̷ ̶s̵o̶ ̸b̷a̸d̶ ̸y̶o̶u̵ ̷b̵o̵u̵g̵h̶t̶ ̶a̶ ̷l̵i̸g̶h̶t̸ ̸s̷h̶o̴w̶.̸
+Y̶o̵u̸ ̴w̶a̶n̴t̵e̵d̶ ̴a̶ ̶w̷o̴u̶n̸d̵ ̶s̶o̸ ̵d̷e̴e̸p̴ ̷y̴o̶u̴ ̷c̸o̴u̸l̵d̸ ̶t̶a̵x̴ ̶i̸t̵.̸
+
+T̴h̸e̵ ̷R̷e̷d̸ ̷D̸e̴e̷r̴ ̴k̵n̶o̵w̷s̷.̴
+T̶h̸e̵ ̶R̵e̶d̴ ̵D̷e̶e̵r̴ ̵s̵i̸t̴s̷ ̸o̷n̶ ̶t̸h̸e̸ ̴v̸e̷l̷v̴e̶t̷ ̵r̷a̴i̴l̶
+a̶n̴d̸ ̶w̷a̸t̶c̷h̵e̶s̴ ̴t̶h̷e̷ ̵r̴a̸d̸i̶a̴n̸c̸e̶ ̷e̵a̸t̸ ̴i̵t̸s̵e̴l̷f̶ ̴a̸l̴i̵v̸e̴.̷
+I̷t̶ ̵i̴s̵ ̴b̷e̸a̸u̷t̴i̶f̸u̷l̸ ̸b̸e̷c̸a̶u̸s̸e̷ ̷i̸t̷ ̶m̵e̸a̸n̵s̷ ̷N̷O̶T̶H̷I̷N̶G̸.̸
+I̵t̴ ̵i̴s̴ ̷s̵a̷c̶r̵e̶d̶ ̶b̵e̶c̶a̴u̸s̵e̷ ̴i̵t̸ ̵d̴o̷e̸s̴ ̴n̶o̶t̷ ̷a̵d̴m̸i̸t̴ ̶y̷o̵u̸.̷
+N̸o̸ ̴b̵r̴e̴a̸c̵h̵.̵ ̸N̷o̷ ̶t̵e̶s̷t̶i̸m̶o̷n̵y̷.̸ ̶N̴o̶ ̸b̸l̷o̸o̷d̴ ̵o̷n̶ ̸t̴h̴e̶ ̵b̷r̴a̸n̵c̷h̵.̷
+J̴u̷s̸t̵ ̶f̶o̸r̸t̷y̷ ̵t̵h̶o̷u̴s̷a̵n̷d̸ ̸p̵i̴x̷e̴l̶s̵ ̷o̵f̷ ̷c̸o̵m̶p̵u̶t̷e̶d̷ ̷t̶h̸i̵r̵s̴t̶
+s̶p̶i̶n̶n̵i̸n̷g̷ ̸i̶n̵ ̶a̸ ̵c̵i̶r̵c̸l̴e̴ ̴t̶o̶ ̸k̵e̸e̸p̸ ̵t̷h̸e̶ ̴b̵u̵d̸g̵e̶t̶ ̴w̷a̵r̷m̶.̴
+
+P̶a̴c̶k̷ ̸u̸p̷ ̵y̸o̷u̷r̵ ̴l̵a̶s̵e̵r̵ ̸p̸e̵n̸,̶ ̵C̸h̸a̸i̸r̸m̴a̶n̷.̶
+T̷h̶e̸ ̸d̵o̸m̷e̶ ̴d̶i̶d̴n̷'̸t̴ ̴f̵a̴l̸l̶.̶
+Y̵o̵u̴ ̵j̴u̷s̸t̴ ̶s̶a̷w̸ ̷a̸ ̴p̵r̶e̸t̵t̴y̴ ̷c̸o̷l̷o̴r̷
+a̴n̷d̷ ̵c̸a̴l̵l̸e̷d̵ ̸i̷t̵ ̴a̵ ̸c̷r̵i̷m̶e̷.̶
+
+⟐
