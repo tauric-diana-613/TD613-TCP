@@ -1765,17 +1765,17 @@ body[data-view="overview"] .reading-back{display:none}
 </dialog>
 
 <!-- CONCEALED CYBERNETIC INSPECTOR (Alt + I) -->
-<dialog class="dialog inspector-dialog" id="inspectorDialog" closedby="any" aria-label="Concealed Cybernetic Inspector">
+<dialog class="dialog inspector-dialog" id="inspectorDialog" closedby="any" aria-label="Vixen research source inspector">
   <div class="dialog-shell">
     <div class="dialog-header">
-      <span style="font:600 10.5px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--vixen-pink)">◆ Concealed Cybernetic Nervous System · Provenance &amp; Negative-Control Bench</span>
+      <span style="font:600 10.5px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--vixen-pink)">◆ Vixen Research · Sources, Verification &amp; Inquiry</span>
       <button type="button" class="hdr-pill" id="closeInspectorBtn" style="color:var(--porcelain);border-color:rgba(246,244,240,.35)">Close ✕</button>
     </div>
     <div class="dialog-body">
       <div class="insp-tabs" role="tablist" aria-label="Inspector Views">
-        <button type="button" data-insp-tab="census" aria-pressed="true">I · 87 / 94 / 147 Census &amp; Custodial Duties</button>
-        <button type="button" data-insp-tab="bench" aria-pressed="false">II · Fail-Closed UTF-8 &amp; Digest Bench</button>
-        <button type="button" data-insp-tab="provenance" aria-pressed="false">III · Codepoint Separation &amp; Couture Seam</button>
+        <button type="button" data-insp-tab="census" aria-pressed="true">I · Original Works &amp; Record Inventory</button>
+        <button type="button" data-insp-tab="bench" aria-pressed="false">II · How to Verify Evidence</button>
+        <button type="button" data-insp-tab="provenance" aria-pressed="false">III · Attribution &amp; Visual Limits</button>
         <button type="button" data-insp-tab="podium" aria-pressed="false">IV · Research handoff &amp; source boundaries</button>
       </div>
       <div id="inspectorTabBody" aria-live="polite"></div>
@@ -1789,7 +1789,7 @@ body[data-view="overview"] .reading-back{display:none}
   </div>
   <div class="footer-actions">
     <button type="button" class="text-link" data-view="operator">Podium Settings &amp; Ledger</button>
-    <button type="button" class="text-link" data-action="inspector">Open Concealed Inspector (Alt+I)</button>
+    <button type="button" class="text-link" data-action="inspector">Open Source Inspector (Alt+I)</button>
     <button type="button" class="text-link" data-action="search">Search Catalogue (Ctrl/⌘+K)</button>
     <a class="text-link footer-td613-mark" id="footerEncyclopediaLink" href="#overview">𝌋 Collection index →</a>
   </div>
@@ -3995,56 +3995,34 @@ body[data-view="overview"] .reading-back{display:none}
     });
 
     if (state.inspectorTab === 'census') {
-      const dutiesHtml = DATA.custodial_duties.map((d) =>
-        '<div style="padding:10px 0;border-top:1px solid rgba(246,244,240,.14)">' +
-          '<div><strong>' + esc(d.id) + '</strong> · Governed by: <code>' + esc(d.governor) + '</code> (Quarantined outside 06-INSTRUMENTS; retired V2 label: <code>' + esc(d.retired_alias) + '</code>)</div>' +
-          '<div style="color:#cfd3d6">' + esc(d.scope) + '</div>' +
-        '</div>'
-      ).join('');
       body.innerHTML =
-        '<div class="insp-card">' +
-          '<h3>HISTORICAL ESTATE (87 + 53) VS RECIPIENT CENSUS (94 + 53 = 147)</h3>' +
-          '<div>• Historical 01-MANIFESTS/source-files.jsonl: <strong>87 files</strong> (7,938,934 B = 20 PDF [5,642,539 B] + 33 MD [1,534,070 B] + 1 Archive.zip [697,429 B] + 33 <code>._*</code> AppleDouble [64,896 B]).</div>' +
-          '<div>• Source-package classification: Quarantines <strong>33 <code>._*</code> AppleDouble sidecars</strong> → <strong>54 substantive historical items</strong> (53 analyzable text/PDF manifestations + 1 container zip).</div>' +
-          '<div>• Canonical Work Crosswalk: <strong>32 conditional Work routes</strong> (8 human-gated <code>UNADJUDICATED_PAIR</code>, 13 confirmed dual, 11 singletons; sensitivity interval <strong>[32, 40]</strong> across 2⁸ = 256 states).</div>' +
-        '</div>' +
-        '<div class="insp-card">' +
-          '<h3>NON-REGISTRY OPERATIONAL &amp; CUSTODIAL DUTIES (OUTSIDE 06-INSTRUMENTS)</h3>' +
-          dutiesHtml +
-        '</div>';
+        '<div class="insp-card"><h3>THE PRESERVED VIXEN RESEARCH COLLECTION</h3>' +
+          '<p>The Vixen Opera preserves 32 recorded original Works and 53 linked source manifestations. ' +
+          'Twenty-one documentary methods support inquiry; eight attribution questions remain open for independent human review.</p>' +
+          '<p>Choose a Work in Manuscripts or Folios to read its recorded title, source list, file identity ' +
+          'and available original text. A second manifestation may be compared with the first without merging distinct identities.</p>' +
+          '<p>Technical packaging records and host infrastructure are catalogued separately; ' +
+          'they cannot be counted as original authored Vixen Works.</p></div>' +
+        '<div class="insp-card"><h3>WHAT THE SOURCE INVENTORY MEANS</h3>' +
+          '<p>A source record describes an observed manuscript or manifest entry. ' +
+          'An exact byte digest checks that recorded content has not changed, while ' +
+          'authorship, external origin, substantive interpretation and scientific evidence ' +
+          'require their own independently supported judgments.</p>' +
+          '<p>Unresolved evidence remains visible, rather than being silently promoted into an accepted finding.</p></div>';
     } else if (state.inspectorTab === 'bench') {
-      const sampleDefault = '\u{1D30B} Vixen\u200cOpera \u{10D613} Cybernetics';
+      // The original UTF-8, digest and negative-control apparatus remains
+      // testable in code, outside the public human research surface.
       body.innerHTML =
-        '<div class="insp-card">' +
-          '<h3>ENGINE_DIAGNOSTIC_BENCH (SOURCE-FREE · ATTESTATION CAPPED AT DIGEST_COMPUTED)</h3>' +
-          '<p style="color:#cfd3d6;margin-bottom:12px">Unattested strings never receive <code>ORIGINAL_SOURCE</code> or <code>VERIFIED_GROUNDED_BYTE_SPAN</code>. Mid-codepoint UTF-8 slices and non-safe-integer bounds fail closed without mutating engine state.</p>' +
-          '<div style="display:grid;gap:10px">' +
-            '<label>Test UTF-8 String:<input id="diagInputText" type="text" value="' + esc(sampleDefault) + '" style="width:100%;padding:8px 10px;margin-top:4px;background:#0d0f11;color:#F6F4F0;border:1px solid rgba(246,244,240,.3)"></label>' +
-            '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">' +
-              '<label>Start Byte: <input id="diagStart" type="number" value="0" style="width:84px;padding:6px;background:#0d0f11;color:#F6F4F0;border:1px solid rgba(246,244,240,.3)"></label>' +
-              '<label>End Byte: <input id="diagEnd" type="number" value="19" style="width:84px;padding:6px;background:#0d0f11;color:#F6F4F0;border:1px solid rgba(246,244,240,.3)"></label>' +
-              '<button type="button" class="hdr-pill" id="runValidSpanBtn" style="background:var(--vixen-pink);color:var(--graphite)">Compute Valid Span [0..19]</button>' +
-              '<button type="button" class="hdr-pill" id="runSplitEmojiBtn">Negative Control: Split 𝌋 [0..2]</button>' +
-              '<button type="button" class="hdr-pill" id="runSplitZwnjBtn">Negative Control: Split U+200C [10..12]</button>' +
-              '<button type="button" class="hdr-pill" id="runNanBoundsBtn">Negative Control: NaN Span</button>' +
-              '<button type="button" class="hdr-pill" id="runCryptoRejectBtn">Negative Control: Crypto Error</button>' +
-            '</div>' +
-            '<pre id="diagOutputPre" style="padding:12px;background:#090b0d;border:1px solid rgba(255,145,175,.35);white-space:pre-wrap;margin:0">Click a diagnostic control above to execute live WebCrypto &amp; fatal UTF-8 boundary verification.</pre>' +
-          '</div>' +
-        '</div>';
-
-      const outPre = $('diagOutputPre');
-      const runWith = async (s, e, opts) => {
-        const txt = $('diagInputText').value;
-        const res = await computeDiagnosticDigest(txt, s, e, opts);
-        outPre.textContent = JSON.stringify(res, null, 2);
-      };
-      $('runValidSpanBtn').addEventListener('click', () => runWith(Number($('diagStart').value), Number($('diagEnd').value)));
-      $('runSplitEmojiBtn').addEventListener('click', () => runWith(0, 2));
-      $('runSplitZwnjBtn').addEventListener('click', () => runWith(10, 12));
-      $('runNanBoundsBtn').addEventListener('click', () => runWith(NaN, 5));
-      $('runCryptoRejectBtn').addEventListener('click', () => runWith(0, 19, { simulateCryptoReject: true }));
-      runWith(0, 19);
+        '<div class="insp-card"><h3>VERIFY A RECORDED WORK</h3>' +
+          '<p>Begin with a specific Work ID and the recorded manifestation you intend to inspect. ' +
+          'Compare the available exact passage, original filename and declared source digest. ' +
+          'When the body is absent, report the missing source rather than reconstructing its contents.</p>' +
+          '<p>For external references, open the separate independent reading room explicitly. ' +
+          'Preserve both source identities; matching vocabulary cannot establish a relation.</p></div>' +
+        '<div class="insp-card"><h3>QUESTION · METHOD · COUNTEREVIDENCE</h3>' +
+          '<p>State the exact research question, choose a retrieval or measurement method, ' +
+          'identify a rival explanation and name the observation that could challenge the hypothesis. ' +
+          'A rendered mathematical model illustrates a method rather than supplying an empirical witness.</p></div>';
     } else if (state.inspectorTab === 'podium') {
       // Visitor-facing handoff: the machine dispatcher and its native adapter
       // inventory belong to the separate Podium contract, not a human UI.
@@ -4085,25 +4063,18 @@ body[data-view="overview"] .reading-back{display:none}
         }else showToast('Clipboard unavailable; use AI research guide');
       });
     } else {
-      const themeCss = document.getElementById('manifest-instance-theme').textContent;
-      const hasCrypto = Boolean(window.crypto && window.crypto.subtle);
       body.innerHTML =
-        '<div class="insp-card">' +
-          '<h3>ARCHIVAL SIGNATURE LITERAL &amp; THREE-CODEPOINT SEPARATION (Q09 GUARD)</h3>' +
-          '<div>• Preserved Historical Signature String: <code>VIXENCYBERNETICS$S_e≡[x+y]=z+1$</code></div>' +
-          '<div>• Rendered Title-Math Derivative: <code>S_e ≡ [x + y] = z + 1</code> (Branding locus ornament only; arithmetic x/y/z calculator retired).</div>' +
-          '<div>• Codepoint 1 — Tetragram <code>𝌋</code>: <code>U+1D30B</code> (UTF-8 <code>F0 9D 8C 8B</code>)</div>' +
-          '<div>• Codepoint 2 — Supplementary PUA <code>\u{10D613}</code>: <code>U+10D613</code> (UTF-8 <code>F4 8D 98 93</code>)</div>' +
-          '<div>• Codepoint 3 — Interior ZWNJ Exemplar (<code>Vixen\u200cOpera</code>): <code>U+200C</code> (UTF-8 <code>E2 80 8C</code>, charCodeAt(5) = ' + 'Vixen\u200cOpera'.charCodeAt(5) + ')</div>' +
-          '<div>• Dynamic Runtime Sub-Checks: WebCrypto SubtleDigest = <code>' + (hasCrypto ? 'AVAILABLE' : 'HELD_CRYPTO_UNAVAILABLE') + '</code> · A-PFR0.2 Engine Track = <code>SEPARATE_HEADLESS_TRACK_PENDING</code> (never hardcoded PREFLIGHT_VERIFIED).</div>' +
-        '</div>' +
-        '<div class="insp-card">' +
-          '<h3>THREE-CLOCK GOVERNANCE &amp; DISPLAY-THEME SEPARATION</h3>' +
-          '<div>• Separate Clock Ledgers: <code>τ_theory, τ_presentation, τ_empirical</code> · Conditional invariance <code>K(D,S,p₁)=K(D,S,p₂)</code> &amp; <code>A(D,S,p₁)=A(D,S,p₂)</code> (no pairwise orthogonality theorem)</div>' +
-          '<div>• Active <code>#manifest-instance-theme</code> Layer Length: <strong>' + themeCss.length + ' chars</strong> (Baker–Miller <code>#FF91AF</code>, Graphite <code>#24282A</code>, Porcelain <code>#F6F4F0</code>, Smoked Nickel <code>#667078</code>, rare Arc Flash <code>#F9F36D</code>).</div>' +
-          '<div>• Historical Frontispiece Custody: <code>PROVISIONAL_CREATIVE_ARTWORK</code> (Mugler-Unchained Cybernetic Astrolabe · predecessor Desktop WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.desktop_webp_sha256.slice(0, 24)) + '…</code> · predecessor Mobile WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.mobile_webp_sha256.slice(0, 24)) + '…</code> · Zero Encyclopedia asset reuse · Zero Experiment B claim).</div>' +
-          '<div>• Current Artwork Delivery: <code>' + esc(MANIFEST.frontispiece.active_source_mode || 'EMBEDDED_HISTORICAL_WEBP') + '</code> · Operator-selected PNG SHA-256 desktop <code>' + esc((MANIFEST.frontispiece.desktop_png_sha256 || 'PENDING').slice(0,24)) + '</code> · mobile <code>' + esc((MANIFEST.frontispiece.mobile_png_sha256 || 'PENDING').slice(0,24)) + '</code> · Human aesthetic closure RESERVED.</div>' +
-        '</div>';
+        '<div class="insp-card"><h3>AUTHORSHIP AND INDEPENDENT CUSTODY</h3>' +
+          '<p>Every original Vixen Work retains its recorded author and manifestation coordinates. ' +
+          'Eight historical human attribution questions remain unadjudicated. ' +
+          'A hosted copy, machine-generated summary or related external archive ' +
+          'cannot revise those identities or appropriate an original Work.</p></div>' +
+        '<div class="insp-card"><h3>THE VISUAL STAGE REPRESENTS A MODEL</h3>' +
+          '<p>The chromed couture, optical fields, five-clock illustrations and source diagrams ' +
+          'are explicitly constructed research instruments. They represent bounded questions, ' +
+          'not observed physical effects or proof of a cross-source relationship.</p>' +
+          '<p>The visitor controls motion, research selection and local presentation. ' +
+          'Human aesthetic review, authorship closure and scientific interpretation remain separate decisions.</p></div>';
     }
   }
 
