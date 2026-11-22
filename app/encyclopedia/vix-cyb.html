@@ -6111,7 +6111,7 @@ import {
     renderCandidates();
     const status = document.getElementById('ciStatusLine');
     if (status) {
-      status.textContent = `PROMOTED CANDIDATE ${candidateId} AS ${entryId} (empirical credit: 0). CLI commit: TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --select-candidate ${candidateId} --sync-html`;
+      status.textContent = `Selected research candidate ${candidateId} for local presentation (${entryId}). Evidence remains provisional; publication and persistent changes require separate human review.`;
     }
     return getSessionSnapshot();
   }
@@ -6133,7 +6133,7 @@ import {
     renderSynthesisLog();
     const status = document.getElementById('ciStatusLine');
     if (status) {
-      status.textContent = `APPLIED AS ${entryId} · Headline & Threshold updated (empirical credit: 0). CLI commit: node scripts/vixen-podium.mjs --write-synthesis --sync-html`;
+      status.textContent = `Local inquiry updated (${entryId}). Review the recorded question and evidence before any separately authorized persistent change.`;
     }
     return getSessionSnapshot();
   }
