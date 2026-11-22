@@ -3,6 +3,17 @@ import fs from 'fs';
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const gitignore = fs.readFileSync('.gitignore', 'utf8');
+// Vercel CLI 66.6.0 --prebuilt preserves Python traced-source symlinks
+// inside .vercel/output. Excluding their targets from the *upload* causes
+// ENOENT even after an otherwise successful local production build.
+const vercelignore = fs.readFileSync('.vercelignore', 'utf8');
+const prebuiltUploadIgnoreRules = vercelignore.split(/\r?\n/)
+  .map(line => line.trim())
+  .filter(line => line && !line.startsWith('#'));
+assert.deepEqual(prebuiltUploadIgnoreRules, ['.venv-dome/', '**/__pycache__/'],
+  'Keep prebuilt Python source targets uploadable; prune Lambda bundles through the per-function vercel.json excludeFiles law instead');
+assert.ok(fs.existsSync('packages/dome_world_exact/bridge/__init__.py'),
+  'The exact Python bridge file referenced by the production prebuilt trace must exist in source');
 const configuredFunctions = Object.keys(vercel.functions || {}).sort();
 const deployedApiFiles = [];
 function collectApiFiles(directory, prefix = '') {
@@ -80,6 +91,18 @@ assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment-guard.py']?.maxDuration, 60);
+// Production Python bundle hygiene: the separately qualified Vixen preview uses
+// these exact exclusions. Guard all four entry points against 225 MB regressions.
+const pythonBundleExcludes = '{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}';
+for (const entry of [
+  'api/dome-world-engine.py',
+  'api/dome-world-engine-guard.py',
+  'api/ash-local-commitment.py',
+  'api/ash-local-commitment-guard.py'
+]) {
+  assert.equal(vercel.functions?.[entry]?.excludeFiles, pythonBundleExcludes,
+    `${entry}: preserve preview-parity Python bundle exclusions for production`);
+}
 for (const [name, config] of Object.entries(vercel.functions || {})) {
   if ('includeFiles' in config) assert.equal(typeof config.includeFiles, 'string', `${name}.includeFiles must be a string`);
   if ('includeFiles' in config) assert.ok(config.includeFiles.length<=256, `${name}.includeFiles must not exceed Vercel's 256-character schema ceiling`);

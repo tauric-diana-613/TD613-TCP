@@ -550,3 +550,463 @@ jobs:
         shell: bash
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"
+
+  # PR #1730 source-only preflight: no Vercel credentials, no deployment.
+
+  vixen-preview-prepare:
+    name: Exact-source GitHub preflight — NO DEPLOY
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'issue_comment' &&
+      (
+        (github.event.issue.number == 1730 && github.event.issue.pull_request != null) ||
+        (github.event.issue.number == 1744 && github.event.issue.pull_request == null)
+      ) &&
+      (
+        github.event.comment.user.login == github.repository_owner ||
+        github.event.comment.user.login == 'chatgpt-codex-connector[bot]'
+      ) &&
+      startsWith(github.event.comment.body, '/td613-vixen-preview PREPARE ')
+    concurrency:
+      group: td613-vixen-pr1730-preview-prepare
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      MANUAL_SHA: ${{ inputs.commit_sha || '' }}
+      COMMENT_BODY: ${{ github.event.comment.body || '' }}
+      VERCEL_SCOPE: tauric-diana-s-projects
+      VERCEL_PROJECT: td-613-tcp
+      VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
+      VERCEL_CLI_VERSION: '65.16.0'
+
+    steps:
+      - name: Check out trusted qualification policy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: preview-governance
+          persist-credentials: false
+
+      - name: Qualify request, exact PR HEAD and named execution witnesses
+        id: qualify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          INPUT_SHA="$MANUAL_SHA"
+          if [[ "$GITHUB_EVENT_NAME" == 'issue_comment' ]]; then
+            read -r COMMAND OP INPUT_SHA EXTRA <<< "$COMMENT_BODY"
+            [[ "$COMMAND" == '/td613-vixen-preview' && "$OP" == 'PREPARE' && -z "$EXTRA" ]] || exit 1
+          fi
+          [[ "$INPUT_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Exact 40-character SHA required.' >&2; exit 1; }
+          PR="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730")"
+          jq -e --arg sha "$INPUT_SHA" --arg repo "$GITHUB_REPOSITORY" \
+            '.state == "open" and .merged == false and .head.sha == $sha and
+             .head.ref == "research/vixen-dual-estate-encyclopedia-20261108" and
+             .head.repo.full_name == $repo and .base.ref == "main"' \
+            <<< "$PR" >/dev/null || { echo 'PR #1730 head mismatch.' >&2; exit 1; }
+          RECEIPT="$(node preview-governance/scripts/verify-vixen-preview-qualification.mjs "$INPUT_SHA")"
+          CI_RUN="$(jq -er '.run_id' <<< "$RECEIPT")"
+          echo "sha=$INPUT_SHA" >> "$GITHUB_OUTPUT"
+          echo "ci_run=$CI_RUN" >> "$GITHUB_OUTPUT"
+
+      - name: Check out immutable PR source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.qualify.outputs.sha }}
+          persist-credentials: false
+
+      - name: Assert exact SHA, locked git deployment and required assets
+        env:
+          EXPECTED_SHA: ${{ steps.qualify.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == "$EXPECTED_SHA" ]] || exit 1
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          if (JSON.parse(fs.readFileSync('vercel.json','utf8')).git?.deploymentEnabled !== false)
+            throw new Error('Existing Git auto-deploy lock must remain closed.');
+          for (const p of [
+            'app/encyclopedia/vix-cyb.html',
+            'app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs',
+            'app/encyclopedia/vixen-estate/synthesis-salon.mjs',
+            'app/encyclopedia/assets/vixen/fox-arcflash.svg'
+          ]) if (!fs.existsSync(p)) throw new Error('Missing Vixen asset: '+p);
+          NODE
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install repository dependencies without Vercel credentials
+        run: npm ci
+
+      - name: Record delegated provider boundary — no Vercel authentication or build
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'Source and exact-head CI verified. Provider step reserved to Kenough using working Antigravity Vercel access.'
+          echo 'GitHub VERCEL_TOKEN confirmed unusable by run 43786830123 (User not found 404).'
+          echo 'No project link, pull, build, deploy, alias change, or production action executed here.'
+
+      - name: Revalidate current PR head and emit nonsecret PREPARED receipt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ steps.qualify.outputs.sha }}
+          CI_RUN: ${{ steps.qualify.outputs.ci_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          CURRENT="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730" --jq '.head.sha')"
+          [[ "$CURRENT" == "$EXPECTED_SHA" ]] || { echo 'PR HEAD moved; readiness invalidated.' >&2; exit 1; }
+          mkdir -p "$RUNNER_TEMP/vixen-preview-preflight"
+          cat > "$RUNNER_TEMP/vixen-preview-preflight/receipt.txt" <<EOF
+          TD613 VIXEN PREVIEW — PREPARED ONLY
+          repository=$GITHUB_REPOSITORY
+          pr=1730
+          exact_source_sha=$EXPECTED_SHA
+          consolidated_ci_run=$CI_RUN
+          prepare_run_id=$GITHUB_RUN_ID
+          configured_existing_project=$VERCEL_PROJECT
+          configured_existing_scope=$VERCEL_SCOPE
+          github_source_preflight=SUCCESS
+          vercel_local_build=NOT_PERFORMED
+          external_vercel_qualification=REQUIRED
+          vercel_deployment=NOT_PERFORMED
+          preview_alias=UNCHANGED
+          production=UNTOUCHED
+          operator_review=REQUIRED
+          EOF
+          sha256sum vercel.json \
+            app/encyclopedia/vix-cyb.html \
+            app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs \
+            app/encyclopedia/vixen-estate/synthesis-salon.mjs \
+            app/encyclopedia/assets/vixen/fox-arcflash.svg \
+            > "$RUNNER_TEMP/vixen-preview-preflight/source-sha256.txt"
+          {
+            echo '### Vixen Preview PREPARED — human adjudication required'
+            echo ''
+            echo "PR #1730 SHA: $EXPECTED_SHA"
+            echo "CI: $CI_RUN"
+            echo "Preparation run ID: $GITHUB_RUN_ID"
+            echo '**Exact-source CI qualified; Vercel-side preview build delegated to Kenough. Deployment, aliases and production untouched.**'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload sanitized preparation receipt ONLY
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-preview-prepared-${{ steps.qualify.outputs.sha }}
+          path: ${{ runner.temp }}/vixen-preview-preflight/
+          retention-days: 14
+          if-no-files-found: error
+
+  # PR #1730 Preview deployment: separate explicit owner comment only.
+
+  vixen-preview-deploy:
+    name: Verified Vixen preview
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'issue_comment' &&
+      (
+        (github.event.issue.number == 1730 && github.event.issue.pull_request != null) ||
+        (github.event.issue.number == 1744 && github.event.issue.pull_request == null)
+      ) &&
+      github.event.comment.user.login == github.repository_owner &&
+      startsWith(github.event.comment.body, '/td613-vixen-preview DEPLOY ')
+    concurrency:
+      group: td613-vixen-pr1730-preview-deploy
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    environment: vixen-preview
+    env:
+      MANUAL_SHA: ${{ inputs.commit_sha || '' }}
+      MANUAL_PREPARE_RUN: ${{ inputs.prepare_run_id || '' }}
+      APPROVAL_COMMENT: ${{ github.event.comment.body || '' }}
+      VERCEL_SCOPE: tauric-diana-s-projects
+      VERCEL_PROJECT: td-613-tcp
+      VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
+      VERCEL_PROJECT_ID: prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7
+      VERCEL_PREVIEW_ALIAS: td-613-tcp-git-research-vixen-du-4ba43a-tauric-diana-s-projects.vercel.app
+      VERCEL_CLI_VERSION: '65.16.0'
+
+    steps:
+      - name: Enforce distinct OWNER approval and successful preflight receipt
+        id: operator_gate
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          APPROVED_SHA="$MANUAL_SHA"
+          PREPARE_RUN="$MANUAL_PREPARE_RUN"
+          if [[ "$GITHUB_EVENT_NAME" == 'issue_comment' ]]; then
+            read -r COMMAND OP APPROVED_SHA PREPARE_RUN EXTRA <<< "$APPROVAL_COMMENT"
+            [[ "$COMMAND" == '/td613-vixen-preview' && "$OP" == 'DEPLOY' && -z "$EXTRA" ]] || {
+              echo 'Operator deploy command must be exact.' >&2
+              exit 1
+            }
+          fi
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]] || {
+            echo 'Operator must approve an exact 40-character source SHA.' >&2
+            exit 1
+          }
+          [[ "$PREPARE_RUN" =~ ^[0-9]{8,20}$ ]] || {
+            echo 'Operator must identify a successful preparation run ID.' >&2
+            exit 1
+          }
+          PREPARED="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN")"
+          jq -e \
+            '.name == "Vercel Relock Safety" and
+             .head_branch == "main" and .status == "completed" and
+             .conclusion == "success" and .event == "issue_comment"' \
+            <<< "$PREPARED" >/dev/null || {
+              echo 'Referenced preparation is not a successful trusted preflight run.' >&2
+              exit 1
+            }
+          PREPARED_JOBS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN/jobs?per_page=100")"
+          jq -e 'any(.jobs[]?; .name == "Exact-source GitHub preflight — NO DEPLOY" and .conclusion == "success")' \
+            <<< "$PREPARED_JOBS" >/dev/null || {
+              echo 'Referenced run lacks successful Vixen source preflight.' >&2
+              exit 1
+            }
+          ARTIFACTS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN/artifacts?per_page=100")"
+          jq -e --arg receipt "vixen-preview-prepared-$APPROVED_SHA" \
+            'any(.artifacts[]?; .name == $receipt and .expired == false)' \
+            <<< "$ARTIFACTS" >/dev/null || {
+              echo 'Missing exact-SHA nonexpired PREPARED receipt artifact.' >&2
+              exit 1
+            }
+          echo "INPUT_SHA=$APPROVED_SHA" >> "$GITHUB_ENV"
+          echo "PREPARE_RUN_ID=$PREPARE_RUN" >> "$GITHUB_ENV"
+          echo "sha=$APPROVED_SHA" >> "$GITHUB_OUTPUT"
+          echo 'Human-authorized preview path accepted; production remains prohibited.'
+
+      - name: Check out trusted qualification policy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: preview-governance
+          persist-credentials: false
+
+      - name: Authorize exact PR head and named execution witnesses
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          [[ "$INPUT_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'A full 40-character commit SHA is required.' >&2; exit 1; }
+          PR="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730")"
+          jq -e --arg sha "$INPUT_SHA" --arg repo "$GITHUB_REPOSITORY" \
+            '.state == "open" and .merged == false and
+             .head.sha == $sha and
+             .head.ref == "research/vixen-dual-estate-encyclopedia-20261108" and
+             .head.repo.full_name == $repo and .base.ref == "main"' \
+            <<< "$PR" >/dev/null || { echo 'SHA is not the current, same-repository PR #1730 HEAD.' >&2; exit 1; }
+
+          node preview-governance/scripts/verify-vixen-preview-qualification.mjs "$INPUT_SHA"
+
+      - name: Checkout the authorized immutable source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.operator_gate.outputs.sha }}
+          persist-credentials: false
+
+      - name: Verify checked-out SHA and deployment lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == "$INPUT_SHA" ]] || exit 1
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) {
+            throw new Error('Git auto-deployment lock must remain closed.');
+          }
+          for (const path of [
+            'app/encyclopedia/vix-cyb.html',
+            'app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs',
+            'app/encyclopedia/vixen-estate/synthesis-salon.mjs',
+            'app/encyclopedia/assets/vixen/fox-arcflash.svg'
+          ]) {
+            if (!fs.existsSync(path)) throw new Error('Missing Vixen route asset: ' + path);
+          }
+          NODE
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install pinned Vercel CLI
+        run: npm install --global "vercel@$VERCEL_CLI_VERSION"
+
+      - name: Install pinned uv for Python Vercel preview functions
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: '0.13.7'
+          enable-cache: false
+
+      - name: Confirm pinned uv executable
+        run: uv --version
+
+      - name: Verify existing Vercel account and project link
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ -n "$VERCEL_TOKEN" ]] || { echo 'VERCEL_TOKEN unavailable in GitHub Actions.' >&2; exit 1; }
+          vercel whoami --scope "$VERCEL_SCOPE" >/dev/null
+          # Read-only named-project existence check BEFORE link. Link --yes may create missing projects.
+          vercel project inspect "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" >/dev/null
+          vercel link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE"
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          // Vercel CLI 65.16.0 may link directly from the two environment IDs
+          // without writing .vercel/project.json. Validate both pinned IDs,
+          // and validate the local link file if the CLI produced one.
+          if (process.env.VERCEL_ORG_ID !== 'team_pX5L7AFivMzMU1lH28Y6RIhX' ||
+              process.env.VERCEL_PROJECT_ID !== 'prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7') {
+            throw new Error('Unexpected Vercel environment project or team ID.');
+          }
+          if (fs.existsSync('.vercel/project.json')) {
+            const link = JSON.parse(fs.readFileSync('.vercel/project.json', 'utf8'));
+            if (link.orgId !== process.env.VERCEL_ORG_ID || link.projectId !== process.env.VERCEL_PROJECT_ID) {
+              throw new Error('Vercel link resolved to an unexpected owner or project.');
+            }
+          }
+          NODE
+          vercel project inspect "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" >/dev/null
+
+      - name: Build whole site as Preview only
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          vercel pull --yes --environment=preview --scope "$VERCEL_SCOPE"
+          vercel build --scope "$VERCEL_SCOPE"
+
+      - name: Deploy immutable Preview without moving the familiar alias
+        id: deploy
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_GIT_COMMIT_SHA: ${{ steps.operator_gate.outputs.sha }}
+          VERCEL_GIT_COMMIT_REF: research/vixen-dual-estate-encyclopedia-20261108
+          VERCEL_GIT_REPO_SLUG: TD613-TCP
+          VERCEL_GIT_REPO_OWNER: tauric-diana-613
+        run: |
+          set -euo pipefail
+          # Prebuilt function bundles refer to repository sources. Source-only
+          # .vercelignore exclusions must not drop those required function files.
+          # This edit is temporary in the CI checkout and restored on exit.
+          cp .vercelignore "$RUNNER_TEMP/vercelignore.preview-original"
+          trap 'cp "$RUNNER_TEMP/vercelignore.preview-original" .vercelignore' EXIT
+          grep -v '^packages/dome_world_exact/' "$RUNNER_TEMP/vercelignore.preview-original" > .vercelignore
+          vercel deploy --prebuilt --archive=tgz --yes --scope "$VERCEL_SCOPE" | tee "$RUNNER_TEMP/vercel-preview-deploy.log"
+          URL="$(grep -Eo 'https://[A-Za-z0-9.-]+\.vercel\.app' "$RUNNER_TEMP/vercel-preview-deploy.log" | tail -n 1)"
+          [[ "$URL" =~ ^https://[A-Za-z0-9.-]+\.vercel\.app$ ]] || { echo 'Invalid immutable preview URL.' >&2; exit 1; }
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Confirm deployment READY and served source bytes
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+          vercel inspect "$PREVIEW_URL" --wait --scope "$VERCEL_SCOPE" >/dev/null
+          for relative in \
+            encyclopedia/vix-cyb.html \
+            encyclopedia/vixen-estate/observatory-electric-foundry.mjs \
+            encyclopedia/vixen-estate/synthesis-salon.mjs \
+            encyclopedia/assets/vixen/fox-arcflash.svg; do
+            safe_name="$(printf '%s' "$relative" | tr / _)"
+            vercel curl "/$relative" --deployment "$PREVIEW_URL" --scope "$VERCEL_SCOPE" > "$RUNNER_TEMP/$safe_name"
+            if ! cmp -s "app/$relative" "$RUNNER_TEMP/$safe_name"; then
+              if [[ "$relative" == "encyclopedia/vix-cyb.html" ]]; then
+                SOURCE_PATH="app/$relative" SERVED_PATH="$RUNNER_TEMP/$safe_name" python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import os
+          import sys
+
+          source = Path(os.environ["SOURCE_PATH"]).read_bytes()
+          served = Path(os.environ["SERVED_PATH"]).read_bytes()
+          print("Source bytes:", len(source), "sha256:", hashlib.sha256(source).hexdigest())
+          print("Served bytes:", len(served), "sha256:", hashlib.sha256(served).hexdigest())
+          offset = next((i for i, (a, b) in enumerate(zip(source, served)) if a != b), min(len(source), len(served)))
+          extra = len(served) - len(source)
+          print("First differing byte offset:", offset, "byte delta:", extra)
+          # Admit precisely one small, additive, Vercel-identified preview instrumentation
+          # span ONLY when stripping it recovers every exact original source byte.
+          if 0 < extra <= 1024:
+              addition = served[offset:offset + extra]
+              if (served[:offset] == source[:offset]
+                      and served[offset + extra:] == source[offset:]
+                      and (b"vercel" in addition.lower() or b"/_vercel" in addition.lower())):
+                  print("PASS: original HTML is byte-for-byte intact except one",
+                        "Vercel-only additive preview instrumentation span; sha256:",
+                        hashlib.sha256(addition).hexdigest())
+                  sys.exit(0)
+          print("HELD: unrecognized HTML transformation; preserving existing preview alias.")
+          print("Source window sha256:", hashlib.sha256(source[max(0,offset-128):offset+256]).hexdigest())
+          print("Served window sha256:", hashlib.sha256(served[max(0,offset-128):offset+256]).hexdigest())
+          sys.exit(1)
+          PY
+              else
+                echo "Served bytes differ from PR source: $relative; alias preserved." >&2
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Recheck HEAD and existing alias before reassignment
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          CURRENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730" --jq '.head.sha')"
+          [[ "$CURRENT_SHA" == "$INPUT_SHA" ]] || { echo 'PR head moved during build; alias preserved.' >&2; exit 1; }
+          vercel inspect "https://$VERCEL_PREVIEW_ALIAS" --scope "$VERCEL_SCOPE" >/dev/null || {
+            echo 'Established alias cannot be resolved in the expected team; alias preserved.' >&2
+            exit 1
+          }
+
+      - name: Reassign only the established Vixen preview alias
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+          vercel alias set "$PREVIEW_URL" "$VERCEL_PREVIEW_ALIAS" --scope "$VERCEL_SCOPE"
+          {
+            echo '### Vixen Cybernetics preview deployed'
+            echo ''
+            echo "Authorized commit: $INPUT_SHA"
+            echo "Immutable preview: $PREVIEW_URL/encyclopedia/vix-cyb.html"
+            echo "Established preview alias: https://$VERCEL_PREVIEW_ALIAS/encyclopedia/vix-cyb.html"
+            echo ''
+            echo 'Target: PREVIEW. Git deployment lock preserved. Production not changed.'
+          } >> "$GITHUB_STEP_SUMMARY"

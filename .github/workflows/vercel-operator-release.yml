@@ -159,6 +159,19 @@ jobs:
           fs.writeFileSync('app/giving/history/release-source.json', `${JSON.stringify(receipt, null, 2)}\n`);
           NODE
 
+      # The direct-token build executes @vercel/python on the Actions runner.
+      # Pin uv here as in the established preview path; never alter fallback mode.
+      - name: Install pinned uv for Python Vercel production functions
+        if: steps.mode.outputs.mode == 'direct-token'
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: '0.13.7'
+          enable-cache: false
+
+      - name: Confirm pinned uv executable before production build
+        if: steps.mode.outputs.mode == 'direct-token'
+        run: uv --version
+
       - name: Link exact repository to the existing Vercel project
         if: steps.mode.outputs.mode == 'direct-token'
         run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
@@ -180,7 +193,7 @@ jobs:
         run: |
           set -euo pipefail
           DEPLOY_LOG="$(mktemp)"
-          npx --yes vercel@latest deploy --prebuilt --prod --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN" | tee "$DEPLOY_LOG"
+          npx --yes vercel@latest deploy --prebuilt --archive=split-tgz --prod --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN" | tee "$DEPLOY_LOG"
           DEPLOY_URL="$(grep -Eo 'https://[^[:space:]]+' "$DEPLOY_LOG" | tail -n 1)"
           [[ -n "$DEPLOY_URL" ]] || { echo 'Vercel returned no deployment URL.' >&2; exit 1; }
           echo "deployment_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"

@@ -46,33 +46,28 @@ if (baselineProjection.functions?.['api/khonapolit.js']) {
   delete baselineProjection.functions['api/khonapolit.js'].includeFiles;
   baselineProjection.functions['api/khonapolit.js'].maxDuration = 60;
 }
-const ADMITTED_PYTHON_EXCLUDE =
-  '{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}';
-for (const pyFn of [
-  'api/dome-world-engine.py',
-  'api/dome-world-engine-guard.py',
-  'api/ash-local-commitment.py',
-  'api/ash-local-commitment-guard.py'
-]) {
-  assert.equal(
-    baselineProjection.functions?.[pyFn]?.excludeFiles,
-    ADMITTED_PYTHON_EXCLUDE,
-    `${pyFn} must carry the exact admitted non-runtime excludeFiles pattern`
-  );
-  if (pyFn === 'api/dome-world-engine.py') {
-    baselineProjection.functions[pyFn].excludeFiles =
-      'packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**';
-  } else {
-    delete baselineProjection.functions[pyFn].excludeFiles;
-  }
+// Build-cap repair is separately approved from Giving route semantics.
+// Verify exact preview-parity values, then restore the historical projection
+// before checking the unchanged full Vercel configuration blob SHA.
+const previewParityPythonExcludes = '{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}';
+const pythonHandlers = [
+  'api/dome-world-engine.py', 'api/dome-world-engine-guard.py',
+  'api/ash-local-commitment.py', 'api/ash-local-commitment-guard.py'
+];
+for (const handler of pythonHandlers) {
+  assert.equal(config.functions?.[handler]?.excludeFiles, previewParityPythonExcludes,
+    `${handler}: exact known preview-only exclusion law required for build-size correction`);
 }
+baselineProjection.functions['api/dome-world-engine.py'].excludeFiles =
+  'packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**';
+for (const handler of pythonHandlers.slice(1)) delete baselineProjection.functions[handler].excludeFiles;
 const baselineRaw = `${JSON.stringify(baselineProjection, null, 2)}\n`;
 const gitBlob = Buffer.concat([
   Buffer.from(`blob ${Buffer.byteLength(baselineRaw)}\0`),
   Buffer.from(baselineRaw)
 ]);
 const projectedSha = crypto.createHash('sha1').update(gitBlob).digest('hex');
-assert.equal(projectedSha, BASELINE_VERCEL_BLOB_SHA, 'outside admitted Giving redirects, Kʰonapolit duration and exact Loom input carriage, vercel.json must remain byte-equivalent to the reviewed baseline');
+assert.equal(projectedSha, BASELINE_VERCEL_BLOB_SHA, 'outside exact-admitted Giving redirects, Kʰonapolit carriage, and four verified Python bundle exclusions, vercel.json must remain byte-equivalent to the reviewed baseline');
 
 const slashlessRewrite = (config.rewrites || []).find((entry) => entry.source === '/giving/history');
 const slashfulRewrite = (config.rewrites || []).find((entry) => entry.source === '/giving/history/');
