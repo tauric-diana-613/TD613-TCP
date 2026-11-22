@@ -318,19 +318,35 @@ try {
       // frames, recording quality, paint cost and actual cadence. This is a
       // synthetic pressure test, not a claim about iOS Safari hardware.
       if(device.width===390){
+        // The Salon owns its own 60Hz stage, and intentionally PARKS the
+        // independent page-wide mesh. A parked mesh retains old FPS and
+        // quality samples: treating those as live CPU-throttle evidence
+        // produces a false RED and hides actual display-frame behavior.
+        // Return to a room in which the page-wide mesh is actively painted.
+        await livePage.locator('#vixenRoomRail button[data-view="overview"]').click({force:true});
+        await livePage.waitForFunction(()=>{
+          const s=window.VixenLivingMesh?.status?.();
+          return document.body.dataset.view==='overview'&&s?.route==='overview'&&
+            s?.motion==='LIVE'&&s?.scheduled&&s.rendered_frames>=2;
+        },null,{timeout:15000,polling:100});
+        const preThrottle=await livePage.evaluate(()=>window.VixenLivingMesh.status());
         const cdp=await liveContext.newCDPSession(livePage);
         await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});
         try{
           await livePage.waitForTimeout(2600);
           const pressure=await livePage.evaluate(()=>window.VixenLivingMesh.status());
+          assert.equal(pressure.route,'overview','Pressure evidence must concern the live measured room');
+          assert.equal(pressure.motion,'LIVE','Parked mesh telemetry cannot count as performance evidence');
+          assert(pressure.scheduled,'The measured mesh must retain its active display scheduler');
           assert([1,2,4].includes(pressure.raster_detail_stride));
-          assert(pressure.rendered_frames>startFrames,'Optical thread must continue under load');
+          assert(pressure.rendered_frames>preThrottle.rendered_frames,'Optical thread must continue under load');
           assert(pressure.raster_backing_scale>=.5&&pressure.raster_backing_scale<=1.25);
           if(pressure.presented_fps<38||pressure.paint_cost_ms>9){
             assert(pressure.raster_detail_stride>1,
               'Missing real display frames must lower raster work instead of persisting at full quality: '+JSON.stringify(pressure));
           }
           runningSamples.push({throttled_8x:{
+            room:pressure.route,motion:pressure.motion,
             fps:pressure.presented_fps,paint_ms:pressure.paint_cost_ms,
             raster_stride:pressure.raster_detail_stride,
             backing_scale:pressure.raster_backing_scale
