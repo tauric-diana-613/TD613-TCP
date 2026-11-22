@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main, research/vixen-dual-estate-encyclopedia-20261108]
+    branches: [main, research/vixen-seven-estate-braid-g4-20261120, research/vixen-seven-estate-braid-g5-20261120, research/vixen-seven-estate-braid-g7-20261120, research/vixen-seven-estate-braid-g6-20261121, research/vixen-dual-estate-encyclopedia-20261108]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
