@@ -221,7 +221,11 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   const btn=doc.getElementById('motionBtn')||motion;
   return mq.matches||doc.body.dataset.vixenMotion==='still'||btn?.getAttribute('aria-pressed')==='true';
  };
- const enabled=()=>!outsideOpera()&&(view()!=='observatory'||doc.body.dataset.vixenOpticalMeshObservatory!=='off');
+ // Scroll-owned iPhone geometry and a viewport-fixed field cannot keep a single
+  // compositor epoch during momentum scrolling. The Salon's own canvas retains
+  // its 60 Hz optical charge, while the global viewport field parks on mobile.
+  const salonMobile=()=>view()==='collection'&&width()<=MOBILE_STACKING_ONLY_MAX_WIDTH;
+  const enabled=()=>!salonMobile()&&!outsideOpera()&&(view()!=='observatory'||doc.body.dataset.vixenOpticalMeshObservatory!=='off');
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
   .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
  function readExclusions(force=false){
