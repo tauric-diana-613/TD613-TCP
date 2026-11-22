@@ -102,15 +102,19 @@ test('Historical TCC-08 diagnostics remain original source semantics without exp
 
 test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
  const guide=readFileSync(new URL('../app/encyclopedia/vix-cyb/llms.txt',import.meta.url),'utf8');
- assert.match(guide,/8.*historically recorded OPERA folio entries/);
- assert.match(guide,/14.*OPERAHOUSE technical\/optical records/);
- assert.match(guide,/TCC-06.*TCC-03.*TCC-07/);
- assert.match(guide,/RC records remain OPERAHOUSE technical optics/);
- assert.match(guide,/LAB_RC-##/);
- assert.match(guide,/TCC-08.*TITLE_LOCUS_ORNAMENT.*BRANDING_ORNAMENT_ONLY/);
- assert.match(guide,/browser-isomorphic/);
- assert.match(guide,/sourceContext/);
- assert.match(guide,/operatorQuestion/);
- assert.match(guide,/separately gated Podium/);
+ assert.match(guide,/OPERAHOUSE ≠ OPERA ≠ PERFORMER/);
+ assert.match(guide,/32 canonical Works/);
+ assert.match(guide,/53 recorded linked manifestations/);
+ assert.match(guide,/Twenty-one documentary methods/);
+ assert.match(guide,/27 typed routes/);
+ assert.match(guide,/zero admitted mappings/);
+ assert.match(guide,/The reference archive remains independent|reference index belongs to the OPERAHOUSE/);
+ assert.match(guide,/original recorded source/);
+ // The exact programme/ornament/technical split is asserted against the
+ // immutable source registry above, never imposed as backstage UI prose.
+ assert.deepEqual([auditVixenFolioCensus(corpus).programme,
+                   auditVixenFolioCensus(corpus).ornaments,
+                   auditVixenFolioCensus(corpus).technical],[7,1,14]);
+ assert.deepEqual(VIXEN_OPERA_HEADLINERS,['TCC-01','TCC-04','TCC-05','TCC-06','TCC-03','TCC-07']);
  assert.doesNotMatch(guide,/dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`/);
 });
