@@ -30,7 +30,7 @@ test('Program codenames and private researcher aliases stay out of public copy',
 });
 
 test('Human inspector no longer exposes host-private diagnostic benches',()=>{
- const ix=html.slice(html.indexOf('function renderInspector('),html.indexOf('// Reference & Utility Button Binders'));
+ const ix=html.slice(html.indexOf('function renderInspectorBody()'),html.indexOf('// Reference & Utility Button Binders'));
  assert(!ix.includes('ENGINE_DIAGNOSTIC_BENCH'),'engineering-only digest bench escaped into public inspector');
  assert(!ix.includes('A-PFR0.2 Engine Track'),'host engine inventory escaped into public inspector');
  assert(!ix.includes('TD613_PODIUM_OPERATOR_DIRECT=1'),'private CLI attestation escaped into visitor inspector');
