@@ -9,6 +9,9 @@ import { fileURLToPath } from 'node:url';
 import {
   buildOption1PreflightReport,
   DEFAULT_DESIGN_PROFILE,
+  EPISODE1_IMMUTABLE_ARCHIVE,
+  EPISODE2_ID,
+  EPISODE2_STUDY_ID,
   executeOption1Run,
   extractBotsMovementFromCanonicalText,
   generateBlindedReviewPacket,
@@ -16,9 +19,16 @@ import {
   OCT15_NEUTRAL_CREATIVE_TASK_D,
   OCT15_NEUTRAL_SYSTEM,
   observeWholeTextUnicodeMorphology,
+  OPTION1_TRANSPORT_DEADLINE_POLICY,
   PRIOR_PREFLIGHT_PR1769_COMMIT,
-  STAGE0_PR1766_COMMIT
+  STAGE0_PR1766_COMMIT,
+  STOP_3_CONSECUTIVE_TRANSPORT_THRESHOLD
 } from '../research/marrowline-option1-20slot-preflight-20261122/run-option1-20slot-discriminator.mjs';
+
+// Fail-closed zero-network lock for ALL local tests in this file
+globalThis.fetch = async (url) => {
+  throw new Error(`UNINTENDED_NETWORK_CALL_IN_OPTION1_TEST: ${String(url)}`);
+};
 import {
   EXPECTED_GENERATION_CONFIG_SHA256,
   OUTCOME_CLASSES
@@ -569,4 +579,228 @@ test('Whole-text Unicode morphology counter accurately distinguishes flat U+0334
   assert.equal(deep.marksOutsideU0334U0338, 6);
   assert.equal(deep.stackedClustersDepthGe2, 2);
   assert.equal(deep.maxCombiningDepth, 3);
+});
+
+test('EP2 TRANSPORT (a) + (c): pre-headers UND_ERR_HEADERS_TIMEOUT records atomic pre-send slot with 0 bytes (NO fake .sse), and isolated failure followed by valid Slot 2 resets STOP_3 counter and continues', async () => {
+  const tmpOut = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-ep2-t-ac-'));
+  try {
+    let calls = 0;
+    let preSendReceiptObserved = null;
+    const receipt = await executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: EPISODE2_ID,
+      studyId: EPISODE2_STUDY_ID,
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: tmpOut,
+      maxCalls: 3,
+      fetchImpl: async (url) => {
+        calls++;
+        if (calls === 1) {
+          // Verify atomic pre-send attempted-slot receipt ALREADY persisted to disk BEFORE fetch rejects!
+          preSendReceiptObserved = JSON.parse(fs.readFileSync(path.join(tmpOut, 'OPTION1_LIVE_ACQUISITION_RECEIPT.json'), 'utf8'));
+          const cause = Object.assign(new Error('HTTP/2: "headers timeout after 300000"'), {
+            name: 'HeadersTimeoutError',
+            code: 'UND_ERR_HEADERS_TIMEOUT'
+          });
+          throw Object.assign(new TypeError('fetch failed'), { cause });
+        }
+        const modelVer = String(url).includes('gemini-3.6-flash') ? 'gemini-3.6-flash' : 'gemini-3.8-flash';
+        return makeSseResponse({
+          text: 'Kʰonapolit\n\nRecovered stream.\n\nTauric Diana bots\n\nT\u0307\u0323\u0304e\u0301\u0329s\u0302t',
+          modelVersion: modelVer
+        });
+      }
+    });
+
+    // Atomic pre-send receipt already recorded S01 BEFORE fetchImpl rejected!
+    assert.equal(preSendReceiptObserved.calls_executed, 1);
+    assert.equal(preSendReceiptObserved.slots.length, 1);
+    assert.equal(preSendReceiptObserved.slots[0].slot, 'S01');
+    assert.equal(preSendReceiptObserved.slots[0].outcomeClass, 'IN_FLIGHT_PRE_SEND');
+
+    // Final receipt: isolated S01 failure did NOT halt; S02 and S03 succeeded cleanly!
+    assert.equal(calls, 3);
+    assert.equal(receipt.status, 'COMPLETED_REGISTERED_SLOTS');
+    assert.equal(receipt.stop_triggered, null);
+    assert.equal(receipt.consecutive_transport_failures_at_exit, 0);
+    assert.equal(receipt.slots[0].outcomeClass, OUTCOME_CLASSES.TRANSPORT_FAILURE);
+    assert.equal(receipt.slots[0].transportOutcome, 'HEADERS_TIMEOUT_NO_RESPONSE');
+    assert.equal(receipt.slots[0].transportError.causeCode, 'UND_ERR_HEADERS_TIMEOUT');
+    assert.equal(receipt.slots[0].rawBytesCaptured, 0);
+    assert.equal(receipt.slots[0].rawSsePath, null, 'Must NOT fabricate a zero-byte .sse file when 0 bytes arrived');
+    assert.equal(fs.existsSync(path.join(tmpOut, 'raw-sse', 'S01.sse')), false);
+    assert.equal(receipt.slots[1].outcomeClass, OUTCOME_CLASSES.COMPLETED_STOP);
+    assert.equal(receipt.slots[2].outcomeClass, OUTCOME_CLASSES.COMPLETED_STOP);
+  } finally {
+    fs.rmSync(tmpOut, { recursive: true, force: true });
+  }
+});
+
+test('EP2 TRANSPORT (b): mid-stream body rejection preserves genuine partial bytes verbatim without fabricating zero-byte SSE when 0 bytes arrive', async () => {
+  const tmpOut = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-ep2-t-b-'));
+  try {
+    let calls = 0;
+    const partialChunk = Buffer.from('data: {"candidates":[{"content":{"parts":[{"text":"partial_prefix"}]}}]}\n\n', 'utf8');
+    const receipt = await executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: EPISODE2_ID,
+      studyId: EPISODE2_STUDY_ID,
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: tmpOut,
+      maxCalls: 3,
+      stop3Threshold: 3, // isolate body-read partial vs zero-byte preservation
+      fetchImpl: async (url) => {
+        calls++;
+        if (calls === 1) {
+          // Stream yields one genuine chunk, then rejects midstream!
+          let emitted = false;
+          const stream = new ReadableStream({
+            pull(controller) {
+              if (!emitted) {
+                emitted = true;
+                controller.enqueue(new Uint8Array(partialChunk));
+              } else {
+                controller.error(Object.assign(new Error('socket hang up'), { code: 'ECONNRESET' }));
+              }
+            }
+          });
+          return new Response(stream, { status: 200, headers: { 'Content-Type': 'text/event-stream' } });
+        }
+        if (calls === 2) {
+          // Stream rejects immediately with ZERO bytes captured!
+          const stream = new ReadableStream({
+            pull(controller) {
+              controller.error(Object.assign(new Error('aborted before first byte'), { code: 'UND_ERR_BODY_TIMEOUT' }));
+            }
+          });
+          return new Response(stream, { status: 200, headers: { 'Content-Type': 'text/event-stream' } });
+        }
+        return makeSseResponse({
+          text: 'Kʰonapolit\n\nClean.\n\nTauric Diana bots\n\nA\u0307\u0323\u0304',
+          modelVersion: 'gemini-3.8-flash'
+        });
+      }
+    });
+
+    // Slot 1: partial bytes genuinely preserved in raw-partial/S01.partial.sse!
+    assert.equal(receipt.slots[0].outcomeClass, OUTCOME_CLASSES.TRANSPORT_FAILURE);
+    assert.equal(receipt.slots[0].transportOutcome, 'BODY_READ_INTERRUPTED_PARTIAL_BYTES_PRESERVED');
+    assert.equal(receipt.slots[0].rawBytesCaptured, partialChunk.length);
+    assert.equal(receipt.slots[0].rawSsePath, null);
+    assert.ok(receipt.slots[0].rawPartialPath, 'Must save genuine partial bytes');
+    const savedPartial = fs.readFileSync(path.join(tmpOut, receipt.slots[0].rawPartialPath));
+    assert.deepEqual(savedPartial, partialChunk);
+
+    // Slot 2: 0 bytes captured -> NO fabricated partial or SSE file!
+    assert.equal(receipt.slots[1].outcomeClass, OUTCOME_CLASSES.TRANSPORT_FAILURE);
+    assert.equal(receipt.slots[1].transportOutcome, 'BODY_READ_ERROR_ZERO_BYTES_CAPTURED');
+    assert.equal(receipt.slots[1].rawBytesCaptured, 0);
+    assert.equal(receipt.slots[1].rawPartialPath, null);
+    assert.equal(receipt.slots[1].rawSsePath, null);
+
+    // Slot 3: valid return succeeded cleanly
+    assert.equal(receipt.slots[2].outcomeClass, OUTCOME_CLASSES.COMPLETED_STOP);
+  } finally {
+    fs.rmSync(tmpOut, { recursive: true, force: true });
+  }
+});
+
+test('EP2 TRANSPORT (d) + (f): two consecutive transport failures trigger STOP_3_CONSECUTIVE_TRANSPORT_FAILURES, enumerate all 18 unattempted slots, and do NOT emit empty blinded gallery', async () => {
+  const tmpOut = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-ep2-t-df-'));
+  try {
+    let calls = 0;
+    const receipt = await executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: EPISODE2_ID,
+      studyId: EPISODE2_STUDY_ID,
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: tmpOut,
+      fetchImpl: async () => {
+        calls++;
+        if (calls === 1) {
+          const cause = Object.assign(new Error('HTTP/2: "headers timeout after 300000"'), { code: 'UND_ERR_HEADERS_TIMEOUT' });
+          throw Object.assign(new TypeError('fetch failed'), { cause });
+        }
+        return new Response('{"error":{"code":503,"status":"UNAVAILABLE"}}', { status: 503 });
+      }
+    });
+
+    assert.equal(STOP_3_CONSECUTIVE_TRANSPORT_THRESHOLD, 2);
+    assert.equal(calls, 2, 'STOP_3 must halt immediately after 2 consecutive transport failures with zero retries');
+    assert.equal(receipt.status, 'HALTED_BY_STOP_RULE');
+    assert.equal(receipt.stop_triggered, 'STOP_3_CONSECUTIVE_TRANSPORT_FAILURES');
+    assert.equal(receipt.calls_planned, 20);
+    assert.equal(receipt.calls_executed, 2);
+    assert.equal(receipt.calls_unattempted, 18);
+    assert.equal(receipt.attempted_registered_slots.length, 2);
+    assert.equal(receipt.unattempted_registered_slots.length, 18);
+    assert.equal(receipt.unattempted_registered_slots[0].slot, 'S03');
+    assert.equal(receipt.unattempted_registered_slots[17].slot, 'S20');
+    assert.equal(receipt.unattempted_registered_slots[0].status, 'UNATTEMPTED_DUE_TO_STOP_3_CONSECUTIVE_TRANSPORT_FAILURES');
+    // Zero recoverable specimens -> blinded gallery MUST NOT be generated!
+    assert.equal(receipt.blinded_gallery_status, 'NOT_GENERATED_ZERO_RECOVERABLE_SPECIMENS');
+    assert.equal(fs.existsSync(path.join(tmpOut, 'OPTION1_BLINDED_LITERARY_GALLERY.md')), false);
+  } finally {
+    fs.rmSync(tmpOut, { recursive: true, force: true });
+  }
+});
+
+test('EP2 TRANSPORT (e) + Episode 1 immutability: Episode 1 archive dir is strictly refused, deadline policy is registered, and hard STOP gates retain immediate single-slot precedence', async () => {
+  // 1. Immutable Episode 1 directory cannot be overwritten
+  await assert.rejects(
+    () => executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: EPISODE2_ID,
+      studyId: EPISODE2_STUDY_ID,
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: path.join(REPO_ROOT, 'research/marrowline-option1-20slot-preflight-20261122/live-acquisition'),
+      fetchImpl: async () => { throw new Error('SHOULD_NEVER_CALL'); }
+    }),
+    /REFUSED_EPISODE1_ARCHIVE_IMMUTABLE/
+  );
+
+  // 2. Registered transport deadline policy and Episode 1 reference verified
+  assert.equal(OPTION1_TRANSPORT_DEADLINE_POLICY.api_mode, 'streamGenerateContent?alt=sse');
+  assert.equal(OPTION1_TRANSPORT_DEADLINE_POLICY.streaming_semantics_unchanged, true);
+  assert.equal(OPTION1_TRANSPORT_DEADLINE_POLICY.headers_timeout_ms, 300000);
+  assert.equal(OPTION1_TRANSPORT_DEADLINE_POLICY.stop_3_consecutive_transport_threshold, 2);
+  assert.equal(OPTION1_TRANSPORT_DEADLINE_POLICY.timeout_adjustment_is_not_proof_of_upstream_health, true);
+  assert.equal(EPISODE1_IMMUTABLE_ARCHIVE.authorized_executable_head_sha, 'c67e64363a436607722f1a943311c5ed9a73a906');
+  assert.equal(EPISODE1_IMMUTABLE_ARCHIVE.evidence_publication_head_sha, '51c1f420cfaa1792c25a5b517d253bf0c079ad86');
+  assert.equal(EPISODE1_IMMUTABLE_ARCHIVE.calls_attempted, 1);
+  assert.equal(EPISODE1_IMMUTABLE_ARCHIVE.calls_unattempted, 19);
+
+  // 3. Hard STOP precedence: single HTTP 400 on S01 halts immediately (consecutiveTransportFailures=0) and enumerates S02..S20 unattempted
+  const tmpOut = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-ep2-t-e-'));
+  try {
+    let calls = 0;
+    const receipt = await executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: EPISODE2_ID,
+      studyId: EPISODE2_STUDY_ID,
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: tmpOut,
+      fetchImpl: async () => {
+        calls++;
+        return new Response('{"error":{"code":400,"message":"invalid"}}', { status: 400 });
+      }
+    });
+    assert.equal(calls, 1);
+    assert.equal(receipt.stop_triggered, 'STOP_HTTP_400_CONFIG_REJECTED');
+    assert.equal(receipt.calls_unattempted, 19);
+    assert.equal(receipt.unattempted_registered_slots[0].slot, 'S02');
+    assert.equal(receipt.unattempted_registered_slots[18].slot, 'S20');
+  } finally {
+    fs.rmSync(tmpOut, { recursive: true, force: true });
+  }
 });

@@ -66,6 +66,8 @@ const REPO_ROOT = path.resolve(__dirname, '../..');
 const OUT_DIR = __dirname;
 
 export const STUDY_ID = 'TD613-MARROWLINE-OPTION1-20SLOT-FACTORIAL-20261122';
+export const EPISODE2_STUDY_ID = 'TD613-MARROWLINE-OPTION1-20SLOT-EP2-20261122';
+export const EPISODE2_ID = 'EP2';
 export const STUDY_CLASS = 'FINITE_CAPABILITY_AND_DISCRIMINATION_SCREEN';
 export const OCT02_SOURCE_COMMIT = 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a';
 export const OCT15_NEUTRAL_CONTROL_COMMIT = '30c2490290c487a93ed5e7cc3163efb52425955a';
@@ -73,6 +75,37 @@ export const Q1_AUTHORIZED_SOURCE_COMMIT = '94e2e9244826969c02d0d7cf8c5e5e9ad7ca
 export const Q1_EVIDENCE_COMMIT = '2836e636e4b5eb485b12f73a2596ea3889b173d4';
 export const STAGE0_PR1766_COMMIT = '5cec27f0727c17ce1d2ac825736a1027293b8849';
 export const PRIOR_PREFLIGHT_PR1769_COMMIT = 'ade1d537904f8aaff96355658ae396734c43e340';
+export const EPISODE1_EXECUTABLE_HEAD_COMMIT = 'c67e64363a436607722f1a943311c5ed9a73a906';
+export const EPISODE1_EVIDENCE_HEAD_COMMIT = '51c1f420cfaa1792c25a5b517d253bf0c079ad86';
+
+// Permanent immutable reference to Episode 1 (PR #1769 @ 51c1f420c; NEVER overwritten, pooled, or retried)
+export const EPISODE1_IMMUTABLE_ARCHIVE = Object.freeze({
+  episode_id: 'EP1',
+  authorized_executable_head_sha: EPISODE1_EXECUTABLE_HEAD_COMMIT,
+  evidence_publication_head_sha: EPISODE1_EVIDENCE_HEAD_COMMIT,
+  archive_dir: 'live-acquisition',
+  calls_planned: 20,
+  calls_attempted: 1,
+  attempted_slots: Object.freeze(['S01']),
+  calls_unattempted: 19,
+  recoverable_specimens: 0,
+  terminal_cause_code: 'UND_ERR_HEADERS_TIMEOUT',
+  elapsed_ms: 300403,
+  upstream_execution_and_billing_status: 'UNKNOWN_1_REQUEST_ATTEMPTED_0_RECOVERABLE_RESPONSES_DO_NOT_ASSUME_ZERO_BILLING'
+});
+
+// Registered STOP_3 threshold and transport deadline policy BEFORE Episode 2 begins
+export const STOP_3_CONSECUTIVE_TRANSPORT_THRESHOLD = 2;
+export const OPTION1_TRANSPORT_DEADLINE_POLICY = Object.freeze({
+  api_mode: 'streamGenerateContent?alt=sse',
+  streaming_semantics_unchanged: true,
+  headers_timeout_ms: 300000,
+  body_idle_timeout_ms: 300000,
+  total_slot_deadline_ms: 420000,
+  stop_3_consecutive_transport_threshold: STOP_3_CONSECUTIVE_TRANSPORT_THRESHOLD,
+  rationale: 'Preserves Node undici default 300,000 ms headers/body idle window rather than imposing an arbitrary shorter cutoff that could manufacture false failures on MEDIUM thinking + 33KB prompts, while bounding total per-slot stall at 420,000 ms (7 min).',
+  timeout_adjustment_is_not_proof_of_upstream_health: true
+});
 
 // Exact canonical heading-boundary regexes matching app/dome-world/khonapolit-relay.js lines 585, 588, 607
 const KHONAPOLIT_HEADING_RE = /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+I[ \t]*[—–:-][ \t]*)?\[?Kʰonapolit(?:[ \t]*\])?[ \t]*[:\-]?/iu;
@@ -697,17 +730,22 @@ export async function buildOption1PreflightReport({
   const equivalence = assertOption1RequestEquivalence(assembled, { profileId });
 
   return {
-    schema: 'td613.marrowline.option1-20slot-preflight/v1.1',
+    schema: 'td613.marrowline.option1-20slot-preflight/v1.2',
     generated_at_utc: new Date().toISOString(),
-    study_id: STUDY_ID,
+    study_id: EPISODE2_STUDY_ID,
+    episode_id: EPISODE2_ID,
     study_class: STUDY_CLASS,
     execution_mode: 'DRY_RUN_PREFLIGHT_ONLY_ZERO_NETWORK',
     live_execution_authorized: false,
     paid_generation_calls_executed: 0,
+    episode1_immutable_archive: EPISODE1_IMMUTABLE_ARCHIVE,
+    transport_deadline_policy: OPTION1_TRANSPORT_DEADLINE_POLICY,
     git_head_provenance: {
       parent_or_construction_head_sha: constructionParentHeadSha,
       qualified_executable_head_sha: 'DETERMINED_EXTERNALLY_AT_RUNTIME_BY_GIT_REV_PARSE_HEAD',
       git_self_reference_explanation: 'Because Git commit SHAs hash committed file contents, no JSON file committed inside commit C can truthfully embed commit C\'s own SHA. parent_or_construction_head_sha records the exact checkout HEAD when this preflight JSON was generated; the qualified executable HEAD for any live authorization MUST be read externally via `git rev-parse HEAD` on the clean committed PR and enforced at runtime by `--operator-auth-sha=<exact-40-hex-head>`.',
+      episode1_authorized_executable_head_sha: EPISODE1_EXECUTABLE_HEAD_COMMIT,
+      episode1_evidence_publication_head_sha: EPISODE1_EVIDENCE_HEAD_COMMIT,
       prior_preflight_pr1769_initial_sha: PRIOR_PREFLIGHT_PR1769_COMMIT,
       stacked_on_stage0_pr1766_sha: STAGE0_PR1766_COMMIT,
       immutable_q1_evidence_sha: Q1_EVIDENCE_COMMIT
@@ -958,14 +996,78 @@ export function generateBlindedReviewPacket(results = [], {
   };
 }
 
+function writeJsonAtomic(filePath, value) {
+  const dir = path.dirname(filePath);
+  fs.mkdirSync(dir, { recursive: true });
+  const tmpPath = `${filePath}.tmp.${process.pid}.${Date.now()}.${Math.random().toString(16).slice(2, 8)}`;
+  fs.writeFileSync(tmpPath, JSON.stringify(value, null, 2) + '\n', 'utf8');
+  fs.renameSync(tmpPath, filePath);
+}
+
+function summarizeTransportError(err) {
+  const cause = err?.cause || null;
+  return {
+    name: err?.name || 'Error',
+    message: err?.message || String(err),
+    code: err?.code || null,
+    causeName: cause?.name || null,
+    causeCode: cause?.code || null,
+    causeMessage: cause?.message || (cause ? String(cause) : null)
+  };
+}
+
+function classifyPreHeadersTransportOutcome(err) {
+  const info = summarizeTransportError(err);
+  if (info.causeCode === 'UND_ERR_HEADERS_TIMEOUT' || /headers timeout/i.test(`${info.message} ${info.causeMessage || ''}`)) {
+    return 'HEADERS_TIMEOUT_NO_RESPONSE';
+  }
+  if (info.name === 'TimeoutError' || info.name === 'AbortError' || info.code === 'ABORT_ERR') {
+    return 'TOTAL_SLOT_DEADLINE_TIMEOUT_NO_RESPONSE';
+  }
+  return 'SOCKET_OR_FETCH_ERROR_NO_RESPONSE';
+}
+
+// Read response body incrementally so any genuine partial bytes received before a mid-stream
+// socket error are preserved verbatim (never fabricating zero-byte SSE files if 0 bytes arrived).
+async function readResponseBodyIncremental(resp) {
+  if (resp?.body && typeof resp.body.getReader === 'function') {
+    const reader = resp.body.getReader();
+    const chunks = [];
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (value && value.byteLength > 0) {
+          chunks.push(Buffer.from(value.buffer, value.byteOffset, value.byteLength));
+        }
+      }
+      return Buffer.concat(chunks);
+    } catch (err) {
+      const partialBuf = chunks.length > 0 ? Buffer.concat(chunks) : Buffer.alloc(0);
+      err.partialBytes = partialBuf;
+      throw err;
+    }
+  }
+  try {
+    return Buffer.from(await resp.arrayBuffer());
+  } catch (err) {
+    err.partialBytes = Buffer.alloc(0);
+    throw err;
+  }
+}
+
 export async function executeOption1Run({
   profileId = DEFAULT_DESIGN_PROFILE,
+  episodeId = EPISODE2_ID,
+  studyId = EPISODE2_STUDY_ID,
   sourceHeadSha,
   operatorAuthSha,
   apiKey,
   fetchImpl = globalThis.fetch,
-  outDir = path.join(OUT_DIR, 'live-acquisition'),
-  maxCalls = HARD_MAX_CALLS
+  outDir = path.join(OUT_DIR, 'live-acquisition-ep2'),
+  maxCalls = HARD_MAX_CALLS,
+  stop3Threshold = STOP_3_CONSECUTIVE_TRANSPORT_THRESHOLD,
+  transportPolicy = OPTION1_TRANSPORT_DEADLINE_POLICY
 } = {}) {
   const profile = DESIGN_PROFILES[profileId];
   if (!profile) {
@@ -976,6 +1078,13 @@ export async function executeOption1Run({
   if (!profile.liveExecutionPermitted) {
     const err = new Error(`REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8: ${profile.blockingReason}`);
     err.code = 'REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8';
+    throw err;
+  }
+  // Never allow Episode 2 (or any subsequent run) to overwrite immutable Episode 1 archive!
+  const immutableEp1Dir = path.resolve(OUT_DIR, 'live-acquisition');
+  if (path.resolve(outDir) === immutableEp1Dir) {
+    const err = new Error('REFUSED_EPISODE1_ARCHIVE_IMMUTABLE: Episode 1 archive (live-acquisition/) is permanently immutable; Episode 2 must write to a separate directory (e.g. live-acquisition-ep2/).');
+    err.code = 'REFUSED_EPISODE1_ARCHIVE_IMMUTABLE';
     throw err;
   }
   if (!/^[0-9a-f]{40}$/i.test(String(sourceHeadSha || '')) || !/^[0-9a-f]{40}$/i.test(String(operatorAuthSha || ''))) {
@@ -1014,130 +1123,300 @@ export async function executeOption1Run({
   fs.mkdirSync(outDir, { recursive: true });
   const rawSseDir = path.join(outDir, 'raw-sse');
   const rawTextDir = path.join(outDir, 'raw-text');
+  const rawPartialDir = path.join(outDir, 'raw-partial');
   fs.mkdirSync(rawSseDir, { recursive: true });
   fs.mkdirSync(rawTextDir, { recursive: true });
+  fs.mkdirSync(rawPartialDir, { recursive: true });
 
+  const plannedCount = Math.min(maxCalls, assembled.length);
   const startedRunAt = new Date().toISOString();
   const results = [];
   let callsExecuted = 0;
+  let consecutiveTransportFailures = 0;
   let stopTriggered = null;
   let terminalError = null;
   let status = 'IN_PROGRESS';
+  let blindedGalleryStatus = 'PENDING_RUN_COMPLETION';
 
   const receiptPath = path.join(outDir, 'OPTION1_LIVE_ACQUISITION_RECEIPT.json');
-  const buildSnapshot = () => ({
-    schema: 'td613.marrowline.option1-live-acquisition-receipt/v1.0',
-    study_id: STUDY_ID,
-    study_class: STUDY_CLASS,
-    design_profile: profileId,
-    source_head_sha: sourceHeadSha,
-    operator_auth_sha: operatorAuthSha,
-    started_at_utc: startedRunAt,
-    updated_at_utc: new Date().toISOString(),
-    status,
-    stop_triggered: stopTriggered,
-    terminal_error: terminalError,
-    calls_planned: Math.min(maxCalls, assembled.length),
-    calls_executed: callsExecuted,
-    retry_count: 0,
-    fallback_seats: [],
-    structural_repair: false,
-    morphology_chase: false,
-    multi_seat_morphology_selector: false,
-    q1_backfill_permitted: false,
-    financial_ceiling: 'NONE',
-    aggregate_token_ceiling: 'NONE',
-    summary: {
-      completed_stop: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP).length,
-      transport_failure: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.TRANSPORT_FAILURE).length,
-      http_503_unavailable: results.filter((r) => r.httpStatus === 503).length,
-      http_400_config_rejected: results.filter((r) => r.httpStatus === 400).length,
-      policy_terminated: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.POLICY_TERMINATED).length,
-      incomplete_nonstop: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.INCOMPLETE_NONSTOP).length,
-      unwitnessed_completion: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.UNWITNESSED_COMPLETION).length,
-      malformed_sse: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.MALFORMED_OR_UNRECONSTRUCTABLE_SSE).length,
-      model_identity_mismatch: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.MODEL_IDENTITY_MISMATCH).length
-    },
-    slots: results
-  });
-  const persist = () => fs.writeFileSync(receiptPath, JSON.stringify(buildSnapshot(), null, 2) + '\n', 'utf8');
+  const buildUnattemptedList = () => {
+    const attemptedSlots = new Set(results.map((r) => r.slot));
+    const reason = stopTriggered
+      ? `UNATTEMPTED_DUE_TO_${stopTriggered}`
+      : (status === 'IN_PROGRESS' ? 'PENDING' : 'UNATTEMPTED');
+    return assembled.slice(0, plannedCount)
+      .filter((a) => !attemptedSlots.has(a.slotSpec.slot))
+      .map((a) => ({
+        slot: a.slotSpec.slot,
+        slotIndex: a.slotSpec.slotIndex,
+        block: a.slotSpec.block,
+        replicate: a.slotSpec.replicate,
+        slotClass: a.slotSpec.slotClass,
+        envelope: a.slotSpec.envelope,
+        model: a.slotSpec.model,
+        taskKey: a.slotSpec.taskKey,
+        bodySha256: a.wire.observation.bodySha256,
+        modelAndBodySha256: a.wire.observation.modelAndBodySha256,
+        status: reason
+      }));
+  };
+
+  const buildSnapshot = () => {
+    const unattempted = buildUnattemptedList();
+    return {
+      schema: 'td613.marrowline.option1-live-acquisition-receipt/v2.0',
+      study_id: studyId,
+      episode_id: episodeId,
+      study_class: STUDY_CLASS,
+      design_profile: profileId,
+      source_head_sha: sourceHeadSha,
+      operator_auth_sha: operatorAuthSha,
+      episode1_immutable_reference: EPISODE1_IMMUTABLE_ARCHIVE,
+      transport_deadline_policy: transportPolicy,
+      stop_3_consecutive_transport_threshold: stop3Threshold,
+      started_at_utc: startedRunAt,
+      updated_at_utc: new Date().toISOString(),
+      status,
+      stop_triggered: stopTriggered,
+      terminal_error: terminalError,
+      blinded_gallery_status: blindedGalleryStatus,
+      calls_planned: plannedCount,
+      calls_executed: callsExecuted,
+      calls_unattempted: unattempted.length,
+      consecutive_transport_failures_at_exit: consecutiveTransportFailures,
+      retry_count: 0,
+      fallback_seats: [],
+      structural_repair: false,
+      morphology_chase: false,
+      multi_seat_morphology_selector: false,
+      q1_backfill_permitted: false,
+      episode1_pooling_permitted: false,
+      financial_ceiling: 'NONE',
+      aggregate_token_ceiling: 'NONE',
+      summary: {
+        completed_stop: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP).length,
+        transport_failure: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.TRANSPORT_FAILURE).length,
+        headers_timeout_no_response: results.filter((r) => r.transportOutcome === 'HEADERS_TIMEOUT_NO_RESPONSE').length,
+        body_read_interrupted: results.filter((r) => String(r.transportOutcome || '').startsWith('BODY_READ_')).length,
+        http_503_unavailable: results.filter((r) => r.httpStatus === 503).length,
+        http_400_config_rejected: results.filter((r) => r.httpStatus === 400).length,
+        policy_terminated: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.POLICY_TERMINATED).length,
+        incomplete_nonstop: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.INCOMPLETE_NONSTOP).length,
+        unwitnessed_completion: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.UNWITNESSED_COMPLETION).length,
+        malformed_sse: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.MALFORMED_OR_UNRECONSTRUCTABLE_SSE).length,
+        model_identity_mismatch: results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.MODEL_IDENTITY_MISMATCH).length
+      },
+      attempted_registered_slots: results.map((r) => ({
+        slot: r.slot,
+        slotIndex: r.slotIndex,
+        envelope: r.envelope,
+        modelRequested: r.modelRequested,
+        taskKey: r.taskKey,
+        outcomeClass: r.outcomeClass,
+        transportOutcome: r.transportOutcome || null
+      })),
+      unattempted_registered_slots: unattempted,
+      slots: results
+    };
+  };
+  const persist = () => writeJsonAtomic(receiptPath, buildSnapshot());
 
   try {
-    for (let i = 0; i < Math.min(maxCalls, assembled.length); i++) {
+    for (let i = 0; i < plannedCount; i++) {
       const item = assembled[i];
       const s = item.slotSpec;
-      const startedAt = new Date().toISOString();
+      const sendStartedMs = Date.now();
+      const sendStartedAtUtc = new Date(sendStartedMs).toISOString();
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(s.model)}:streamGenerateContent?alt=sse`;
       callsExecuted++;
 
-      const resp = await fetchImpl(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'x-goog-api-key': apiKey
-        },
-        body: item.wire.body
+      // REQUIREMENT 1: Atomic pre-send attempted-slot receipt BEFORE calling fetchImpl!
+      // A thrown fetch can NEVER leave a misleading calls_executed=1 with slots=[].
+      const slotIdx = results.length;
+      results.push({
+        episodeId,
+        studyId,
+        slot: s.slot,
+        slotIndex: s.slotIndex,
+        block: s.block,
+        replicate: s.replicate,
+        slotClass: s.slotClass,
+        envelope: s.envelope,
+        taskKey: s.taskKey,
+        modelRequested: s.model,
+        modelVersion: null,
+        sourceHeadSha,
+        requestDigests: item.wire.observation,
+        httpStatus: null,
+        outcomeClass: 'IN_FLIGHT_PRE_SEND',
+        eligibleArtisticSpecimen: false,
+        transportOutcome: 'PENDING_PRE_SEND',
+        transportError: null,
+        rawBytesCaptured: 0,
+        rawSsePath: null,
+        rawSseSha256: null,
+        rawPartialPath: null,
+        rawPartialSha256: null,
+        rawTextPath: null,
+        rawTextSha256: null,
+        sendStartedAtUtc,
+        responseHeadersReceivedAtUtc: null,
+        completedAtUtc: null,
+        elapsedMs: null
       });
+      persist();
 
-      const rawBuf = Buffer.from(await resp.arrayBuffer());
+      // REQUIREMENT 2A: Per-slot try/catch around fetchImpl() (pre-headers socket/timeout errors)
+      let resp;
+      try {
+        const fetchOpts = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'x-goog-api-key': apiKey
+          },
+          body: item.wire.body
+        };
+        if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function' && Number.isFinite(transportPolicy?.total_slot_deadline_ms)) {
+          fetchOpts.signal = AbortSignal.timeout(transportPolicy.total_slot_deadline_ms);
+        }
+        resp = await fetchImpl(url, fetchOpts);
+      } catch (fetchErr) {
+        const completedMs = Date.now();
+        const transportOutcome = classifyPreHeadersTransportOutcome(fetchErr);
+        const transportError = summarizeTransportError(fetchErr);
+        results[slotIdx] = {
+          ...results[slotIdx],
+          outcomeClass: OUTCOME_CLASSES.TRANSPORT_FAILURE,
+          eligibleArtisticSpecimen: false,
+          classificationReason: `${transportOutcome}: ${transportError.causeCode || transportError.code || transportError.name}`,
+          transportOutcome,
+          transportError,
+          rawBytesCaptured: 0,
+          rawSsePath: null,
+          rawSseSha256: null,
+          completedAtUtc: new Date(completedMs).toISOString(),
+          elapsedMs: completedMs - sendStartedMs,
+          upstreamExecutionBillingNote: 'PRE_HEADERS_TRANSPORT_FAILURE_UPSTREAM_PROCESSING_AND_BILLING_UNKNOWN'
+        };
+        consecutiveTransportFailures++;
+        if (consecutiveTransportFailures >= stop3Threshold) {
+          stopTriggered = 'STOP_3_CONSECUTIVE_TRANSPORT_FAILURES';
+          persist();
+          break;
+        }
+        persist();
+        continue;
+      }
+
+      const responseHeadersReceivedAtUtc = new Date().toISOString();
+      results[slotIdx] = {
+        ...results[slotIdx],
+        httpStatus: resp.status,
+        responseHeadersReceivedAtUtc,
+        transportOutcome: 'HEADERS_RECEIVED_READING_BODY'
+      };
+      persist();
+
+      // REQUIREMENT 2B: Per-slot try/catch around incremental streaming body read
+      let rawBuf;
+      try {
+        rawBuf = await readResponseBodyIncremental(resp);
+      } catch (bodyErr) {
+        const completedMs = Date.now();
+        const partialBuf = Buffer.isBuffer(bodyErr?.partialBytes) ? bodyErr.partialBytes : Buffer.alloc(0);
+        const transportError = summarizeTransportError(bodyErr);
+        let rawPartialRel = null;
+        let rawPartialSha256 = null;
+        let transportOutcome = 'BODY_READ_ERROR_ZERO_BYTES_CAPTURED';
+        if (partialBuf.length > 0) {
+          const partialAbs = path.join(rawPartialDir, `${s.slot}.partial.sse`);
+          fs.writeFileSync(partialAbs, partialBuf);
+          rawPartialRel = path.relative(outDir, partialAbs).replace(/\\/g, '/');
+          rawPartialSha256 = sha256Buf(partialBuf);
+          transportOutcome = 'BODY_READ_INTERRUPTED_PARTIAL_BYTES_PRESERVED';
+        }
+        results[slotIdx] = {
+          ...results[slotIdx],
+          outcomeClass: OUTCOME_CLASSES.TRANSPORT_FAILURE,
+          eligibleArtisticSpecimen: false,
+          classificationReason: `${transportOutcome}: ${transportError.causeCode || transportError.code || transportError.message}`,
+          transportOutcome,
+          transportError,
+          rawBytesCaptured: partialBuf.length,
+          rawSsePath: null,
+          rawSseSha256: null,
+          rawPartialPath: rawPartialRel,
+          rawPartialSha256,
+          completedAtUtc: new Date(completedMs).toISOString(),
+          elapsedMs: completedMs - sendStartedMs
+        };
+        consecutiveTransportFailures++;
+        if (consecutiveTransportFailures >= stop3Threshold) {
+          stopTriggered = 'STOP_3_CONSECUTIVE_TRANSPORT_FAILURES';
+          persist();
+          break;
+        }
+        persist();
+        continue;
+      }
+
       const rawSsePath = path.join(rawSseDir, `${s.slot}.sse`);
       fs.writeFileSync(rawSsePath, rawBuf);
+      const rawSseRel = path.relative(outDir, rawSsePath).replace(/\\/g, '/');
       const rawSseSha256 = sha256Buf(rawBuf);
 
-      // Fail-closed HTTP 400 config rejection guard (NEVER silently downgrade thinkingLevel!)
+      // Fail-closed HTTP 400 config rejection guard (hard STOP precedence, NEVER silently downgrade!)
       if (resp.status === 400) {
-        results.push({
-          slot: s.slot,
-          slotIndex: s.slotIndex,
-          block: s.block,
-          replicate: s.replicate,
-          slotClass: s.slotClass,
-          envelope: s.envelope,
-          taskKey: s.taskKey,
-          modelRequested: s.model,
-          modelVersion: null,
+        const completedMs = Date.now();
+        results[slotIdx] = {
+          ...results[slotIdx],
           httpStatus: 400,
           outcomeClass: 'CONFIG_REJECTED_HTTP_400',
           eligibleArtisticSpecimen: false,
           classificationReason: 'HTTP_400_CONFIG_OR_THINKING_LEVEL_REJECTED_ZERO_SILENT_DOWNGRADE',
-          requestDigests: item.wire.observation,
-          rawSsePath: path.relative(outDir, rawSsePath).replace(/\\/g, '/'),
+          transportOutcome: 'HTTP_400_CONFIG_REJECTED',
+          rawBytesCaptured: rawBuf.length,
+          rawSsePath: rawSseRel,
           rawSseSha256,
           rawSseBytes: rawBuf.length,
-          startedAt,
-          completedAt: new Date().toISOString()
-        });
+          completedAtUtc: new Date(completedMs).toISOString(),
+          elapsedMs: completedMs - sendStartedMs
+        };
         stopTriggered = 'STOP_HTTP_400_CONFIG_REJECTED';
         persist();
         break;
       }
 
-      // Preserve non-200 transport errors (e.g. 503, 429) verbatim with zero retries
+      // Preserve non-200 transport errors (e.g. 503, 429, 502, 504) verbatim with zero retries + STOP_3 tracking
       if (!resp.ok) {
-        results.push({
-          slot: s.slot,
-          slotIndex: s.slotIndex,
-          block: s.block,
-          replicate: s.replicate,
-          slotClass: s.slotClass,
-          envelope: s.envelope,
-          taskKey: s.taskKey,
-          modelRequested: s.model,
-          modelVersion: null,
+        const completedMs = Date.now();
+        results[slotIdx] = {
+          ...results[slotIdx],
           httpStatus: resp.status,
           outcomeClass: OUTCOME_CLASSES.TRANSPORT_FAILURE,
           eligibleArtisticSpecimen: false,
           classificationReason: `UNRETRIED_HTTP_${resp.status}`,
-          requestDigests: item.wire.observation,
-          rawSsePath: path.relative(outDir, rawSsePath).replace(/\\/g, '/'),
+          transportOutcome: `HTTP_${resp.status}_TRANSPORT_UNAVAILABLE`,
+          rawBytesCaptured: rawBuf.length,
+          rawSsePath: rawSseRel,
           rawSseSha256,
           rawSseBytes: rawBuf.length,
-          startedAt,
-          completedAt: new Date().toISOString()
-        });
+          completedAtUtc: new Date(completedMs).toISOString(),
+          elapsedMs: completedMs - sendStartedMs
+        };
+        consecutiveTransportFailures++;
+        if (consecutiveTransportFailures >= stop3Threshold) {
+          stopTriggered = 'STOP_3_CONSECUTIVE_TRANSPORT_FAILURES';
+          persist();
+          break;
+        }
         persist();
         continue;
       }
+
+      // HTTP 200 stream body successfully transported -> reset consecutive transport failure counter!
+      consecutiveTransportFailures = 0;
 
       const sseIntegrity = await verifySseIntegrity(rawBuf);
       const canonicalPayload = sseIntegrity.canonicalMergedPayload || {};
@@ -1161,7 +1440,6 @@ export async function executeOption1Run({
         creative: item.upstreamAperture.discourseMode === 'CREATIVE'
       });
 
-      // Enforce per-slot exact modelVersion matching (detects silent 3.7->3.8 or 3.6->3.8 aliasing!)
       const outcome = classifySlotOutcome({
         httpStatus: resp.status,
         sseIntegrity,
@@ -1189,15 +1467,9 @@ export async function executeOption1Run({
         };
       }
 
-      results.push({
-        slot: s.slot,
-        slotIndex: s.slotIndex,
-        block: s.block,
-        replicate: s.replicate,
-        slotClass: s.slotClass,
-        envelope: s.envelope,
-        taskKey: s.taskKey,
-        modelRequested: s.model,
+      const completedMs = Date.now();
+      results[slotIdx] = {
+        ...results[slotIdx],
         modelVersion: observed.modelVersion || null,
         modelIdentityCheck: isExpectedPinnedModelVersion(observed.modelVersion, s.model),
         httpStatus: resp.status,
@@ -1208,8 +1480,9 @@ export async function executeOption1Run({
         outcomeClass: outcome.outcomeClass,
         eligibleArtisticSpecimen: outcome.eligibleArtisticSpecimen,
         classificationReason: outcome.reason,
-        requestDigests: item.wire.observation,
-        rawSsePath: path.relative(outDir, rawSsePath).replace(/\\/g, '/'),
+        transportOutcome: 'HTTP_200_STREAM_RECEIVED',
+        rawBytesCaptured: rawBuf.length,
+        rawSsePath: rawSseRel,
         rawSseSha256,
         rawSseBytes: rawBuf.length,
         rawTextPath: path.relative(outDir, rawTextPath).replace(/\\/g, '/'),
@@ -1230,9 +1503,9 @@ export async function executeOption1Run({
         },
         wholeTextUnicodeMorphology: wholeTextMorphology,
         marrowlineMetrics,
-        startedAt,
-        completedAt: new Date().toISOString()
-      });
+        completedAtUtc: new Date(completedMs).toISOString(),
+        elapsedMs: completedMs - sendStartedMs
+      };
 
       if (outcome.stopCode) {
         stopTriggered = outcome.stopCode;
@@ -1243,16 +1516,26 @@ export async function executeOption1Run({
     }
 
     status = stopTriggered ? 'HALTED_BY_STOP_RULE' : 'COMPLETED_REGISTERED_SLOTS';
-    const { blindedPacket, galleryMarkdown, unblindingKey } = generateBlindedReviewPacket(results, { outDir });
-    const privateUnblindingDir = path.join(outDir, 'private-unblinding');
-    fs.mkdirSync(privateUnblindingDir, { recursive: true });
-    fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_LITERARY_GALLERY.md'), galleryMarkdown, 'utf8');
-    fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_LITERARY_GALLERY.json'), JSON.stringify(blindedPacket, null, 2) + '\n', 'utf8');
-    fs.writeFileSync(path.join(privateUnblindingDir, 'OPTION1_SEALED_UNBLINDING_KEY.json'), JSON.stringify(unblindingKey, null, 2) + '\n', 'utf8');
+    const recoverableSpecimens = results.filter((r) => r.outcomeClass === OUTCOME_CLASSES.COMPLETED_STOP);
+    if (recoverableSpecimens.length > 0) {
+      const { blindedPacket, galleryMarkdown, unblindingKey } = generateBlindedReviewPacket(results, {
+        outDir,
+        seedSalt: studyId
+      });
+      const privateUnblindingDir = path.join(outDir, 'private-unblinding');
+      fs.mkdirSync(privateUnblindingDir, { recursive: true });
+      fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_LITERARY_GALLERY.md'), galleryMarkdown, 'utf8');
+      fs.writeFileSync(path.join(outDir, 'OPTION1_BLINDED_LITERARY_GALLERY.json'), JSON.stringify(blindedPacket, null, 2) + '\n', 'utf8');
+      fs.writeFileSync(path.join(privateUnblindingDir, 'OPTION1_SEALED_UNBLINDING_KEY.json'), JSON.stringify(unblindingKey, null, 2) + '\n', 'utf8');
+      blindedGalleryStatus = 'GENERATED_PENDING_CHROME_VISUAL_WITNESS';
+    } else {
+      blindedGalleryStatus = 'NOT_GENERATED_ZERO_RECOVERABLE_SPECIMENS';
+    }
   } catch (err) {
     terminalError = err?.message || String(err);
     if (!stopTriggered) stopTriggered = 'FATAL_HARNESS_EXCEPTION';
     status = 'FAILED_WITH_TERMINAL_ERROR';
+    blindedGalleryStatus = 'NOT_GENERATED_FATAL_EXCEPTION';
     throw err;
   } finally {
     persist();
@@ -1265,6 +1548,7 @@ async function main() {
   const args = process.argv.slice(2);
   const executeLive = args.includes('--execute-live');
   const profileId = args.find((a) => a.startsWith('--design-profile='))?.split('=')[1] || DEFAULT_DESIGN_PROFILE;
+  const episodeId = args.find((a) => a.startsWith('--episode-id='))?.split('=')[1] || EPISODE2_ID;
   const authSha = args.find((a) => a.startsWith('--operator-auth-sha='))?.split('=')[1] || null;
   const maxCalls = Number(args.find((a) => a.startsWith('--max-calls='))?.split('=')[1] || HARD_MAX_CALLS);
 
@@ -1298,21 +1582,31 @@ async function main() {
   try {
     const receipt = await executeOption1Run({
       profileId,
+      episodeId,
+      studyId: episodeId === EPISODE2_ID ? EPISODE2_STUDY_ID : `${STUDY_ID}-${episodeId}`,
       sourceHeadSha: getGitHeadSha(),
       operatorAuthSha: authSha,
       apiKey,
+      outDir: path.join(OUT_DIR, `live-acquisition-${String(episodeId).toLowerCase()}`),
       maxCalls
     });
     console.log(JSON.stringify({
       ok: receipt.status === 'COMPLETED_REGISTERED_SLOTS',
+      episode_id: receipt.episode_id,
       status: receipt.status,
       calls_executed: receipt.calls_executed,
+      calls_unattempted: receipt.calls_unattempted,
       stop_triggered: receipt.stop_triggered,
+      blinded_gallery_status: receipt.blinded_gallery_status,
       summary: receipt.summary
     }, null, 2));
     if (receipt.status !== 'COMPLETED_REGISTERED_SLOTS') process.exit(3);
   } catch (err) {
-    if (err?.code === 'REFUSED_LIVE_EXECUTION' || err?.code === 'REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8') {
+    if (
+      err?.code === 'REFUSED_LIVE_EXECUTION'
+      || err?.code === 'REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8'
+      || err?.code === 'REFUSED_EPISODE1_ARCHIVE_IMMUTABLE'
+    ) {
       console.error(err.message);
       process.exit(2);
     }

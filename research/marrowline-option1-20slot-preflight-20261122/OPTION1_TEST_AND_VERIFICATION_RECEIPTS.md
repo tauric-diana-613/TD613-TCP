@@ -64,10 +64,16 @@ node tests/release-plumbing.test.mjs
 node research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs --verify
 ```
 
-### Summary Results
-- **`tests/marrowline-option1-20slot-preflight.test.mjs`:** **`11 / 11 PASS`** (including all `3` dedicated Redpen 1/2/3 regression tests + full 20-slot happy-path nonzero bots & scrubbed gallery assertions + `BLOCKED_HISTORICAL_3_7`, `STOP_1`, `HTTP 400`, `HTTP 503`/`MAX_TOKENS`/`PROHIBITED_CONTENT`/`STOP_4` negative controls)
+### Summary Results (Episode 2 Transport-Hardened Qualification — `42 / 42` Marrowline + `5 / 5` Constitutional)
+- **`tests/marrowline-option1-20slot-preflight.test.mjs`:** **`15 / 15 PASS`** (`globalThis.fetch` fail-closed poisoned — `0` unintended network calls):
+  - All `11` prior Option 1 preflight & Redpen 1–3 tests PASS unchanged;
+  - **(a)+(c)** Pre-headers `UND_ERR_HEADERS_TIMEOUT`: verifies atomic pre-send receipt written BEFORE `fetch` rejects (`slots.length === 1`, `IN_FLIGHT_PRE_SEND`), records `HEADERS_TIMEOUT_NO_RESPONSE`, `rawBytesCaptured: 0`, `rawSsePath: null` (NO zero-byte `.sse` fabricated), and verifies isolated Slot 1 failure followed by valid Slot 2 resets `consecutiveTransportFailures` to `0` and continues cleanly;
+  - **(b)** Mid-stream body rejection: preserves genuine partial UTF-8 bytes verbatim in `raw-partial/S01.partial.sse` (`BODY_READ_INTERRUPTED_PARTIAL_BYTES_PRESERVED`), and verifies zero-byte body rejection writes `rawBytesCaptured: 0, rawPartialPath: null`;
+  - **(d)+(f)** Two consecutive transport failures trigger `STOP_3_CONSECUTIVE_TRANSPORT_FAILURES` (`threshold = 2`), enumerate all `18` remaining slots (`S03`–`S20`) in `unattempted_registered_slots`, and set `blinded_gallery_status: "NOT_GENERATED_ZERO_RECOVERABLE_SPECIMENS"` without emitting an empty gallery;
+  - **(e)+EP1 Immutability:** Targeting `live-acquisition/` throws `REFUSED_EPISODE1_ARCHIVE_IMMUTABLE`, registered transport deadline policy verified, and single-slot `HTTP 400` (`STOP_HTTP_400_CONFIG_REJECTED`) retains immediate hard STOP precedence with `S02`–`S20` unattempted enumeration.
 - **`tests/marrowline-sep26-oct02-stage0.test.mjs`:** **`6 / 6 PASS`**
 - **`tests/marrowline-q1-live-discriminator.test.mjs`:** **`9 / 9 PASS`**
 - **`tests/marrowline-screaming-grove-restoration.test.mjs`:** **`12 / 12 PASS`**
 - **TD613 Constitutional Hygiene Suites:** `workflow-estate`, `docs-surface`, `release-hardening`, `vercel-deploy-hygiene` (`5/5`), `release-plumbing` — **all PASS**.
-- **Custody Manifest Verifier:** `ok: true, error_count: 0` (`18 / 18` published files SHA-256 verified, `0` broken navigator links, `0` secret/local-path/mention-token leaks).
+- **Custody Manifest Verifier:** `ok: true, error_count: 0` (`23 / 23` published files SHA-256 verified, `0` broken navigator links, `0` secret/local-path/mention-token leaks).
+- **Episode 1 Immutable Verification:** `git diff 51c1f420c -- research/marrowline-option1-20slot-preflight-20261122/live-acquisition/` is empty (`0` bytes changed in Episode 1 archive).

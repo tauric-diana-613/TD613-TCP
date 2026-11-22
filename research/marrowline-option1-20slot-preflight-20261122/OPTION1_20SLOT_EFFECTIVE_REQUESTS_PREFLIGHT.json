@@ -1,15 +1,44 @@
 {
-  "schema": "td613.marrowline.option1-20slot-preflight/v1.1",
-  "generated_at_utc": "2026-11-22T15:42:31.000Z",
-  "study_id": "TD613-MARROWLINE-OPTION1-20SLOT-FACTORIAL-20261122",
+  "schema": "td613.marrowline.option1-20slot-preflight/v1.2",
+  "generated_at_utc": "2026-11-22T19:02:23.018Z",
+  "study_id": "TD613-MARROWLINE-OPTION1-20SLOT-EP2-20261122",
+  "episode_id": "EP2",
   "study_class": "FINITE_CAPABILITY_AND_DISCRIMINATION_SCREEN",
   "execution_mode": "DRY_RUN_PREFLIGHT_ONLY_ZERO_NETWORK",
   "live_execution_authorized": false,
   "paid_generation_calls_executed": 0,
+  "episode1_immutable_archive": {
+    "episode_id": "EP1",
+    "authorized_executable_head_sha": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "evidence_publication_head_sha": "51c1f420cfaa1792c25a5b517d253bf0c079ad86",
+    "archive_dir": "live-acquisition",
+    "calls_planned": 20,
+    "calls_attempted": 1,
+    "attempted_slots": [
+      "S01"
+    ],
+    "calls_unattempted": 19,
+    "recoverable_specimens": 0,
+    "terminal_cause_code": "UND_ERR_HEADERS_TIMEOUT",
+    "elapsed_ms": 300403,
+    "upstream_execution_and_billing_status": "UNKNOWN_1_REQUEST_ATTEMPTED_0_RECOVERABLE_RESPONSES_DO_NOT_ASSUME_ZERO_BILLING"
+  },
+  "transport_deadline_policy": {
+    "api_mode": "streamGenerateContent?alt=sse",
+    "streaming_semantics_unchanged": true,
+    "headers_timeout_ms": 300000,
+    "body_idle_timeout_ms": 300000,
+    "total_slot_deadline_ms": 420000,
+    "stop_3_consecutive_transport_threshold": 2,
+    "rationale": "Preserves Node undici default 300,000 ms headers/body idle window rather than imposing an arbitrary shorter cutoff that could manufacture false failures on MEDIUM thinking + 33KB prompts, while bounding total per-slot stall at 420,000 ms (7 min).",
+    "timeout_adjustment_is_not_proof_of_upstream_health": true
+  },
   "git_head_provenance": {
-    "parent_or_construction_head_sha": "ade1d537904f8aaff96355658ae396734c43e340",
+    "parent_or_construction_head_sha": "51c1f420cfaa1792c25a5b517d253bf0c079ad86",
     "qualified_executable_head_sha": "DETERMINED_EXTERNALLY_AT_RUNTIME_BY_GIT_REV_PARSE_HEAD",
     "git_self_reference_explanation": "Because Git commit SHAs hash committed file contents, no JSON file committed inside commit C can truthfully embed commit C's own SHA. parent_or_construction_head_sha records the exact checkout HEAD when this preflight JSON was generated; the qualified executable HEAD for any live authorization MUST be read externally via `git rev-parse HEAD` on the clean committed PR and enforced at runtime by `--operator-auth-sha=<exact-40-hex-head>`.",
+    "episode1_authorized_executable_head_sha": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "episode1_evidence_publication_head_sha": "51c1f420cfaa1792c25a5b517d253bf0c079ad86",
     "prior_preflight_pr1769_initial_sha": "ade1d537904f8aaff96355658ae396734c43e340",
     "stacked_on_stage0_pr1766_sha": "5cec27f0727c17ce1d2ac825736a1027293b8849",
     "immutable_q1_evidence_sha": "2836e636e4b5eb485b12f73a2596ea3889b173d4"
