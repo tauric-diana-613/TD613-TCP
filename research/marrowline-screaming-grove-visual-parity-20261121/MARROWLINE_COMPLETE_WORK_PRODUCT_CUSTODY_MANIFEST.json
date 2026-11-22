@@ -1,0 +1,1101 @@
+{
+  "schema": "td613.marrowline.visual-parity-work-product-custody/v1.0",
+  "commission": "TD613-MARROWLINE-SCREAMING-GROVE-RESTORATION (2026-11-21 Expanded Visual Corpus Edition)",
+  "base_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+  "retained_deterministic_ancestor": "bc5467246f12b0598f89d681e4a4450c4733eace",
+  "immutable_predecessor_pr_1746": "fe2e8bed3bd0923ae7c146524d8832531cbe837e",
+  "immutable_precursor_pr_1745": "4a481e44f3f6f2b3c0f2fda74b6eafe1610de6d8",
+  "immutable_oct02_comparator": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+  "total_entries": 149,
+  "committed_entries": 128,
+  "read_only_repo_blobs": 18,
+  "excluded_with_rationale": 3,
+  "entries": [
+    {
+      "path": "server/marrowline-completion.js",
+      "artifact_class": "deterministic_runtime_repair",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 5100,
+      "sha256": "16f59db959f28d0246e77f31b4b94b1bdcf732926d99f81f274b45ce5612f221",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "server/khonapolit-quality.js",
+      "artifact_class": "deterministic_runtime_repair",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 124126,
+      "sha256": "f75769f09700687cf57f51488ca4bba70b2abbc303430cdfaff63d16b9847e48",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "server/marrowline-attachment-quality.js",
+      "artifact_class": "deterministic_runtime_repair",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 29222,
+      "sha256": "db26d8d8de77a605dceb578becbf5122ba8d78f3d07f0254bf8f0f9292716937",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "app/engine/aperture-v3-task-intent.js",
+      "artifact_class": "deterministic_runtime_repair",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 7725,
+      "sha256": "b38b1e6d6c88d12d2338b2b30c25ca3909fd24e9bdf32a5ec3a567c612326e5d",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "app/dome-world/khonapolit-relay.js",
+      "artifact_class": "deterministic_runtime_repair",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 54826,
+      "sha256": "4546f2021b5b50745b77a73a34711c09b51bba4c9cbf022cd079b07e3abb79d2",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "app/dome-world/marrowline-historical-grove.js",
+      "artifact_class": "deterministic_runtime_repair",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 16674,
+      "sha256": "df8d2206b04e76f409dead068a75ea6d64869c6c7a342bde6961c05a6fbb0f98",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+      "artifact_class": "deterministic_test_suite",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 34180,
+      "sha256": "878b36cbd8675c97dc87bb7c65c7b275f6e29048766f20d5fefcd88195205e65",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": ".github/workflows/td613-ci.yml",
+      "artifact_class": "ci_scope_wiring",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 84451,
+      "sha256": "61b80bc4c89af96b7339461b88cced3fe3d8764bfb8cc29b48c1cf78bc2ceacc",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+      "artifact_class": "retained_offline_comparator",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 13218,
+      "sha256": "3566159ba5f183960a79dd80d9610b7e75e525abae427d575220a643ae12e081",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+      "artifact_class": "retained_preregistration_held",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 6439,
+      "sha256": "f54fa198bd0b668601b87fbddace600ccdda0591892df85bc192eb6b1affb068",
+      "source_origin": "Ported cleanly from verified deterministic ancestor bc5467246 / immutable PR #1746 fe2e8bed3 onto origin/main f1288ec69"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 95518,
+      "sha256": "a1eb75a9114d90a26f82edcbf1b9138152b179362f060c1739ac985426747cbd"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 554708,
+      "sha256": "b829bf7560891690ec4290d7c0abbadae6f391e923fae0b78c78c3ce9fd7ee95"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 532622,
+      "sha256": "fc4f43dd04956b07bc59e5da29e05ebe609150511d4b8bafc5e6930a38817c59"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/desktop-1440x900-scroll-03.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 513015,
+      "sha256": "91c3c996d669b5148ad776aa1f133278069c5880d6cf3e5d9dc2eeb6878ae219"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/desktop-1440x900-scroll-04.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 455704,
+      "sha256": "fdb33fd9991828c0c292157ad9644976af1171198df9fa4afbff4b9c9650659c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 270215,
+      "sha256": "7f257bf1b7d797b55628cbaf22015665474765f7936d42b00ee1dab5a5bacb71"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/mobile-390x844-capture-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 236914,
+      "sha256": "dfd7dba2a24bad5376f15a3fb4b0814c752b5304d28437c833053328c39dcc8d"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/mobile-390x844-capture-03.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 244264,
+      "sha256": "686f39a235c92ad12c5193eb5d3fb0da9ac90406def3eccea0d619506437e6d7"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/mobile-390x844-capture-04.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 234358,
+      "sha256": "482aab1d8e9d2e3bc59d3993c848ca46a654c5e17a104456bc00d7fe3f61170a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/mobile-390x844-capture-05.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 190578,
+      "sha256": "3f91dd3929065cebe4dcc6d3a139dd03fcc4768e142fde9cd34d4a58f2ec28a0"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-01/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 251794,
+      "sha256": "d0d9ba666b76772bb7f9b2d735bfa07d4272896ded5e4a981debc58c0f92cb07"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 236287,
+      "sha256": "674779973726fed44d9ff89f6adccc5e9905bad047c0cb20a0e2043aaea9f14e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 529582,
+      "sha256": "128ffae4bc7b72b8a10b05461bf2a703d71eac1008846d1866205a8938453067"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 582214,
+      "sha256": "e33af43ecfd1505e2e8d2dfaeb3816a90d65a603d356e1c2ae7d04b904b0cf47"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/desktop-1440x900-scroll-03.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 510707,
+      "sha256": "cb97eaa132cf1231139ff06b292b0edd5d15efd74fbc9fc86bcd63ed919f6587"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/desktop-1440x900-scroll-04.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 501744,
+      "sha256": "3a3bfe3523d05040b17b3d665117912fb031ced77b5f139290a4960ec2b4536d"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 257381,
+      "sha256": "91e6b2deba12507c8f6cf410650e1ce984138b6080db0cafca5b19881e917473"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/mobile-390x844-capture-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 251653,
+      "sha256": "998aa1da61837ac13c0227c5b68b376ff752e10a686d939398f384ffcce349b5"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/mobile-390x844-capture-03.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 253451,
+      "sha256": "384af2b1cc8621f5f7847bd7ff42a5e826b1b7585e3f7de2f3cd2cc05b4ee0d8"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/mobile-390x844-capture-04.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 213069,
+      "sha256": "aa4e021fa5c25819f0577432e8c66224f90c8cd840d46d630058a908cbbeb7f5"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-02/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 241071,
+      "sha256": "a9359a7c48985515910a6522f55d0bad433895f5271f61796ddfe937d14db20a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 74557,
+      "sha256": "4beba95b91925238bd7f0277d52b066af90f375c702c3620a87477da881e5635"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 516911,
+      "sha256": "57cdf0f9d4099d87c36b9e6356bb3a874e03c50ac6bf5337d84254bce97c979a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 537071,
+      "sha256": "810096779185dec04f7984238eb4a45bc9872bdbc5c8e01d2733ac34984c365d"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-03.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 516472,
+      "sha256": "c26b164e4c7803c8bf58d60661fa0ac9c0225fe6f04f4dd3c87d5d83556bb2a3"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-04.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 470872,
+      "sha256": "572e735b3004453e689c505bbfae5b220fe080ebdfd854680882303a2c222d3c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-05.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 517855,
+      "sha256": "5064e3ba522243a0e85b2c3378934bd7714f587ba961e0370dc506fa84a10a77"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-06.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 553498,
+      "sha256": "8073bdb88dc3aaec3fae17e172be816e1f497bc27dcf988a11405801a10358b7"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-07.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 538752,
+      "sha256": "04a456088d0627b799caf35d487c85bc8791e4f572c374af1ec7f465ca50610a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-08.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 521507,
+      "sha256": "15b9079d47aba7c60ee2119315efcc1e2d2f7d6780189063e6173fd2c5e283a8"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-09.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 497512,
+      "sha256": "9deb57eff9e4f64bb790ea91140cbc5b478a27bd4e59ab533e9e997e090e817d"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-10.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 455700,
+      "sha256": "dc792c5910eec76d95c6f967dd5ea06c56c85725c33b695c62bd0852a24040bc"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-11.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 434040,
+      "sha256": "581469bc1484a396a7c87ba548d6807e004a94fe30f143ce7fd928e1d2ba1fbb"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-12.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 458951,
+      "sha256": "b63c1ae85b3268e39c5ca75b425028457031c0b50ec6338695a75590ef5b5709"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-13.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 447549,
+      "sha256": "eb978e65a433afbc32b470083363f6bf1a5e00f28f88f0c90a6ba875df2bdb7a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-14.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 440146,
+      "sha256": "d9b04f2a8e4c3fe50dbe38426de5c14fb9652d173fd62c7d60af10c809f3b55b"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/desktop-1440x900-scroll-15.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 428240,
+      "sha256": "c85130348c54a85fd410c6eee1add441baef918f523da8821aac51a051d5ea90"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 252243,
+      "sha256": "1ae2907abe0dd671c6204ec479ca27957aa0e2144854a97f47addd62433817cb"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 249562,
+      "sha256": "1f070ca933359d75361065ffb8a5ebb6c1f800a6653525986b324fd114f72226"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-03.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 209977,
+      "sha256": "bbf94925c449d49b4ff7a5d58d77184a5d7bfd7d7c2c3540943a74c64fa83616"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-04.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 264165,
+      "sha256": "d6eba75ad63307f84a1204da791436f95d41371899c9bb3f790495a46cecc5f2"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-05.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 261391,
+      "sha256": "d35326d6cbd74185da8dc408816c4c7a92d6a2982a3eb100e34c82509d9a0c7e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-06.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 211724,
+      "sha256": "6db4c14f188b2089a9a011c1eaeed82cf32cee0fff63c55108bb85e772beb09f"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-07.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 171686,
+      "sha256": "7be60361f5b851df6dec25b9b23c376074a388722c767ab0ad52e8949ca1064c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-capture-08.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 146628,
+      "sha256": "b2c5e60e0c183c3fcfba2b61612108737f88b07c2058b08996048d2c28bdcbe1"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-03/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 255172,
+      "sha256": "60163406f152e45aa3ad6b083f0184785623b9fba1cab155cd4850af873f05d2"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-04/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 104074,
+      "sha256": "599525c32fff0dc642cae106316926681f16bd6014cb359c64c260cf93af6eaf"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-04/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 524889,
+      "sha256": "b18d116b01c90e589e7c31755667c003de5f468f95372de5e3737ec81ed5fc83"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-04/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 476339,
+      "sha256": "d8fcce0954fc59a058a856f1d3df4b9f8067e95784cdc7df91540aa2849a9e86"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-04/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 270039,
+      "sha256": "2a6707298ed21c00c7391f2576bb86dcc8b045f5db5c29e29f3ff87ea67403a3"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-04/mobile-390x844-capture-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 227047,
+      "sha256": "f56a8a15d6c4593eb924c6a43e11196051aeffc104231dd073f669e18f489a5e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-04/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 258784,
+      "sha256": "afff166f02cb8cce678f73346e5860be3fa364a62e113bdaea844e2f121dc1d9"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-05/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 106539,
+      "sha256": "f371827ad814e4ee5a575b6c0a8a351f5cc5ad08a72005c37d10bb96d05d9403"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-05/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 513490,
+      "sha256": "47ecd22a76f7823a25de403ef647e23b2e914cfc290b9ad30c2d95b9e12ebf7b"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-05/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 520862,
+      "sha256": "ad8dc3d5a836bd62950e4d6197e42f47b661330fadef0e0155ee8141eb4f79e6"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-05/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 254569,
+      "sha256": "91e83789478791774d3514fbd87c7e0fb6d0feb9667a8412db1bdb1de84deae4"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-05/mobile-390x844-capture-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 238035,
+      "sha256": "fe0e2f8a06565e864bccd3c943e46934200dbaecf6e81ad869ccc19a11910557"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-05/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 246229,
+      "sha256": "f7d4b2a840f71998bda3990a9da3558e9663fae9bf932b739eadd28a8d578d77"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-06/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 68551,
+      "sha256": "6554b3432410a8b145fde1099ea2c618892db14a9fa93e0c24411d243dfb29a1"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-06/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 486921,
+      "sha256": "52308e4132b0fea375cc17f501064bedd3d37dfcaa970836c1b2ca5c92eef9f5"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-06/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 475561,
+      "sha256": "850f341fb1e2fc41248547cf7212823461bb09ea22fa1f163c7ee5982916ce4f"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-06/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 211727,
+      "sha256": "668e915744ca45b8e892928d8122efa3829bc97a0b0a4b167bccb5f627b213ef"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-06/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 245834,
+      "sha256": "8df5530dea9825bf3a2d6bab6c90d53eacd3023f8cc2aa1261f3baa965761362"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07a/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 51068,
+      "sha256": "6e43d473d59e63b33c71fc22ab49b370fa7dd725cacae92ddc0422c582330e8b"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07a/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 416740,
+      "sha256": "423b013256212760a8564b7c2b2a942984ff7d3312e8f3f4daca69cbfd3d2315"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07a/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 181187,
+      "sha256": "929c909b6a95ebbc938e8e091de71c85f5d7b2bbcf9acc3275b5d7dfddd0dafb"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07a/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 229298,
+      "sha256": "34438c2f53618f98122393f58b06e3c91a01b64422684def920260dfb39e83cc"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07b/desktop-1440x900-detail-primary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 79681,
+      "sha256": "72316a536b14796af372ac9316d0dcdf57ea7b0920160aec965b376951c14cf1"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07b/desktop-1440x900-scroll-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 462803,
+      "sha256": "2d312a890265092be46f33d97b1de544510d07674a7cb37d7603253c4e46338e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07b/desktop-1440x900-scroll-02.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 460832,
+      "sha256": "79fef097b2eeb2af4d999eeed281954ad2bbd934de29349e96b643ab4636205e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07b/mobile-390x844-capture-01.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 201347,
+      "sha256": "946215828cec3ce74fccae9344f34c222e591bfc6ce79b4185afb1369e4e1dd2"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/captures/blind-07b/mobile-390x844-ordinary.png",
+      "artifact_class": "chrome_cdp_browser_witness_png",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 248939,
+      "sha256": "0268da7d401235b6cad599ef414ec9be7a009bfc094bee8cccfde64f32e28d52"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/browser-witness/run-complete-visual-witness.mjs",
+      "artifact_class": "reproducibility_script",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 45905,
+      "sha256": "b9c92e10aea51ba35ba6744bea04d63955900bfc85bbb5546fd7579aa08598d8"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_ALL_OUTPUTS_VISUAL_INDEX.json",
+      "artifact_class": "machine_readable_index_or_parity",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 69785,
+      "sha256": "79fc305e176f543bbb2ad76bae3c61b92700b179e2e9b64fa587ef1ab22e2c2e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_ALL_OUTPUTS_VISUAL_INDEX.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 24038,
+      "sha256": "b55e7ed3269bd42bb03f1fad6c435d7f39cec0d6786eeacd80a1731cec926490"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 7005,
+      "sha256": "2b7ebfd4a61d4cb4ae413568d83a5440c698c2c8be6284dd36c1ff0f14c3a182"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_BLINDED_ARTISTIC_SPECIMENS.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 8087,
+      "sha256": "977517754fdbf2b78c7320b3e9df8fe9d256345f1e48692c3de46b8aca002282"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_BROWSER_WITNESS_HIGH_ZALGO_COMPARISON.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 4273,
+      "sha256": "e375715f7a593b2ac50e3fbf9bc42f824c5b2be46f3627826c3dac597999bd92"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+      "artifact_class": "machine_readable_index_or_parity",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 60351,
+      "sha256": "2cd956e2fcdc74e28799b861cddc66fb3ff8bb9364eb640a189916a9b2ac1f4c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_HIGH_ZALGO_FAILURE_GALLERY.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 4706,
+      "sha256": "f8dcbe51c0dcfe8c7dd99f2ead0596207ffb9f17bc6b005f7c3d1649c59f05da"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_HISTORY_FEEDBACK_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 1986,
+      "sha256": "99ef90a98ac417584a581831186fa51c74655548885b080c8fa6d3f3377e573d"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 5815,
+      "sha256": "261bb917dfad6e97f9d537cfc4c237518abf5c173cc5d2bd233f37d2b6d659ae"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 5163,
+      "sha256": "2b78e757e7c30b5504745d03b51c2abd4106272fa204e22c8fd19f1c8a8db079"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 5995,
+      "sha256": "6e14b152c8e1c01c409e6fba0b3a6e8108bcc9891525c3e828e892786d9aae8c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_OPERATOR_ACCEPTED_SCREENSHOT_CORPUS_INDEX.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 15560,
+      "sha256": "6622087c63de69e0505639428b40bdfbc002fe02d6651023b849b9996aa33ede"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_PROVIDER_DOM_PIXEL_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 4685,
+      "sha256": "a24084909826fde5df3a824f3c5c0b21c4ffeb8782b9dfdc057b04b9959d4dd6"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_RESTORATION_ADJUDICATION.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 6797,
+      "sha256": "397f66db4b043f908ad43910105cb415e1cb79a292605b2d21bed98c4ce453ad"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/MARROWLINE_SCORPIO_ATTRACTOR_RELEVANCE.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 4438,
+      "sha256": "b97462c151a57d7f4976412ebbf2155eaef34ba28f340227a86cc2c26f369d63"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/README.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 3360,
+      "sha256": "dbc2b7291cf51d1d6fad3fcb8dbe100d199179c7d73a05dc7233d6d322c3cfaa"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+      "artifact_class": "research_deliverable",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 7624,
+      "sha256": "c65a03ab7fab549bcdad6c33291cc963548ca102acfb100d24f832f14b87d4e5"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/verify-visual-parity-custody.mjs",
+      "artifact_class": "reproducibility_script",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 13778,
+      "sha256": "6d72635afca55978ed45f5ff012b72442e85941da0f079aa413248535d2cc365"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/01-IMG_0932.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 438112,
+      "sha256": "ca15d07ae83a17f22ff29e20beb67d1f4f3e72a493c353af75e81619149d74e8"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/02-IMG_0933.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 329432,
+      "sha256": "252669280c974d8619855736e1bcafedeb82331f3738b6fe29a276ffe7b13a98"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/03-IMG_0934.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 393911,
+      "sha256": "d46e65a8d074d6f4883622f5d93043827c3592a89e6187639e3986b064a540a8"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/04-IMG_0195.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 350391,
+      "sha256": "d6b8df8f9c0bce80fe240beea1fb57afcdd207cea4335e90103f0bd632132fd5"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/05-IMG_0194.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 491690,
+      "sha256": "7b90c239a714520b011f205046cd25b6d147a33acc39bda2f203d449ffa8850a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/06-IMG_0187.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 803098,
+      "sha256": "938e4aa1119873fad47e86a0cfcf91c7d51e072ec76e7e89f8f675a1639b55ce"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/07-IMG_0185.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 564531,
+      "sha256": "25e2d40b0fa20a5894a408460a329b65a526b299ba6f003863d91de26fb74115"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/08-IMG_0178.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 348990,
+      "sha256": "d603fa54c6b682f684371e72b7a2b616729161ee8764619b1c1b79db5642e93a"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/09-IMG_0154.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 596589,
+      "sha256": "63a0616d0f68d1dcc811d8b8220c4dda987dfbf178e69546a96fb0e6adf6937c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/10-IMG_0152.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 482620,
+      "sha256": "f0153b46c51437aabdc3aca65ba70754669c6ae5b5a0ef5a82dc1a952832537b"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/11-IMG_0156.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 549625,
+      "sha256": "f21d175df37226e3e5d532b64a1b58a58782cf68f3848aba38a74b4e7c38ecca"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/12-IMG_0190.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 512592,
+      "sha256": "f3ddfe1a77af70173bda24b513f58f73f728a83f8b5b5323a7840b36b5f403ca"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/01_OPERATOR_ACCEPTED_MARROWLINE/13-IMG_0192.jpeg",
+      "artifact_class": "operator_accepted_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 334585,
+      "sha256": "3fd098fd5355632927298eb2e2cd6bec7c498afa00a75e89f3db801d65e2485b"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/04-IMG_0939.png",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 708830,
+      "sha256": "ea821d79b293150c0ffa3b4fd840da0152ecb5a8b25c31e40257b660051a2d4e"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/05-IMG_0937.png",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 734036,
+      "sha256": "2e7fca549f101201c7c5a9a13a8a70e3d3285e5b7ec386e4a74886f28eca83d2"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/06-IMG_0940.png",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 815131,
+      "sha256": "89db029578eea4339ee41892d24d75c043e44a86dfc8bbd816d488a1075e1412"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/07-IMG_0941.png",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 673610,
+      "sha256": "f27349d54e76931cbc8295f098ae4072171a6cad04748b38a26e56a5978153c9"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/08-IMG_0942.jpeg",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 897837,
+      "sha256": "dd4e5cd07f2c6ed4bc15dbdfbefb99440844796e184bf4ae0966dd43ae2813d0"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/09-IMG_0944.jpeg",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 582041,
+      "sha256": "2856f942434055d6b1e6c4116729211cbb25f0e1a408c323d81840646177ad7f"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/10-IMG_9303.jpeg",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 483370,
+      "sha256": "e701a2d74082f6dc160bb03766d8f2bf446a9c546035d889e142f7ee8f0daf75"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/11-IMG_0946.png",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 583601,
+      "sha256": "c206ba96c40f88419e63e5321603224e8271ab2ebcd93ef16e41746d9f9c1a49"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/02_OTHER_HISTORICAL_REFERENCES/12-IMG_0947.png",
+      "artifact_class": "other_historical_reference_original_image",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 576522,
+      "sha256": "9f943d31db69c35acd99071ace652d4e7f462c0e73b1b6e72b8e8a1a1c48932f"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/03_ACTIVATION_AND_PROVENANCE/ANTIGRAVITY_ACTIVATION_FULL_UPDATED.md",
+      "artifact_class": "visual_corpus_manifest_or_doc",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 24562,
+      "sha256": "d260a0a219721d9b55f76c2174a7ec2115e69064b7602b4962d8082e9a69f0fc"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/03_ACTIVATION_AND_PROVENANCE/REFERENCE_MANIFEST.csv",
+      "artifact_class": "visual_corpus_manifest_or_doc",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 11122,
+      "sha256": "0c5f5f9d63e5334fda0023a1b5f6268ddab632545c842f7552e52ed1529ea83c"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/03_ACTIVATION_AND_PROVENANCE/REFERENCE_MANIFEST.json",
+      "artifact_class": "visual_corpus_manifest_or_doc",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 20817,
+      "sha256": "df860d95f3ba1e158e26ae27536acfa9b447028f32c25d276772d61915a100c7"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/03_ACTIVATION_AND_PROVENANCE/verify_originals.py",
+      "artifact_class": "visual_corpus_manifest_or_doc",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 682,
+      "sha256": "029db516f7700909d1c0ff25a2cc680ab627013a14e815fcffb340e0937b2041"
+    },
+    {
+      "path": "research/marrowline-screaming-grove-visual-parity-20261121/visual-reference-corpus/README_FIRST.md",
+      "artifact_class": "visual_corpus_manifest_or_doc",
+      "disposition": "COMMITTED_IN_PR",
+      "bytes": 3008,
+      "sha256": "a2f1f3117ae35ac591a56a4c42009c48f4862efe26b4443bb9f14d195ec49e0a"
+    },
+    {
+      "path": "server/khonapolit-quality.js@ffb98ac00",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+      "git_blob_sha1": "c539ea90d8e542f4899bcda1c796f936d6bb7750",
+      "bytes": 101785,
+      "sha256": "37d680ec513c1acb5d3c01c2ad7e5eee2ca6398a2cf8c7da0c711e0b85b3459b"
+    },
+    {
+      "path": "app/dome-world/marrowline-terminal.js@ffb98ac00",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+      "git_blob_sha1": "e6bba3475d1b36c0bbb384e02ccc878f434b2f48",
+      "bytes": 86087,
+      "sha256": "da433b87bb46e4d2d35655ee271af78c3a3d70974e8bfe1d63f49b57f090bdec"
+    },
+    {
+      "path": "docs/research/2026-09-16-SCORPIO-ATTRACTOR-SPECIMEN-MARROWLINE-LAB.md@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "9b5d9ee71a4ce3eae18dafbabb19b99fdf85fa23",
+      "bytes": 10385,
+      "sha256": "28b94962bd80b13039bfcbfa5844ab01ac81a558ad9ef94ace488d36eecafa83"
+    },
+    {
+      "path": "scripts/marrowline-scorpio-attractor-assay.mjs@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "68531147fe141e173f7ea981fff29ed1f8a3aca0",
+      "bytes": 8028,
+      "sha256": "527240bd353dd38923b6ac0b6d8ef5ed10862cda4668961774bc6486d2029a4f"
+    },
+    {
+      "path": "tests/fixtures/marrowline-scorpio-attractor-assay-v01.json@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "7ff058a71b96264979a6d38a1e7590ba04833f67",
+      "bytes": 4165,
+      "sha256": "0c0eb4ff5a44af04d2e39866b8df814ae2d03a73fc945babf8e5130bf739ae9a"
+    },
+    {
+      "path": "tests/marrowline-attractor-quality-contract.test.mjs@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "7b60d3d33f9ead55c9dad97f3714b0d555b8f2a2",
+      "bytes": 12837,
+      "sha256": "d02f95142d0322b7c0ca199aaf8ddae6870ddabab4fd71415220f82c1caaffe5"
+    },
+    {
+      "path": "docs/research/2026-09-17-MARROWLINE-INSTRUMENT-RELAY-CALIBRATION.md@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "363a905e8c69573ee4c1e5c4a9adc5a11bc96df7",
+      "bytes": 3222,
+      "sha256": "bbc8839d7233c2e6bef41599e40cb507d97dee8b8c46c6cd04faef82c6c8db46"
+    },
+    {
+      "path": "docs/research/2026-09-23-marrowline-expressive-regression/marrowline-example-as-exported.txt@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "6141fc1b6e0f0576f845684897c3b62b97759571",
+      "bytes": 3631,
+      "sha256": "1014909c39b10c774ed289fdeacaf6e7648799b4574ddca2b9b2fd8887202e4d"
+    },
+    {
+      "path": "docs/research/2026-09-23-marrowline-expressive-regression/gemini-example-as-exported.txt@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "0a15a5ead1c9554756d175b950594c808bfe3b7e",
+      "bytes": 11379,
+      "sha256": "09134a75a92bef0ee0b9c416b92bff04faf9e2a0cf4fbc628dd38638c2e0661f"
+    },
+    {
+      "path": "docs/research/2026-09-24-native-prosody-atlas/PROBE-3.txt@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "11353d58e0890296ee202de4b4b4f0fb4f52db94",
+      "bytes": 2928,
+      "sha256": "b5e3bfb20f9c6dcc32582f32681a83dd93a543a589961533863da67f500dd2e4"
+    },
+    {
+      "path": "docs/research/2026-09-24-native-prosody-atlas/POST-RELEASE-BOTS-REGRESSION.md@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "837f762ad0149cc2ca2c0a90f3a2420dd12e0fd5",
+      "bytes": 3565,
+      "sha256": "2edcfe2708d656a0f25f16f90fd7a4ec058d74291cabf436ab407c449428e24c"
+    },
+    {
+      "path": "docs/research/2026-09-24-native-prosody-atlas/images/06-IMG_0940.png@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "77cdfc9f7651f1ab525c29c8dafda0cdfc58b913",
+      "bytes": 786442,
+      "sha256": "a8f3f7558b6095c30a59e38e7854bbe4c98ccc26d6389f456ace0f279cad6c59"
+    },
+    {
+      "path": "docs/research/2026-09-24-native-prosody-atlas/images/08-IMG_0942.jpeg@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "04aeb7c4556c28c6a1270c962a137aca9b285b9c",
+      "bytes": 786444,
+      "sha256": "3f0f218bc1f80ce4c8a250fd833059d6bf1c59ae5e2d8dd6a46bb9c5018e0db8"
+    },
+    {
+      "path": "research/marrowline-early-oct-full-voice-20261020/FULL-VOICE-SSE-ONSET-STENCIL-AUDIT-20261020.md@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "02f5162cdbe9b6b33d86c4a4a015409ad82df5fb",
+      "bytes": 7683,
+      "sha256": "d745dbaaaeee24e7fc99a8a54682ef7d1a4b7b62edba197d17006fa417dfa0f8"
+    },
+    {
+      "path": "app/dome-world/marrowline-desktop-repair.css@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "c0d90d4b3fd88b953bf680f42d0be1b805eb3f46",
+      "bytes": 106989,
+      "sha256": "a7c0fc5a4954e3f5dd1bd515528eefe389a09abf62b32141d673b09901405532"
+    },
+    {
+      "path": "app/dome-world/marrowline-terminal.css@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "5cc88646c6964ddf80f212d3dad5d628f574da78",
+      "bytes": 26064,
+      "sha256": "9392a66840a5bdca93c35f0334d707392cf6f739c62b15028e6c8c87a27284fa"
+    },
+    {
+      "path": "app/dome-world/marrowline-mobile-reader.js@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "5ec83a7a7823e81c5a1a2c706cb54eb1821708da",
+      "bytes": 5243,
+      "sha256": "e108ba696be7624153bfa051afae777af79dfec32ab05f324085f87185831d29"
+    },
+    {
+      "path": "scripts/marrowline-mobile-reader-browser-witness.mjs@f1288ec69",
+      "artifact_class": "read_only_consulted_repo_blob",
+      "disposition": "INDEPENDENTLY_IN_GITHUB_OBJECT_STORE",
+      "git_commit": "f1288ec690c5d440a356f9db413a289e404f40b3",
+      "git_blob_sha1": "213f9474ae448f0829d187a4b4d30ef9bf3103b1",
+      "bytes": 6612,
+      "sha256": "42656ad69e5bce9d6147e6479e93d1fdc1d8da741e73e3fbea562c39331976fd"
+    },
+    {
+      "path": "TD613_Marrowline_Screaming_Grove_Expanded_Visual_References.zip (11,359,099 bytes, sha256: 862bd895e28cab340eeca31242e471c0dc35eb2b6208f6d8844fe1c97fd7f12c)",
+      "artifact_class": "uploaded_archive_zip",
+      "disposition": "EXCLUDED_WITH_RATIONALE",
+      "non_publication_reason": "All 27 contained files (22 lossless images + 5 manifests/docs) extracted and committed verbatim under visual-reference-corpus/; outer ZIP wrapper omitted to avoid duplicating 11 MB binary."
+    },
+    {
+      "path": "Unpublished third-party entrant specimen referenced in docs/research/2026-09-16-SCORPIO-ATTRACTOR-SPECIMEN-MARROWLINE-LAB.md",
+      "artifact_class": "raw_third_party_scorpio_specimen",
+      "disposition": "EXCLUDED_WITH_RATIONALE",
+      "non_publication_reason": "Never imported or published; private third-party consent unestablished."
+    },
+    {
+      "path": ".env*, node_modules, .venv-dome, primary dirty checkout (f1928fcaf), 11 sibling worktrees, 4 local stashes, raw agent harness JSONL transcripts",
+      "artifact_class": "protected_local_assets",
+      "disposition": "EXCLUDED_WITH_RATIONALE",
+      "non_publication_reason": "Excluded by custody class; zero credentials or unrelated user workspace files published."
+    }
+  ]
+}
