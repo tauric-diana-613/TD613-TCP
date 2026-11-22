@@ -71,7 +71,8 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
   });
  });
  for(const pane of panes){
-  const steps=Math.min(20,Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.58))+1));
+  const steps=Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.58))+1);
+  if(steps>175)throw Error('NESTED_SCROLL_COVERAGE_EXCEEDS_BOUND '+surface+' '+pane.key+' tiles='+steps);
   for(let i=0;i<steps;i++){
    const target=i===steps-1?pane.max:Math.round(i*pane.max/(steps-1));
    const observed=await page.evaluate(({key,y})=>{
