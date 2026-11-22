@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
@@ -802,5 +803,130 @@ test('EP2 TRANSPORT (e) + Episode 1 immutability: Episode 1 archive dir is stric
     assert.equal(receipt.unattempted_registered_slots[18].slot, 'S20');
   } finally {
     fs.rmSync(tmpOut, { recursive: true, force: true });
+  }
+});
+
+test('EP2 WRITE-ONCE CUSTODY GUARD (Amari #7084243315): (1) duplicate run refuses before fetch with original hashes untouched, (2) pre-existing partial run refuses overwrite, (3) new unique episode requires fresh ID/dir', async () => {
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-ep2-writeonce-'));
+  const shaFile = (p) => crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+  try {
+    const ep2Dir = path.join(tmpRoot, 'live-acquisition-ep2');
+    let callsFirst = 0;
+    const firstReceipt = await executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: EPISODE2_ID,
+      studyId: EPISODE2_STUDY_ID,
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: ep2Dir,
+      maxCalls: 2,
+      fetchImpl: async (url) => {
+        callsFirst++;
+        const modelVer = String(url).includes('gemini-3.6-flash') ? 'gemini-3.6-flash' : 'gemini-3.8-flash';
+        return makeSseResponse({
+          text: `Kʰonapolit\n\nOriginal first run ${callsFirst}.\n\nTauric Diana bots\n\nT\u0307\u0323\u0304e\u0301\u0329s\u0302t`,
+          modelVersion: modelVer
+        });
+      }
+    });
+    assert.equal(callsFirst, 2);
+    assert.equal(firstReceipt.status, 'COMPLETED_REGISTERED_SLOTS');
+    assert.ok(fs.existsSync(path.join(ep2Dir, 'EPISODE_CLAIM_LOCK.json')), 'Must create exclusive EPISODE_CLAIM_LOCK.json');
+
+    // Snapshot original file SHA-256 hashes before attempting duplicate invocation
+    const trackedFiles = [
+      path.join(ep2Dir, 'EPISODE_CLAIM_LOCK.json'),
+      path.join(ep2Dir, 'OPTION1_LIVE_ACQUISITION_RECEIPT.json'),
+      path.join(ep2Dir, 'raw-sse', 'S01.sse'),
+      path.join(ep2Dir, 'raw-text', 'S01.txt'),
+      path.join(ep2Dir, 'OPTION1_BLINDED_LITERARY_GALLERY.md')
+    ];
+    const originalHashes = Object.fromEntries(trackedFiles.map((f) => [f, shaFile(f)]));
+
+    // (1) Second invocation under the EXACT same episodeId, outDir, and valid operatorAuthSha MUST refuse BEFORE fetch!
+    let callsDuplicate = 0;
+    await assert.rejects(
+      () => executeOption1Run({
+        profileId: DEFAULT_DESIGN_PROFILE,
+        episodeId: EPISODE2_ID,
+        studyId: EPISODE2_STUDY_ID,
+        sourceHeadSha: FAKE_HEAD,
+        operatorAuthSha: FAKE_HEAD,
+        apiKey: 'test-key',
+        outDir: ep2Dir,
+        maxCalls: 2,
+        fetchImpl: async () => {
+          callsDuplicate++;
+          throw new Error('SHOULD_NEVER_REACH_FETCH_ON_DUPLICATE_EPISODE');
+        }
+      }),
+      /REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE/
+    );
+    assert.equal(callsDuplicate, 0, 'Duplicate invocation must make 0 fetch calls');
+    for (const f of trackedFiles) {
+      assert.equal(shaFile(f), originalHashes[f], `Original file must remain untouched: ${path.basename(f)}`);
+    }
+
+    // (2) Pre-existing partial/incomplete directory (even WITHOUT EPISODE_CLAIM_LOCK.json!) MUST refuse overwrite!
+    const partialDir = path.join(tmpRoot, 'live-acquisition-partial-prior');
+    fs.mkdirSync(path.join(partialDir, 'raw-partial'), { recursive: true });
+    const partialSse = path.join(partialDir, 'raw-partial', 'S01.partial.sse');
+    const partialReceipt = path.join(partialDir, 'OPTION1_LIVE_ACQUISITION_RECEIPT.json');
+    fs.writeFileSync(partialSse, 'data: {"partial":true}\n\n', 'utf8');
+    fs.writeFileSync(partialReceipt, '{"status":"HALTED_BY_STOP_RULE"}\n', 'utf8');
+    const partialSseSha = shaFile(partialSse);
+    const partialReceiptSha = shaFile(partialReceipt);
+
+    let callsPartial = 0;
+    await assert.rejects(
+      () => executeOption1Run({
+        profileId: DEFAULT_DESIGN_PROFILE,
+        episodeId: EPISODE2_ID,
+        studyId: EPISODE2_STUDY_ID,
+        sourceHeadSha: FAKE_HEAD,
+        operatorAuthSha: FAKE_HEAD,
+        apiKey: 'test-key',
+        outDir: partialDir,
+        maxCalls: 2,
+        fetchImpl: async () => {
+          callsPartial++;
+          throw new Error('SHOULD_NEVER_REACH_FETCH_ON_EXISTING_PARTIAL_DIR');
+        }
+      }),
+      /REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE/
+    );
+    assert.equal(callsPartial, 0);
+    assert.equal(shaFile(partialSse), partialSseSha);
+    assert.equal(shaFile(partialReceipt), partialReceiptSha);
+
+    // (3) New unique episode ID + fresh output directory (EP3) succeeds cleanly under exact-HEAD auth without mutating EP2!
+    const ep3Dir = path.join(tmpRoot, 'live-acquisition-ep3');
+    let callsEp3 = 0;
+    const ep3Receipt = await executeOption1Run({
+      profileId: DEFAULT_DESIGN_PROFILE,
+      episodeId: 'EP3',
+      studyId: 'TD613-MARROWLINE-OPTION1-20SLOT-EP3-TEST',
+      sourceHeadSha: FAKE_HEAD,
+      operatorAuthSha: FAKE_HEAD,
+      apiKey: 'test-key',
+      outDir: ep3Dir,
+      maxCalls: 1,
+      fetchImpl: async () => {
+        callsEp3++;
+        return makeSseResponse({
+          text: 'Kʰonapolit\n\nFresh EP3.\n\nTauric Diana bots\n\nA\u0307\u0323\u0304',
+          modelVersion: 'gemini-3.8-flash'
+        });
+      }
+    });
+    assert.equal(callsEp3, 1);
+    assert.equal(ep3Receipt.episode_id, 'EP3');
+    assert.ok(fs.existsSync(path.join(ep3Dir, 'EPISODE_CLAIM_LOCK.json')));
+    for (const f of trackedFiles) {
+      assert.equal(shaFile(f), originalHashes[f], `EP3 must never touch EP2 file: ${path.basename(f)}`);
+    }
+  } finally {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
   }
 });

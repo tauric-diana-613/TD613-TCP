@@ -1056,6 +1056,86 @@ async function readResponseBodyIncremental(resp) {
   }
 }
 
+// Atomic write-once episode directory reservation (Amari #issuecomment-7084243315).
+// Prevents accidental duplicate execution under the same episode ID/directory from ever
+// overwriting original provider responses, partial streams, receipts, or literary galleries.
+export function claimEpisodeOutputDirectoryWriteOnce({
+  outDir,
+  episodeId,
+  studyId,
+  profileId,
+  sourceHeadSha,
+  operatorAuthSha
+}) {
+  if (!/^[A-Za-z0-9_-]{2,32}$/.test(String(episodeId || ''))) {
+    const err = new Error(`REFUSED_LIVE_EXECUTION: invalid episodeId "${episodeId}".`);
+    err.code = 'REFUSED_LIVE_EXECUTION';
+    throw err;
+  }
+  const resolvedOutDir = path.resolve(outDir);
+  const immutableEp1Dir = path.resolve(OUT_DIR, 'live-acquisition');
+  if (resolvedOutDir === immutableEp1Dir || String(episodeId).toUpperCase() === 'EP1') {
+    const err = new Error('REFUSED_EPISODE1_ARCHIVE_IMMUTABLE: Episode 1 archive (live-acquisition/) is permanently immutable; Episode 2 must write to a separate directory (e.g. live-acquisition-ep2/).');
+    err.code = 'REFUSED_EPISODE1_ARCHIVE_IMMUTABLE';
+    throw err;
+  }
+
+  fs.mkdirSync(path.dirname(resolvedOutDir), { recursive: true });
+
+  if (fs.existsSync(resolvedOutDir)) {
+    const stat = fs.statSync(resolvedOutDir);
+    if (!stat.isDirectory()) {
+      const err = new Error(`REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE: target path exists and is not a directory (${path.basename(resolvedOutDir)}).`);
+      err.code = 'REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE';
+      throw err;
+    }
+    const existingEntries = fs.readdirSync(resolvedOutDir);
+    if (existingEntries.length > 0) {
+      const err = new Error(`REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE: output directory "${path.basename(resolvedOutDir)}" already contains prior episode artifacts (${existingEntries.slice(0, 5).join(', ')}); single first-return acquisition per episode forbids overwrite, rename, or silent resume.`);
+      err.code = 'REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE';
+      throw err;
+    }
+  } else {
+    try {
+      // Atomic non-recursive creation on the final episode directory path
+      fs.mkdirSync(resolvedOutDir);
+    } catch (mkdirErr) {
+      if (mkdirErr?.code === 'EEXIST') {
+        const err = new Error(`REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE: concurrent atomic directory claim conflict on "${path.basename(resolvedOutDir)}".`);
+        err.code = 'REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE';
+        throw err;
+      }
+      throw mkdirErr;
+    }
+  }
+
+  const claimLockPath = path.join(resolvedOutDir, 'EPISODE_CLAIM_LOCK.json');
+  const claimRecord = {
+    schema: 'td613.marrowline.option1-episode-write-once-claim/v1.0',
+    episode_id: episodeId,
+    study_id: studyId,
+    design_profile: profileId,
+    source_head_sha: sourceHeadSha,
+    operator_auth_sha: operatorAuthSha,
+    claimed_at_utc: new Date().toISOString(),
+    pid: process.pid,
+    write_once_contract: 'SINGLE_FIRST_RETURN_ACQUISITION_PER_EPISODE_NO_OVERWRITE_OR_SILENT_RESUME'
+  };
+  try {
+    // OS-level O_CREAT | O_EXCL exclusive atomic claim file
+    fs.writeFileSync(claimLockPath, JSON.stringify(claimRecord, null, 2) + '\n', { encoding: 'utf8', flag: 'wx' });
+  } catch (lockErr) {
+    if (lockErr?.code === 'EEXIST') {
+      const err = new Error(`REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE: EPISODE_CLAIM_LOCK.json already exists in "${path.basename(resolvedOutDir)}"; duplicate execution refused before any provider call.`);
+      err.code = 'REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE';
+      throw err;
+    }
+    throw lockErr;
+  }
+
+  return { resolvedOutDir, claimLockPath, claimRecord };
+}
+
 export async function executeOption1Run({
   profileId = DEFAULT_DESIGN_PROFILE,
   episodeId = EPISODE2_ID,
@@ -1082,7 +1162,7 @@ export async function executeOption1Run({
   }
   // Never allow Episode 2 (or any subsequent run) to overwrite immutable Episode 1 archive!
   const immutableEp1Dir = path.resolve(OUT_DIR, 'live-acquisition');
-  if (path.resolve(outDir) === immutableEp1Dir) {
+  if (path.resolve(outDir) === immutableEp1Dir || String(episodeId).toUpperCase() === 'EP1') {
     const err = new Error('REFUSED_EPISODE1_ARCHIVE_IMMUTABLE: Episode 1 archive (live-acquisition/) is permanently immutable; Episode 2 must write to a separate directory (e.g. live-acquisition-ep2/).');
     err.code = 'REFUSED_EPISODE1_ARCHIVE_IMMUTABLE';
     throw err;
@@ -1120,7 +1200,15 @@ export async function executeOption1Run({
     throw err;
   }
 
-  fs.mkdirSync(outDir, { recursive: true });
+  // Atomically reserve the write-once episode output directory BEFORE creating subdirs or calling fetchImpl
+  claimEpisodeOutputDirectoryWriteOnce({
+    outDir,
+    episodeId,
+    studyId,
+    profileId,
+    sourceHeadSha,
+    operatorAuthSha
+  });
   const rawSseDir = path.join(outDir, 'raw-sse');
   const rawTextDir = path.join(outDir, 'raw-text');
   const rawPartialDir = path.join(outDir, 'raw-partial');
@@ -1606,6 +1694,7 @@ async function main() {
       err?.code === 'REFUSED_LIVE_EXECUTION'
       || err?.code === 'REFUSED_MODEL_IDENTITY_BLOCKED_3_7_ALIAS_TO_3_8'
       || err?.code === 'REFUSED_EPISODE1_ARCHIVE_IMMUTABLE'
+      || err?.code === 'REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE'
     ) {
       console.error(err.message);
       process.exit(2);

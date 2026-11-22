@@ -64,9 +64,10 @@ node tests/release-plumbing.test.mjs
 node research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs --verify
 ```
 
-### Summary Results (Episode 2 Transport-Hardened Qualification — `42 / 42` Marrowline + `5 / 5` Constitutional)
-- **`tests/marrowline-option1-20slot-preflight.test.mjs`:** **`15 / 15 PASS`** (`globalThis.fetch` fail-closed poisoned — `0` unintended network calls):
-  - All `11` prior Option 1 preflight & Redpen 1–3 tests PASS unchanged;
+### Summary Results (Episode 2 Transport-Hardened + Write-Once Custody Qualification — `43 / 43` Marrowline + `5 / 5` Constitutional)
+- **`tests/marrowline-option1-20slot-preflight.test.mjs`:** **`16 / 16 PASS`** (`globalThis.fetch` fail-closed poisoned — `0` unintended network calls):
+  - All `15` prior Option 1 preflight, Redpen 1–3, and Episode 2 transport negative-control tests PASS unchanged;
+  - **Write-Once Episode Custody Guard (Amari `#issuecomment-7084243315`):** (1) first claim writes exclusive `EPISODE_CLAIM_LOCK.json` (`flag: 'wx'`), second call under identical `episodeId`, `outDir`, and valid `operatorAuthSha` refuses fail-closed (`REFUSED_EPISODE_ALREADY_CLAIMED_WRITE_ONCE`) before `fetch` with `0` new calls and every original file SHA-256 untouched; (2) pre-existing partial directory (even without `EPISODE_CLAIM_LOCK.json`) refuses overwrite (`0` calls, bytes untouched); (3) fresh unique episode ID + fresh directory (`EP3`) succeeds cleanly under exact-HEAD auth without mutating `EP2`!
   - **(a)+(c)** Pre-headers `UND_ERR_HEADERS_TIMEOUT`: verifies atomic pre-send receipt written BEFORE `fetch` rejects (`slots.length === 1`, `IN_FLIGHT_PRE_SEND`), records `HEADERS_TIMEOUT_NO_RESPONSE`, `rawBytesCaptured: 0`, `rawSsePath: null` (NO zero-byte `.sse` fabricated), and verifies isolated Slot 1 failure followed by valid Slot 2 resets `consecutiveTransportFailures` to `0` and continues cleanly;
   - **(b)** Mid-stream body rejection: preserves genuine partial UTF-8 bytes verbatim in `raw-partial/S01.partial.sse` (`BODY_READ_INTERRUPTED_PARTIAL_BYTES_PRESERVED`), and verifies zero-byte body rejection writes `rawBytesCaptured: 0, rawPartialPath: null`;
   - **(d)+(f)** Two consecutive transport failures trigger `STOP_3_CONSECUTIVE_TRANSPORT_FAILURES` (`threshold = 2`), enumerate all `18` remaining slots (`S03`–`S20`) in `unattempted_registered_slots`, and set `blinded_gallery_status: "NOT_GENERATED_ZERO_RECOVERABLE_SPECIMENS"` without emitting an empty gallery;
