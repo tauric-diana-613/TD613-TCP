@@ -4085,25 +4085,16 @@ body[data-view="overview"] .reading-back{display:none}
         }catch(_){showToast('Clipboard unavailable. Open the AI research guide instead.');}
       });
     } else {
-      const themeCss = document.getElementById('manifest-instance-theme').textContent;
-      const hasCrypto = Boolean(window.crypto && window.crypto.subtle);
-      body.innerHTML =
-        '<div class="insp-card">' +
-          '<h3>ARCHIVAL SIGNATURE LITERAL &amp; THREE-CODEPOINT SEPARATION (Q09 GUARD)</h3>' +
-          '<div>• Preserved Historical Signature String: <code>VIXENCYBERNETICS$S_e≡[x+y]=z+1$</code></div>' +
-          '<div>• Rendered Title-Math Derivative: <code>S_e ≡ [x + y] = z + 1</code> (Branding locus ornament only; arithmetic x/y/z calculator retired).</div>' +
-          '<div>• Codepoint 1 — Tetragram <code>𝌋</code>: <code>U+1D30B</code> (UTF-8 <code>F0 9D 8C 8B</code>)</div>' +
-          '<div>• Codepoint 2 — Supplementary PUA <code>\u{10D613}</code>: <code>U+10D613</code> (UTF-8 <code>F4 8D 98 93</code>)</div>' +
-          '<div>• Codepoint 3 — Interior ZWNJ Exemplar (<code>Vixen\u200cOpera</code>): <code>U+200C</code> (UTF-8 <code>E2 80 8C</code>, charCodeAt(5) = ' + 'Vixen\u200cOpera'.charCodeAt(5) + ')</div>' +
-          '<div>• Dynamic Runtime Sub-Checks: WebCrypto SubtleDigest = <code>' + (hasCrypto ? 'AVAILABLE' : 'HELD_CRYPTO_UNAVAILABLE') + '</code> · A-PFR0.2 Engine Track = <code>SEPARATE_HEADLESS_TRACK_PENDING</code> (never hardcoded PREFLIGHT_VERIFIED).</div>' +
-        '</div>' +
-        '<div class="insp-card">' +
-          '<h3>THREE-CLOCK GOVERNANCE &amp; DISPLAY-THEME SEPARATION</h3>' +
-          '<div>• Separate Clock Ledgers: <code>τ_theory, τ_presentation, τ_empirical</code> · Conditional invariance <code>K(D,S,p₁)=K(D,S,p₂)</code> &amp; <code>A(D,S,p₁)=A(D,S,p₂)</code> (no pairwise orthogonality theorem)</div>' +
-          '<div>• Active <code>#manifest-instance-theme</code> Layer Length: <strong>' + themeCss.length + ' chars</strong> (Baker–Miller <code>#FF91AF</code>, Graphite <code>#24282A</code>, Porcelain <code>#F6F4F0</code>, Smoked Nickel <code>#667078</code>, rare Arc Flash <code>#F9F36D</code>).</div>' +
-          '<div>• Historical Frontispiece Custody: <code>PROVISIONAL_CREATIVE_ARTWORK</code> (Mugler-Unchained Cybernetic Astrolabe · predecessor Desktop WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.desktop_webp_sha256.slice(0, 24)) + '…</code> · predecessor Mobile WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.mobile_webp_sha256.slice(0, 24)) + '…</code> · Zero Encyclopedia asset reuse · Zero Experiment B claim).</div>' +
-          '<div>• Current Artwork Delivery: <code>' + esc(MANIFEST.frontispiece.active_source_mode || 'EMBEDDED_HISTORICAL_WEBP') + '</code> · Operator-selected PNG SHA-256 desktop <code>' + esc((MANIFEST.frontispiece.desktop_png_sha256 || 'PENDING').slice(0,24)) + '</code> · mobile <code>' + esc((MANIFEST.frontispiece.mobile_png_sha256 || 'PENDING').slice(0,24)) + '</code> · Human aesthetic closure RESERVED.</div>' +
-        '</div>';
+      // The public inspector describes evidentiary meaning. Internal character
+      // guards and release-custody diagnostics remain in engineering tests.
+      const digestAvailable=Boolean(window.crypto && window.crypto.subtle);
+      body.innerHTML=
+        '<div class="insp-card"><h3>READING AND EVIDENCE STATUS</h3>' +
+        '<p>Original Works retain their stated identities and source provenance. Readable text, a file digest, a search match and an independent observation are different kinds of evidence.</p>' +
+        '<p>Local source-digest support: <strong>' + (digestAvailable?'AVAILABLE':'UNAVAILABLE IN THIS BROWSER') + '</strong>. An available checking instrument never establishes authorship or scientific proof.</p></div>' +
+        '<div class="insp-card"><h3>HUMAN REVIEW BOUNDARY</h3>' +
+        '<p>Draft comparisons, research paths and presentation changes remain reviewable. Preserve unresolved author identity, unratified relations and unanswered questions.</p>' +
+        '<p>Browse <a href="./vix-cyb/llms.txt">source-bound AI guidance</a> or return to Works to inspect a recorded manuscript.</p></div>';
     }
   }
 
