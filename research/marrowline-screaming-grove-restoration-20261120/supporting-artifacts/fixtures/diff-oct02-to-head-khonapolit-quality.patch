@@ -1,0 +1,813 @@
+diff --git a/server/khonapolit-quality.js b/server/khonapolit-quality.js
+index c539ea90d..631c7c249 100644
+--- a/server/khonapolit-quality.js
++++ b/server/khonapolit-quality.js
+@@ -50,12 +50,29 @@ import {
+   observeGeminiQuota
+ } from './gemini-provider-transport.js';
+ import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
++import { buildCompactWholeFrame } from './marrowline-whole-frame-voice.js';
++import {
++  MARROWLINE_HISTORICAL_TRIAL_ID,
++  MARROWLINE_HISTORICAL_MODEL,
++  MARROWLINE_HISTORICAL_MODEL_ORDER,
++  MARROWLINE_RESTORED_MODEL_ORDER,
++  MARROWLINE_RESTORED_PROSODY_PROFILE,
++  buildHistoricalGroveSystemInstruction
++} from '../app/dome-world/marrowline-historical-grove.js';
++import {
++  MARROWLINE_GROVE_TRIAL_ID,
++  selectMarrowlineGroveTrial,
++  buildMarrowlineGroveTrialSystemInstruction
++} from '../app/dome-world/marrowline-grove-trial.js';
++import { MARROWLINE_ROLE_IDS, buildMarrowlineRoleConditioningSystemInstruction } from '../app/dome-world/marrowline-role-conditioning.js';
++import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_VARIANTS, UNICODE_ASSAY_MODEL } from './marrowline-unicode-capability-assay.js';
+ import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
+ 
+ export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
+ export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v48-provider-completion-boundary';
+-export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
+-export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
++import { MARROWLINE_PROVIDER_BUDGET } from '../app/dome-world/marrowline-provider-budget.js';
++export const KHONAPOLIT_MAX_PROVIDER_CALLS = MARROWLINE_PROVIDER_BUDGET.providerCalls;
++export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = MARROWLINE_PROVIDER_BUDGET.structuralRepairs;
+ export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
+ const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
+ const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
+@@ -64,6 +81,9 @@ const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
+ const WALL_TIMEOUT_MS = 210000;
+ const RESPONSE_RESERVE_MS = 5000;
+ const MAX_SHARED_RATE_RETRY_SECONDS = 8;
++// Preserve raw SSE only for an exact synthetic prompt and single-model canary.
++const NATIVE_SSE_WITNESS_PROMPT = 'In a fictional town, a committee counts only returned forms and concludes that every silent resident is content. Locate the denominator error, pursue its consequence, and complete the connected Kʰonapolit and Tauric Diana bots movements. Let the voices author their own prose and native typography.';
++const MAX_NATIVE_SSE_WITNESS_BYTES = 256 * 1024;
+ const DEFAULT_EXPECTED_DAILY_RPD = 100;
+ function expectedDailyRpd(env = process.env) {
+   const raw = Number(env.KHONAPOLIT_GEMINI_EXPECTED_DAILY_RPD || env.GEMINI_EXPECTED_DAILY_RPD || DEFAULT_EXPECTED_DAILY_RPD);
+@@ -75,6 +95,7 @@ const LEGACY_OUTPUT_TOKENS = 4096;
+ // local packet/morphology admission as diagnostic telemetry rather than authority
+ // to erase nonempty provider text from an explicit human turn.
+ const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
++  'gemini-4-argon',
+   'gemini-3.8-flash',
+   'gemini-3.5-flash',
+   'gemini-3.6-flash',
+@@ -83,6 +104,7 @@ const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
+ ]);
+ export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
+ const QUALITY_ENVELOPE_MODELS = new Set([
++  'gemini-4-argon',
+   'gemini-3.8-flash',
+   'gemini-3.7-flash',
+   'gemini-3.6-flash',
+@@ -111,10 +133,12 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
+   'tauric-diana-zalgo-mechanical-clone',
+   'tauric-diana-zalgo-shallow-wallpaper',
+   'tauric-diana-zalgo-enclosing-ornament-collapse',
+-  'tauric-diana-zalgo-glyph-substitution-collapse'
++  'tauric-diana-zalgo-glyph-substitution-collapse',
++  'tauric-diana-zalgo-replacement-character-corruption'
+ ]);
+ const HARD_MORPHOLOGY_CORRUPTION_WARNINGS = new Set([
+-  'tauric-diana-zalgo-glyph-substitution-collapse'
++  'tauric-diana-zalgo-glyph-substitution-collapse',
++  'tauric-diana-zalgo-replacement-character-corruption'
+ ]);
+ const MANDATORY_HIGH_ZALGO_WARNINGS = new Set([
+   'tauric-diana-zalgo-dynamic-range-collapse',
+@@ -269,15 +293,15 @@ export function khonapolitTaskGuidance(apertureReceipt = {}) {
+   return ORDINARY_PROJECT_GUIDANCE;
+ }
+ 
+-export function selectKhonapolitProviderModels(callableModels = []) {
++export function selectKhonapolitProviderModels(callableModels = [], { modelOrder = HUMAN_LIVENESS_MODEL_ORDER } = {}) {
+   const available = [...new Set((Array.isArray(callableModels) ? callableModels : [])
+     .map((model) => String(model || '').replace(/^models\//, '').trim())
+     .filter(Boolean)
+-    .filter((model) => /^gemini-3(?:\.|-|$)/.test(model))
++    .filter((model) => modelOrder.includes(model))
+     .filter((model) => !/lite/i.test(model)))];
+   if (!available.length) return [];
+   const selected = [];
+-  for (const model of HUMAN_LIVENESS_MODEL_ORDER) {
++  for (const model of modelOrder) {
+     if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
+     if (available.includes(model) && !selected.includes(model)) selected.push(model);
+   }
+@@ -288,7 +312,11 @@ export function selectKhonapolitProviderModels(callableModels = []) {
+   return selected;
+ }
+ 
+-export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
++export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false } = {}) {
++  // Historical mode preserves the actual old frontier for research. Restored
++  // production keeps historical instructions but admits the current Argon seat.
++  const modelOrder = restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
++    : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
+   const rows = Array.isArray(plan?.rows) ? plan.rows : [];
+   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
+   const coolingEligible = rows
+@@ -298,6 +326,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
+     .filter((row) => {
+       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
+       return row?.metadata?.lifecycle === 'current'
++        && row?.model !== 'gemini-4-argon'
+         && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
+         && reasons.length === 1
+         && reasons[0] === 'provider-absent';
+@@ -312,6 +341,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
+     .filter((row) => {
+       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
+       return row?.metadata?.lifecycle === 'current'
++        && row?.model !== 'gemini-4-argon'
+         && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
+         && reasons.length === 1
+         && reasons[0] === 'fresh-complete-provider-observation-required';
+@@ -325,10 +355,10 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
+   // These probes remain last and only when the sole reason is missing discovery;
+   // disabled, retired, specialized, Lite and pre-3.x routes stay excluded.
+   const orderedGroups = [
+-    selectKhonapolitProviderModels(callable),
+-    selectKhonapolitProviderModels(coolingEligible),
+-    selectKhonapolitProviderModels(providerAbsentCurrent),
+-    selectKhonapolitProviderModels(discoveryUnwitnessedCurrent)
++    selectKhonapolitProviderModels(callable, { modelOrder }),
++    selectKhonapolitProviderModels(coolingEligible, { modelOrder }),
++    selectKhonapolitProviderModels(providerAbsentCurrent, { modelOrder }),
++    selectKhonapolitProviderModels(discoveryUnwitnessedCurrent, { modelOrder })
+   ];
+   const selected = [];
+   for (const group of orderedGroups) {
+@@ -353,11 +383,14 @@ export function preferMarrowlineIncompleteReturn(current = null, candidate = nul
+   return observedBaseLength(candidate) > observedBaseLength(current) ? candidate : current;
+ }
+ 
+-export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false } = {}) {
++export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false, model = '' } = {}) {
+   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
+   const position = Math.max(0, Math.floor(Number(index) || 0));
+   const inheritedCap = position === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS;
+-  if (!fairShare) return Math.min(inheritedCap, remaining);
++  if (!fairShare) return Math.min(model === 'gemini-4-argon' ? 75000 : inheritedCap, remaining);
++  // One bounded Argon stream; no implicit long-decode retries or changed spend ceiling.
++  // Reserve the existing Gemini 3 fallback runway inside this interactive wall.
++  if (model === 'gemini-4-argon') return Math.min(75000, Math.max(1, remaining - (modelCount > 1 ? 105000 : 0)));
+ 
+   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
+   const remainingAttempts = Math.max(1, total - position);
+@@ -441,9 +474,30 @@ function send(res, status, payload, extraHeaders = {}) {
+       ? payload.attempts
+       : [];
+   const geminiConsumption = buildGeminiConsumptionReceipt({ route: 'marrowline', attempts });
++  // The historical trial must identify itself in *every* response receipt, even
++  // on a HELD/502 failure. Header-only flags were not recoverable from the UI.
++  // A missing groove-trial key used to look identical to a stripped flag.
++  // Every route now records an explicit runtime selection, including failed
++  // ordinary calls and early failures before the selector was reached.
++  const experiment = res.__td613GroveTrial || Object.freeze({
++    id: 'unresolved', active: false, variant: 'selection-not-reached'
++  });
++  const observedExperiment = Object.freeze({
++    ...experiment,
++    attempt_models: attempts.map(attempt => attempt.model),
++    provider_reported_versions: attempts.map(attempt => attempt.output?.modelVersion ?? null),
++    local_admission: payload?.relay?.admission?.quality || (status >= 400 ? 'HELD' : 'UNCLASSIFIED')
++  });
++  const taggedPayload = {
++    ...payload,
++    grove_trial: observedExperiment,
++    ...(payload?.receipt ? {
++      receipt: { ...payload.receipt, grove_trial: observedExperiment }
++    } : {})
++  };
+   const body = geminiConsumption.call_count
+-    ? { ...payload, gemini_consumption: geminiConsumption }
+-    : payload;
++    ? { ...taggedPayload, gemini_consumption: geminiConsumption }
++    : taggedPayload;
+   if (geminiConsumption.call_count) logGeminiConsumption(geminiConsumption);
+   res.statusCode = status;
+   for (const [name, value] of Object.entries(extraHeaders)) res.setHeader(name, value);
+@@ -471,13 +525,13 @@ function currentTurnRelayCue() {
+     '- Creative form carries the same intellectual method as analytic form. Embody the mechanism in action, material details, choices and consequences while honoring the requested scene, poem or other form. Let requested affects alter what a character permits, refuses, risks or relinquishes. Develop the turn after the clever line; atmospheric detail and a declaration that everyone falls silent cannot by themselves discharge the dramatic stakes.',
+     '- When the operator invites Kʰonapolit’s adversarial camp, let the opponent act on the disputed premise and pursue the resulting material or institutional consequences. Give her wit a changing situation to work on: a decision, its cost, an attempted recovery, a consequence that survives it. These are possibilities, not mandatory beats. Let the bots take that consequence somewhere the first movement has not already exhausted. Keep developing while the task still has unspent substance; the obligation to reach the second voice is never a reason to abridge the first.',
+     '- When mathematical or scientific language carries an inference, make its terms, relation and limit intelligible, in notation or precise prose appropriate to the task. A metaphor may illuminate a mechanism; resemblance alone supplies no derivation. Use only the formalism the particular problem earns, and make its consequence available to the reader rather than decorating an assertion with technical nouns.',
+-    '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific, and theatrically inventive rather than an ornamental afterword or recap. Their native scream-sing typography evolves with that movement; never substitute a heading and a few decorated words for authored prose.',
++    '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific and theatrically inventive rather than an ornamental afterword. Their High Zalgo is native language, free to keep one register for the entire movement or shift at any scale; never substitute a heading and a few decorated words for authored prose.',
+     '- PERFORMANCE REFERENCE, NOT TEXT TO RECITE: Kʰonapolit may make an argument by turning the institution’s own measurement into a comedy of administrative panic; move freely among witty deistic arrogance, eschatological and surveillance theory, thermodynamic slapstick, precision, intimacy, and outrageous camp when the operator’s task makes them useful. A mathematical fiction may be a joke; an empirical audit still needs honest distinctions. Neither a cold list of five definitions nor a timid two-sentence synopsis is the requested voice.',
+-    '- The Tauric Diana bots begin native High-Zalgo speech in their first sentence on EVERY turn, including ordinary questions, jokes and tenderness. - The bots deserve an extended dramatic conversation, not a token outro: expose the cost, change whom they address, let repetition mutate its meaning, and move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths. Do not tile a single chosen mark or one identical stack across letters or words, impose an axis schedule, imitate a specimen verbatim, or flatten the passage into a short sign-off.',
++    '- The Tauric Diana bots speak provider-native High Zalgo as their own written voice in every turn, including ordinary questions, jokes and tenderness. Compose real native combining marks ABOVE and BELOW the SAME prose letters: asymmetric crowns and roots can coexist on a letter, deepen across a phrase, or breathe lightly without a prewritten specimen or character filter. They may sustain one recognizable style across the ENTIRE reply, or improvise changes between paragraphs, lines, words or even letters. Neither sameness nor variation is a required pattern; do not force a shift, rest, thinning, crescendo or new ornament at a paragraph break. Complete an extended dramatic conversation rather than a token outro or an obligatory high-mark opening followed by default plaintext.',
+     '- Write ordinary prose at normal typographic weight. Use Markdown bold only for specific terms, sharp pivots or selective emphasis; never surround an entire answer, voice, paragraph sequence or sustained bots movement in bold markers. Native combining marks remain untouched and are independent of Markdown emphasis.',
+-    '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: the provider authors varied combinations of native marks within the terminal prose. Dramatic passages grow crowns ABOVE and roots BELOW the letters, including simultaneous deep stacks that collide with neighboring lines. Quiet phrases may thin or go clean. A repeated single exotic accent on every letter is a failed flat texture, not High Zalgo.',
+-    '- Give the bots native page rhythm as well as native marks: author real single-line turns and blank-line paragraph breaks as pauses, pivots, comic traps, or entrances and exits for deep-stack cries. Some intense passages may stand alone; others should jostle neighboring lines or deny an expected rest. Let the voice be silly, mercurial and cryptic, not a continuous wall by default and not a fixed stanza schedule. Never require blank lines before or after every stack, rewrite the generated text locally, or replace their actual newlines with printed escape sequences.',
+-    '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical flourishes are primary, with horizontal strokes, tilde and diagonal overlays available when the words earn them, never compulsory. Let the ACTUAL code points, stack depths and placement change across words and passages; one sampled mark copied across the stanza cannot carry the voice. A wholly vertical performance is welcome. Invent the flourishes alongside fresh prose; do not recite a calibration alphabet or simulate a character-by-character filter.',
++    '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: the provider authors real combining marks within the prose. Dense interleaved crowns and roots, horizontal or diagonal treatments, sustained single-register performances and mixed registers are available choices. A deeply marked run may continue for many paragraphs without changing its pattern. A clean passage is permissible when the voice chooses it, never a mandated transition after a peak. Do not interpret repeated native morphology as inherently inferior artistry.',
++    '- Give the bots full authorship over line breaks and paragraph rests. They can hold an unbroken field, use pauses, or interrupt themselves without a prescribed alternation between overprinted text and unmarked prose. Do not impose a paragraph, line or stanza schedule; preserve the newlines and combining marks they actually author.',
++    '- NATIVE SEMANTIC PROSODY: deep vertical overlap, planar marks, light ornament, dense ornament and clean breaths are all possible. Let the bots decide the placement, duration and continuity of any register. The same pattern can persist from first word to final word; a different passage can mutate every word. Avoid fixed palettes, recipes, mandatory code-point diversity and prescribed shifts in stack depth. Invent the typography with the prose, never as a character-by-character filter.',
+     `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
+     '- “Earned” governs only the semantic handoff between registers; it neither licenses omission of the bots nor controls the depth or availability of their native High-Zalgo writing system.',
+     `- TD613 continuity anchors (application context, never API authentication): HERITAGE KEY ${HERITAGE_KEY}; CANONICAL COVENANT PHRASE ${HERITAGE_COVENANT}; COVENANT KEY ${COVENANT_KEY} (retain U+200C); PUA LABEL ${CLAIMED_PUA}; RENDERED PUA GLYPH ${CLAIMED_PUA_SCALAR}; UTF-16 REFERENCE ${CLAIMED_PUA_SURROGATE_LABEL}. Preserve the distinctions without reciting this line or treating its position as special provider authority.`
+@@ -505,17 +559,32 @@ function geminiContents(packet = {}) {
+ 
+ function khonapolitReasoning(model = '', { fallback = false } = {}) {
+   if (!qualityEnvelope(model)) return null;
++  if (model === 'gemini-4-argon') return { level: 'medium' };
+   return {
+     // Fallback means transport position, not permission to lower the requested reasoning level.
+     level: 'high'
+   };
+ }
+ 
+-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false } = {}) {
++export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = true } = {}) {
+   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
++  const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
++  const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
++    ? buildHistoricalGroveSystemInstruction({
++      packetSystemInstruction: packet.systemInstruction,
++      taskGuidance,
++      relayAddendum: buildRelaySystemAddendum(apertureReceipt),
++      relayCue: currentTurnRelayCue(),
++      nativeProsodyFreedom: historicalProsodyFreedom === true
++    })
++    : groveTrial === MARROWLINE_GROVE_TRIAL_ID
++      ? buildMarrowlineGroveTrialSystemInstruction(packet)
++      : MARROWLINE_ROLE_IDS.includes(groveTrial)
++        ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
++        : normalSystemInstruction;
+   return {
+     systemInstruction: {
+-      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${buildRelaySystemAddendum(apertureReceipt)}\n${currentTurnRelayCue()}` }]
++      parts: [{ text: systemText }]
+     },
+     contents: geminiContents(packet),
+     generationConfig: buildGeminiGenerationConfig({
+@@ -533,6 +602,27 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
+   };
+ }
+ 
++// Bounded system-instruction ablation: remove exactly one repeated style paragraph,
++// and ONLY on a gated artificial /api/khonapolit canary. Everything else stays byte-identical.
++export function compactSyntheticWholeFrame(request = {}) {
++  const original = request?.systemInstruction?.parts?.[0]?.text;
++  if (typeof original !== 'string' || !original.includes('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:')) throw new Error('WHOLE_FRAME_SOURCE_SHAPE_MISMATCH');
++  return { ...request, systemInstruction: { ...request.systemInstruction, parts: [{ text: buildCompactWholeFrame() }] } };
++}
++
++export function ablateOneSyntheticSystemProsodyParagraph(request = {}) {
++  const raw = request?.systemInstruction?.parts?.[0]?.text;
++  if (typeof raw !== 'string') throw new Error('PROSODY_ABLATION_SYSTEM_TEXT_ABSENT');
++  const prefix = '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION:';
++  const lines = raw.split('\n');
++  const n = lines.filter(x => x.startsWith(prefix)).length;
++  if (n !== 1) throw new Error('PROSODY_ABLATION_PARAGRAPH_NOT_UNIQUE');
++  return { ...request, systemInstruction: {
++    ...request.systemInstruction,
++    parts: [{ text: lines.filter(x => !x.startsWith(prefix)).join('\n') }]
++  }};
++}
++
+ export function repairableKhonapolitAdmission(reasons = []) {
+   const values = Array.isArray(reasons) ? reasons.filter(reason => typeof reason === 'string') : [];
+   return values.length > 0 && values.every(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason));
+@@ -630,12 +720,17 @@ export function buildGeminiStructuralRepairRequest(
+   model = '',
+   heldText = '',
+   reasons = [],
+-  { fallback = false } = {}
++  { fallback = false, groveTrial = null } = {}
+ ) {
+-  const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback });
++  const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial });
+   const reasonList = (Array.isArray(reasons) ? reasons : [])
+     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
+     .slice(0, 8);
++  // A draft missing both voices is a failed provider attempt, not material
++  // that Gemini may be instructed to preserve in the correction. Retain the
++  // original bytes and digest in the attempt receipt, not a model-history turn.
++  const bothVoicesAbsent = reasonList.includes('khonapolit-nominative-missing')
++    && reasonList.includes('tauric-diana-bots-nominative-missing');
+   const repairContext = heldText;
+   const firstVoiceStarted = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText);
+   const boundedTail = firstVoiceStarted && reasonList.includes('provider-return-unfinished');
+@@ -645,7 +740,7 @@ export function buildGeminiStructuralRepairRequest(
+     'The preceding model turn is the exact prefix of the response. Author ONLY its missing continuation. Do not repeat the prefix, restart Kʰonapolit, add a preface or discuss this repair.',
+     'If the first voice has only opened the scene or argument, keep developing it: the decisive event, resistance, cost, justified inference, changing stakes and full imaginative form must happen before any earned handoff. Do not treat the mere presence of an opening paragraph as a completed first movement.',
+     'Complete the Tauric Diana bots in a sustained new choral movement. If the terminal heading is not yet in the prefix, give it as an exact standalone heading; if it already exists, continue its prose without repeating the heading.',
+-    'Their provider-authored Unicode is native voice: dynamic full-height overprint at dramatic peaks, fine marked breaths, horizontal/diagonal strokes where earned, novel motifs and changing amplitude. No pasted or identical stack per letter. Preserve all existing Unicode bytes.',
++    'Their provider-authored Unicode is native voice. Continue the existing typography as long as its voice requires; the bots may retain the same register or change it on their own terms, including across paragraph boundaries. Preserve all existing Unicode bytes.',
+     'Finish the actual dramatic or intellectual consequence and the conversational closing. No JSON, packet delimiters, template echo or commentary about the repair.',
+     CONVERSATIONAL_CLOSING_GUIDANCE
+   ] : missingTerminalOnly ? [
+@@ -656,6 +751,13 @@ export function buildGeminiStructuralRepairRequest(
+     'The two actual provider outputs will be joined verbatim into one continuous corrected response. No preface, repeat of Kʰonapolit, JSON, fences, or repair report.',
+     CONVERSATIONAL_CLOSING_GUIDANCE,
+     'Do not repaint, normalize, score, or re-author the Tauric Diana combining field. Author the missing typography natively.'
++  ] : bothVoicesAbsent ? [
++    'BOUNDED STRUCTURAL SAME-PROVIDER RECOVERY — BOTH VOICES ABSENT.',
++    'The original provider attempt is HELD because neither required speaker appeared. It is not a completed literary draft and has not been supplied to you as a model-history exemplar.',
++    'Return one fresh, complete, provider-authored response to the original operator request, with the exact plain standalone heading “Kʰonapolit” first and “Tauric Diana bots” at the earned handoff.',
++    'Let Kʰonapolit actually develop the prompt-specific argument or fictional scene; let the bots carry its remaining consequence in their own original Unicode High-Zalgo speech.',
++    'Do not append a correction memo, apology, packet delimiters, or a preface. Preserve the original user request and genuine earlier history, not the unadmitted previous attempt.',
++    CONVERSATIONAL_CLOSING_GUIDANCE
+   ] : [
+     'BOUNDED STRUCTURAL SAME-VOICE REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
+     `The previous draft had these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-observation'}.`,
+@@ -670,19 +772,21 @@ export function buildGeminiStructuralRepairRequest(
+     ...request,
+     contents: [
+       ...geminiContents(packet),
+-      { role: 'model', parts: [{ text: repairContext }] },
++      ...(bothVoicesAbsent ? [] : [{ role: 'model', parts: [{ text: repairContext }] }]),
+       { role: 'user', parts: [{ text: repairDirective }] }
+     ]
+   };
+ }
+ 
+ export function extractGeminiText(payload = {}) {
+-  // Keep exact provider whitespace, including a possible leading continuation
+-  // separator; no model-authored Unicode or text is cleaned by this boundary.
++  // Parts are transport segments, not paragraph boundaries. Joining with an
++  // invented separator can split a heading or detach marks from their base.
++  // Match streaming extraction: retain every visible text part verbatim and
++  // exclude thought summaries without mutating the original provider payload.
+   return (payload?.candidates?.[0]?.content?.parts || [])
+-    .map((part) => typeof part?.text === 'string' ? part.text : '')
+-    .filter((text) => Boolean(text.trim()))
+-    .join('\n\n');
++    .filter((part) => typeof part?.text === 'string' && part.thought !== true)
++    .map((part) => part.text)
++    .join('');
+ }
+ 
+ // Bind evidence to the bytes actually sent, after all prompt layers, history,
+@@ -720,6 +824,10 @@ export function observeGeminiOutput(payload = {}, model = '', { fallback = false
+     : null);
+   return Object.freeze({
+     submittedRequest: submittedRequestObservation,
++    // Requested names can be provider-side aliases. Carry the actual returned
++    // version when present; never fill absent evidence from the requested ID.
++    ...(typeof payload.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)
++      ? { modelVersion: payload.modelVersion } : {}),
+     finishReason,
+     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
+     maxOutputTokens: submittedGenerationConfig?.maxOutputTokens ?? outputBudget(model),
+@@ -810,6 +918,7 @@ function mergeGeminiStreamPayload(chunks = []) {
+   let text = '';
+   let finishReason = null;
+   let usageMetadata = null;
++  let modelVersion = null;
+   for (const payload of chunks) {
+     const candidate = payload?.candidates?.[0] || null;
+     for (const part of candidate?.content?.parts || []) {
+@@ -817,6 +926,7 @@ function mergeGeminiStreamPayload(chunks = []) {
+     }
+     if (typeof candidate?.finishReason === 'string' && candidate.finishReason) finishReason = candidate.finishReason;
+     if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') usageMetadata = payload.usageMetadata;
++    if (typeof payload?.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)) modelVersion = payload.modelVersion;
+   }
+   const candidate = {
+     content: { parts: text ? [{ text }] : [] },
+@@ -824,6 +934,7 @@ function mergeGeminiStreamPayload(chunks = []) {
+   };
+   return {
+     candidates: [candidate],
++    ...(modelVersion ? { modelVersion } : {}),
+     ...(usageMetadata ? { usageMetadata } : {})
+   };
+ }
+@@ -860,10 +971,14 @@ export function marrowlineAuthoredStreamDeadlineMs({ initialTimeoutMs = 0, elaps
+   return Math.max(initial, Math.min(initial + grace, elapsed + remaining));
+ }
+ 
+-async function readGeminiSse(response, progress, onAuthoredText = null) {
++export async function readGeminiSse(response, progress, onAuthoredText = null, captureNativeEvidence = false) {
+   const reader = response?.body?.getReader?.();
+   if (!reader) return null;
+   const decoder = new TextDecoder();
++  const wireSha256 = captureNativeEvidence ? crypto.createHash('sha256') : null;
++  const wireChunks = captureNativeEvidence ? [] : null;
++  let wireTotalBytes = 0;
++  let wireOverflow = false;
+   let buffer = '';
+   const chunks = [];
+   try {
+@@ -871,6 +986,12 @@ async function readGeminiSse(response, progress, onAuthoredText = null) {
+       const { value, done } = await reader.read();
+       if (done) break;
+       progress.byteCount += value?.byteLength || 0;
++      if (wireSha256 && value?.byteLength) {
++        wireSha256.update(value);
++        wireTotalBytes += value.byteLength;
++        if (!wireOverflow && wireTotalBytes <= MAX_NATIVE_SSE_WITNESS_BYTES) wireChunks.push(Buffer.from(value));
++        else { wireOverflow = true; wireChunks.length = 0; }
++      }
+       buffer += decoder.decode(value, { stream: true });
+       const events = buffer.split(/\r?\n\r?\n/);
+       buffer = events.pop() || '';
+@@ -885,7 +1006,28 @@ async function readGeminiSse(response, progress, onAuthoredText = null) {
+   }
+   buffer += decoder.decode();
+   if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress, onAuthoredText);
+-  return mergeGeminiStreamPayload(chunks);
++  const merged = mergeGeminiStreamPayload(chunks);
++  if (wireSha256) {
++    const providerParts = chunks.flatMap((entry) =>
++      (entry?.candidates?.[0]?.content?.parts || [])
++        .filter((part) => typeof part?.text === 'string' && part.thought !== true)
++        .map((part) => part.text)).join('');
++    const rebuilt = extractGeminiText(merged);
++    progress.nativeSseEvidence = Object.freeze({
++      schema: 'td613.marrowline.provider-sse-wire/v1',
++      scope: 'single-synthetic-canary-raw-google-response-as-seen-by-td613',
++      rawSseSha256: wireSha256.digest('hex'),
++      rawSseBytes: wireTotalBytes,
++      captureComplete: !wireOverflow && !progress.streamInterrupted && progress.parseErrors === 0,
++      rawSseBase64: wireOverflow ? null : Buffer.concat(wireChunks).toString('base64'),
++      originalEventTextSha256: sha256(providerParts),
++      mergedTextSha256: sha256(rebuilt),
++      textEquivalent: providerParts === rebuilt,
++      eventCount: chunks.length,
++      parseErrors: progress.parseErrors
++    });
++  }
++  return merged;
+ }
+ 
+ async function callGemini(
+@@ -893,7 +1035,7 @@ async function callGemini(
+   packet,
+   apertureReceipt,
+   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
+-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null } = {}
++  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null, groveTrial = null } = {}
+ ) {
+   const controller = new AbortController();
+   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
+@@ -915,16 +1057,20 @@ async function callGemini(
+   let submittedGenerationConfig = null;
+   let submittedRequestObservation = null;
+   try {
+-    const request = structuralRepair
++    const fullRequest = structuralRepair
+       ? buildGeminiStructuralRepairRequest(
+           packet,
+           apertureReceipt,
+           model,
+           structuralRepair.heldText,
+           structuralRepair.reasons,
+-          { fallback }
++          { fallback, groveTrial }
+         )
+-      : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
++      : buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial });
++    if ([systemProsodyAblation, wholeFrameCompact, Boolean(syntheticUnicodeAssay)].filter(Boolean).length > 1) throw new Error('CONFLICTING_SYNTHETIC_ASSAY_CONDITIONS');
++    const request = syntheticUnicodeAssay ? buildSyntheticUnicodeAssayRequest(fullRequest, syntheticUnicodeAssay)
++      : wholeFrameCompact ? compactSyntheticWholeFrame(fullRequest)
++      : systemProsodyAblation ? ablateOneSyntheticSystemProsodyParagraph(fullRequest) : fullRequest;
+     submittedGenerationConfig = request.generationConfig;
+     const wire = serializeGeminiRequest(request, model);
+     submittedRequestObservation = wire.observation;
+@@ -938,7 +1084,7 @@ async function callGemini(
+       const payload = await response.json().catch(() => ({}));
+       return { response, payload, text: '', timedOut: false, streamed: false, submittedGenerationConfig, submittedRequestObservation, ...progress };
+     }
+-    const streamedPayload = await readGeminiSse(response, progress, onAuthoredText);
++    const streamedPayload = await readGeminiSse(response, progress, onAuthoredText, captureNativeSse);
+     const payload = streamedPayload || await response.json().catch(() => ({}));
+     return {
+       response,
+@@ -967,6 +1113,41 @@ async function callGemini(
+   }
+ }
+ 
++// Verifiable privacy gate. Raw Gemini SSE may only be returned for this exact
++// artificial sample; even a canary with operator history or personal text is held.
++export function allowSyntheticNativeSseWitness({ releaseCanary = false, witnessHeader = '', body = {} } = {}) {
++  return releaseCanary === true && witnessHeader === '1'
++    && body?.message === NATIVE_SSE_WITNESS_PROMPT
++    && Array.isArray(body?.history) && body.history.length === 0
++    && body?.mode === 'issued-conjunction'
++    && body?.waiveIssuance === true
++    && !body?.shi
++    && !body?.attachments;
++}
++
++// A valid raw-SSE synthetic canary is a prerequisite: this flag can never
++// change ordinary user generations, uploaded files, or stored history.
++export function allowSyntheticUnicodeAssay({ nativeSseWitness = false, assayHeader = '', modelHeader = '' } = {}) {
++  return nativeSseWitness === true && modelHeader === UNICODE_ASSAY_MODEL && UNICODE_ASSAY_VARIANTS.includes(assayHeader) ? assayHeader : null;
++}
++
++export function allowSyntheticWholeFrameCompact({ nativeSseWitness = false, assayHeader = '', modelHeader = '' } = {}) {
++  return nativeSseWitness === true && assayHeader === 'compact-whole-frame-v1' && modelHeader === 'gemini-3.8-flash';
++}
++
++export function allowSyntheticSystemProsodyAblation({ nativeSseWitness = false, assayHeader = '' } = {}) {
++  return nativeSseWitness === true && assayHeader === 'ablate-one-prosody-paragraph';
++}
++
++// A provider STOP proves that transport ended, not that the two mandatory
++// Marrowline speakers appeared. A return with NEITHER voice is a broken relay,
++// not an ordinary stylistic variation or a lawful completed answer.
++export function bothMarrowlineVoicesAbsent(relay = {}) {
++  const reasons = new Set(Array.isArray(relay?.admission?.reasons) ? relay.admission.reasons : []);
++  return reasons.has('khonapolit-nominative-missing')
++    && reasons.has('tauric-diana-bots-nominative-missing');
++}
++
+ export default async function handler(req, res) {
+   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
+   let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+@@ -987,6 +1168,10 @@ export default async function handler(req, res) {
+       provider: 'Gemini',
+       modelPolicy: plan,
+       hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
++      nativeSseWitness: 'synthetic-canary-only-v1',
++      syntheticProsodyAssay: 'one-system-paragraph-ablation-v1',
++      syntheticWholeFrameAssay: 'compact-whole-frame-v1',
++      syntheticUnicodeAssay: 'literal-vs-creative-multistack-v1',
+       aperture,
+       aperture_egress: apertureEgress,
+       relaySchema: KHONAPOLIT_RELAY_SCHEMA,
+@@ -1029,7 +1214,32 @@ export default async function handler(req, res) {
+   const startedAt = Date.now();
+   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
++  const groveTrial = selectMarrowlineGroveTrial(body, { releaseCanary });
++  res.__td613GroveTrial = Object.freeze({
++    id: groveTrial || 'off',
++    active: Boolean(groveTrial),
++    variant: groveTrial ? 'explicit-operator-trial' : 'ordinary-marrowline',
++    selection: groveTrial ? 'request-body-opt-in' : 'no-valid-trial-requested'
++  });
++  res.setHeader('X-TD613-Grove-Trial', groveTrial || 'off');
++  const nativeSseWitness = allowSyntheticNativeSseWitness({
++    releaseCanary, witnessHeader: requestHeader(req, 'x-td613-native-sse-witness'), body
++  });
++  const systemProsodyAblation = allowSyntheticSystemProsodyAblation({
++    nativeSseWitness,
++    assayHeader: requestHeader(req, 'x-td613-prosody-assay')
++  });
+   const requestedCanaryModel = requestHeader(req, 'x-td613-canary-model').replace(/^models\//, '');
++  const wholeFrameCompact = allowSyntheticWholeFrameCompact({
++    nativeSseWitness,
++    assayHeader: requestHeader(req, 'x-td613-whole-frame-assay'),
++    modelHeader: requestedCanaryModel
++  });
++  const syntheticUnicodeAssay = allowSyntheticUnicodeAssay({
++    nativeSseWitness,
++    assayHeader: requestHeader(req, 'x-td613-unicode-assay'),
++    modelHeader: requestedCanaryModel
++  });
+   const discourseMode = classifyApertureDiscourseMode(packet.message);
+   const apertureReceipt = buildApertureV3InvocationReceipt({
+     message: packet.message,
+@@ -1044,7 +1254,8 @@ export default async function handler(req, res) {
+   const attempts = [];
+   const clientQuotaCooldown = clientQuotaCooldownHints(body);
+   const clientQuotaBudget = clientQuotaBudgetHints(body);
+-  const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
++  const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
++  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { restoredGrove: isHistoricalGrove });
+   // Browser-local quota/cooldown history is receipt evidence only. It cannot
+   // reorder or suppress the settled human provider frontier. 3.8 remains first;
+   // live Gemini transport decides whether that seat can answer this turn.
+@@ -1062,6 +1273,20 @@ export default async function handler(req, res) {
+     ? requestedCanaryModel
+     : allModels[0] || null;
+   const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
++  // The restored voice is requested by browser text-only ingress, with a
++  // present-day frontier; no invented model IDs or unapproved paid calls.
++  if (isHistoricalGrove) {
++    res.__td613GroveTrial = Object.freeze({
++      id: MARROWLINE_HISTORICAL_TRIAL_ID,
++      source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
++      variant: 'restored-voice-argon-frontier-20261019',
++      requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
++      eligible_model_order: [...models],
++      admission_policy: 'both-voices-absent-held-after-bounded-recovery',
++      typography_policy: 'provider-native-morphology-observation-only',
++      native_prosody_profile: MARROWLINE_RESTORED_PROSODY_PROFILE
++    });
++  }
+   const routeModelCount = Math.max(1, providerModels.length);
+   let structuralRepairCandidate = null;
+   let structuralRepairSpent = false;
+@@ -1069,7 +1294,8 @@ export default async function handler(req, res) {
+   let service503Count = 0;
+   let service503WaitedMs = 0;
+   let incompleteFallback = null;
+-  let severeMorphologyFallback = null;
++  let zeroMarkFallback = null;
++  let zeroMarkRecoverySpent = false;
+   const providerWallDeadlineAt = startedAt + WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
+   const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
+     // Natural text and legacy JSON envelopes must use the same visible response.
+@@ -1105,7 +1331,7 @@ export default async function handler(req, res) {
+     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
+       fallback,
+       structuralRepair: { heldText, reasons },
+-      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt
++      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt, groveTrial
+     });
+     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
+     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
+@@ -1327,6 +1553,29 @@ export default async function handler(req, res) {
+     qualityWarnings = [],
+     completion = null
+   } = {}) => {
++    // Incident guard: a complete, provider-authored but wholly unvoiced reply
++    // must NEVER be surfaced as HTTP 200 OK after bounded recovery fails.
++    // Keep the exact provider text out of the successful human transcript;
++    // retain only its digest and the existing attempt diagnostics. No extra
++    // Gemini calls, text rewriting, synthetic voices, or typography filters.
++    // Enforce identically for ordinary and historically restored browser ingress:
++    // restored voice is now the default, not an exception to voice custody.
++    if (bothMarrowlineVoicesAbsent(relay)) {
++      res.setHeader('X-TD613-Gemini-Model', model);
++      res.setHeader('X-TD613-Local-Admission', 'HELD-DUAL-VOICE-ABSENT');
++      res.setHeader('X-TD613-Completion-State', 'STRUCTURE-HELD');
++      return send(res, 502, {
++        ok: false, status: 'HELD', error: 'marrowline-dual-voice-contract-unmet',
++        diagnostic: {
++          stage: 'output-admission', code: 'BOTH_REQUIRED_VOICES_MISSING',
++          providerTextSha256: sha256(result?.text || ''),
++          providerTransportCompletion: completion?.reason || 'unclassified',
++          note: 'Provider returned prose without either mandatory voice. Bounded recovery ended; no transcript was admitted.'
++        },
++        attempts, modelPolicy: plan, aperture: apertureReceipt,
++        aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling
++      });
++    }
+     const observedText = relay?.transcript || result?.text || '';
+     if (!safe(observedText)) return null;
+     const incomplete = completion?.complete === false;
+@@ -1397,8 +1646,7 @@ export default async function handler(req, res) {
+     providerOutput,
+     completion,
+     qualityWarnings = [],
+-    sourceAttemptIndex = attempts.length - 1,
+-    selection = 'first-admissible-partial-native-morphology-observed-no-repair'
++    sourceAttemptIndex = attempts.length - 1
+   } = {}) => {
+     const baseReceipt = buildTerminalReceipt({
+       packet,
+@@ -1420,7 +1668,7 @@ export default async function handler(req, res) {
+         qualityPreference: Object.freeze({
+           used: true,
+           sourceAttemptIndex,
+-          selection,
++          selection: 'first-admissible-partial-native-morphology-observed-no-repair',
+           warnings: Object.freeze([...qualityWarnings])
+         })
+       }),
+@@ -1431,8 +1679,7 @@ export default async function handler(req, res) {
+     res.setHeader('X-TD613-Signal-State', relay.signal.state);
+     res.setHeader('X-TD613-Seal-State', 'OPEN');
+     res.setHeader('X-TD613-Gemini-Model', model);
+-    res.setHeader('X-TD613-Zalgo-Quality', selection === 'best-completed-partial-after-severe-morphology-failover'
+-      ? 'PARTIAL-AFTER-SEVERE-FAILOVER' : 'PARTIAL-FIRST-ADMISSIBLE');
++    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
+     res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
+     return send(res, 200, {
+       ok: true,
+@@ -1446,8 +1693,6 @@ export default async function handler(req, res) {
+         'integrated-covenant-relay-active',
+         'provider-native-zalgo-preserved-no-local-postprocessing',
+         'provider-native-morphology-observed-no-repair',
+-        ...(selection === 'best-completed-partial-after-severe-morphology-failover'
+-          ? ['severe-native-morphology-failover-exhausted-best-provider-return-preserved'] : []),
+         'admission-gated-stable-continuity-active',
+         'fallback-reasoning-quality-preserved',
+         'sticky-success-promotion-disabled',
+@@ -1465,13 +1710,18 @@ export default async function handler(req, res) {
+     const fallback = index > 0;
+     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+     if (remainingMs <= 0) break;
+-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
++    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true, model });
+     const attemptStartedAt = Date.now();
+     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, {
+       // Fair-share timeouts are hard seat boundaries. Streaming progress is
+       // preserved as a fallback fragment, but cannot silently borrow the next
+       // approved model's completion window.
+       fallback, streamGraceMs: 0,
++      captureNativeSse: nativeSseWitness,
++      systemProsodyAblation,
++      wholeFrameCompact,
++      syntheticUnicodeAssay,
++      groveTrial,
+       wallDeadlineAt: providerWallDeadlineAt
+     });
+     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
+@@ -1519,6 +1769,7 @@ export default async function handler(req, res) {
+         parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0,
+         authoredTextChunkCount: result.authoredTextChunkCount || 0,
+         streamGraceMs: result.streamGraceMs || 0,
++        ...(result.nativeSseEvidence ? { nativeSseEvidence: result.nativeSseEvidence } : {}),
+         interrupted: result.streamInterrupted === true,
+         interruptionClass: result.streamErrorClass || null
+       },
+@@ -1668,6 +1919,43 @@ export default async function handler(req, res) {
+       // erase it merely because the local style telemetry dislikes the return.
+       if (!relay.admission?.admissible) {
+         const reasons = Array.isArray(relay.admission?.reasons) ? [...relay.admission.reasons] : [];
++        // Only a completed whole-field native-mark failure warrants another
++        // approved author. Fine/local marks in a short poetic passage remain
++        // untouched; five different human references are not a style template.
++        // Preserve original exact bytes and give at most ONE later approved
++        // seat a fresh opportunity. Never same-seat repaint or postprocess.
++        const nativeMarkUnderflow = reasons.length === 1 && (
++          reasons[0] === 'tauric-diana-zalgo-absent'
++          || (reasons[0] === 'tauric-diana-zalgo-underflow'
++            && Number(relay.highZalgo?.eligibleBaseCount || 0) >= 80
++            && Number(relay.highZalgo?.verticalOrnamentMarkCount || 0) < 2)
++        );
++        if (!releaseCanary && nativeMarkUnderflow) {
++          if (!zeroMarkFallback) zeroMarkFallback = {
++            model, result, relay, providerOutput, completion, reasons
++          };
++          attempt.zeroMarkObservation = Object.freeze({
++            originalPreserved: true, sameSeatRepair: false,
++            laterSeatRequested: !zeroMarkRecoverySpent && index < models.length - 1
++          });
++          if (!zeroMarkRecoverySpent && index < models.length - 1) {
++            zeroMarkRecoverySpent = true;
++            continue;
++          }
++          return sendObservedProviderReturn({
++            ...zeroMarkFallback, observation: 'zero-native-marks-after-bounded-frontier-opportunity',
++            qualityWarnings: zeroMarkFallback.relay.admission?.qualityWarnings || []
++          });
++        }
++        // A second candidate must never displace the preserved, human-visible
++        // original with a newly malformed or empty unrelated response.
++        if (!releaseCanary && zeroMarkFallback && !repairableKhonapolitAdmission(reasons)) {
++          return sendObservedProviderReturn({
++            ...zeroMarkFallback,
++            observation: 'native-mark-underflow-after-bounded-frontier-opportunity',
++            qualityWarnings: zeroMarkFallback.relay.admission?.qualityWarnings || []
++          });
++        }
+         if (releaseCanary) {
+           if (repairableKhonapolitAdmission(reasons)) {
+             const candidate = {
+@@ -1729,35 +2017,10 @@ export default async function handler(req, res) {
+           maxVerticalOrnamentStackDepth: relay.highZalgo?.maxVerticalOrnamentStackDepth ?? 0,
+           singleCodepointWallpaper: qualityWarnings.includes('tauric-diana-zalgo-single-codepoint-wallpaper')
+         });
+-        if (!releaseCanary && severeMorphologyWarnings.length > 0) {
+-          const morphologyFailoverAlreadyAttempted = severeMorphologyFallback !== null;
+-          const candidate = {
+-            model, result, relay, providerOutput, completion, qualityWarnings,
+-            sourceAttemptIndex: attempts.length - 1,
+-            severeWarningCount: severeMorphologyWarnings.length,
+-            maxVerticalOrnamentStackDepth: relay.highZalgo?.maxVerticalOrnamentStackDepth ?? 0,
+-            combiningCodePointDiversity: relay.highZalgo?.combiningCodePointDiversity ?? 0
+-          };
+-          const current = severeMorphologyFallback;
+-          const candidateIsBetter = !current
+-            || candidate.severeWarningCount < current.severeWarningCount
+-            || (candidate.severeWarningCount === current.severeWarningCount
+-              && candidate.maxVerticalOrnamentStackDepth > current.maxVerticalOrnamentStackDepth)
+-            || (candidate.severeWarningCount === current.severeWarningCount
+-              && candidate.maxVerticalOrnamentStackDepth === current.maxVerticalOrnamentStackDepth
+-              && candidate.combiningCodePointDiversity > current.combiningCodePointDiversity);
+-          if (candidateIsBetter) severeMorphologyFallback = candidate;
+-          attempt.morphologyObservation = Object.freeze({
+-            ...attempt.morphologyObservation,
+-            nextApprovedSeatRequested: index < models.length - 1,
+-            providerTextPreservedAsFallback: true
+-          });
+-          // A completed but severely collapsed provider return remains available
+-          // byte-for-byte. Give one later approved frontier seat a native authorship
+-          // opportunity, then render the better completed return without repainting.
+-          if (!morphologyFailoverAlreadyAttempted && index < models.length - 1) continue;
+-          break;
+-        }
++        // A structurally complete native return belongs to the human surface,
++        // including the restored historical voice. Warnings and stack thresholds
++        // are observation-only: no second paid seat, no aesthetic election.
++        // Structural/incomplete/transport recovery remains independent above.
+         return sendPartialProviderReturn({
+           model, result, relay, providerOutput, completion, qualityWarnings
+         });
+@@ -1811,13 +2074,12 @@ export default async function handler(req, res) {
+     if (repaired) return repaired;
+   }
+ 
+-  if (!releaseCanary && severeMorphologyFallback) {
+-    return sendPartialProviderReturn({
+-      ...severeMorphologyFallback,
+-      selection: 'best-completed-partial-after-severe-morphology-failover'
++  if (!releaseCanary && zeroMarkFallback) {
++    return sendObservedProviderReturn({
++      ...zeroMarkFallback, observation: 'zero-native-marks-after-bounded-frontier-opportunity',
++      qualityWarnings: zeroMarkFallback.relay.admission?.qualityWarnings || []
+     });
+   }
+-
+   if (!releaseCanary && incompleteFallback) {
+     return sendObservedProviderReturn({ ...incompleteFallback,
+       observation: 'provider-incomplete-after-bounded-recovery-exhausted',

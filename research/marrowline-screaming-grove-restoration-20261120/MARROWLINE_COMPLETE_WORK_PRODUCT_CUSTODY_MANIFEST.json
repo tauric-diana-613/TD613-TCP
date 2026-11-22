@@ -1,0 +1,2621 @@
+{
+  "schema": "td613.marrowline.complete-work-product-custody-manifest/v1.0",
+  "commission": "TD613-MARROWLINE-SCREAMING-GROVE-RESTORATION",
+  "stage": "Stage II · Final Custody and Qualification Pass",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "primary_pr": 1746,
+  "primary_branch": "research/marrowline-screaming-grove-emergence-hq-dossier-20261120",
+  "predecessor_pr_1746_head": "5819e1035dbd0e1e57499103ede2cae1a93f8872",
+  "preserved_precursor_pr": 1745,
+  "preserved_precursor_head": "4a481e44f3f6f2b3c0f2fda74b6eafe1610de6d8",
+  "verified_deterministic_repair_ancestor": "bc5467246f12b0598f89d681e4a4450c4733eace",
+  "historical_reference_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+  "origin_main_head_at_reentry": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+  "authority_posture": {
+    "paid_provider_calls_authorized": 0,
+    "paid_provider_calls_executed": 0,
+    "new_deployment_gestures_authorized": 0,
+    "merge_authority": false,
+    "human_artistic_closure": "RESERVED"
+  },
+  "summary": {
+    "total_accounted_entries": 168,
+    "by_github_disposition": {
+      "ALREADY_IN_PR_1746": 68,
+      "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746": 18,
+      "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II": 37,
+      "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE": 20,
+      "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE": 20,
+      "EXCLUDED_ENV_OR_UNRELATED_BY_CLASS": 5
+    },
+    "by_artifact_class": {
+      "ci_wiring_modification": 1,
+      "final_source_modification": 6,
+      "final_test_modification": 1,
+      "superseded_intermediate_source_version": 18,
+      "pr_surface_navigator": 1,
+      "research_deliverable": 18,
+      "browser_witness_artifact": 4,
+      "browser_witness_host_verified_screenshot": 2,
+      "ci_attribution_report": 1,
+      "dollhouse_subagent_raw_command_outputs": 6,
+      "reproducibility_script": 4,
+      "local_reproducibility_script": 1,
+      "pr_publication_body": 2,
+      "remote_reentry_receipt": 2,
+      "verification_or_diagnostic_log": 8,
+      "failed_intermediate_run_log": 5,
+      "ci_diagnostic_log": 4,
+      "browser_witness_server_log": 2,
+      "dollhouse_engine_receipt": 4,
+      "dollhouse_specialist_report": 7,
+      "dollhouse_audit_spec": 4,
+      "historical_pr_snapshot": 11,
+      "local_scratch_source_reconciled": 11,
+      "local_prompt_extract": 1,
+      "read_only_historical_extraction": 1,
+      "ephemeral_command_log": 12,
+      "raw_agent_harness_transcript": 7,
+      "read_only_source_dependency": 19,
+      "protected_credentials_and_env": 1,
+      "environment_dependency_cache": 1,
+      "unrelated_user_worktree": 1,
+      "unrelated_user_worktrees_and_stashes": 1,
+      "ephemeral_subagent_sandbox_artifacts": 1
+    }
+  },
+  "verification_command": "node research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/local-scripts/build-work-product-custody-manifest.mjs --verify",
+  "entries": [
+    {
+      "original_path": ".github/workflows/td613-ci.yml",
+      "artifact_class": "ci_wiring_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "716477e5c779e796cb2b4b0ec00b98d4f1b88dbc9e4e42d208123a5b21e5eb4e",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "93f5e12847f262bb6ac331bb373c2c287a6acbd8",
+        "git_change_status": "M"
+      },
+      "bytes": 84128,
+      "current_preservation_location": ".github/workflows/td613-ci.yml",
+      "archived_sha256": "716477e5c779e796cb2b4b0ec00b98d4f1b88dbc9e4e42d208123a5b21e5eb4e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "app/dome-world/khonapolit-relay.js",
+      "artifact_class": "final_source_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "4546f2021b5b50745b77a73a34711c09b51bba4c9cbf022cd079b07e3abb79d2",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "3090e1cda22cdd47d77b3c6e82e0c4269cc867ef",
+        "git_change_status": "M"
+      },
+      "bytes": 54826,
+      "current_preservation_location": "app/dome-world/khonapolit-relay.js",
+      "archived_sha256": "4546f2021b5b50745b77a73a34711c09b51bba4c9cbf022cd079b07e3abb79d2",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "app/dome-world/marrowline-historical-grove.js",
+      "artifact_class": "final_source_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "df8d2206b04e76f409dead068a75ea6d64869c6c7a342bde6961c05a6fbb0f98",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "7b8ef4c3c636f43c1904a3f018a6547a0d7e7692",
+        "git_change_status": "M"
+      },
+      "bytes": 16674,
+      "current_preservation_location": "app/dome-world/marrowline-historical-grove.js",
+      "archived_sha256": "df8d2206b04e76f409dead068a75ea6d64869c6c7a342bde6961c05a6fbb0f98",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "app/engine/aperture-v3-task-intent.js",
+      "artifact_class": "final_source_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "b38b1e6d6c88d12d2338b2b30c25ca3909fd24e9bdf32a5ec3a567c612326e5d",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "bc29718519138f9fed9f08e6bc09837b0ede9be4",
+        "git_change_status": "M"
+      },
+      "bytes": 7725,
+      "current_preservation_location": "app/engine/aperture-v3-task-intent.js",
+      "archived_sha256": "b38b1e6d6c88d12d2338b2b30c25ca3909fd24e9bdf32a5ec3a567c612326e5d",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "server/khonapolit-quality.js",
+      "artifact_class": "final_source_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "f75769f09700687cf57f51488ca4bba70b2abbc303430cdfaff63d16b9847e48",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "c97a2ebf6dbe9620482c61a19727c816a167ab49",
+        "git_change_status": "M"
+      },
+      "bytes": 124126,
+      "current_preservation_location": "server/khonapolit-quality.js",
+      "archived_sha256": "f75769f09700687cf57f51488ca4bba70b2abbc303430cdfaff63d16b9847e48",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "server/marrowline-attachment-quality.js",
+      "artifact_class": "final_source_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "db26d8d8de77a605dceb578becbf5122ba8d78f3d07f0254bf8f0f9292716937",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "97a2f684e92d1361ad6fbdc177713691932ff8f0",
+        "git_change_status": "M"
+      },
+      "bytes": 29222,
+      "current_preservation_location": "server/marrowline-attachment-quality.js",
+      "archived_sha256": "db26d8d8de77a605dceb578becbf5122ba8d78f3d07f0254bf8f0f9292716937",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "server/marrowline-completion.js",
+      "artifact_class": "final_source_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "16f59db959f28d0246e77f31b4b94b1bdcf732926d99f81f274b45ce5612f221",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "a8904b463e1704ae5d312d63bc33439daf403dea",
+        "git_change_status": "M"
+      },
+      "bytes": 5100,
+      "current_preservation_location": "server/marrowline-completion.js",
+      "archived_sha256": "16f59db959f28d0246e77f31b4b94b1bdcf732926d99f81f274b45ce5612f221",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": "tests/marrowline-screaming-grove-restoration.test.mjs",
+      "artifact_class": "final_test_modification",
+      "source_episode": "Stage I · Deterministic Repair Ancestor bc5467246 (unchanged in Stage II)",
+      "version_or_digest": {
+        "sha256": "878b36cbd8675c97dc87bb7c65c7b275f6e29048766f20d5fefcd88195205e65",
+        "git_commit": "bc5467246f12b0598f89d681e4a4450c4733eace",
+        "git_blob_sha1": "d89fd24021e0bb9ca56a61c2312fa47cf9e800f9",
+        "git_change_status": "A"
+      },
+      "bytes": 34180,
+      "current_preservation_location": "tests/marrowline-screaming-grove-restoration.test.mjs",
+      "archived_sha256": "878b36cbd8675c97dc87bb7c65c7b275f6e29048766f20d5fefcd88195205e65",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Present identically on PR #1745 (4a481e44f) and PR #1746 (5819e1035 and Stage II HEAD); zero Stage II runtime code edits."
+    },
+    {
+      "original_path": ".github/workflows/td613-ci.yml@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "716477e5c779e796cb2b4b0ec00b98d4f1b88dbc9e4e42d208123a5b21e5eb4e",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "93f5e12847f262bb6ac331bb373c2c287a6acbd8"
+      },
+      "bytes": 84128,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:.github/workflows/td613-ci.yml",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "app/dome-world/khonapolit-relay.js@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "001a0952408ec44272fa20d6e76064f0f439338c84d4ea8d0af13e5fbdcdaed2",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "39e6389873c723eb84cf809655ff6e3f1bb7a1ab"
+      },
+      "bytes": 53534,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:app/dome-world/khonapolit-relay.js",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "app/dome-world/marrowline-historical-grove.js@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "df8d2206b04e76f409dead068a75ea6d64869c6c7a342bde6961c05a6fbb0f98",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "7b8ef4c3c636f43c1904a3f018a6547a0d7e7692"
+      },
+      "bytes": 16674,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:app/dome-world/marrowline-historical-grove.js",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "app/engine/aperture-v3-task-intent.js@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "e377e85ac62268378cad6dd0a59a99f41d5e970a35adaacd1788c30a89f06417",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "116dd8a9de8d3118914d621106e7e8322cd697c3"
+      },
+      "bytes": 7218,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:app/engine/aperture-v3-task-intent.js",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "32f3e106e9e8390c222863f72a590ff13921c03c246bd632382effd17f9142b9",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "a64981e7287e55450baa9ea06fa7a090dc8328f7"
+      },
+      "bytes": 6176,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "47b352dc11daf05df70cbce1fa64facc7a0a56899680fed6a6901e44cae69f35",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "ce28e69ed53a26b6ad512865c917a714bfa87257"
+      },
+      "bytes": 14200,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "7f4fe9340fb271aa54c91b89acb22ea5bd71f4d85351b4ef17a79c3bb78d8d96",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "bb2b2ccc56760f2bf2d3f38581e388d8e4c72a33"
+      },
+      "bytes": 71151,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORICAL_PR_CASE_REGISTER.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "c2374cab5a4c05648ae89ef225cc5b53ce716ddb03556207710c2ac97ff0a304",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "1f59df3b1ace571ecfe9ac582247aa0f27066470"
+      },
+      "bytes": 13126,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORICAL_PR_CASE_REGISTER.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "428967a4f532b149bff0bf88162b48aecfb95fc64760e5400c7372c906669975",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "95275f6c72cd4b8199e01a8dd7b5250ca59e85b6"
+      },
+      "bytes": 6473,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "b97d26f851473456c9990496fd96cc93d56fa9e910272fbb4deda1c77996522e",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "bdaa2419571473718fd3a4ef530594666b6b7fe6"
+      },
+      "bytes": 14063,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "ed79d24a3fb172b99dd9d08c4c7791f467bc291a5b7fcb7265cb091e8ed073c3",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "e685c2bb11be6a4d9d0369f10c3c89bdac115f9d"
+      },
+      "bytes": 8160,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "dd03327427fdf57e48aac4f73da3a06b3aac09063ec1457133e656cb2a21224f",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "e8fdaa4c118249e5e817be4dbab87c3f3640b30a"
+      },
+      "bytes": 10555,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "f5069f8f208aabbacebb750737085094e445266a71a578d7bc3f08922df231e9",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "f9c4891807d9fdf39bd3b301b481796ce911a802"
+      },
+      "bytes": 12144,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "3566159ba5f183960a79dd80d9610b7e75e525abae427d575220a643ae12e081",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "01b80a5155fc3d06e1b4ce0bcb13d596adc3733e"
+      },
+      "bytes": 13218,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "server/khonapolit-quality.js@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "8525dee9f56d5411c12f649953136779539bc6d09ca569bd9652cd448d97dff8",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "38032ea828a7cce110eaab554a350552f28125a0"
+      },
+      "bytes": 123553,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:server/khonapolit-quality.js",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "server/marrowline-attachment-quality.js@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "f176b2f90fcf0ccca8a5b7d4859873bc82b2def3ddff6a7956a31801ad8f703e",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "fc24e4322319ea19a8475ba38d05bb667e8a7db3"
+      },
+      "bytes": 27942,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:server/marrowline-attachment-quality.js",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "server/marrowline-completion.js@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "1f2d1a0fef4fc9a4db798c9d8518c7361a2945fd371702a2ce472db47ee80a46",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "b48d74539981002798df41d2a28386c8d87770c7"
+      },
+      "bytes": 5127,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:server/marrowline-completion.js",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "tests/marrowline-screaming-grove-restoration.test.mjs@6cf64d17d",
+      "artifact_class": "superseded_intermediate_source_version",
+      "source_episode": "Stage I · Initial Deterministic Repair (Pre-Hardening Ancestor of bc5467246)",
+      "version_or_digest": {
+        "sha256": "20c9840f99be17f210f6facc9e7c4984e2f47085ec51adbcc5059b2587f8ea27",
+        "git_commit": "6cf64d17d82f727bb918be6869f313a3342e530c",
+        "git_blob_sha1": "b32f579e5317a83dc6f0504f0bec0fe0d36e3dd9"
+      },
+      "bytes": 28569,
+      "current_preservation_location": "git:6cf64d17d82f727bb918be6869f313a3342e530c:tests/marrowline-screaming-grove-restoration.test.mjs",
+      "github_disposition": "PRESERVED_IN_GIT_HISTORY_PR_1745_AND_1746",
+      "non_publication_reason": null,
+      "notes": "Retained immutably in Git commit ancestry of both PR #1745 and PR #1746."
+    },
+    {
+      "original_path": "MARROWLINE_SCREAMING_GROVE_EMERGENCE_HQ_NAVIGATOR.md",
+      "artifact_class": "pr_surface_navigator",
+      "source_episode": "Stage I (5819e1035) · Updated in Stage II with Final Custody Appendix Index",
+      "version_or_digest": {
+        "sha256": "f1bb7cca1e9fc62c7ce586d5e4b37280b46520dce8df988add32a109a01fe4a7"
+      },
+      "bytes": 23138,
+      "current_preservation_location": "MARROWLINE_SCREAMING_GROVE_EMERGENCE_HQ_NAVIGATOR.md",
+      "archived_sha256": "f1bb7cca1e9fc62c7ce586d5e4b37280b46520dce8df988add32a109a01fe4a7",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Surface entry guide for Emergence HQ adjudication."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "f54fa198bd0b668601b87fbddace600ccdda0591892df85bc192eb6b1affb068",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 6439,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/BOUNDED_PROVIDER_EXPERIMENT_PREREGISTRATION.md",
+      "archived_sha256": "f54fa198bd0b668601b87fbddace600ccdda0591892df85bc192eb6b1affb068",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/dollhouse-engine-receipt-baseline-bc5467246.json",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15488,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/dollhouse-engine-receipt-baseline-bc5467246.json",
+      "archived_sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/dollhouse-engine-receipt-global-hold-bc5467246.json",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15276,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/dollhouse-engine-receipt-global-hold-bc5467246.json",
+      "archived_sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "3566159ba5f183960a79dd80d9610b7e75e525abae427d575220a643ae12e081",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 13218,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/dramaturgy-parity-discriminator-offline.mjs",
+      "archived_sha256": "3566159ba5f183960a79dd80d9610b7e75e525abae427d575220a643ae12e081",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/MARROWLINE_PROVIDER_FREE_BROWSER_WITNESS.md",
+      "artifact_class": "browser_witness_artifact",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "8b4f1e15ba48af5b55eb6ab574d71a92793d1439bd8ac2087f84478af7e07576",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 8516,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/MARROWLINE_PROVIDER_FREE_BROWSER_WITNESS.md",
+      "archived_sha256": "8b4f1e15ba48af5b55eb6ab574d71a92793d1439bd8ac2087f84478af7e07576",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/marrowline-provider-free-witness-server.mjs",
+      "artifact_class": "browser_witness_artifact",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "8a9311030e253d63133b1fc987cbdb57133ac0f1dab93e6efb090efff4f3ba44",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 12776,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/marrowline-provider-free-witness-server.mjs",
+      "archived_sha256": "8a9311030e253d63133b1fc987cbdb57133ac0f1dab93e6efb090efff4f3ba44",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/browser_evidence/46f0f3d7-452b-41be-8b99-f997801b0f21/final_step_59.png",
+      "artifact_class": "browser_witness_host_verified_screenshot",
+      "source_episode": "Stage II · Section VI (Pass 2 Desktop 1440x900 WITNESS-INCOMPLETE)",
+      "version_or_digest": {
+        "sha256": "3cc01dfbebf9f9b386aa57399093a0cee9f680b7e160807fdc6729dbd2719505",
+        "original_sha256": "3cc01dfbebf9f9b386aa57399093a0cee9f680b7e160807fdc6729dbd2719505",
+        "byte_identical": true
+      },
+      "bytes": 261978,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/screenshots/desktop-1440x900-incomplete-return-pass2-host-verified.png",
+      "archived_sha256": "3cc01dfbebf9f9b386aa57399093a0cee9f680b7e160807fdc6729dbd2719505",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Copied verbatim from BROWSER_HOST_FACTS latest_screenshot final_step_59.png (origin http://127.0.0.1:6137)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/browser_evidence/46f0f3d7-452b-41be-8b99-f997801b0f21/final_step_47.png",
+      "artifact_class": "browser_witness_host_verified_screenshot",
+      "source_episode": "Stage II · Section VI (Pass 1 Mobile 390x844)",
+      "version_or_digest": {
+        "sha256": "2336bb347fe80b11285b0350a173084a86a8db68f0b7c82e49943973e3eed914",
+        "original_sha256": "2336bb347fe80b11285b0350a173084a86a8db68f0b7c82e49943973e3eed914",
+        "byte_identical": true
+      },
+      "bytes": 295665,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/screenshots/mobile-390x844-dense-unicode-pass1-host-verified.png",
+      "archived_sha256": "2336bb347fe80b11285b0350a173084a86a8db68f0b7c82e49943973e3eed914",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Copied verbatim from BROWSER_HOST_FACTS latest_screenshot final_step_47.png (origin http://127.0.0.1:6137)."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/witness-log-pass1.json",
+      "artifact_class": "browser_witness_artifact",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "908bb1ca74df4f3607149651e46b4f2ad31fc7b7d4f00f777a27d66456a694e0",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 8001,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/witness-log-pass1.json",
+      "archived_sha256": "908bb1ca74df4f3607149651e46b4f2ad31fc7b7d4f00f777a27d66456a694e0",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/witness-log-pass2.json",
+      "artifact_class": "browser_witness_artifact",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "96837abec0e8b030a47b5548f52dce5319faea0f4974cb64e2cdacf379a008e0",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 3969,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/browser-witness/witness-log-pass2.json",
+      "archived_sha256": "96837abec0e8b030a47b5548f52dce5319faea0f4974cb64e2cdacf379a008e0",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/CI_RED_44800185041_ATTRIBUTION_AND_GOVERNANCE_RECOMMENDATION.md",
+      "artifact_class": "ci_attribution_report",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "f4e85180a48da421e89263b18d6df171400f24cedb88d9c1d683da49339f57ad",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 11609,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/CI_RED_44800185041_ATTRIBUTION_AND_GOVERNANCE_RECOMMENDATION.md",
+      "archived_sha256": "f4e85180a48da421e89263b18d6df171400f24cedb88d9c1d683da49339f57ad",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/58c7dc01-ddd5-47a7-abe5-1a2f875316be/.system_generated/logs/transcript_full.jsonl (run_command executions extracted)",
+      "artifact_class": "dollhouse_subagent_raw_command_outputs",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "b68415a2d3313c94d5c1f6e9f8cfa9ce65272c212b75485725415a71875f2f32",
+        "source_transcript_sha256": "abddd77d5279fec74835ff2b860a701789c95408cadfded42964eaebd99b8a8b"
+      },
+      "bytes": 2089,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/dollhouse-raw-command-outputs/01-aperture-raw-commands.json",
+      "archived_sha256": "b68415a2d3313c94d5c1f6e9f8cfa9ce65272c212b75485725415a71875f2f32",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "All 7 raw run_command invocations and stdout/stderr engine outputs extracted from dollhouse-aperture (58c7dc01-ddd5-47a7-abe5-1a2f875316be)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/35a2025a-9967-46d9-acfe-876afc13e92e/.system_generated/logs/transcript_full.jsonl (run_command executions extracted)",
+      "artifact_class": "dollhouse_subagent_raw_command_outputs",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "8d1d8d2cb8f9a3380566006d4767a8a69c018cf23a6f745e09bf1e8b0bbe7f35",
+        "source_transcript_sha256": "2699ec2d4963da1ee3613a8733874887545bc63b9eedf23d0dae773e12850138"
+      },
+      "bytes": 1426,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/dollhouse-raw-command-outputs/02-fadt-raw-commands.json",
+      "archived_sha256": "8d1d8d2cb8f9a3380566006d4767a8a69c018cf23a6f745e09bf1e8b0bbe7f35",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "All 4 raw run_command invocations and stdout/stderr engine outputs extracted from dollhouse-fadt (35a2025a-9967-46d9-acfe-876afc13e92e)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/1415ce7d-6db4-4160-a92e-4e052adc83dd/.system_generated/logs/transcript_full.jsonl (run_command executions extracted)",
+      "artifact_class": "dollhouse_subagent_raw_command_outputs",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "61076f600d9a23a057ba97f35c4f82f6c6d8a0162bc1afaccc0aded20a9af139",
+        "source_transcript_sha256": "964432ff6443c58da669f195c9487b5241a013f734b49b4599352f13dc38a0a0"
+      },
+      "bytes": 2750,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/dollhouse-raw-command-outputs/03-pedagogue-raw-commands.json",
+      "archived_sha256": "61076f600d9a23a057ba97f35c4f82f6c6d8a0162bc1afaccc0aded20a9af139",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "All 10 raw run_command invocations and stdout/stderr engine outputs extracted from dollhouse-pedagogue (1415ce7d-6db4-4160-a92e-4e052adc83dd)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/b0ee9fd1-3394-4eaa-89da-e645c186a2dd/.system_generated/logs/transcript_full.jsonl (run_command executions extracted)",
+      "artifact_class": "dollhouse_subagent_raw_command_outputs",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "5c6467a0cdc8a0d1f1c21051898e4a5d5126da576c161d61b7aa6ae51cb5a6c5",
+        "source_transcript_sha256": "2f312e439311d7f1dccb17abd71b16bbb67f13980efdbfaa4b0c25792ad82e3b"
+      },
+      "bytes": 2526,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/dollhouse-raw-command-outputs/04-atlas-raw-commands.json",
+      "archived_sha256": "5c6467a0cdc8a0d1f1c21051898e4a5d5126da576c161d61b7aa6ae51cb5a6c5",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "All 9 raw run_command invocations and stdout/stderr engine outputs extracted from dollhouse-atlas (b0ee9fd1-3394-4eaa-89da-e645c186a2dd)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3c0e6c5b-ac37-4e79-8677-090b3d33f3f7/.system_generated/logs/transcript_full.jsonl (run_command executions extracted)",
+      "artifact_class": "dollhouse_subagent_raw_command_outputs",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "da0e044fac1de4a95106ba5a1763e24467c3820dd84d53c3756f798bbb1630ad",
+        "source_transcript_sha256": "8ef90181e575841ca1ced3460e40e3e6ba93da20e45837afdc4b5095758a16eb"
+      },
+      "bytes": 1659,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/dollhouse-raw-command-outputs/05-temporal-custodian-raw-commands.json",
+      "archived_sha256": "da0e044fac1de4a95106ba5a1763e24467c3820dd84d53c3756f798bbb1630ad",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "All 5 raw run_command invocations and stdout/stderr engine outputs extracted from dollhouse-temporal-custodian (3c0e6c5b-ac37-4e79-8677-090b3d33f3f7)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/f9edfc36-b2b0-45e2-81c6-4437904d8c0f/.system_generated/logs/transcript_full.jsonl (run_command executions extracted)",
+      "artifact_class": "dollhouse_subagent_raw_command_outputs",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "c80c1083961e7fb134d4ee7055e84c2da10c2e3f553e60eff42b349cb8724b6c",
+        "source_transcript_sha256": "ae9125f831682b40a62360f0c79224069b908c66f0626a6a9be0747607e8bac1"
+      },
+      "bytes": 1650,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/dollhouse-raw-command-outputs/06-orchestrator-raw-commands.json",
+      "archived_sha256": "c80c1083961e7fb134d4ee7055e84c2da10c2e3f553e60eff42b349cb8724b6c",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "All 5 raw run_command invocations and stdout/stderr engine outputs extracted from dollhouse-orchestrator (f9edfc36-b2b0-45e2-81c6-4437904d8c0f)."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/local-scripts/build-work-product-custody-manifest.mjs",
+      "artifact_class": "reproducibility_script",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "1623aeb2498fa785f966c8a0b6b1d70d1562ceecc0c2bcf66ccaad211a371d55",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 56056,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/local-scripts/build-work-product-custody-manifest.mjs",
+      "archived_sha256": "1623aeb2498fa785f966c8a0b6b1d70d1562ceecc0c2bcf66ccaad211a371d55",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/scratch/bundle_emergence_hq_dossier.mjs",
+      "artifact_class": "local_reproducibility_script",
+      "source_episode": "Stage I · PR #1746 Dossier Packaging",
+      "version_or_digest": {
+        "sha256": "64f95223791d0ffa779101167614673b3e920fab3c56680c09afe4e568b663d3",
+        "original_sha256": "3d492cf8286b627576190e28235a02720a5d9e961201f2e1f1afd8cae40ee547",
+        "byte_identical": false
+      },
+      "bytes": 12795,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/local-scripts/bundle-emergence-hq-dossier.mjs",
+      "archived_sha256": "64f95223791d0ffa779101167614673b3e920fab3c56680c09afe4e568b663d3",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Stage I bundler script that assembled PR #1746 (5819e1035) from local research outputs and Dollhouse transcripts."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/scratch/pr_body.md",
+      "artifact_class": "pr_publication_body",
+      "source_episode": "Stage I · Draft Precursor PR #1745 Publication",
+      "version_or_digest": {
+        "sha256": "9147b84b247c9576e90b31f153a43659aa8b9e0f7784a8b65c481495a611b1a7",
+        "original_sha256": "9147b84b247c9576e90b31f153a43659aa8b9e0f7784a8b65c481495a611b1a7",
+        "byte_identical": true
+      },
+      "bytes": 5244,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/pr-bodies/pr-1745-body.md",
+      "archived_sha256": "9147b84b247c9576e90b31f153a43659aa8b9e0f7784a8b65c481495a611b1a7",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Exact authored GitHub PR #1745 description body."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/scratch/pr_body_emergence_hq.md",
+      "artifact_class": "pr_publication_body",
+      "source_episode": "Stage I · Emergence HQ Dossier PR #1746 Publication",
+      "version_or_digest": {
+        "sha256": "24c256787c34c513961fb1da24b24790dd33d847fda3e5e20f70d61f8db80c61",
+        "original_sha256": "24c256787c34c513961fb1da24b24790dd33d847fda3e5e20f70d61f8db80c61",
+        "byte_identical": true
+      },
+      "bytes": 5177,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/pr-bodies/pr-1746-body.md",
+      "archived_sha256": "24c256787c34c513961fb1da24b24790dd33d847fda3e5e20f70d61f8db80c61",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Exact authored GitHub PR #1746 description body."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/STAGE_II_REMOTE_REENTRY_RECEIPT.md",
+      "artifact_class": "remote_reentry_receipt",
+      "source_episode": "Stage II · Final Custody & Qualification Appendix",
+      "version_or_digest": {
+        "sha256": "a4a02aef9b0ec2d2f408be6da17e761c8d88c1ba93912b204e8a62762aa6bf31",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": false
+      },
+      "bytes": 7761,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/STAGE_II_REMOTE_REENTRY_RECEIPT.md",
+      "archived_sha256": "a4a02aef9b0ec2d2f408be6da17e761c8d88c1ba93912b204e8a62762aa6bf31",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Authored/captured during Stage II custody pass."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-12.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · Section P0 Pre-Fetch Custody Inventory",
+      "version_or_digest": {
+        "sha256": "957c951432ccff207796d59d89956ea00e61958acf42ee465a1302d493a7259c",
+        "original_sha256": "89001b804d036e2caa6611e4f84e027f4d178057cb18432c978be209e8320918",
+        "byte_identical": false
+      },
+      "bytes": 7849,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/01-stage1-preflight-refs-task12.txt",
+      "archived_sha256": "957c951432ccff207796d59d89956ea00e61958acf42ee465a1302d493a7259c",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Exact pre-fetch ref and worktree inventory recorded before Stage I git fetch."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-97.log",
+      "artifact_class": "failed_intermediate_run_log",
+      "source_episode": "Stage I · Baseline Test Discovery (Failed Run)",
+      "version_or_digest": {
+        "sha256": "d65021689a4c6c829cc480888a3b40b1db7b5e0deec6fc168c0159fba02b51ff",
+        "original_sha256": "198a708ff28c7fd20e0d2bf155d39ff9076721dc0246df576fcd66b9a025687c",
+        "byte_identical": false
+      },
+      "bytes": 182904,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/02-initial-84-test-jsdom-missing-failure-task97.txt",
+      "archived_sha256": "d65021689a4c6c829cc480888a3b40b1db7b5e0deec6fc168c0159fba02b51ff",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Original failed 84-test sweep revealing ERR_MODULE_NOT_FOUND for jsdom in isolated worktree without node_modules."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-126.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · Pre-Repair Pure-Node Baseline",
+      "version_or_digest": {
+        "sha256": "a165c198adad75fc282b3f33487ee1d1d638ef0730776a1ef35c61f11dd29644",
+        "original_sha256": "a165c198adad75fc282b3f33487ee1d1d638ef0730776a1ef35c61f11dd29644",
+        "byte_identical": true
+      },
+      "bytes": 72389,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/03-pre-repair-baseline-pure-node-task126.txt",
+      "archived_sha256": "a165c198adad75fc282b3f33487ee1d1d638ef0730776a1ef35c61f11dd29644",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Pre-repair pure-Node Marrowline baseline sweep."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-212.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · First Post-Repair Verification (6cf64d17d)",
+      "version_or_digest": {
+        "sha256": "12d337dc753a502dcd9d562b0f25bf7d2b3a7be1da19eac7a8705c398127a088",
+        "original_sha256": "12d337dc753a502dcd9d562b0f25bf7d2b3a7be1da19eac7a8705c398127a088",
+        "byte_identical": true
+      },
+      "bytes": 74248,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/04-post-repair-6cf64d17d-pure-node-277pass-task212.txt",
+      "archived_sha256": "12d337dc753a502dcd9d562b0f25bf7d2b3a7be1da19eac7a8705c398127a088",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "277/277 pure-Node Marrowline tests passing on pre-hardening repair commit 6cf64d17d."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/269/output.txt",
+      "artifact_class": "failed_intermediate_run_log",
+      "source_episode": "Stage I · Restoration Test Authoring (Intermediate Failure 1)",
+      "version_or_digest": {
+        "sha256": "5d3f3389049501303883c4011c5fae8c689c5f5cb35c32acce3f3c066de8fe43",
+        "original_sha256": "5d3f3389049501303883c4011c5fae8c689c5f5cb35c32acce3f3c066de8fe43",
+        "byte_identical": true
+      },
+      "bytes": 15872,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/05-restoration-test-authoring-intermediate-fail1-step269.txt",
+      "archived_sha256": "5d3f3389049501303883c4011c5fae8c689c5f5cb35c32acce3f3c066de8fe43",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Failed intermediate test execution during initial authoring of tests/marrowline-screaming-grove-restoration.test.mjs."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/292/output.txt",
+      "artifact_class": "failed_intermediate_run_log",
+      "source_episode": "Stage I · Restoration Test Authoring (Intermediate Failure 2)",
+      "version_or_digest": {
+        "sha256": "ddb3fad890ef49a4d164332f200ec1739d315e359a25b8a4de19803e5b8f27c3",
+        "original_sha256": "ddb3fad890ef49a4d164332f200ec1739d315e359a25b8a4de19803e5b8f27c3",
+        "byte_identical": true
+      },
+      "bytes": 10281,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/06-restoration-test-authoring-intermediate-fail2-step292.txt",
+      "archived_sha256": "ddb3fad890ef49a4d164332f200ec1739d315e359a25b8a4de19803e5b8f27c3",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Second failed intermediate test execution before settling restoration test suite."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/299/output.txt",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · Restoration Test Authoring (First Pass)",
+      "version_or_digest": {
+        "sha256": "1a6e59e4c2a1f9f2ecf187994358440872088949dc6b791e13bcad718871f6e2",
+        "original_sha256": "1a6e59e4c2a1f9f2ecf187994358440872088949dc6b791e13bcad718871f6e2",
+        "byte_identical": true
+      },
+      "bytes": 7297,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/07-restoration-test-authoring-first-pass-step299.txt",
+      "archived_sha256": "1a6e59e4c2a1f9f2ecf187994358440872088949dc6b791e13bcad718871f6e2",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "First passing execution of tests/marrowline-screaming-grove-restoration.test.mjs."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/301/output.txt",
+      "artifact_class": "ci_diagnostic_log",
+      "source_episode": "Stage I · Local Constitutional Guard Witness",
+      "version_or_digest": {
+        "sha256": "22c69c0f5f5a4021cb9aa4129bef8d9705b813e3926323a07a84969e1de461be",
+        "original_sha256": "d97fb6fb6261e22e4ec38d1d19e3605e44c3cd6bd3fed9671443b8026ec4a758",
+        "byte_identical": false
+      },
+      "bytes": 1338,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/08-local-workflow-estate-vixen-red-step301.txt",
+      "archived_sha256": "22c69c0f5f5a4021cb9aa4129bef8d9705b813e3926323a07a84969e1de461be",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Local failure witness of tests/workflow-estate.test.mjs tripping on main commit 2f0fa5944 (vixen-a0-corpus-rebuild.yml)."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/303/output.txt",
+      "artifact_class": "ci_diagnostic_log",
+      "source_episode": "Stage I · Local Release-Plumbing Guard Witness",
+      "version_or_digest": {
+        "sha256": "7715ac31361c4e802d4719e074f6a15447d967db0842ff29596be2fb816bc7c0",
+        "original_sha256": "a4f42913c3ff374775c1e91f3b9f12704691da140ce32dec41da6914659f2389",
+        "byte_identical": false
+      },
+      "bytes": 882,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/09-local-release-plumbing-vixen-red-step303.txt",
+      "archived_sha256": "7715ac31361c4e802d4719e074f6a15447d967db0842ff29596be2fb816bc7c0",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Local failure witness of tests/release-plumbing.test.mjs tripping on executable git push in vixen-a0-corpus-rebuild.yml."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-308.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · Dollhouse Audits Suite (220/220 PASS)",
+      "version_or_digest": {
+        "sha256": "49f5327316ee4f509e2ec920c36f86818a8f044cd58f3d8ecfe858dddd1901f5",
+        "original_sha256": "49f5327316ee4f509e2ec920c36f86818a8f044cd58f3d8ecfe858dddd1901f5",
+        "byte_identical": true
+      },
+      "bytes": 35846,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/10-dollhouse-audits-220pass-task308.txt",
+      "archived_sha256": "49f5327316ee4f509e2ec920c36f86818a8f044cd58f3d8ecfe858dddd1901f5",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Full npm run test:dollhouse:audits passing 220/220 locally."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/352/output.txt",
+      "artifact_class": "failed_intermediate_run_log",
+      "source_episode": "Stage I · Initial Strict-Provenance Dollhouse Audit Rejection (6cf64d17d)",
+      "version_or_digest": {
+        "sha256": "149faea8b4f646d9c9ea2c444427c5ac5ccb52663ad84121050651548f314223",
+        "original_sha256": "149faea8b4f646d9c9ea2c444427c5ac5ccb52663ad84121050651548f314223",
+        "byte_identical": true
+      },
+      "bytes": 34910,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/11-dollhouse-strict-validator-initial-rejection-step352.txt",
+      "archived_sha256": "149faea8b4f646d9c9ea2c444427c5ac5ccb52663ad84121050651548f314223",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Pre-fix strict-provenance Dollhouse engine output (dollhouse-audit-1795199987778-4a8b7b6f) documenting initial schema rejection across both baseline and global-hold specs before fixing TEMPORAL_CUSTODIAN UNPERFORMED->HELD and ATLAS.relation_entry."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-405.log",
+      "artifact_class": "failed_intermediate_run_log",
+      "source_episode": "Stage I · Post-Dollhouse Hardening Pre-Commit Intermediate Failure",
+      "version_or_digest": {
+        "sha256": "4633d3db8081ebd882726af2f4520041450a9498c96c3857be0e106944845a89",
+        "original_sha256": "4633d3db8081ebd882726af2f4520041450a9498c96c3857be0e106944845a89",
+        "byte_identical": true
+      },
+      "bytes": 41229,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/12-hardening-pre-bc5467246-category-error-regex-fail-task405.txt",
+      "archived_sha256": "4633d3db8081ebd882726af2f4520041450a9498c96c3857be0e106944845a89",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Failed intermediate test run during post-Dollhouse hardening that caught the category-error regex collision in tests/marrowline-screaming-grove-restoration.test.mjs before fixing it and committing bc5467246."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-410.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · Final Hardened Verification (bc5467246)",
+      "version_or_digest": {
+        "sha256": "dddb752b7b01bb5c3697b29a8f9512de9bf052af5432b9ac09a625f642c56d9d",
+        "original_sha256": "dddb752b7b01bb5c3697b29a8f9512de9bf052af5432b9ac09a625f642c56d9d",
+        "byte_identical": true
+      },
+      "bytes": 40053,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/13-hardening-bc5467246-pure-node-285pass-task410.txt",
+      "archived_sha256": "dddb752b7b01bb5c3697b29a8f9512de9bf052af5432b9ac09a625f642c56d9d",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "285/285 pure-Node Marrowline tests passing on verified deterministic repair ancestor bc5467246."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-440.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · Pre-Push Contract Gate",
+      "version_or_digest": {
+        "sha256": "a8a3fed02e322cad258fc2f91d0c15ae09478e37e739a14e062978671406633b",
+        "original_sha256": "a8a3fed02e322cad258fc2f91d0c15ae09478e37e739a14e062978671406633b",
+        "byte_identical": true
+      },
+      "bytes": 857,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/14-prepush-generated-sync-and-retrieval-lane-task440.txt",
+      "archived_sha256": "a8a3fed02e322cad258fc2f91d0c15ae09478e37e739a14e062978671406633b",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "check-generated-sync.mjs and retrieval-lane.test.mjs green verification output."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/steps/450/output.txt",
+      "artifact_class": "ci_diagnostic_log",
+      "source_episode": "Stage I · PR #1745 CI Run 44797765746 Failure Log",
+      "version_or_digest": {
+        "sha256": "080e9c5932d8df299f1e5421a5ce61f286a00b4c1c28b1f8a7cab8c484ca241d",
+        "original_sha256": "6194c1ae355a922e32bbf89f13feeddb36b19fae0da54f4ff9e7f6103c178463",
+        "byte_identical": false
+      },
+      "bytes": 5576,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/15-pr1745-ci-run-44797765746-failed-log-step450.txt",
+      "archived_sha256": "080e9c5932d8df299f1e5421a5ce61f286a00b4c1c28b1f8a7cab8c484ca241d",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Raw gh run view --log-failed output from PR #1745 exact-head CI run 44797765746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-480.log",
+      "artifact_class": "verification_or_diagnostic_log",
+      "source_episode": "Stage I · PR #1746 Pre-Commit Hygiene & JSON Scan",
+      "version_or_digest": {
+        "sha256": "7e2e2da724f91b95edad41a051c00ccae15546308e67c1b2979e37f777bce869",
+        "original_sha256": "7e2e2da724f91b95edad41a051c00ccae15546308e67c1b2979e37f777bce869",
+        "byte_identical": true
+      },
+      "bytes": 9389,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/16-stage1-dossier-hygiene-scan-task480.txt",
+      "archived_sha256": "7e2e2da724f91b95edad41a051c00ccae15546308e67c1b2979e37f777bce869",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Stage I dossier hygiene verification (49 scanned files, 24 valid JSON files, 0 hygiene hits)."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/steps/{504,506,508}/output.txt",
+      "artifact_class": "ci_diagnostic_log",
+      "source_episode": "Stage II · Section V CI Run 44800185041 & Vixen Workflow Forensics",
+      "version_or_digest": {
+        "sha256": "411583c68fa38296b25bafac43c33217a0a3ed720ec4abeb198554151774b8fc",
+        "source_step_sha256s": {
+          "step_504": "fb5694efd587f6383165a7db3d3f142ba83e96671c470334a95b6da90c7b786a",
+          "step_506": "460817a2dbb1b6b293c672e46a3d6011de255f8e6b5506c44a1a1c755518f5b4",
+          "step_508": "3006729798f66a7539b7cceda504846b2d69044e49e233ace860ed82d8e2f6f4"
+        }
+      },
+      "bytes": 19217,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/17-pr1746-ci-run-44800185041-forensics-step504-506-508.txt",
+      "archived_sha256": "411583c68fa38296b25bafac43c33217a0a3ed720ec4abeb198554151774b8fc",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Combined raw gh/git forensics establishing exact Run 44800185041 47-step breakdown, Vixen commit 2f0fa5944, failed Run 43821872218, and PR #1730 superseding freeze e32b82f0d."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-521.log",
+      "artifact_class": "browser_witness_server_log",
+      "source_episode": "Stage II · Section VI Pass 1 Witness Server Stdout",
+      "version_or_digest": {
+        "sha256": "321744d8af5efecbdd15ad3b611203e6f8661c1369c0703a3e252d8009043f21",
+        "original_sha256": "321744d8af5efecbdd15ad3b611203e6f8661c1369c0703a3e252d8009043f21",
+        "byte_identical": true
+      },
+      "bytes": 4138,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/18-browser-witness-pass1-server-stdout-task521.txt",
+      "archived_sha256": "321744d8af5efecbdd15ad3b611203e6f8661c1369c0703a3e252d8009043f21",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Local zero-egress witness server Pass 1 stdout including synthetic gemini-consumption receipts."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3cc40de8-dc77-4540-a38b-0d7a12e39cd0/.system_generated/tasks/task-541.log",
+      "artifact_class": "browser_witness_server_log",
+      "source_episode": "Stage II · Section VI Pass 2 Witness Server Stdout",
+      "version_or_digest": {
+        "sha256": "8284e99a593f113e8bfebb8364e0322e05ca62de2cbf936b1bd1acc0b5f177d2",
+        "original_sha256": "8284e99a593f113e8bfebb8364e0322e05ca62de2cbf936b1bd1acc0b5f177d2",
+        "byte_identical": true
+      },
+      "bytes": 2293,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/final-custody-appendix/verification-logs/19-browser-witness-pass2-server-stdout-task541.txt",
+      "archived_sha256": "8284e99a593f113e8bfebb8364e0322e05ca62de2cbf936b1bd1acc0b5f177d2",
+      "github_disposition": "NEWLY_ARCHIVED_IN_PR_1746_STAGE_II",
+      "non_publication_reason": null,
+      "notes": "Local zero-egress witness server Pass 2 stdout for WITNESS-INCOMPLETE verification."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "47b352dc11daf05df70cbce1fa64facc7a0a56899680fed6a6901e44cae69f35",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 14200,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_ATTRACTOR_FAILURE_REGISTER.md",
+      "archived_sha256": "47b352dc11daf05df70cbce1fa64facc7a0a56899680fed6a6901e44cae69f35",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_DOLLHOUSE_AUDIT_RECEIPT.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "ce1d6afbe11fb3f11f0e4343fc7086679d8afd133e10b8839c28bab70d5c62ac",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 10196,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_DOLLHOUSE_AUDIT_RECEIPT.md",
+      "archived_sha256": "ce1d6afbe11fb3f11f0e4343fc7086679d8afd133e10b8839c28bab70d5c62ac",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "27d1acb979e62b51719605663c64c27e698a1dbb84bf8e693da7d08c20b00037",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 71151,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_EFFECTIVE_REQUEST_PARITY.json",
+      "archived_sha256": "27d1acb979e62b51719605663c64c27e698a1dbb84bf8e693da7d08c20b00037",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORICAL_PR_CASE_REGISTER.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "dd4898da5e1b2d1a66f2092a075a3092aacdc01ec1d3a1c44dc23205bdec29aa",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 13162,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORICAL_PR_CASE_REGISTER.md",
+      "archived_sha256": "dd4898da5e1b2d1a66f2092a075a3092aacdc01ec1d3a1c44dc23205bdec29aa",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "428967a4f532b149bff0bf88162b48aecfb95fc64760e5400c7372c906669975",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 6473,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_HISTORY_FEEDBACK_PARITY.md",
+      "archived_sha256": "428967a4f532b149bff0bf88162b48aecfb95fc64760e5400c7372c906669975",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md",
+      "artifact_class": "remote_reentry_receipt",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "b97d26f851473456c9990496fd96cc93d56fa9e910272fbb4deda1c77996522e",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 14063,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_LOCAL_REMOTE_REENTRY_RECEIPT.md",
+      "archived_sha256": "b97d26f851473456c9990496fd96cc93d56fa9e910272fbb4deda1c77996522e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "ed79d24a3fb172b99dd9d08c4c7791f467bc291a5b7fcb7265cb091e8ed073c3",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 8160,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_NATIVE_PROSODY_PARITY.md",
+      "archived_sha256": "ed79d24a3fb172b99dd9d08c4c7791f467bc291a5b7fcb7265cb091e8ed073c3",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "145551a10d89da9d2e210ace3fb2bff0e349fb5f6f4eb42cf553bc820030de9c",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 10669,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_OCT02_HISTORICAL_PARITY.md",
+      "archived_sha256": "145551a10d89da9d2e210ace3fb2bff0e349fb5f6f4eb42cf553bc820030de9c",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_RESTORATION_ADJUDICATION.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "d3b21efaca4202a5f07740c0f4ceedbd237cf958d883b268b9b642cddd1c07fa",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 12082,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/MARROWLINE_RESTORATION_ADJUDICATION.md",
+      "archived_sha256": "d3b21efaca4202a5f07740c0f4ceedbd237cf958d883b268b9b642cddd1c07fa",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/README.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "32ef9453149cce592035caf0c1d51b08e2cf8361edcb51df3619fe038deb515f",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 4320,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/README.md",
+      "archived_sha256": "32ef9453149cce592035caf0c1d51b08e2cf8361edcb51df3619fe038deb515f",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1745 (4a481e44f) & Retained in PR #1746",
+      "version_or_digest": {
+        "sha256": "f5069f8f208aabbacebb750737085094e445266a71a578d7bc3f08922df231e9",
+        "present_in_pr1745": true,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 12144,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/SCREAMING_GROVE_EVIDENCE_LEDGER.md",
+      "archived_sha256": "f5069f8f208aabbacebb750737085094e445266a71a578d7bc3f08922df231e9",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/ci-witness/pr1745-exact-head-ci-run-44797765746.md",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "13c4dc14ba159a877618994839de512df0a5b9b064c73d4440e73be1372c42f5",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 2367,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/ci-witness/pr1745-exact-head-ci-run-44797765746.md",
+      "archived_sha256": "13c4dc14ba159a877618994839de512df0a5b9b064c73d4440e73be1372c42f5",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-baseline-6cf64d17d.json",
+      "artifact_class": "dollhouse_engine_receipt",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "515a63887096c725d4fb7afaf8818dac5a6e401f64de93dfdbf1eb84300e0859",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15488,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-baseline-6cf64d17d.json",
+      "archived_sha256": "515a63887096c725d4fb7afaf8818dac5a6e401f64de93dfdbf1eb84300e0859",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-baseline-bc5467246.json",
+      "artifact_class": "dollhouse_engine_receipt",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15488,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-baseline-bc5467246.json",
+      "archived_sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-global-hold-6cf64d17d.json",
+      "artifact_class": "dollhouse_engine_receipt",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "1020cc297ae920e0ece28b082831074c7789cee3e5d198b3ba5d747e3e55f5fe",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15276,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-global-hold-6cf64d17d.json",
+      "archived_sha256": "1020cc297ae920e0ece28b082831074c7789cee3e5d198b3ba5d747e3e55f5fe",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-global-hold-bc5467246.json",
+      "artifact_class": "dollhouse_engine_receipt",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15276,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-global-hold-bc5467246.json",
+      "archived_sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/01-aperture-leaf-audit.md",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "24fa28784e224280dfa4473c08ff07feff5e3cb437a1629df9687f8a30c70f36",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 12499,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/01-aperture-leaf-audit.md",
+      "archived_sha256": "24fa28784e224280dfa4473c08ff07feff5e3cb437a1629df9687f8a30c70f36",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/02-fadt-leaf-audit.md",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "cd8756cae7d498b9d5f57a4bdb07b2e4e70d2b8e80812301f824228d97c5378e",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 10993,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/02-fadt-leaf-audit.md",
+      "archived_sha256": "cd8756cae7d498b9d5f57a4bdb07b2e4e70d2b8e80812301f824228d97c5378e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/03-pedagogue-leaf-audit.md",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "623ed8d1c3e7d1b0e4f6879afd95de64078fcb5746076ff195efd262dddec878",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 9078,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/03-pedagogue-leaf-audit.md",
+      "archived_sha256": "623ed8d1c3e7d1b0e4f6879afd95de64078fcb5746076ff195efd262dddec878",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/04-atlas-leaf-audit.md",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "ae13e9b4636d3ef3e241d7434cea34fcc74d84aad9a2bb2f49d05e8045f0b636",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 15461,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/04-atlas-leaf-audit.md",
+      "archived_sha256": "ae13e9b4636d3ef3e241d7434cea34fcc74d84aad9a2bb2f49d05e8045f0b636",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/05-temporal-custodian-leaf-audit.md",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "8bff883ea2b07225af87fde9c0cf485a94bcba18b518bb27c9ae06edd13d1df7",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 24895,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/05-temporal-custodian-leaf-audit.md",
+      "archived_sha256": "8bff883ea2b07225af87fde9c0cf485a94bcba18b518bb27c9ae06edd13d1df7",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/06-orchestrator-adjudication.md",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "20e7846886b6806d38be236e8b6693bc21407e5caa8966c87df3026fb976c40f",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 10990,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/06-orchestrator-adjudication.md",
+      "archived_sha256": "20e7846886b6806d38be236e8b6693bc21407e5caa8966c87df3026fb976c40f",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/dollhouse-six-agent-execution-trace.json",
+      "artifact_class": "dollhouse_specialist_report",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "edd8f41bfb03b1c6093644dd406adc9a573c39abe6eb43c989e2f8d6b942d68a",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 64137,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specialist-reports/dollhouse-six-agent-execution-trace.json",
+      "archived_sha256": "edd8f41bfb03b1c6093644dd406adc9a573c39abe6eb43c989e2f8d6b942d68a",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-baseline-6cf64d17d.json",
+      "artifact_class": "dollhouse_audit_spec",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "4224495dac38afcf9e7f007f2abf4989287eb0d37209b90c6e841b21505e5cda",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 3239,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-baseline-6cf64d17d.json",
+      "archived_sha256": "4224495dac38afcf9e7f007f2abf4989287eb0d37209b90c6e841b21505e5cda",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-baseline-bc5467246.json",
+      "artifact_class": "dollhouse_audit_spec",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "16d11c91db3ad57b7d6216d4f87e9d80aa51c558a43f675e78efbb7b4e316a52",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 3239,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-baseline-bc5467246.json",
+      "archived_sha256": "16d11c91db3ad57b7d6216d4f87e9d80aa51c558a43f675e78efbb7b4e316a52",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-global-hold-6cf64d17d.json",
+      "artifact_class": "dollhouse_audit_spec",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "ef0aa834b46bfbe47ccccbf262b1a50084073af16f59cf8b76e2bdea85b60f76",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 2685,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-global-hold-6cf64d17d.json",
+      "archived_sha256": "ef0aa834b46bfbe47ccccbf262b1a50084073af16f59cf8b76e2bdea85b60f76",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-global-hold-bc5467246.json",
+      "artifact_class": "dollhouse_audit_spec",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "7cd074d7a5d5d618bcaa3a4fc732024c9729f8bae7b7b9f0183a70c3c3392161",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 2685,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-global-hold-bc5467246.json",
+      "archived_sha256": "7cd074d7a5d5d618bcaa3a4fc732024c9729f8bae7b7b9f0183a70c3c3392161",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/diff-oct02-to-head-khonapolit-quality.patch",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "8335f143e6df349241bc379e005feee058bcd65d0a686ff45a1bfa33952faf54",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 54814,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/diff-oct02-to-head-khonapolit-quality.patch",
+      "archived_sha256": "8335f143e6df349241bc379e005feee058bcd65d0a686ff45a1bfa33952faf54",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/diff-oct02-to-head-marrowline-terminal.patch",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "fd34a3571dc60586483510fda9ce54c4986ca1ca9219dcb5bb990a7a4cbd9d7f",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 29600,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/diff-oct02-to-head-marrowline-terminal.patch",
+      "archived_sha256": "fd34a3571dc60586483510fda9ce54c4986ca1ca9219dcb5bb990a7a4cbd9d7f",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/oct02-vs-head-parity-comparison-pre-repair.json",
+      "artifact_class": "research_deliverable",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "27b71e1b73c014e3d316ca74a4bd6a3a7feff8d5f8058f9ddd961dce59668247",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 111995,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/oct02-vs-head-parity-comparison-pre-repair.json",
+      "archived_sha256": "27b71e1b73c014e3d316ca74a4bd6a3a7feff8d5f8058f9ddd961dce59668247",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/oct-nov-marrowline-prs-index.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "3fcf800572ab282f31acbeb94aed32eb7b116bd7c78b2b34a4719b4bb7f0405b",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 48124,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/oct-nov-marrowline-prs-index.json",
+      "archived_sha256": "3fcf800572ab282f31acbeb94aed32eb7b116bd7c78b2b34a4719b4bb7f0405b",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1433.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "e9f5300032221dd6b01a4b8c1c0d09a2ffeb2d0d1f29071de757438371ea45ab",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1636,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1433.json",
+      "archived_sha256": "e9f5300032221dd6b01a4b8c1c0d09a2ffeb2d0d1f29071de757438371ea45ab",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1509.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "6cd6cf55dc6f455c45df318bdb1050decd7e13cf0c151747550c63b22dd85455",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 950,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1509.json",
+      "archived_sha256": "6cd6cf55dc6f455c45df318bdb1050decd7e13cf0c151747550c63b22dd85455",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1513.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "00df87504673789a1f4ac08ebb032f07e40cf620ee26b9ba3c8a3036c223bddb",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1060,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1513.json",
+      "archived_sha256": "00df87504673789a1f4ac08ebb032f07e40cf620ee26b9ba3c8a3036c223bddb",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1515.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "df624a6ab9fa61b5b8d580393178af1eca9fdb9b6798a108634a20b13a299e1b",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1037,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1515.json",
+      "archived_sha256": "df624a6ab9fa61b5b8d580393178af1eca9fdb9b6798a108634a20b13a299e1b",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1516.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "5f6edf652e09a9ca248817eb73e9ea2c42fcc74217ca2a4e94ddc80774a5fe93",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1061,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1516.json",
+      "archived_sha256": "5f6edf652e09a9ca248817eb73e9ea2c42fcc74217ca2a4e94ddc80774a5fe93",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1517.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "5c28c4170d1cf1caa9c83098647d863d256fb88069ac7c8e64233489f1c0a9ae",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 4944,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1517.json",
+      "archived_sha256": "5c28c4170d1cf1caa9c83098647d863d256fb88069ac7c8e64233489f1c0a9ae",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1545.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "91fbc44d7e8508fe87b534992cca3b43089dc3b3e02c81df72dd4607780a8003",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 2213,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1545.json",
+      "archived_sha256": "91fbc44d7e8508fe87b534992cca3b43089dc3b3e02c81df72dd4607780a8003",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1549.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "19187bad592cb5c0e5dc1f6648b988bad4167a7ab4b8d937eb07894fbed18e2a",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 2081,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1549.json",
+      "archived_sha256": "19187bad592cb5c0e5dc1f6648b988bad4167a7ab4b8d937eb07894fbed18e2a",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1555.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "103d8ee43d2c8f2635f122f8e579c14bdcaf1c6dccd6da5b9bf7ebfb1dad26fc",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1783,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1555.json",
+      "archived_sha256": "103d8ee43d2c8f2635f122f8e579c14bdcaf1c6dccd6da5b9bf7ebfb1dad26fc",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1569.json",
+      "artifact_class": "historical_pr_snapshot",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "0f2fef8094eac0d65e517b50191003e77977f7a180f883c158a24dd31cf2d939",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1386,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/github-pr-snapshots/pr-1569.json",
+      "archived_sha256": "0f2fef8094eac0d65e517b50191003e77977f7a180f883c158a24dd31cf2d939",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/compare-oct02-exact.mjs",
+      "artifact_class": "reproducibility_script",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "f3de6f5ecae562d819a4d3f2e2d490e0c7375c0727c9a3d582b4644f7cd53493",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 12469,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/compare-oct02-exact.mjs",
+      "archived_sha256": "f3de6f5ecae562d819a4d3f2e2d490e0c7375c0727c9a3d582b4644f7cd53493",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/generate-effective-request-parity.mjs",
+      "artifact_class": "reproducibility_script",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "9eb37103be12cbb6e587690d0f232141ba049d6ca2f79a5a06dccde259cdd4c8",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 8489,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/generate-effective-request-parity.mjs",
+      "archived_sha256": "9eb37103be12cbb6e587690d0f232141ba049d6ca2f79a5a06dccde259cdd4c8",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/inspect-historical-prs.mjs",
+      "artifact_class": "reproducibility_script",
+      "source_episode": "Stage I · Published in PR #1746 (5819e1035)",
+      "version_or_digest": {
+        "sha256": "5649208d504da37f41ef2ad4cee9c19455c5b288e29b28ee05ff41e8eb54e46e",
+        "present_in_pr1745": false,
+        "present_in_pr1746_5819e1035": true
+      },
+      "bytes": 1611,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/inspect-historical-prs.mjs",
+      "archived_sha256": "5649208d504da37f41ef2ad4cee9c19455c5b288e29b28ee05ff41e8eb54e46e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Preserved unchanged from Stage I."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/compare_oct02_exact.mjs",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "241bcb976c6cc1f638b42a00e2fd55baf97454dffd22e149af46a998fc67bc32",
+        "published_sha256": "f3de6f5ecae562d819a4d3f2e2d490e0c7375c0727c9a3d582b4644f7cd53493",
+        "byte_identical": false
+      },
+      "bytes": 12093,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/compare-oct02-exact.mjs",
+      "archived_sha256": "f3de6f5ecae562d819a4d3f2e2d490e0c7375c0727c9a3d582b4644f7cd53493",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/generate_effective_request_parity.mjs",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "3b60d5e329c4fba0a2422d2cda1753606f8d499bf585508388dd85acacb0f3c0",
+        "published_sha256": "9eb37103be12cbb6e587690d0f232141ba049d6ca2f79a5a06dccde259cdd4c8",
+        "byte_identical": false
+      },
+      "bytes": 8194,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/generate-effective-request-parity.mjs",
+      "archived_sha256": "9eb37103be12cbb6e587690d0f232141ba049d6ca2f79a5a06dccde259cdd4c8",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/inspect_prs.mjs",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "458e486c498871724541c44620e1b617334c940f8c51870631e21b76a3417c13",
+        "published_sha256": "5649208d504da37f41ef2ad4cee9c19455c5b288e29b28ee05ff41e8eb54e46e",
+        "byte_identical": false
+      },
+      "bytes": 1473,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/scripts/inspect-historical-prs.mjs",
+      "archived_sha256": "5649208d504da37f41ef2ad4cee9c19455c5b288e29b28ee05ff41e8eb54e46e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/diff_khonapolit_quality.patch",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "0ebf4df100316497bab800fcbd2f73c09d563b10a0bafe0e00632e78c376a66c",
+        "published_sha256": "8335f143e6df349241bc379e005feee058bcd65d0a686ff45a1bfa33952faf54",
+        "byte_identical": false
+      },
+      "bytes": 54817,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/diff-oct02-to-head-khonapolit-quality.patch",
+      "archived_sha256": "8335f143e6df349241bc379e005feee058bcd65d0a686ff45a1bfa33952faf54",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/diff_marrowline_terminal.patch",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "a2d02bdd2a42b253dab619c547825413a6ce1b7740b7e0e99590091a2cc0634c",
+        "published_sha256": "fd34a3571dc60586483510fda9ce54c4986ca1ca9219dcb5bb990a7a4cbd9d7f",
+        "byte_identical": false
+      },
+      "bytes": 29603,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/fixtures/diff-oct02-to-head-marrowline-terminal.patch",
+      "archived_sha256": "fd34a3571dc60586483510fda9ce54c4986ca1ca9219dcb5bb990a7a4cbd9d7f",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/dollhouse_audit_spec_baseline.json",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "a102c08f26d1826a9f39b5582376ff41d7d62ff60d6a6127be440f1a0e42f733",
+        "published_sha256": "16d11c91db3ad57b7d6216d4f87e9d80aa51c558a43f675e78efbb7b4e316a52",
+        "byte_identical": false
+      },
+      "bytes": 3238,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-baseline-bc5467246.json",
+      "archived_sha256": "16d11c91db3ad57b7d6216d4f87e9d80aa51c558a43f675e78efbb7b4e316a52",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/dollhouse_audit_spec_global_hold.json",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "007556ae84e62f97c193c1b3e8c598f0b6e7717f4151e5b7f39affb8022448c8",
+        "published_sha256": "7cd074d7a5d5d618bcaa3a4fc732024c9729f8bae7b7b9f0183a70c3c3392161",
+        "byte_identical": false
+      },
+      "bytes": 2684,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/specs/dollhouse-audit-spec-global-hold-bc5467246.json",
+      "archived_sha256": "7cd074d7a5d5d618bcaa3a4fc732024c9729f8bae7b7b9f0183a70c3c3392161",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Published in Stage I PR #1746 with portable relative paths / CRLF normalization; original local SHA-256 recorded here."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/dollhouse_engine_baseline.json",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "515a63887096c725d4fb7afaf8818dac5a6e401f64de93dfdbf1eb84300e0859",
+        "published_sha256": "515a63887096c725d4fb7afaf8818dac5a6e401f64de93dfdbf1eb84300e0859",
+        "byte_identical": true
+      },
+      "bytes": 15488,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-baseline-6cf64d17d.json",
+      "archived_sha256": "515a63887096c725d4fb7afaf8818dac5a6e401f64de93dfdbf1eb84300e0859",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Byte-for-byte identical to published Stage I file in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/dollhouse_engine_baseline_bc5467246.json",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+        "published_sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+        "byte_identical": true
+      },
+      "bytes": 15488,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-baseline-bc5467246.json",
+      "archived_sha256": "d20284caffc7c807f43b996fa09ec16d54ed286e93267af4595a43e663c0e0b1",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Byte-for-byte identical to published Stage I file in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/dollhouse_engine_global_hold.json",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "1020cc297ae920e0ece28b082831074c7789cee3e5d198b3ba5d747e3e55f5fe",
+        "published_sha256": "1020cc297ae920e0ece28b082831074c7789cee3e5d198b3ba5d747e3e55f5fe",
+        "byte_identical": true
+      },
+      "bytes": 15276,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-global-hold-6cf64d17d.json",
+      "archived_sha256": "1020cc297ae920e0ece28b082831074c7789cee3e5d198b3ba5d747e3e55f5fe",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Byte-for-byte identical to published Stage I file in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/dollhouse_engine_global_hold_bc5467246.json",
+      "artifact_class": "local_scratch_source_reconciled",
+      "source_episode": "Stage I · Local Scratch Work Product (Already Published in PR #1746)",
+      "version_or_digest": {
+        "original_sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+        "published_sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+        "byte_identical": true
+      },
+      "bytes": 15276,
+      "current_preservation_location": "research/marrowline-screaming-grove-restoration-20261120/supporting-artifacts/dollhouse/engine-receipts/dollhouse-engine-receipt-global-hold-bc5467246.json",
+      "archived_sha256": "721b7846feedeb6e467212dbd4543ebb9b8feb477ef38a223f76f41167858c1e",
+      "github_disposition": "ALREADY_IN_PR_1746",
+      "non_publication_reason": null,
+      "notes": "Byte-for-byte identical to published Stage I file in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/commission_prompt.md",
+      "artifact_class": "local_prompt_extract",
+      "source_episode": "Stage I · Local Copy of Commission Prompt",
+      "version_or_digest": {
+        "sha256": "d751f72c03c1f8f236007e3c6618977877d79a72e29968a809544473627d7f26"
+      },
+      "bytes": 55525,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Contains raw Antigravity session harness metadata XML blocks (<USER_REQUEST>, <ADDITIONAL_METADATA>, <USER_SETTINGS_CHANGE>); all commission terms and deliverables are already captured in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/scratch/oct02_snapshot/**",
+      "artifact_class": "read_only_historical_extraction",
+      "source_episode": "Stage I · Historical Oct 2 Reference Commit Extraction",
+      "version_or_digest": {
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "extracted_file_count": 1002
+      },
+      "bytes": 10190424,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a (already retained in GitHub repository object store)",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only extraction of historical repository commit ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a; per Section III/IV, identical Git blobs already retained in GitHub are referenced by commit/blob digest rather than duplicated."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-104.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "514980ad1f6f2f7d637ed6d5a4cf4a1b76a1244e818962a62a3824c876d30e93"
+      },
+      "bytes": 1599573,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Failed PowerShell tar pipe attempt during Oct 2 extraction (1.6 MB repeating bad-header retries); superseded by clean git archive extraction."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-16.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "c6f71bbd75979fe14a3904461fdf7a2310caa2797d42b2ba520cf4d9607a52d6"
+      },
+      "bytes": 225020,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "225 KB raw GitHub PR JSON dump for #1730/#1734/#1735; superseded by compact PR snapshots and Stage II remote reentry receipt."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-26.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "4bc9b7b1dd7f64e7f545d37bf9b9877298c72b2a570e8d5d40ee22258d5a98bb"
+      },
+      "bytes": 862,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Initial historical PR header query; superseded by archived github-pr-snapshots/pr-*.json."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-34.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "129d6c15f651d93ecb7ae1ff267103845cea67fa42289bb3ef8b9406c6cd38f0"
+      },
+      "bytes": 5657,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "git worktree add checkout progress bar output (non-substantive carriage-return log)."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-140.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "e994d2233a4ae5ca5dab25d2de5ebea1fd220e5c19e7295030876e0c2d65d78d"
+      },
+      "bytes": 5868,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Exploratory Select-String grep output during Stage I reading."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-238.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "d8623575f822f06b27555c333d9329ef65106a3dff3e440162b079336e5675ca"
+      },
+      "bytes": 11811,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "PowerShell Select-String directory-access error on app/dome-world/ash folder."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-333.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "bea9de296eb59d04c5984af727ea2f07e3d4f5cf8adeba4da7a9929de23fc19f"
+      },
+      "bytes": 80004,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Duplicate 277/277 pure-Node test pass identical to archived 04-post-repair-6cf64d17d-pure-node-277pass-task212.log."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-412.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "7486c0c66ba60b8d79b4b63021b2bf818433384729d5c2c69d2f02db88cd1721"
+      },
+      "bytes": 42121,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Duplicate 285/285 pure-Node test pass identical to archived 13-hardening-bc5467246-pure-node-285pass-task410.log."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-446.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "e9acb2922cd6462b1f1a40705326c778053f51e6ff292d4e048885b855c4f3aa"
+      },
+      "bytes": 51831,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Live ANSI polling stream of gh run watch on PR #1745; clean failure extract archived as 15-pr1745-ci-run-44797765746-failed-log-step450.log."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-463.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "ccd195b48ae571a0efa008e9917415732fa5e07cc084196cfc8223779f4f0491"
+      },
+      "bytes": 4839,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "git worktree add progress bar output for PR #1746 dossier worktree."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-483.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "6bf7d81c4299ddb16d43d46894d79807694ab81ef943cbb78c8f327161f2b578"
+      },
+      "bytes": 2546,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Compact PR index printout superseded by archived github-pr-snapshots/oct-nov-marrowline-prs-index.json."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/tasks/task-489.log",
+      "artifact_class": "ephemeral_command_log",
+      "source_episode": "Stage I · Local Execution Log",
+      "version_or_digest": {
+        "sha256": "1f7734b9cbdc738dab38b0e4d20140033437f042fd7e1274edf94dee35927594"
+      },
+      "bytes": 6263,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "git commit/push stdout for 5819e1035; commit itself is live in GitHub PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/58c7dc01-ddd5-47a7-abe5-1a2f875316be/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "abddd77d5279fec74835ff2b860a701789c95408cadfded42964eaebd99b8a8b"
+      },
+      "bytes": 421702,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED (substantive report + execution trace + all raw run_command outputs published in PR #1746)",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Full raw JSONL harness transcript contains internal model thinking blocks and system wrapper metadata; 100% of final specialist prose reports (Stage I), execution trace metadata (Stage I), and raw run_command engine outputs (Stage II) are published in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/35a2025a-9967-46d9-acfe-876afc13e92e/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "2699ec2d4963da1ee3613a8733874887545bc63b9eedf23d0dae773e12850138"
+      },
+      "bytes": 382317,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED (substantive report + execution trace + all raw run_command outputs published in PR #1746)",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Full raw JSONL harness transcript contains internal model thinking blocks and system wrapper metadata; 100% of final specialist prose reports (Stage I), execution trace metadata (Stage I), and raw run_command engine outputs (Stage II) are published in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/1415ce7d-6db4-4160-a92e-4e052adc83dd/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "964432ff6443c58da669f195c9487b5241a013f734b49b4599352f13dc38a0a0"
+      },
+      "bytes": 278237,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED (substantive report + execution trace + all raw run_command outputs published in PR #1746)",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Full raw JSONL harness transcript contains internal model thinking blocks and system wrapper metadata; 100% of final specialist prose reports (Stage I), execution trace metadata (Stage I), and raw run_command engine outputs (Stage II) are published in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/b0ee9fd1-3394-4eaa-89da-e645c186a2dd/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "2f312e439311d7f1dccb17abd71b16bbb67f13980efdbfaa4b0c25792ad82e3b"
+      },
+      "bytes": 349309,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED (substantive report + execution trace + all raw run_command outputs published in PR #1746)",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Full raw JSONL harness transcript contains internal model thinking blocks and system wrapper metadata; 100% of final specialist prose reports (Stage I), execution trace metadata (Stage I), and raw run_command engine outputs (Stage II) are published in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/3c0e6c5b-ac37-4e79-8677-090b3d33f3f7/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "8ef90181e575841ca1ced3460e40e3e6ba93da20e45837afdc4b5095758a16eb"
+      },
+      "bytes": 361254,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED (substantive report + execution trace + all raw run_command outputs published in PR #1746)",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Full raw JSONL harness transcript contains internal model thinking blocks and system wrapper metadata; 100% of final specialist prose reports (Stage I), execution trace metadata (Stage I), and raw run_command engine outputs (Stage II) are published in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_USER_HOME>/.gemini/antigravity/brain/f9edfc36-b2b0-45e2-81c6-4437904d8c0f/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I · Six-Role Dollhouse Specialist Execution",
+      "version_or_digest": {
+        "sha256": "ae9125f831682b40a62360f0c79224069b908c66f0626a6a9be0747607e8bac1"
+      },
+      "bytes": 54336,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED (substantive report + execution trace + all raw run_command outputs published in PR #1746)",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Full raw JSONL harness transcript contains internal model thinking blocks and system wrapper metadata; 100% of final specialist prose reports (Stage I), execution trace metadata (Stage I), and raw run_command engine outputs (Stage II) are published in PR #1746."
+    },
+    {
+      "original_path": "<LOCAL_BRAIN>/.system_generated/logs/transcript_full.jsonl",
+      "artifact_class": "raw_agent_harness_transcript",
+      "source_episode": "Stage I & Stage II · Primary Antigravity Session Log",
+      "version_or_digest": {
+        "sha256": "5f18acef679297990f4f20091babfc447eb17b911b87d0487c30d41ec6fdc549"
+      },
+      "bytes": 3424283,
+      "current_preservation_location": "LOCAL_AGENT_BRAIN_RETAINED",
+      "github_disposition": "EXCLUDED_LOCAL_ONLY_WITH_RATIONALE",
+      "non_publication_reason": "Contains internal model reasoning blocks, local filesystem paths, and session harness metadata; all substantive engineering/research outputs and verification logs are published in PR #1746."
+    },
+    {
+      "original_path": "api/khonapolit.js@ffb98ac00",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Historical Reference (Oct 2, 2026)",
+      "version_or_digest": {
+        "sha256": "196fde9ce7e65c63cc6e25bcc83c6848ddf21b6ca1871dff53cbf5aa67b5fbf1",
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "git_blob_sha1": "a82bd6c61dde1cc9e87844cf50f3a09783bab96d"
+      },
+      "bytes": 2213,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:api/khonapolit.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Oct 2 historical API route baseline"
+    },
+    {
+      "original_path": "server/khonapolit-quality.js@ffb98ac00",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Historical Reference (Oct 2, 2026)",
+      "version_or_digest": {
+        "sha256": "37d680ec513c1acb5d3c01c2ad7e5eee2ca6398a2cf8c7da0c711e0b85b3459b",
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "git_blob_sha1": "c539ea90d8e542f4899bcda1c796f936d6bb7750"
+      },
+      "bytes": 101785,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:server/khonapolit-quality.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Oct 2 historical relay & prompt baseline"
+    },
+    {
+      "original_path": "app/dome-world/marrowline.html@ffb98ac00",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Historical Reference (Oct 2, 2026)",
+      "version_or_digest": {
+        "sha256": "e151282ea8d1d2e37849222029e9838d9e6b6e531a6c1943589c6a5811c3470f",
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "git_blob_sha1": "ac1f206d3ba9053b8f97788ca71203781ed92128"
+      },
+      "bytes": 20181,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:app/dome-world/marrowline.html",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Oct 2 historical Marrowline HTML shell"
+    },
+    {
+      "original_path": "app/dome-world/marrowline-terminal.js@ffb98ac00",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Historical Reference (Oct 2, 2026)",
+      "version_or_digest": {
+        "sha256": "da433b87bb46e4d2d35655ee271af78c3a3d70974e8bfe1d63f49b57f090bdec",
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "git_blob_sha1": "e6bba3475d1b36c0bbb384e02ccc878f434b2f48"
+      },
+      "bytes": 86087,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:app/dome-world/marrowline-terminal.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Oct 2 historical client relay/history baseline"
+    },
+    {
+      "original_path": "app/dome-world/khonapolit-relay.js@ffb98ac00",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Historical Reference (Oct 2, 2026)",
+      "version_or_digest": {
+        "sha256": "d0509f9668714cd877b5c12406ecb4e0a600cc3a35659393987ad8e77a43b196",
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "git_blob_sha1": "33fba5daadcaac903d4cf809698359371e598bd6"
+      },
+      "bytes": 49815,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:app/dome-world/khonapolit-relay.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Oct 2 historical client renderer baseline"
+    },
+    {
+      "original_path": "app/dome-world/khonapolit-covenant.js@ffb98ac00",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Historical Reference (Oct 2, 2026)",
+      "version_or_digest": {
+        "sha256": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+        "git_commit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+        "git_blob_sha1": "e38ba0ba9548eb1e764d9cde152bb94a6266028e"
+      },
+      "bytes": 29140,
+      "current_preservation_location": "git:ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a:app/dome-world/khonapolit-covenant.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Oct 2 historical client covenant baseline"
+    },
+    {
+      "original_path": "AGENTS.md@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "63abc5dc679715ea3370a8b289e930abb940efd5"
+      },
+      "bytes": 25186,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:AGENTS.md",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "TD613 governing agent entry contract"
+    },
+    {
+      "original_path": "DOLLHOUSE.md@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "5bb24cc71acbf9c9ab5656813365cd0bc8ea4d5f875a3fe54daf3fd6dd040ddd",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "154999b102f411930db5fcff4caa23521699cdd8"
+      },
+      "bytes": 17428,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:DOLLHOUSE.md",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Dollhouse governance map"
+    },
+    {
+      "original_path": "PEDAGOGUE.md@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "8088e42d0b04847f7a63ae806faa6655ec654790fba75e8874f2d84d615303da",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "256b2d36fdac2a924b2d804d4f4671e79457e316"
+      },
+      "bytes": 30118,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:PEDAGOGUE.md",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Flow-Core Pedagogue canonical reference"
+    },
+    {
+      "original_path": "APERTURE.md@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "25d8391361f84c90bf7476684ad2171b5626538e"
+      },
+      "bytes": 17025,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:APERTURE.md",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Aperture observability canonical reference"
+    },
+    {
+      "original_path": "ATLAS.md@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "6600263f9e572ecff679a792709a4c3315b605794ba9454ad7d0b14d6c7d1a27",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "b85c81460d5480ca9f23f50c0002742342b201ad"
+      },
+      "bytes": 12364,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:ATLAS.md",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Atlas receiver-relation canonical reference"
+    },
+    {
+      "original_path": "FADT.md@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "90da4760baf9a96e0050e1857b8cc5ae822adb44"
+      },
+      "bytes": 9196,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:FADT.md",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "FADT admissibility descent canonical reference"
+    },
+    {
+      "original_path": ".github/workflows/vixen-a0-corpus-rebuild.yml@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "fab1bb62e76374860db24a6effb49eb4ff27d464c3ed41896fb1acb2a9e2d997",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "d787cc271902167535a2c76396f0c5f2d76315ed"
+      },
+      "bytes": 6464,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:.github/workflows/vixen-a0-corpus-rebuild.yml",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Origin/main commit 2f0fa5944 Vixen workflow causing CI Run 44800185041 Step 6 RED"
+    },
+    {
+      "original_path": "tests/workflow-estate.test.mjs@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "baaa3f13d65ce68fa8c699db8934e3e141a2d3ef87755bb3919b57f48e5477ef",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "f87fa0f1fe17dd25f870a8ded347defcb29d27e5"
+      },
+      "bytes": 14689,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:tests/workflow-estate.test.mjs",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Four-workflow constitutional guard (preserved unmodified)"
+    },
+    {
+      "original_path": "tests/release-plumbing.test.mjs@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "3c02f917f9039d61749fbe8d9ecf6200c701f62dfde51c23643bff3a452a8b0f",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "4882e3e12752cd531accd0418b91baf7d89ff1ea"
+      },
+      "bytes": 10095,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:tests/release-plumbing.test.mjs",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "No-git-push release-plumbing constitutional guard (preserved unmodified)"
+    },
+    {
+      "original_path": "scripts/run-dollhouse-skill-audit.mjs@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "0592176c8201c76011134cbe349b609d3ead681af2283f31dccb37bd99c00cff",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "a0edd5c542292151836614c3ad0bdae1c38ce32a"
+      },
+      "bytes": 8438,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:scripts/run-dollhouse-skill-audit.mjs",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Strict-provenance Dollhouse skill-audit CLI"
+    },
+    {
+      "original_path": "app/dome-world/marrowline.html@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "77ab54bc749410965759cad3b3ab4395a55b14ae3d31cb5c4074f3384f8b985c",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "af8ddedfa6733adc128b78b3f71649769e28a823"
+      },
+      "bytes": 20940,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:app/dome-world/marrowline.html",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Restored Marrowline HTML shell exercised by provider-free browser witness"
+    },
+    {
+      "original_path": "app/dome-world/khonapolit-relay.js@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "6d418e132da199ea80b40de6056125d74b4f1f97f4b528d024bb573d9d7cf5d8",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "d8631b76c2555a13284acca5f8fedfe76c685e72"
+      },
+      "bytes": 50162,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:app/dome-world/khonapolit-relay.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Marrowline client two-voice renderer exercised by provider-free browser witness"
+    },
+    {
+      "original_path": "app/dome-world/khonapolit-covenant.js@363b5b4ae",
+      "artifact_class": "read_only_source_dependency",
+      "source_episode": "Consulted Baseline (origin/main 363b5b4ae)",
+      "version_or_digest": {
+        "sha256": "dffc4819a63e614754cfca275e541a51faa74055f5bf8f78dbf361c321a45d23",
+        "git_commit": "363b5b4aeaec33ad380c5f1124f0fe96e3d7975e",
+        "git_blob_sha1": "20897f2f87deabd4a2b0c81b3ab432d6518d329d"
+      },
+      "bytes": 29180,
+      "current_preservation_location": "git:363b5b4aeaec33ad380c5f1124f0fe96e3d7975e:app/dome-world/khonapolit-covenant.js",
+      "github_disposition": "INDEPENDENTLY_IN_GITHUB_REPO_OBJECT_STORE",
+      "non_publication_reason": "Read-only consulted source already retained immutably in GitHub repository object store; referenced by exact commit, Git blob SHA-1, and SHA-256 without duplication.",
+      "notes": "Marrowline client covenant module"
+    },
+    {
+      "original_path": "<LOCAL_PRIMARY_CHECKOUT>/.env*",
+      "artifact_class": "protected_credentials_and_env",
+      "source_episode": "Local Environment & Preexisting Custody Boundary",
+      "version_or_digest": {
+        "classified_exclusion": true
+      },
+      "bytes": null,
+      "current_preservation_location": "EXCLUDED_BY_CLASS_LOCAL_CUSTODY",
+      "github_disposition": "EXCLUDED_ENV_OR_UNRELATED_BY_CLASS",
+      "non_publication_reason": "Never inspected or published; local environment/credentials remain strictly private under local custody."
+    },
+    {
+      "original_path": "<LOCAL_PRIMARY_CHECKOUT>/node_modules & .venv-dome",
+      "artifact_class": "environment_dependency_cache",
+      "source_episode": "Local Environment & Preexisting Custody Boundary",
+      "version_or_digest": {
+        "classified_exclusion": true
+      },
+      "bytes": null,
+      "current_preservation_location": "EXCLUDED_BY_CLASS_LOCAL_CUSTODY",
+      "github_disposition": "EXCLUDED_ENV_OR_UNRELATED_BY_CLASS",
+      "non_publication_reason": "Environment-generated package caches; excluded by classification per Section III."
+    },
+    {
+      "original_path": "<LOCAL_PRIMARY_CHECKOUT> (dirty rulefield-counterworld-loom-lab-20261108 @ f1928fcaf, 79 dirty lines)",
+      "artifact_class": "unrelated_user_worktree",
+      "source_episode": "Local Environment & Preexisting Custody Boundary",
+      "version_or_digest": {
+        "classified_exclusion": true
+      },
+      "bytes": null,
+      "current_preservation_location": "EXCLUDED_BY_CLASS_LOCAL_CUSTODY",
+      "github_disposition": "EXCLUDED_ENV_OR_UNRELATED_BY_CLASS",
+      "non_publication_reason": "Preexisting dirty user workspace outside Marrowline restoration scope; preserved untouched."
+    },
+    {
+      "original_path": "8 sibling local worktrees & 4 local stashes (stash@{0}..stash@{3})",
+      "artifact_class": "unrelated_user_worktrees_and_stashes",
+      "source_episode": "Local Environment & Preexisting Custody Boundary",
+      "version_or_digest": {
+        "classified_exclusion": true
+      },
+      "bytes": null,
+      "current_preservation_location": "EXCLUDED_BY_CLASS_LOCAL_CUSTODY",
+      "github_disposition": "EXCLUDED_ENV_OR_UNRELATED_BY_CLASS",
+      "non_publication_reason": "Preexisting independent research estates (Vixen, Experiment A/B, Atlas, Rulefield); preserved untouched."
+    },
+    {
+      "original_path": "<LOCAL_BROWSER_SUBAGENT>/browser_sandbox/screenshots/*",
+      "artifact_class": "ephemeral_subagent_sandbox_artifacts",
+      "source_episode": "Local Environment & Preexisting Custody Boundary",
+      "version_or_digest": {
+        "classified_exclusion": true
+      },
+      "bytes": null,
+      "current_preservation_location": "EXCLUDED_BY_CLASS_LOCAL_CUSTODY",
+      "github_disposition": "EXCLUDED_ENV_OR_UNRELATED_BY_CLASS",
+      "non_publication_reason": "Internal subagent screenshots not listed in BROWSER_HOST_FACTS; only host-verified BROWSER_HOST_FACTS screenshots (final_step_47.png, final_step_59.png) are cited and archived."
+    }
+  ]
+}

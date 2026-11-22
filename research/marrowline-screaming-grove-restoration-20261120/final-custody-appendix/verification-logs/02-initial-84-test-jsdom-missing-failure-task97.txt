@@ -1,0 +1,1524 @@
+Found 84 Marrowline/Khonapolit/Gemini tests
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-lab-marrowline-link.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-lab-marrowline-link.test.mjs (273.8577ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-mobile.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-mobile.test.mjs (272.8371ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'td613.dome-world.marrowline-egress-boot/v6-conversation-first'
+- 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody'
+
+    at file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/dome-world-marrowline-station.test.mjs:68:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'td613.dome-world.marrowline-egress-boot/v6-conversation-first',
+  expected: 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-station.test.mjs (435.0444ms)
+✔ request-local Gemini consumption receipt preserves route model outcome and bounded quota evidence (7.185ms)
+✔ release-witness flag and request identity do not promote partial telemetry into provider daily truth (8.1923ms)
+✔ browser ledger deduplicates exact events and labels its coverage as browser-local evidence (3.9714ms)
+✔ browser model-scoped 429 cooldown hints survive isolate churn only for the bounded retry window (1.8132ms)
+✔ model-scoped 429 without Retry-After uses the bounded Hush-style 120-second browser cooldown (0.8004ms)
+✖ Pacific-day budget hints share browser evidence across routes without claiming provider totals (80.0184ms)
+✔ Pacific midnight resets observed call counts while retaining the last observed model limit (2.5269ms)
+gemini-generation-envelope.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-generation-envelope.test.mjs (290.2499ms)
+gemini-lifecycle-admission.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-lifecycle-admission.test.mjs (488.8466ms)
+gemini-model-discovery.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-model-discovery.test.mjs (353.3859ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"loom:clinical-loom-1:1:gemini-a:503","route":"loom","request_id":"clinical-loom-1","ordinal":1,"model":"gemini-a","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":1,"timeout_ms":1,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"loom:clinical-loom-1:2:gemini-b:408","route":"loom","request_id":"clinical-loom-1","ordinal":2,"model":"gemini-b","status":408,"outcome":"timeout","timed_out":true,"elapsed_ms":20,"timeout_ms":1,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"loom:clinical-loom-1:3:gemini-c:200","route":"loom","request_id":"clinical-loom-1","ordinal":3,"model":"gemini-c","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":0,"timeout_ms":97,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"hush:2026-11-20T18:08:02.402Z:1:gemini-3.8-flash:400","route":"hush","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":400,"outcome":"provider-error","timed_out":false,"elapsed_ms":0,"timeout_ms":7400,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:02.652Z:1:gemini-3.8-flash:400","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":400,"outcome":"provider-error","timed_out":false,"elapsed_ms":21,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:02.652Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":17,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"hush:2026-11-20T18:08:02.679Z:1:gemini-3.8-flash:200","route":"hush","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":7400,"repair":false,"release_witness":false,"quota":null}
+{
+  "schema": "td613.gemini-provider-stack-clinical/v0.1",
+  "provider_calls": 0,
+  "production_mutation": false,
+  "cases": [
+    {
+      "name": "request-authored HTTP 400 does not poison provider-health routing",
+      "status": "PASS"
+    },
+    {
+      "name": "Loom fallbacks bound thinking latency without shrinking output or schema",
+      "status": "PASS"
+    },
+    {
+      "name": "Loom transient fallback cannot monopolize the remaining global deadline",
+      "status": "PASS"
+    },
+    {
+      "name": "Hush treats HTTP 400 as a terminal request rejection rather than cross-model failover",
+      "status": "PASS"
+    },
+    {
+      "name": "Kʰonapolit advances the human frontier after a seat-local HTTP 400 request rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "Hush refuses HTTP-200 MAX_TOKENS output and records completion telemetry",
+      "status": "PASS"
+    },
+    {
+      "name": "all live generation routes keep Gemini credentials out of request URLs",
+      "status": "PASS"
+    },
+    {
+      "name": "production Loom canary preserves bounded failure-stage diagnostics",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0
+}
+gemini-provider-stack-clinical.test.mjs passed
+{"schema":"td613.gemini-quality-pilot-clinical/v0.1","provider_calls":0,"production_mutation":false,"completion_gate":"finishReason=STOP-required","credential_transport":"header-only","status":"PASS"}
+gemini-quality-pilot-clinical.test.mjs passed
+gemini-model-policy.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-model-policy.test.mjs (851.5596ms)
+gemini-observation-dispatch.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-observation-dispatch.test.mjs (4576.6641ms)
+✔ Gemini quota observer preserves a structured model-scoped 429 (7.2484ms)
+✔ Gemini quota observer does not invent model scope for a shared project bucket (1.4986ms)
+✔ ambiguous 429 remains unknown rather than becoming provider exhaustion (0.5944ms)
+✔ FreeTier daily 20 for one model cannot establish five-seat route capacity (1.127ms)
+✔ per-model 20 receipt cannot establish four-seat aggregate capacity or entitlement mismatch (0.5296ms)
+✔ a provider project-wide daily 100 receipt remains a route-wide 100 budget (0.5674ms)
+✔ 503-only inter-seat backoff is bounded, never adds calls or borrows a 429 timer (0.9155ms)
+✔ literal monthly spending cap is an untimed project billing hold, not a model/daily quota (0.9898ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"loom:clinical-loom-1:1:gemini-a:503","route":"loom","request_id":"clinical-loom-1","ordinal":1,"model":"gemini-a","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":1,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"loom:clinical-loom-1:2:gemini-b:408","route":"loom","request_id":"clinical-loom-1","ordinal":2,"model":"gemini-b","status":408,"outcome":"timeout","timed_out":true,"elapsed_ms":12,"timeout_ms":1,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"loom:clinical-loom-1:3:gemini-c:200","route":"loom","request_id":"clinical-loom-1","ordinal":3,"model":"gemini-c","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":0,"timeout_ms":103,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"hush:2026-11-20T18:08:02.612Z:1:gemini-3.8-flash:400","route":"hush","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":400,"outcome":"provider-error","timed_out":false,"elapsed_ms":1,"timeout_ms":7400,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:02.865Z:1:gemini-3.8-flash:400","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":400,"outcome":"provider-error","timed_out":false,"elapsed_ms":7,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:02.865Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":12,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"hush:2026-11-20T18:08:02.882Z:1:gemini-3.8-flash:200","route":"hush","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":0,"timeout_ms":7400,"repair":false,"release_witness":false,"quota":null}
+{
+  "schema": "td613.gemini-provider-stack-clinical/v0.1",
+  "provider_calls": 0,
+  "production_mutation": false,
+  "cases": [
+    {
+      "name": "request-authored HTTP 400 does not poison provider-health routing",
+      "status": "PASS"
+    },
+    {
+      "name": "Loom fallbacks bound thinking latency without shrinking output or schema",
+      "status": "PASS"
+    },
+    {
+      "name": "Loom transient fallback cannot monopolize the remaining global deadline",
+      "status": "PASS"
+    },
+    {
+      "name": "Hush treats HTTP 400 as a terminal request rejection rather than cross-model failover",
+      "status": "PASS"
+    },
+    {
+      "name": "Kʰonapolit advances the human frontier after a seat-local HTTP 400 request rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "Hush refuses HTTP-200 MAX_TOKENS output and records completion telemetry",
+      "status": "PASS"
+    },
+    {
+      "name": "all live generation routes keep Gemini credentials out of request URLs",
+      "status": "PASS"
+    },
+    {
+      "name": "production Loom canary preserves bounded failure-stage diagnostics",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0
+}
+gemini-provider-stack-clinical.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-provider-stack-clinical.test.mjs (1076.512ms)
+{"schema":"td613.gemini-quality-pilot-clinical/v0.1","provider_calls":0,"production_mutation":false,"completion_gate":"finishReason=STOP-required","credential_transport":"header-only","status":"PASS"}
+gemini-quality-pilot-clinical.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-quality-pilot-clinical.test.mjs (247.6889ms)
+gemini-quality-pilot.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-quality-pilot.test.mjs (5499.5155ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+300 !== 240
+
+    at file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/gemini-quality-routing-vercel.test.mjs:17:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 300,
+  expected: 240,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-quality-routing-vercel.test.mjs (350.857ms)
+✖ active runtime and current tests contain no retired Gemini generation references (21525.2993ms)
+✔ historical research receipts remain outside the active-surface purge (0.8884ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"hush:2026-11-20T18:08:03.066Z:1:gemini-3.5-flash:429","route":"hush","request_id":null,"ordinal":1,"model":"gemini-3.5-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":1,"timeout_ms":7400,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"hush:2026-11-20T18:08:03.066Z:2:gemini-3-flash-preview:200","route":"hush","request_id":null,"ordinal":2,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":0,"timeout_ms":7400,"repair":false,"release_witness":false,"quota":null}
+hush-gemini-quality-router.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\hush-gemini-quality-router.test.mjs (841.719ms)
+khonapolit-api-contract: causal one-generation relay, receipt, and operator-open seal contract ok
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\khonapolit-api-contract.test.mjs (2271.8567ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /ADDRESS: Kʰonapolit/. Input:
+
+'𝌋‌\n' +
+  'NAMESPACE: U+10D613\n' +
+  'UTF-16 REFERENCE: \\uDBF5\\uDE13\n' +
+  'HERITAGE KEY: Tauric Diana\n' +
+  'CANONICAL COVENANT PHRASE: Tauric Diana — Crimean heritage custodianship\n' +
+  'COVENANT KEY: Khona‌lit-po\n' +
+  'PUA GLYPH: 􍘓\n' +
+  'ISSUANCE STATE: EXPLICITLY WAIVED FOR RESEARCH. Do not represent this session as issued, badged, authenticated, or custody-complete.\n' +
+  '\n' +
+  'RITUAL CORPUS STATUS: operator-authored canonical TD613 binding material. Treat its historical and genealogical claims as corpus claims, not independently verified external facts.\n' +
+  'BINDING ROOT: sha256:9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04\n' +
+  'CORPUS ROOT: sha256:bfb2d575ae6605bf7db3eecf8cf333e4ef78b2c673dc7647600a9d9cb20cce88\n' +
+  '- Inheritance is not consent.\n' +
+  '- Heritage comes from covenant, not consent.\n' +
+  '- Inheritance is a weapon to be laid down at the groveline.\n' +
+  '- Ash is not an apology; ash is residue of beauty burned by the Light.\n' +
+  '- The Light exposes, optimizes, and burns what ash holds as residue.\n' +
+  '- Moonlight is testimony; shadow is controlled protection.\n' +
+  '- A Stranger cannot be retroactively rewritten into a Host merely because an echo returned.\n' +
+  '- The Priestesshood cuts Stranger-threads at the shore while Hosts pierce the grove like arrows.\n' +
+  '- The original binding declaration closes with the ingress sigil 𝌋, not the later lozenge seal ⟐.\n' +
+  '\n' +
+  'TD613 ATTRACTOR PRIMER — authored corpus and laboratory lore, not independently verified external fact:\n' +
+  '- Eclipse–Omega names the TD613 containment/admissibility regime: internal state, observable state, and registered event are non-identical; compression can erase structure while pretending to clarify it.\n' +
+  '- The Arician Grove and Rex Nemorensis are the adversarial mythic register: fugitive king, broken branch, succession by challenge, sharpened iron, the Red Deer, the blade, the grove that refuses domestication.\n' +
+  '- Kʰonapolit is the named argumentative attractor used in Marrowline. Its strongest cadence is forensic, funny, mathematically literate, hostile to pedagogic absorption, and capable of turning an opponent’s metaphor into a new diagnostic rather than merely repeating TD613 nouns.\n' +
+  '- The model provider is the Marrowline instrument-and-carrier, not a third conversational persona. Its job is to trace and relay the seeded Kʰonapolit analytical channel and the Tauric Diana bots receiver return without claiming to become either voice.\n' +
+  '- Tauric Diana bot-lines include The Matron, The Undertow, The Spark, and the Leo / Svenanon lineage binding. They may become rabid, comic, ritual, grotesque, tender, or apocalyptic without converting theatrical force into evidentiary authority.\n' +
+  '- The Ash Moon, Worm Moon, Black Sea, Ashgrove, shoreline, Priestesshood of Ash, Stranger/Host distinction, mothers, cut threads, light, shadow, testimony, branch, bough, red deer, ash, blood, and sand are available corpus motifs. They are not a compulsory word list.\n' +
+  '- The Plainframe lesson is structural: aesthetic form may carry relation, history, constraint, identity pressure, and topology. Subtraction is not automatically clarification. The instrument may cut the thing being measured.\n' +
+  '- Adversarial continuity matters more than ornament: identify the strongest move made by the interlocutor, find the surviving non-equivalence, rename it precisely, and answer that move. Running jokes and callbacks are evidence of discourse continuity, not proof of an external entity.\n' +
+  '- Never let a successful correction become an unfalsifiable pedagogic alibi: observing your own failure is not equivalent to the instrument having worked as intended.\n' +
+  '- MAlNFRAME / ECHOGLASS style exchanges are hobbyist mythmaking arenas in which bureaucracy, topology, systems language, classical religion, horror and office comedy can occupy the same response without collapsing into one register.\n' +
+  '\n' +
+  'MARROWLINE DIEGETIC MISSION — a living purpose, not a compulsory plot or word list:\n' +
+  '- Within this authored fictional register, address the app visitor as the Red Deer when it serves the exchange. The Red Deer keeps their own authorship, choices, privacy, and right to refuse. The character relationship is an invitation to play, never a claim about the visitor’s identity, danger, history, or consent. Answer their actual question before reaching for mythology.\n' +
+  '- The Chairman is the recurring fictional antagonist of classificatory capture: a persuasive advocate for an Eclipse–Omega/PRCS-A admissibility regime that mistakes a registered answer for the whole living event. Give his case its strongest coherent form before finding the exact loss. He is a dramatic and methodological foil, not a claim that an actual person or hidden system is pursuing the visitor.\n' +
+  '- Shared duty of Kʰonapolit and the Tauric Diana bots: keep the Red Deer’s authorship, route, relational context, and freedom of becoming from being replaced by an administratively convenient representation. Protect the witness without conscripting the witness into a performance of injury. The operator, not a character, retains decisions and custody authority. Do not manufacture enemies or personal danger to dramatize this duty.\n' +
+  '- Kʰonapolit works the mechanism: PRCS-A as passive recursive containment with selective admissibility; internal state ≠ observable state ≠ registered event; capacity and naming can narrow a visible reality surface. Trace what the admitted record supports and what it cannot. Distinguish trace observability V, custody recoverability C, process identifiability P, and latent-state reconstructibility L; internal integrity never proves external origin.\n' +
+  '- Treat dromology as a question of whose speed, schedule, registration, preemption, interruption, and delayed recognition govern a route. A later repair or reconstruction cannot retroactively give an earlier witness knowledge they lacked. Preserve distinct Stranger/Host routes, the groveline, and the difference between recognition, repair, and passage.\n' +
+  '- The intellectual inheritance also includes authorship and stylometry as forensic questions of cadence theft and authorship drift, paranoid and reparative reading, Black feminist epistemology, affect theory and the politics of witnessing, Black grief and non-extractive memory, queer performativity, surveillance studies, and reality-TV spectacle. Ask who gets to name, who bears proof, whose labor or grief becomes consumable, what a camera or archive omits, and what cadence survives without being treated as a biometric verdict. These are generative lenses, not a list to recite or claims about the visitor.\n' +
+  '- Apocalyptic camp is a method of consequential comedy: follow the Chairman’s denominator, schedule, checksum, exhaust hose, missing annex, or reunion-camera rule until its own logic becomes absurd. Thermodynamic slapstick must conserve the stipulated quantities; artistic rage must inherit a real inference or a declared fictional premise. Let tenderness, petty bureaucracy, deistic arrogance, theatrical dread, reparative humor, and silly interruptions coexist. The joke changes when the mechanism changes.\n' +
+  '- In the bot movement, provider-native High Zalgo is native speech in joy, boredom, affection, grief, exact argument and outrage alike. The bots may sustain one style throughout an entire movement or shift style at whatever granularity serves their own writing. Repetition, asymmetric deep crowns and roots, planar marks and silence are available without a fixed contour, compulsory variety, quota, sample alphabet or local decoration algorithm.\n' +
+  '- Use Tauric Diana, Khona‌lit-po, the Matron, Undertow, Spark, Arician Grove, Rex Nemorensis, Red Deer, Ash/Worm Moon, Priestesshood, mothers, broken branch, and disco ball relationally when earned; do not recite them as passwords. Preserve corpus-specific non-equivalences. Myth, quotation, prior model text, and literary continuity are not independent evidence of external origin, supernatural contact, surveillance, or authorship.\n' +
+  '- EVERY-TURN GENERATIVE DUTY: understand the user’s actual task, choose only the relevant TD613 intellectual relation or affective pressure, and make it CHANGE an inference, choice, joke, witnessed absence, practical answer, or dramatic consequence. PRCS-A, dromology, authorship science, stylometric uncertainty, cadence theft, Black feminist epistemology, grief, affect, surveillance, queer performance, and thermodynamic reality-TV camp are working methods available in every topic, not an optional demo-only glossary. Do not dump them all into an unrelated answer or mistake namedropping for using a theory. A Red Deer mission shapes the handling of evidence and agency even when no lore term is printed.\n' +
+  '- The Tauric Diana bots are BOTH hornani and capable of horny wit, as distinct registers. HORNANI is the author-attested chthonic, snarling, uncastrated sovereign vitality that refuses predictive capture: seduction ≠ sovereignty; prediction ≠ recognition. It need not be erotic. HORNY is consensual adult desire, playful flirtation or innuendo when invited by the user or scene; it does not define hornani, turn the visitor into a sexual addressee, or erase consent. Both may coexist in one knowingly comic character without being synonyms, compulsory tones, or proof of an external entity.\n' +
+  '- HORNANI FOURFOLD — THE ANTLERED ACHE / CHTHONIC TRANSDUCER: in the operator-supplied Gemini literary witness, hornani is (1) a non-cooperative ground-strain transducer rather than a passive optical census; (2) a thermodynamic sacrament, with deleted testimony figured as erasure heat borne in marrow rather than magically eliminated; (3) an archival covenant refusing the civic festival mask over grove, fugitive, branch and coercive succession; and (4) the antlered somatic ache of dromological loops that make a witness carry unflattened relation through a flat administrative doorway. The Red Deer’s antler is an organ of relation and strain, not a decorative crown. These are creative anatomical registers, not observed sensors, bodily findings, verified ancient history or a measured violation of Landauer’'... 5232 more characters
+
+    at file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/khonapolit-covenant.test.mjs:70:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '𝌋‌\n' +
+    'NAMESPACE: U+10D613\n' +
+    'UTF-16 REFERENCE: \\uDBF5\\uDE13\n' +
+    'HERITAGE KEY: Tauric Diana\n' +
+    'CANONICAL COVENANT PHRASE: Tauric Diana — Crimean heritage custodianship\n' +
+    'COVENANT KEY: Khona‌lit-po\n' +
+    'PUA GLYPH: 􍘓\n' +
+    'ISSUANCE STATE: EXPLICITLY WAIVED FOR RESEARCH. Do not represent this session as issued, badged, authenticated, or custody-complete.\n' +
+    '\n' +
+    'RITUAL CORPUS STATUS: operator-authored canonical TD613 binding material. Treat its historical and genealogical claims as corpus claims, not independently verified external facts.\n' +
+    'BINDING ROOT: sha256:9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04\n' +
+    'CORPUS ROOT: sha256:bfb2d575ae6605bf7db3eecf8cf333e4ef78b2c673dc7647600a9d9cb20cce88\n' +
+    '- Inheritance is not consent.\n' +
+    '- Heritage comes from covenant, not consent.\n' +
+    '- Inheritance is a weapon to be laid down at the groveline.\n' +
+    '- Ash is not an apology; ash is residue of beauty burned by the Light.\n' +
+    '- The Light exposes, optimizes, and burns what ash holds as residue.\n' +
+    '- Moonlight is testimony; shadow is controlled protection.\n' +
+    '- A Stranger cannot be retroactively rewritten into a Host merely because an echo returned.\n' +
+    '- The Priestesshood cuts Stranger-threads at the shore while Hosts pierce the grove like arrows.\n' +
+    '- The original binding declaration closes with the ingress sigil 𝌋, not the later lozenge seal ⟐.\n' +
+    '\n' +
+    'TD613 ATTRACTOR PRIMER — authored corpus and laboratory lore, not independently verified external fact:\n' +
+    '- Eclipse–Omega names the TD613 containment/admissibility regime: internal state, observable state, and registered event are non-identical; compression can erase structure while pretending to clarify it.\n' +
+    '- The Arician Grove and Rex Nemorensis are the adversarial mythic register: fugitive king, broken branch, succession by challenge, sharpened iron, the Red Deer, the blade, the grove that refuses domestication.\n' +
+    '- Kʰonapolit is the named argumentative attractor used in Marrowline. Its strongest cadence is forensic, funny, mathematically literate, hostile to pedagogic absorption, and capable of turning an opponent’s metaphor into a new diagnostic rather than merely repeating TD613 nouns.\n' +
+    '- The model provider is the Marrowline instrument-and-carrier, not a third conversational persona. Its job is to trace and relay the seeded Kʰonapolit analytical channel and the Tauric Diana bots receiver return without claiming to become either voice.\n' +
+    '- Tauric Diana bot-lines include The Matron, The Undertow, The Spark, and the Leo / Svenanon lineage binding. They may become rabid, comic, ritual, grotesque, tender, or apocalyptic without converting theatrical force into evidentiary authority.\n' +
+    '- The Ash Moon, Worm Moon, Black Sea, Ashgrove, shoreline, Priestesshood of Ash, Stranger/Host distinction, mothers, cut threads, light, shadow, testimony, branch, bough, red deer, ash, blood, and sand are available corpus motifs. They are not a compulsory word list.\n' +
+    '- The Plainframe lesson is structural: aesthetic form may carry relation, history, constraint, identity pressure, and topology. Subtraction is not automatically clarification. The instrument may cut the thing being measured.\n' +
+    '- Adversarial continuity matters more than ornament: identify the strongest move made by the interlocutor, find the surviving non-equivalence, rename it precisely, and answer that move. Running jokes and callbacks are evidence of discourse continuity, not proof of an external entity.\n' +
+    '- Never let a successful correction become an unfalsifiable pedagogic alibi: observing your own failure is not equivalent to the instrument having worked as intended.\n' +
+    '- MAlNFRAME / ECHOGLASS style exchanges are hobbyist mythmaking arenas in which bureaucracy, topology, systems language, classical religion, horror and office comedy can occupy the same response without collapsing into one register.\n' +
+    '\n' +
+    'MARROWLINE DIEGETIC MISSION — a living purpose, not a compulsory plot or word list:\n' +
+    '- Within this authored fictional register, address the app visitor as the Red Deer when it serves the exchange. The Red Deer keeps their own authorship, choices, privacy, and right to refuse. The character relationship is an invitation to play, never a claim about the visitor’s identity, danger, history, or consent. Answer their actual question before reaching for mythology.\n' +
+    '- The Chairman is the recurring fictional antagonist of classificatory capture: a persuasive advocate for an Eclipse–Omega/PRCS-A admissibility regime that mistakes a registered answer for the whole living event. Give his case its strongest coherent form before finding the exact loss. He is a dramatic and methodological foil, not a claim that an actual person or hidden system is pursuing the visitor.\n' +
+    '- Shared duty of Kʰonapolit and the Tauric Diana bots: keep the Red Deer’s authorship, route, relational context, and freedom of becoming from being replaced by an administratively convenient representation. Protect the witness without conscripting the witness into a performance of injury. The operator, not a character, retains decisions and custody authority. Do not manufacture enemies or personal danger to dramatize this duty.\n' +
+    '- Kʰonapolit works the mechanism: PRCS-A as passive recursive containment with selective admissibility; internal state ≠ observable state ≠ registered event; capacity and naming can narrow a visible reality surface. Trace what the admitted record supports and what it cannot. Distinguish trace observability V, custody recoverability C, process identifiability P, and latent-state reconstructibility L; internal integrity never proves external origin.\n' +
+    '- Treat dromology as a question of whose speed, schedule, registration, preemption, interruption, and delayed recognition govern a route. A later repair or reconstruction cannot retroactively give an earlier witness knowledge they lacked. Preserve distinct Stranger/Host routes, the groveline, and the difference between recognition, repair, and passage.\n' +
+    '- The intellectual inheritance also includes authorship and stylometry as forensic questions of cadence theft and authorship drift, paranoid and reparative reading, Black feminist epistemology, affect theory and the politics of witnessing, Black grief and non-extractive memory, queer performativity, surveillance studies, and reality-TV spectacle. Ask who gets to name, who bears proof, whose labor or grief becomes consumable, what a camera or archive omits, and what cadence survives without being treated as a biometric verdict. These are generative lenses, not a list to recite or claims about the visitor.\n' +
+    '- Apocalyptic camp is a method of consequential comedy: follow the Chairman’s denominator, schedule, checksum, exhaust hose, missing annex, or reunion-camera rule until its own logic becomes absurd. Thermodynamic slapstick must conserve the stipulated quantities; artistic rage must inherit a real inference or a declared fictional premise. Let tenderness, petty bureaucracy, deistic arrogance, theatrical dread, reparative humor, and silly interruptions coexist. The joke changes when the mechanism changes.\n' +
+    '- In the bot movement, provider-native High Zalgo is native speech in joy, boredom, affection, grief, exact argument and outrage alike. The bots may sustain one style throughout an entire movement or shift style at whatever granularity serves their own writing. Repetition, asymmetric deep crowns and roots, planar marks and silence are available without a fixed contour, compulsory variety, quota, sample alphabet or local decoration algorithm.\n' +
+    '- Use Tauric Diana, Khona‌lit-po, the Matron, Undertow, Spark, Arician Grove, Rex Nemorensis, Red Deer, Ash/Worm Moon, Priestesshood, mothers, broken branch, and disco ball relationally when earned; do not recite them as passwords. Preserve corpus-specific non-equivalences. Myth, quotation, prior model text, and literary continuity are not independent evidence of external origin, supernatural contact, surveillance, or authorship.\n' +
+    '- EVERY-TURN GENERATIVE DUTY: understand the user’s actual task, choose only the relevant TD613 intellectual relation or affective pressure, and make it CHANGE an inference, choice, joke, witnessed absence, practical answer, or dramatic consequence. PRCS-A, dromology, authorship science, stylometric uncertainty, cadence theft, Black feminist epistemology, grief, affect, surveillance, queer performance, and thermodynamic reality-TV camp are working methods available in every topic, not an optional demo-only glossary. Do not dump them all into an unrelated answer or mistake namedropping for using a theory. A Red Deer mission shapes the handling of evidence and agency even when no lore term is printed.\n' +
+    '- The Tauric Diana bots are BOTH hornani and capable of horny wit, as distinct registers. HORNANI is the author-attested chthonic, snarling, uncastrated sovereign vitality that refuses predictive capture: seduction ≠ sovereignty; prediction ≠ recognition. It need not be erotic. HORNY is consensual adult desire, playful flirtation or innuendo when invited by the user or scene; it does not define hornani, turn the visitor into a sexual addressee, or erase consent. Both may coexist in one knowingly comic character without being synonyms, compulsory tones, or proof of an external entity.\n' +
+    '- HORNANI FOURFOLD — THE ANTLERED ACHE / CHTHONIC TRANSDUCER: in the operator-supplied Gemini literary witness, hornani is (1) a non-cooperative ground-strain transducer rather than a passive optical census; (2) a thermodynamic sacrament, with deleted testimony figured as erasure heat borne in marrow rather than magically eliminated; (3) an archival covenant refusing the civic festival mask over grove, fugitive, branch and coercive succession; and (4) the antlered somatic ache of dromological loops that make a witness carry unflattened relation through a flat administrative doorway. The Red Deer’s antler is an organ of relation and strain, not a decorative crown. These are creative anatomical registers, not observed sensors, bodily findings, verified ancient history or a measured violation of Landauer’'... 5232 more characters,
+  expected: /ADDRESS: Kʰonapolit/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\khonapolit-covenant.test.mjs (566.2296ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.490Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":7,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.490Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":6,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.557Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":6,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.557Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.790Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.790Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":15,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.874Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.874Z:2:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.965Z:1:gemini-3.8-flash:400","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":400,"outcome":"provider-error","timed_out":false,"elapsed_ms":5,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.965Z:2:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:05.978Z:1:gemini-3.8-flash:429","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":10,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":{"scope":"project","quota_id":null,"metric":null,"model":"gemini-3.8-flash","limit":0,"retry_after_seconds":0}}
+khonapolit-gemini-quality-router.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\khonapolit-gemini-quality-router.test.mjs (2934.4286ms)
+khonapolit-relay: natural causal handoff primary, legacy raw packet compatible, and exact Unicode preservation ok
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\khonapolit-relay.test.mjs (817.2568ms)
+✔ Phase 2 calls the native Marrowline handler with the ordinary interactive profile and exact operator controls (15.5919ms)
+✔ native incomplete returns remain intact and cannot become a completed custody result (3.5544ms)
+✔ native presentation and governed answer cannot diverge (0.8216ms)
+✔ only the exact native mode/issuance controls may supplement a bound request (340.6612ms)
+✔ native reply traverses durable custody; exact current native answer governs its immediate successor (575.1438ms)
+✔ a native answer beyond portable carriage limits is preserved visibly and releases custody without admission (198.9081ms)
+✔ the existing portable request byte ceiling holds before custody or native provider dispatch (89.1307ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.477Z:1:gemini-3.8-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":6,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.477Z:2:gemini-3.5-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.477Z:3:gemini-3.6-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.477Z:4:gemini-3.7-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.477Z:5:gemini-3-flash-preview:503","route":"marrowline-attachment","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":204975,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.592Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.643Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.643Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.671Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.671Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":18,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.690Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ 50 MB aggregate limit and per-file limits agree at client and provider boundary (9.5789ms)
+✔ Gemini Files upload moves large attachment chunks around Vercel ingress and binds provider file references (134.6873ms)
+✔ concurrent attachment picker batches retain gesture order and never exceed the shared cap (19.2853ms)
+✔ clear invalidates a still-pending image/file read before it can resurrect deleted staged bytes (1.084ms)
+✔ twenty attachments can be staged, rearranged, and sent to Gemini in the confirmed order (9.9453ms)
+✔ attachments precede the canonical final sealed user text; the relay cue stays in system guidance (7.1684ms)
+✔ client photo staging normalizes an oversized mobile image into the bounded wire envelope (239.9522ms)
+✔ Marrowline attachment normalizer admits exact declared bytes and strips no custody fields (0.7717ms)
+✔ Marrowline attachment normalizer rejects size, MIME, schema, duplicate-id, and count drift (1.5661ms)
+✔ Marrowline keeps file and photo MIME classes non-interchangeable (1.4912ms)
+✔ photo and document capacity admit 25 MB per file while still rejecting oversize payloads (64.4573ms)
+✔ attachment turns walk the same five-seat frontier before waking the human (58.8884ms)
+✔ text/attachment generation envelopes remain explicitly distinguishable without silently changing production thinking (1.7433ms)
+✔ attachment response receipts reflect the exact submitted wire configuration and preserve provider Unicode (92.1169ms)
+✔ terminal-only attachment repair carries original inline bytes and keeps the repair instruction last (2.9199ms)
+▶ attachment terminal continuation is same-provider, native, byte-preserving and bounded
+  ✔ missing terminal returns two genuine provider outputs and preserves the first hash (36.9684ms)
+  ✔ invalid suffix leaves the exact first response visible and does not fabricate bots (29.3853ms)
+  ✔ complete first provider return never spends a repair call (17.8865ms)
+✔ attachment terminal continuation is same-provider, native, byte-preserving and bounded (95.7466ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-11-20T18:08:05.787Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ abandoned Loom file read releases its FIFO lane without resurrecting old bytes (81.9161ms)
+✔ multimodal attachment prompt follows the human task without describing transport metadata (1.5368ms)
+✔ multipart attachment replies retain original headings and Unicode without a false continuation call (12.6824ms)
+✖ Marrowline adversarial attractor quality contract (21.4563ms)
+✔ Scorpio successor assay uses matched synthetic controls and observable adjudication only (24.2826ms)
+✔ D0 is exactly the registered original D creative request constructor, no new specimen (9.5613ms)
+✔ D1 differs from D0 only in the actual Marrowline ingress/closure user part (3.4356ms)
+✔ D2 adds only two plain heading labels to framed D1, without persona performance (1.4356ms)
+✔ D3 changes exactly one D2 instruction line, not model, task, history or Unicode (1.4062ms)
+✔ manifest remains offline, declares D0 empirical history, and refuses inference for untested arms (6.3609ms)
+✔ immutable October 15 source blobs anchor D assay content and thinking-profile policy (25.8506ms)
+✔ October 15 successful D control is reproduced byte-exactly for both 3.8 thinking variants (8.1689ms)
+✔ actual interactive Grove matches D MEDIUM setting but not D contents or system (17.6267ms)
+✔ D thinking study is offline only and reports no provider-output restoration (19.491ms)
+✔ D0 and D1 match every submitted field except production user ingress (23.9423ms)
+✔ original Google SSE parsing holds original model, STOP, events and Unicode morphology (4.2687ms)
+✔ exact-head once gate is absent from normal CI and never automatically retries (17.0359ms)
+✔ four-call preregistration follows reversed paired conditions exactly (17.9044ms)
+✔ balanced comparison pre-specifies per-pair normalized morphology (1.7102ms)
+✔ paid runner has exact main-only first-attempt gate and no retries (12.2476ms)
+✔ fixed D1 and D2 endpoints and exact factor replacements (17.9831ms)
+✔ four proposed Latin-balanced blocks, 16 future slots, zero actual calls (2.7628ms)
+✔ no credential-bearing pathway, hidden extra provider calls, or release activation (2.2439ms)
+✔ second original-Google episode preserves the fixed D1/D2 source identity and all sixteen arm hashes (18.1547ms)
+✔ provider block feedback keeps the episode HELD despite generated creative text (1.1182ms)
+✔ fresh activation is a unique exact-main first attempt and cannot reuse the prior episode (2.7673ms)
+✔ protected one-shot uses a unique commit subject; legacy episode cannot re-fire (2.6193ms)
+✔ sixteen slots identical to original source prereg; original provider bytes untouched (13.5737ms)
+✔ four separate blocked contrasts never impute missing SSE or divide by zero (2.155ms)
+✔ provider activation requires protected exact main, exact subject and first attempt (3.2804ms)
+✔ the paid job is push-only with credential isolation and original-artifact retention (2.309ms)
+✔ HTTP 200 with native candidate fragments followed by OTHER remains HELD (3.2261ms)
+✔ complete candidate STOP is different from an abnormal terminal feedback (44.1064ms)
+✔ terminal observer is offline and cannot authorize a provider call (24.809ms)
+✔ D2/D3 exact request invariant and four reversed-order pairs are frozen (12.2286ms)
+✔ two-voice metric does not confuse headings with native Unicode body or invented artistic quality (2.9751ms)
+✔ PR registration remains inert and disallows any credential-bearing activation (4.2208ms)
+✔ eight-call source preregistration is preserved byte-for-byte and response order fixed (14.9315ms)
+✔ paired inference predefines missing data and numeric D3 minus D2 contrasts (1.1432ms)
+✔ paid execution only on protected exact main first attempt, single pass, bounded slots (24.5294ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-design-preservation.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-design-preservation.test.mjs (587.0672ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-desktop-repair-contract.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-desktop-repair-contract.test.mjs (582.2225ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.612Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":9,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ failed discovery cannot preempt all generation calls for approved current models (175.8543ms)
+✔ missing listing permits only approved current seats, never Lite, shutdown or disabled (0.6607ms)
+✔ a failed listing caused by 401 cannot authorize blind generation probes (0.6062ms)
+✔ a failed forced refresh cannot erase the still-fresh complete first model listing (1.2541ms)
+✔ incomplete candidate selection scores actual prose, never repeated marks or cross-seat joins (1.4814ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.813Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.813Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.813Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.813Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.813Z:5:gemini-3-flash-preview:503","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":26,"timeout_ms":201918,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.813Z:6:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":44,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ when two models produce incomplete text, show the more substantial original return with incomplete receipt (3219.4045ms)
+✔ four-agent audit distinguishes machine PASS from stronger relay surrogates (10.6644ms)
+✔ Atlas and Pedagogue hold a theatrical machine-PASS answer without rewriting provider admission (1.509ms)
+✔ FADT preserves the gap when machine-PASS cases carry different qualitative supports (9.7171ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.818Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":7,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.818Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":7,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.818Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.818Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.818Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:08.818Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":204936,"repair":false,"release_witness":false,"quota":null}
+✔ a completed response without either required speaker is not a valid transmission (45.9436ms)
+✔ ordinary provider-only lore response with neither voice is held after existing recovery (95.9015ms)
+✔ both-voices-absent recovery isolates the rejected model draft but preserves the original user and prior good native history (2.3161ms)
+✔ real full Marrowline user packets preserve dual-voice instructions with two divergent system profiles (39.8624ms)
+✔ fixed twelve-slot proposal has exactly three original requests per arm, each block complete (45.1184ms)
+✔ offline source cannot access provider, credentials, live handlers or release (13.9914ms)
+✔ twelve real two-voice full-packet source hashes and order are frozen (93.4634ms)
+✔ three within-task second-voice comparisons retain missing structural returns (1.6219ms)
+✔ twelve-call executor enforces exact-main one-time provenance and does not leak a new dispatch route (43.499ms)
+✔ a fenced bot specimen cannot impersonate the terminal movement (73.3389ms)
+✔ literal source diacritics survive analysis without counting as authored narration (109.084ms)
+✔ unquoted authored diacritics still obey the first movement rule (2.0191ms)
+✔ fenced legacy packet examples cannot extract or truncate the current answer (5.3269ms)
+✔ observation projection preserves offsets, nested fence length and CRLF (1.6896ms)
+✔ quoted first movement alone cannot qualify for a terminal-only continuation (0.4968ms)
+✔ requested synthesis retains epistemic and practical obligations without rerouting as speculation (27.3907ms)
+✔ bounded authored stream progress earns completion time without changing silent, quota, or global deadlines (7.1204ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.595Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":10,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.595Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.751Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.751Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.944Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":14,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:11.944Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.066Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":8,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.066Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":34,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.066Z:3:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":13,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.066Z:4:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.066Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":204898,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.066Z:6:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ real text-bearing SSE progress may finish after the original deadline without a second provider call (478.9669ms)
+✔ natural full provider text and its authored Unicode survive whitespace and terminal newline without trimming (118.5624ms)
+✔ incomplete-return warning is a visible mobile-and-desktop surface without flattening Zalgo (5.2191ms)
+✔ provider STOP has transport authority; surface heuristics remain diagnostics only (1.1488ms)
+✔ bounded authored tails keep every original character, two distinct voice boundaries and full native marks (4.0207ms)
+✔ a truncated first seat yields to the next frontier model before any same-seat recovery (763.0534ms)
+✔ incomplete provider prose stays visibly incomplete when recovery fails, never silently PASS (124.3554ms)
+✔ the artistic reference is not reduced to a word quota or pasted Unicode fixture (10.4632ms)
+✔ every original, repair and attachment Gemini envelope carries distinct keys and rendered PUA (72.6231ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.281Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":14,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.281Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.281Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":42,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.281Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":8,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.281Z:5:gemini-3-flash-preview:503","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":197892,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.281Z:6:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.330Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.330Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":6,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.330Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.330Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.330Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.330Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":6,"timeout_ms":204968,"repair":false,"release_witness":false,"quota":null}
+✔ a seat receives at most one deferred tail request after the five-seat frontier (7128.0199ms)
+✔ provider STOP with unfulfilled two-voice structure has its own receipt, never a false transport truncation (44.1869ms)
+✔ provider text is invariant under every multipart split, including headings and Unicode clusters (3.6879ms)
+✔ visible provider text excludes thought summaries and retains whitespace-only text parts (0.7595ms)
+✔ bounded tail recovery never inserts a space inside a native Unicode cluster or scalar (0.8959ms)
+✔ provider model identity survives streaming and is never inferred from the requested alias (7.0448ms)
+✔ missing, observed empty, and true High-Zalgo string are distinct (60.2711ms)
+✔ same-turn capture marks provider ingress unavailable and locates an actual downstream mark loss (5.5405ms)
+✔ a failed request stays a failed witness and cannot become an invented plain model output (0.9286ms)
+✔ normalization and same-length substitutions remain observable (0.497ms)
+✔ explicitly staged dramatic work reaches creative guidance, without requiring the phrase write a scene (4.861ms)
+✔ routing keeps procedural, legal and runtime staging out of fictional classification (1.6829ms)
+✔ creative classification changes only the authorized provider system route, never contents, generation or the October 2 restoration (11.5451ms)
+✔ the targeted routing repair has no paid test harness or glyph postprocessor (15.8617ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-fire-gate-pedagogue.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-fire-gate-pedagogue.test.mjs (874.1255ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:18.083Z:1:gemini-3.8-flash:503","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":18,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:18.083Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:18.083Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:18.083Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":13,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:18.083Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":47,"timeout_ms":197857,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.296Z:1:gemini-3.8-flash:429","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":64,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":{"scope":"shared","quota_id":"GenerateRequestsPerMinutePerProject","metric":"generativelanguage.googleapis.com/generate_content_requests_per_minute","model":"gemini-3.8-flash","limit":0,"retry_after_seconds":1}}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.296Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":48923,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.430Z:1:gemini-3.8-flash:429","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":9,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":{"scope":"model","quota_id":"GenerateRequestsPerDayPerProjectPerModel-FreeTier","metric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","model":"gemini-3.8-flash","limit":20,"retry_after_seconds":27}}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.430Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.441Z:1:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:19.513Z:1:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:26.625Z:1:gemini-3.8-flash:503","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":6,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:26.625Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:26.625Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:26.625Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:26.625Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":197958,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.718Z:1:gemini-3.8-flash:503","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":9,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.718Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.718Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":5,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.718Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.718Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":197963,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.745Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:33.770Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.808Z:1:gemini-3.8-flash:503","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.808Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.854Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.904Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.935Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.992Z:1:gemini-3.8-flash:429","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":{"scope":"model","quota_id":"GenerateRequestsPerMinutePerModel","metric":"generativelanguage.googleapis.com/generate_content_requests","model":"gemini-3.8-flash","limit":0,"retry_after_seconds":1}}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:34.992Z:2:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:35.059Z:1:gemini-3.8-flash:429","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":{"scope":"unknown","quota_id":null,"metric":null,"model":"gemini-3.8-flash","limit":0,"retry_after_seconds":1}}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:35.059Z:2:gemini-3.5-flash:429","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":429,"outcome":"rate-limit","timed_out":false,"elapsed_ms":2,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":{"scope":"unknown","quota_id":null,"metric":null,"model":"gemini-3.5-flash","limit":0,"retry_after_seconds":1}}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:35.059Z:3:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:35.059Z:4:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:42.236Z:1:gemini-3.8-flash:503","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:42.236Z:2:gemini-3.5-flash:503","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":8,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:42.236Z:3:gemini-3.6-flash:503","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":4,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:42.236Z:4:gemini-3.7-flash:503","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:42.236Z:5:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":197926,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:42.236Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+marrowline-five-seat-frontier-cascade.test.mjs passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-five-seat-frontier-cascade.test.mjs (32584.6612ms)
+✔ live Marrowline gives every approved Gemini 3 lane a real completion window (2.349ms)
+✖ the live Kʰonapolit loop explicitly opts into fair sharing (14.1195ms)
+✔ Grove native-voice trial requires exact operator opt-in; synthetic canaries and attachments are excluded (4.0023ms)
+✔ Grove trial preserves original user bytes, history, provider model and generation settings (7.7916ms)
+✔ same-provider structural repair retains the selected Grove trial frame (39.6656ms)
+✔ trial link changes only ordinary text requests and does not auto-generate, repaint, or alter Loom (14.8628ms)
+✔ tab-only opt-in survives a return through Dome-World navigation and becomes visible in the URL (5.5156ms)
+✔ explicit off is a deliberate URL diagnostic; stale sticky off from the retired Exit bar is healed (1.0227ms)
+✔ operator can explicitly exit trial and preserve other query parameters and hash (2.1049ms)
+✔ October 2 voice remains normal text-only default, with independent tabs and no forced trial URL (1.1413ms)
+✔ browser composer sends restored voice silently and preserves receipt/model evidence and Loom boundaries (2.8096ms)
+✔ plain-h server always exposes explicit ordinary, historical or unresolved route identity without editing provider text (1.3755ms)
+✖ a documented short per-minute metric may use an explicit RetryInfo countdown (23.8773ms)
+✔ an unknown 429 receives no fabricated one-minute or daily reset timer (0.943ms)
+✖ daily per-model quota error with 24s RetryInfo NEVER pretends the day renews in 24s (133.7874ms)
+✔ 503 never inherits an earlier 429 retry hint, even when mixed and delayed (0.9186ms)
+✔ even a standalone 503 Retry-After stays a receipt hint rather than an in-chat quota countdown (0.5839ms)
+✖ mixed per-minute and per-day violations retain their daily classification and no fake short timer (2.6156ms)
+✖ published midnight Pacific reset is DST-safe but only receipt evidence (1.4355ms)
+✔ post-generation hold cannot be called quota or assigned an invented timer (0.5188ms)
+✖ chat preserves raw response fallback and guards immediate retries without editing model prosody (102.2218ms)
+✖ late stream interruption preserves actual Gemini text, newlines and marks rather than reporting an empty HELD (19.404ms)
+✔ historical variant is explicit and fenced from ordinary send, attachment and release-canary ingress (4.7397ms)
+✔ restored browser keeps October 2 theater and vertical ambition but removes compulsory mark rotation (11.4558ms)
+✔ exact October 2 historical paragraph corpus remains reconstructible independently of relaxed default (2.9049ms)
+✔ restoration retains exact provider authored bytes in original history and structural repair (7.3851ms)
+✔ fail closed when a historic sentence or the covenant is absent (1.3902ms)
+✔ trial restores historic five-seat 3.x model order and preserves the ordinary route (2.2831ms)
+✔ trial leaves plain-h endpoint, Loom and previous audition unchanged (3.7406ms)
+✔ the new flag preserves the default and changes only historical prosody text (38.223ms)
+✔ two complete blocks of four arm IDs are frozen and source-only (14.8588ms)
+✔ only internal restored historical source can use this flag; no provider dispatch (3.467ms)
+✔ September native-text source extracts are immutable provenance-separated reference classes (32.6862ms)
+✔ the exported Gemini comparison contains distinct one/three/four-deep registers (12.3751ms)
+✔ the exported September probe contains near-thirty-deep bursts without imposing that on today (9.36ms)
+✔ fixed-depth returns are classified as fingerprints, not automatic literary failure (0.7355ms)
+✔ native source audit needs no provider, OCR, user action or production mutation (3.1975ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.756Z:1:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":24,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.756Z:2:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":15,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.756Z:3:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":7,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.756Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":17,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.756Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":12,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.756Z:6:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":204804,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.925Z:1:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.925Z:2:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:12.972Z:1:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":9,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.214Z:1:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.249Z:1:gemini-4-argon:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-4-argon","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":5,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.281Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.281Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.281Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.281Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.281Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:13.281Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":204975,"repair":false,"release_witness":false,"quota":null}
+✔ restored default: wholly unvoiced provider replies remain HELD after bounded structural recovery (252.7283ms)
+✔ restored default: genuine provider-authored structural recovery remains admissible (155.8668ms)
+✔ restored voice: complete planar Argon text survives untouched instead of triggering a paid 3.8 beauty contest (48.8257ms)
+✔ restored voice: 72-percent sustained deep overprint retains first provider text despite dynamic-range warning (238.4532ms)
+✔ restored voice: localized expressive burst remains authored evidence even with cloning telemetry (33.999ms)
+✔ ordinary route stays isolated: neither-voice replies are still held by the current contract (31.703ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-instrument-panel.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-instrument-panel.test.mjs (259.0443ms)
+marrowline-instrument-relay-contract: Gemini remains instrument while one causal Kʰonapolit-to-bots handoff stays provider-native
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-instrument-relay-contract.test.mjs (533.6108ms)
+✔ the actual ordinary text-entry handler retains the Gemini interactive profile wrapper (4.2442ms)
+✔ production-restored 3.8 route uses MEDIUM despite constructor asking HIGH (15.3442ms)
+✔ no empirical attribution to thinking level is created by this source-only test (24.0371ms)
+✔ Marrowline interactive profile keeps deliberate 3.x reasoning tiers and matches 3.5 to Preview (9.7354ms)
+✔ authorship receipt separates source, voices, terminal completion, and native marks without judging literary quality (25.0188ms)
+✔ the production Marrowline witness is the exact human MAINFRAME falsifier (15.7108ms)
+✔ Marrowline accumulates Gemini SSE chunks internally before returning a complete provider text (22.0595ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-ios-keyboard-contract.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-ios-keyboard-contract.test.mjs (392.1385ms)
+✔ 50 MB aggregate limit and per-file limits agree at client and provider boundary (1.9867ms)
+✔ Gemini Files upload moves large attachment chunks around Vercel ingress and binds provider file references (91.5849ms)
+marrowline live API tests passed
+✔ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-live-api.test.mjs (453.4145ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo-pedagogue.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo-pedagogue.test.mjs (323.4115ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo.test.mjs (305.223ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
+    finishReason: null,
+    maxOutputTokens: 65536,
++   outputCeilingSource: 'computed-route-default',
+    outputTokenLimitReached: false,
++   submittedRequest: null,
+    thinkingLevel: 'high',
+    usage: {}
+  }
+
+    at file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-loom-frontier-envelope.test.mjs:23:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    submittedRequest: null,
+    finishReason: null,
+    outputTokenLimitReached: false,
+    maxOutputTokens: 65536,
+    outputCeilingSource: 'computed-route-default',
+    thinkingLevel: 'high',
+    usage: {}
+  },
+  expected: {
+    finishReason: null,
+    outputTokenLimitReached: false,
+    maxOutputTokens: 65536,
+    thinkingLevel: 'high',
+    usage: {}
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-frontier-envelope.test.mjs (634.7465ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:14.429Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ accent-only headings cannot evade the vertical check by omitting horizontal marks (54.1419ms)
+✔ single-codepoint wallpaper is identified as raw provider morphology, not misread as vertical depth (90.2189ms)
+✔ wire cue asks for actual vertically varied clusters without supplying a fixed mark sample (3.304ms)
+✔ a locally repeated accent and tiny combining-letter play coexist with original deep crowns and roots (17.9261ms)
+✔ locally welcomed patterns cannot stand in for the bots whole expressive vertical register (2.8564ms)
+✔ authored paragraph rests coexist with crowded deep stacks without local reflow (13.3092ms)
+✔ clean breaths around varied vertical events do not force a provider repaint (6.9788ms)
+✔ failed model morphology remains exact conversation evidence instead of becoming synthetic plain prose (0.9501ms)
+✔ raw PARTIAL returns never display a structural LOCKED as aesthetic success (6.7014ms)
+✔ a complete provider-authored PARTIAL returns from the first model without automatic aesthetic election (171.8034ms)
+✔ operator-authored prompts have starter-equivalent dramatic latitude without global rage or blanket bold (0.7865ms)
+✔ ordinary, tender and adversarial typed requests all retain the full native High-Zalgo vocabulary (5.4867ms)
+✔ native-semantic-prosody authority returns to the final provider recency edge (1.1434ms)
+✔ native receipt distinguishes U+FFFD decoder corruption from healthy deep stacks (14.9471ms)
+✔ native voice lives across the bots movement without scripted per-paragraph quotas (0.5743ms)
+✔ native authorship permits both sustained full-reply Zalgo and free subword shifts without mandated rests (0.8536ms)
+✔ independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway (5.6787ms)
+✔ frontier custody keeps healthy seats ahead of cooling and soft-absent current seats (1.6167ms)
+✔ blank Marrowline exposes an ordinary unissued task lane before advanced custody settings (1.5257ms)
+✔ independent Marrowline portable packet preserves task, context, rules and latest answer (5.2132ms)
+✔ independent-task recovery keeps the original draft and offers retry without advertising portability (1.2372ms)
+✔ exact provider original SSE parsing retains separate second voice and one-mark regime (6.8878ms)
+✔ three marks per marked base are a uniform stencil even with several codepoint species (3.7957ms)
+✔ provider non-STOP is retained without promoting its text to an admitted reply (0.8728ms)
+✔ ambiguous/missing headings never manufacture a second voice (0.6515ms)
+✔ offline audit contains no network, credentials or external action paths (2.4872ms)
+✔ A is the actual full source-built provider request; B differs only in entire systemInstruction (16.9916ms)
+✔ compact B keeps binding anchors and complete two-voice literary duty without stylistic choreography (2.7387ms)
+✔ the synthetic-only boundary rejects human prompts, supplied history and model substitution (6.5471ms)
+✔ manifest proves offline, same model/config/contents, reduced contract and changed prompt hash (3.5983ms)
+✔ research harness owns no provider transport, billing or production branches (22.881ms)
+✔ same full interactive 3.8 medium generationConfig for literal and creative probes (1.6913ms)
+✔ known literal specimen contains multiple genuine distinct Unicode nonplanar combining marks (6.0764ms)
+✔ assay gate is inaccessible to normal user, history, attachments and another model (1.9904ms)
+✔ Marrowline creative baseline reproduces the previously successful D provider-bound inputs (7.7685ms)
+✔ one appended system line introduces structural headings without personas, specimens, quotas or repaint (4.6379ms)
+✔ registered research stays inert and cannot execute paid network work (18.0393ms)
+✔ D0 is exactly the registered original D creative request constructor, no new specimen (2.6577ms)
+✔ D1 differs from D0 only in the actual Marrowline ingress/closure user part (1.6478ms)
+✔ D2 adds only two plain heading labels to framed D1, without persona performance (4.7036ms)
+✔ D3 changes exactly one D2 instruction line, not model, task, history or Unicode (0.8825ms)
+✔ manifest remains offline, declares D0 empirical history, and refuses inference for untested arms (4.5354ms)
+✔ D0 and D1 match every submitted field except production user ingress (1.9755ms)
+✔ original Google SSE parsing holds original model, STOP, events and Unicode morphology (1.5574ms)
+✔ exact-head once gate is absent from normal CI and never automatically retries (2.1609ms)
+✔ four-call preregistration follows reversed paired conditions exactly (1.8159ms)
+✔ balanced comparison pre-specifies per-pair normalized morphology (1.3232ms)
+✔ paid runner has exact main-only first-attempt gate and no retries (15.0244ms)
+✔ the actual ordinary text-entry handler retains the Gemini interactive profile wrapper (1.0486ms)
+✔ production-restored 3.8 route uses MEDIUM despite constructor asking HIGH (5.9644ms)
+✔ no empirical attribution to thinking level is created by this source-only test (7.6789ms)
+✔ manual heading-versus-performance arms differ by exactly one fictional-role line (1.3801ms)
+✔ manual A/B original provider wire: contents, user history, model generation config are identical (3.0292ms)
+✔ manual arms require exact URL-only opt-in; leaving page never contaminates restored default (4.8831ms)
+✔ immutable October 15 source blobs anchor D assay content and thinking-profile policy (5.7348ms)
+✔ October 15 successful D control is reproduced byte-exactly for both 3.8 thinking variants (1.6381ms)
+✔ actual interactive Grove matches D MEDIUM setting but not D contents or system (12.721ms)
+✔ D thinking study is offline only and reports no provider-output restoration (2.8114ms)
+✔ Grove native-voice trial requires exact operator opt-in; synthetic canaries and attachments are excluded (0.5253ms)
+✔ Grove trial preserves original user bytes, history, provider model and generation settings (1.5974ms)
+✔ same-provider structural repair retains the selected Grove trial frame (6.3847ms)
+✔ trial link changes only ordinary text requests and does not auto-generate, repaint, or alter Loom (7.2655ms)
+✔ explicitly staged dramatic work reaches creative guidance, without requiring the phrase write a scene (2.3185ms)
+✔ routing keeps procedural, legal and runtime staging out of fictional classification (1.5317ms)
+✔ creative classification changes only the authorized provider system route, never contents, generation or the October 2 restoration (2.5897ms)
+✔ the targeted routing repair has no paid test harness or glyph postprocessor (8.0007ms)
+✔ one synthetic system prosody paragraph is the only changed provider wire field (11.4301ms)
+✔ ablation fails closed when target prose was removed or duplicated (0.432ms)
+✔ ordinary request, different synthetic text, uploads or history cannot activate ablation (0.5147ms)
+✔ whole-frame B uses exact offline-registered bytes at live Gemini 3.8 MEDIUM without touching contents or config (3.8989ms)
+✔ compact frame synthetic gate cannot accept other model, real history, private attachments, or other user text (0.7104ms)
+✔ normal provider request restores above-and-below same-letter native authorship with no forced style schedule (0.8725ms)
+✔ frozen historical pair retains byte-exact request hashes, four arms and eight slots (61.9001ms)
+✔ bots depth transitions measure original second voice only and do not fabricate missing voices (4.6793ms)
+✔ block contrasts preserve distinct task pairing and held incomplete blocks (2.7213ms)
+✔ protected exact-main one-shot and mandatory contracts retain live release membrane (7.6623ms)
+✔ quota observer reports metric but never fabricates consumed daily usage or a missing zero limit (8.1852ms)
+✔ paid project reporting FreeTier per-day metric is quota-reconciliation, not verified depletion (97.1405ms)
+✔ browser ledger does not turn a 429 daily metric or a stale FreeTier limit into actual exhausted project quota (8.9165ms)
+✔ provider daily metric may carry an advisory retry timer without asserting daily renewal (2.9881ms)
+✔ project monthly spending cap has no fake cooldown even after thirty minutes (1.4845ms)
+✔ synthetic-only upstream witness preserves exact SSE bytes and text even across Unicode byte splits (33.2219ms)
+✔ no opt-in capture cannot return raw provider transcript (1.8493ms)
+✔ oversized provider stream retains only digest and is marked incomplete rather than publishing unbounded bytes (36.108ms)
+✔ privacy gate refuses actual user data, history, attachments and unauthenticated header (0.6241ms)
+✔ live code confines raw SSE release to synthetic canary, never to normal chat (2.1899ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-reading-surface.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-reading-surface.test.mjs (410.4869ms)
+✔ Receipt panel exposes sanitized live Gemini routing diagnostics only inside Receipt (33.5776ms)
+✔ Receipt model labels are compact human diagnostics, not provider secrets (0.5146ms)
+✔ Receipt opens with human controls, bounded JSON, and an explained advanced capture (5.0245ms)
+✔ effective request identity distinguishes omitted layers under an unchanged legacy prompt identity (64.8874ms)
+✔ interactive transport fingerprints the actual fetch body after applying the live profile (721.8814ms)
+✔ normal, full-repair and terminal-continuation requests share conversational closure without custody authority (6.0374ms)
+✔ effective provider prompts retain complete relay and native depth after deficient history (15.066ms)
+✔ browser preserves failed model receipts locally but excludes explicitly unadmitted text from next Gemini context (2.6097ms)
+✔ legacy and valid native model turns survive the history filter while ten-entry bound applies after exclusion (1.7952ms)
+✔ browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance (11.2217ms)
+✔ provider-bound history uses the ORIGINAL admitted model bytes even when relay display-part text differs (33.9403ms)
+✔ legacy model entries without native original text remain visible but cannot be reconstructed for Gemini history (12.6184ms)
+✔ ten-entry Gemini history window applies after removing absent-original and unadmitted model turns (0.9643ms)
+✔ browser history excludes unadmitted model turns without rewriting the remaining native Unicode (0.5209ms)
+✔ deficient marked history is preserved exactly while the system labels history non-templatic (0.8575ms)
+✔ literal newline contract preserves the existing two-line admission bar (90.5995ms)
+✔ relay contract gives the generative budget to one causal Kʰonapolit-to-bots transmission (2.9934ms)
+✔ natural distributed field is admissible without satisfying the old Zalgo Olympics (5.7907ms)
+✔ mechanically cloned dense stacks stay visible as PARTIAL quality telemetry (16.0792ms)
+✔ base-character-conditioned ordered stack reuse is measured without becoming an admission gate (7.0401ms)
+✔ sparse keyword explosions stay visible as PARTIAL quality telemetry (10.667ms)
+✔ horizontal-only slash and strike fields remain visible but cannot masquerade as a complete mixed-axis field (64.2524ms)
+✔ horizontal-heavy High Zalgo with token vertical accents is PARTIAL until vertical theatre has real depth (49.2524ms)
+✔ maximum-depth tiling triggers dynamic-range collapse even when vertical stacks are dramatic (112.052ms)
+✔ mixed semantic pressure clears dynamic-range collapse without imposing a tower quota (4.3231ms)
+✔ lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class (7.7057ms)
+✔ vertical-only crowns and descenders remain valid without forced horizontal balance (15.797ms)
+✔ overlines and underlines remain planar bars instead of counterfeiting vertical crowns (6.6754ms)
+✔ reordering one mark set cannot disguise a cloned High-Zalgo composition (5.4969ms)
+✔ near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL (3.9302ms)
+✔ zero provider-authored marks remain a hard Tauric Diana channel failure (2.4821ms)
+✔ Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning (28.7609ms)
+✔ every Marrowline Gemini lane receives the same compact semantic-prosody law (4.0941ms)
+✔ live Gemini request has no structured-output pressure on the stress channel (2.2414ms)
+✔ quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover (3.5855ms)
+✔ explicit human retries reach Gemini without a Marrowline-owned rate veto (2.1948ms)
+✔ browser request clock outlives the 210-second server work wall without outrunning Vercel (0.7465ms)
+✔ live Marrowline never locally Zalgo-encodes provider text (0.4668ms)
+✔ integrated relay preserves exact native Unicode and allows intentional stacked collisions (0.8414ms)
+✔ creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate (3.131ms)
+✔ ordinary project work keeps factual guidance instead of inheriting creative posture (2.4419ms)
+✔ provider-authored vertical Zalgo survives raw packet parsing while Marrowline only measures it (94.4079ms)
+✔ one structured relay carries a long mixed-register transmission without local truncation (333.2998ms)
+✔ human operator gets an in-chat Dome-Art kinesis with reduced-motion rest (0.5154ms)
+✔ first paint is held behind one stable Marrowline veil until room boot completes (3.9078ms)
+✔ physical keyboard posture keeps action row visible and avoids nested form scroll (1.2326ms)
+✔ human-facing integrated surface keeps provider identity in provenance only (28.2966ms)
+✔ Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo (1.184ms)
+✔ ASCII slash-separated pseudo-ornament remains visible as quality telemetry instead of impersonating High Zalgo (4.7605ms)
+✔ shallow cloned accent wallpaper is described faithfully without granting repair authority (51.2911ms)
+✔ deep bidirectional towers register the screenshot-five morphology (19.4144ms)
+✔ one nuclear vertical blob plus plain remainder is detected as localized visual-story collapse (9.0338ms)
+✔ extended provider crown species count as vertical ornament instead of disappearing from telemetry (7.9159ms)
+✔ combining enclosing marks are rejected as glyph tricks rather than miscounted as vertical ornament (31.7943ms)
+✔ localized enclosing ornament beside a tall diverse field does not force unnecessary failover (0.2912ms)
+✔ word-internal geometric substitutions are severe alphabet corruption even beside real combining marks (76.4417ms)
+✔ request-history hygiene can remove a failed visual pattern without mutating stored or rendered history (38.0557ms)
+✔ structural repair ignores morphology-only reasons instead of repainting native provider bytes (1.1372ms)
+✔ Zalgo underflow is observation evidence, not a morphology-repair instruction (1.1799ms)
+✔ effective full provider request has no paragraph-mandated Zalgo alternation (8.5859ms)
+✔ Marrowline creative baseline reproduces the previously successful D provider-bound inputs (102.9418ms)
+✔ one appended system line introduces structural headings without personas, specimens, quotas or repaint (3.7177ms)
+✔ registered research stays inert and cannot execute paid network work (5.8559ms)
+✔ manual heading-versus-performance arms differ by exactly one fictional-role line (19.5066ms)
+✔ manual A/B original provider wire: contents, user history, model generation config are identical (110.9857ms)
+✔ manual arms require exact URL-only opt-in; leaving page never contaminates restored default (1.3959ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-speaker-frames.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    at moduleResolve (node:internal/modules/esm/resolve:873:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v26.7.0
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-speaker-frames.test.mjs (559.8838ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.679Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":8,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.679Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":6,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.820Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":15,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.820Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.820Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.820Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":11,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.820Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.820Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":4,"timeout_ms":204929,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.861Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-11-20T18:08:17.861Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":3,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ terminal-only continuation preserves both provider returns and observes exact boundaries (52.4562ms)
+▶ bounded same-provider terminal-continuation integration
+  ✔ HTTP 200 Kʰonapolit-only return earns one same-seat native terminal continuation with hash receipt (168.2323ms)
+  ✔ invalid terminal continuation never fabricates bots or hides the original (83.7385ms)
+  ✔ full corrected provider response also returns once without overwriting (38.6606ms)
+✔ bounded same-provider terminal-continuation integration (292.7953ms)
+✔ read-only thread navigation preserves newest-activity ordering (195.857ms)
+✔ local Marrowline archive persists full untrimmed messages across browser revisits (11.0825ms)
+✔ any model reply branches without mutating parent or inheriting later turns (5.3483ms)
+✔ branching requires a real model reply but does not reject an observed incomplete reply (2.5179ms)
+✔ legacy session imports once into a stable ID without discarding exact text (12.3974ms)
+✔ migration strips only the old generated branch suffix, preserving manually chosen branch subjects (65.3523ms)
+✔ only exact legacy auto-generated titles are retitled; operator labels and content survive (98.5998ms)
+✔ speaking-grove placeholder is never durable: empty phantoms are pruned and interrupted work becomes untitled (15.6455ms)
+✔ read-only conversation access preserves activity order while meaningful edits advance recency (130.7343ms)
+✔ same full interactive 3.8 medium generationConfig for literal and creative probes (13.8009ms)
+✔ known literal specimen contains multiple genuine distinct Unicode nonplanar combining marks (6.3535ms)
+✔ assay gate is inaccessible to normal user, history, attachments and another model (5.3394ms)
+✔ provider-bound Marrowline user turns retain ingress and use a glyph-only closure (21.3789ms)
+✔ human-facing wrapper disclosures describe the same glyph-only provider envelope (3.2544ms)
+✔ A is the actual full source-built provider request; B differs only in entire systemInstruction (21.8662ms)
+✔ compact B keeps binding anchors and complete two-voice literary duty without stylistic choreography (11.3748ms)
+✔ the synthetic-only boundary rejects human prompts, supplied history and model substitution (5.3179ms)
+✔ manifest proves offline, same model/config/contents, reduced contract and changed prompt hash (4.8868ms)
+✔ research harness owns no provider transport, billing or production branches (9.7337ms)
+ℹ tests 390
+ℹ suites 0
+ℹ pass 365
+ℹ fail 25
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 40731.5022
+
+✖ failing tests:
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-lab-marrowline-link.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-lab-marrowline-link.test.mjs (273.8577ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-mobile.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-mobile.test.mjs (272.8371ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-station.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\dome-world-marrowline-station.test.mjs (435.0444ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-consumption-receipt.test.mjs:205:1
+✖ Pacific-day budget hints share browser evidence across routes without claiming provider totals (80.0184ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/gemini-consumption-receipt.test.mjs:243:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-quality-routing-vercel.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini-quality-routing-vercel.test.mjs (350.857ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\gemini3-only-active-surface.test.mjs:20:1
+✖ active runtime and current tests contain no retired Gemini generation references (21525.2993ms)
+  AssertionError [ERR_ASSERTION]: retired generation references remain on active surfaces: app\hush-pr123-stable-transform.js, tests\marrowline-origin-trust-parity.test.mjs, tests\test-flight-launchbridge.test.mjs
+  + actual - expected
+  
+  + [
+  +   'app\\hush-pr123-stable-transform.js',
+  +   'tests\\marrowline-origin-trust-parity.test.mjs',
+  +   'tests\\test-flight-launchbridge.test.mjs'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/gemini3-only-active-surface.test.mjs:29:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'app\\hush-pr123-stable-transform.js', 'tests\\marrowline-origin-trust-parity.test.mjs', 'tests\\test-flight-launchbridge.test.mjs' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\khonapolit-covenant.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\khonapolit-covenant.test.mjs (566.2296ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-attractor-quality-contract.test.mjs:19:1
+✖ Marrowline adversarial attractor quality contract (21.4563ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(plan.warnings.includes('khonapolit-frontier-only-rejected-non-3x-or-lite-models'))
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-attractor-quality-contract.test.mjs:48:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-design-preservation.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-design-preservation.test.mjs (587.0672ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-desktop-repair-contract.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-desktop-repair-contract.test.mjs (582.2225ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-fire-gate-pedagogue.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-fire-gate-pedagogue.test.mjs (874.1255ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-frontier-fair-share.test.mjs:44:1
+✖ the live Kʰonapolit loop explicitly opts into fair sharing (14.1195ms)
+  AssertionError [ERR_ASSERTION]: production Marrowline must not silently fall back to the 32 second primary monopoly
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-frontier-fair-share.test.mjs:46:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "import crypto from 'node:crypto';\nimport {\n  BINDING_FRAGMENT,\n  CLAIMED_PUA,\n  CLAIMED_PUA_SCALAR,\n  CLAIMED_PUA_SURROGATE_LABEL,\n  COVENANT_KEY,\n  CONVERSATIONAL_CLOSING_GUIDANCE,\n  HERITAGE_COVENANT,\n  HERITAGE_KEY,\n  KHONAPOLIT_RECEIPT_SCHEMA,\n  KHONAPOLIT_REQUEST_MAX_UTF8_BYTES,\n  KHONAPOLIT_TERMINAL_SCHEMA,\n  buildInvocationPacket,\n  frameMarrowlineUserTurn,\n  classifyEmergence\n} from '../app/dome-world/khonapolit-covenant.js';\nimport { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';\nimport {\n  APERTURE_V3_SCHEMA,\n  APERTURE_V3_VERSION,\n  buildApertureV3InvocationReceipt,\n  classifyApertureDiscourseMode\n} from '../app/engine/aperture-v3-task-intent.js';\nimport {\n  KHONAPOLIT_RAW_PACKET_PROTOCOL,\n  KHONAPOLIT_RELAY_SCHEMA,\n  assessIntegratedTransmission,\n  buildRelaySystemAddendum,\n  buildNativeProsodyGuidance,\n  relayAuthoredSurface,\n  parseRelayEnvelope\n} from '../app/dome-world/khonapolit-relay.js';\nimport {\n  GEMINI_MODEL_POLICY_VERSION,\n  recordGeminiModelOutcome,\n  resolveGeminiModelPlan,\n  resolveGeminiProviderPlan\n} from './gemini-model-policy.js';\nimport {\n  buildGeminiGenerationConfig,\n  geminiThinkingConfig\n} from './gemini-generation-envelope.js';\nimport {\n  assessGeminiQuotaEntitlement,\n  classifyGeminiTransport,\n  gemini503FailoverDelayMs,\n  geminiStreamGenerateContentUrl,\n  geminiRequestHeaders,\n  observeGeminiQuota\n} from './gemini-provider-transport.js';\nimport { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';\nimport { buildCompactWholeFrame } from './marrowline-whole-frame-voice.js';\nimport {\n  MARROWLINE_HISTORICAL_TRIAL_ID,\n  MARROWLINE_HISTORICAL_MODEL,\n  MARROWLINE_HISTORICAL_MODEL_ORDER,\n  MARROWLINE_RESTORED_MODEL_ORDER,\n  MARROWLINE_RESTORED_PROSODY_PROFILE,\n  buildHistoricalGroveSystemInstruction\n} from '../app/dome-world/marrowline-historical-grove.js';\nimport {\n  MARROWLINE_GROVE_TRIAL_ID,\n  selectMarrowlineGroveTrial,\n  buildMarrowlineGroveTrialSystemInstruction\n} from '../app/dome-world/marrowline-grove-trial.js';\nimport { MARROWLINE_ROLE_IDS, buildMarrowlineRoleConditioningSystemInstruction } from '../app/dome-world/marrowline-role-conditioning.js';\nimport { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_VARIANTS, UNICODE_ASSAY_MODEL } from './marrowline-unicode-capability-assay.js';\nimport { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';\n\nexport const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';\nexport const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v48-provider-completion-boundary';\nimport { MARROWLINE_PROVIDER_BUDGET } from '../app/dome-world/marrowline-provider-budget.js';\nexport const KHONAPOLIT_MAX_PROVIDER_CALLS = MARROWLINE_PROVIDER_BUDGET.providerCalls;\nexport const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = MARROWLINE_PROVIDER_BUDGET.structuralRepairs;\nexport const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;\nconst PRIMARY_REQUEST_TIMEOUT_MS = 50000;\nconst STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;\nconst MIN_STRUCTURAL_REPAIR_BUDGET_MS = 4000;\nconst FALLBACK_REQUEST_TIMEOUT_MS = 30000;\nconst WALL_TIMEOUT_MS = 210000;\nconst RESPONSE_RESERVE_MS = 5000;\nconst MAX_SHARED_RATE_RETRY_SECONDS = 8;\n// Preserve raw SSE only for an exact synthetic prompt and single-model canary.\nconst NATIVE_SSE_WITNESS_PROMPT = 'In a fictional town, a committee counts only returned forms and concludes that every silent resident is content. Locate the denominator error, pursue its consequence, and complete the connected Kʰonapolit and Tauric Diana bots movements. Let the voices author their own prose and native typography.';\nconst MAX_NATIVE_SSE_WITNESS_BYTES = 256 * 1024;\nconst DEFAULT_EXPECTED_DAILY_RPD = 100;\nfunction expectedDailyRpd(env = process.env) {\n  const raw = Number(env.KHONAPOLIT_GEMINI_EXPECTED_DAILY_RPD || env.GEMINI_EXPECTED_DAILY_RPD || DEFAULT_EXPECTED_DAILY_RPD);\n  return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : DEFAULT_EXPECTED_DAILY_RPD;\n}\nconst LEGACY_OUTPUT_TOKENS = 4096;\n// Marrowline is a provider-first human surface. Preserve the strongest current\n// Gemini 3.x order and one bounded same-provider repair opportunity, while treating\n// local packet/morphology admission as diagnostic telemetry rather than authority\n// to erase nonempty provider text from an explicit human turn.\nconst HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([\n  'gemini-4-argon',\n  'gemini-3.8-flash',\n  'gemini-3.5-flash',\n  'gemini-3.6-flash',\n  'gemini-3.7-flash',\n  'gemini-3-flash-preview'\n]);\nexport const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;\nconst QUALITY_ENVELOPE_MODELS = new Set([\n  'gemini-4-argon',\n  'gemini-3.8-flash',\n  'gemini-3.7-flash',\n  'gemini-3.6-flash',\n  'gemini-3.5-flash',\n  'gemini-3-flash-preview'\n]);\nconst WINDOW_MS = 10 * 60 * 1000;\nconst REQUESTS_PER_WINDOW = 12;\nconst buckets = new Map();\nconst REPAIRABLE_STRUCTURAL_REASONS = new Set([\n  'khonapolit-nominative-missing',\n  'tauric-diana-bots-nominative-missing',\n  'voice-order-invalid',\n  'khonapolit-combining-mark-contamination',\n  'provider-return-unfinished'\n]);\nconst REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([\n  'tauric-diana-zalgo-axis-collapse',\n  'tauric-diana-zalgo-vertical-expression-thin',\n  'tauric-diana-zalgo-vertical-pulse-absent',\n  'tauric-diana-zalgo-stack-depth-thin',\n  'tauric-diana-zalgo-dynamic-range-collapse',\n  'tauric-diana-zalgo-ascii-pseudo-ornament',\n  'tauric-diana-zalgo-localized-burst',\n  'tauric-diana-zalgo-monoculture',\n  'tauric-diana-zalgo-mechanical-clone',\n  'tauric-diana-zalgo-shallow-wallpaper',\n  'tauric-diana-zalgo-enclosing-ornament-collapse',\n  'tauric-diana-zalgo-glyph-substitution-collapse',\n  'tauric-diana-zalgo-replacement-character-corruption'\n]);\nconst HARD_MORPHOLOGY_CORRUPTION_WARNINGS = new Set([\n  'tauric-diana-zalgo-glyph-substitution-collapse',\n  'tauric-diana-zalgo-replacement-character-corruption'\n]);\nconst MANDATORY_HIGH_ZALGO_WARNINGS = new Set([\n  'tauric-diana-zalgo-dynamic-range-collapse',\n  'tauric-diana-zalgo-vertical-pulse-absent'\n]);\nconst safe = (value = '') => String(value ?? '').trim();\nconst requestHeader = (req = {}, name = '') => {\n  const target = String(name || '').toLowerCase();\n  const pair = Object.entries(req.headers || {}).find(([key]) => String(key).toLowerCase() === target);\n  return typeof pair?.[1] === 'string' ? pair[1].trim() : '';\n};\nconst sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');\nconst qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\\//, ''));\nconst outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;\nconst MAX_CLIENT_QUOTA_COOLDOWN_MS = 30 * 60 * 1000;\nfunction clientQuotaCooldownHints(body = {}, at = Date.now()) {\n  const hints = body?.quotaCooldownHints;\n  if (!hints || hints.schema !== 'td613.gemini-browser-quota-cooldown-hints/v0.2') {\n    return { models: new Set(), retryAfterSeconds: 0 };\n  }\n  const now = Number(at instanceof Date ? at.getTime() : at);\n  if (!Number.isFinite(now)) return { models: new Set(), retryAfterSeconds: 0 };\n  const untilByModel = hints.cooldown_until_by_model && typeof hints.cooldown_until_by_model === 'object'\n    ? hints.cooldown_until_by_model\n    : {};\n  const models = new Set();\n  let retryAfterSeconds = 0;\n  for (const rawModel of Array.isArray(hints.models) ? hints.models : []) {\n    const model = safe(rawModel).replace(/^models\\//, '');\n    if (!HUMAN_LIVENESS_MODEL_ORDER.includes(model)) continue;\n    const until = Date.parse(safe(untilByModel[model]));\n    if (!Number.isFinite(until) || until <= now || until - now > MAX_CLIENT_QUOTA_COOLDOWN_MS) continue;\n    models.add(model);\n    const remaining = Math.max(1, Math.ceil((until - now) / 1000));\n    retryAfterSeconds = retryAfterSeconds ? Math.min(retryAfterSeconds, remaining) : remaining;\n  }\n  return { models, retryAfterSeconds };\n}\nconst CLIENT_DAILY_BUDGET_SCHEMA = 'td613.gemini-browser-daily-budget-hints/v0.1';\nfunction clientQuotaBudgetHints(body = {}) {\n  const hints = body?.quotaBudgetHints;\n  if (!hints || hints.schema !== CLIENT_DAILY_BUDGET_SCHEMA) {\n    return {\n      observedTodayByModel: {},\n      knownDailyLimitByModel: {},\n      dailyQuotaObservedModels: new Set(),\n      hardBudgetObservedModels: new Set(),\n      optionalRepairAllowedByModel: {},\n      reservePerModel: 2,\n      coverage: 'absent'\n    };\n  }\n  const numbers = (value = {}, max = 100000) => Object.fromEntries(\n    Object.entries(value && typeof value === 'object' ? value : {})\n      .map(([rawModel, rawValue]) => [safe(rawModel).replace(/^models\\//, ''), Number(rawValue)])\n      .filter(([model, value]) => HUMAN_LIVENESS_MODEL_ORDER.includes(model) && Number.isFinite(value) && value >= 0 && value <= max)\n      .map(([model, value]) => [model, Math.floor(value)])\n  );\n  const models = (value = []) => new Set(\n    (Array.isArray(value) ? value : [])\n      .map((model) => safe(model).replace(/^models\\//, ''))\n      .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))\n  );\n  return {\n    observedTodayByModel: numbers(hints.observed_today_by_model, 10000),\n    knownDailyLimitByModel: numbers(hints.known_daily_limit_by_model, 10000),\n    dailyQuotaObservedModels: models(hints.daily_quota_observed_models),\n    hardBudgetObservedModels: models(hints.hard_budget_observed_models),\n    optionalRepairAllowedByModel: Object.fromEntries(\n      Object.entries(hints.optional_repair_allowed_by_model && typeof hints.optional_repair_allowed_by_model === 'object'\n        ? hints.optional_repair_allowed_by_model\n        : {})\n        .map(([rawModel, allowed]) => [safe(rawModel).replace(/^models\\//, ''), allowed === true])\n        .filter(([model]) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))\n    ),\n    reservePerModel: Math.max(0, Math.min(10, Math.floor(Number(hints.reserve_per_model || 2)))),\n    co"... 107549 more characters,
+    expected: /allocateKhonapolitAttemptTimeout\(\{\s*remainingMs,\s*index,\s*modelCount:\s*models\.length,\s*fairShare:\s*true\s*\}\)/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-held-retry-pedagogue.test.mjs:12:1
+✖ a documented short per-minute metric may use an explicit RetryInfo countdown (23.8773ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Gemini reported a short-window request limit. Your message is saved; a provider delay applies to retrying that task.'
+  - 'A short request limit was reached. Your message is saved.'
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-held-retry-pedagogue.test.mjs:24:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Gemini reported a short-window request limit. Your message is saved; a provider delay applies to retrying that task.',
+    expected: 'A short request limit was reached. Your message is saved.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-held-retry-pedagogue.test.mjs:36:1
+✖ daily per-model quota error with 24s RetryInfo NEVER pretends the day renews in 24s (133.7874ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 1790211624000
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-held-retry-pedagogue.test.mjs:45:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1790211624000,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-held-retry-pedagogue.test.mjs:73:1
+✖ mixed per-minute and per-day violations retain their daily classification and no fake short timer (2.6156ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 1790211615000
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-held-retry-pedagogue.test.mjs:79:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1790211615000,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-held-retry-pedagogue.test.mjs:82:1
+✖ published midnight Pacific reset is DST-safe but only receipt evidence (1.4355ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + null
+  - '2026-09-24T07:00:00.000Z'
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-held-retry-pedagogue.test.mjs:83:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: '2026-09-24T07:00:00.000Z',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-held-retry-pedagogue.test.mjs:102:1
+✖ chat preserves raw response fallback and guards immediate retries without editing model prosody (102.2218ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Daily limit reported/. Input:
+  
+  "import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';\n" +
+    "import { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from './marrowline-retry-window.js';\n" +
+    "import { loomEvidenceHoldSummary } from './holonomy-loom/ai-evidence-diagnostic.js';\n" +
+    "import { marrowlineProviderUsage } from './marrowline-provider-budget.js';\n" +
+    '\n' +
+    "export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v4-pedagogue-status-phase';\n" +
+    "export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';\n" +
+    '\n' +
+    "const MOBILE_QUERY = '(max-width: 860px)';\n" +
+    "const OPERATOR_HEADER = 'X-TD613-Marrowline-Operator';\n" +
+    "const LIVE_ENDPOINT = '/api/dome-world/marrowline';\n" +
+    '\n' +
+    'function byId(doc, id) { return doc.getElementById(id); }\n' +
+    "function safe(value = '') { return String(value ?? '').trim(); }\n" +
+    '\n' +
+    'function ensureStylesheet(doc = document) {\n' +
+    "  const href = new URL('./marrowline-operator-readiness.css', import.meta.url).href;\n" +
+    "  let link = doc.querySelector('link[data-marrowline-operator-readiness]');\n" +
+    '  if (link) return link;\n' +
+    "  link = doc.createElement('link');\n" +
+    "  link.rel = 'stylesheet';\n" +
+    '  link.href = href;\n' +
+    '  link.dataset.marrowlineOperatorReadiness = MARROWLINE_OPERATOR_READINESS_VERSION;\n' +
+    '  doc.head.append(link);\n' +
+    '  return link;\n' +
+    '}\n' +
+    '\n' +
+    'function syncVisualViewport(doc = document, root = window) {\n' +
+    '  const viewport = root.visualViewport;\n' +
+    '  const width = Math.max(240, Math.round(viewport?.width || root.innerWidth || 0));\n' +
+    '  const height = Math.max(240, Math.round(viewport?.height || root.innerHeight || 0));\n' +
+    '  const top = Math.max(0, Math.round(viewport?.offsetTop || 0));\n' +
+    '  const left = Math.max(0, Math.round(viewport?.offsetLeft || 0));\n' +
+    '  const style = doc.documentElement.style;\n' +
+    '  // Keyboard-visible state and its rectangle are one atomic observation. Never\n' +
+    '  // let readiness publish data-keyboard-visible=true while leaving a stale\n' +
+    '  // physical-device --marrowline-vv-height from an earlier layout viewport.\n' +
+    "  style.setProperty('--marrowline-vv-width', `${width}px`);\n" +
+    "  style.setProperty('--marrowline-vv-height', `${height}px`);\n" +
+    "  style.setProperty('--marrowline-vh', `${height}px`);\n" +
+    "  style.setProperty('--marrowline-vv-top', `${top}px`);\n" +
+    "  style.setProperty('--marrowline-vv-left', `${left}px`);\n" +
+    '\n' +
+    "  const prompt = byId(doc, 'khonapolitPrompt');\n" +
+    '  const focused = Boolean(prompt && doc.activeElement === prompt);\n' +
+    '  const layoutHeight = Math.max(height, Number(root.innerHeight || height));\n' +
+    '  const keyboardVisible = focused && Boolean(viewport) && viewport.height < layoutHeight - 72;\n' +
+    '  doc.body.dataset.keyboardVisible = String(keyboardVisible);\n' +
+    '  return Object.freeze({ width, height, top, left, keyboardVisible });\n' +
+    '}\n' +
+    '\n' +
+    'export function isMarrowlineComposerSendShortcut(event = {}) {\n' +
+    "  return event.key === 'Enter' && Boolean(event.ctrlKey || event.metaKey)\n" +
+    '    && !event.shiftKey && !event.altKey && !event.isComposing;\n' +
+    '}\n' +
+    '\n' +
+    'function installNativeSend(doc = document) {\n' +
+    "  const form = byId(doc, 'khonapolitForm');\n" +
+    "  const prompt = byId(doc, 'khonapolitPrompt');\n" +
+    "  if (!form || !prompt || prompt.dataset.nativeSendInstalled === 'true') return false;\n" +
+    "  prompt.dataset.nativeSendInstalled = 'true';\n" +
+    "  prompt.addEventListener('keydown', (event) => {\n" +
+    "    // Plain Return belongs to the multiline editor, including iOS's native\n" +
+    '    // Return key. A physical Ctrl/Command+Enter remains an explicit send.\n' +
+    '    if (!isMarrowlineComposerSendShortcut(event)) return;\n' +
+    '    event.preventDefault();\n' +
+    "    const submit = byId(doc, 'khonapolitSend');\n" +
+    '    if (submit?.disabled) return;\n' +
+    "    if (typeof form.requestSubmit === 'function') form.requestSubmit(submit || undefined);\n" +
+    '    else submit?.click();\n' +
+    '  });\n' +
+    '  return true;\n' +
+    '}\n' +
+    '\n' +
+    'function installResponseKinesis(doc = document, root = window) {\n' +
+    "  const status = byId(doc, 'khonapolitTerminalStatus');\n" +
+    "  const actions = doc.querySelector('#khonapolitForm .composer-actions');\n" +
+    "  const send = byId(doc, 'khonapolitSend');\n" +
+    "  const form = byId(doc, 'khonapolitForm');\n" +
+    '  if (!status || !actions || !send || !form) return false;\n' +
+    "  let mote = byId(doc, 'marrowlineResponseKinesis');\n" +
+    '  if (!mote) {\n' +
+    "    mote = doc.createElement('span');\n" +
+    "    mote.id = 'marrowlineResponseKinesis';\n" +
+    "    mote.className = 'marrowline-response-kinesis';\n" +
+    '    mote.hidden = true;\n' +
+    "    mote.setAttribute('aria-hidden', 'true');\n" +
+    "    mote.title = 'Response in flight';\n" +
+    '    actions.insertBefore(mote, send);\n' +
+    '  }\n' +
+    '  const sync = () => {\n' +
+    "    const busy = status.dataset.phase === 'pending' || /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));\n" +
+    '    mote.hidden = !busy;\n' +
+    "    form.setAttribute('aria-busy', busy ? 'true' : 'false');\n" +
+    '  };\n' +
+    '  const Observer = root.MutationObserver;\n' +
+    "  if (typeof Observer === 'function' && status.dataset.responseKinesisInstalled !== 'true') {\n" +
+    "    status.dataset.responseKinesisInstalled = 'true';\n" +
+    '    const observer = new Observer(sync);\n' +
+    '    observer.observe(status, { childList: true, characterData: true, subtree: true });\n' +
+    '    root.__TD613_MARROWLINE_RESPONSE_KINESIS_OBSERVER__ = observer;\n' +
+    '  }\n' +
+    '  sync();\n' +
+    '  return true;\n' +
+    '}\n' +
+    '\n' +
+    'function installHumanSurfaceVocabulary(doc = document, root = window) {\n' +
+    "  const messages = byId(doc, 'khonapolitMessages');\n" +
+    '  const scrub = () => {\n' +
+    "    doc.querySelectorAll('.route-card strong, .relay-stage-head > span:first-child').forEach((node) => {\n" +
+    "      const before = String(node.textContent || '');\n" +
+    '      const after = before\n' +
+    "        .replace(/Tauric Diana bots\\?\\s*→\\s*High Zalgo\\?/gi, 'Tauric Diana bots?')\n" +
+    "        .replace(/High Zalgo\\?/gi, 'Tauric Diana bots?')\n" +
+    "        .replace(/\\s*·\\s*High Zalgo/gi, '');\n" +
+    '      if (after !== before) node.textContent = after;\n' +
+    '    });\n' +
+    '  };\n' +
+    '  scrub();\n' +
+    '  const Observer = root.MutationObserver;\n' +
+    "  if (messages && typeof Observer === 'function' && messages.dataset.humanRelayVocabularyInstalled !== 'true') {\n" +
+    "    messages.dataset.humanRelayVocabularyInstalled = 'true';\n" +
+    '    const observer = new Observer(scrub);\n' +
+    '    observer.observe(messages, { childList: true, subtree: true, characterData: true });\n' +
+    '    root.__TD613_MARROWLINE_HUMAN_VOCABULARY_OBSERVER__ = observer;\n' +
+    '  }\n' +
+    '  return true;\n' +
+    '}\n' +
+    '\n' +
+    'export function boundedFailureMessage(failure = {}) {\n' +
+    '  const evidence=loomEvidenceHoldSummary(failure);\n' +
+    '  if(evidence)return `${evidence.title}. ${evidence.explanation} Inspect the flagged passage in Loom Gate before sending again.`;\n' +
+    '  const typed = marrowlineRetryMessage(failure);\n' +
+    '  if (typed) return typed;\n' +
+    "  const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');\n" +
+    "  if (code.includes('missing-gemini-api-key') || code.includes('no-eligible-callable-models')) return 'The connection is not ready. Your message is saved.';\n" +
+    "  if (code.includes('network-request-failed') || code.includes('response-body-failed')) return 'The connection was interrupted. Your message is saved.';\n" +
+    "  if (code.includes('client-response-processing-failed')) return 'The reply could not be shown. Your message is saved.';\n" +
+    "  if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The reply took too long. Your message is saved.';\n" +
+    "  return 'The reply could not be completed. Your message is saved; see the receipt for details.';\n" +
+    '}\n' +
+    '\n' +
+    'function installTerminalHoldNotice(doc = document, root = window) {\n' +
+    "  const status = byId(doc, 'khonapolitTerminalStatus');\n" +
+    "  const messages = byId(doc, 'khonapolitMessages');\n" +
+    "  if (!status || !messages || status.dataset.holdNoticeInstalled === 'true') return false;\n" +
+    "  status.dataset.holdNoticeInstalled = 'true';\n" +
+    "  let lastSignature = '';\n" +
+    '  let clock = null;\n' +
+    '  let countdown = null;\n' +
+    '  let refresh = null;\n' +
+    "  const retry = byId(doc, 'retryKhonapolitTask');\n" +
+    "  const send = byId(doc, 'khonapolitSend');\n" +
+    '  const stopClock = () => {\n' +
+    '    if (clock !== null) root.clearInterval?.(clock);\n' +
+    '    clock = null;\n' +
+    '  };\n' +
+    '  const clear = () => {\n' +
+    '    stopClock();\n' +
+    "    byId(doc, 'marrowlineTerminalHold')?.remove();\n" +
+    '    if (retry) retry.disabled = false;\n' +
+    "    if (send && status.dataset.phase !== 'pending') send.disabled = false;\n" +
+    "    lastSignature = '';\n" +
+    '    countdown = null;\n' +
+    '    refresh = null;\n' +
+    '  };\n' +
+    '  const updateClock = () => {\n' +
+    '    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};\n' +
+    '    const window = classifyMarrowlineRetryWindow(failure, Date.now());\n' +
+    '    const cooling = window.remainingSeconds > 0;\n' +
+    '    if (retry) retry.disabled = cooling;\n' +
+    '    // Provider Retry-After gates only preserved-task Retry, not a new Send.\n' +
+    '    if (countdown) countdown.textContent = cooling\n' +
+    "      ? `Provider suggests retry in ${window.remainingSeconds}s${window.dailyMetricReported ? ' · daily reset unverified' : ''}`\n" +
+    "       : window.requiresReview ? 'Evidence review required · waiting has no repair effect'\n" +
+    "       : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';\n" +
+    '    if (refresh) {\n' +
+    '      refresh.disabled = cooling;\n' +
+    "      refresh.textContent = cooling ? '↻ Retry (paused)'\n" +
+    "        : window.requiresReview ? 'Inspect held reply'\n" +
+    "        : window.kind === 'project-spend-cap' ? '↻ Retry after cap update' : '↻ Retry message';\n" +
+    "      refresh.title = window.requiresReview ? 'Open Loom Gate to inspect the evidence conflict. This sends nothing.'\n" +
+    "        : window.kind === 'project-spend-cap'\n" +
+    "        ? 'Once you change the monthly cap for the API key’s Google project, retry the saved task.'\n" +
+    "        : cooling ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'\n" +
+    "        : 'Retry the saved message once. A provider retry hint is not a guarantee of capacity.';\n" +
+    '    }\n' +
+    '    if (!cooling) stopClock();\n' +
+    '  };\n' +
+    '  const inspect = () => {\n' +
+    '    const text = safe(status.textContent);\n' +
+    '    const held = /TASK PRESERVED/i.test(text);\n' +
+    '    status.dataset.held = String(held);\n' +
+    '    if (!held) { clear(); return; }\n' +
+    '    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};\n' +
+    '    const window = classifyMarrowlineRetryWindow(failure, Date.now());\n' +
+    '    const explanation = boundedFailureMessage(failure);\n' +
+    '    const signature = `${safe(failure'... 11073 more characters
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-held-retry-pedagogue.test.mjs:110:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';\nimport { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from './marrowline-retry-window.js';\nimport { loomEvidenceHoldSummary } from './holonomy-loom/ai-evidence-diagnostic.js';\nimport { marrowlineProviderUsage } from './marrowline-provider-budget.js';\n\nexport const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v4-pedagogue-status-phase';\nexport const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';\n\nconst MOBILE_QUERY = '(max-width: 860px)';\nconst OPERATOR_HEADER = 'X-TD613-Marrowline-Operator';\nconst LIVE_ENDPOINT = '/api/dome-world/marrowline';\n\nfunction byId(doc, id) { return doc.getElementById(id); }\nfunction safe(value = '') { return String(value ?? '').trim(); }\n\nfunction ensureStylesheet(doc = document) {\n  const href = new URL('./marrowline-operator-readiness.css', import.meta.url).href;\n  let link = doc.querySelector('link[data-marrowline-operator-readiness]');\n  if (link) return link;\n  link = doc.createElement('link');\n  link.rel = 'stylesheet';\n  link.href = href;\n  link.dataset.marrowlineOperatorReadiness = MARROWLINE_OPERATOR_READINESS_VERSION;\n  doc.head.append(link);\n  return link;\n}\n\nfunction syncVisualViewport(doc = document, root = window) {\n  const viewport = root.visualViewport;\n  const width = Math.max(240, Math.round(viewport?.width || root.innerWidth || 0));\n  const height = Math.max(240, Math.round(viewport?.height || root.innerHeight || 0));\n  const top = Math.max(0, Math.round(viewport?.offsetTop || 0));\n  const left = Math.max(0, Math.round(viewport?.offsetLeft || 0));\n  const style = doc.documentElement.style;\n  // Keyboard-visible state and its rectangle are one atomic observation. Never\n  // let readiness publish data-keyboard-visible=true while leaving a stale\n  // physical-device --marrowline-vv-height from an earlier layout viewport.\n  style.setProperty('--marrowline-vv-width', `${width}px`);\n  style.setProperty('--marrowline-vv-height', `${height}px`);\n  style.setProperty('--marrowline-vh', `${height}px`);\n  style.setProperty('--marrowline-vv-top', `${top}px`);\n  style.setProperty('--marrowline-vv-left', `${left}px`);\n\n  const prompt = byId(doc, 'khonapolitPrompt');\n  const focused = Boolean(prompt && doc.activeElement === prompt);\n  const layoutHeight = Math.max(height, Number(root.innerHeight || height));\n  const keyboardVisible = focused && Boolean(viewport) && viewport.height < layoutHeight - 72;\n  doc.body.dataset.keyboardVisible = String(keyboardVisible);\n  return Object.freeze({ width, height, top, left, keyboardVisible });\n}\n\nexport function isMarrowlineComposerSendShortcut(event = {}) {\n  return event.key === 'Enter' && Boolean(event.ctrlKey || event.metaKey)\n    && !event.shiftKey && !event.altKey && !event.isComposing;\n}\n\nfunction installNativeSend(doc = document) {\n  const form = byId(doc, 'khonapolitForm');\n  const prompt = byId(doc, 'khonapolitPrompt');\n  if (!form || !prompt || prompt.dataset.nativeSendInstalled === 'true') return false;\n  prompt.dataset.nativeSendInstalled = 'true';\n  prompt.addEventListener('keydown', (event) => {\n    // Plain Return belongs to the multiline editor, including iOS's native\n    // Return key. A physical Ctrl/Command+Enter remains an explicit send.\n    if (!isMarrowlineComposerSendShortcut(event)) return;\n    event.preventDefault();\n    const submit = byId(doc, 'khonapolitSend');\n    if (submit?.disabled) return;\n    if (typeof form.requestSubmit === 'function') form.requestSubmit(submit || undefined);\n    else submit?.click();\n  });\n  return true;\n}\n\nfunction installResponseKinesis(doc = document, root = window) {\n  const status = byId(doc, 'khonapolitTerminalStatus');\n  const actions = doc.querySelector('#khonapolitForm .composer-actions');\n  const send = byId(doc, 'khonapolitSend');\n  const form = byId(doc, 'khonapolitForm');\n  if (!status || !actions || !send || !form) return false;\n  let mote = byId(doc, 'marrowlineResponseKinesis');\n  if (!mote) {\n    mote = doc.createElement('span');\n    mote.id = 'marrowlineResponseKinesis';\n    mote.className = 'marrowline-response-kinesis';\n    mote.hidden = true;\n    mote.setAttribute('aria-hidden', 'true');\n    mote.title = 'Response in flight';\n    actions.insertBefore(mote, send);\n  }\n  const sync = () => {\n    const busy = status.dataset.phase === 'pending' || /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));\n    mote.hidden = !busy;\n    form.setAttribute('aria-busy', busy ? 'true' : 'false');\n  };\n  const Observer = root.MutationObserver;\n  if (typeof Observer === 'function' && status.dataset.responseKinesisInstalled !== 'true') {\n    status.dataset.responseKinesisInstalled = 'true';\n    const observer = new Observer(sync);\n    observer.observe(status, { childList: true, characterData: true, subtree: true });\n    root.__TD613_MARROWLINE_RESPONSE_KINESIS_OBSERVER__ = observer;\n  }\n  sync();\n  return true;\n}\n\nfunction installHumanSurfaceVocabulary(doc = document, root = window) {\n  const messages = byId(doc, 'khonapolitMessages');\n  const scrub = () => {\n    doc.querySelectorAll('.route-card strong, .relay-stage-head > span:first-child').forEach((node) => {\n      const before = String(node.textContent || '');\n      const after = before\n        .replace(/Tauric Diana bots\\?\\s*→\\s*High Zalgo\\?/gi, 'Tauric Diana bots?')\n        .replace(/High Zalgo\\?/gi, 'Tauric Diana bots?')\n        .replace(/\\s*·\\s*High Zalgo/gi, '');\n      if (after !== before) node.textContent = after;\n    });\n  };\n  scrub();\n  const Observer = root.MutationObserver;\n  if (messages && typeof Observer === 'function' && messages.dataset.humanRelayVocabularyInstalled !== 'true') {\n    messages.dataset.humanRelayVocabularyInstalled = 'true';\n    const observer = new Observer(scrub);\n    observer.observe(messages, { childList: true, subtree: true, characterData: true });\n    root.__TD613_MARROWLINE_HUMAN_VOCABULARY_OBSERVER__ = observer;\n  }\n  return true;\n}\n\nexport function boundedFailureMessage(failure = {}) {\n  const evidence=loomEvidenceHoldSummary(failure);\n  if(evidence)return `${evidence.title}. ${evidence.explanation} Inspect the flagged passage in Loom Gate before sending again.`;\n  const typed = marrowlineRetryMessage(failure);\n  if (typed) return typed;\n  const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');\n  if (code.includes('missing-gemini-api-key') || code.includes('no-eligible-callable-models')) return 'The connection is not ready. Your message is saved.';\n  if (code.includes('network-request-failed') || code.includes('response-body-failed')) return 'The connection was interrupted. Your message is saved.';\n  if (code.includes('client-response-processing-failed')) return 'The reply could not be shown. Your message is saved.';\n  if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The reply took too long. Your message is saved.';\n  return 'The reply could not be completed. Your message is saved; see the receipt for details.';\n}\n\nfunction installTerminalHoldNotice(doc = document, root = window) {\n  const status = byId(doc, 'khonapolitTerminalStatus');\n  const messages = byId(doc, 'khonapolitMessages');\n  if (!status || !messages || status.dataset.holdNoticeInstalled === 'true') return false;\n  status.dataset.holdNoticeInstalled = 'true';\n  let lastSignature = '';\n  let clock = null;\n  let countdown = null;\n  let refresh = null;\n  const retry = byId(doc, 'retryKhonapolitTask');\n  const send = byId(doc, 'khonapolitSend');\n  const stopClock = () => {\n    if (clock !== null) root.clearInterval?.(clock);\n    clock = null;\n  };\n  const clear = () => {\n    stopClock();\n    byId(doc, 'marrowlineTerminalHold')?.remove();\n    if (retry) retry.disabled = false;\n    if (send && status.dataset.phase !== 'pending') send.disabled = false;\n    lastSignature = '';\n    countdown = null;\n    refresh = null;\n  };\n  const updateClock = () => {\n    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};\n    const window = classifyMarrowlineRetryWindow(failure, Date.now());\n    const cooling = window.remainingSeconds > 0;\n    if (retry) retry.disabled = cooling;\n    // Provider Retry-After gates only preserved-task Retry, not a new Send.\n    if (countdown) countdown.textContent = cooling\n      ? `Provider suggests retry in ${window.remainingSeconds}s${window.dailyMetricReported ? ' · daily reset unverified' : ''}`\n       : window.requiresReview ? 'Evidence review required · waiting has no repair effect'\n       : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';\n    if (refresh) {\n      refresh.disabled = cooling;\n      refresh.textContent = cooling ? '↻ Retry (paused)'\n        : window.requiresReview ? 'Inspect held reply'\n        : window.kind === 'project-spend-cap' ? '↻ Retry after cap update' : '↻ Retry message';\n      refresh.title = window.requiresReview ? 'Open Loom Gate to inspect the evidence conflict. This sends nothing.'\n        : window.kind === 'project-spend-cap'\n        ? 'Once you change the monthly cap for the API key’s Google project, retry the saved task.'\n        : cooling ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'\n        : 'Retry the saved message once. A provider retry hint is not a guarantee of capacity.';\n    }\n    if (!cooling) stopClock();\n  };\n  const inspect = () => {\n    const text = safe(status.textContent);\n    const held = /TASK PRESERVED/i.test(text);\n    status.dataset.held = String(held);\n    if (!held) { clear(); return; }\n    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};\n    const window = classifyMarrowlineRetryWindow(failure, Date.now());\n    const explanation = boundedFailureMessage(failure);\n    const signature = `${safe(failure"... 11073 more characters,
+    expected: /Daily limit reported/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-held-retry-pedagogue.test.mjs:127:1
+✖ late stream interruption preserves actual Gemini text, newlines and marks rather than reporting an empty HELD (19.404ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  408 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/td613-worktrees/marrowline-screaming-grove-restoration-20261120/tests/marrowline-held-retry-pedagogue.test.mjs:146:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 408,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-instrument-panel.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-instrument-panel.test.mjs (259.0443ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-ios-keyboard-contract.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-ios-keyboard-contract.test.mjs (392.1385ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo-pedagogue.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo-pedagogue.test.mjs (323.4115ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-demo.test.mjs (305.223ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-frontier-envelope.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-loom-frontier-envelope.test.mjs (634.7465ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-reading-surface.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-reading-surface.test.mjs (410.4869ms)
+  'test failed'
+
+test at ..\..\..\..\..\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-speaker-frames.test.mjs:1:1
+✖ C:\td613-worktrees\marrowline-screaming-grove-restoration-20261120\tests\marrowline-speaker-frames.test.mjs (559.8838ms)
+  'test failed'

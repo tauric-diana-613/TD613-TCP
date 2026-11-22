@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "Clean ancestry from #405 relock 4590e89e. PR #1514 synthetic-only ablation already merged and production source confirmed via #405. The only purpose here is the one-shot GitHub Actions experiment invoking the existing plain-h /api/khonapolit 2 times maximum. A full system; B same except one removed repeated High Zalgo paragraph. Same synthetic prompt, model 3.8, empty history, generation settings, raw SSE evidence and provider completion captured. Never deploy/merge this temporary Actions job; remove after observation. Zero automatic retries/failovers. Original SSE retained in short-lived synthetic-only artifact. Authorization given for remainder of conversation.",
+  "comments": [],
+  "headRefName": "research/marrowline-system-ablation-execution-20261015",
+  "headRefOid": "e6ab6baac896cbfcd5f777690763144b26e0b7f2",
+  "isDraft": true,
+  "mergeable": "UNKNOWN",
+  "number": 1515,
+  "state": "OPEN",
+  "title": "research(marrowline): one-shot live Gemini 3.8 system-prosody ablation A/B"
+}

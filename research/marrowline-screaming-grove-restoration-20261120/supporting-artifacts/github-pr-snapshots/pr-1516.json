@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "Clean post-#405 release lineage, no normal production code change. This isolated research PR carries the already-merged inert A/B script and a one-shot execution receipt. The A/B is pinned to Gemini 3.8 Flash using the plaintext-h Kʰonapolit route, source verified and released: A full system instructions, B one repeated prosody paragraph removed, with same prompt/history/generation config. Original Google SSE and provider completion will be preserved and compared against TD613 assembly. Bounded at two attempted provider requests, zero retries or fallback, one-day artifact. Exact-head CI execution will be registered with no recurrent spending and removed after observation.",
+  "comments": [],
+  "headRefName": "research/marrowline-system-ablation-one-shot-20261015-r1",
+  "headRefOid": "e606eecc5654d8796a1e08160d162545323e36e9",
+  "isDraft": true,
+  "mergeable": "MERGEABLE",
+  "number": 1516,
+  "state": "OPEN",
+  "title": "research(marrowline): execute one native system-prosody A/B with original Gemini SSE"
+}

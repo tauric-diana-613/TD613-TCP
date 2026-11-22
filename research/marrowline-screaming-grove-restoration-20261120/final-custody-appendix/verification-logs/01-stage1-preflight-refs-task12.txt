@@ -1,0 +1,97 @@
+=== PRE-FETCH EXACT REFS ===
+local main: e6f2533612deed73ae2c5bee57d3062dec0fded4
+origin/main: e6f2533612deed73ae2c5bee57d3062dec0fded4
+HEAD: f1928fcafd359f071cc9ded5750fe00b22bb8b02
+remote refs count pre-fetch: 1839
+tags count pre-fetch: 0
+=== RUNNING GIT FETCH --ALL --PRUNE --TAGS ===
+git : From https://github.com/tauric-diana-613/TD613-TCP
+At line:9 char:1
++ git fetch --all --prune --tags 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (From https://gi...a-613/TD613-TCP:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ * [new branch]          fix/vixen-preview-single-gesture-20261116 -> origin/fix/vixen-preview-single-gesture-20261116
+   e6f253361..363b5b4ae  main       -> origin/main
+   4955ee0c2..8754cd72b  research/vixen-dual-estate-encyclopedia-20261108 -> 
+origin/research/vixen-dual-estate-encyclopedia-20261108
+ * [new branch]          work/em-hostile-method-expedition-20261120 -> 
+origin/work/em-hostile-method-expedition-20261120
+ * [new branch]          work/em-maestro-public-encounter-20261120 -> origin/work/em-maestro-public-encounter-20261120
+ * [new branch]          work/emstd613-proscenium-native-reconciliation-20261120 -> 
+origin/work/emstd613-proscenium-native-reconciliation-20261120
+ * [new branch]          work/src-wendbine-comparative-maestro-20261120 -> 
+origin/work/src-wendbine-comparative-maestro-20261120
+ * [new branch]          work/vixen-field-role-exit-zeroization-20261120 -> 
+origin/work/vixen-field-role-exit-zeroization-20261120
+ * [new branch]          work/vixen-real-operator-trial-20261120 -> origin/work/vixen-real-operator-trial-20261120
+ * [new branch]          work/vixen-source-math-throughput-20261119 -> 
+origin/work/vixen-source-math-throughput-20261119
+ * [new branch]          work/wendbine-directed-walk-falsification-20261120 -> 
+origin/work/wendbine-directed-walk-falsification-20261120
+ * [new branch]          work/wendbine-frequency-null-20261119 -> origin/work/wendbine-frequency-null-20261119
+ * [new branch]          work/wendbine-open-world-novelty-boundary-20261120 -> 
+origin/work/wendbine-open-world-novelty-boundary-20261120
+ * [new branch]          work/wendbine-proscenium-reconciliation-20261119 -> 
+origin/work/wendbine-proscenium-reconciliation-20261119
+ * [new branch]          work/wendbine-topology-rewire-20261119 -> origin/work/wendbine-topology-rewire-20261119
+=== POST-FETCH EXACT REFS ===
+local main: e6f2533612deed73ae2c5bee57d3062dec0fded4
+origin/main: 363b5b4aeaec33ad380c5f1124f0fe96e3d7975e
+origin/HEAD: refs/remotes/origin/main
+remote refs count post-fetch: 1852
+tags count post-fetch: 0
+=== COMMITS ON origin/main SINCE local main ===
+363b5b4ae docs(vixen): establish #1744 canonical Antigravity/ChatGPT preview operator gate and correct stale provider history
+a9bcf4613 test(vixen): assert issue #1744 has live PREPARE and owner-only DEPLOY triggers separate from #405
+c8773b788 release(vixen): bind permanent issue #1744 to existing PREPARE/DEPLOY preview jobs, retain PR #1730 and owner-only deploy
+b31ad3d07 ci(vixen): distinguish additive Vercel preview injection from genuine served-byte drift
+2f0fa5944 ci(vixen): owner-gated exact-PR A0 seven-free index regeneration with read-only comparator custody
+862e8979b fix(vercel): preserve prebuilt Python function sources during preview archive upload
+3f9e877ca fix(vercel): archive prebuilt Vixen preview to avoid Hobby file-upload limit
+3232db5f1 fix(vercel): install pinned uv on GitHub preview build runner
+c5fc25568 fix(vercel): support environment-based project link in preview verification
+731e69219 fix(vercel): bind existing preview project ID alongside team ID in owner-gated relay
+d0ff0eb9e docs(vixen): record four-workflow PREPARE relay and credential-404 boundary
+5854ab687 ci(vixen): preserve four-workflow estate after integrating preview gate into relock safety
+fcf820a0d ci(vixen): preserve four-workflow estate after integrating preview gate into relock safety
+1fe2197b6 ci(vixen): consolidate gated preview PREPARE and DEPLOY jobs under existing four-workflow estate
+398308fd1 ci(vixen): count successful active CI jobs, allow intentionally skipped conditional jobs
+d946d0426 ci(vixen): count successful active CI jobs, allow intentionally skipped conditional jobs
+8bda271c0 docs(vixen): stage operator-gated preview PREPARE runbook and post-review DEPLOY instructions
+baf7ef949 ci(vixen): fail closed on missing Vercel project before noninteractive link
+4af2588e3 ci(vixen): fail closed on missing Vercel project before noninteractive link
+6684e1a18 ci(vixen): gate preview deployment on explicit owner approval and successful preflight artifact
+67ccc1677 ci(vixen): allow PR1730 comment relay to qualify and prebuild preview without deploying
+7c82c4650 ci: correct GitHub expression interpolation in Vixen preview dispatch
+7017e7c61 ci: add gated exact-head Vixen preview dispatch on main
+=== RECENT 25 COMMITS ON origin/main ===
+363b5b4ae 2026-11-16 docs(vixen): establish #1744 canonical Antigravity/ChatGPT preview operator gate and correct stale provider history
+a9bcf4613 2026-11-16 test(vixen): assert issue #1744 has live PREPARE and owner-only DEPLOY triggers separate from #405
+c8773b788 2026-11-16 release(vixen): bind permanent issue #1744 to existing PREPARE/DEPLOY preview jobs, retain PR #1730 and owner-only deploy
+b31ad3d07 2026-11-16 ci(vixen): distinguish additive Vercel preview injection from genuine served-byte drift
+2f0fa5944 2026-11-16 ci(vixen): owner-gated exact-PR A0 seven-free index regeneration with read-only comparator custody
+862e8979b 2026-11-16 fix(vercel): preserve prebuilt Python function sources during preview archive upload
+3f9e877ca 2026-11-16 fix(vercel): archive prebuilt Vixen preview to avoid Hobby file-upload limit
+3232db5f1 2026-11-16 fix(vercel): install pinned uv on GitHub preview build runner
+c5fc25568 2026-11-16 fix(vercel): support environment-based project link in preview verification
+731e69219 2026-11-16 fix(vercel): bind existing preview project ID alongside team ID in owner-gated relay
+d0ff0eb9e 2026-11-15 docs(vixen): record four-workflow PREPARE relay and credential-404 boundary
+5854ab687 2026-11-15 ci(vixen): preserve four-workflow estate after integrating preview gate into relock safety
+fcf820a0d 2026-11-15 ci(vixen): preserve four-workflow estate after integrating preview gate into relock safety
+1fe2197b6 2026-11-15 ci(vixen): consolidate gated preview PREPARE and DEPLOY jobs under existing four-workflow estate
+398308fd1 2026-11-15 ci(vixen): count successful active CI jobs, allow intentionally skipped conditional jobs
+d946d0426 2026-11-15 ci(vixen): count successful active CI jobs, allow intentionally skipped conditional jobs
+8bda271c0 2026-11-15 docs(vixen): stage operator-gated preview PREPARE runbook and post-review DEPLOY instructions
+baf7ef949 2026-11-15 ci(vixen): fail closed on missing Vercel project before noninteractive link
+4af2588e3 2026-11-15 ci(vixen): fail closed on missing Vercel project before noninteractive link
+6684e1a18 2026-11-15 ci(vixen): gate preview deployment on explicit owner approval and successful preflight artifact
+67ccc1677 2026-11-15 ci(vixen): allow PR1730 comment relay to qualify and prebuild preview without deploying
+7c82c4650 2026-11-15 ci: correct GitHub expression interpolation in Vixen preview dispatch
+7017e7c61 2026-11-15 ci: add gated exact-head Vixen preview dispatch on main
+e6f253361 2026-11-13 Merge pull request #1741 from tauric-diana-613/fix/dollhouse-codex-discovery
+95664ab58 2026-11-12 Preserve handoff recovery instructions for dollhouse-audit
+=== CHECK OCT 2 REFERENCE COMMIT ===
+commit
+ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a 2026-10-02 23:34:35 +0000 github-actions[bot] release: restore Vercel deployment lock for 08a2ac347654e6b45f8a0369df4efa92a4c66bc7

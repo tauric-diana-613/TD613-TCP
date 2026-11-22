@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "𝌋 **Causal correction after #1553**\n\nThe original #1553 D/Grove countercontrol omitted the actual server entrypoint `api/khonapolit.js`, whose ordinary text branch wraps the handler with `withGeminiGenerationProfile(GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, ...)`. This maps Gemini 3.8 Flash HIGH→MEDIUM (and Argon HIGH→MEDIUM). Thus the originally asserted **D MEDIUM vs Grove HIGH** divergence was a constructor-only artifact, not a real text-route contrast.\n\nThis PR corrects the reconstructed Grove countercontrol to invoke the same profile as the live text HTTP boundary; changes its expectations to **D MEDIUM == ordinary Grove 3.8 MEDIUM**, asserts the actual HTTP wrapper source and profile mapping, and revises the research interpretation while retaining #1553's valid purely hypothetical matched MEDIUM/HIGH request pair.\n\nUser observation: Gemini app both HIGH and MEDIUM support attractor basin performance; HIGH preferred creatively. Prior paid comparison proposal #1554 was CLOSED unmerged and **never activated**, with zero provider calls. Focus returns to the same-MEDIUM D ingress/heading/persona factors (#1551), not Argon blame or local typography stencils.\n\nNo app changes, no provider calls, no #405 Vercel work. Require exact-head CI before merge.\n\n𝄐 ACTUAL_HTTP_PROFILE_IDENTIFIED · HIGH_CONFUND_RETRACTED · SOURCE_CAUSE_HELD. Sealed ⟐",
+  "comments": [],
+  "headRefName": "research/marrowline-actual-entrypoint-d-profile-correction-20261019",
+  "headRefOid": "a37b70e39aac34ab5f7c4eca8599f876e08920ed",
+  "isDraft": true,
+  "mergeable": "CONFLICTING",
+  "number": 1555,
+  "state": "OPEN",
+  "title": "fix(research): recover actual Marrowline interactive MEDIUM profile versus neutral D"
+}

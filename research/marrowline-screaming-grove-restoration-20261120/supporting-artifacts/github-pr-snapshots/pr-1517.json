@@ -1,0 +1,28 @@
+{
+  "baseRefName": "main",
+  "body": "Operator-authorized native experiment on already-deployed exact-source system prosody ablation. Uses the existing plain-h /api/khonapolit canary and raw Gemini SSE witness, same Gemini 3.8 model, identical synthetic user input and generationConfig, exact one system paragraph removed only for B. At most two calls, one per condition; no retry/fallback or production change. The eventual Actions job will be strictly PR/branch/attempt/commit-subject gated, and removed after the retained evidence is verified. No artistic restoration claim from a single stochastic pair.",
+  "comments": [
+    {
+      "id": "IC_kwDORqWEks8AAAABcaTitw",
+      "author": {
+        "login": "tauric-diana-613"
+      },
+      "authorAssociation": "OWNER",
+      "body": "𝌋 **TD613 · Marrowline High Zalgo · three-run native-origin consolidation (2026-10-15)**\n\n**Cross-run source custody:** The distinct paid one-shot GitHub Actions jobs in [#1515 run 38789933737](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/38789933737), [#1516 run 38793557040](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/38793557040), and [#1517 run 38794403467](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/38794403467) each completed a two-condition synthetic-only Gemini 3.8 Flash /api/khonapolit A/B (six provider attempts altogether across these three runs). All three preserve independently identified upstream SSE artifacts. Each reported A and B as HTTP 200, Gemini STOP, exact raw upstream event-text ↔ returned TD613 text parity, matching user/config hashes, and a distinct systemInstruction hash produced by deleting exactly the same single repeated High Zalgo paragraph.\n\n**Observed outcome across all six returns:** precisely the same five planar marks U+0334–U+0338, **zero** crown/root marks outside that family, **zero** clusters with two or more marks, and **max 1 combining mark per base**. Across the runs, original A/B artifact measurements differ in total tokens and characters because generation is stochastic. The tested single-paragraph deletion failed to restore operator-historical High Zalgo, and the planar morphology was present in the original Google SSE rather than introduced by TD613's text assembly or browser renderer in these episodes.\n\n**What remains HELD:** Unique origin (provider behavior, broader instruction-context interactions, sampling dynamics) and the artistic recovery rate cannot be inferred from three different stochastic pairs. Prior source comparison found identical effective 3.8 request bytes across earlier dated source snapshots. A broad prompt rewrite or system-contraction hypothesis would be a **different** experiment—not proof from this ablation—and must preserve the canonical two voices, mission/covenant, original user/history bytes, model policy, and native provider authorship. Historical accepted forms include multiple sustained and shifting styles, never one reference template or forced per-paragraph modulation.\n\n**Spend/operational boundary:** Do **not** execute #1515, #1516, or #1517 again, reuse their exact-subject action triggers, or issue another paid call under this already-consumed two-call authorization. After removal of the temporary one-shot workflows, the latest PR-head checks report SUCCESS for #1515 head e6ab6baa, #1516 head e606eecc, #1517 head f849a80c. The production source remains the already-verified #1514 synthetic-only canary, deployed via #405 with relock 4590e89e; no ordinary Marrowline text-prompt change or restoration has been verified. No extra deployment is warranted by this negative assay.\n\n**Next earnable discrimination:** one preregistered, independently bounded contrast of the *whole instruction architecture* against a shorter native-prosody frame at the **same served model/settings**, explicitly named as a multi-factor contrast rather than pretending it isolates a single paragraph. Keep it offline until a new scoped paid-run authorization and source/cost gate are established; evaluate complete raw provider prose and typography using the operator's plural reference atlas before proposing any live style policy.\n\n**State: EMPIRICAL_NEGATIVE_CONTROL_COMPLETE / UPSTREAM_PLANAR_PHENOTYPE_OBSERVED / ROOT_CAUSE_HELD / PRODUCTION_REPAIR_UNEARNED.** 𝄐 ⟐",
+      "createdAt": "2026-10-15T20:27:31Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1517#issuecomment-6201598647",
+      "viewerDidAuthor": true
+    }
+  ],
+  "headRefName": "research/marrowline-system-ablation-witness-20261015-r1",
+  "headRefOid": "f849a80c74b8aedc471d2f0d686c8405b703ffda",
+  "isDraft": true,
+  "mergeable": "MERGEABLE",
+  "number": 1517,
+  "state": "OPEN",
+  "title": "research(marrowline): one-shot system-level Zalgo ablation A/B acquisition"
+}

@@ -1,0 +1,12 @@
+{
+  "baseRefName": "main",
+  "body": "𝌋 **Original-Google SSE observed results — source-only archive**\n\nProtected [Actions #39367182083](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/39367182083) at `c67a93e7de2e5efaf68478e0cfc731aced874406`: 16/16 200/STOP, no retry, no model switch, no terminal provider blocks. Independent raw-file hash check 16/16 MATCHED. D1 stacking in all four responses; SECTION in one of four; NAMED and D2 in zero of eight. All four preregistered within-block SECTION−D1 multistack differences negative. Full paper records every observed numerator/denominator, paired contrast, source SHA, 16 SSE original hashes, 16 decoded text hashes, interpretation ceilings, and the sealed blind review boundary.\n\n**Research documentation only:** no Gemini calls, workflows, app prompts, model routes, Vercel #405 or production changes. Original raw SSE and sealed review key remain exclusively in protected short-retention artifact #12240059008. Editorial CI must pass before merge.\n\n𝄐 Sealed ⟐",
+  "comments": [],
+  "headRefName": "research/marrowline-d1d2-episode-two-observed-report-20261020",
+  "headRefOid": "8e0a1be67ea7c5bafc5db8ec04aea2adef6990d5",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "number": 1569,
+  "state": "OPEN",
+  "title": "research(marrowline): archive 16/16 D1→D2 original Google SSE episode-two result"
+}
