@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 
 const site='http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
-const routes=['overview','works','observatory','collection','reference','protocols','gates','holds'];
+const routes=['overview','works','observatory','collection','reference','protocols','gates','holds','operator'];
 const browser=await chromium.launch({headless:true});
 try{
  for(const viewport of [{width:1440,height:900},{width:390,height:844}]){
@@ -24,7 +24,7 @@ try{
    await page.waitForFunction(key=>document.body.dataset.view===key,route,{timeout:10000});
    await page.waitForTimeout(110);
    const leakage=await page.evaluate(()=>{
-    const banned=/\b(?:Wendbine|SignalRupture|EMSTD613|SRC|Atelier|FADT|TD613)\b/g; // Preserve the public constitutional role names.
+    const banned=/\b(?:Wendbine|SignalRupture|EMSTD613|SRC|Atelier|FADT|TD613|Emergence\s+HQ|Experiment\s+[ABC])\b/g; // Preserve the public constitutional role names.
     const text=document.body.innerText;
     const visibleText=[...text.matchAll(banned)].slice(0,18).map(m=>({
       term:m[0],excerpt:text.slice(Math.max(0,m.index-50),m.index+70)
@@ -56,4 +56,4 @@ try{
   await context.close();
  }
 }finally{await browser.close()}
-console.log('Public Vixen language boundary browser witness passed on all eight routes at 1440px and 390px.');
+console.log('Public Vixen language boundary browser witness passed on all nine routes at 1440px and 390px.');
