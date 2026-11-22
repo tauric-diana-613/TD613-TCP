@@ -12,7 +12,7 @@ const html=readFileSync(resolve(here,'../app/encyclopedia/vix-cyb.html'),'utf8')
 const PUBLIC_TERMS=/\b(?:SignalRupture|Wendbine|EMSTD613|SRC|Atelier|FADT|Experiment\s+[ABC]|Emergence\s+HQ)\b/i;
 
 test('presentation aliases explain internal names without changing machine identifiers',()=>{
- const before='Wendbine and SignalRupture / SRC Atelier / EMSTD613 / Cross-Atelier / FADT / Experiment A / Experiment B / Emergence HQ';
+ const before='Wendbine and SignalRupture / SRC Atelier / EMSTD613 / Cross-Atelier / FADT / Experiment A / Experiment B / Emergence HQ / Paul';
  const after=translatePublicCopy(before);
  assert.doesNotMatch(after,PUBLIC_TERMS);
  assert.match(after,/documentary|research|source|evidence/i);
