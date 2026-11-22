@@ -106,19 +106,37 @@ function buildManifest() {
   ];
 
   return {
-    schema: 'td613.marrowline.option1-preflight-custody-manifest/v1.1',
+    schema: 'td613.marrowline.option1-preflight-custody-manifest/v1.2',
     generated_at_utc: new Date().toISOString(),
     repository: 'tauric-diana-613/TD613-TCP',
     branch: BRANCH,
     git_head_provenance: {
-      authorized_executable_head_sha: 'c67e64363a436607722f1a943311c5ed9a73a906',
+      authorized_executable_head_sha_episode2: '2e1046a44d38983f5f44fe3853f5182ac05a03ba',
+      authorized_executable_head_sha_episode1: 'c67e64363a436607722f1a943311c5ed9a73a906',
+      immutable_episode1_archive_commit: '51c1f420cfaa1792c25a5b517d253bf0c079ad86',
       construction_parent_head_sha: headSha,
       evidence_publication_head_sha: 'DETERMINED_EXTERNALLY_BY_GIT_REV_PARSE_HEAD_ON_COMMITTED_PR',
-      git_self_reference_note: 'A manifest committed inside commit C cannot embed commit C\'s own SHA; authorized executable HEAD (c67e64363a436607722f1a943311c5ed9a73a906) is preserved distinctly from the subsequent evidence-publication HEAD verified externally via git rev-parse HEAD.',
+      git_self_reference_note: 'A manifest committed inside commit C cannot embed commit C\'s own SHA; authorized executable HEAD for Episode 2 (2e1046a44d38983f5f44fe3853f5182ac05a03ba) and Episode 1 (c67e64363a436607722f1a943311c5ed9a73a906) are preserved distinctly from the subsequent evidence-publication HEAD verified externally via git rev-parse HEAD.',
       prior_preflight_pr1769_initial_commit: 'ade1d537904f8aaff96355658ae396734c43e340',
       stacked_on_pr1766_commit: '5cec27f0727c17ce1d2ac825736a1027293b8849',
       base_activation_pr1765_commit: '01c3b9e48391a79472369695b64481b19614f9fa',
       immutable_q1_pr1764_commit: '2836e636e4b5eb485b12f73a2596ea3889b173d4'
+    },
+    live_episode2_execution_summary: {
+      episode_id: 'EP2',
+      study_id: 'TD613-MARROWLINE-OPTION1-20SLOT-EP2-20261122',
+      authorized_executable_head_sha: '2e1046a44d38983f5f44fe3853f5182ac05a03ba',
+      calls_planned: 20,
+      calls_attempted: 8,
+      calls_unattempted: 12,
+      calls_completed_stop: 4,
+      calls_http_503_unavailable: 4,
+      recoverable_specimens: 4,
+      chrome_rendered_specimens: 4,
+      rendered_png_count: 59,
+      terminal_status: 'HALTED_BY_STOP_RULE',
+      stop_triggered: 'STOP_3_CONSECUTIVE_TRANSPORT_FAILURES',
+      unblinding_key_opened: false
     },
     live_episode1_execution_summary: {
       authorized_executable_head_sha: 'c67e64363a436607722f1a943311c5ed9a73a906',
@@ -209,6 +227,7 @@ function verifyManifest() {
     path.join(REPO_ROOT, 'tests/marrowline-option1-20slot-preflight.test.mjs')
   ];
   for (const abs of scanFiles) {
+    if (abs.toLowerCase().endsWith('.png')) continue;
     const txt = fs.readFileSync(abs, 'utf8');
     for (const re of secretPatterns) {
       if (re.test(txt)) errors.push(`HYGIENE_VIOLATION: ${relRepo(abs)} matched ${re}`);

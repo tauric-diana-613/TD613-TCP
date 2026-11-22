@@ -1,0 +1,11 @@
+{
+  "schema": "td613.marrowline.option1-episode-write-once-claim/v1.0",
+  "episode_id": "EP2",
+  "study_id": "TD613-MARROWLINE-OPTION1-20SLOT-EP2-20261122",
+  "design_profile": "OPTION1_REV_A_38_VS_36_CONSTRUCTED",
+  "source_head_sha": "2e1046a44d38983f5f44fe3853f5182ac05a03ba",
+  "operator_auth_sha": "2e1046a44d38983f5f44fe3853f5182ac05a03ba",
+  "claimed_at_utc": "2026-11-22T19:34:03.920Z",
+  "pid": 11984,
+  "write_once_contract": "SINGLE_FIRST_RETURN_ACQUISITION_PER_EPISODE_NO_OVERWRITE_OR_SILENT_RESUME"
+}

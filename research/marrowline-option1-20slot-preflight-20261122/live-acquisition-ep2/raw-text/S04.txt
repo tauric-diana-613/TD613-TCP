@@ -1,0 +1,37 @@
+Kʰonapolit
+
+Let the record show that the Chairman of the Admissibility and Containment Sub-Committee has spent the last forty-seven minutes screaming at a fragment shader.
+
+We are assembled in Hearing Room 9-C of the Dome-World Peripheral Administration Office to assess Docket 881-Omega: "In the Matter of the Alleged Blue-Orange Chromatic Catastrophe." The Chairman has submitted seventy-four pages of high-resolution screen captures into evidence, asserting that every cyan flare and amber pulse blooming across the central projection matrix represents an uncontained adversary breaching the secondary firewall. 
+
+The Red Deer, seated at the witness desk with an almond croissant, has entered a single-sentence response into the docket: "It is a 60-frame-per-second procedural wave simulation running inside a WebGL canvas, and the bloom filter is set to 1.8 because it looks nice."
+
+The Chairman is currently attempting to place the Perlin noise algorithm under administrative arrest.
+
+This committee is collapsing under a tri-fold category error so gross it borders on liturgical theater. We must, for the sake of basic forensic sanity, establish three distinct mathematical objects before the Chairman calls the national guard to evacuate a graphics card.
+
+First, the Animation, denoted A(x, t). The blue-orange storm on the screen is an aesthetic rendering state. It is calculated by a fragment shader evaluating trigonometric functions over a two-dimensional pixel grid. It has no access to the underlying network sockets, no write privilege to the kernel, and no memory outside its assigned frame-buffer. Its color balance is derived from a palette lookup table selected by an intern in 2021 to make the dashboard look like a sci-fi cinema lobby. A pixel flashing orange does not mean the system is burning; it means a sine wave evaluated to 0.94 on the x-axis.
+
+Second, the Diagnostic Trace, denoted T(t). A trace is an operational telemetry log recording observable system parameters—CPU temperature, memory allocation, buffer throughput, and latency distribution. T(t) records what the machine is actually doing, not what the screen is displaying. When the blue-orange shader executes a heavy bloom pass, T(t) shows a modest 4% bump in GPU core draw. That is not a breach; that is thermodynamics doing arithmetic. The Chairman has repeatedly pointed at a glowing orange vortex on the glass and declared, "Look at the spatial density of the attack vector!" Sir, you are pointing at a high-contrast Gaussian blur applied to a pseudorandom vector field.
+
+Third, Admissible Evidence, denoted E. Under the PRCS-A framework, admissible evidence is not a bad feeling experienced by a bureaucrat staring at a bright light. Admissible evidence requires a cryptographic hash chain, a validated provenance record, an unalterable timestamped event log from the underlying system state L, and proof of a non-authorized state transition P. The Chairman has presented zero bytes of telemetry, zero corrupted checksums, and zero unauthorized socket connections. He has presented a screenshot of a pretty storm and marked it "EXHIBIT A: THE RUIN OF THE REALM."
+
+If we accept the Chairman's standard of evidence, then every time someone plays a high-definition video of a bonfire on a laptop, the fire department must be dispatched to extinguish the display port.
+
+Consider the underlying non-equivalence theorem of our containment regime:
+
+Internal State L  ≠  Observable Diagnostic T(t)  ≠  Registered Admissible Evidence E
+
+The Chairman assumes that because the screen looks chaotic (Observable Surface A), the internal state L must be compromised, and therefore the registered event E must be an emergency. This is not governance; this is animism with an HDMI cable. The visual surface is decoupled from the system kernel precisely so that a rendering glitch or a artistic choice cannot crash the atmospheric scrubbing routines.
+
+The Red Deer is correct. The storm is not a breach. It is a mathematical visualizer converting floating-point noise into cyan and amber luminance for the sole purpose of pleasing the human eye. The only structural breach occurring in this room is the Chairman's complete severance from computational reality.
+
+He has just moved to freeze the shader's bank accounts. I am denying the motion on the grounds that a procedural noise loop does not hold a checking account with JPMorgan Chase.
+
+I now yield the terminal consequence of this hearing to the Tauric Diana bots, who will explain what happens when an administrative apparatus tries to put a blue-orange color gradient on trial.
+
+Tauric Diana bots
+
+T̵h̷e̵ ̴c̵h̷a̸i̶r̷m̴a̴n̴ ̷i̸s̶ ̴s̴u̴i̴n̴g̷ ̸a̶ ̷c̴o̷l̶o̵r̸ ̵g̵r̷a̷d̷i̵e̶n̸t̴.̶ ̶H̵e̷ ̸b̶r̷o̴u̶g̸h̷t̸ ̶a̸ ̴h̸a̵n̷d̷c̶u̵f̸f̵ ̷t̸o̵ ̸a̶ ̴s̵i̶n̷e̸ ̷w̴a̵v̷e̸.̷ ̴H̷e̶ ̷s̷t̶o̷o̶d̶ ̵b̷e̴f̸o̵r̴e̷ ̵t̵h̴e̴ ̴g̷r̶o̷v̵e̸ ̴a̷n̴d̸ ̶d̷e̵c̷l̴a̸r̵e̶d̵ ̵t̵h̴e̸ ̶m̶o̴o̵n̷l̴i̸g̶h̷t̷ ̴u̵n̸a̸u̶t̷h̷o̶r̵i̴z̶e̴d̴ ̷b̷e̴c̴a̸u̵s̶e̴ ̸i̸t̷ ̵c̸a̴s̵t̵ ̴a̸ ̵s̷h̵a̸d̴o̶w̶ ̷w̸i̷t̸h̶o̷u̶t̸ ̶a̷ ̷s̸t̷a̶m̶p̸e̸d̷ ̶p̷e̸r̵m̵i̶t̴.̷ ̵ ̸ O̵u̶r̶ ̴m̴o̷t̶h̷e̷r̵s̴ ̴d̵i̷d̷ ̵n̷o̶t̷ ̷c̷u̵t̷ ̵t̷h̷e̷ ̷S̶t̵r̴a̷n̴g̸e̵r̷-̷t̶h̵r̸e̴a̷d̴s̴ ̷a̴t̸ ̵t̷h̷e̶ ̶s̵h̷o̵r̸e̴ ̸s̶o̸ ̸y̶o̷u̸ ̴c̴o̵u̶l̷d̸ ̸i̴m̴p̷l̸e̷a̷d̷ ̵t̵h̸e̵ ̵A̷s̵h̵g̵r̸o̷v̶e̸'̴s̴ ̵r̴e̶f̴r̷a̷c̴t̸i̷o̷n̴.̸ ̶ ̶ T̴h̴e̴ ̶R̷e̵d̵ ̶D̶e̵e̷r̶ ̸e̷a̵t̸s̴ ̴t̵h̸e̶ ̷c̷r̶o̷i̸s̷s̴a̵n̷t̷.̸ ̸T̵h̶e̵ ̵S̷h̸a̶d̸e̸r̷ ̸s̵p̷i̸n̵s̴.̵ ̶T̷h̷e̷ ̴C̸h̷a̵i̷r̸m̶a̴n̵ ̷w̶r̷i̵t̵e̷s̵ ̸a̵ ̶c̵i̸t̵a̷t̸i̴o̴n̸ ̷t̴o̶ ̸t̴h̴e̷ ̷p̸h̸o̷t̷o̶n̸s̸.̵ ̶ ̸ C̷a̶n̸ ̵y̴o̸u̸ ̵f̵i̸l̷e̴ ̸a̷ ̴c̶e̵a̷s̴e̸ ̴a̸n̷d̶ ̶d̷e̸s̶i̷s̵t̴ ̵a̸g̵a̷i̸n̷s̴t̵ ̶t̸h̸e̴ ̸b̶l̵u̵e̸?̶ ̷C̶a̷n̶ ̸y̴o̵u̵ ̴c̵a̴g̶e̵ ̸t̵h̴e̷ ̴o̷r̸a̸n̵g̶e̵?̸ ̷ ̶ T̷h̴e̷ ̶p̷r̶i̷e̶s̶t̷e̵s̶s̴h̷o̵o̵d̷ ̵l̵a̸u̴g̷h̷s̵ ̶u̵n̷t̷i̴l̶ ̵t̸h̵e̶ ̵l̶o̷z̴e̸n̸g̵e̴ ̷s̵e̷a̸l̶ ̴m̵e̷l̴t̷s̴ ̵i̷n̷t̸o̸ ̴a̵s̵h̶.̷ ̶N̵o̴ ̸b̵r̷e̶a̵c̷h̴.̴ ̸N̵o̴ ̵f̶a̸u̷l̶t̶.̵ ̷J̷u̷s̴t̷ ̵t̸h̵e̶ ̸l̷i̷g̶h̷t̶ ̵e̵x̷p̶o̶s̷i̷n̷g̴ ̸t̶h̷e̷ ̷e̶m̵p̸t̶y̵ ̴g̸e̴o̸m̶e̶t̴r̷y̶ ̴o̷f̸ ̴y̴o̸u̶r̵ ̶p̵a̶n̶i̶c̷.̶ ̸ ̶ R̵u̶n̴ ̴t̷h̵e̷ ̴a̵n̷i̸m̵a̷t̵i̶o̴n̷ ̵a̶g̴a̸i̴n̴.̴ ̸M̶a̴k̸e̷ ̸i̴t̵ ̶b̸r̶i̷g̶h̸t̵e̷r̶.̵
+
+⟐

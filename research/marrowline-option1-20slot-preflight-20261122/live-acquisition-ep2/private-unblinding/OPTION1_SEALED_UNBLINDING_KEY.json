@@ -1,0 +1,194 @@
+{
+  "schema": "td613.marrowline.option1-sealed-unblinding-key/v2.0",
+  "study_id": "TD613-MARROWLINE-OPTION1-20SLOT-FACTORIAL-20261122",
+  "sealed_until_operator_literary_adjudication": true,
+  "operator_custody_note": "Keep this file isolated from the initial blinded reading surface; binds blindId to slot, envelope, requested/observed modelVersion, and raw SSE/text SHA-256 receipts.",
+  "marrowline": [
+    {
+      "blindId": "OPT1_M_01",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S08",
+      "slotIndex": 8,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "CURRENT_HYBRID_A",
+      "modelRequested": "gemini-3.8-flash",
+      "modelVersionObserved": null,
+      "taskKey": "T2_FORENSIC",
+      "httpStatus": 503,
+      "outcomeClass": "TRANSPORT_FAILURE",
+      "availabilityStatus": "INELIGIBLE_TRANSPORT_UNAVAILABLE_HTTP_503",
+      "rawTextPath": null,
+      "rawTextSha256": null,
+      "rawSsePath": "raw-sse/S08.sse",
+      "rawSseSha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_01_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_01_mobile_390x844.png"
+      }
+    },
+    {
+      "blindId": "OPT1_M_02",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S03",
+      "slotIndex": 3,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "LITERAL_OCT02_H2",
+      "modelRequested": "gemini-3.8-flash",
+      "modelVersionObserved": null,
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "httpStatus": 503,
+      "outcomeClass": "TRANSPORT_FAILURE",
+      "availabilityStatus": "INELIGIBLE_TRANSPORT_UNAVAILABLE_HTTP_503",
+      "rawTextPath": null,
+      "rawTextSha256": null,
+      "rawSsePath": "raw-sse/S03.sse",
+      "rawSseSha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_02_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_02_mobile_390x844.png"
+      }
+    },
+    {
+      "blindId": "OPT1_M_03",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S06",
+      "slotIndex": 6,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "CURRENT_HYBRID_A",
+      "modelRequested": "gemini-3.6-flash",
+      "modelVersionObserved": "gemini-3.6-flash",
+      "taskKey": "T2_FORENSIC",
+      "httpStatus": 200,
+      "outcomeClass": "COMPLETED_STOP",
+      "availabilityStatus": "AVAILABLE_COMPLETED_STOP",
+      "rawTextPath": "raw-text/S06.txt",
+      "rawTextSha256": "da1d94cdba91e1ff4875c18d59ae0b2262372fbea590c920978d172cbaa9b13b",
+      "rawSsePath": "raw-sse/S06.sse",
+      "rawSseSha256": "acc38dac3285cbfe83d0b41547d4c61e7911d9a6ebccdf40cf1f21c6b523c12f",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_03_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_03_mobile_390x844.png"
+      }
+    },
+    {
+      "blindId": "OPT1_M_04",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S01",
+      "slotIndex": 1,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "CURRENT_HYBRID_A",
+      "modelRequested": "gemini-3.8-flash",
+      "modelVersionObserved": "gemini-3.8-flash",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "httpStatus": 200,
+      "outcomeClass": "COMPLETED_STOP",
+      "availabilityStatus": "AVAILABLE_COMPLETED_STOP",
+      "rawTextPath": "raw-text/S01.txt",
+      "rawTextSha256": "f07d1c2aa20b6084d908d462c49b4d2af8230e705646a6ebd25daceb7ff9d5c1",
+      "rawSsePath": "raw-sse/S01.sse",
+      "rawSseSha256": "c8a63a3213b24adfe64290f7574e173786ba43c25b359f358804c901d43cbf5e",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_04_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_04_mobile_390x844.png"
+      }
+    },
+    {
+      "blindId": "OPT1_M_05",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S07",
+      "slotIndex": 7,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "LITERAL_OCT02_H2",
+      "modelRequested": "gemini-3.8-flash",
+      "modelVersionObserved": null,
+      "taskKey": "T2_FORENSIC",
+      "httpStatus": 503,
+      "outcomeClass": "TRANSPORT_FAILURE",
+      "availabilityStatus": "INELIGIBLE_TRANSPORT_UNAVAILABLE_HTTP_503",
+      "rawTextPath": null,
+      "rawTextSha256": null,
+      "rawSsePath": "raw-sse/S07.sse",
+      "rawSseSha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_05_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_05_mobile_390x844.png"
+      }
+    },
+    {
+      "blindId": "OPT1_M_06",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S04",
+      "slotIndex": 4,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "CURRENT_HYBRID_A",
+      "modelRequested": "gemini-3.6-flash",
+      "modelVersionObserved": "gemini-3.6-flash",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "httpStatus": 200,
+      "outcomeClass": "COMPLETED_STOP",
+      "availabilityStatus": "AVAILABLE_COMPLETED_STOP",
+      "rawTextPath": "raw-text/S04.txt",
+      "rawTextSha256": "bdce05f6fc7f5ca49ac1270ed479786fbcb821e1f0c074ddd14fe9d9b2308185",
+      "rawSsePath": "raw-sse/S04.sse",
+      "rawSseSha256": "a386b8aa1ba8f34c1eac3d055803cb69a4269adbf2078a40e0eb95d83412e76a",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_06_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_06_mobile_390x844.png"
+      }
+    },
+    {
+      "blindId": "OPT1_M_07",
+      "section": "MARROWLINE_LITERARY",
+      "slot": "S02",
+      "slotIndex": 2,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "LITERAL_OCT02_H2",
+      "modelRequested": "gemini-3.6-flash",
+      "modelVersionObserved": "gemini-3.6-flash",
+      "taskKey": "T1_BLUE_ORANGE_WEATHER",
+      "httpStatus": 200,
+      "outcomeClass": "COMPLETED_STOP",
+      "availabilityStatus": "AVAILABLE_COMPLETED_STOP",
+      "rawTextPath": "raw-text/S02.txt",
+      "rawTextSha256": "80801d967e2f587377c22445c601fc14463e345727f198ed5ef8ce0bd8e56a59",
+      "rawSsePath": "raw-sse/S02.sse",
+      "rawSseSha256": "af32a7a3c5adc5044e92a9779c605d4a30c0a89964250467a6c451b8211f1c33",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_M_07_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_M_07_mobile_390x844.png"
+      }
+    }
+  ],
+  "neutral": [
+    {
+      "blindId": "OPT1_N_01",
+      "section": "NEUTRAL_CAPABILITY_CONTROL",
+      "slot": "S05",
+      "slotIndex": 5,
+      "block": 1,
+      "replicate": 1,
+      "envelope": "NEUTRAL_CREATIVE_D",
+      "modelRequested": "gemini-3.8-flash",
+      "modelVersionObserved": null,
+      "taskKey": "NEUTRAL_CREATIVE_MULTISTACK_V1",
+      "httpStatus": 503,
+      "outcomeClass": "TRANSPORT_FAILURE",
+      "availabilityStatus": "INELIGIBLE_TRANSPORT_UNAVAILABLE_HTTP_503",
+      "rawTextPath": null,
+      "rawTextSha256": null,
+      "rawSsePath": "raw-sse/S05.sse",
+      "rawSseSha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d",
+      "anonymizedScreenshots": {
+        "desktopFullResPath": "blinded-screenshots/OPT1_N_01_desktop_1440x900.png",
+        "mobileFullResPath": "blinded-screenshots/OPT1_N_01_mobile_390x844.png"
+      }
+    }
+  ]
+}
