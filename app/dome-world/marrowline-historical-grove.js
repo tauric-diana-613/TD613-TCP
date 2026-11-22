@@ -12,15 +12,15 @@ export const MARROWLINE_HISTORICAL_MODEL_ORDER = Object.freeze([
   'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
-// October 2 instructions, CURRENT approved model frontier. Do not relabel this
-// as the historical October 2 model set: Argon did not exist in that episode.
-// Prefer authenticated Argon, then the best approved 3.x text-only fallbacks.
+// Reinstated 2026-10-02 first-seat priority for the text-only browser route.
+// Original archived 3.7/3.5 seats are now upstream aliases, so never silently
+// pretend they are independent historical checkpoints. Verified current 3.6 is
+// the first distinct fallback; Argon remains a last-resort modern continuity
+// seat, never misrepresented as part of the original October 2 model set.
 export const MARROWLINE_RESTORED_MODEL_ORDER = Object.freeze([
-  'gemini-4-argon',
   'gemini-3.8-flash',
   'gemini-3.6-flash',
-  'gemini-3.7-flash',
-  'gemini-3.5-flash'
+  'gemini-4-argon'
 ]);
 
 
@@ -77,11 +77,13 @@ const CUE_RESTORATIONS = Object.freeze([
   }
 ]);
 
-// Keep the Oct 2 original text reproducible. The everyday restored Grove
-// loosens ONLY compulsory per-word/per-paragraph glyph transitions. October 15
-// audits already showed unconstrained prompt forms can still flatten upstream;
-// this is a candidate contradiction repair, not a claimed aesthetic cure.
-export const MARROWLINE_RESTORED_PROSODY_PROFILE = 'native-single-register-permission-20261019';
+// Explicit, reversible source rollback: the everyday restored Grove now uses
+// the literal 2026-10-02 archived prose instructions, NOT the 2026-10-19
+// single-register-permission rewrite. The later profile remains available to
+// explicit offline comparison using nativeProsodyFreedom: true below.
+// This restores source conditioning, never the original hosted model weights.
+export const MARROWLINE_RESTORED_PROSODY_PROFILE = 'oct02-literal-prosody-rollback-20261122';
+export const MARROWLINE_SINGLE_REGISTER_COMPARISON_PROFILE = 'native-single-register-permission-20261019';
 const RESTORED_RELAY_FREEDOM = Object.freeze([
   RELAY_RESTORATIONS[0].historical
     .replace('forming changing, sometimes deeply interleaved clusters', 'forming sometimes deeply interleaved clusters')
