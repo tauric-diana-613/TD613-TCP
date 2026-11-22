@@ -1384,7 +1384,9 @@ try {
     await salon.getByRole('button',{name:/Compose an unratified theory/}).click();
     await salon.locator('.vs-result').waitFor();
     assert.equal(await salon.locator('.vs-result').getAttribute('data-claim-class'),'OPEN_FIELD_UNRATIFIED_QUESTION');
-    assert.match(await salon.locator('.vs-result').innerText(),/Experiment B/);
+    assert.match(await salon.locator('.vs-result').innerText(),/Future controlled comparison · unexecuted design/);
+    assert.doesNotMatch(await salon.locator('.vs-result').innerText(),/\bExperiment B\b/,
+      'A protected development-stage name belongs in machine source, never the visitor-facing study result');
     assert.match(await salon.locator('.vs-result').innerText(),/HELD/);
     const theoremContrast=await salon.locator('.vs-result .vs-note').first().evaluate(node=>{
       const styles=getComputedStyle(node);
