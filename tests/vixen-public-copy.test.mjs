@@ -24,7 +24,7 @@ test('presentation aliases explain internal names without changing machine ident
 test('Program codenames and private researcher aliases stay out of public copy',()=>{
  const aliases='Experiment A / Experiment B / Emergence HQ / AIX / Paul / Atelier / EMSTD613 / SRC / SignalRupture / Wendbine';
  const visible=translatePublicCopy(aliases);
- assert.doesNotMatch(visible,/\\b(?:Experiment[- ]A|Experiment[- ]B|Emergence\\s+HQ|AIX|Paul|Atelier|EMSTD613|SRC|SignalRupture|Wendbine)\\b/i);
+ assert.doesNotMatch(visible,/\b(?:Experiment[- ]A|Experiment[- ]B|Emergence\s+HQ|AIX|Paul|Atelier|EMSTD613|SRC|SignalRupture|Wendbine)\b/i);
  assert.equal(translatePublicCopy('OPERAHOUSE ≠ OPERA ≠ PERFORMER'),'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
  assert.equal(translatePublicCopy('The Architecture of Control'),'The Architecture of Control');
 });
