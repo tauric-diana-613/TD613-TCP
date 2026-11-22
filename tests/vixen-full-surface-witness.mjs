@@ -35,7 +35,10 @@ async function capture(page,rel,details){
 async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
  const dom=await page.evaluate(()=>({scrollHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight),viewport:innerHeight,view:document.body.dataset.view}));
  const travel=Math.max(0,dom.scrollHeight-dom.viewport);
- const step=Math.max(1,Math.floor(dom.viewport*.82));
+ // Fixed masthead and mobile dock obscure the top/bottom of each image.
+ // Use a deliberate 42% tile overlap so each portion of scrollable content
+ // appears unobscured in at least one neighboring viewport capture.
+ const step=Math.max(1,Math.floor(dom.viewport*.58));
  const yPositions=new Set([0,travel]);
  for(let y=0;y<travel;y+=step)yPositions.add(Math.min(travel,y));
  const positions=[...yPositions].sort((a,b)=>a-b);
@@ -68,7 +71,7 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
   });
  });
  for(const pane of panes){
-  const steps=Math.min(20,Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.82))+1));
+  const steps=Math.min(20,Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.58))+1));
   for(let i=0;i<steps;i++){
    const target=i===steps-1?pane.max:Math.round(i*pane.max/(steps-1));
    const observed=await page.evaluate(({key,y})=>{
@@ -155,6 +158,7 @@ try{
 const report={
  schema:'td613.vixen.full-surface-witness/v1',source_revision:revision,
  mode:'REAL_CHROMIUM_LOCAL_HTTP_NOT_PHYSICAL_DEVICE',captured_at:new Date().toISOString(),
+ vertical_tile_stride_fraction:.58,conservative_tile_overlap_fraction:.42,
  profiles,primary_routes:primaryRoutes,matrices:matrix,images:records,
  errors:failure,
  limits:['Tiled coverage includes four viewports and reachable principal routes; it is not all 32 original manuscript permutations.',
