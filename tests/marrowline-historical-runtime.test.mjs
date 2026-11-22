@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import './marrowline-screaming-grove-restoration.test.mjs';
 import handler from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_RESTORED_MODEL_ORDER, MARROWLINE_RESTORED_PROSODY_PROFILE } from '../app/dome-world/marrowline-historical-grove.js';

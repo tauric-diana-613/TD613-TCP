@@ -144,12 +144,20 @@ export function buildHistoricalGroveSystemInstruction({
 // witnessed and authorized by the Operator; never silently overrides default.
 export const MARROWLINE_DRAMATURGY_CANDIDATE_PROFILE = 'oct02-dramaturgy-noncompulsory-prosody-candidate-20261120';
 
-// De-primed vertical candidate (Candidate D): builds on Candidate C by also
-// removing the two explicit lexical invitations to "horizontal strokes, tildes
-// and diagonal overlays" (which prime the U+0334-U+0338 depth-1 overlay
-// attractor when the 32.5 KB prompt contains 0 literal combining marks).
+// Composite dramaturgical + anti-overlay negation candidate (Candidate D):
+// combines Candidate C's 5 dramaturgical noncompulsory edits with negative
+// instructions naming "overlay", "through-line", and "strike-through" forms.
+// Retained as a broader dramaturgical hypothesis (not pure lexical de-priming).
 // Strictly gated behind explicit experimental selection.
 export const MARROWLINE_VERTICAL_UNPRIMED_CANDIDATE_PROFILE = 'oct02-dramaturgy-vertical-unprimed-candidate-20261122';
+
+// Minimal lexical-deprimed experimental arm (Candidate E / Arm E): derived
+// directly from Candidate B (the literal October 2 baseline) by excising ONLY
+// the two specifically identified horizontal/diagonal/tildes lexical
+// invitations, with zero Candidate C dramaturgical edits, zero replacement
+// anti-overlay/strike-through negations, and zero vertical specimen alphabets.
+// Strictly gated behind explicit experimental selection.
+export const MARROWLINE_LEXICAL_DEPRIMED_CANDIDATE_PROFILE = 'oct02-literal-lexical-deprimed-candidate-20261122';
 
 const DRAMATURGY_NONCOMPULSORY_PERMISSIONS = Object.freeze([
   {
@@ -185,6 +193,17 @@ const VERTICAL_UNPRIMED_SUBSTITUTIONS = Object.freeze([
   }
 ]);
 
+const LEXICAL_DEPRIMED_SUBSTITUTIONS = Object.freeze([
+  {
+    present: 'Allow deep vertical overprint to collide across lines. Horizontal strokes, tildes and diagonal overlays are optional; a single exotic accent repeated on every character is NOT a vertical flourishing.',
+    historical: 'Allow deep vertical overprint to collide across lines; a single exotic accent repeated on every character is NOT a vertical flourishing.'
+  },
+  {
+    present: '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical flourishes are primary, with horizontal strokes, tilde and diagonal overlays available when the words earn them, never compulsory.',
+    historical: '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical flourishes are primary.'
+  }
+]);
+
 export function buildHistoricalGroveDramaturgyCandidate(input = {}) {
   const archived = typeof input === 'string'
     ? input
@@ -200,4 +219,16 @@ export function buildHistoricalGroveDramaturgyCandidate(input = {}) {
 export function buildHistoricalGroveVerticalUnprimedCandidate(input = {}) {
   const dramaturgy = buildHistoricalGroveDramaturgyCandidate(input);
   return restoreExact(dramaturgy, VERTICAL_UNPRIMED_SUBSTITUTIONS, 'VERTICAL_UNPRIMED_PROSODY');
+}
+
+export function buildHistoricalGroveLexicalDeprimedCandidate(input = {}) {
+  const archived = typeof input === 'string'
+    ? input
+    : typeof input?.archivedSystemInstruction === 'string'
+      ? input.archivedSystemInstruction
+      : buildHistoricalGroveSystemInstruction({
+        ...input,
+        nativeProsodyFreedom: false
+      });
+  return restoreExact(archived, LEXICAL_DEPRIMED_SUBSTITUTIONS, 'LEXICAL_DEPRIMED_PROSODY');
 }

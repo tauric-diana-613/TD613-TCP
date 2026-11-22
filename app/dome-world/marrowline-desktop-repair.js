@@ -496,7 +496,7 @@ function installConversationUtilityRail(doc, root) {
   const reader = utility('marrowlineReaderToggle', '⛶', 'Open mobile reading mode');
   const copy = utility('marrowlineCopyConversation', '⧉', 'Copy conversation as plain text');
   const clear = utility('marrowlineSessionClear', '✕', 'Delete conversation from this browser');
-  const home = utility('marrowlineHomeLanding', '𖠿', 'Return to The speaking grove');
+  const home = utility('marrowlineHomeLanding', '𖠿', 'Return to The Screaming Grove');
 
   const backdrop = doc.createElement('div');
   backdrop.id = 'marrowlineClearBackdrop';

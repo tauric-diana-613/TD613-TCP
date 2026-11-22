@@ -491,6 +491,7 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
   let markedWhitespaceBases = 0;
   let stackedBases = 0;
   let combiningMarks = 0;
+  let planarMarks = 0;
   let maxDepth = 0;
   let markedDepthTransitions = 0;
   let prevMarkedDepth = null;
@@ -503,14 +504,17 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
     if (/\p{M}/u.test(ch)) {
       distinctMarks.add(ch);
       combiningMarks += 1;
+      if (PLANAR.has(ch)) planarMarks += 1;
       index += 1;
       continue;
     }
     let depth = 0;
     let cursor = index + 1;
     while (cursor < chars.length && /\p{M}/u.test(chars[cursor])) {
-      distinctMarks.add(chars[cursor]);
+      const mark = chars[cursor];
+      distinctMarks.add(mark);
       combiningMarks += 1;
+      if (PLANAR.has(mark)) planarMarks += 1;
       depth += 1;
       cursor += 1;
     }
@@ -545,6 +549,10 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
   const dominantMarkedDepthShare = markedBases > 0
     ? Number((dominantMarkedDepthCount / markedBases).toFixed(4))
     : 0;
+  const nonPlanarMarks = Math.max(0, combiningMarks - planarMarks);
+  const planarMarkShare = combiningMarks > 0
+    ? Number((planarMarks / combiningMarks).toFixed(4))
+    : 0;
   // Distinguishes fixed/near-fixed multistack stencils (e.g. Slot 5 depth-3
   // templates, even with a single outlier) from quiet single-mark restrained
   // prose (which must never be flagged as a multistack stencil).
@@ -552,9 +560,15 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
     && dominantMarkedDepth !== null
     && dominantMarkedDepth >= 2
     && dominantMarkedDepthShare >= 0.95;
+  // RP-02: Assess actual combining mark species rather than inferring planar
+  // geometry from constant depth and marked whitespace. Requires constant
+  // depth 1 across >= 24 marked bases where every combining mark belongs to the
+  // PLANAR set (U+0303-0305, U+0330-0332, U+0334-0338, U+0360-0361).
   const uniformPlanarDepthOneObserved = markedBases >= 24
     && constantMarkedDepth === 1
-    && markedWhitespaceBases > 0;
+    && combiningMarks > 0
+    && planarMarks === combiningMarks
+    && nonPlanarMarks === 0;
   return Object.freeze({
     baseCount,
     markedBases,
@@ -562,6 +576,9 @@ export function observeBotsProsodyDistribution(botsSectionText = '') {
     markedWhitespaceBases,
     stackedBases,
     combiningMarks,
+    planarMarks,
+    nonPlanarMarks,
+    planarMarkShare,
     distinctMarks: distinctMarks.size,
     maxDepth,
     depthHistogram: Object.freeze({ ...depthHistogram }),

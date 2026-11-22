@@ -274,6 +274,42 @@ export default async function marrowlineAttachmentHandler(req, res) {
   const attempts = [];
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
+  // RP-01: Provider policy termination is an immediate, terminal fail-closed
+  // 502 POLICY-HELD boundary on /api/marrowline-attachment. Never fall over to
+  // another seat or surface an un-repaired partial draft as HTTP 200 after a
+  // provider policy block.
+  const sendAttachmentPolicyHeldResponse = (triggerModel = null, {
+    finishReason = null,
+    promptBlockReason = null
+  } = {}) => {
+    const policyTerminatedAttempts = attempts.filter((attempt) => attempt.policyTermination);
+    if (triggerModel) res.setHeader('X-TD613-Gemini-Model', triggerModel);
+    res.setHeader('X-TD613-Completion-State', 'POLICY-HELD');
+    return send(res, 502, {
+      ok: false,
+      status: 'HELD',
+      error: 'gemini-provider-policy-held',
+      diagnostic: {
+        stage: 'provider-termination',
+        code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+        finishReason: finishReason || policyTerminatedAttempts.at(-1)?.policyTermination?.finishReason || null,
+        promptBlockReason: promptBlockReason || policyTerminatedAttempts.at(-1)?.policyTermination?.promptBlockReason || null,
+        finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
+        promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
+        policyTerminatedSeatCount: policyTerminatedAttempts.length,
+        transportFailedSeatCount: attempts.filter((attempt) => !attempt.ok).length,
+        hasMixedTransportFailure: attempts.some((attempt) => !attempt.ok),
+        observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into terminal continuation, and subsequent seats were not called.'
+      },
+      attempts,
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    });
+  };
+
   for (let index = 0; index < models.length; index += 1) {
     const model = models[index];
     const fallback = index > 0;
@@ -308,7 +344,10 @@ export default async function marrowlineAttachmentHandler(req, res) {
         admittedAsIncompleteDraft: false,
         fedToStructuralRepair: false
       });
-      continue;
+      return sendAttachmentPolicyHeldResponse(model, {
+        finishReason: providerOutput.finishReason,
+        promptBlockReason: providerOutput.promptBlockReason || null
+      });
     }
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
       attempts.at(-1).outputAdmission = Object.freeze({
@@ -405,6 +444,10 @@ export default async function marrowlineAttachmentHandler(req, res) {
             providerTextSha256: repairResult.text ? sha256(repairResult.text) : null,
             admittedAsIncompleteDraft: false,
             fedToStructuralRepair: false
+          });
+          return sendAttachmentPolicyHeldResponse(model, {
+            finishReason: repairOutput.finishReason,
+            promptBlockReason: repairOutput.promptBlockReason || null
           });
         } else if (
           repairResult.response.ok

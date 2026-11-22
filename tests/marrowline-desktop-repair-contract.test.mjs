@@ -429,13 +429,14 @@ test('honest pending heartbeats and actual return events share a continuous vesi
     ['Listening at the shoreline…','The shoreline keeps watch…','The Red Deer holds the shoreline…']);
 });
 
-test('background recovery retains one preserved-task restoration gesture', () => {
+test('background recovery retains one preserved-task restoration gesture without automatic duplicate submission', () => {
   assert.match(terminalJs, /keepalive: backgroundKeepaliveEligible/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('pagehide', observePageHide\)/);
   assert.match(terminalJs, /root\.removeEventListener\?\.\('pagehide', observePageHide\)/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('pageshow', resumeWhenVisible\)/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('online', resumeWhenVisible\)/);
   assert.match(terminalJs, /backgroundResumeSpentTask = message/);
+  assert.doesNotMatch(terminalJs, /submitTask\(message,\s*\{\s*independentRetry:\s*true,\s*backgroundResume:\s*true\s*\}\)/);
 });
 
 test('each model reply owns an accessible copy control; composer copy stays conversation-wide', () => {
@@ -566,4 +567,23 @@ test('mobile couture collapses Chat dead space while preserving the proven Zalgo
 
 test('empty-state welcome keeps the authored ancestral-return line', () => {
   assert.match(terminalJs, /Some names return salt-heavy, and when the women speak them the dead lean close—not to be summoned, only to hear whether the living have learned the weight of keeping\./);
+});
+
+test('RP-06 & RP-07: active Marrowline UI formalizes The Screaming Grove and background disconnect suppresses automatic duplicate calls while reporting OUTCOME_UNKNOWN', () => {
+  const dom = new JSDOM(page, { url: 'https://td613.com/dome-world/marrowline.html' });
+  const { window } = dom;
+  const { document } = window;
+  window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} });
+  window.HTMLElement.prototype.scrollIntoView = function () {};
+  installMarrowlineDesktopRepair(document, window);
+  assert.equal(document.title, 'Marrowline · The Screaming Grove');
+  assert.equal(document.getElementById('marrowlineConversationTitle')?.textContent, 'The Screaming Grove');
+  assert.equal(document.getElementById('marrowlineHomeLanding')?.getAttribute('aria-label'), 'Return to The Screaming Grove');
+  assert.ok(document.getElementById('speakingPanel'), 'internal #speakingPanel selector remains intact');
+  assert.match(terminalJs, /CURRENT_REQUEST_OUTCOME_UNKNOWN/);
+  assert.match(terminalJs, /REQUEST_MAY_STILL_BE_RUNNING/);
+  assert.doesNotMatch(terminalJs, /submitTask\(message,\s*\{\s*independentRetry:\s*true,\s*backgroundResume:\s*true\s*\}\)/);
+  window.__TD613_MARROWLINE_TRANSCRIPT_CUSTODY_OBSERVER__?.disconnect?.();
+  window.__TD613_MARROWLINE_STARTER_CAROUSEL_OBSERVER__?.disconnect?.();
+  dom.window.close();
 });

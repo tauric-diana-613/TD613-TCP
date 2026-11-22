@@ -4,7 +4,12 @@ import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { isLoomEvidenceHold, projectLoomEvidenceReview } from './holonomy-loom/ai-evidence-diagnostic.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
 import { marrowlineUploadRequired, prepareMarrowlineAttachmentWire } from './marrowline-attachment-upload.js';
-import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
+import {
+  DEFAULT_MARROWLINE_TITLE,
+  LEGACY_DEFAULT_MARROWLINE_TITLE,
+  isDefaultMarrowlineTitle,
+  deriveMarrowlineConversationTitle
+} from './marrowline-title.js';
 import { formatMarrowlineReplyForCopy } from './marrowline-speaker-frames.js';
 import {
   clearMarrowlineAttachments,
@@ -64,16 +69,43 @@ const PORTABLE_RULES = Object.freeze([
 function byId(doc, id) { return doc.getElementById(id); }
 function safe(value = '') { return String(value ?? '').trim(); }
 
-export function classifyMarrowlineClientFailure(error, stage = 'request', httpStatus = null) {
+export function classifyMarrowlineClientFailure(
+  error,
+  stage = 'request',
+  httpStatus = null,
+  { hiddenDuringRequest = false, deadlineTimedOut = false } = {}
+) {
   const transportStage = stage === 'request' || stage === 'response-body';
-  const code = transportStage && error?.name === 'AbortError' ? 'request-timeout'
+  const backgroundInterrupted = Boolean(hiddenDuringRequest && transportStage && !deadlineTimedOut);
+  const isTimeout = transportStage && (deadlineTimedOut || (!backgroundInterrupted && error?.name === 'AbortError'));
+  const code = isTimeout ? 'request-timeout'
     : stage === 'request' ? 'network-request-failed'
     : stage === 'response-body' ? 'response-body-failed'
     : 'client-response-processing-failed';
+  const outcomeState = backgroundInterrupted
+    ? 'OUTCOME_UNKNOWN'
+    : isTimeout
+      ? 'CLIENT_DEADLINE_EXCEEDED'
+      : 'KNOWN_FAILED';
   return {
     error: code,
     httpStatus,
-    diagnostic: { stage, code, errorClass: safe(error?.name || 'Error').slice(0, 64) }
+    outcomeState,
+    ...(backgroundInterrupted ? {
+      backgroundInterrupted: true,
+      serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+      automaticRetrySuppressed: true
+    } : {}),
+    diagnostic: {
+      stage,
+      code: backgroundInterrupted ? 'background-connection-interrupted-outcome-unknown' : code,
+      errorClass: safe(error?.name || 'Error').slice(0, 64),
+      ...(backgroundInterrupted ? {
+        outcomeState: 'OUTCOME_UNKNOWN',
+        serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+        automaticRetrySuppressed: true
+      } : {})
+    }
   };
 }
 
@@ -141,11 +173,20 @@ function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
 const DEFAULT_CONVERSATION_TITLE = DEFAULT_MARROWLINE_TITLE;
-export { deriveMarrowlineConversationTitle } from './marrowline-title.js';
+export {
+  DEFAULT_MARROWLINE_TITLE,
+  LEGACY_DEFAULT_MARROWLINE_TITLE,
+  isDefaultMarrowlineTitle,
+  deriveMarrowlineConversationTitle
+} from './marrowline-title.js';
 
 function syncConversationTitle(doc, state = {}) {
   const node = byId(doc, 'marrowlineConversationTitle');
-  if (node) node.textContent = safe(state.conversationTitle) || DEFAULT_CONVERSATION_TITLE;
+  const rawTitle = safe(state.conversationTitle);
+  if (node) {
+    node.textContent = (state.titleSource === 'operator' ? rawTitle : (!isDefaultMarrowlineTitle(rawTitle) ? rawTitle : ''))
+      || DEFAULT_CONVERSATION_TITLE;
+  }
 }
 
 function portableEntry(entry = {}) {
@@ -193,11 +234,12 @@ function readStoredShi(root = window) {
 function loadSession(root = window) {
   try {
     const parsed = JSON.parse(root.sessionStorage.getItem(SESSION_KEY) || '{}');
+    const rawTitle = safe(parsed.conversationTitle);
     return {
       messages: Array.isArray(parsed.messages) ? parsed.messages : [],
       lastReceipt: parsed.lastReceipt || null, pendingTask: safe(parsed.pendingTask),
       lastFailure: parsed.lastFailure || null,
-      conversationTitle: safe(parsed.conversationTitle) || DEFAULT_CONVERSATION_TITLE
+      conversationTitle: !isDefaultMarrowlineTitle(rawTitle) ? rawTitle : DEFAULT_CONVERSATION_TITLE
     };
   } catch {
     return { messages: [], lastReceipt: null, pendingTask: '', lastFailure: null,
@@ -395,8 +437,11 @@ export function marrowlineThreadMatchesSearch(thread = {}, query = '') {
 
 function updateReceipt(doc, root, state) {
   const node = byId(doc, 'khonapolitReceipt');
+  const failureStatus = state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN' || state.lastFailure?.backgroundInterrupted === true
+    ? 'CURRENT_REQUEST_OUTCOME_UNKNOWN'
+    : 'CURRENT_REQUEST_FAILED';
   if (node) node.textContent = state.lastFailure
-    ? JSON.stringify({ status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure,
+    ? JSON.stringify({ status: failureStatus, failure: state.lastFailure,
         transportInterpretation: classifyMarrowlineRetryWindow(state.lastFailure) }, null, 2)
     : state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'Awaiting a return for the current request.';
   root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = state.lastReceipt;
@@ -798,9 +843,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const row = doc.createElement('div'); row.className = 'marrowline-thread-row';
       row.dataset.threadId = thread.id;
       const open = doc.createElement('button'); open.type = 'button'; open.className = 'marrowline-thread-open';
+      const rawThreadTitle = safe(thread.conversationTitle);
       const threadLabel = thread.titleSource === 'pending-return'
         ? 'Unfinished conversation'
-        : (thread.conversationTitle || DEFAULT_CONVERSATION_TITLE);
+        : ((thread.titleSource === 'operator' ? rawThreadTitle : (!isDefaultMarrowlineTitle(rawThreadTitle) ? rawThreadTitle : ''))
+          || DEFAULT_CONVERSATION_TITLE);
       open.textContent = (thread.parentId ? '⤴ ' : '') + threadLabel;
       open.setAttribute('aria-current', thread.id === activeThread?.id ? 'true' : 'false');
       open.addEventListener('click', () => void switchThread(thread.id));
@@ -865,9 +912,38 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     activeThread = record;
     state.messages = Array.isArray(record.messages) ? record.messages : [];
     state.lastReceipt = record.lastReceipt || null;
-    state.lastFailure = record.lastFailure || null;
     state.pendingTask = record.pendingTask || '';
-    state.conversationTitle = record.conversationTitle || DEFAULT_CONVERSATION_TITLE;
+    const interruptedInFlightOnReload = Boolean(
+      safe(state.pendingTask)
+      && !record.lastFailure
+      && !record.lastReceipt
+      && state.messages.at(-1)?.role === 'user'
+    );
+    state.lastFailure = record.lastFailure || (interruptedInFlightOnReload
+      ? {
+          error: 'page-lifecycle-interrupted',
+          httpStatus: null,
+          observedAt: Date.now(),
+          backgroundInterrupted: true,
+          pageReloadInterrupted: true,
+          outcomeState: 'OUTCOME_UNKNOWN',
+          serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+          automaticRetrySuppressed: true,
+          diagnostic: {
+            stage: 'page-lifecycle',
+            code: 'page-suspended-or-reloaded-while-in-flight',
+            outcomeState: 'OUTCOME_UNKNOWN',
+            serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+            automaticRetrySuppressed: true
+          }
+        }
+      : null);
+    state.titleSource = record.titleSource || null;
+    const rawRecordTitle = safe(record.conversationTitle);
+    state.conversationTitle = (record.titleSource === 'operator'
+      ? rawRecordTitle
+      : (!isDefaultMarrowlineTitle(rawRecordTitle) ? rawRecordTitle : ''))
+      || DEFAULT_CONVERSATION_TITLE;
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
     const prompt = byId(doc, 'khonapolitPrompt');
     if (prompt) { prompt.value = record.draft || state.pendingTask || ''; prompt.style.height = ''; }
@@ -875,9 +951,19 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     const status = byId(doc, 'khonapolitTerminalStatus');
     if (status) {
+      const outcomeUnknown = state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN' || state.lastFailure?.backgroundInterrupted === true;
       status.dataset.progressStage = state.lastFailure || state.pendingTask ? 'held' : 'prepared';
-      setPedagogueStatus(status, state.lastFailure || state.pendingTask ? 'held' : 'prepared',
-      state.lastFailure || state.pendingTask ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline');
+      status.dataset.outcomeState = outcomeUnknown ? 'unknown' : (state.lastFailure ? 'failed' : 'ready');
+      setPedagogueStatus(
+        status,
+        state.lastFailure || state.pendingTask ? 'held' : 'prepared',
+        outcomeUnknown
+          ? 'TASK PRESERVED · background connection lost · outcome unknown'
+          : (state.lastFailure || state.pendingTask ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline'),
+        outcomeUnknown
+          ? 'Page was suspended or reloaded while a request was in flight; the original provider outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+          : ''
+      );
     }
     setSendControlState(requestInFlight);
     if (sendControl) sendControl.disabled = false;
@@ -1270,8 +1356,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     startPedagogueStatus(status, root, attachments.length);
     // Large file uploads have a separate bounded transfer window. The normal
     // 225-second generation deadline starts afresh only after upload completes.
+    let requestDeadlineTimedOut = false;
     let requestDeadline = root.setTimeout(
-      () => requestController.abort(),
+      () => {
+        requestDeadlineTimedOut = true;
+        requestController.abort();
+      },
       marrowlineUploadRequired(attachments) ? 600000 : KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
     );
     let hiddenDuringRequest = doc.visibilityState === 'hidden';
@@ -1313,8 +1403,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           // Provider generation owns its own 225-second budget after the
           // final attachment is confirmed. This is not an automatic retry.
           root.clearTimeout(requestDeadline);
+          requestDeadlineTimedOut = false;
           requestDeadline = root.setTimeout(
-            () => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
+            () => {
+              requestDeadlineTimedOut = true;
+              requestController.abort();
+            },
+            KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
           );
           requestStage = 'request';
         } else requestBody.attachments = attachments;
@@ -1425,11 +1520,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       state.messages.push(entry); state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
       if (witnessThisTurn) witnessSavedText = entry.text;
       let nextTitleSource = activeThread?.titleSource || null;
-      if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
+      if (activeThread?.titleSource !== 'operator' && isDefaultMarrowlineTitle(state.conversationTitle)) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
         state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
         nextTitleSource = 'local-topic-v3-after-return';
       }
+      state.titleSource = nextTitleSource;
       if (!activeThread) {
         activeThread = await threadLibrary.create({
           messages: state.messages,
@@ -1466,13 +1562,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       state.pendingTask = message;
       state.lastFailure = activeRequestCancelRequested
         ? { error: 'operator-cancelled', httpStatus: responseStatus, observedAt: Date.now(),
+            outcomeState: 'OPERATOR_CANCELLED',
             diagnostic: { stage: requestStage, code: 'operator-cancelled', errorClass: safe(error?.name || 'AbortError') } }
-        : failurePayload || {
-            ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
-            ...(hiddenDuringRequest && (requestStage === 'request' || requestStage === 'response-body')
-              ? { backgroundInterrupted: true } : {}),
-            ...(receivedReceipt ? { receipt: receivedReceipt } : {})
-          };
+        : failurePayload
+          ? { outcomeState: 'KNOWN_FAILED', ...failurePayload }
+          : {
+              ...classifyMarrowlineClientFailure(error, requestStage, responseStatus, {
+                hiddenDuringRequest,
+                deadlineTimedOut: requestDeadlineTimedOut
+              }),
+              observedAt: Date.now(),
+              ...(receivedReceipt ? { receipt: receivedReceipt } : {})
+            };
       loomTransport?.rejectAttempt(state.lastFailure);
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
@@ -1483,19 +1584,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       renderGeminiBrowserLedger(doc, root);
       stopPedagogueStatus(root);
-      if (status) status.dataset.progressStage = activeRequestCancelRequested ? 'cancelled' : 'held';
+      const backgroundOutcomeUnknown = state.lastFailure?.backgroundInterrupted === true
+        || state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN';
+      if (status) {
+        status.dataset.progressStage = activeRequestCancelRequested ? 'cancelled' : 'held';
+        status.dataset.outcomeState = backgroundOutcomeUnknown ? 'unknown' : (activeRequestCancelRequested ? 'cancelled' : 'failed');
+      }
       const requestBudgetHeld = state.lastFailure?.error === 'request-budget-exceeded';
       setPedagogueStatus(status, 'held', activeRequestCancelRequested ? 'The Red Deer stills the signal.'
         : requestBudgetHeld
           ? 'TASK PRESERVED · request exceeds transport envelope'
-          : attachments.length
-            ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
-            : 'TASK PRESERVED · retry when ready',
+          : backgroundOutcomeUnknown
+            ? 'TASK PRESERVED · background connection lost · outcome unknown'
+            : attachments.length
+              ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
+              : 'TASK PRESERVED · retry when ready',
         activeRequestCancelRequested
           ? 'Operator cancelled the browser request; no completed reply admitted. Task and attachments preserved for explicit retry.'
           : requestBudgetHeld
             ? 'Current turn, recent history, and attachments together exceed Marrowline’s 3.7 MB request envelope. Start a new conversation, remove attachments, or shorten the current input; nothing was sent.'
-            : 'Request held; task preserved for explicit retry.');
+            : backgroundOutcomeUnknown
+              ? 'Browser connection closed while backgrounded or suspended; the original provider request outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+              : 'Request held; task preserved for explicit retry.');
     } finally {
       loomTransport?.finishAttempt(loomPrepared);
       // Release the actual UI/request lifecycle before any optional evidence
@@ -1503,7 +1613,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       stopPedagogueStatus(root);
       requestInFlight = false;
       activeRequestController = null;
-      const cancelledByOperator = activeRequestCancelRequested;
       activeRequestCancelRequested = false;
       setSendControlState(false);
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
@@ -1561,7 +1670,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           if (receiptStatus) receiptStatus.textContent = 'Turn recording failed; diagnostic record available to copy.';
         }
       }
-      if (!loomTransport && !cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
+      // RP-06: Do not convert a background/lock connection interruption into an
+      // automatic chargeable re-invocation. Because the stateless HTTP response
+      // stream was severed while the page was hidden, the original server-side
+      // generation outcome is OUTCOME_UNKNOWN (REQUEST_MAY_STILL_BE_RUNNING).
+      // When the page returns to the foreground, surface the preserved task and
+      // OUTCOME_UNKNOWN diagnostic once without dispatching a duplicate request.
+      if (!loomTransport && !activeRequestCancelRequested && state.lastFailure?.backgroundInterrupted === true
         && !backgroundResume
         && backgroundResumeSpentTask !== message) {
         backgroundResumeTask = message;
@@ -1572,8 +1687,17 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           root.removeEventListener?.('online', resumeWhenVisible);
           backgroundResumeTask = '';
           backgroundResumeSpentTask = message;
-          setPedagogueStatus(status, 'pending', 'Working…', 'Background connection interrupted · restoring the preserved task once');
-          root.setTimeout?.(() => submitTask(message, { independentRetry: true, backgroundResume: true }), 0);
+          if (status) {
+            status.dataset.progressStage = 'held';
+            status.dataset.outcomeState = 'unknown';
+          }
+          setPedagogueStatus(
+            status,
+            'held',
+            'TASK PRESERVED · background connection lost · outcome unknown',
+            'Browser connection closed while backgrounded or suspended; the original provider request outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+          );
+          prompt?.focus?.({ preventScroll: true });
         };
         doc.addEventListener?.('visibilitychange', resumeWhenVisible);
         root.addEventListener?.('pageshow', resumeWhenVisible);
@@ -1786,8 +1910,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
     try {
+      const failureStatus = state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN' || state.lastFailure?.backgroundInterrupted === true
+        ? 'CURRENT_REQUEST_OUTCOME_UNKNOWN'
+        : 'CURRENT_REQUEST_FAILED';
       const current = state.lastFailure
-        ? { status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }
+        ? { status: failureStatus, failure: state.lastFailure }
         : state.lastReceipt || null;
       const payload = current
         ? { current, browser_consumption: summarizeGeminiBrowserLedger(root) }

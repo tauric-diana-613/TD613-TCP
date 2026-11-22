@@ -59,7 +59,8 @@ import {
   MARROWLINE_RESTORED_PROSODY_PROFILE,
   buildHistoricalGroveSystemInstruction,
   buildHistoricalGroveDramaturgyCandidate,
-  buildHistoricalGroveVerticalUnprimedCandidate
+  buildHistoricalGroveVerticalUnprimedCandidate,
+  buildHistoricalGroveLexicalDeprimedCandidate
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   MARROWLINE_GROVE_TRIAL_ID,
@@ -572,7 +573,15 @@ function khonapolitReasoning(model = '', { fallback = false } = {}) {
 // instruction body and paragraph order. The Oct 19 softened alternative or
 // explicit dramaturgy candidates can be assembled only through explicit
 // source-level comparison flags.
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = false, historicalDramaturgyCandidate = false, historicalVerticalUnprimedCandidate = false } = {}) {
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = false, historicalDramaturgyCandidate = false, historicalVerticalUnprimedCandidate = false, historicalLexicalDeprimedCandidate = false, maxOutputTokensOverride = null } = {}) {
+  if ([
+    historicalProsodyFreedom === true,
+    historicalDramaturgyCandidate === true,
+    historicalVerticalUnprimedCandidate === true,
+    historicalLexicalDeprimedCandidate === true
+  ].filter(Boolean).length > 1) {
+    throw new Error('CONFLICTING_HISTORICAL_GROVE_CANDIDATE_FLAGS');
+  }
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
   const historicalBase = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
@@ -585,16 +594,21 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
     })
     : null;
   const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-    ? (historicalVerticalUnprimedCandidate === true
-      ? buildHistoricalGroveVerticalUnprimedCandidate(historicalBase)
-      : historicalDramaturgyCandidate === true
-        ? buildHistoricalGroveDramaturgyCandidate(historicalBase)
-        : historicalBase)
+    ? (historicalLexicalDeprimedCandidate === true
+      ? buildHistoricalGroveLexicalDeprimedCandidate(historicalBase)
+      : historicalVerticalUnprimedCandidate === true
+        ? buildHistoricalGroveVerticalUnprimedCandidate(historicalBase)
+        : historicalDramaturgyCandidate === true
+          ? buildHistoricalGroveDramaturgyCandidate(historicalBase)
+          : historicalBase)
     : groveTrial === MARROWLINE_GROVE_TRIAL_ID
       ? buildMarrowlineGroveTrialSystemInstruction(packet)
       : MARROWLINE_ROLE_IDS.includes(groveTrial)
         ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
         : normalSystemInstruction;
+  const resolvedMaxOutputTokens = Number.isInteger(maxOutputTokensOverride) && maxOutputTokensOverride > 0
+    ? Math.min(outputBudget(model), maxOutputTokensOverride)
+    : outputBudget(model);
   return {
     systemInstruction: {
       parts: [{ text: systemText }]
@@ -602,7 +616,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
     contents: geminiContents(packet),
     generationConfig: buildGeminiGenerationConfig({
       model,
-      maxOutputTokens: outputBudget(model),
+      maxOutputTokens: resolvedMaxOutputTokens,
       sampling: {
         // Gemini 3.x strips these legacy overrides and uses provider-default sampling
         // (temperature 1.0). They remain only for unknown/synthetic compatibility.
@@ -733,14 +747,16 @@ export function buildGeminiStructuralRepairRequest(
   model = '',
   heldText = '',
   reasons = [],
-  { fallback = false, groveTrial = null, historicalProsodyFreedom = false, historicalDramaturgyCandidate = false, historicalVerticalUnprimedCandidate = false } = {}
+  { fallback = false, groveTrial = null, historicalProsodyFreedom = false, historicalDramaturgyCandidate = false, historicalVerticalUnprimedCandidate = false, historicalLexicalDeprimedCandidate = false, maxOutputTokensOverride = null } = {}
 ) {
   const request = buildGeminiRequest(packet, apertureReceipt, model, {
     fallback,
     groveTrial,
     historicalProsodyFreedom,
     historicalDramaturgyCandidate,
-    historicalVerticalUnprimedCandidate
+    historicalVerticalUnprimedCandidate,
+    historicalLexicalDeprimedCandidate,
+    maxOutputTokensOverride
   });
   const reasonList = (Array.isArray(reasons) ? reasons : [])
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
@@ -1364,6 +1380,49 @@ export default async function handler(req, res) {
       creative: discourseMode === 'CREATIVE' }
   );
 
+  // RP-01: Provider policy termination (PROHIBITED_CONTENT, SAFETY, RECITATION,
+  // BLOCKLIST, SPII, IMAGE_SAFETY, IMAGE_PROHIBITED_CONTENT, MALFORMED_FUNCTION_CALL,
+  // or promptBlockReason) is an immediate, terminal fail-closed 502 POLICY-HELD
+  // boundary. Never fall over to another model seat or surface an earlier
+  // incomplete/zero-mark draft as HTTP 200 after a provider policy block.
+  const sendPolicyHeldResponse = (triggerModel = null, {
+    finishReason = null,
+    promptBlockReason = null,
+    completion = null
+  } = {}) => {
+    const policyAttempts = attempts.filter((entry) => entry.policyTermination);
+    const rateLimited = attempts.filter((entry) => entry.status === 429 && entry.rateLimit?.observed);
+    const priorRateWindows = [...new Set(rateLimited.map((entry) => entry.rateLimit?.windowClass || 'unknown'))];
+    if (triggerModel) res.setHeader('X-TD613-Gemini-Model', triggerModel);
+    res.setHeader('X-TD613-Completion-State', 'POLICY-HELD');
+    send(res, 502, {
+      ok: false,
+      error: 'gemini-provider-policy-held',
+      status: 'HELD',
+      diagnostic: {
+        stage: 'provider-termination',
+        code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+        finishReason: finishReason || policyAttempts.at(-1)?.policyTermination?.finishReason || null,
+        promptBlockReason: promptBlockReason || policyAttempts.at(-1)?.policyTermination?.promptBlockReason || null,
+        finishReasons: [...new Set(policyAttempts.map((entry) => entry.policyTermination?.finishReason).filter(Boolean))],
+        promptBlockReasons: [...new Set(policyAttempts.map((entry) => entry.policyTermination?.promptBlockReason).filter(Boolean))],
+        policyTerminatedSeatCount: policyAttempts.length,
+        transportFailedSeatCount: attempts.filter((entry) => !entry.ok).length,
+        hasMixedTransportFailure: attempts.some((entry) => !entry.ok),
+        observedStatuses: [...new Set(attempts.map((entry) => entry.status || 0))],
+        rateLimitWindowsOnPriorAttempts: priorRateWindows,
+        ...(completion ? { completion } : {}),
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into structural repair, and subsequent seats were not called.'
+      },
+      attempts,
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    });
+    return true;
+  };
+
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
     // Native Tauric Diana morphology is part of the channel contract, not a
@@ -1472,7 +1531,11 @@ export default async function handler(req, res) {
         admittedAsIncompleteDraft: false,
         fedToStructuralRepair: false
       });
-      return null;
+      return sendPolicyHeldResponse(model, {
+        finishReason: repairProviderOutput.finishReason,
+        promptBlockReason: repairProviderOutput.promptBlockReason || null,
+        completion: rawRepairCompletion
+      });
     }
     if (tailOnly && repairResult.response.ok && repairResult.text) {
       const firstAssembly = assembleMarrowlineProviderTail(heldText, repairResult.text);
@@ -1949,9 +2012,11 @@ export default async function handler(req, res) {
     attempt.completion = completion;
     if (result.response.ok && completion && !completion.complete && completion.policyTerminated) {
       // A provider policy termination (e.g. PROHIBITED_CONTENT, SAFETY, or prompt
-      // block) is an explicit terminal hold, never a retryable transport fragment.
-      // Never promote partial policy-terminated text to HTTP 200 OK or inject it
-      // into a subsequent same-provider structural repair turn.
+      // block) is an explicit terminal hold, never a retryable transport fragment
+      // or a reason to silently fail over to another model seat.
+      // Never promote partial policy-terminated text to HTTP 200 OK, inject it
+      // into a subsequent same-provider structural repair turn, or continue to
+      // another seat after an explicit provider policy block.
       attempt.policyTermination = Object.freeze({
         finishReason: providerOutput.finishReason,
         ...(providerOutput.promptBlockReason ? { promptBlockReason: providerOutput.promptBlockReason } : {}),
@@ -1960,28 +2025,11 @@ export default async function handler(req, res) {
         admittedAsIncompleteDraft: false,
         fedToStructuralRepair: false
       });
-      if (releaseCanary) {
-        res.setHeader('X-TD613-Gemini-Model', model);
-        res.setHeader('X-TD613-Completion-State', 'POLICY-HELD');
-        return send(res, 502, {
-          ok: false,
-          error: 'gemini-provider-policy-held',
-          status: 'HELD',
-          diagnostic: {
-            stage: 'provider-termination',
-            code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
-            finishReason: providerOutput.finishReason,
-            promptBlockReason: providerOutput.promptBlockReason || null,
-            completion
-          },
-          attempts,
-          modelPolicy: plan,
-          aperture: apertureReceipt,
-          aperture_egress: apertureEgress,
-          claim_ceiling: packet.claimCeiling
-        });
-      }
-      continue;
+      return sendPolicyHeldResponse(model, {
+        finishReason: providerOutput.finishReason,
+        promptBlockReason: providerOutput.promptBlockReason || null,
+        completion
+      });
     }
     if (result.response.ok && result.text && !completion.complete) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
