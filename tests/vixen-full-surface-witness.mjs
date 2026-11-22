@@ -143,14 +143,36 @@ try{
    await page.waitForTimeout(250);
    matrix.push({profile:profile.name,...await scrollCapture(page,profile,'works-original-reader')});
   }catch(e){failure.push({profile:profile.name,route:'works-original-reader',error:String(e)});}
+  // Inspect every public research-inspector pane, including scrollable
+  // dialog content. A hidden/pinned developer panel is not omitted silently.
   try{
    await page.evaluate(()=>document.querySelector('[data-action="inspector"]')?.click());
-   await page.waitForTimeout(150);
-   const tab=page.locator('[data-insp-tab="podium"]').first();
-   if(await tab.count())await tab.click({force:true,timeout:5000});
-   await page.waitForTimeout(100);
-   matrix.push({profile:profile.name,...await scrollCapture(page,profile,'podium-handoff-inspector')});
-  }catch(e){failure.push({profile:profile.name,route:'podium-handoff-inspector',error:String(e)});}
+   await page.locator('#inspectorDialog').waitFor({state:'visible',timeout:7000});
+   for(const tab of ['census','bench','provenance','podium']){
+    await page.locator('[data-insp-tab="'+tab+'"]').click({force:true,timeout:5000});
+    await page.waitForTimeout(80);
+    const metrics=await page.evaluate(()=>{
+     const el=document.querySelector('#inspectorDialog .dialog-body');
+     return {max:Math.max(0,el.scrollHeight-el.clientHeight),clientHeight:el.clientHeight};
+    });
+    const step=Math.max(120,Math.floor(metrics.clientHeight*.82));
+    const ys=new Set([0,metrics.max]);
+    for(let y=0;y<metrics.max;y+=step)ys.add(Math.min(y,metrics.max));
+    const positions=[...ys].sort((a,b)=>a-b);
+    if(positions.length>35)throw Error('UNBOUNDED_INSPECTOR_'+tab);
+    for(const [i,y] of positions.entries()){
+     await page.evaluate(v=>{const el=document.querySelector('#inspectorDialog .dialog-body');el.scrollTop=v;},y);
+     await page.waitForTimeout(60);
+     await capture(page,path.join(profile.name,'inspector-'+tab,'dialog-'+String(i).padStart(3,'0')+'.jpg'),{
+      profile:profile.name,surface:'inspector-'+tab,kind:'dialog_scroll_tile',
+      tile:i,requested_y:y,modal_scroll_max:metrics.max
+     });
+    }
+    matrix.push({profile:profile.name,route:'inspector-'+tab,tiles:positions.length,modal:true,
+      scrollHeight:metrics.max+metrics.clientHeight,covered_bottom:true});
+   }
+   await page.locator('#closeInspectorBtn').click({force:true,timeout:5000});
+  }catch(e){failure.push({profile:profile.name,route:'research-inspector-all-tabs',error:String(e)});}
   if(pageErrors.length)failure.push({profile:profile.name,route:'browser',errors:pageErrors.slice(0,25)});
   await context.close();
  }
