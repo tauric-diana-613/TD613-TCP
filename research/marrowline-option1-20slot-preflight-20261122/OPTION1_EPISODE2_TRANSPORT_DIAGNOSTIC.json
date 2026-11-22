@@ -1,0 +1,39 @@
+{
+  "schema": "td613.marrowline.option1-ep2-transport-diagnostic/v1.0",
+  "checked_at_utc": "2026-11-22T18:58:21.887Z",
+  "node_version": "v26.7.0",
+  "paid_generation_calls_executed": 0,
+  "endpoint_class": "READ_ONLY_TLS_AND_GET_METADATA_ONLY",
+  "credential_hygiene": "REDACTED_ZERO_EXPOSURE",
+  "tls_alpn_probe": {
+    "ok": true,
+    "elapsed_ms": 390,
+    "protocol": "TLSv1.3",
+    "alpnProtocol": "h2",
+    "cipher": "TLS_AES_256_GCM_SHA384",
+    "authorized": true
+  },
+  "metadata_get_probes": {
+    "gemini-3.8-flash": {
+      "ok": true,
+      "http_status": 200,
+      "elapsed_ms": 453,
+      "version": "3.0",
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "server_header": "scaffolding on HTTPServer2",
+      "alt_svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+    },
+    "gemini-3.6-flash": {
+      "ok": true,
+      "http_status": 200,
+      "elapsed_ms": 149,
+      "version": "3.6-flash-07-2026",
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "server_header": "scaffolding on HTTPServer2",
+      "alt_svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+    }
+  },
+  "epistemic_limit_note": "Read-only TLS + GET /v1beta/models metadata probes verify host reachability, ALPN negotiation, and model catalog responsiveness only. They do NOT establish live streamGenerateContent?alt=sse queue latency, server-side thinking time, or upstream billable execution status of Episode 1 S01."
+}

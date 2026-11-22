@@ -1,0 +1,892 @@
+{
+  "schema": "td613.marrowline.option1-preflight-custody-manifest/v1.2",
+  "generated_at_utc": "2026-11-22T19:47:58.627Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "research/marrowline-option1-20slot-preflight-20261122",
+  "git_head_provenance": {
+    "authorized_executable_head_sha_episode2": "2e1046a44d38983f5f44fe3853f5182ac05a03ba",
+    "authorized_executable_head_sha_episode1": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "immutable_episode1_archive_commit": "51c1f420cfaa1792c25a5b517d253bf0c079ad86",
+    "construction_parent_head_sha": "2e1046a44d38983f5f44fe3853f5182ac05a03ba",
+    "evidence_publication_head_sha": "DETERMINED_EXTERNALLY_BY_GIT_REV_PARSE_HEAD_ON_COMMITTED_PR",
+    "git_self_reference_note": "A manifest committed inside commit C cannot embed commit C's own SHA; authorized executable HEAD for Episode 2 (2e1046a44d38983f5f44fe3853f5182ac05a03ba) and Episode 1 (c67e64363a436607722f1a943311c5ed9a73a906) are preserved distinctly from the subsequent evidence-publication HEAD verified externally via git rev-parse HEAD.",
+    "prior_preflight_pr1769_initial_commit": "ade1d537904f8aaff96355658ae396734c43e340",
+    "stacked_on_pr1766_commit": "5cec27f0727c17ce1d2ac825736a1027293b8849",
+    "base_activation_pr1765_commit": "01c3b9e48391a79472369695b64481b19614f9fa",
+    "immutable_q1_pr1764_commit": "2836e636e4b5eb485b12f73a2596ea3889b173d4"
+  },
+  "live_episode2_execution_summary": {
+    "episode_id": "EP2",
+    "study_id": "TD613-MARROWLINE-OPTION1-20SLOT-EP2-20261122",
+    "authorized_executable_head_sha": "2e1046a44d38983f5f44fe3853f5182ac05a03ba",
+    "calls_planned": 20,
+    "calls_attempted": 8,
+    "calls_unattempted": 12,
+    "calls_completed_stop": 4,
+    "calls_http_503_unavailable": 4,
+    "recoverable_specimens": 4,
+    "chrome_rendered_specimens": 4,
+    "rendered_png_count": 59,
+    "terminal_status": "HALTED_BY_STOP_RULE",
+    "stop_triggered": "STOP_3_CONSECUTIVE_TRANSPORT_FAILURES",
+    "unblinding_key_opened": false
+  },
+  "live_episode1_execution_summary": {
+    "authorized_executable_head_sha": "c67e64363a436607722f1a943311c5ed9a73a906",
+    "calls_planned": 20,
+    "calls_attempted": 1,
+    "calls_unattempted": 19,
+    "calls_completed_stop": 0,
+    "recoverable_specimens": 0,
+    "terminal_status": "FAILED_WITH_TERMINAL_ERROR",
+    "stop_triggered": "FATAL_HARNESS_EXCEPTION",
+    "cause_code": "UND_ERR_HEADERS_TIMEOUT"
+  },
+  "model_identity_gate_verdict": "MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8",
+  "q1_operator_artistic_verdict": "REJECTED_PRIOR_TO_UNBLINDING",
+  "q1_unblinding_key_opened": false,
+  "q2_status": "HELD",
+  "experiment_b_status": "CLOSED",
+  "merge_and_release_authority": false,
+  "human_artistic_closure": "RESERVED",
+  "summary_counts": {
+    "option1_directory_files": 91,
+    "linked_repository_files": 10,
+    "total_published_in_git_entries": 101,
+    "excluded_with_safe_custody_entries": 2
+  },
+  "published_in_git": {
+    "option1_preflight_estate": [
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/MODEL_IDENTITY_REDESIGN_GATE.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/MODEL_IDENTITY_REDESIGN_GATE.md",
+        "bytes": 7878,
+        "sha256": "8d3218d1ffd2766aaa67883986a4e1441e66c57023d7bbc649d7cc00e296cbdf"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_20SLOT_EFFECTIVE_REQUESTS_PREFLIGHT.json",
+        "bytes": 43637,
+        "sha256": "b245d217169dc4ff87a9fa9fe331fa91d52b9eba484836fe7e4a4f711ccbd399"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_CAUSAL_LIMITS_AND_APERTURE_BOUNDARY.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_CAUSAL_LIMITS_AND_APERTURE_BOUNDARY.md",
+        "bytes": 7600,
+        "sha256": "ab85ccccdd2cefbf5ea0029af4d01c24935cba7c53e2002717184e58887e152e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "bytes": 15176,
+        "sha256": "276b2000715e3e66529ea972bdafa739d0d2e449a751906a188ee9f21adc4680"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_EPISODE2_PREREGISTRATION_AND_TRANSPORT_HARDENING.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_EPISODE2_PREREGISTRATION_AND_TRANSPORT_HARDENING.md",
+        "bytes": 7306,
+        "sha256": "b84e63a32556fc7fc3e0cd785c39341dfb42c1c73926675cb8dfdc842c580ce5"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_EPISODE2_TRANSPORT_DIAGNOSTIC.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_EPISODE2_TRANSPORT_DIAGNOSTIC.json",
+        "bytes": 1455,
+        "sha256": "13f47f69f54aab24f87074ee4510e557819bb72556e114f42543c48a86077275"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
+        "bytes": 14769,
+        "sha256": "dcf770bee178a311ced606750d4fc37661df46f5d003cf205f66f207d7a14c97"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/OPTION1_TEST_AND_VERIFICATION_RECEIPTS.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_TEST_AND_VERIFICATION_RECEIPTS.md",
+        "bytes": 11027,
+        "sha256": "ef653ee690c09c26e029604ab344dfbce1390a83690506d73da923ce2a3a0151"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/EPISODE_CLAIM_LOCK.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/EPISODE_CLAIM_LOCK.json",
+        "bytes": 514,
+        "sha256": "165a105baa315986c230086d6b6dfd2c97f99033c73822d2eb2def9aab151d67"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_BLINDED_LITERARY_GALLERY.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_BLINDED_LITERARY_GALLERY.json",
+        "bytes": 38060,
+        "sha256": "dcad83b3f4f4331b136997c673167cd8dcd849628b640e8dd88c74021d2c9737"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_BLINDED_LITERARY_GALLERY.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_BLINDED_LITERARY_GALLERY.md",
+        "bytes": 39471,
+        "sha256": "bbe31c323eeb5b0d6c04dcedeaf62f18a3aa05f6b6ce76ee78002df30eb3e0b3"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_EP2_VISUAL_WITNESS_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_EP2_VISUAL_WITNESS_RECEIPT.json",
+        "bytes": 45475,
+        "sha256": "1b06efd9ff1e1097fd8b6faa30ef480b14ab124792724198e640b94da54b6c7f"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_LIVE_ACQUISITION_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/OPTION1_LIVE_ACQUISITION_RECEIPT.json",
+        "bytes": 44852,
+        "sha256": "31e13b9e432c887b9bb70daed1bcb5d985f2b9a2ffa9b24cacadce926c7299e6"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900.png",
+        "bytes": 540231,
+        "sha256": "7c44fb7d787d56a8c229b3f9336e5bd5d9b541a84e068708a31de474e1f3a28a"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_detail_bots.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_detail_bots.png",
+        "bytes": 107219,
+        "sha256": "db0def7d7ae17cc6372a584be76d8a6af5e238b2707c4638a549eadeef510a81"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_02.png",
+        "bytes": 582989,
+        "sha256": "78c6901af0017ceb83b6e0eb65e5b842da8e963e15c9c0dde9fa25aceeb6b639"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_03.png",
+        "bytes": 581056,
+        "sha256": "79a76af85279db00e360dc2bde8551bacbd77ff898432143719136089414022a"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_04.png",
+        "bytes": 590733,
+        "sha256": "b1f32335fe8f0119bb594419e3e86f9c9c03cd15ce3e13b5d3c8550eeb804a77"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_05.png",
+        "bytes": 514307,
+        "sha256": "cf65839a5d410da540201f26f787ca29017e5da2c0e2e0dfee2053fe47fd457e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_06.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_desktop_1440x900_scroll_06.png",
+        "bytes": 469110,
+        "sha256": "35922950d9e35a48b2d0840f6c9094743b4c8672e98c87310d7c77ddea4a600e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844.png",
+        "bytes": 275410,
+        "sha256": "7c09b6111ccd7fe93941b9d8ce8c8c478ae3e272fbd56278912932dd2717d0a8"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_01.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_01.png",
+        "bytes": 292296,
+        "sha256": "fddb05fffb69fa74975997012302e01afc4da0be87853ad44d4db410277c6e86"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_02.png",
+        "bytes": 259625,
+        "sha256": "4efaa206cd448ede3b6e011b8286e0685648bd9d83b7f851a00ccc3be64f0a28"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_03.png",
+        "bytes": 255492,
+        "sha256": "158dff3e000b250c7692b11d125c5c3417b40ae8380519a820f6d437f1b30d6b"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_04.png",
+        "bytes": 265314,
+        "sha256": "a2450af7aaa2846908d881025eeb9e1d6676ebbbdfd5c93b81913ad69a8724fc"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_05.png",
+        "bytes": 264164,
+        "sha256": "22c1e944b4d987d7e288011faf4e268e57da45fa758b3004061f3b91291dad4d"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_06.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_06.png",
+        "bytes": 234581,
+        "sha256": "52515250c838a6d35f572f6f6c8acf8b315f182670c05d40f9b8f6bddaf65959"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_07.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_03_mobile_390x844_capture_07.png",
+        "bytes": 186793,
+        "sha256": "9ea21cc195543b2b45f52ec50b698957f65f5f4adacdcaadb7054c99685edb20"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900.png",
+        "bytes": 544349,
+        "sha256": "13572e37caf27a39784cfdcaf68008d7ea201ce59d077fb25e3227c76af76c66"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_detail_bots.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_detail_bots.png",
+        "bytes": 109745,
+        "sha256": "13e0713cac105fe47e09c8496f4a0f04ecf9174472b59b580f78e08d78a86514"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_02.png",
+        "bytes": 564106,
+        "sha256": "9584f63c1ca963bf6dd5048a977cfeb9541a773ca070ac26a200d6b911292cc1"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_03.png",
+        "bytes": 574462,
+        "sha256": "8920fd9eab48ae9b3722e4bf7b859fe96457b30f8abcb28aa44cf1ba489f80f7"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_04.png",
+        "bytes": 570066,
+        "sha256": "a96fcc51fd5b3ac3832e3df0ed07bab3ad739a84ed0ed6b61ee692ab9bf3484b"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_05.png",
+        "bytes": 529785,
+        "sha256": "25bd76089f6b29ea0771db7d168c6a6a03f28ad440d2a0f88280bd0fd5da6fad"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_06.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_06.png",
+        "bytes": 465890,
+        "sha256": "d5e5dfeb64dae6f5f9cc44fd5bd394fdf5ac723ab4615be2641e62b1391e0690"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_07.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_desktop_1440x900_scroll_07.png",
+        "bytes": 466418,
+        "sha256": "bde342f18bf30487d9d6a60b20d53cee34685e637a79055ba552e491f37c5c65"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844.png",
+        "bytes": 259446,
+        "sha256": "17eef2dd04981a6f0c9974c76fee458f57d240dc506a1d46f759d1da9610039e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_01.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_01.png",
+        "bytes": 285215,
+        "sha256": "39265766cea8622a158877ed880fc9d2cd074e53a0d9dbb7acbf1da4a305e367"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_02.png",
+        "bytes": 253477,
+        "sha256": "ea7fc4a3c35c910f8373c462c0ddfce50a5953a2facc4d2aebf97e01d53c98d6"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_03.png",
+        "bytes": 238098,
+        "sha256": "2f0153ab13a6107b930f0494045f1613159c499a95b14b7bfe176d8dcf88f7d1"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_04.png",
+        "bytes": 262095,
+        "sha256": "da3fc89640c079f7e6649cb2bd1241d6264fea2bd62cb12f0cc292f075cda836"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_05.png",
+        "bytes": 260945,
+        "sha256": "e69096cec6fe4acc0fa244f46a1294cf3392f1b3c10fe099648b1a6453b7d6b1"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_06.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_06.png",
+        "bytes": 248716,
+        "sha256": "cf645d17143f3d563c8e3e3b996a097b7abb8d788a8962766afc5fb7a053c414"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_07.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_04_mobile_390x844_capture_07.png",
+        "bytes": 201214,
+        "sha256": "b4869fcbefa6bed56c3619890995c24932d36892b772a062683e6c932ca826a0"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900.png",
+        "bytes": 539211,
+        "sha256": "0867367811470e28b50064fa897a49e7f751725ede7542d5391a87076203475a"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_detail_bots.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_detail_bots.png",
+        "bytes": 97637,
+        "sha256": "a6586a3c70b4ad80473d2b68214893a89023fd0118eab7cce617350dbce44da1"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_02.png",
+        "bytes": 588966,
+        "sha256": "6752458fe1bcc8ac85e3f853f82e7ea9da9f1fea6356fecf04dcaf34c3788f2a"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_03.png",
+        "bytes": 578487,
+        "sha256": "3cfa8e54a8fe94ed4e6c7847fbaa21f8ab889e46a5ce75d29d1ec050bc5392a2"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_04.png",
+        "bytes": 541023,
+        "sha256": "639304e852c143f6c94f2dc32210820190b50e514e1f57c3359210ad8d0e615e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_desktop_1440x900_scroll_05.png",
+        "bytes": 485933,
+        "sha256": "83f108d6dc3a47475da14f1f8aaa3fa6aee203d3fc30efb6954f51d7451554f8"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844.png",
+        "bytes": 259547,
+        "sha256": "a1244ebf66242cfd92fc38db4b3089e3c9466469bd082dda6dcf1b1b1dd42bdf"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_01.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_01.png",
+        "bytes": 286181,
+        "sha256": "8ae78c56acaebf977e4bcb5757fa5d78d01507ae3521f78186f0e20a72966b30"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_02.png",
+        "bytes": 247964,
+        "sha256": "f5ea3dd0b8573ffe96338c28c845e5a7c567579d2ce2a4f8d90e2ccab3778689"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_03.png",
+        "bytes": 267356,
+        "sha256": "44f338fcfe638313c0cf4d67fde30827bb6543bae24452bc659e99ccf668ca7f"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_04.png",
+        "bytes": 257702,
+        "sha256": "786c4e6a08fbea3fa58b14d5b6060c1283c020e192b6cea53fd54aa946899584"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_05.png",
+        "bytes": 241900,
+        "sha256": "3b47e799d628e0a17b4f9694ca8e4544808b359ac787d907b2633fc3350e7b24"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_06.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_06.png",
+        "bytes": 230542,
+        "sha256": "244ed3abeee599a5499f22f67adc270c5b23639e84acfa47d89fe9d276466174"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_07.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_06_mobile_390x844_capture_07.png",
+        "bytes": 204522,
+        "sha256": "55bed708dd96b22fd9568573e1780dd01d7e916a2578a53237d81bdfabb98d83"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900.png",
+        "bytes": 554930,
+        "sha256": "3e729f4d20428218a28783ef74dd42183e50166e0e2441c7b17fd6b4f872f2c1"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_detail_bots.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_detail_bots.png",
+        "bytes": 71461,
+        "sha256": "d27b9e0920b7d2ffe6d263921a5dc4f74d5796e7897cdcc4a62b40818988a573"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_02.png",
+        "bytes": 567787,
+        "sha256": "5cb0b8f29c62907246c8c73dc644f1c10c806f308f4d7e4c1dec24c45e13eade"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_03.png",
+        "bytes": 587284,
+        "sha256": "9b22210d7dc515742a6e00f50f814405236aebee43dbeecbc98d66919b4a6632"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_04.png",
+        "bytes": 525386,
+        "sha256": "9ab3a1cb582a15026c9384ffc2ed843d8a5e00dfbcb0cb5acd9e64d509752762"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_desktop_1440x900_scroll_05.png",
+        "bytes": 441964,
+        "sha256": "d3edb2e64d455ce94ef87c80d687b9b6cbb9a41b73bc3d7ef05a72f46335c5e6"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844.png",
+        "bytes": 259257,
+        "sha256": "a7a4b63d5c23137a6833ca8f734dd3822b584a8e1da6f8e985d63fbaa3fe1c00"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_01.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_01.png",
+        "bytes": 285034,
+        "sha256": "3c704e28ac9062dae37a6474590a1ce38162d8b5a3b4ccee00992f669308c58f"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_02.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_02.png",
+        "bytes": 256767,
+        "sha256": "566341cd413610bf0afcccca70c5885beeeb306a423eca0349776aea592fe1fa"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_03.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_03.png",
+        "bytes": 252385,
+        "sha256": "79944acc0ef7dd1d7cc3d4630e5ccd676ca8440b77414fe983f4a5df1e484ae2"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_04.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_04.png",
+        "bytes": 271445,
+        "sha256": "5610bf4b6c01fae3bf17be135e89c5e096b1411e7747ad989c3554263515e28c"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_05.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_05.png",
+        "bytes": 250215,
+        "sha256": "776dc17f085c1f58e7049bf03ac8521fb898689e22a919a54eb16b3bdf86aa76"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_06.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_06.png",
+        "bytes": 225643,
+        "sha256": "cc520b9e31c937931fbd7de3b39646c69e1ea0829e918f5883efd533c5ba7dd6"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_07.png",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/blinded-screenshots/OPT1_M_07_mobile_390x844_capture_07.png",
+        "bytes": 178093,
+        "sha256": "f3935ff1d06e93fd24a503899f52dfb8b9f3e21c25db84c74c1a6846161d1bf3"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/private-unblinding/OPTION1_SEALED_UNBLINDING_KEY.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/private-unblinding/OPTION1_SEALED_UNBLINDING_KEY.json",
+        "bytes": 7559,
+        "sha256": "74aa6fb641d3c201b85a1abc352d9893f66996111079986f2b28be507f81b670"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S01.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S01.sse",
+        "bytes": 57532,
+        "sha256": "c8a63a3213b24adfe64290f7574e173786ba43c25b359f358804c901d43cbf5e"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S02.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S02.sse",
+        "bytes": 60784,
+        "sha256": "af32a7a3c5adc5044e92a9779c605d4a30c0a89964250467a6c451b8211f1c33"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S03.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S03.sse",
+        "bytes": 198,
+        "sha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S04.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S04.sse",
+        "bytes": 47379,
+        "sha256": "a386b8aa1ba8f34c1eac3d055803cb69a4269adbf2078a40e0eb95d83412e76a"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S05.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S05.sse",
+        "bytes": 198,
+        "sha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S06.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S06.sse",
+        "bytes": 61263,
+        "sha256": "acc38dac3285cbfe83d0b41547d4c61e7911d9a6ebccdf40cf1f21c6b523c12f"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S07.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S07.sse",
+        "bytes": 198,
+        "sha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S08.sse",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-sse/S08.sse",
+        "bytes": 198,
+        "sha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S01.txt",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S01.txt",
+        "bytes": 8297,
+        "sha256": "f07d1c2aa20b6084d908d462c49b4d2af8230e705646a6ebd25daceb7ff9d5c1"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S02.txt",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S02.txt",
+        "bytes": 5869,
+        "sha256": "80801d967e2f587377c22445c601fc14463e345727f198ed5ef8ce0bd8e56a59"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S04.txt",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S04.txt",
+        "bytes": 6640,
+        "sha256": "bdce05f6fc7f5ca49ac1270ed479786fbcb821e1f0c074ddd14fe9d9b2308185"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S06.txt",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition-ep2/raw-text/S06.txt",
+        "bytes": 7311,
+        "sha256": "da1d94cdba91e1ff4875c18d59ae0b2262372fbea590c920978d172cbaa9b13b"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_RECEIPT.json",
+        "bytes": 1211,
+        "sha256": "1a178da55c62296fce233be8b217aad2486c01a55170090ea525e712343f12eb"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.json",
+        "bytes": 13922,
+        "sha256": "4ec24fb49e7545b220bb2b7de74f3c58a820238ec65d7026099f699e6cfb3df8"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/live-acquisition/OPTION1_LIVE_ACQUISITION_SUPPLEMENTAL_RECEIPT.md",
+        "bytes": 8988,
+        "sha256": "2be87cbc02ea2055fd08c9a195e202a3aaf3f4eccc501f45f50e4ec23697efae"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/run-option1-20slot-discriminator.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/run-option1-20slot-discriminator.mjs",
+        "bytes": 78198,
+        "sha256": "d9e4bde881f777ef3650c26fe6e722169a6024311600a289f7b949d8726a74fb"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/run-option1-ep2-visual-witness.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/run-option1-ep2-visual-witness.mjs",
+        "bytes": 34314,
+        "sha256": "b411aa16270df21f7971548bdc341a7b8efe0cf15db421132955e93ff7090b06"
+      },
+      {
+        "path": "research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/verify-option1-preflight-custody.mjs",
+        "bytes": 11038,
+        "sha256": "85ee8e108a467068e9b9591754b39cd5b9aa47adc16d45e83483d895d31b9eaa"
+      }
+    ],
+    "linked_repository_witnesses_and_tests": [
+      {
+        "path": "tests/marrowline-option1-20slot-preflight.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/tests/marrowline-option1-20slot-preflight.test.mjs",
+        "bytes": 44562,
+        "sha256": "8eb305a7e94051cd19f9672514be691d06462ea7b9bc1a3be10d4f15cb2b00a1"
+      },
+      {
+        "path": "tests/marrowline-sep26-oct02-stage0.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/tests/marrowline-sep26-oct02-stage0.test.mjs",
+        "bytes": 12773,
+        "sha256": "aac96fa39e2cc7192d78db4a26ba043ebf161668635d16ab7215f21502d83a0d"
+      },
+      {
+        "path": "tests/marrowline-q1-live-discriminator.test.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/tests/marrowline-q1-live-discriminator.test.mjs",
+        "bytes": 21187,
+        "sha256": "a2bdbd99d884381bf164a67415e3617460c10a183a66430ad3435eda9c34637c"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/MISSION_ENVELOPE_EFFECTIVE_REQUEST_MATRIX.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-sep26-oct02-reconstruction-20261121/MISSION_ENVELOPE_EFFECTIVE_REQUEST_MATRIX.json",
+        "bytes": 151461,
+        "sha256": "d0d6b15f67b0e7c454cc5ec801f9e6cd0d54b9ae81b54bd937449dc7bc3fa8db"
+      },
+      {
+        "path": "research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-sep26-oct02-reconstruction-20261121/STAGE0_EMERGENCE_HQ_RETRIEVAL_NAVIGATOR.md",
+        "bytes": 9825,
+        "sha256": "91d75ccad7e748bc3a7e1c18416113445d92e14fdc5e8d6c668bcb87cd2bf09a"
+      },
+      {
+        "path": "research/marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-screaming-grove-q1-20261121/run-q1-live-discriminator.mjs",
+        "bytes": 55414,
+        "sha256": "7b06241a366d2a3816e3300cfb54c8234d5ae1cf68f3f1d8fdd68b725de49f05"
+      },
+      {
+        "path": "research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-screaming-grove-q1-20261121/live-acquisition/Q1_LIVE_ACQUISITION_RECEIPT.json",
+        "bytes": 40831,
+        "sha256": "bc3a9e9c942d2130e65ad8e9fd2831bbc88039da5f93f5d856946c40f6d29f65"
+      },
+      {
+        "path": "research/marrowline-multipart-repair-20261015/README.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-multipart-repair-20261015/README.md",
+        "bytes": 9532,
+        "sha256": "2dbf79f000f4524bcb6e7518a4a039b6b36fb9ebc1cf2dfed216f05073042e1f"
+      },
+      {
+        "path": "research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-unicode-capability-20261015/LIVE-RESULT-20261015.md",
+        "bytes": 5783,
+        "sha256": "1305668237d6f6d32caef1bb6c17656896db2962825a5cd63557d6ac52636c16"
+      },
+      {
+        "path": "research/marrowline-native-authorship-rest-20261014/README.md",
+        "custody_status": "PUBLISHED_IN_GIT",
+        "branch": "research/marrowline-option1-20slot-preflight-20261122",
+        "github_blob_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-native-authorship-rest-20261014/README.md",
+        "bytes": 3806,
+        "sha256": "e46e48d5cac9ae24ec73720c50d8f738c07aefc571dd78a8c1a0693af3849077"
+      }
+    ]
+  },
+  "excluded_artifacts_with_safe_custody": [
+    {
+      "custody_status": "EXCLUDED_WITH_SAFE_CUSTODY_RECORD",
+      "original_identity_and_purpose": "Local operator .env Gemini API key used strictly for read-only HTTP GET /v1beta/models catalog check (0 paid generation calls).",
+      "source_episode": "TD613-MARROWLINE-OPTION1-20SLOT-PREFLIGHT (2026-11-22)",
+      "reason_for_exclusion": "Secret API credential; prohibited from repository custody.",
+      "safe_digest_or_reference": "REDACTED_CREDENTIAL_REF:env:GEMINI_API_KEY",
+      "recoverable": true,
+      "authorized_retrieval_route": "Local operator environment custody only; never exported to GitHub."
+    },
+    {
+      "custody_status": "EXCLUDED_WITH_SAFE_CUSTODY_RECORD",
+      "original_identity_and_purpose": "Ephemeral scratch helper script for read-only catalog query and raw Antigravity tool logs.",
+      "source_episode": "TD613-MARROWLINE-OPTION1-20SLOT-PREFLIGHT (2026-11-22)",
+      "reason_for_exclusion": "Scratch helper and harness logs contain private local machine paths; complete sanitized catalog payload is committed in OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json.",
+      "safe_digest_or_reference": "PUBLISHED_REPLACEMENT:research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json",
+      "recoverable": true,
+      "authorized_retrieval_route": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/marrowline-option1-20slot-preflight-20261122/research/marrowline-option1-20slot-preflight-20261122/OPTION1_MODEL_CATALOG_AND_ALIASING_RECEIPT.json"
+    }
+  ]
+}

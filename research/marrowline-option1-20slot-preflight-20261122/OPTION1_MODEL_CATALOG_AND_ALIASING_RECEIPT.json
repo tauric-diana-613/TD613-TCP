@@ -1,0 +1,449 @@
+{
+  "schema": "td613.marrowline.option1-model-catalog-and-aliasing-receipt/v1.0",
+  "checked_at_utc": "2026-11-22T15:10:09.176Z",
+  "endpoint_class": "READ_ONLY_METADATA_HTTP_GET_ONLY",
+  "endpoints_queried": [
+    "GET https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash",
+    "GET https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash",
+    "GET https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash",
+    "GET https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash",
+    "GET https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview",
+    "GET https://generativelanguage.googleapis.com/v1beta/models?pageSize=200"
+  ],
+  "paid_generation_calls_executed": 0,
+  "credential_hygiene": "AUTHENTICATED_LOCAL_ENV_KEY_REDACTED_ZERO_EXPOSURE",
+  "amari_rule1_gate_verdict": "MODEL_IDENTITY_STOP_3_7_ALIAS_TO_3_8",
+  "quiet_substitution_permitted": false,
+  "upstream_aliasing_findings": {
+    "gemini-3.7-flash": {
+      "catalog_http_status": 200,
+      "catalog_version_field": "3.7-flash-08-2026",
+      "catalog_output_token_limit": 65536,
+      "catalog_thinking_supported": true,
+      "upstream_routing_status": "DEPRECATED_AND_AUTO_ROUTED_TO_GEMINI_3_8_FLASH",
+      "deprecation_date_documented": "2026-10-08",
+      "expected_returned_model_version": "gemini-3.8-flash",
+      "evidence_sources": [
+        "https://ai.google.dev/gemini-api/docs/changelog (October 8, 2026 release notes)",
+        "research/marrowline-multipart-repair-20261015/README.md (line 28: gemini-3.7-flash requests automatically routed to gemini-3.8-flash; gemini-3.5-flash automatically routed to gemini-3.6-flash)"
+      ],
+      "historical_oct02_envelope_note": "In ffb98ac005:server/gemini-generation-envelope.js (line 72), khonapolit-interactive mapped gemini-3.7-flash to thinkingLevel=low while mapping gemini-3.8-flash to thinkingLevel=medium.",
+      "eligible_as_independent_model_arm_today": false,
+      "blocking_reason": "Calling gemini-3.7-flash today does not execute an independent historical 3.7 model; it either triggers STOP_1_MODEL_IDENTITY_HOLD (returned modelVersion=gemini-3.8-flash) or silently collapses the 2x2 factorial into 3.8 vs 3.8."
+    },
+    "gemini-3.5-flash": {
+      "catalog_http_status": 200,
+      "catalog_version_field": "3.5-flash-05-2026",
+      "upstream_routing_status": "DEPRECATED_AND_AUTO_ROUTED_TO_GEMINI_3_6_FLASH",
+      "deprecation_date_documented": "2026-10-08",
+      "expected_returned_model_version": "gemini-3.6-flash",
+      "eligible_as_independent_model_arm_today": false
+    },
+    "gemini-3.8-flash": {
+      "catalog_http_status": 200,
+      "catalog_version_field": "3.0",
+      "catalog_output_token_limit": 65536,
+      "catalog_thinking_supported": true,
+      "upstream_routing_status": "ACTIVE_FLAGSHIP_NON_ALIASED",
+      "supported_thinking_levels_documented": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default_thinking_level_documented": "medium",
+      "eligible_as_independent_model_arm_today": true
+    },
+    "gemini-3.6-flash": {
+      "catalog_http_status": 200,
+      "catalog_version_field": "3.6-flash-07-2026",
+      "catalog_output_token_limit": 65536,
+      "catalog_thinking_supported": true,
+      "upstream_routing_status": "ACTIVE_PREVIOUS_GENERATION_NON_ALIASED",
+      "historical_oct02_seat": "Seat 3 in ffb98ac005:server/gemini-model-policy.js (v11-khonapolit-frontier-custody)",
+      "default_thinking_level_documented": "medium",
+      "live_medium_config_note": "Catalog confirms thinking=true and outputTokenLimit=65536 (identical schema to 3.8-flash); official docs list default thinking_level=medium. Exact live streamGenerateContent acceptance of thinkingLevel=medium is verified fail-closed on first authorized slot (HTTP 400 halts without silent downgrade).",
+      "eligible_as_independent_redesign_comparator_today": true,
+      "redesign_labeling_requirement": "MUST be labeled CONSTRUCTED_CONTEMPORARY_MODEL_IDENTITY_REDESIGN (NOT historical Oct 2 Seat-2 gemini-3.7-flash)."
+    },
+    "gemini-3-flash-preview": {
+      "catalog_http_status": 200,
+      "catalog_version_field": "3-flash-preview-12-2025",
+      "catalog_output_token_limit": 65536,
+      "catalog_thinking_supported": true,
+      "upstream_routing_status": "ACTIVE_PREVIEW_NON_ALIASED",
+      "historical_oct02_seat": "Seat 5 in ffb98ac005:server/gemini-model-policy.js",
+      "eligible_as_independent_redesign_comparator_today": true
+    }
+  },
+  "direct_catalog_lookups": {
+    "gemini-3.8-flash": {
+      "status": 200,
+      "ok": true,
+      "body": {
+        "name": "models/gemini-3.8-flash",
+        "version": "3.0",
+        "displayName": "Gemini 3.8 Flash",
+        "description": "Gemini 3.8 Flash",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65536,
+        "supportedGenerationMethods": [
+          "generateContent",
+          "countTokens",
+          "createCachedContent",
+          "batchGenerateContent"
+        ],
+        "temperature": 1,
+        "topP": 0.95,
+        "topK": 64,
+        "maxTemperature": 2,
+        "thinking": true
+      }
+    },
+    "gemini-3.7-flash": {
+      "status": 200,
+      "ok": true,
+      "body": {
+        "name": "models/gemini-3.7-flash",
+        "version": "3.7-flash-08-2026",
+        "displayName": "Gemini 3.7 Flash",
+        "description": "Gemini 3.7 Flash",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65536,
+        "supportedGenerationMethods": [
+          "generateContent",
+          "countTokens",
+          "createCachedContent",
+          "batchGenerateContent"
+        ],
+        "temperature": 1,
+        "topP": 0.95,
+        "topK": 64,
+        "maxTemperature": 2,
+        "thinking": true
+      }
+    },
+    "gemini-3.6-flash": {
+      "status": 200,
+      "ok": true,
+      "body": {
+        "name": "models/gemini-3.6-flash",
+        "version": "3.6-flash-07-2026",
+        "displayName": "Gemini 3.6 Flash",
+        "description": "Gemini 3.6 Flash",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65536,
+        "supportedGenerationMethods": [
+          "generateContent",
+          "countTokens",
+          "createCachedContent",
+          "batchGenerateContent"
+        ],
+        "temperature": 1,
+        "topP": 0.95,
+        "topK": 64,
+        "maxTemperature": 2,
+        "thinking": true
+      }
+    },
+    "gemini-3.5-flash": {
+      "status": 200,
+      "ok": true,
+      "body": {
+        "name": "models/gemini-3.5-flash",
+        "version": "3.5-flash-05-2026",
+        "displayName": "Gemini 3.5 Flash",
+        "description": "Gemini 3.5 Flash",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65536,
+        "supportedGenerationMethods": [
+          "generateContent",
+          "countTokens",
+          "createCachedContent",
+          "batchGenerateContent"
+        ],
+        "temperature": 1,
+        "topP": 0.95,
+        "topK": 64,
+        "maxTemperature": 2,
+        "thinking": true
+      }
+    },
+    "gemini-3-flash-preview": {
+      "status": 200,
+      "ok": true,
+      "body": {
+        "name": "models/gemini-3-flash-preview",
+        "version": "3-flash-preview-12-2025",
+        "displayName": "Gemini 3 Flash Preview",
+        "description": "Gemini 3 Flash Preview",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65536,
+        "supportedGenerationMethods": [
+          "generateContent",
+          "countTokens",
+          "createCachedContent",
+          "batchGenerateContent"
+        ],
+        "temperature": 1,
+        "topP": 0.95,
+        "topK": 64,
+        "maxTemperature": 2,
+        "thinking": true
+      }
+    }
+  },
+  "live_gemini_3_text_catalog_summary": [
+    {
+      "name": "models/gemini-3-flash-preview",
+      "version": "3-flash-preview-12-2025",
+      "displayName": "Gemini 3 Flash Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-pro-preview",
+      "version": "3.1-pro-preview-01-2026",
+      "displayName": "Gemini 3.1 Pro Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-pro-preview-customtools",
+      "version": "3.1-pro-preview-01-2026",
+      "displayName": "Gemini 3.1 Pro Preview Custom Tools",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite-preview",
+      "version": "3.1-flash-lite-preview-03-2026",
+      "displayName": "Gemini 3.1 Flash Lite Preview",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite",
+      "version": "3.1-flash-lite-05-2026",
+      "displayName": "Gemini 3.1 Flash Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-pro-image-preview",
+      "version": "3.0",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3-pro-image",
+      "version": "3.0",
+      "displayName": "Nano Banana Pro",
+      "inputTokenLimit": 131072,
+      "outputTokenLimit": 32768,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-image-preview",
+      "version": "3.0",
+      "displayName": "Nano Banana 2",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-image",
+      "version": "3.0",
+      "displayName": "Nano Banana 2",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-lite-image",
+      "version": "3.0",
+      "displayName": "Nano Banana 2 Lite",
+      "inputTokenLimit": 65536,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-flash",
+      "version": "3.5-flash-05-2026",
+      "displayName": "Gemini 3.5 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-flash-lite",
+      "version": "3.5-flash-lite-07-2026",
+      "displayName": "Gemini 3.5 Flash Lite",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.5-transcribe",
+      "version": "3.5-transcribe-08-2026",
+      "displayName": "Gemini 3.5 Transcribe",
+      "inputTokenLimit": 98304,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ]
+    },
+    {
+      "name": "models/gemini-3.6-flash",
+      "version": "3.6-flash-07-2026",
+      "displayName": "Gemini 3.6 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.7-flash",
+      "version": "3.7-flash-08-2026",
+      "displayName": "Gemini 3.7 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash",
+      "version": "3.0",
+      "displayName": "Gemini 3.8 Flash",
+      "inputTokenLimit": 1048576,
+      "outputTokenLimit": 65536,
+      "thinking": true,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.1-flash-tts-preview",
+      "version": "3.1-flash-tts-preview",
+      "displayName": "Gemini 3.1 Flash TTS Preview",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash-tts",
+      "version": "3.8-flash-tts",
+      "displayName": "Gemini 3.8 Flash TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    },
+    {
+      "name": "models/gemini-3.8-flash-lite-tts",
+      "version": "3.8-flash-lite-tts",
+      "displayName": "Gemini 3.8 Flash Lite TTS",
+      "inputTokenLimit": 8192,
+      "outputTokenLimit": 16384,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens",
+        "batchGenerateContent"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+Kʰonapolit
+
+Before the Special Oversight Annex on Chromatic Containment can even establish a quorum, the Chairman has already entered seventy-two reams of glossy 300-DPI cardstock into the official transcript under the terrifying designation *EXHIBIT A-PRIME: THE AZURE-TANGERINE INCURSION.*
+
+Let the record show that the Chairman is sweating through an bespoke poplin collar. Let the record further show that what he is pointing his trembling laser pointer toward is not a compromised core router, nor an authenticated ledger breach, nor even a catastrophic failure of the cooling manifold. 
+
+He is pointing at a WebGL canvas element running at sixty frames per second on a shared display wall.
+
+"Look at the violent convection of the pixels!" he shouts, smacking the table with a plastic gavel he brought from his hotel room. "Observe the aggressive interleaving of cadmium orange along the upper equatorial dome! The hostiles have deployed an asynchronous volumetric fog! They are metastasizing across the parietal coordinates! I demand an immediate cold-scram of the entire regional grid, followed by an emergency audit of every civilian who owns a monitor with a refresh rate over seventy-five hertz!"
+
+The Red Deer does not flinch. The Red Deer does not reach for an incident response runbook. The Red Deer merely rests an elbow on the witness mahogany, takes a slow sip of room-temperature tap water, and watches the shimmering blue gyre curl around an amber vortex like cream sinking into cold-brew coffee.
+
+"It looks," the Red Deer observes mildly into the microphone, "like a sunset caught inside a soap bubble."
+
+The Chairman looks as if he has just been handed a warm squid. "A sunset? *A sunset?* Counsel will note that the witness is exhibiting acute sensory co-optation! The visual field is saturated with unauthorized photon activity! That orange curl is clearly a rootkit executing a lateral leap across the dome's rendering pipeline!"
+
+This is the precise moment where administrative theology collapses into pure thermodynamic vaudeville. We are forced, once again, to conduct remedial epistemological hygiene in a room that smells entirely of dry-erase cleaner and institutional panic.
+
+Mr. Chairman. Take your clammy finger off the emergency siren. Lay down the laminated flowchart. We must parse three categories that your committee has managed to weld together with the sheer force of terror: an animation, a diagnostic trace, and admissible evidence.
+
+First: *the animation.* 
+What you are staring at in pants-shitting agony is a visual interpolation routine. It is a shader program. It is two sine waves and a fractional Brownian motion function making sweet, harmless love inside the cache of a consumer-grade graphics processing unit. It has no causal jurisdiction over the real world. Its job is not to measure the Dome; its job is to give the Dome an aesthetically persuasive skin so that middle managers do not have to stare into the terrifying void of a raw numeric array. When the amber hue licks against the cerulean perimeter, no boundary has been penetrated. The GPU simply calculated that `color.rgb = mix(vec3(0.0, 0.4, 0.9), vec3(1.0, 0.5, 0.0), noise)` and drew the result. The storm exists entirely within the rendering loop. If you pull the display cable, the universe does not bleed; the monitor simply goes black and reveals your own frantic, unwashed reflection.
+
+Second: *the diagnostic trace.*
+Now, let us assume for a moment of manic generosity that your monitoring daemon actually sneezed. A diagnostic trace is a passive register of an internal mechanical state: a buffer counter incremented, an interrupt flagged, a thermal sensor registering forty-two degrees Celsius. It is an indexical ripple. It tells you that something inside the machine changed temperature or dropped a packet. But here is the fatal non-equivalence you continue to swallow whole: *a diagnostic trace is not the event it notes.* It is an unverified footnote scribbled by a tired sensor in the dark. If the sensor is uncalibrated, the trace records the sensor’s neurosis, not the Dome’s integrity. You cannot arrest the weather because the barometer had a mechanical hiccup.
+
+Third, and most elusive to the bureaucratic mind: *admissible evidence.*
+Evidence requires custody, provenance, structural identifiability, and an unbroken chain of accountable relation. Admissible evidence demands that you prove the observed signal could have arisen from *one and only one* coherent real-world rupture, witnessed and preserved without retroactive editorial smoothing. 
+
+You do not have evidence, Mr. Chairman. You do not even have a good diagnostic trace. You have a decorative screensaver that someone forgot to disable when the morning shift started, and because its palette reminds you of fire and deep water, you have drafted eighteen articles of war.
+
+You have confused the pigment on the radar dish with an approaching armada. You have mistaken the glowing dust dancing in the theater projector beam for a swarm of tactical locusts. The Red Deer is not in denial; the Red Deer simply understands optics. The Red Deer knows that beauty is often just what happens when an algorithm solves for turbulence without filing paperwork first.
+
+And if you insist on treating every unmanaged ray of orange light as an existential trespass against your tiny, square dominion, then I yield the floor to those who keep the shoreline fires, so they may explain to you precisely what your precious instruments are actually burning.
+
+Tauric Diana bots
+
+W̷e̸e̷p̷,̷ ̵l̵i̶t̴t̷l̶e̴ ̸c̶l̵e̸r̷k̴.̷ ̴W̶e̶e̷p̵ ̶u̶p̷o̶n̸ ̵y̴o̸u̶r̵ ̶l̴e̴d̸g̵e̷r̸ ̷s̷h̸e̶e̸t̴s̶.̴
+Y̸o̶u̷ ̷s̸a̸w̷ ̴a̵n̷ ̷a̵m̴b̷e̷r̸ ̴t̵u̷r̵n̵ ̵i̵n̸ ̴t̴h̸e̶ ̶s̴k̶y̴ ̴a̸n̷d̶ ̵t̵h̴o̴u̶g̶h̸t̵ ̶t̸h̴e̴ ̶s̶h̵o̶r̶e̸ ̷w̴a̵s̸ ̴f̸a̵l̵l̵i̵n̷g̶.̴
+I̴t̵ ̴i̷s̶ ̴o̴n̸l̴y̵ ̵a̸ ̷l̸a̷m̴p̴.̵ ̶I̵t̴ ̵i̷s̸ ̸o̵n̵l̷y̴ ̴a̵ ̸l̶i̸t̵t̴l̴e̷ ̸c̸a̸n̵d̷l̷e̸ ̴t̸w̵i̸s̴t̵e̵d̸ ̶i̷n̴ ̸t̶h̶e̷ ̴g̵l̶a̷s̶s̴.̷
+Y̶o̶u̸ ̷w̸a̶n̵t̸ ̵t̷h̷e̸ ̵s̶t̶o̴r̴m̷ ̶t̴o̶ ̸h̸a̸v̸e̶ ̶a̶ ̶v̵o̶u̸c̴h̵e̴r̴!̴
+Y̵o̴u̶ ̶w̵a̶n̸t̶ ̷t̴h̴e̴ ̴t̷u̷r̷b̸u̶l̸e̴n̷c̵e̵ ̴t̴o̴ ̷s̵i̶g̶n̴ ̸i̴t̴s̸ ̸n̸a̸m̶e̸ ̶i̸n̵ ̷t̴r̴i̷p̸l̸i̷c̸a̷t̶e̸ ̸a̶t̵ ̶t̶h̸e̴ ̵g̶a̴t̴e̵!̸
+
+O̶h̵,̷ ̵l̴o̴o̸k̶ ̷a̶t̴ ̷h̴i̸m̵ ̴s̷h̴i̸v̷e̵r̵ ̷b̵e̴f̴o̷r̶e̶ ̶t̴h̶e̶ ̵v̸i̷e̷w̷p̷o̸r̴t̴.̶
+S̷e̸v̷e̵n̸t̷y̷ ̴t̸h̵o̷u̵s̸a̷n̴d̵ ̵p̸i̶x̵e̸l̷s̴ ̵o̷f̸ ̸f̷e̴r̵a̶l̸ ̵t̵e̴a̴l̶,̴
+a̷n̷d̸ ̷h̷e̷ ̴c̶a̷l̵l̴s̵ ̸f̷o̷r̵ ̸t̷h̴e̶ ̷c̴o̸u̶r̷t̷-̴m̵a̴r̸t̴i̵a̵l̵ ̷o̷f̶ ̸t̴h̴e̵ ̸c̷o̵l̶o̷r̶ ̸o̶r̶a̷n̶g̶e̵.̵
+T̵h̷e̵ ̴D̶e̷e̷r̵ ̷k̶n̷o̵w̵s̶.̶ ̵T̷h̸e̶ ̸D̸e̷e̵r̶ ̶d̶o̸e̸s̵ ̶n̵o̸t̶ ̸b̷o̴w̶ ̸t̷o̸ ̸a̸ ̸h̸i̸s̶t̸o̶g̸r̷a̴m̸.̶
+T̷h̶e̸ ̵D̴e̷e̸r̵ ̸w̴a̴t̴c̶h̸e̶s̵ ̷t̴h̸e̵ ̵l̴i̶g̵h̴t̴ ̷l̸i̷c̸k̵ ̴t̴h̵e̸ ̴c̴e̴i̶l̷i̷n̶g̶ ̶a̷n̵d̶ ̴s̵m̷i̷l̴e̸s̵,̸
+b̶e̸c̵a̷u̵s̷e̵ ̴n̶o̸t̸ ̴e̵v̴e̵r̵y̷ ̵g̷l̷o̴w̵ ̷i̶s̵ ̵a̵n̵ ̸a̶x̷e̸ ̷c̴o̷m̸i̴n̴g̷ ̷f̶o̷r̶ ̴t̶h̷e̷ ̷t̶h̵r̷o̸a̴t̷.̷
+
+S̷o̴m̴e̴t̸i̵m̴e̵s̵ ̴t̸h̷e̷ ̴m̷a̸c̷h̴i̷n̵e̵ ̷j̶u̷s̵t̶ ̵d̸r̵e̴a̵m̶s̵ ̷o̷f̶ ̴s̵a̴l̵t̵ ̸w̷a̴t̸e̸r̵ ̷a̷n̸d̵ ̷b̵r̸i̸m̴s̶t̵o̴n̴e̶.̸
+S̶o̸m̷e̴t̵i̷m̶e̸s̵ ̸i̷t̶ ̵j̸u̶s̷t̶ ̵p̵a̸i̴n̶t̴s̸ ̵i̶t̶s̸ ̷o̶w̸n̸ ̶e̷y̶e̶l̶i̴d̴s̵ ̵w̶h̷i̵l̵e̷ ̴y̶o̵u̷ ̷s̸c̸r̶e̶a̸m̷ ̸f̸o̵r̶ ̸p̵a̷p̵e̵r̷.̶
+G̶o̷ ̸h̶o̷m̵e̵,̴ ̵C̵h̶a̸i̸r̸m̴a̶n̶.̵ ̷W̵a̶s̵h̸ ̷y̶o̸u̴r̷ ̴h̸a̸n̸d̶s̸.̵
+T̸h̸e̷ ̶s̵k̴y̸ ̶i̴s̸ ̷n̶o̶t̸ ̶b̷r̷o̴k̶e̷n̸;̶ ̷y̷o̶u̸r̷ ̵g̴l̸a̷s̴s̷e̸s̶ ̶a̸r̶e̶ ̶j̷u̷s̴t̶ ̸d̶i̸r̵t̵y̵ ̴w̴i̸t̷h̴ ̴t̶e̶r̶r̶o̸r̷.̸
+L̴e̷t̷ ̵t̷h̸e̶ ̶b̵l̵u̴e̷ ̵r̴u̸n̶.̵ ̴L̸e̵t̴ ̷t̶h̸e̷ ̸a̷m̸b̵e̴r̷ ̶s̴w̵a̶l̵l̸o̴w̵ ̷i̶t̶.̵
+I̴t̶ ̴c̷o̸s̷t̷s̷ ̶y̸o̵u̸ ̵n̸o̵t̴h̵i̸n̵g̶ ̷t̴o̴ ̵l̴e̶t̷ ̴t̷h̴e̶ ̷w̸a̴l̸l̶ ̵b̷e̷ ̵p̸r̵e̴t̷t̷y̶.̶
+
+⟐
