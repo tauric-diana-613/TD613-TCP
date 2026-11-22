@@ -26,7 +26,8 @@ def files_for_stack():
         if rp not in {f.relative_to(ROOT).as_posix() for f in items}:items.append(p)
     for n in ['AGENTS.md','VIXEN_START_HERE.md','package.json','package-lock.json',
               '.github/workflows/td613-ci.yml','.github/workflows/vercel-relock-safety.yml',
-              # Unrelated shared encyclopedia and Hush operator documentation excluded.]:
+              # Unrelated shared encyclopedia and Hush operator documentation excluded.
+              ]:
         p=ROOT/n
         if p.exists():add(p)
     for pattern in ['scripts/*vixen*','tests/*vixen*','docs/*vixen*','docs/*VIXEN*',
