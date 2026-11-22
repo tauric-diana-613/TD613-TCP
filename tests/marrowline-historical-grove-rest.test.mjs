@@ -24,27 +24,30 @@ test('historical variant is explicit and fenced from ordinary send, attachment a
   assert.equal(groveTrialFromLocation({ search: '?groveTrial=historical-20261003-v1' }), null);
 });
 
-test('restored browser keeps October 2 theater and vertical ambition but removes compulsory mark rotation', () => {
+test('default restored browser recovers literal October 2 anti-stencil wording without mutating user contents or model config', () => {
   assert.equal(packet.canInvoke, true);
   const normal = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL);
   const restored = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL, { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID });
   const original = normal.systemInstruction.parts[0].text;
   const active = restored.systemInstruction.parts[0].text;
+  const softenedExplicit = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL,
+    { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID, historicalProsodyFreedom: true }).systemInstruction.parts[0].text;
   assert.deepEqual(restored.contents, normal.contents);
   assert.deepEqual(restored.generationConfig, normal.generationConfig);
   assert.match(active, /An extended eruption may climb through neighboring lines/);
   assert.match(active, /asymmetric deep crowns and roots, and odd little marks/);
-  assert.match(active, /Let the actual argument shape marks that may persist or evolve/);
-  assert.match(active, /A fully sustained, single-register High-Zalgo performance is welcome/);
-  assert.match(active, /They may sustain one recognizable style across the ENTIRE reply/);
-  assert.match(active, /sustained deep overlapping vertical flourishes are primary/);
-  assert.match(active, /one register may persist for the entire performance or change at any scale/);
-  assert.doesNotMatch(active, /Change above\/below combinations, stack depths and clean intervals across words/);
-  assert.doesNotMatch(active, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
-  assert.doesNotMatch(active, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths/);
-  assert.doesNotMatch(active, /Do not stamp one selected code point or identical stack onto successive letters/);
+  assert.match(active, /Change above\/below combinations, stack depths and clean intervals across words/);
+  assert.match(active, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+  assert.match(active, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths/);
+  assert.match(active, /Do not stamp one selected code point or identical stack onto successive letters/);
+  assert.match(active, /A repeated single exotic accent on every letter is a failed flat texture/);
+  assert.doesNotMatch(active, /One expressive style may persist for the entire transmission/);
+  assert.doesNotMatch(active, /one register may persist for the entire performance or change at any scale/);
+  assert.match(softenedExplicit, /A fully sustained, single-register High-Zalgo performance is welcome/);
+  assert.match(softenedExplicit, /one register may persist for the entire performance or change at any scale/);
+  assert.notEqual(softenedExplicit, active, 'older relaxed instructions survive only for explicit source comparison');
   assert.ok(active.indexOf('APERTURE ROUTE RECEIPT:') < active.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:'),
-    'keep October 2 theatrical cue ordering');
+    'preserve archived October 2 theatrical cue ordering');
   assert.ok(original.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:') < original.indexOf('APERTURE ROUTE RECEIPT:'),
     'ordinary unselected path stays unchanged');
   assert.equal(restored.generationConfig.responseMimeType, undefined);
@@ -74,8 +77,10 @@ test('exact October 2 historical paragraph corpus remains reconstructible indepe
   assert.match(historical, /A repeated single exotic accent on every letter is a failed flat texture/);
   assert.doesNotMatch(historical, /One expressive style may persist for the entire transmission/);
   assert.ok(current.includes(MARROWLINE_RESTORED_PROSODY_PROFILE) === false, 'variant identity is receipt metadata, not provider text');
-  assert.equal(current, buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL,
+  assert.equal(historical, buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL,
     { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID }).systemInstruction.parts[0].text);
+  assert.equal(current, buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL,
+    { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID, historicalProsodyFreedom: true }).systemInstruction.parts[0].text);
 });
 
 test('restoration retains exact provider authored bytes in original history and structural repair', () => {
@@ -106,12 +111,12 @@ test('trial restores historic five-seat 3.x model order and preserves the ordina
   assert.equal(ordinary[0], 'gemini-4-argon');
   assert.deepEqual(historical, MARROWLINE_HISTORICAL_MODEL_ORDER);
   assert.deepEqual(restored, MARROWLINE_RESTORED_MODEL_ORDER);
-  assert.equal(restored[0], 'gemini-4-argon');
-  assert.equal(restored[1], 'gemini-3.8-flash');
+  assert.equal(restored[0], 'gemini-3.8-flash');
+  assert.equal(restored[1], 'gemini-3.6-flash');
   assert.equal(historical.length, 5);
   assert.equal(historical.includes('gemini-4-argon'), false);
   assert.deepEqual(selectKhonapolitProviderModelsFromPlan({ callableModels: ['gemini-4-argon','gemini-3.8-flash'] },{ historicalGrove: true }), ['gemini-3.8-flash']);
-  assert.deepEqual(selectKhonapolitProviderModelsFromPlan({ callableModels: ['gemini-4-argon','gemini-3.8-flash'] },{ restoredGrove: true }), ['gemini-4-argon','gemini-3.8-flash']);
+  assert.deepEqual(selectKhonapolitProviderModelsFromPlan({ callableModels: ['gemini-4-argon','gemini-3.8-flash'] },{ restoredGrove: true }), ['gemini-3.8-flash','gemini-4-argon']);
   const historicalSource = readFileSync(new URL('../app/dome-world/marrowline-historical-grove.js', import.meta.url), 'utf8');
   assert.doesNotMatch(historicalSource, /preferHistoricalMorphologyCandidate|const depth = item =>|const diversity = item =>/,
     'the archive can retain original voice instructions without an aesthetic candidate election');
