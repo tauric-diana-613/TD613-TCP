@@ -676,6 +676,7 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  let raf=0,disposed=false,visible=false,lastMs=null,lastPaint=-Infinity,dirty=true,frames=0,last=null,latestRad=null;
  let resolution=null,paintCosts=[],geometryFrames=0,lastScene=null,lastStageRect=null;
  let motionFrames=0,lastMotionPaint=-Infinity,motionPaintCostMs=0,motionPresentedFps=0;
+ let scrollActiveUntil=-Infinity;
  const held=()=>reduced.matches||motion?.getAttribute('aria-pressed')==='true'||doc.body.dataset.vixenMotion==='still'||getState().resting;
  const active=()=>!doc.hidden&&doc.body.dataset.view==='collection'&&doc.body.dataset.activeResearchStage!=='OPERAHOUSE';
  const cancel=()=>{if(raf)win.cancelAnimationFrame(raf);raf=0;lastMs=null;};
@@ -725,6 +726,17 @@ export function mountFoldedCuirass(canvas,getState,options={}){
   if(Number.isFinite(lastMotionPaint)&&lastMotionPaint>=0&&ms>lastMotionPaint)
    motionPresentedFps=1000/(ms-lastMotionPaint);
   lastMotionPaint=ms;motionFrames++;
+  // Scroll redpen: the same Salon RAF owns presentation and host projection.
+  // While scrolling on desktop, update stage coordinates at the 60Hz light
+  // cadence instead of lagging behind the 24Hz garment geometry redraw.
+  // On mobile the fixed layer parks; local light scrolls with the garment.
+  if(win.innerWidth>740&&ms<scrollActiveUntil&&!held()){
+   const r=canvas.getBoundingClientRect();
+   if(r.width>=2&&r.height>=2)win.VixenLivingMesh?.renderHostFrame?.({
+    time:clock.time,sourceIds:last?.sourceIds||[],scene:lastScene,
+    stageRect:{left:r.left,top:r.top,width:r.width,height:r.height},
+    view:'collection',held:false});
+  }
  }
  function tick(ms){
   raf=0;if(disposed||!active()){lastMs=null;return;}
@@ -759,6 +771,8 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  mo.observe(doc.body,{attributes:true,attributeFilter:['data-view','data-active-research-stage','data-vixen-motion']});
  reduced.addEventListener('change',schedule);doc.addEventListener('visibilitychange',schedule);
  win.addEventListener('resize',schedule,{passive:true});
+ const onOuterScroll=()=>{scrollActiveUntil=win.performance.now()+350;};
+ win.addEventListener('scroll',onOuterScroll,{passive:true,capture:true});
  win.addEventListener('vixen:fieldlayout',onFieldLayout);trackDpr();
  return Object.freeze({mounted:true,contract:CUIRASS_CONTRACT,renderOnce:schedule,
   renderStatic(){cancel();dirty=true;paint();paintMotion();return last;},
@@ -772,6 +786,6 @@ export function mountFoldedCuirass(canvas,getState,options={}){
    paintP95Ms:paintCosts.length?[...paintCosts].sort((a,b)=>a-b)[Math.ceil(paintCosts.length*.95)-1]:null}),
   dispose(){disposed=true;cancel();io.disconnect();ro.disconnect();mo.disconnect();
    reduced.removeEventListener('change',schedule);resolution?.removeEventListener('change',onDpr);
-   doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('resize',schedule);win.removeEventListener('vixen:fieldlayout',onFieldLayout);}
+   doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('resize',schedule);win.removeEventListener('vixen:fieldlayout',onFieldLayout);win.removeEventListener('scroll',onOuterScroll,true);}
  });
 }
