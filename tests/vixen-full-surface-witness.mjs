@@ -57,7 +57,7 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
  if(end.max-end.y>2)throw Error('SCROLL_BOTTOM_NOT_COVERED '+surface+' '+JSON.stringify(end));
  // Probe contained scroll panes independently: manuscripts, inspector, dialogue and reading cards.
  const panes=await page.evaluate(()=>{
-  const scope=document.querySelector('.view:not([hidden])')||document.body;
+  const scope=document.querySelector('dialog[open]')||document.querySelector('.view:not([hidden])')||document.body;
   return [...scope.querySelectorAll('*')].filter(el=>{
    const st=getComputedStyle(el),r=el.getBoundingClientRect();
    return r.width>=125&&r.height>=130&&el.scrollHeight-el.clientHeight>=200&&
@@ -68,6 +68,10 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
   });
  });
  for(const pane of panes){
+  await page.evaluate(key=>{
+   const node=document.querySelector('[data-vixen-witness-pane="'+key+'"]');
+   node?.scrollIntoView({block:'center',behavior:'instant'});
+  },pane.key);
   const steps=Math.min(20,Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.82))+1));
   for(let i=0;i<steps;i++){
    const target=i===steps-1?pane.max:Math.round(i*pane.max/(steps-1));
