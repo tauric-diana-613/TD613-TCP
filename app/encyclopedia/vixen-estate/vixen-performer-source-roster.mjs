@@ -36,3 +36,11 @@ export function assertLocalVixenSourceRoster(corpus){
   throw new TypeError('PERFORMER_ROSTER_CUSTODY_MISMATCH');
  return true;
 }
+
+/** Individually verified coordinates allow bounded partial-roster reads. */
+export function assertLocalVixenWorkCoordinate(work){
+ if(!work||PINNED_LOCAL_WORK_COORDINATES.get(work.work_id)!==workCoordinate(work)||
+    work.human_gate_required!==(work.identity_status==='SAME_WORK_SUPPORTED'))
+  throw new TypeError('PERFORMER_SOURCE_COORDINATE_DRIFT');
+ return true;
+}

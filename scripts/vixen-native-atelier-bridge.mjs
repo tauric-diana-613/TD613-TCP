@@ -56,7 +56,7 @@ function pinnedNativeRoots(repo,estate,config){
  // single-estate route takes <checkout>/packages/.../<ESTATE>, whereas
  // cross-estate loaders take <checkout> and append the estate subtree.
  // Resolve both explicitly rather than forwarding the same untyped path.
- const checkoutRoot=config?privateDirectory(repo,config.path):repo;
+ const checkoutRoot=config?privateDirectory(repo,(config.checkoutRoot??config.path)):repo;
  // Validate checkout identity before probing estate contents: a caller who
  // passes an estate directory must receive the checkout-root contract HOLD,
  // not a misleading "missing estate" HOLD from a nested invented path.
@@ -73,7 +73,9 @@ function pinnedNativeRoots(repo,estate,config){
     !lstatSync(estateRoot).isDirectory()||lstatSync(estateRoot).isSymbolicLink())
   HOLD('HELD_NATIVE_ESTATE_ROOT_MISSING');
  if(config){
-  const wanted=nonempty(config.git_head,40);
+  if(config.estateRoot&&resolve(config.estateRoot)!==estateRoot)HOLD('HELD_NATIVE_ESTATE_ROOT_CONTRACT_REQUIRED');
+  if(config.originalManifestRoot&&resolve(config.originalManifestRoot)!==resolve(estateRoot,'01-MANIFESTS'))HOLD('HELD_NATIVE_MANIFEST_ROOT_CONTRACT_REQUIRED');
+  const wanted=nonempty(config.historicalGitHead??config.git_head,40);
   if(!/^[0-9a-f]{40}$/.test(wanted))HOLD('HELD_NATIVE_PINNED_HEAD_REQUIRED');
   if(observed!==wanted)HOLD('HELD_NATIVE_SOURCE_CHECKOUT_HEAD_DRIFT');
  }

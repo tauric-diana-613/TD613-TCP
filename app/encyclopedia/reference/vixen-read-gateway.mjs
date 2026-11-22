@@ -1,3 +1,5 @@
+const ISSUED_REFERENCE_WITNESSES=new WeakSet();
+export const isIssuedVixenReferenceWitness=w=>Boolean(w&&ISSUED_REFERENCE_WITNESSES.has(w));
 /**
  * 𝌋 Operahouse · Shared Encyclopedia read-only reference gateway.
  * Not the Universal Atelier SQLite receiver and never a postflight admission path.
@@ -155,7 +157,10 @@ export function createVixenReferenceMembrane({
     if(digest!==row.record_sha256){stamp('SOURCE_DIGEST_REFUSED',{id,expected:row.record_sha256,actual:digest});throw new BridgeHold('RECORD_DIGEST_MISMATCH')}
     const record=decodeJson(payload.raw,'RECORD_SCHEMA_MISMATCH');
     if(record?.id!==id||record?.kind!==row.kind||record?.label!==row.label){stamp('RECORD_IDENTITY_REFUSED',{id});throw new BridgeHold('RECORD_SCHEMA_MISMATCH')}
+    const freezeTree=x=>{if(x&&typeof x==='object'){Object.values(x).forEach(freezeTree);Object.freeze(x);}return x;};
+    freezeTree(record);
     const witness=Object.freeze({estate:'UNIVERSAL_REFERENCE',id,record,source_path:row.record_path,record_sha256:digest,verified_at_interaction:true,served_file_sha256:servedFileDigest,canonical_record_payload_sha256:digest,warrant:'CANONICAL_JSON_PAYLOAD_SHA256_VERIFIED_NOT_CLAIM_ENTAILMENT',authorization:'READ_ONLY'});
+    ISSUED_REFERENCE_WITNESSES.add(witness);
     stamp('SOURCE_WITNESSED',{id,canonical_payload_sha256:digest,served_file_sha256:servedFileDigest,source_path:row.record_path});
     return witness;
   }

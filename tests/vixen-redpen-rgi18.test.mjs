@@ -76,7 +76,11 @@ test('RGI24 · Markdown documents keep native structural breaks and manifest ide
 });
 test('RGI25 · Noir Folio replaces porcelain reading asset with compact, interactive source-safe layout',()=>{
  const noir=read('app/encyclopedia/vixen-estate/vixen-noir-folio-rgi25.css');
- assert.match(page,/vixen-noir-folio-rgi25\.css/);
+ assert.doesNotMatch(page,/<link[^>]*vixen-noir-folio-rgi25\.css/);
+ assert.match(page,/<link[^>]*vixen-obsidian-reading-rgi26\.css/);
+ const successor=read('app/encyclopedia/vixen-estate/vixen-obsidian-reading-rgi26.css');
+ assert.match(successor,/\.vix-couture-reader/);
+ assert.match(successor,/#0b1215/);
  assert.match(page,/class="vix-noir-folio-frame"/);
  assert.match(page,/data-folio-density="compact"/);
  assert.match(page,/data-folio-density="comfort"/);
@@ -97,7 +101,7 @@ test('RGI25 · scoring cards explain eight axes and keep TD613 candidate authors
  const noir=read('app/encyclopedia/vixen-estate/vixen-noir-folio-rgi25.css');
  const engine=read('app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs');
  assert.match(noir,/\.ci-candidate-axes/);
- assert.match(page,/SHOW EIGHT SCORING AXES|INSPECT THE EIGHT SCORING AXES/);
+ assert.match(page,/OPEN EVIDENCE LEDGER · EIGHT AXES & COUNTERTEST/);
  assert.match(page,/NOT A PROBABILITY OF TRUTH/);
  assert.match(page,/operaResearchLabel/);
  assert.match(page,/documentary source-route/);
@@ -124,7 +128,7 @@ test('redpen IV–V — selection remains existing source-backed button with sil
  assert.match(foundry,/ef-silver-lace/);
  assert.match(foundry,/state\.simPhase\*2\.8/);
  assert.match(visual,/\.ef-hero-tab::after/);
- assert.match(visual,/content:"◀"/);
+ assert.match(visual,/content:"◀︎"/);
 });
 test('redpen VI — exactly nine original constitutional method strings carried into accessible list',()=>{
  const original=read('app/encyclopedia/vixen-estate/observatory-vixen-corpus.mjs');
@@ -162,7 +166,7 @@ test('RGI23 · engine text receives bounded editorial lineation, no CSS-generate
 test('RGI23 · selection marker follows actual aria-pressed and gold frame, not all hover targets',()=>{
  assert.match(foundry,/b\.setAttribute\('aria-pressed',String\(state\.labId===id\)\)/);
  assert.match(visual,/\.ef-hero-tab::after\s*\{\s*content:none!important/);
- assert.match(visual,/\.ef-hero-tab\[aria-pressed="true"\]::after\s*\{\s*content:"◀"!important/);
+ assert.match(visual,/\.ef-hero-tab\[aria-pressed="true"\]::after\s*\{\s*content:"◀︎"!important/);
  assert.match(visual,/border:2px solid #d6ad45!important/);
  assert.match(visual,/@keyframes vix-gold-interference/);
  assert.match(visual,/@media\(prefers-reduced-motion:reduce\)/);
@@ -198,8 +202,12 @@ test('redpen VIII — loaded CSS, host prewarm, bounded fail-open arrival curtai
  assert.match(page,/rel="modulepreload".*observatory-electric-foundry\.mjs/);
  assert.match(page,/rel="modulepreload".*synthesis-salon\.mjs/);
  assert.match(page,/id="vixEntryVeil"/);
- assert.match(page,/age>=2900/);
- assert.match(page,/setTimeout\(finish,3100\)/);
+ const arrival=read('app/encyclopedia/vixen-estate/vixen-arrival-prewarm-rgi19.mjs');
+ assert.match(page,/vixen-arrival-prewarm-rgi19\.mjs/);
+ assert.match(arrival,/setTimeout\(\(\)=>finish\('BOUNDED_FAIL_OPEN'\),3100\)/);
+ assert.match(arrival,/status\.critical_presentation_ready&&resources/);
+ assert.match(arrival,/salonSourceStatus==='TWO_SALON_BODIES_VERIFIED'/);
+ assert.doesNotMatch(arrival,/age>=2900/);
  assert.match(foundry,/requestIdleCallback\(prewarm/);
  assert.match(visual,/\.vix-entry-veil\[data-state="revealed"\]/);
 });

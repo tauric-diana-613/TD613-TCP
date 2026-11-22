@@ -10,6 +10,7 @@ const marker='<script id="vixen-corpus-bundle" type="application/json">';
 const i=html.indexOf(marker),j=html.indexOf('</script>',i+marker.length);
 assert.ok(i>=0&&j>i);
 const corpus=JSON.parse(html.slice(i+marker.length,j));
+const mathWork=corpus.works.find(w=>w.linked_sources.some(s=>s.source_file_id==='emsrc_31ed6fb3bdc15d3c29b8ae13'));
 const lookup=new Map(corpus.works.flatMap(w=>w.linked_sources.map(s=>[s.source_file_id,w])));
 const admittedFixture=async source_file_id=>{
  const work=lookup.get(source_file_id);
@@ -24,14 +25,17 @@ test('math extraction returns exact literal source positions without proof promo
  assert.equal(passages[0].independent_proof,false);
  assert.equal(extractOriginalMathPassages('Ordinary paragraph with no notation').length,0);
 });
-test('readable Work manifestations determine inventory; TCC and RC cannot supply Works',async()=>{
- const x=await buildOriginalWorkMathWardrobe({works:corpus.works.slice(0,2)},{readSource:admittedFixture});
- assert.equal(x.examined_work_count,2);
- assert.equal(x.verified_work_math_count,2);
- assert.deepEqual(x.entries.map(e=>e.work_id),corpus.works.slice(0,2).map(w=>w.work_id));
+test('valid partial roster derives exact source equations and keeps host folios outside Works',async()=>{
+ const x=await buildOriginalWorkMathWardrobe({works:[mathWork]});
+ assert.equal(x.examined_work_count,1);
+ assert.equal(x.verified_work_math_count,1);
+ assert.equal(x.entries[0].work_id,mathWork.work_id);
  assert.equal(x.technical_formula_promotions,0);
  assert.equal(x.empirical_credit,0);
- assert.ok(x.entries.every(e=>e.source_excerpts[0].literal==='a + b = c'));
+ assert.ok(x.entries[0].source_excerpts.some(e=>/I\(t\)/.test(e.literal)));
+ const forged=await buildOriginalWorkMathWardrobe({works:[mathWork]},{readSource:admittedFixture});
+ assert.equal(forged.entries.length,0);
+ assert(forged.source_refusals.some(r=>r.reason==='CANONICAL_DERIVATIVE_BINDING_REQUIRED'));
 });
 test('unverified or mismatched source refuses instead of substituting host engineering',async()=>{
  const x=await buildOriginalWorkMathWardrobe({works:corpus.works.slice(0,1)},{readSource:async id=>({
@@ -43,11 +47,11 @@ test('unverified or mismatched source refuses instead of substituting host engin
  assert.equal(x.technical_formula_promotions,0);
 });
 test('source-conditioned candidate receipt retains evidence and native-execution holds',async()=>{
- const x=await buildOriginalWorkMathWardrobe({works:corpus.works.slice(0,1)},{readSource:admittedFixture});
+ const x=await buildOriginalWorkMathWardrobe({works:[mathWork]});
  const receipt=scoreOriginalWorkMath(corpus,x.entries[0]);
  assert.equal(receipt.work_id,x.entries[0].work_id);
  assert.equal(receipt.source_file_id,x.entries[0].source_file_id);
- assert.equal(receipt.excerpt_literal,'a + b = c');
+ assert.equal(receipt.excerpt_literal,x.entries[0].source_excerpts[0].literal);
  assert.equal(receipt.native_host_tools_executed,false);
  assert.equal(receipt.empirical_credit,0);
  assert.ok(receipt.candidates.length>0);

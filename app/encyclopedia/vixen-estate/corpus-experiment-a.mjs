@@ -286,6 +286,9 @@ export async function loadJsonSibling(filename, {
       registerExperimentAShardSeals(data.corpus_custody.shard_seals);
     }
 
+    // A verified cache entry cannot be mutated into a different source under its old seal.
+    const freeze=x=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x);}return x;};
+    if(data?.schema==='td613.vixen.experiment-a-corpus-shard/v1')freeze(data);
     SHARD_CACHE.set(key, data);
     SHARD_META_CACHE.set(key, {
       sha256: actualSha,
@@ -830,4 +833,15 @@ export function clearExperimentACache({ clearSeals = false } = {}) {
   SHARD_META_CACHE.clear();
   SHARD_INFLIGHT.clear();
   if (clearSeals) REGISTERED_SHARD_SEALS.clear();
+}
+
+// Independent production custody pins for the historical derivative register.
+// Mutable loader options and synthetic readers cannot redefine this authority.
+const CANONICAL_DERIVATIVE_SHARDS=Object.freeze({"1": "3b766a590a656b88b9ae31293e75f62de8b8964e4fb7e8e4cf94125d16466e2e", "2": "de49b53ec8219b2fed24f7274101911bd034729dddd962e6bf2200923bb3f5f2"});
+export async function loadCanonicalExperimentABodyBySourceId(sourceFileId){
+ for(const n of [1,2]){
+  const shard=await loadExperimentAShard(n,{expectedSha256:CANONICAL_DERIVATIVE_SHARDS[n]});
+  if(shard?.sources?.[sourceFileId])return projectExperimentACustodyForBody(await verifyBodyRecordIntegrity(shard.sources[sourceFileId]),{});
+ }
+ return null;
 }

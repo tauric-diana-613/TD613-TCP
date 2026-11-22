@@ -1,3 +1,4 @@
+import {sourceWitness} from './fixtures/vixen/source-witness.mjs';
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFile,mkdtemp,cp,rm} from 'node:fs/promises';
@@ -13,12 +14,7 @@ const corpus=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([
 const task=(intent,params={})=>({schema:PODIUM_SCHEMA,intent,params});
 const source=corpus.works[0].linked_sources[0];
 const workId=corpus.works[0].work_id;
-const witness={
- id:'G-101',verified_at_interaction:true,authorization:'READ_ONLY',
- record_sha256:'a'.repeat(64),served_file_sha256:'b'.repeat(64),
- source_path:'reference/records/G-101.json',
- record:{id:'G-101',kind:'glossary',label:'FADT',status:'FORMAL_RESULT'}
-};
+const witness=await sourceWitness('G-101');
 function mock(){
  let calls=0;return {
   stats:()=>calls,status:()=>({state:calls?'CENSUS_MATCHED':'UNOPENED'}),

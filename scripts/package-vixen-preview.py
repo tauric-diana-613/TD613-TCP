@@ -190,8 +190,7 @@ and public TD613.com deployment are not required.
 1. Navigate to **01 · Observatory**. The previous four-tab stage recedes
    automatically; the chrome computation theater, not the old four-model
    interface, becomes the primary interactive instrument.
-2. The six headliners are **TCC-01, TCC-04, TCC-05, RC-03, RC-07,
-   and RC-10**. Select each, inspect its exact recorded Vixen folio
+2. The six headliners are **{runtime_headliners}**. Select each, inspect its exact recorded Vixen folio
    title and original formula, and verify the live mathematical readout.
 3. Move Gain, Witness, Impulse Voltage and Refractive Twist; GPU/CPU
    output, diagnostics and probe state respond causally.
@@ -330,6 +329,10 @@ See PREVIEW-MANIFEST.json for exact commit and file hashes.
         "The desktop and mobile frontispieces use the historical inline WebP\n"
         "fallbacks until the operator supplies the selected 16:9 and 9:16 PNGs."
     )
+    headliners=json.loads(subprocess.check_output(["node","--input-type=module","-e",
+        "import {VIXEN_OPERA_HEADLINERS as h} from './app/encyclopedia/vixen-estate/vixen-stage-subject-contract.mjs'; process.stdout.write(JSON.stringify(h))"],cwd=ROOT,text=True))
+    assert len(headliners)==6 and len(set(headliners))==6
+    readme=readme.replace("{runtime_headliners}",", ".join(headliners))
     readme=readme.replace("{frontispiece_state}",frontispiece_state,1)
     source=head()
     file_manifest=[{"path":n,"sha256":sha(blob),"bytes":len(blob)} for n,blob in sorted(files.items())]

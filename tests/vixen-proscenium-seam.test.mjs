@@ -1,4 +1,4 @@
-import {test} from 'node:test';
+import {test,after} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
@@ -92,4 +92,4 @@ test('Research data and immutable performer boundaries remain intact',()=>{
  assert.equal(one('#view-operator').querySelectorAll('[data-stage-role="PERFORMER"]').length,0);
 });
 
-dom.window.close();
+after(()=>dom.window.close());

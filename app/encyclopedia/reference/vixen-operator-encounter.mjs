@@ -7,7 +7,8 @@
  * An admissible record verifies its own bytes, never the proposed relationship.
  * OPERAHOUSE ≠ OPERA ≠ PERFORMER.
  */
-import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
+import {createVixenReferenceMembrane,isIssuedVixenReferenceWitness} from './vixen-read-gateway.mjs';
+import {assertLocalVixenWorkCoordinate} from '../vixen-estate/vixen-performer-source-roster.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 import {STAGE_ROLES,readOperahouseStatus,assertStageRoleSeparation} from '../vixen-estate/role-boundary.mjs';
 import {setVixenStage} from './vixen-stage-boundary.mjs';
@@ -30,10 +31,13 @@ const choice=(items,selected,fn,accessible)=>{
  for(const item of items){const o=el('option','',item.label);o.value=String(item.value);s.append(o)}
  s.value=String(selected);s.addEventListener('change',()=>fn(s.value));return s;
 };
-const verified=(w)=>Boolean(w&&w.verified_at_interaction===true&&w.authorization==='READ_ONLY'&&
+const verified=(w)=>Boolean(isIssuedVixenReferenceWitness(w)&&w.verified_at_interaction===true&&w.authorization==='READ_ONLY'&&
   /^[a-f0-9]{64}$/.test(w.record_sha256||'')&&w.id===w.record?.id);
 
 export function classifyIndependentEncounter({work,source,witness,warrant}={}){
+ try{assertLocalVixenWorkCoordinate(work);}catch(_){return Object.freeze({state:'HELD_VIXEN_SOURCE_IDENTITY',relation:'UNESTABLISHED',publication_eligible:false});}
+ // Recompute from the independently reviewed registry; caller assertions are inert.
+ warrant=inspectVixenCrossOperaWarrant({work,source});
  if(!work?.work_id||!source?.source_file_id||!(work.linked_sources||[]).some(x=>
    x.source_file_id===source.source_file_id&&x.sha256===source.sha256))
    return Object.freeze({state:'HELD_VIXEN_SOURCE_IDENTITY',relation:'UNESTABLISHED',publication_eligible:false});
@@ -75,7 +79,7 @@ export function constructCrossAtelierWitness({work,source,witness,warrant,humanQ
    evidence_class:'UNRATIFIED_QUESTION_NOT_SOURCE_DATA'
   }),
   admissibility:Object.freeze({
-   human_ratified_crosswalk:verified(witness)&&Boolean(warrant?.eligible===true&&warrant.record_id===witness.id),
+   human_ratified_crosswalk:disposition.state==='WARRANT_PRESENT_NOT_SCIENTIFIC_ENTAILMENT',
    lexical_similarity_is_warrant:false,claim_entailment:false,
    source_identity_collapsed:false,publication_eligible:false
   }),

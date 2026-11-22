@@ -46,35 +46,21 @@ test('mathematical passages are transcribed from text and never invented from me
  assert.equal(math[0].independent_proof,false);
 });
 
-test('verified Work mathematics preserves manuscript identity and digest; rejects caller-forged receipts',async()=>{
- const work=corpus.works[0],source=work.linked_sources[0];
- const body='An independently recorded equation: $$x^2+y^2=z^2$$.\n';
- const derivative=createHash('sha256').update(body).digest('hex');
- const readSource=async id=>id===source.source_file_id?{
-  source_file_id:id,work_id:work.work_id,text_body:body,
-  derivative_sha256:derivative,body_sha256_verified:true,readable:true
- }:null;
- const wardrobe=await buildOriginalWorkMathWardrobe(corpus,{readSource});
- assert.equal(wardrobe.examined_work_count,corpus.works.length);
- assert.equal(wardrobe.verified_work_math_count,1);
- assert.equal(wardrobe.technical_formula_promotions,0);
+test('canonical mathematics preserves source identity and refuses self-consistent forged reader bytes',async()=>{
+ const work=corpus.works.find(w=>w.linked_sources.some(s=>s.source_file_id==='emsrc_31ed6fb3bdc15d3c29b8ae13'));
+ const wardrobe=await buildOriginalWorkMathWardrobe({works:[work]});
+ assert.equal(wardrobe.entries.length,1);
  const entry=wardrobe.entries[0];
+ assert.equal(entry.source_role,'PERFORMER_WORK_MANIFESTATION');
  assert.equal(entry.work_id,work.work_id);
- assert.equal(entry.source_file_id,source.source_file_id);
- assert.equal(entry.declared_source_sha256,source.sha256);
- assert.equal(entry.derivative_sha256,derivative);
- assert.equal(entry.source_excerpts[0].literal,'x^2+y^2=z^2');
- const result=scoreOriginalWorkMath(corpus,entry);
- assert.equal(result.work_id,entry.work_id);
- assert.equal(result.excerpt_literal,entry.source_excerpts[0].literal);
- assert.equal(result.native_host_tools_executed,false);
- assert.equal(result.empirical_credit,0);
- assert.throws(()=>scoreOriginalWorkMath(corpus,{...entry}),/UNVERIFIED_OR_FOREIGN_MATHEMATICAL_MANUSCRIPT/);
- const corrupted=await buildOriginalWorkMathWardrobe(corpus,{readSource:async id=>
-  id===source.source_file_id?{source_file_id:id,work_id:work.work_id,text_body:body,
-   derivative_sha256:'0'.repeat(64),body_sha256_verified:true,readable:true}:null});
- assert.equal(corrupted.verified_work_math_count,0);
- assert(corrupted.source_refusals.some(x=>x.reason==='DERIVATIVE_BODY_SHA256_MISMATCH_OR_ABSENT'));
+ assert.equal(scoreOriginalWorkMath(corpus,entry).empirical_credit,0);
+ assert.throws(()=>scoreOriginalWorkMath(corpus,{...entry}),/UNVERIFIED_OR_FOREIGN/);
+ const body='$$x^2+y^2=z^2$$',derivative=createHash('sha256').update(body).digest('hex');
+ const forged=await buildOriginalWorkMathWardrobe({works:[work]},{readSource:async id=>({
+  source_file_id:id,work_id:work.work_id,text_body:body,derivative_sha256:derivative,body_sha256_verified:true,readable:true
+ })});
+ assert.equal(forged.entries.length,0);
+ assert(forged.source_refusals.every(r=>r.reason==='CANONICAL_DERIVATIVE_BINDING_REQUIRED'));
 });
 
 test('original manuscript titles and exact mathematical passages are exempt from display-copy substitution',()=>{
