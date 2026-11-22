@@ -252,7 +252,7 @@ export function buildSessionStartHereMd({ synthesisState, sessionMeta, exportedA
     '## Quickstart for Human & AI Collaborator',
     '',
     '1. **Serve locally to view offline identically:** run `npx serve .` (or `python -m http.server 8000`) from this unpacked folder, then open `/encyclopedia/vix-cyb.html`. The page loads your live saved `encyclopedia/vixen-estate/podium-synthesis.json` immediately.',
-    '2. **AI Operator Podium Instructions:** read `encyclopedia/vix-cyb/llms.txt` first for the complete computational machinery map (Observatory Vernier / SVD / [111] / XOR synergy, Synthesis Salon, 7 cross-domain conjectures, Podium 12-route schema, native engine slots, and non-retroactive synthesis log & `--rollback`).',
+    '2. **AI research companion:** read `encyclopedia/vix-cyb/llms.txt` first. The current machine Podium declares 27 typed routes, separate from the human research prompts. Preserve original Work identities, the zero cross-study-warrant state, read-only collaboration, and explicit human approval for consequential actions.',
     '3. **Universal Edition 1.4 Retrieval Instructions:** read `encyclopedia/llms.txt` and `encyclopedia/reference/manifest.json` (`1,141` records; `2,131` typed graph edges).',
     '4. **Opera Boundary Law:** `OPERAHOUSE ≠ OPERA ≠ PERFORMER`. Never claim authorship resolution, empirical replication credit, or production closure without explicit human review. ⟐',
     ''
