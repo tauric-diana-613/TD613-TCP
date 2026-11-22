@@ -78,8 +78,11 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
    const observed=await page.evaluate(({key,y})=>{
     const node=document.querySelector('[data-vixen-witness-pane="'+key+'"]');
     if(!node)return null;
+    node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
     node.scrollTop=y;
-    return {scrollTop:node.scrollTop,max:node.scrollHeight-node.clientHeight};
+    const rect=node.getBoundingClientRect();
+    return {scrollTop:node.scrollTop,max:node.scrollHeight-node.clientHeight,
+      visible:rect.bottom>0&&rect.top<innerHeight&&rect.width>0};
    },{key:pane.key,y:target});
    if(!observed)throw Error('NESTED_PANE_DISAPPEARED '+pane.key);
    await page.waitForTimeout(50);
