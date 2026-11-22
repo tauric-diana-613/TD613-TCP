@@ -9,10 +9,10 @@ import {translatePublicCopy,installVixenPublicCopy} from
 
 const here=dirname(fileURLToPath(import.meta.url));
 const html=readFileSync(resolve(here,'../app/encyclopedia/vix-cyb.html'),'utf8');
-const PUBLIC_TERMS=/\b(?:SignalRupture|Wendbine|EMSTD613|SRC|Atelier|FADT)\b/i;
+const PUBLIC_TERMS=/\b(?:SignalRupture|Wendbine|EMSTD613|SRC|Atelier|FADT|Experiment\s+[ABC]|Emergence\s+HQ)\b/i;
 
 test('presentation aliases explain internal names without changing machine identifiers',()=>{
- const before='Wendbine and SignalRupture / SRC Atelier / EMSTD613 / Cross-Atelier / FADT';
+ const before='Wendbine and SignalRupture / SRC Atelier / EMSTD613 / Cross-Atelier / FADT / Experiment A / Experiment B / Emergence HQ';
  const after=translatePublicCopy(before);
  assert.doesNotMatch(after,PUBLIC_TERMS);
  assert.match(after,/documentary|research|source|evidence/i);
@@ -21,6 +21,13 @@ test('presentation aliases explain internal names without changing machine ident
   assert.equal(translatePublicCopy('OPERAHOUSE ≠ OPERA ≠ PERFORMER'),'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
 });
 
+test('public host labels disclose research stage semantics without private program tokens',()=>{
+ const copy=translatePublicCopy('Experiment A · Experiment B · Emergence HQ · Research Atelier');
+ assert.doesNotMatch(copy,PUBLIC_TERMS);
+ assert.match(copy,/current research preview/);
+ assert.match(copy,/future controlled study/);
+ assert.equal(translatePublicCopy('OPERAHOUSE ≠ OPERA ≠ PERFORMER'),'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
+});
 test('DOM language boundary covers initial chrome and asynchronous user-facing messages',async()=>{
  const dom=new JSDOM('<!DOCTYPE html><body><nav title="SRC methods"><button aria-label="Wendbine Atelier">SignalRupture scored by FADT</button></nav><script type="application/json" id="data">{"name":"EMSTD613"}</script><div id="dynamic"></div></body>');
  const root=dom.window.document.body;
