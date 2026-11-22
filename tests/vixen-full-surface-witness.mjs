@@ -121,7 +121,7 @@ try{
   try{
    await page.locator('#vixenRoomRail button[data-view="reference"]').click({force:true});
    await page.waitForTimeout(100);
-   const entrance=page.getByRole('button',{name:/Enter Operahouse reading room/i}).first();
+   const entrance=page.locator('#vixenReferenceChamber').getByRole('button',{name:/Open independent reference reading room/i}).first();
    await entrance.click({force:true,timeout:7000});
    await page.waitForTimeout(250);
    const opened=await page.evaluate(()=>document.body.dataset.activeResearchStage==='OPERAHOUSE');
