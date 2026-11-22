@@ -258,7 +258,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    canvas.width=Math.floor(w*ratio);canvas.height=Math.floor(h*ratio);dpr=ratio;layoutDirty=true;
   }
   ctx.setTransform(canvas.width/w,0,0,canvas.height/h,0,0);
-  if(!enabled()){ctx.clearRect(0,0,w,h);canvas.dataset.animation='PARKED';return;}
+  if(!enabled()){ctx.clearRect(0,0,w,h);canvas.dataset.route=view();canvas.dataset.animation='PARKED';return;}
   if(layoutDirty)readExclusions(true);
   const shared=stageOwned()&&frame?.view===view()?frame:null;
   // A parked optical room cannot synthesize a competing autonomous phase.
