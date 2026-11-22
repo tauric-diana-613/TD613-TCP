@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {buildOriginalWorkMathWardrobe,buildSyntheticWorkMathWardrobe,scoreOriginalWorkMath} from '../app/encyclopedia/vixen-estate/observatory-work-mathematics.mjs';
-import {loadExperimentAShard,computeSha256HexAsync} from '../app/encyclopedia/vixen-estate/corpus-experiment-a.mjs';
+import {loadExperimentAShard,computeSha256HexAsync,loadCanonicalExperimentABodyBySourceId} from '../app/encyclopedia/vixen-estate/corpus-experiment-a.mjs';
 import {classifyIndependentEncounter,constructCrossAtelierWitness} from '../app/encyclopedia/reference/vixen-operator-encounter.mjs';
 import {sourceWitness} from './fixtures/vixen/source-witness.mjs';
 const html=readFileSync('app/encyclopedia/vix-cyb.html','utf8');
@@ -45,4 +45,17 @@ test('genuine byte replay remains unlinked; cloned, forged and stale witnesses c
  const altered=structuredClone(work);altered.display_title='Fake identity';
  assert.equal(classifyIndependentEncounter({work:altered,source,witness,warrant:forged}).state,'HELD_VIXEN_SOURCE_IDENTITY');
  assert.throws(()=>{witness.record.id='G-999';},TypeError);
+});
+
+test('caller metadata mutation during a genuine asynchronous source read cannot alter issued authority',async()=>{
+ const mutable=structuredClone(work),expectedTitle=mutable.display_title;
+ const result=await buildOriginalWorkMathWardrobe({works:[mutable]},{readSource:async id=>{
+  mutable.display_title='Counterfeit title injected during source read';
+  mutable.human_gate_required=!mutable.human_gate_required;
+  return loadCanonicalExperimentABodyBySourceId(id);
+ }});
+ assert.equal(result.entries.length,1);
+ assert.equal(result.entries[0].title,expectedTitle);
+ assert.notEqual(result.entries[0].title,mutable.display_title);
+ assert.equal(scoreOriginalWorkMath(corpus,result.entries[0]).empirical_credit,0);
 });

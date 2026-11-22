@@ -105,10 +105,16 @@ async function buildWorkMathWardrobe(corpus,{
  const seen=new Set(),entries=[],unavailable=[],empty=[];
  // Verify each independent Work with bounded concurrency; aggregate in roster order.
  const inspect=async(work,i)=>{
+  // Validate a private snapshot: caller metadata cannot drift across source awaits.
+  if(!synthetic)work=structuredClone(work);
   const sourceRefusals=[];
   if(!work||!/^emwork_[0-9a-f]{24}$/.test(work.work_id)||seen.has(work.work_id))
    throw new TypeError('ORIGINAL_WORK_COORDINATE_INVALID');
-  if(!synthetic)assertLocalVixenWorkCoordinate(work);
+  if(!synthetic){
+   assertLocalVixenWorkCoordinate(work);
+   work.linked_sources.forEach(Object.freeze);
+   Object.freeze(work.linked_sources);Object.freeze(work);
+  }
   seen.add(work.work_id);
   const linked=Array.isArray(work.linked_sources)?work.linked_sources:[];
   const sorted=[...linked].filter(s=>s&&typeof s.source_file_id==='string')
