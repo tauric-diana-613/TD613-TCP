@@ -11,6 +11,7 @@ const manifest=JSON.parse(readFileSync(root+'reference/podium/manifest.json','ut
 const developerGuide=readFileSync('VIXEN_START_HERE.md','utf8');
 const generated=readFileSync('scripts/package-vixen-preview.py','utf8');
 const exported=readFileSync(root+'vixen-estate/session-zip.mjs','utf8');
+const salonEngine=readFileSync(root+'vixen-estate/synthesis-salon-engine.mjs','utf8');
 
 test('AI guide, machine runtime and manifest agree on all 27 typed routes',()=>{
  assert.equal(PODIUM_ROUTES.length,27);
@@ -48,4 +49,8 @@ test('conservative mobile optical clock choice retains all other room fields',()
  assert.equal(meshScrollCoherencePolicy({view:'collection',viewportWidth:1024}),'SHARED_VIEWPORT_FIELD');
  assert.equal(meshScrollCoherencePolicy({view:'works',viewportWidth:390}),'SHARED_VIEWPORT_FIELD');
  assert.equal(meshScrollCoherencePolicy({view:'observatory',viewportWidth:390}),'SHARED_VIEWPORT_FIELD');
+});
+test('public Salon research limits describe real review boundaries without exposing private host/release machinery',()=>{
+ assert.doesNotMatch(salonEngine,/Em volunteer-client inspection|operator secret \(like TD613 Giving\)/);
+ assert.match(salonEngine,/Future publication, source acquisition, and release require separate human review/);
 });
