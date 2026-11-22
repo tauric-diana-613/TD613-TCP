@@ -6,6 +6,17 @@
  * The internal names in THIS FILE are deliberately confined to machine code.
  */
 const PUBLIC_TERMS=Object.freeze([
+  // Public stage and screen-reader copy never expose internal experiment,
+  // operator-host, or historical engineering aliases. Machine and original
+  // manuscript bytes are protected below, including original citations.
+  [/\bExperiment[- ]A\b/gi,'research preview'],
+  [/\bExperiment[- ]B\b/gi,'prospective comparison'],
+  [/\bExperiment[- ]C\b/gi,'future publication review'],
+  [/\bEmergence\s+HQ\b/gi,'internal research office'],
+  [/\bPaul['’]s\b/gi,"the outside researcher's"],
+  [/\bPaul\b/g,'outside researcher'],
+  [/\bAIX\b/g,'AI research conductor'],
+  [/\b(?:LAB_RC-\d{2}|LAB_TCC-\d{2})\b/g,'source-scoped instrument'],
   [/\bEMSTD613\s+Atelier\b/gi,'Vixen manuscript research'],
   [/\bSRC\s+Atelier\b/gi,'documentary evidence research'],
   [/\bWendbine\s+Atelier\b/gi,'external-source research'],
