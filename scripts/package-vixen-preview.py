@@ -143,184 +143,125 @@ def main(out):
     files["scripts/vixen-podium-native-adapters.mjs"]=(ROOT/"scripts"/"vixen-podium-native-adapters.mjs").read_bytes()
     # One short root entrypoint per shipped preview; archival sources stay in
     # their original paths. An extracted public preview is not a full checkout.
-    quickstart=ROOT/"VIXEN_START_HERE.md"
-    assert quickstart.is_file(), "Operator agent navigation missing"
-    files["VIXEN_START_HERE.md"]=quickstart.read_bytes()
-    readme="""# Vixen Cybernetics Encyclopedia / PR #1730 browser preview
+    # Developer worktree quickstart remains in Git. Do not publish engineering
+    # branch/authorization instructions in the visitor's portable archive.
+    readme="""# Vixen Cybernetics · source-bound research preview
 
-This exact-Git-HEAD preview contains the Vixen operator-facing page,
-its historical 32 Works / eight identity gates / 21 protocols, and the
-SEPARATE 1,141-record Universal reference estate.
+This self-contained preview serves the Vixen Opera and an independently
+identified read-only reference archive. Start with the original Works, not
+with a technical host console. Source identity, original authorship, model
+demonstrations, and research proposals remain separate.
 
-## Operator-selected frontispiece and independent fox SVG
+## First open
 
-These are THREE separate asset contracts. The standalone Arc Flash-yellow
-fox is installed at encyclopedia/assets/vixen/fox-arcflash.svg and used
-by both 42px desktop and 38px mobile mastheads; it is never rasterized.
+1. Unzip the preview archive into a local directory.
+2. From that directory run python3 -m http.server 6130 (or a comparable
+   local static HTTP server).
+3. Visit http://127.0.0.1:6130/encyclopedia/vix-cyb.html.
+4. Navigate with the Vixen room menu. Allow the page's local modules to
+   load before interacting with the instruments.
+
+Do not double-click the HTML file using a file:// URL; browser module
+and same-origin source requests require HTTP.
+
+## Source ownership
+
+OPERAHOUSE ≠ OPERA ≠ PERFORMER.
+
+- The shared hosting and independent reference retrieval constitute
+  infrastructure, not a source of Vixen authorship.
+- Vixen is its own source-conditioned Opera.
+- Each of the 32 original Works and 53 linked manifestations retains its
+  declared source and authorial uncertainty. Eight human identity gates
+  remain for independent review. Twenty-one methods are documentary.
+
+The reference archive remains independent. A verified reference digest or
+lexical overlap cannot create a ratified relationship between studies.
+
+## 01 · Works
+
+Choose an original Work, then inspect its recorded manifestations, declared
+metadata and readable manuscript text. Preserve original titles and source
+identifiers. Missing original PDF bytes produce source-availability holds,
+never invented text.
+
+## 02 · Observatory
+
+The six headliners are **{runtime_headliners}**.
+These are Vixen source-conditioned instrument illustrations. Their visual
+models and mathematical outputs are not independent empirical evidence.
+Test instrument response, pause/still, readable labels and source access.
+
+## 03 · Salon
+
+Select two different original Works. Vary inquiry order without merging
+their author identities. Explore source excerpts, diagnostic models and
+falsifiable questions. The same local source-conditioned optical stage
+animates the corset. On narrow mobile screens, its separate fixed-page
+wallpaper is parked to preserve scroll coherence.
+
+Draft comparisons and future controlled-study designs remain proposals.
+Use Rest without forfeiting the chosen Works or question. The Research Cart
+and local question export involve no privileged machine action.
+
+## 04 · Folios
+
+Compare two recorded manifestations of the SAME original Work. The
+comparison is bounded by recorded metadata and any available original
+source bodies. Do not infer a relationship with an unrelated reference
+record or a new performer identity.
+
+## 05 · Methods
+
+Read the original source-declared methods as documentary material.
+Distinguish preserved text from an independently executable and witnessed
+method. Historic files are unchanged by the display.
+
+## Podium · AI research companion
+
+The human Podium suggests readable research questions and preserves local
+review context, rather than displaying host-specific developer commands.
+AI assistants should first read encyclopedia/vix-cyb/llms.txt.
+The distinct machine-only contract at
+encyclopedia/reference/podium/manifest.json defines 27 typed read,
+proposal, review and collaboration routes. These are inert unless a
+legitimately authorized runtime executes an explicit task. Merely
+enumerating native adapters does not connect them or authorize writes.
+
+A reader may consult the independently maintained encyclopedia/llms.txt
+and reference manifest for the separate reference index. Its records
+remain outside Vixen's original Work population and cannot self-ratify
+cross-study warrants.
+
+## Original artwork and portable integrity
+
+Three separate assets remain operator selected: desktop frontispiece,
+mobile frontispiece and the Arc-Flash-yellow vector fox. Do not
+regenerate, recolor, crop or substitute the approved originals during
+a performance or corpus experiment.
+
 {frontispiece_state}
 
-Full checkout (not the extracted preview) accepts the three approved files:
-    python3 scripts/install-vixen-brand-assets.py --desktop "chosen-desktop.png" --mobile "chosen-mobile.png" --fox "fox-arcflash.svg" --dry-run
-    python3 scripts/install-vixen-brand-assets.py --desktop "chosen-desktop.png" --mobile "chosen-mobile.png" --fox "fox-arcflash.svg"
-    python3 scripts/install-vixen-brand-assets.py --check
+PREVIEW-MANIFEST.json contains the exact source revision and hashes.
+The developer preview ZIP contains more reference files than the browser's
+independent Save Session ZIP. Never attribute the developer package's
+reference coverage to an ordinary browser-exported session.
 
-The installer checks SHA-256, dimensions/orientation, SVG vector integrity
-and source identity before rewriting the HTML. Afterward run full tests and
-generate a NEW exact-head preview; older previews cannot certify new assets.
+## Evidence and future acquisition limits
 
-**Agent quickstart:** VIXEN_START_HERE.md at the archive root explains the
-active optical engines, Still graph and rollback paths. Source-editing agents
-must use the full repository checkout and its binding root AGENTS.md.
+The seven missing PDF documents plus one separate blind-archive document
+are a planned 7 + 1 acquisition test, NOT observed hydration or admitted
+source material at this version. Establish a frozen pre-acquisition
+baseline and preserve separate custody for the seven and the one before
+any source-utility comparison.
 
-## Start in a web browser
+Human aesthetic/pedagogical acceptance, authorship and identity decisions,
+publication approval, external source trust and scientific closure remain
+independent. This preview grants no production, protected trial or
+automatic source-admission authority.
 
-1. Unzip the archive. Open a terminal in this extracted directory
-   (the one containing the encyclopedia subfolder).
-2. Run either:
-       Windows:        py -m http.server 6130
-       macOS / Linux:  python3 -m http.server 6130
-3. Open http://127.0.0.1:6130/encyclopedia/vix-cyb.html
-
-Do not open the HTML by double-clicking (file scheme blocks the modules
-and reference requests). A local HTTP server is sufficient: GitHub main
-and public TD613.com deployment are not required.
-
-## Test the Vixen Electric Foundry — six completed flagship instrument surfaces
-
-1. Navigate to **01 · Observatory**. The previous four-tab stage recedes
-   automatically; the chrome computation theater, not the old four-model
-   interface, becomes the primary interactive instrument.
-2. The six headliners are **{runtime_headliners}**. Select each, inspect its exact recorded Vixen folio
-   title and original formula, and verify the live mathematical readout.
-3. Move Gain, Witness, Impulse Voltage and Refractive Twist; GPU/CPU
-   output, diagnostics and probe state respond causally.
-4. Hover to interrogate local field gradients; click to PIN a probe.
-   The computation is synthetic and source-typed, not empirical proof.
-5. Use Pause/Resume and Single Frame, then visit another view.
-   The frame loop is host-controlled and stops offstage.
-6. Inspect the **39 visual delivery carriers**: 6 near / 13 mid / 20 far.
-   These belong to Loom's optical engine; they are never described as
-   Em's independently sourced authored works.
-7. View other Vixen folios in the historical catalogue: the complete
-   22-formula register and six giveback routes remain discoverable.
-   Registration is not a claim that twenty-eight equal-quality
-   simulations have been built.
-8. The GLSL renderer is in `observatory-foundry.frag`; the control
-   and custody kernel is `observatory-vixen-corpus.mjs`. Both are
-   included in this portable HTTP preview.
-
-## Test the source-first Vixen Synthesis Salon (one coherent creative Opera)
-
-1. Choose **06 · Salon** from the top menu, or **Synthesis Salon & Research Cart** from the mobile navigation.
-2. Inspect *two original Vixen Works* and deliberately select one archival
-   manifestation for each. Confirm IDs, distinct authorship, original filenames,
-   declared SHA-256 digests and any unadjudicated human gate.
-3. Choose one of the six source-recorded giveback tracks and a separate
-   documentary method from the 21-instrument source list.
-4. Switch encounter route I→II vs II→I. The route history changes while
-   source identities remain invariant.
-5. Move **Synthetic arrival lag** between 0 and 120 ticks. The five-clock
-   visual score must change causally, while its labels still refuse to claim
-   equivalence among transformer, token, surrogate, wall, and 48 kHz clocks.
-6. Add both Works to the **existing Research Cart**, which survives from the
-   previous Vixen implementation. Saved items must be visible in the source
-   tray; no sale, backend submission, or foreign performer is permitted.
-7. Compose a source-attributed question or supply your own; inspect the
-   falsifiable predicate, counterworld, evidence deficits and the
-   unexecuted four-arm Experiment B competent-union comparison. Refract
-   encounter order. Use Rest and Resume and inspect the preserved question.
-8. Export the **local** question receipt or copy an inert Podium JSON batch.
-   These operations invoke no native tools, run no protected Flight,
-   admit no record and grant no scientific closure.
-
-## Test the Vixen Opera (source-bound Folios)
-
-1. Open **07 · Vixen Folios**; select one of the 32 historical Vixen Works.
-2. Inspect its recorded manifestations. Choose two manifestations of the
-   **same Work**, then select **Begin this Work's comparison**.
-3. Select **Observe the recorded differences**. Companion Experiment-A preview
-   bodies are readable locally while human closure remains reserved; production
-   releases gate personal corpora behind an operator secret.
-4. Choose **Name an unresolved question**, optionally annotate it locally,
-   **Rest without penalty**, and resume without an identity adjudication.
-5. Visit the Observatory and eight unclosed human gates. Review the phone
-   layout: the initial Folio should appear without scrolling past a giant
-   proscenium. Source records outside the Vixen estate are not performers here.
-
-## Test the independent Operahouse reading room (intentional encounter)
-
-1. While on Vixen Folios, explicitly choose **Enter Operahouse reading
-   room — Vixen leaves the stage**. Vixen becomes hidden as the separate
-   reading room opens; the two source estates remain independently typed.
-2. Select a Vixen Work and an actually recorded manifestation on the left.
-3. Explicitly click **Open independent read-only estate**. This loads the
-   Universal directory and graph census only, without authorizing a link.
-4. Enter a separately chosen Universal query (e.g. G-101); search the
-   reference estate, then select a result to fetch and verify its exact
-   canonical JSON bytes using fatal UTF-8 and browser SHA-256.
-5. Inspect the bounded canonical payload and the separate Universal graph
-   edge count. Then click **Observe separately** to obtain an unratified,
-   session-local third-order receipt. It MUST report relationship
-   UNESTABLISHED and zero human-ratified cross-opera warrants.
-6. Rest and resume. Then choose **Return to Vixen Opera**. The separate
-   Operahouse room is hidden before Vixen becomes visible again. A Universal
-   record must never appear as a Vixen Performer or historical Vixen source.
-7. Alter a record payload or serve malformed UTF-8 in an isolated test
-   fixture: integrity must fail CLOSED. The CI tests include both negatives.
-
-The **separate** Universal reference estate remains packaged for independent
-Encyclopedia research. The witness room makes a bounded, operator-initiated
-confrontation available without assigning a counterpart or transferring
-authorship by lexical proximity. The native SQLite receiver remains separate.
-
-## Machine-only Podium · agent-led but human-authorized
-
-The machine-facing contract lives at `encyclopedia/reference/podium/manifest.json`.
-The operator-facing Vixen UI remains untouched by this extra task plane.
-Podium task routes are typed JSON, not hidden visual buttons or auto-agents.
-
-From this extracted preview root, the public-asset-only CLI supports:
-    node scripts/vixen-podium.mjs --manifest
-    node scripts/vixen-podium.mjs --input YOUR_TASK_BATCH.json
-
-A task is a JSON object:
-    {"schema":"td613.vixen.podium.task/v1","intent":"podium.describe","params":{}}
-
-A batch is a JSON array of such objects; their sequence matters.
-For actual read operations use universal.open, universal.search,
-universal.get, universal.related, then synthesis.propose.
-New Opera-native tasks `vixen.salon.compose` and
-`experiment_b.preregister` use exactly the same source-bound kernel
-as the human Synthesis Salon, but return held unexecuted proposals.
-Neither converts a declared Work hash into original-body verification. The system
-refuses unseen records, unratified crosswalks and unconnected native
-research engines. Rulefield, Atlas, Aperture, Dollhouse, and the native
-Universal Atelier receiver have **explicit adapter slots**, not
-imaginary built-in providers. They can execute only when a separately
-authorized host supplies real native tool implementations.
-
-A full repository checkout can enable the qualified native-read adapters
-through a separate, operator-directed invocation:
-  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --input YOUR_TASK_BATCH.json
-That shell-level attestation is a host declaration, not independent identity
-proof. The portable preview contains the adapter *source* but not the
-Dollhouse/Aperture/Atlas engine runtime; missing engines remain HELD.
-Task JSON cannot authorize native execution.
-
-The machine receipts are session-local research material, not signed
-human custody, empirical surplus, or automatic approval.
-
-## Scope and limits
-
-Source edition 1.4 is read-only. The separately developed native
-Universal Atelier SQLite backend is NOT wired into production here.
-No private Em source bodies; no backend source mutation or automatic
-scientific promotion; no protected Experiment B launch; no release.
-The browser witness verifies source bytes and distinct custody loci, not
-a substantive cross-estate relationship or a scientific surplus.
-Unmatched terms and unavailable references must produce honest HELD
-or bounded-negative outcomes.
-See PREVIEW-MANIFEST.json for exact commit and file hashes.
+No mirrors at the kiki.
+OPERAHOUSE ≠ OPERA ≠ PERFORMER.
 """
     frontispiece_state=(
         "The selected desktop and mobile PNGs are served from separate files\n"
