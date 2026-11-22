@@ -309,7 +309,7 @@ human custody, empirical surplus, or automatic approval.
 ## Scope and limits
 
 Source edition 1.4 is read-only. The separately developed native
-Universal reference SQLite receiver is NOT wired into production here.
+Independent reference SQLite backend remains unconnected in this preview.
 Authorized preview companion bodies remain readable; missing original binaries
 stay missing. No source mutation, scientific promotion, protected flight or production release.
 The browser witness verifies source bytes and distinct custody loci, not

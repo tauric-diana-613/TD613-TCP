@@ -41,6 +41,14 @@ The public Podium describes **27 declared typed routes** (the definitive list is
 
 An additional protected future-study design route exists in the exact machine manifest. It returns a design-only HOLD and supplies no authority to launch a study.
 
+## Historical Opera-versus-host folio contract — machine maintenance only
+
+The archival formula register contains **8 historically recorded OPERA folio entries** and **14 OPERAHOUSE technical/optical records**. These secondary folios and host optics must never be promoted into the 32 primary Vixen Works. The six public Vixen Folio models are **TCC-01, TCC-04, TCC-05, TCC-06, TCC-03, TCC-07**, in that authoritative runtime order. Backstage RC models may be indexed for internal engineering but **RC records remain OPERAHOUSE technical optics** and cannot headline the public source instrument.
+
+The archival **LAB_RC-##** identifier is machine-only; original source passage identifiers and technical tests retain it without exposing private nomenclature in visitor controls. The TCC-08 subject has exact status **TITLE_LOCUS_ORNAMENT** and **BRANDING_ORNAMENT_ONLY** and cannot be presented as a research-programme theorem.
+
+Public original mathematical wardrobe scoring remains **browser-isomorphic**: it supplies a verified original manifestation passage as **sourceContext**, never **operatorQuestion**, and does not automatically invoke the separately gated Podium native research engines. These roles are also checked by `tests/vixen-stage-subject-contract.test.mjs` and `tests/vixen-original-work-mathematics.test.mjs`. Retain the distinction after adding any hydration candidates.
+
 ## Task and receipt rules
 
 ```json

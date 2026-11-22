@@ -65,11 +65,12 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
    const st=getComputedStyle(el),r=el.getBoundingClientRect();
    return r.width>=125&&r.height>=130&&el.scrollHeight-el.clientHeight>=200&&
     /auto|scroll/.test(st.overflowY)&&st.display!=='none';
-  }).slice(0,12).map(el=>{
+  }).map(el=>{
    if(!el.dataset.vixenWitnessPane)el.dataset.vixenWitnessPane='witness-'+Math.random().toString(16).slice(2,10);
    return {key:el.dataset.vixenWitnessPane,max:el.scrollHeight-el.clientHeight,height:el.clientHeight};
   });
  });
+ if(panes.length>50)throw Error('TOO_MANY_NESTED_SCROLLPORTS '+surface+' '+panes.length);
  for(const pane of panes){
   const steps=Math.max(2,Math.ceil(pane.max/Math.max(100,pane.height*.58))+1);
   if(steps>175)throw Error('NESTED_SCROLL_COVERAGE_EXCEEDS_BOUND '+surface+' '+pane.key+' tiles='+steps);
@@ -91,6 +92,8 @@ async function scrollCapture(page,profile,surface,{rootSelector='body'}={}){
     observed_scroll:observed.scrollTop,pane_max_scroll:observed.max
    });
   }
+  const bottom=await page.evaluate(key=>{const n=document.querySelector('[data-vixen-witness-pane="'+key+'"]');return n?{y:n.scrollTop,max:n.scrollHeight-n.clientHeight}:null;},pane.key);
+  if(!bottom||bottom.max-bottom.y>2)throw Error('NESTED_SCROLL_BOTTOM_NOT_COVERED '+surface+' '+pane.key);
  }
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  return {route:surface,scrollHeight:dom.scrollHeight,tiles:positions.length,nestedPanes:panes.length,covered_bottom:true};
