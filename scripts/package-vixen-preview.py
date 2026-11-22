@@ -199,8 +199,8 @@ and public TD613.com deployment are not required.
 5. Use Pause/Resume and Single Frame, then visit another view.
    The frame loop is host-controlled and stops offstage.
 6. Inspect the **39 visual delivery carriers**: 6 near / 13 mid / 20 far.
-   These belong to Loom's optical engine; they are never described as
-   Em's independently sourced authored works.
+   These are host optical carriers; they are never described as
+   the historical authors' independently sourced Works.
 7. View other Vixen folios in the historical catalogue: the complete
    22-formula register and six giveback routes remain discoverable.
    Registration is not a claim that twenty-eight equal-quality
@@ -227,7 +227,7 @@ and public TD613.com deployment are not required.
    tray; no sale, backend submission, or foreign performer is permitted.
 7. Compose a source-attributed question or supply your own; inspect the
    falsifiable predicate, counterworld, evidence deficits and the
-   unexecuted four-arm Experiment B competent-union comparison. Refract
+   unexecuted matched-control prospective comparison. Refract
    encounter order. Use Rest and Resume and inspect the preserved question.
 8. Export the **local** question receipt or copy an inert Podium JSON batch.
    These operations invoke no native tools, run no protected Flight,
@@ -238,7 +238,7 @@ and public TD613.com deployment are not required.
 1. Open **07 · Vixen Folios**; select one of the 32 historical Vixen Works.
 2. Inspect its recorded manifestations. Choose two manifestations of the
    **same Work**, then select **Begin this Work's comparison**.
-3. Select **Observe the recorded differences**. Companion Experiment-A preview
+3. Select **Observe the recorded differences**. Author-approved original companion
    bodies are readable locally while human closure remains reserved; production
    releases gate personal corpora behind an operator secret.
 4. Choose **Name an unresolved question**, optionally annotate it locally,
@@ -276,7 +276,7 @@ authorship by lexical proximity. The native SQLite receiver remains separate.
 ## Machine-only Podium · agent-led but human-authorized
 
 The machine-facing contract lives at `encyclopedia/reference/podium/manifest.json`.
-The operator-facing Vixen UI remains untouched by this extra task plane.
+The visitor's Vixen UI offers a plain-language research handoff, not a host developer console.
 Podium task routes are typed JSON, not hidden visual buttons or auto-agents.
 
 From this extracted preview root, the public-asset-only CLI supports:
@@ -289,22 +289,18 @@ A task is a JSON object:
 A batch is a JSON array of such objects; their sequence matters.
 For actual read operations use universal.open, universal.search,
 universal.get, universal.related, then synthesis.propose.
-New Opera-native tasks `vixen.salon.compose` and
-`experiment_b.preregister` use exactly the same source-bound kernel
-as the human Synthesis Salon, but return held unexecuted proposals.
+Native source comparison and future-study design use the same source-bound
+kernel as the human Synthesis Salon, but return held unexecuted proposals.
+Their exact route identifiers are in the separate machine manifest.
 Neither converts a declared Work hash into original-body verification. The system
 refuses unseen records, unratified crosswalks and unconnected native
-research engines. Rulefield, Atlas, Aperture, Dollhouse, and the native
-Universal Atelier receiver have **explicit adapter slots**, not
-imaginary built-in providers. They can execute only when a separately
-authorized host supplies real native tool implementations.
+research engines. Optional host-native research adapters are distinct from the Opera; their
+names, methods and permissions are private to the actual authorized host.
+The public preview provides no invisible engine connection.
 
-A full repository checkout can enable the qualified native-read adapters
-through a separate, operator-directed invocation:
-  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --input YOUR_TASK_BATCH.json
-That shell-level attestation is a host declaration, not independent identity
-proof. The portable preview contains the adapter *source* but not the
-Dollhouse/Aperture/Atlas engine runtime; missing engines remain HELD.
+Privileged native execution belongs to separately authenticated repository
+engineering instructions; it is not a public operator control, credential or
+automatically connected engine. Absent host tools remain HELD.
 Task JSON cannot authorize native execution.
 
 The machine receipts are session-local research material, not signed
@@ -314,8 +310,8 @@ human custody, empirical surplus, or automatic approval.
 
 Source edition 1.4 is read-only. The separately developed native
 Universal Atelier SQLite backend is NOT wired into production here.
-No private Em source bodies; no backend source mutation or automatic
-scientific promotion; no protected Experiment B launch; no release.
+Authorized preview companion bodies remain readable; missing original binaries
+stay missing. No source mutation, scientific promotion, protected flight or production release.
 The browser witness verifies source bytes and distinct custody loci, not
 a substantive cross-estate relationship or a scientific surplus.
 Unmatched terms and unavailable references must produce honest HELD
