@@ -42,7 +42,8 @@ test('Human operator route owns presentation history, diagnostics and machine-bo
   assert.equal(doc.querySelectorAll('#'+id).length,1);
  }
  assert(op.querySelector('#vixOperatorPodium'));
- assert(op.querySelector('a[href="./reference/podium/manifest.json"]'));
+ assert(op.querySelector('a[href="./vix-cyb/llms.txt"]'),"Visitor operator route must link to the current source-first AI guide");
+ assert(!op.querySelector('a[href="./reference/podium/manifest.json"]'),"Do not advertise the native machine manifest as a public operator control");
  assert(op.querySelector('button[data-action="inspector"]'));
  assert.match(op.textContent,/human approval|human authorization/i);
  assert(source.includes("'reference', 'operator'"),'Operator hash must be included in routing whitelist');
