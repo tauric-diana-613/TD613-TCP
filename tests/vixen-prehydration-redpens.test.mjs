@@ -13,7 +13,7 @@ const css=read('app/encyclopedia/vixen-estate/vixen-electrical-breath-rgi13.css'
 
 test('public Podium offers source-first research handoff rather than backstage controls',()=>{
  const start=html.indexOf("} else if (state.inspectorTab === 'podium')");
- const stop=html.indexOf('} else {\n      const themeCss',start);
+ const stop=html.indexOf('// Reference & Utility Button Binders',start);
  assert(start>0&&stop>start);
  const visible=html.slice(start,stop);
  for(const term of ['TD613_PODIUM_OPERATOR_DIRECT','CLI Runner','LAB_RC-','wf-experiment-b-hold','Cross-Atelier Podium Task Preview','podiumRouteSelect','podiumFusionProfile']){
