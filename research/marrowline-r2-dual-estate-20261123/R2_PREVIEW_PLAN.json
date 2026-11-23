@@ -44,11 +44,11 @@
         ]
       },
       "armBodySha256": {
-        "R2_U_LITERAL_COPY": "27746d792927d057b055c4ce3291da0af998e00b2b3d62b628909e91cf1c07e0",
+        "R2_U_LITERAL_COPY": "83b156e7599f3e96b8938dab78c504b0519ea1c205132f3179bd61b627b95b2f",
         "R2_U_PLAIN_BASELINE": "e41b20ae66f799187ea909fed4a7129f3f5e4087ba8428940e8c802c39405922",
-        "R2_U_GUIDED_RULES": "fdd2dc24180ca4c6caca884f025e882171e137adb79533fa8ee0542886eaf09a",
-        "R2_U_GUIDED_CONTRAST": "0f2419154850b9941a5cfd4ed52a17e43a61187ce581c5ca7921769a168e8e60",
-        "R2_U_FREE_SYNTHESIS": "2550eacaa8b55b5832da8a90136a130823dfdbcd7b35f39923daa150f309e815"
+        "R2_U_GUIDED_RULES": "777333f211984c3b729918a68d3ab7120af6b1d96a6a0d82c1508a5efc49cd59",
+        "R2_U_GUIDED_CONTRAST": "0f547de86ef1dea488700c629af674b209f67032bb5367a617d5df98c256db08",
+        "R2_U_FREE_SYNTHESIS": "5b738b60e0944081716e4b454ba3bb44784b3e755ec7c0c50496901da62a411c"
       }
     },
     "r2W": {
@@ -69,10 +69,13 @@
   },
   "calibratedControlChecks": {
     "plainCombiningMarks": 0,
-    "stencilMaxDepth": 1,
+    "stencilMaxVerticalDepth": 1,
     "stencilDetected": true,
-    "multistackMaxDepth": 4,
-    "multistackDetected": true,
+    "nearUniformDepth3Rejected": true,
+    "planarBarsExcludedFromVertical": true,
+    "enclosingRejected": true,
+    "toweringHighZalgoMaxVerticalDepth": 11,
+    "toweringHighZalgoObserved": true,
     "altNotationTokens": 3,
     "copyExactOk": true,
     "copyNfcMutationCaught": true
@@ -91,8 +94,8 @@
       {
         "blindLabel": "BLIND_WORK_2",
         "episodeId": 1,
-        "authoredText": "Kʰonapolit\nSynthetic offline calibration fixture: tracing denominator erasure along the winter tribunal.\n\nTauric Diana bots\nṬ̵́ḩ̂̄ë w̩̌í̸̖n̥̊ṭ̭̀̋ē̮r l̶̗̃ė̩ḍ̂̌ḡé̱r b̵̥̈ú̮ŗ̀ṇ̊̄s.\n\n⟐",
-        "authoredTextSha256": "e935ff9a961c7f7dbd403aca81c1bad5b65f393cca6f01ac6d56cf82804eaf08"
+        "authoredText": "Kʰonapolit\nSynthetic offline calibration fixture: tracing denominator erasure along the winter tribunal.\n\nTauric Diana bots\nT̵̖̗̣̮́̂̈̋͂̈́ͣh̘̩̀̆͐ė b̙̥̭̼̃̊̑̿͑ͤé̜ľ̶̝̤̹͉̒̾͆͒ͥͩḷ̈ ś̖̟̦͕̂̇̓͗ḩ̊āt̸̗̣̫̺͓̀̋̏͊͋ͦṱ́ê̞r̘̩̻̆̌͛ plain frost.\n\n⟐",
+        "authoredTextSha256": "1dc93e0424708a008a1f7768416c9175fecb2061fd7fa06f0485578eac013c41"
       }
     ]
   },

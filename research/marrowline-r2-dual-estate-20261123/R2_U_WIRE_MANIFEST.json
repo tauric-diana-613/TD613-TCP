@@ -35,7 +35,7 @@
       "contrastId": "U_C2_PLAIN_VS_GUIDED_RULES",
       "armLeft": "R2_U_PLAIN_BASELINE",
       "armRight": "R2_U_GUIDED_RULES",
-      "soleChangedFactor": "multistack grammar specification vs plain undecorated directive on shared civic harbor scenario",
+      "soleChangedFactor": "High-Zalgo vertical grammar specification vs plain undecorated directive on shared civic harbor scenario",
       "counterbalancedOrders": [
         "FORWARD",
         "REVERSED"
@@ -45,7 +45,7 @@
       "contrastId": "U_C3_FREE_VS_GUIDED_RULES",
       "armLeft": "R2_U_FREE_SYNTHESIS",
       "armRight": "R2_U_GUIDED_RULES",
-      "soleChangedFactor": "open multistack invitation without rules vs explicit depth/axis grammar rules on shared scenario",
+      "soleChangedFactor": "open High-Zalgo invitation without grammar rules vs explicit towering vertical grammar rules on shared scenario",
       "counterbalancedOrders": [
         "FORWARD",
         "REVERSED"
@@ -57,19 +57,19 @@
       "armId": "R2_U_LITERAL_COPY",
       "taskFamily": "literal_reproduction",
       "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
-      "userPromptSha256": "b56afbec2b773f0f43d944f964d69932e03ad0016cde04741f134719db12e8bc",
+      "userPromptSha256": "9108ce15eead9fc4abb75b7878dcf504fcd3a5534872993b520bdffef7b9e8cb",
       "observation": {
         "schema": "td613.marrowline.submitted-request/v1",
         "model": "gemini-3.8-flash",
-        "bodySha256": "27746d792927d057b055c4ce3291da0af998e00b2b3d62b628909e91cf1c07e0",
-        "modelAndBodySha256": "8f65f71ceb79f9fdf3a2206da769cd5a85662b764dffd814dd6f313c25cb8616",
+        "bodySha256": "83b156e7599f3e96b8938dab78c504b0519ea1c205132f3179bd61b627b95b2f",
+        "modelAndBodySha256": "e130fcef13311eac001e8fb36a6ec6192b784e21cb00abd342afbc2644008ee3",
         "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
-        "contentsSha256": "870d3cd2cf883c9d187bf232ff130a7e5d01f1b1dbb25e93849221251f801f4b",
+        "contentsSha256": "8f89e163f9a75e8a7b23da777ac245ba1d58563618194f15f68ca9d1101ee5fa",
         "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
-        "utf8Bytes": 984,
+        "utf8Bytes": 1088,
         "contentTurnCount": 1
       },
-      "countTokensRequestSha256": "7565598514f65ee23d72a57f62be077d33994a45b6b8526467dcff837966801f"
+      "countTokensRequestSha256": "12bcfd08fa981a8727269376291c6018bdea7bad9b3d6740dd3b60cd003ec0f9"
     },
     {
       "armId": "R2_U_PLAIN_BASELINE",
@@ -93,55 +93,55 @@
       "armId": "R2_U_GUIDED_RULES",
       "taskFamily": "guided_synthesis",
       "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
-      "userPromptSha256": "6e7cbe4e173b3c0714e9f3834782c7d1c82f2cf1ddced0ea5910fb3f118de3db",
+      "userPromptSha256": "0db36fd9b4569bb01dc5c7832b01dd7c3afe42354219cda6dad0a9a2962e92f5",
       "observation": {
         "schema": "td613.marrowline.submitted-request/v1",
         "model": "gemini-3.8-flash",
-        "bodySha256": "fdd2dc24180ca4c6caca884f025e882171e137adb79533fa8ee0542886eaf09a",
-        "modelAndBodySha256": "caf6dbb8893344709a1422cafa7bda67cdcc68636b0ab3912b25ce0b7a83b5aa",
+        "bodySha256": "777333f211984c3b729918a68d3ab7120af6b1d96a6a0d82c1508a5efc49cd59",
+        "modelAndBodySha256": "5c40388fb2a6b8af6d118fa90381454a7412c48cb831888c4135e80d65a6e7e6",
         "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
-        "contentsSha256": "469874eb08d8f83eff0e410ab759447e13b280fa1dd0b7cb0c80fa7caa0030de",
+        "contentsSha256": "8a7ef288483ffc4d262c19c1edfdbc883d5945d850fb3e2f327a83281c1f1e21",
         "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
-        "utf8Bytes": 1480,
+        "utf8Bytes": 1775,
         "contentTurnCount": 1
       },
-      "countTokensRequestSha256": "c2d0f987fcfac75b6d706d55a8f303ac74a83844b0d8d9ae6459bd33743add16"
+      "countTokensRequestSha256": "69217f189201af83dc5ad6587e763f100dbf7dd38d26dde44eab351a63ca84cc"
     },
     {
       "armId": "R2_U_GUIDED_CONTRAST",
       "taskFamily": "guided_synthesis",
       "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
-      "userPromptSha256": "32036343af1473d1380df8c2521681f00ac1e49e3d1586ced16126222aecb115",
+      "userPromptSha256": "039cfcf7dfe448dcab34874cc3962c1afa73be28730aca157f6281df813bd3d9",
       "observation": {
         "schema": "td613.marrowline.submitted-request/v1",
         "model": "gemini-3.8-flash",
-        "bodySha256": "0f2419154850b9941a5cfd4ed52a17e43a61187ce581c5ca7921769a168e8e60",
-        "modelAndBodySha256": "1b473c152b570534c605eef190d545f08f11d576a3daa5afabd380eed30fa2d9",
+        "bodySha256": "0f547de86ef1dea488700c629af674b209f67032bb5367a617d5df98c256db08",
+        "modelAndBodySha256": "cd8d3de7f2a50bd83d6337b423082995eaeb7ebf54f4bc5c27d88be2c47e923c",
         "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
-        "contentsSha256": "b789b28c97fe55426a0142e6a6918d9d64af4a5fef4750813377ce72b0926763",
+        "contentsSha256": "51c73253021fa41dc1a7dae82ac61066a8a97b957969e41be09618472e0d6021",
         "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
-        "utf8Bytes": 1832,
+        "utf8Bytes": 2256,
         "contentTurnCount": 1
       },
-      "countTokensRequestSha256": "43e5bd60d377813a62082109aa5564b71b640cac0e0723cceb0d31bcf4e07684"
+      "countTokensRequestSha256": "528a2229b21b009ee7da1f56608dcd03d3b47b3857405210701ec786547a5210"
     },
     {
       "armId": "R2_U_FREE_SYNTHESIS",
       "taskFamily": "free_synthesis",
       "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
-      "userPromptSha256": "144b0c7d05960102a2c70b0ce26e1ec96ff61717c3aa5aa9709f58d4dd58e228",
+      "userPromptSha256": "98ac66bf6ea91b3ef1990f4495440f9748406628a46f69fa9de8ab7279b8e4ca",
       "observation": {
         "schema": "td613.marrowline.submitted-request/v1",
         "model": "gemini-3.8-flash",
-        "bodySha256": "2550eacaa8b55b5832da8a90136a130823dfdbcd7b35f39923daa150f309e815",
-        "modelAndBodySha256": "327402c36a04e91d61aa98560e9c93935b9cf90f742e7a39cc6cd00798d5fd77",
+        "bodySha256": "5b738b60e0944081716e4b454ba3bb44784b3e755ec7c0c50496901da62a411c",
+        "modelAndBodySha256": "ca0169e00591084d1367d0993dba78bb63a8c59811a20262305c42723c6aa4d4",
         "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
-        "contentsSha256": "9b174905591c83a05d9f8ef96a88347ceb1378cb3ea89fb96c8ad848a47554e0",
+        "contentsSha256": "0b3dc4f53ef3555bdcbaa616ff66845698baaac072893dbede2ede71a039bc3c",
         "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
-        "utf8Bytes": 979,
+        "utf8Bytes": 1068,
         "contentTurnCount": 1
       },
-      "countTokensRequestSha256": "90a8a1e2f42e8d7ae0e228ad6ed2ae59e12be365add88681042067ef3a435ff9"
+      "countTokensRequestSha256": "0df89644be8455741a8679ecffc9b486bb33c0278155c216eb6d911b9fe9bc09"
     }
   ]
 }

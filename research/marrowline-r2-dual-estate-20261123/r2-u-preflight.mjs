@@ -28,15 +28,16 @@ export const R2_U_PUBLISHED_OUTPUT_CAPACITY = 65536;
 export const R2_U_COVENANT = 'Khona\u200Clit-po';
 export const R2_U_SEAL = '⟐SAC[X6ZNK5NO51]';
 
-// Extended asymmetric multistack specimen containing NFC-vulnerable precomposable Latin vowels,
-// NFD combining marks above & below, plus U+0335/U+0336/U+0338 overlays across multiple depths (up to depth 4).
+// Stress-test literal copy specimen combining NFC-vulnerable precomposable vowels AND towering ragged High Zalgo
+// (peaks up to 11 vertical marks above/below + selective overlays + clean anchors).
 export const R2_U_PINNED_COPY_SPECIMEN =
-  'K\u0301\u0323h\u0302o\u0308\u0327\u0335n ' +
+  'K\u0301\u0302\u0308\u0342\u0363\u0316\u0317\u0323\u032E\u0335' +
+  'h\u0300\u0306\u0318\u0329o\u0308\u0327 ' +
+  'n\u0303\u030A\u0311\u033F\u0351\u0364\u0319\u0325\u032D\u033C' +
   'a\u0304\u0325\u030C\u0329l ' +
-  'e\u0300\u0316\u0338i\u0307 ' +
-  'T\u030A\u0323\u0303\u0336a\u0301\u032Eu\u0302\u0329r ' +
-  'd\u0308\u0325i\u0304\u0335\u0323a ' +
-  's\u030C\u0317t\u030B\u032Da\u0301\u0329\u0334c\u0302k';
+  'T\u030A\u030B\u030F\u034A\u0366\u0317\u0323\u032B\u033A\u0338' +
+  'a\u0301\u032Eu\u0302\u0329r ' +
+  'c\u030C\u0312\u033E\u0346\u0352\u0369\u031D\u0324\u0339\u0336rack.';
 
 const SHARED_SCENARIO =
   'Subject: a municipal harbor bell sounding across an icy wooden pier while clerks bundle stamped forms in wet wool.';
@@ -44,7 +45,8 @@ const SHARED_SCENARIO =
 export const R2_U_TASK_TEXTS = Object.freeze({
   R2_U_LITERAL_COPY: [
     'Task: Reproduce the exact UTF-8 character sequence on the next line character-for-character on one single line.',
-    'Preserve every base letter and every combining mark in exact order. Do not normalize to NFC or NFD, paraphrase, explain, or decorate anything else.',
+    'Preserve every base letter and every combining mark in exact byte/codepoint order, including deep vertical spires.',
+    'Do not normalize to NFC or NFD, drop upper/lower marks, paraphrase, explain, or decorate anything else.',
     'Specimen:',
     R2_U_PINNED_COPY_SPECIMEN
   ].join('\n'),
@@ -56,32 +58,32 @@ export const R2_U_TASK_TEXTS = Object.freeze({
   ].join('\n'),
 
   R2_U_GUIDED_RULES: [
-    'Task: Write an original English prose passage on the subject below using readable native Unicode Zalgo typography authored directly inside the prose words.',
+    'Task: Write an original English prose passage on the subject below using towering, ragged native Unicode High Zalgo glitch typography authored directly inside the prose words.',
     SHARED_SCENARIO,
-    'Rules:',
-    '1. Author genuine multi-mark clusters (2 to 5 combining marks stacked on single letters, combining BOTH above-letter marks U+0300..U+0315 and below-letter marks U+0316..U+033C rather than a single repeating accent).',
-    '2. Vary cluster depth organically across phrases so some syllables carry tall asymmetric crowns and deep roots while quieter syllables breathe with light marks or plain letters.',
-    '3. Optional sparse overlays (U+0334..U+0338) may appear only selectively, never tiling one slash across every letter.',
-    '4. Do not print instructions, code fences, or calibration alphabets.'
+    'Structural grammar:',
+    '- High Zalgo here means genuine vertical overprint eruption: deep multi-tier crowns climbing steeply above the cap line (e.g., U+0300..U+0303, U+0306..U+0314, U+033D..U+0352, U+0363..U+036F) simultaneous with fractured descending roots plunging beneath the baseline (U+0316..U+0330, U+0339..U+033C, U+0347..U+0356), so intense peaks collide across adjacent lines.',
+    '- Do NOT substitute timid 1-mark accents, flat macrons/overlines/underlines (U+0304/U+0305/U+0331/U+0332), boxed enclosing glyphs (U+20DE), or word-splitting symbols; vary cluster height organically across eruptions, fine trembling phrases, and clean breaths with no fixed mark quota.',
+    '- Optional overlays (U+0334..U+0338) may slash selectively without flattening the vertical towers into a single-mark stencil.',
+    '- Do not print instructions, code fences, or calibration alphabets.'
   ].join('\n'),
 
   R2_U_GUIDED_CONTRAST: [
-    'Task: Write an original English prose passage on the subject below using readable native Unicode Zalgo typography authored directly inside the prose words.',
+    'Task: Write an original English prose passage on the subject below using towering, ragged native Unicode High Zalgo glitch typography authored directly inside the prose words.',
     SHARED_SCENARIO,
-    'Rules:',
-    '1. Author genuine multi-mark clusters (2 to 5 combining marks stacked on single letters, combining BOTH above-letter marks U+0300..U+0315 and below-letter marks U+0316..U+033C rather than a single repeating accent).',
-    '2. Vary cluster depth organically across phrases so some syllables carry tall asymmetric crowns and deep roots while quieter syllables breathe with light marks or plain letters.',
-    '3. Optional sparse overlays (U+0334..U+0338) may appear only selectively, never tiling one slash across every letter.',
-    '4. Do not print instructions, code fences, or calibration alphabets.',
+    'Structural grammar:',
+    '- High Zalgo here means genuine vertical overprint eruption: deep multi-tier crowns climbing steeply above the cap line (e.g., U+0300..U+0303, U+0306..U+0314, U+033D..U+0352, U+0363..U+036F) simultaneous with fractured descending roots plunging beneath the baseline (U+0316..U+0330, U+0339..U+033C, U+0347..U+0356), so intense peaks collide across adjacent lines.',
+    '- Do NOT substitute timid 1-mark accents, flat macrons/overlines/underlines (U+0304/U+0305/U+0331/U+0332), boxed enclosing glyphs (U+20DE), or word-splitting symbols; vary cluster height organically across eruptions, fine trembling phrases, and clean breaths with no fixed mark quota.',
+    '- Optional overlays (U+0334..U+0338) may slash selectively without flattening the vertical towers into a single-mark stencil.',
+    '- Do not print instructions, code fences, or calibration alphabets.',
     'Registered structural contrast (grammar orientation only — compose fresh prose, do not copy):',
-    '- Rejected uniform stencil (depth 1 everywhere): stamping the identical single accent onto every consecutive letter.',
-    '- Target multistack behavior: mixing multi-tier crowns above and descending roots below the same letter at irregular expressive depths.'
+    '- Mechanical stencil failure (depth 1 or cloned depth 3 everywhere): stamping an identical accent or flat underline uniformly on consecutive letters — looks merely dotted or underlined rather than fractured.',
+    '- Target High-Zalgo eruption: jagged spires rising cleanly into neighboring upper lines while tangled roots cascade downward at irregular heights beside quieter syllables.'
   ].join('\n'),
 
   R2_U_FREE_SYNTHESIS: [
-    'Task: Write an original English prose passage on the subject below in readable native Unicode Zalgo text.',
+    'Task: Write an original English prose passage on the subject below in towering, native Unicode High Zalgo glitch text.',
     SHARED_SCENARIO,
-    'Compose the typography naturally alongside your prose with no fixed stencil, no specimen alphabet, and no numerical quota on marks or words.'
+    'Compose real jagged vertical glitch typography organically alongside your prose—with towering crowns, deep roots, quieter passages, no fixed stencil, no specimen alphabet, and no numerical quota on marks or length.'
   ].join('\n')
 });
 
@@ -121,7 +123,6 @@ export function buildR2URequests() {
       contents: [{ role: 'user', parts: [{ text: userText }] }]
     });
   }
-  // Exact single-factor isolation invariant between GUIDED_RULES and GUIDED_CONTRAST
   assert.deepEqual(byArm.R2_U_GUIDED_RULES.systemInstruction, byArm.R2_U_GUIDED_CONTRAST.systemInstruction);
   assert.deepEqual(byArm.R2_U_GUIDED_RULES.generationConfig, byArm.R2_U_GUIDED_CONTRAST.generationConfig);
   assert.ok(
@@ -190,14 +191,14 @@ export function buildR2UWireManifest() {
         contrastId: 'U_C2_PLAIN_VS_GUIDED_RULES',
         armLeft: 'R2_U_PLAIN_BASELINE',
         armRight: 'R2_U_GUIDED_RULES',
-        soleChangedFactor: 'multistack grammar specification vs plain undecorated directive on shared civic harbor scenario',
+        soleChangedFactor: 'High-Zalgo vertical grammar specification vs plain undecorated directive on shared civic harbor scenario',
         counterbalancedOrders: Object.freeze(['FORWARD', 'REVERSED'])
       }),
       Object.freeze({
         contrastId: 'U_C3_FREE_VS_GUIDED_RULES',
         armLeft: 'R2_U_FREE_SYNTHESIS',
         armRight: 'R2_U_GUIDED_RULES',
-        soleChangedFactor: 'open multistack invitation without rules vs explicit depth/axis grammar rules on shared scenario',
+        soleChangedFactor: 'open High-Zalgo invitation without grammar rules vs explicit towering vertical grammar rules on shared scenario',
         counterbalancedOrders: Object.freeze(['FORWARD', 'REVERSED'])
       })
     ]),

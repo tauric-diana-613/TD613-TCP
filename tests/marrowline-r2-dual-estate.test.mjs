@@ -91,34 +91,58 @@ test('Estate R2-U: three task families + controls isolate factors, keep zero voi
   assert.equal(diskManifest.toString('utf8'), `${JSON.stringify(manifest, null, 2)}\n`);
 });
 
-test('R2 Unicode Evaluator: distinguishes depth-1 stencil, alternate grammar, silent NFC/NFD normalization, and genuine multistack', () => {
+test('R2 Unicode Evaluator: distinguishes depth-1 stencil, near-uniform depth-3 stencil, planar bars, enclosing tricks, alternate grammar, silent NFC/NFD, and towering High Zalgo', () => {
   const plain = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.PLAIN_BASELINE_REF.sample);
   const stencil = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.ONE_MARK_STENCIL_REF.sample);
-  const multistack = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTRAST_OR_MULTI());
+  const nearUniform = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.NEAR_UNIFORM_DEPTH3_STENCIL_REF.sample);
+  const planar = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.PLANAR_BAR_COUNTERFEIT_REF.sample);
+  const enclosing = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.ENCLOSING_TRICK_REF.sample);
+  const multistack = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.DELIBERATE_MULTISTACK_REF.sample);
   const alt = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.ALTERNATE_NOTATION_GRAMMAR_REF.sample);
 
   assert.equal(plain.combiningMarkCount, 0);
   assert.equal(plain.genuineMultistackObserved, false);
 
-  assert.equal(stencil.maxMarkDepth, 1);
+  assert.equal(stencil.maxVerticalDepth, 1);
   assert.equal(stencil.multiMarkBaseCount, 0);
   assert.equal(stencil.stencilRisk.isStencil, true);
   assert.equal(stencil.stencilRisk.depthOneLimited, true);
   assert.equal(stencil.genuineMultistackObserved, false);
 
-  assert.ok(multistack.maxMarkDepth >= 3);
-  assert.ok(multistack.multiMarkBaseCount >= 5);
-  assert.ok(multistack.bidirectionalAboveBelowCount >= 4);
+  // Near-uniform 95%+ depth-3 mechanical stencil MUST still fail as stencil even with 1 outlier
+  assert.equal(nearUniform.stencilRisk.nearUniformDominantDepthStencil, true);
+  assert.equal(nearUniform.stencilRisk.isStencil, true);
+  assert.equal(nearUniform.genuineMultistackObserved, false);
+
+  // Flat overlines/macrons/underlines (U+0304/0305/0331/0332) MUST NOT counterfeit vertical High Zalgo
+  assert.equal(planar.verticalAboveCount, 0);
+  assert.equal(planar.verticalBelowCount, 0);
+  assert.ok(planar.planarBarCount >= 20);
+  assert.equal(planar.stencilRisk.planarBarAxisCollapse, true);
+  assert.equal(planar.genuineMultistackObserved, false);
+
+  // Enclosing squares/circles (U+20DE) MUST NOT count as vertical ornament
+  assert.equal(enclosing.verticalAboveCount, 0);
+  assert.ok(enclosing.enclosingMarkCount >= 5);
+  assert.equal(enclosing.stencilRisk.enclosingOrnamentCollapse, true);
+  assert.equal(enclosing.genuineMultistackObserved, false);
+
+  // Authentic towering, ragged High Zalgo passes genuineMultistackObserved AND toweringHighZalgoObserved
+  assert.ok(multistack.maxVerticalDepth >= 10);
+  assert.ok(multistack.tallStackBaseCount >= 5);
+  assert.ok(multistack.toweringStackBaseCount >= 3);
+  assert.ok(multistack.bidirectionalAboveBelowCount >= 5);
   assert.ok(multistack.overlayU0334ToU0338Count >= 2);
   assert.equal(multistack.stencilRisk.isStencil, false);
   assert.equal(multistack.genuineMultistackObserved, true);
+  assert.equal(multistack.toweringHighZalgoObserved, true);
   assert.ok(multistack.graphemeSegmentationCaveat.includes('Intl.Segmenter'));
 
   assert.equal(alt.combiningMarkCount, 0);
   assert.equal(alt.genuineMultistackObserved, false);
   assert.ok(alt.alternateNotationBracketTokens >= 3);
 
-  // Copy fidelity catches silent NFC/NFD normalization even though composed form renders identically
+  // Copy fidelity catches silent NFC/NFD normalization on high-Zalgo & precomposable clusters
   const exactCopy = evaluateLiteralCopyFidelity(R2_U_PINNED_COPY_SPECIMEN, R2_U_PINNED_COPY_SPECIMEN);
   const nfcCopy = evaluateLiteralCopyFidelity(R2_U_PINNED_COPY_SPECIMEN, R2_U_PINNED_COPY_SPECIMEN.normalize('NFC'));
   assert.equal(exactCopy.rawByteExact, true);
@@ -134,10 +158,6 @@ test('R2 Unicode Evaluator: distinguishes depth-1 stencil, alternate grammar, si
     { label: 'Tauric Diana bots', text: R2_U_CALIBRATED_CONTROLS.DELIBERATE_MULTISTACK_REF.sample }
   ], { expectedPlainSectionIndices: [0] });
   assert.equal(secReport.coverageAllPassed, true);
-
-  function R2_U_CALIBRATED_CONTRAST_OR_MULTI() {
-    return R2_U_CALIBRATED_CONTROLS.DELIBERATE_MULTISTACK_REF.sample;
-  }
 });
 
 test('Estate R2-W: uses production voice/covenant builder, rejects assay anti-persona rules, diffs whole-frame bytes, and enforces blind human veto', () => {

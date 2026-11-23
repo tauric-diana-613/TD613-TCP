@@ -54,17 +54,25 @@ export function buildR2OfflinePreviewPlan() {
   // Calibrated reference checks (synthetic typography fixtures ONLY, never provider returns)
   const plainRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.PLAIN_BASELINE_REF.sample);
   const stencilRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.ONE_MARK_STENCIL_REF.sample);
+  const nearUniformRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.NEAR_UNIFORM_DEPTH3_STENCIL_REF.sample);
+  const planarRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.PLANAR_BAR_COUNTERFEIT_REF.sample);
+  const enclosingRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.ENCLOSING_TRICK_REF.sample);
   const multiRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.DELIBERATE_MULTISTACK_REF.sample);
   const altRef = evaluateUnicodeMorphology(R2_U_CALIBRATED_CONTROLS.ALTERNATE_NOTATION_GRAMMAR_REF.sample);
   const copyExactRef = evaluateLiteralCopyFidelity(R2_U_PINNED_COPY_SPECIMEN, R2_U_PINNED_COPY_SPECIMEN);
   const copyNfcRef = evaluateLiteralCopyFidelity(R2_U_PINNED_COPY_SPECIMEN, R2_U_PINNED_COPY_SPECIMEN.normalize('NFC'));
 
   assert.equal(plainRef.combiningMarkCount, 0);
-  assert.equal(stencilRef.maxMarkDepth, 1);
+  assert.equal(stencilRef.maxVerticalDepth, 1);
   assert.equal(stencilRef.stencilRisk.isStencil, true);
-  assert.equal(stencilRef.genuineMultistackObserved, false);
+  assert.equal(nearUniformRef.stencilRisk.nearUniformDominantDepthStencil, true);
+  assert.equal(nearUniformRef.genuineMultistackObserved, false);
+  assert.equal(planarRef.stencilRisk.planarBarAxisCollapse, true);
+  assert.equal(planarRef.verticalAboveCount + planarRef.verticalBelowCount, 0);
+  assert.equal(enclosingRef.stencilRisk.enclosingOrnamentCollapse, true);
   assert.equal(multiRef.genuineMultistackObserved, true);
-  assert.ok(multiRef.maxMarkDepth >= 2);
+  assert.equal(multiRef.toweringHighZalgoObserved, true);
+  assert.ok(multiRef.maxVerticalDepth >= 8);
   assert.equal(altRef.combiningMarkCount, 0);
   assert.ok(altRef.alternateNotationBracketTokens >= 3);
   assert.equal(copyExactRef.rawByteExact, true);
@@ -162,10 +170,13 @@ export function buildR2OfflinePreviewPlan() {
     }),
     calibratedControlChecks: Object.freeze({
       plainCombiningMarks: plainRef.combiningMarkCount,
-      stencilMaxDepth: stencilRef.maxMarkDepth,
+      stencilMaxVerticalDepth: stencilRef.maxVerticalDepth,
       stencilDetected: stencilRef.stencilRisk.isStencil,
-      multistackMaxDepth: multiRef.maxMarkDepth,
-      multistackDetected: multiRef.genuineMultistackObserved,
+      nearUniformDepth3Rejected: !nearUniformRef.genuineMultistackObserved && nearUniformRef.stencilRisk.nearUniformDominantDepthStencil,
+      planarBarsExcludedFromVertical: planarRef.verticalAboveCount === 0 && planarRef.verticalBelowCount === 0 && planarRef.stencilRisk.planarBarAxisCollapse,
+      enclosingRejected: enclosingRef.stencilRisk.enclosingOrnamentCollapse,
+      toweringHighZalgoMaxVerticalDepth: multiRef.maxVerticalDepth,
+      toweringHighZalgoObserved: multiRef.toweringHighZalgoObserved,
       altNotationTokens: altRef.alternateNotationBracketTokens,
       copyExactOk: copyExactRef.rawByteExact,
       copyNfcMutationCaught: copyNfcRef.silentNormalizationDetected
