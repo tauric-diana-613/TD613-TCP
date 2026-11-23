@@ -152,7 +152,7 @@ async function visit(profile,phase){
    leak_count:leaks.length,visible_leaks:leaks
   };
  });
- await page.locator('#expaCompanionBodyPre').scrollIntoViewIfNeeded({timeout:20000});
+ await page.evaluate(()=>document.querySelector('#expaCompanionBodyPre')?.scrollIntoView({block:'start',inline:'nearest',behavior:'instant'}));
  await page.evaluate(()=>window.scrollBy(0,-60));
  await page.waitForTimeout(170);
  const name=phase+'-'+profile.id+'.png',dest=path.join(root,name);
