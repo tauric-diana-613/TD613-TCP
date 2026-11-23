@@ -3130,17 +3130,16 @@ body[data-view="overview"] .reading-back{display:none}
         if (!sel.linked_sources.some((s) => s.source_file_id === state.activeManifestationId)) {
           state.activeManifestationId = sel.linked_sources[0]?.source_file_id || null;
         }
-        const manifestsHtml = sel.linked_sources.map((s) => {
-          const isActiveManifest = s.source_file_id === state.activeManifestationId;
-          return '<div class="manifest-card">' +
-            '<div class="badge-row" style="justify-content:space-between;margin-bottom:6px">' +
-              '<strong>' + esc(s.original_filename) + '</strong>' +
-              '' +
-            '</div>' +
-            '<div>source_file_id: <code>' + esc(s.source_file_id) + '</code> · ' + fmtBytes(s.byte_length) + ' · ' + esc(s.media_type) + '</div>' +
-            '<div>SHA-256: <code>' + esc(s.sha256) + '</code> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-copy-hash="' + esc(s.sha256) + '">Copy</button> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-inspect-manifestation="' + esc(s.source_file_id) + '">' + (isActiveManifest ? 'Inspecting Below ✓' : 'Open Manifestation Below ↓') + '</button></div>' +
-            '<div>Open the recorded manuscript below when a text body is available.</div>' +
-          '</div>';
+        // Public Opera retains source selection and original filenames.
+        // Opaque IDs, hashes, byte clocks, and status codes remain in DATA
+        // and machine receipts rather than being emitted as reader furniture.
+        const manifestsHtml = sel.linked_sources.map((src) => {
+          const active = src.source_file_id === state.activeManifestationId;
+          return '<div class="manifest-card vix-public-source-picker">' +
+            '<span class="vix-source-filename">' + esc(src.original_filename) + '</span>' +
+            '<button type="button" class="secondary-btn" data-inspect-manifestation="' + esc(src.source_file_id) + '">' +
+              (active ? 'Reading this version' : 'Read this version') +
+            '</button></div>';
         }).join('');
 
         const LENS_HEADINGS = {
@@ -3153,23 +3152,14 @@ body[data-view="overview"] .reading-back{display:none}
 
         readerEl.innerHTML =
           '<button type="button" class="secondary-btn reader-close-mobile" id="closeMobileWorkBtn">← Back to 32-Work Index</button>' +
-          '<div data-membrane="HOST_INFRASTRUCTURE" class="badge-row">' +
-            '<span class="tag pink">' + esc(sel.cluster + ' · ' + sel.cluster_short) + '</span>' +
-            '' +
-            '<span class="tag porcelain">Recorded Authorship: ' + esc(sel.authorship) + '</span>' +
-            (sel.human_gate_required ? '<span class="tag gold">Gate #' + sel.gate_num + ' · UNADJUDICATED_PAIR</span>' : '') +
-          '</div>' +
-          '<div data-membrane="RESEARCH_OBJECT">' +
+          '<div data-membrane="RESEARCH_OBJECT" class="vix-public-work-header">' +
             '<h2>' + esc(sel.declared_title) + '</h2>' +
-            '<p style="font:500 10.5px/1.65 var(--font-mono)">Catalog Accession: <code>' + esc(sel.work_id) + '</code> · Identity Status: <strong>' + esc(sel.identity_status) + '</strong> · Contribution Interval: [' + sel.contribution_interval[0] + ', ' + sel.contribution_interval[1] + ']</p>' +
-            '<div class="badge-row" style="margin-top:10px">' +
-              sel.planes.map((pl) => '<span class="tag porcelain">' + esc(pl) + '</span>').join('') +
-              '<span class="tag dark">54 substantive files · 33 excluded system sidecars</span>' +
-              '<span class="tag gold">CLOCK: DERIVATIVE_INDEXED</span>' +
-            '</div>' +
+            ((sel.authorship && !/^(?:UNRESOLVED|UNKNOWN|N\/A)$/i.test(sel.authorship))
+              ? '<p class="vix-public-byline">Recorded author: ' + esc(sel.authorship) + '</p>' : '') +
           '</div>' +
-          '<div data-membrane="SCHOLARLY_INTERPRETATION" class="reader-section">' +
-            '<h3>' + esc(lensTitle) + ' &amp; Observed Variants</h3>' +
+          '<details class="reader-section vix-public-work-context">' +
+            '<summary>About this work</summary>' +
+            '<h3>' + esc(lensTitle) + '</h3>' +
             '<p style="font-size:13px;line-height:1.75"><strong>Observed Title Variants:</strong> ' + esc((sel.title_variants || []).join('  |  ')) + '</p>' +
             '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Identity Basis:</strong> ' + esc((sel.identity_basis || []).join(', ')) + '</p>' +
             ((sel.substantive_differences_if_any && sel.substantive_differences_if_any.length)
@@ -3178,18 +3168,18 @@ body[data-view="overview"] .reading-back{display:none}
             ((sel.unresolved_questions && sel.unresolved_questions.length)
               ? '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Unresolved Questions:</strong> ' + esc(sel.unresolved_questions.join(' ')) + '</p>'
               : '') +
-          '</div>' +
+          '</details>' +
           '<div data-membrane="RESEARCH_OBJECT" class="reader-section">' +
-            '<h3>LINKED MANIFESTATIONS (' + sel.linked_sources.length + ' OF 53 ANALYZABLE SURFACES)</h3>' +
+            '<h3>Manuscript versions</h3>' +
             manifestsHtml +
             '<div id="worksExperimentAReaderMount" class="expa-reader-shell" data-work-id="' + esc(sel.work_id) + '"></div>' +
           '</div>' +
-          '<div data-membrane="HOST_INFRASTRUCTURE" class="reader-section">' +
-            '<h3>GOVERNING 06-INSTRUMENTS PROTOCOLS</h3>' +
+          '<details class="reader-section vix-public-work-methods">' +
+            '<summary>Related methods</summary>' +
             '<div class="badge-row">' +
               sel.protocols.map((pid) => '<button type="button" class="secondary-btn" data-open-ref="' + esc(pid) + '">' + esc(pid) + ' ↗</button>').join('') +
             '</div>' +
-          '</div>' +
+          '</details>' +
           '<div class="reader-section" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">' +
             gateJump +
             '<button type="button" class="secondary-btn" data-open-folios="' + esc(sel.work_id) + '">Inspect in Folios Chamber ↗</button>' +
