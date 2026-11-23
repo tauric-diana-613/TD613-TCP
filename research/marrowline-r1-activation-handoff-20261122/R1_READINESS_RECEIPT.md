@@ -76,6 +76,7 @@ All commands ran strictly offline inside the isolated research worktree with **`
 
 - **Operator trust anchor:** code now defaults to `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null` and will refuse actual live authorization until an independent human-controlled key fingerprint is source-pinned and reviewed.
 - **Corrected source:** the runner's causal scoring, SSE custody, token usage validation, and offline fixtures have changed since the original SHA inventory. Its old `42/42` result belongs to its historical HEAD only. Run the revised suite and capture a new exact-head receipt before human authorization.
+- **Blinded literary review:** the corrected CLI now separates custodian `--out` from `<out>.blinded.json`; do not expose the unblinding map before independent scoring.
 - **Original provider bytes:** now written and fsynced incrementally to exclusive local per-slot `.sse` files with a journal; protect and collect this directory even on a failed attempt.
 - **Live price/model:** current official provider rates and model availability are unverified; historical arithmetic is conditional.
 
