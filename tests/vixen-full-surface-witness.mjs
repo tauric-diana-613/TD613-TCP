@@ -25,13 +25,29 @@ const primaryRoutes=['overview','works','observatory','collection','reference','
 const records=[],failure=[];
 await mkdir(root,{recursive:true});
 function slug(x){return String(x).toLowerCase().replace(/[^a-z0-9_-]+/g,'-').slice(0,100);}
+function jpegPixelDimensions(bytes){
+ if(bytes[0]!==0xff||bytes[1]!==0xd8)throw Error('SCREENSHOT_NOT_JPEG');
+ let p=2;
+ while(p+9<bytes.length){
+  if(bytes[p]!==0xff){p++;continue;}
+  const marker=bytes[p+1];p+=2;
+  if(marker===0xd9||marker===0xda)break;
+  if(marker===0x01||(marker>=0xd0&&marker<=0xd7))continue;
+  const length=bytes.readUInt16BE(p);
+  if(length<2)throw Error('SCREENSHOT_BAD_JPEG_SEGMENT');
+  if([0xc0,0xc1,0xc2,0xc3,0xc5,0xc6,0xc7,0xc9,0xca,0xcb,0xcd,0xce,0xcf].includes(marker))
+   return {width:bytes.readUInt16BE(p+5),height:bytes.readUInt16BE(p+3)};
+  p+=length;
+ }
+ throw Error('SCREENSHOT_JPEG_DIMENSIONS_MISSING');
+}
 async function capture(target,rel,details){
  const dest=path.join(root,rel);
  await mkdir(path.dirname(dest),{recursive:true});
  const started=Date.now();
  await target.screenshot({path:dest,type:'jpeg',quality:85,animations:'allow',timeout:30000});
  const bytes=await readFile(dest);
- const record={file:rel,captured_at:new Date().toISOString(),capture_elapsed_ms:Date.now()-started,sha256:createHash('sha256').update(bytes).digest('hex'),byte_length:bytes.length,...details};
+ const record={file:rel,captured_at:new Date().toISOString(),capture_elapsed_ms:Date.now()-started,sha256:createHash('sha256').update(bytes).digest('hex'),byte_length:bytes.length,pixel_dimensions:jpegPixelDimensions(bytes),...details};
  records.push(record);
  return record;
 }
@@ -174,7 +190,7 @@ try{
    });
    await page.locator('#globalSearchInput').fill('provenance');
    await page.waitForTimeout(350);
-   for(const mode of ['hybrid','lexical','phrase','exact']){
+   for(const mode of ['hybrid','lexical','phrase','exact','src_projective']){
     await page.locator('[data-search-mode="'+mode+'"]').click({force:true,timeout:6000});
     await page.waitForTimeout(180);
     await capture(page,path.join(profile.name,'search-dialog',mode+'-results.jpg'),{
@@ -264,13 +280,41 @@ try{
    }
    await page.locator('#closeInspectorBtn').click({force:true,timeout:5000});
   }catch(e){failure.push({profile:profile.name,route:'research-inspector-all-tabs',error:String(e)});}
+
+  // Explicitly distinguish responsive reduced-motion evidence from two live
+  // motion frames. Two frames do not establish frame rate or synchronization.
+  try{
+   await page.locator('#vixenRoomRail button[data-view="collection"]').click({force:true,timeout:8000});
+   await page.emulateMedia({reducedMotion:'reduce'});
+   await page.waitForTimeout(150);
+   if(!await page.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches))
+    throw Error('REDUCED_MOTION_MEDIA_NOT_ACTIVE');
+   await capture(page,path.join(profile.name,'motion','collection-reduced-motion.jpg'),{
+    profile:profile.name,surface:'collection-reduced-motion',kind:'reduced_motion_frame',prefers_reduced_motion:true
+   });
+   matrix.push({profile:profile.name,route:'collection-reduced-motion',covered_bottom:true,tiles:1});
+   await page.emulateMedia({reducedMotion:'no-preference'});
+   for(const frame of [0,1]){
+    if(frame)await page.waitForTimeout(150);
+    const mesh=await page.evaluate(()=>window.VixenLivingMesh?.status?.()??null);
+    await capture(page,path.join(profile.name,'motion','collection-live-frame-'+frame+'.jpg'),{
+     profile:profile.name,surface:'collection-live-motion',kind:'motion_frame',
+     frame,mesh_status:mesh,prefers_reduced_motion:false
+    });
+   }
+   matrix.push({profile:profile.name,route:'collection-live-motion',covered_bottom:true,tiles:2,
+     limits:'captured frames document visible motion states; not an FPS benchmark'});
+  }catch(e){
+   failure.push({profile:profile.name,route:'motion-comparison',error:String(e)});
+   await page.emulateMedia({reducedMotion:'no-preference'}).catch(()=>{});
+  }
   if(pageErrors.length)failure.push({profile:profile.name,route:'browser',errors:pageErrors.slice(0,25)});
   if(httpFailures.length)failure.push({profile:profile.name,route:'http',errors:httpFailures.slice(0,25)});
   await context.close();
  }
 }finally{await browser.close();}
 const report={
- schema:'td613.vixen.full-surface-witness/v2',source_revision:revision,
+ schema:'td613.vixen.full-surface-witness/v3',source_revision:revision,
  mode:isHostedPreview?'CHROMIUM_HTTPS_PREVIEW_NEEDS_SERVED_SOURCE_AUDIT':'REAL_CHROMIUM_LOCAL_HTTP_NOT_PHYSICAL_DEVICE',
  witness_url_origin:isHostedPreview?new URL(origin).origin:'LOCAL_HTTP',captured_at:new Date().toISOString(),elapsed_ms:Date.now()-startedAt,
  vertical_tile_stride_fraction:.58,conservative_tile_overlap_fraction:.42,
