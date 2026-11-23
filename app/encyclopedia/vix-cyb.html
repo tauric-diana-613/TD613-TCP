@@ -777,11 +777,11 @@ body[data-view="overview"] .reading-back{display:none}
             <div class="badge-row" style="margin-bottom:8px">
               <span class="tag dark">CUSTODIAL MEMBRANE</span>
               <span class="tag porcelain">ATTRIBUTION.md · VERBATIM</span>
-              <span class="tag pink">SOURCE STUDY PREVIEW · AUTHOR-APPROVED ACCESS</span>
+              
               <span class="tag dark">32/32 AUTHORSHIP: HELD</span>
             </div>
             <p style="margin-top:8px">Em / Vix / Cass / Cassie and every other stated author retain authorship of their respective works. The hosting service, its technical operators, and its documentary research tools claim no authorship, ownership, institutional affiliation, endorsement, or origin over the preserved source corpus merely by storing or assaying it here.</p>
-            <p style="margin-top:8px"><strong>Research preview custody:</strong> Under the recorded author-approved preview authorization (developer testing and volunteer-client review), all 53 readable <code>.md</code> / extracted <code>.pdf</code> manifestations and 21 <code>06-INSTRUMENTS</code> scripts are searchable (semantic + semiotic) and readable directly inside Works, Folios, and Methods. The currently authorized preview contains no corpus-access suppression; before any Experiment C main-branch release, a separate, authenticated publication-approval gate must be implemented and qualified. <code>empirical_replication_credit: 0</code>.</p>
+            <p style="margin-top:8px">The catalogue includes readable Markdown and extracted PDF texts, alongside twenty-one documentary methods. Explore the source documents in Works, Folios, and Methods; original authorship and provenance remain attributed.</p>
             <details class="attribution-more">
               <summary>Full alias preservation &amp; anti-inference custody boundary</summary>
               <p style="margin-top:8px">This research chamber hosts Em’s preserved works and open constitutive synthesis inquiries on their own terms. Preservation here is not a declaration of membership, coauthorship, derivation, or incorporation into the host infrastructure.</p>
@@ -3261,7 +3261,7 @@ body[data-view="overview"] .reading-back{display:none}
         { id: 'NAME', label: '4 · NAME' },
         { id: 'REST', label: '5 · REST / EXIT' }
       ];
-      return '<div class="expa-phase-rail" role="navigation" aria-label="Experiment-A 5-Phase Reader Sequence">' +
+      return '<div class="expa-phase-rail" role="navigation" aria-label="Five-stage reading sequence">' +
         PHASES.map((ph) =>
           '<button type="button" class="expa-phase-pill" data-reader-phase="' + ph.id + '" aria-current="' + (state.readerPhase === ph.id ? 'step' : 'false') + '">' + ph.label + '</button>'
         ).join('') +
@@ -3419,7 +3419,7 @@ body[data-view="overview"] .reading-back{display:none}
 
     mountEl.innerHTML =
       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">' +
-        '<strong style="font:600 11px/1.4 var(--font-mono);letter-spacing:.08em;color:#FF91AF">EXPERIMENT-A COMPANION READER · VOLUNTEER / DEV AUTHORIZED</strong>' +
+        '' +
       '</div>' +
       renderPhaseRail() +
       manifestTabsHtml +
@@ -3848,7 +3848,7 @@ body[data-view="overview"] .reading-back{display:none}
 
   async function mountInstrumentExperimentAReader(instrumentId, mountEl) {
     if (!instrumentId || !mountEl) return;
-    mountEl.innerHTML = '<div style="font:500 10.5px/1.6 var(--font-mono);color:#FFF0A8">Loading Experiment-A protocol script <code>' + esc(instrumentId) + '</code>…</div>';
+    mountEl.innerHTML = '<div style="font:500 10.5px/1.6 var(--font-mono);color:#FFF0A8">Loading documentary method <code>' + esc(instrumentId) + '</code>…</div>';
     const mods = await hydrateExperimentAModules();
     if (!mountEl.isConnected || mountEl.dataset.instrumentId !== instrumentId) return;
     if (!mods || !mods.corpusMod || mods.error) {
@@ -3859,7 +3859,7 @@ body[data-view="overview"] .reading-back{display:none}
     const instRec = await corpusMod.loadInstrumentBodyById(instrumentId);
     if (!mountEl.isConnected || mountEl.dataset.instrumentId !== instrumentId) return;
     if (!instRec || !instRec.text_body) {
-      mountEl.innerHTML = '<div style="font:500 11px/1.6 var(--font-mono);color:#FF91AF">Documentary script body not present in Experiment-A shard for <code>' + esc(instrumentId) + '</code>.</div>';
+      mountEl.innerHTML = '<div style="font:500 11px/1.6 var(--font-mono);color:#FF91AF">Documentary method text unavailable for <code>' + esc(instrumentId) + '</code>.</div>';
       return;
     }
     const cleanText = corpusMod.scrubBase64BlobsForDisplay(instRec.text_body);
@@ -4653,7 +4653,7 @@ body[data-view="overview"] .reading-back{display:none}
       if (phrases.length && !phrases.every((phr) => hay.includes(phr))) continue;
       matches.push({
         ...r,
-        snippet: r.snippet || r.summary || r.description || (r.title + ' (' + (r.cluster || r.kind || 'Experiment-A') + ')'),
+        snippet: r.snippet || r.summary || r.description || (r.title + ' (' + (r.cluster || r.kind || 'documentary archive') + ')'),
         why: ['inline terms: ' + qTokens.slice(0, 5).join(', ')],
         score_total: 1.0,
         s_lex: 1.0,
