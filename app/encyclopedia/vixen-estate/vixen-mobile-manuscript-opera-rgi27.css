@@ -33,6 +33,49 @@
     box-sizing:border-box!important;width:100%!important;min-width:0!important;
     padding:10px 9px!important;margin:9px 0!important;
   }
+  /* Visitor-facing Works now begins with its title and clean manuscript picker;
+     scholarly interpretation stays available as an opt-in disclosure. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header {
+    margin:5px 0 9px!important;padding:0 8px!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header h2 {
+    font:400 26px/1.16 "Iowan Old Style","New York",Georgia,serif!important;
+    color:#f2d4bc!important;letter-spacing:-.023em!important;
+    margin:0 0 5px!important;max-width:100%!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-byline {
+    font:500 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    margin:4px 0 9px!important;color:#dfcdbc!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(.vix-public-work-context,.vix-public-work-methods) {
+    display:block!important;width:100%!important;
+    padding:8px 11px!important;margin:6px 0!important;
+    border:1px solid #8a7461!important;background:#1b2425!important;
+    color:#e6d7c9!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(.vix-public-work-context,.vix-public-work-methods) summary {
+    cursor:pointer!important;font:600 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:0!important;color:#f4d4af!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-source-picker {
+    box-sizing:border-box!important;display:flex!important;align-items:center!important;
+    justify-content:space-between!important;gap:8px!important;flex-wrap:wrap!important;
+    width:100%!important;margin:4px 0!important;padding:9px 10px!important;
+    background:#272f30!important;border:1px solid #8a796e!important;
+    color:#f5e8d8!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-source-picker .vix-source-filename {
+    min-width:0!important;flex:1 1 155px!important;
+    font:400 13.5px/1.35 "Iowan Old Style","New York",Georgia,serif!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;
+    color:#f5e8d8!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-source-picker button {
+    flex:0 0 auto!important;min-height:32px!important;padding:6px 9px!important;
+    font:650 10px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:0!important;
+  }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount.expa-reader-shell {
     display:block!important;box-sizing:border-box!important;
     width:100%!important;min-width:0!important;max-width:100%!important;
