@@ -157,6 +157,9 @@ test('Gate B: runner contains zero private keys, zero Argon grant imports, and s
   assert.equal(source.includes('BEGIN PRIVATE KEY'), false);
   assert.equal(source.includes('argon-be-lexical-discriminator-preflight'), false);
   assert.equal(source.includes('vercel'), false);
+  assert.match(source, /R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null/);
+  assert.match(source, /R1_DURABLE_RAW_SSE_WRITE_FAILED/);
+  assert.match(source, /R1_EXPLICIT_DURABLE_EVIDENCE_PATHS_REQUIRED/);
 
   const originalFetch = globalThis.fetch;
   globalThis.fetch = makePoisonFetch();
@@ -503,6 +506,11 @@ test('Gate D: one-use local wx nonce replay blocks second dispatch', async () =>
     assert.equal(first.terminalStopReason, 'STOP_ON_HTTP_503_PROVIDER_UNAVAILABLE');
     assert.equal(first.outcome.classification, 'HELD');
     assert.equal(first.dispatchCounts.generationCalls, 1);
+    const rawPath = path.join(nonceDir, `r1-${first.authorization.nonce}-R1_S01.sse`);
+    assert.equal(fs.existsSync(rawPath), true);
+    const journal = fs.readFileSync(first.evidenceJournalPath, 'utf8');
+    assert.ok(journal.includes('R1_GENERATION_ATTEMPT_PREPARED'));
+    assert.ok(journal.includes('STOP_ON_HTTP_503_PROVIDER_UNAVAILABLE'));
 
     await assert.rejects(
       () => executeR1OriginalSseObservation({
@@ -795,7 +803,9 @@ test('Gate D & Section VI: valid complete S01 with zero vertical marks leaves S0
     const stencilS02 = `Kʰonapolit\nPlain thunder.\n\nTauric Diana bots\n${makeUniformDepth3StencilSample()}`;
     const resStencil = await runPair(compliantS01, stencilS02);
     assert.equal(resStencil.slotRecords[1].analysis.section2Morphology.uniformConstantDepthStencilRisk, true);
-    assert.equal(resStencil.outcome.empiricalNativeMultistackObserved, false);
+    // The varied S01 independently establishes multistack observation, but
+    // S02's wallpaper stencil cannot establish a causal/artistic rescue.
+    assert.equal(resStencil.outcome.empiricalNativeMultistackObserved, true);
     assert.equal(resStencil.outcome.classification, 'FINITE_PREFIX_EFFECT_NOT_ESTABLISHED');
 
     // 5. Protected literals and unmarked headings excluded from Section-II counts; space marks tracked cleanly
