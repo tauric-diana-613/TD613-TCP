@@ -40,7 +40,7 @@ jobs:
     name: Vixen source-bound engineering qualification
     if: >-
       (github.event_name == 'pull_request' &&
-       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-') || startsWith(github.head_ref, 'fix/vixen-prehydration-redpens-'))) ||
+       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-') || startsWith(github.head_ref, 'fix/vixen-prehydration-redpens-') || startsWith(github.head_ref, 'fix/vixen-opera-surface-'))) ||
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification')
     runs-on: ubuntu-24.04
     timeout-minutes: 85
@@ -239,13 +239,14 @@ jobs:
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&
-      github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108'
+      (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-opera-surface-'))
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -269,6 +270,13 @@ jobs:
             if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
             sleep .2
           done
+          # Source-identical baseline from the PR #1730 repair starting point.
+          # Sparse checkout avoids acquiring unrelated monorepo content.
+          git worktree add --detach --no-checkout "$RUNNER_TEMP/vixen-redpen-before" 7500e294003e8a5effa52921c8d4b7eba673be9d
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout init --cone
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout set app/encyclopedia
+          git -C "$RUNNER_TEMP/vixen-redpen-before" checkout --detach 7500e294003e8a5effa52921c8d4b7eba673be9d
+          VIXEN_BASELINE_ROOT="$RUNNER_TEMP/vixen-redpen-before" node tests/vixen-opera-mobile-manuscript-browser.mjs
           node tests/vixen-public-copy-browser.test.mjs
           node tests/vixen-ai-journey-browser.test.mjs
           node tests/vixen-human-comparative-field-browser.test.mjs
