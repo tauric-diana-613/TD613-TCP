@@ -66,12 +66,30 @@ async function visit(profile,phase){
  });
  const page=await context.newPage();const pageErrors=[];
  page.on('pageerror',e=>pageErrors.push(String(e.message)));
- const url=origin+(phase==='before'?'__vixen-opera-before-rgi27.html':'vix-cyb.html');
+ // Preserve the page's canonical URL in both observations. Old scripts
+ // sometimes rely on document route identity; only the body bytes differ.
+ if(phase==='before'){
+  const baseline=await readFile(path.join(app,'__vixen-opera-before-rgi27.html'),'utf8');
+  await page.route('**/encyclopedia/vix-cyb.html',route=>route.fulfill({
+   status:200,contentType:'text/html; charset=utf-8',body:baseline
+  }));
+ }
+ const url=origin+'vix-cyb.html';
  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:40000});
  assert.equal(response?.status(),200,'HTTP source '+phase);
  await page.locator('#vixenRoomRail button[data-view="works"]').waitFor({state:'attached',timeout:25000});
  await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true});
- await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:15000});
+ try {await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:15000});}
+ catch(error){
+  const diag=await page.evaluate(()=>({
+   view:document.body.dataset.view,
+   worksHidden:document.querySelector('#view-works')?.hidden,
+   mainNav:document.querySelector('#vixenRoomRail button[data-view="works"]')?.outerHTML,
+   foyerReady:window.VIXEN_FOYER?.mounted,
+   appReady:document.readyState,hash:location.hash
+  }));
+  throw new Error('WORKS_ROUTE_SETUP_FAILED '+phase+' '+profile.id+' '+JSON.stringify({diag,pageErrors})+' '+error.message);
+ }
  const workButtons=page.locator('#worksListContainer button[data-select-work]');
  await workButtons.first().waitFor({state:'attached',timeout:25000});
  let found=false;
