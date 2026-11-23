@@ -146,7 +146,8 @@
     color:#252326!important;background:transparent!important;
     font:400 15.5px/1.53 "Iowan Old Style","New York",Georgia,serif!important;
     letter-spacing:0!important;white-space:normal!important;text-wrap:wrap!important;
-    word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important;
+    /* Preserve normal literary words; break only oversized source URL tokens. */
+    word-break:normal!important;overflow-wrap:break-word!important;hyphens:none!important;
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading {
     display:block!important;width:auto!important;max-width:100%!important;
