@@ -775,15 +775,15 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="membrane-layer" data-membrane="HOST_INFRASTRUCTURE" style="margin-top:18px">
           <div class="attribution-box" aria-label="Verbatim Attribution and Custody Membrane">
             <div class="badge-row" style="margin-bottom:8px">
-              <span class="tag dark">CUSTODIAL MEMBRANE</span>
-              <span class="tag porcelain">ATTRIBUTION.md · VERBATIM</span>
               
-              <span class="tag dark">32/32 AUTHORSHIP: HELD</span>
+              
+              
+              
             </div>
             <p style="margin-top:8px">Em / Vix / Cass / Cassie and every other stated author retain authorship of their respective works. The hosting service, its technical operators, and its documentary research tools claim no authorship, ownership, institutional affiliation, endorsement, or origin over the preserved source corpus merely by storing or assaying it here.</p>
             
             <details class="attribution-more">
-              <summary>Full alias preservation &amp; anti-inference custody boundary</summary>
+              <summary>Source attribution and editorial notes</summary>
               <p style="margin-top:8px">This research chamber hosts Em’s preserved works and open constitutive synthesis inquiries on their own terms. Preservation here is not a declaration of membership, coauthorship, derivation, or incorporation into the host infrastructure.</p>
               <p style="margin-top:8px">A human provenance statement that a work was selected as “derivative,” “branching,” “in-lineage,” or similar enters the archive as a provenance assertion to be tested. The statement remains distinct from a demonstrated textual, conceptual, methodological, genealogical, or empirical relation.</p>
               <p style="margin-top:8px">When multiple aliases appear, preserve the alias exactly as present in the source or human-supplied provenance record. Do not infer civil identity or merge authorship identities without explicit evidence.</p>
@@ -1075,7 +1075,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span>Explore the full mathematical wardrobe</span>
             <span class="formula-gallery-count" aria-hidden="true">+ source-backed Works</span>
           </button>
-          <p class="formula-gallery-fidelity">Original mathematical passages are derived from admitted Work manuscripts; missing or unverifiable text stays held. Host engineering records remain outside this wardrobe, and synthetic candidate rankings confer zero empirical or authorship authority.</p>
+          
         </div>
       </div>
     </div>
@@ -1656,7 +1656,7 @@ body[data-view="overview"] .reading-back{display:none}
 <!-- Operator route exists within the ONE shared SPA. No duplicate research state. -->
 <section class="view vixen-inquiry-stage vix-operator-view" id="view-operator" data-page="operator" aria-label="Podium Settings and Ledger" hidden>
 <div class="vixen-inquiry-inner">
-<header class="ci-head"><div><p class="ci-kicker">OPERATOR WORKSPACE · EVIDENCE AND CONSEQUENCE BOUNDARIES</p><h1 class="ci-title">Podium Settings &amp; Ledger</h1><p class="vix-operator-dek">Inspect history, measurements and machine contracts without granting permission to persist research, alter the source estate, or deploy.</p></div><div class="badge-row"><span class="tag gold" id="ciActiveEntryBadge">CURRENT PRESENTATION</span><span class="tag porcelain">PERSISTENT COMPOSE · HELD FOR HUMAN APPROVAL</span></div></header>
+<header class="ci-head"><div><h1 class="ci-title">Podium Settings &amp; Ledger</h1></div><div class="badge-row"><span class="tag gold" id="ciActiveEntryBadge">CURRENT PRESENTATION</span><span class="tag porcelain">PERSISTENT COMPOSE · HELD FOR HUMAN APPROVAL</span></div></header>
 <nav class="vix-operator-jump" aria-label="Operator workspace sections"><button type="button" data-vix-operator-jump="vixOperatorHistory">History &amp; review</button><button type="button" data-vix-operator-jump="vixOperatorDiagnostics">Diagnostics</button><button type="button" data-vix-operator-jump="vixOperatorPodium">Podium &amp; approvals</button></nav>
 <div class="ci-main-grid vix-operator-grid">
 <section id="vixOperatorHistory" aria-label="Presentation history"><h2 class="vix-operator-section-title">01 · Presentation history</h2><div class="ci-card" aria-label="Official Podium Synthesis Log and Non-Retroactive Rollback">
@@ -3166,8 +3166,8 @@ body[data-view="overview"] .reading-back{display:none}
             '<p style="font:500 10.5px/1.65 var(--font-mono)">Catalog Accession: <code>' + esc(sel.work_id) + '</code> · Identity Status: <strong>' + esc(sel.identity_status) + '</strong> · Contribution Interval: [' + sel.contribution_interval[0] + ', ' + sel.contribution_interval[1] + ']</p>' +
             '<div class="badge-row" style="margin-top:10px">' +
               sel.planes.map((pl) => '<span class="tag porcelain">' + esc(pl) + '</span>').join('') +
-              '<span class="tag dark">54 substantive files · 33 excluded system sidecars</span>' +
-              '<span class="tag gold">CLOCK: DERIVATIVE_INDEXED</span>' +
+              '' +
+              '' +
             '</div>' +
           '</div>' +
           '<div data-membrane="SCHOLARLY_INTERPRETATION" class="reader-section">' +
@@ -3850,7 +3850,7 @@ body[data-view="overview"] .reading-back{display:none}
 
   async function mountInstrumentExperimentAReader(instrumentId, mountEl) {
     if (!instrumentId || !mountEl) return;
-    mountEl.innerHTML = '<div style="font:500 10.5px/1.6 var(--font-mono);color:#FFF0A8">Loading Experiment-A protocol script <code>' + esc(instrumentId) + '</code>…</div>';
+    mountEl.innerHTML = '<div style="font:500 10.5px/1.6 var(--font-mono);color:#FFF0A8">Loading documentary text <code>' + esc(instrumentId) + '</code>…</div>';
     const mods = await hydrateExperimentAModules();
     if (!mountEl.isConnected || mountEl.dataset.instrumentId !== instrumentId) return;
     if (!mods || !mods.corpusMod || mods.error) {
@@ -4653,7 +4653,7 @@ body[data-view="overview"] .reading-back{display:none}
       if (phrases.length && !phrases.every((phr) => hay.includes(phr))) continue;
       matches.push({
         ...r,
-        snippet: r.snippet || r.summary || r.description || (r.title + ' (' + (r.cluster || r.kind || 'Experiment-A') + ')'),
+        snippet: r.snippet || r.summary || r.description || (r.title + ' (' + (r.cluster || r.kind || 'Work') + ')'),
         why: ['inline terms: ' + qTokens.slice(0, 5).join(', ')],
         score_total: 1.0,
         s_lex: 1.0,
