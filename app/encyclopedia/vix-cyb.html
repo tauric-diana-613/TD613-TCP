@@ -2800,8 +2800,8 @@ body[data-view="overview"] .reading-back{display:none}
     if (!outEl) return;
     outEl.innerHTML =
       '<div class="badge-row" style="margin-bottom:8px">' +
-        '<span class="tag dark">ILLUSTRATIVE_PRESET_DEMO</span>' +
-        '<span class="tag porcelain">EMPIRICAL_CREDIT: 0</span>' +
+        '' +
+        '' +
         '<span class="tag porcelain">E-00.1: BOUNDED_TIE</span>' +
       '</div>' +
       '<div><strong>PAIR:</strong> ' + esc(c.label) + '</div>' +
@@ -3013,7 +3013,7 @@ body[data-view="overview"] .reading-back{display:none}
             '<span class="record-num">B' + String(i + 1).padStart(2, '0') + '</span>' +
             '<span style="flex:1;min-width:0">' +
               '<span class="term-name">' + esc(r.original_filename) + '</span>' +
-              '<span class="term-sub">' + esc(r.source_file_id) + ' · ' + fmtBytes(r.byte_length) + ' · ' + r.page_count + ' pp · BINARY PENDING UPLOAD (METADATA SEARCHABLE)</span>' +
+              '<span class="term-sub">' + esc(r.source_file_id) + ' · ' + fmtBytes(r.byte_length) + ' · ' + r.page_count + ' pp · Full text unavailable</span>' +
             '</span>' +
           '</button></li>'
         ).join('');
@@ -3023,7 +3023,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<div class="badge-row">' +
             '<span class="tag dark">PROSPECTIVE_BATCH_B</span>' +
             '<span class="tag porcelain">Metadata only</span>' +
-            '<span class="tag gold">NO FABRICATED BODY</span>' +
+            '' +
           '</div>' +
           '<h2>' + esc(selB.original_filename) + '</h2>' +
           '<p style="font:500 10.5px/1.7 var(--font-mono)">ID: ' + esc(selB.source_file_id) + ' · Batch: ' + esc(selB.batch_id) + '</p>' +
@@ -3274,7 +3274,7 @@ body[data-view="overview"] .reading-back{display:none}
       const loc = state.localInspectedDoc;
       return '<div class="expa-local-drop">' +
         '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">' +
-          '<span><strong>LOCAL / VOLUNTEER FILE ADAPTER</strong> (.md, .txt, .docx OOXML, .pdf, image metadata — client-only, zero telemetry upload)</span>' +
+          '<span><strong>Open a local file</strong> (.md, .txt, .docx, .pdf)</span>' +
           '<label class="secondary-btn" style="cursor:pointer;min-height:32px;padding:4px 10px;font-size:10px">' +
             'Open Local File…<input type="file" id="expaLocalFileInput" accept=".md,.txt,.docx,.pdf,.png,.jpg,.jpeg,.webp" style="display:none">' +
           '</label>' +
@@ -3303,7 +3303,7 @@ body[data-view="overview"] .reading-back{display:none}
     if (!mods || !mods.corpusMod || mods.error) {
       mountEl.innerHTML =
         renderPhaseRail() +
-        '<div style="font:500 11px/1.6 var(--font-mono);color:#FF91AF">Companion shard loader unavailable in current standalone context (' + esc(mods?.error || 'FETCH_UNAVAILABLE') + '). Metadata stays preserved above.</div>' +
+        '<div style="font:500 11px/1.6 var(--font-mono);color:#FF91AF">Document text is unavailable here (' + esc(mods?.error || 'FETCH_UNAVAILABLE') + '). Source information remains above.</div>' +
         renderLocalDropSection();
       return;
     }
@@ -3800,7 +3800,7 @@ body[data-view="overview"] .reading-back{display:none}
             '<p style="font-size:14px;line-height:1.82;margin-top:12px">' + esc(sel.scope) + '</p>' +
           '</div>' +
           '<div data-membrane="HOST_INFRASTRUCTURE" class="reader-section">' +
-            '<h3>COMMITTED REGISTRY METADATA (original_methods_inventory.json)</h3>' +
+            '<h3>Document details</h3>' +
             '<div class="manifest-card">' +
               '<div><strong>Relative Path:</strong> <code>' + esc(sel.relative_path) + '</code></div>' +
               
