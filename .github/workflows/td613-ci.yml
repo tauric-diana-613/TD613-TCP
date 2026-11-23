@@ -1558,7 +1558,9 @@ jobs:
     if: github.event_name == 'pull_request' && needs.scope.outputs.head_is_current == 'true'
     # Playwright 1.53.2 installers support this qualified runner, unlike ubuntu26.04.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # Full exact-head, cross-engine layout witnesses exceed the historical 10-minute cap.
+    # Preserve all current tests rather than allowing GitHub to cancel late witnesses.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
