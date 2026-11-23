@@ -720,7 +720,7 @@ test('Gate D: halts cleanly as HELD on policy finish, wrong served model, partia
         pull(controller) {
           pullNumber += 1;
           if (pullNumber === 1) {
-            controller.enqueue(new TextEncoder().encode('data: {"modelVersion":"gemini-3.8-flash"}\\n\\n'));
+            controller.enqueue(new TextEncoder().encode('data: {"modelVersion":"gemini-3.8-flash"}\n\n'));
           } else {
             controller.error(new Error('SYNTHETIC_STREAM_BREAK_AFTER_FIRST_CHUNK'));
           }
