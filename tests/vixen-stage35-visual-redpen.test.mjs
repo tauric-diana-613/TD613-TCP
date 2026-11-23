@@ -50,10 +50,10 @@ test('Desktop editorial folio supersedes obsolete poster-scale title without tou
  const rule=lastRule(desktop,sel);
  assert.match(rule,/display:none!important/,'duplicate PDF title yields to the readable semantic Work heading');
  const article=lastRule(desktop,'#expaCompanionBodyPre.vix-couture-reader.vix-manuscript');
- assert.match(article,/font:400 16\\.5px\\/1\\.58/);
+ assert.ok(article.includes('font:400 16.5px/1.58'),'Desktop body is comfortable literary size');
  assert.match(article,/max-height:none!important/);
  assert.match(article,/background:#fffaf6!important/);
- assert.match(desktop,/\\.term-name/,'Catalogue rows use compact serif typography');
+ assert.ok(desktop.includes('.term-name'),'Catalogue rows use compact serif typography');
  assert.ok(html.indexOf('vixen-desktop-manuscript-opera-rgi28.css') > html.indexOf('vixen-obsidian-reading-rgi26.css'),
   'Desktop editorial CSS must load after its inherited theatrical rules');
  assert.match(reading,/vix-reader-paragraph/);
