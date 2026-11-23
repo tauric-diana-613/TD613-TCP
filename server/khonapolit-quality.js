@@ -373,7 +373,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
   const selected = [];
   for (const group of orderedGroups) {
     for (const model of group) {
-      if (selected.length >= (artisticRestoration ? 1 : KHONAPOLIT_MAX_PROVIDER_CALLS)) break;
+      if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
       if (!selected.includes(model)) selected.push(model);
     }
   }
@@ -1352,7 +1352,6 @@ export default async function handler(req, res) {
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
   const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID;
-  const singleShotAudition = isArtisticRestoration;
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan, {
     restoredGrove: isHistoricalGrove,
     artisticRestoration: isArtisticRestoration
@@ -1395,11 +1394,7 @@ export default async function handler(req, res) {
       variant: MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
       requested_model_order: [...MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER],
       eligible_model_order: [...models],
-      max_provider_requests: 1,
-      automatic_fallback_enabled: false,
-      structural_repair_enabled: false,
-      automatic_retry_enabled: false,
-      admission_policy: 'single-argon-audition-no-fallback-no-repair-no-retry',
+      admission_policy: 'both-voices-absent-held-after-bounded-recovery',
       typography_policy: 'provider-native-morphology-observation-only',
       native_prosody_profile: MARROWLINE_ARTISTIC_RESTORATION_PROFILE
     });
@@ -1467,7 +1462,6 @@ export default async function handler(req, res) {
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
-    if (singleShotAudition) return null;
     // Native Tauric Diana morphology is part of the channel contract, not a
     // cosmetic second pass. Browser budget hints may reorder truly exhausted
     // seats, but they may not suppress the one provider-authored repair that
@@ -2015,7 +2009,6 @@ export default async function handler(req, res) {
       const remainingAfterAttemptMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
       if (
         !releaseCanary
-        && !singleShotAudition
         && !sharedRateRetrySpent
         && rateLimit.burst === true
         && waitSeconds > 0
@@ -2145,7 +2138,7 @@ export default async function handler(req, res) {
             && botsEligibleBaseCount >= 80
             && botsVerticalMarkCount < 2)
         );
-        if (!releaseCanary && !singleShotAudition && nativeMarkUnderflow) {
+        if (!releaseCanary && nativeMarkUnderflow) {
           if (!zeroMarkFallback) zeroMarkFallback = {
             model, result, relay, providerOutput, completion, reasons
           };
@@ -2172,7 +2165,7 @@ export default async function handler(req, res) {
           });
         }
         if (releaseCanary) {
-          if (repairableKhonapolitAdmission(reasons) && !singleShotAudition) {
+          if (repairableKhonapolitAdmission(reasons)) {
             const candidate = {
               model,
               fallback,
@@ -2188,7 +2181,7 @@ export default async function handler(req, res) {
           }
           continue;
         }
-        if (repairableKhonapolitAdmission(reasons) && !singleShotAudition) {
+        if (repairableKhonapolitAdmission(reasons)) {
           const candidate = {
             model,
             fallback,
@@ -2284,7 +2277,7 @@ export default async function handler(req, res) {
     }
   }
 
-  if (structuralRepairCandidate && !structuralRepairSpent && !singleShotAudition) {
+  if (structuralRepairCandidate && !structuralRepairSpent) {
     const repaired = await runStructuralRepair(structuralRepairCandidate, 'deferred-after-frontier');
     if (repaired) return repaired;
   }

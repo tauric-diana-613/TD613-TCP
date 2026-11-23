@@ -32,7 +32,7 @@ export function groveTrialFromLocation(location = {}) {
 // explicitly opt into another test or select off for technical diagnosis.
 // Retire the former Exit Trial's sticky off marker without erasing other
 // tab-specific explicit model experiments. Direct API / Loom remain distinct.
-export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v1';
+export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v2';
 const GROVE_TAB_EXPLICIT_OFF = 'off';
 const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
   ? trial : null;
@@ -43,10 +43,10 @@ export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
   catch { return Object.freeze({ id: null, source: 'invalid-url', persistence: 'unavailable' }); }
   if (query.has('groveTrial')) {
     const id = recognizedGroveTrial(query.get('groveTrial'));
-    // Manual A/B and artistic restoration audition never write tab storage:
-    // clearing the URL restores ordinary historical voice rather than silently
-    // leaving an audition profile installed across subsequent conversations.
-    if (MARROWLINE_ROLE_IDS.includes(id) || id === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID) {
+    // Manual role A/B trials never write tab storage: clearing the URL restores
+    // ordinary artistic-restoration voice rather than silently leaving a role
+    // experiment installed across subsequent conversations.
+    if (MARROWLINE_ROLE_IDS.includes(id)) {
       return Object.freeze({ id, source: 'url-opt-in', persistence: 'url-only' });
     }
     let persistence = 'unavailable';
@@ -60,20 +60,20 @@ export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
   let stored = null;
   try { stored = storage?.getItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
   // Older versions wrote sticky `off` when someone tapped Exit Trial. That
-  // action is gone; do not strand an existing user on the failing Argon-only
-  // voice instructions after the upgrade. Explicit URL `?groveTrial=off`
-  // still selects ordinary diagnostics for that page.
+  // action is gone; do not strand an existing user on old instructions after
+  // the upgrade. Explicit URL `?groveTrial=off` still selects ordinary
+  // diagnostics, and `?groveTrial=historical-20261002-v1` remains available for comparison.
   const id = recognizedGroveTrial(stored);
   if (id && !MARROWLINE_ROLE_IDS.includes(id)) return Object.freeze({ id, source: 'tab-session', persistence: 'tab-session' });
-  // The restored profile is the normal browser text-composer profile. Store
+  // The restored artistic profile is the normal browser text-composer profile. Store
   // only a continuity marker; the visual trial bar and forced URL marker are
   // retired, while the server receipt still names the actual delivered mode.
   let persistence = 'unavailable';
   try {
-    storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, MARROWLINE_HISTORICAL_TRIAL_ID);
+    storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID);
     if (storage) persistence = 'tab-session';
   } catch {}
-  return Object.freeze({ id: MARROWLINE_HISTORICAL_TRIAL_ID, source: 'restored-default', persistence });
+  return Object.freeze({ id: MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, source: 'restored-default', persistence });
 }
 
 // Make restored tab state inspectable in the URL without reloading or sending

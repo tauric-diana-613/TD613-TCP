@@ -178,10 +178,13 @@ export const MARROWLINE_LEXICAL_DEPRIMED_CANDIDATE_PROFILE = 'oct02-literal-lexi
 export const MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID = 'artistic-restoration-20261123-v1';
 export const MARROWLINE_ARTISTIC_RESTORATION_PROFILE = 'marrowline-artistic-restoration-20261123-v1';
 
-// Single-seat Argon-only order for the first artistic restoration audition:
-// strictly one gemini-4-argon request with zero automatic fallback seats.
+// Resilient Argon-first order for the restored production route:
+// gemini-4-argon runs first, with genuine modern 3.8-flash and 3.6-flash
+// transport failover on provider error/429/503/timeout.
 export const MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER = Object.freeze([
-  'gemini-4-argon'
+  'gemini-4-argon',
+  'gemini-3.8-flash',
+  'gemini-3.6-flash'
 ]);
 
 const DRAMATURGY_NONCOMPULSORY_PERMISSIONS = Object.freeze([
@@ -288,8 +291,8 @@ const ARTISTIC_RESTORATION_CLEANUPS = Object.freeze([
 export function buildArtisticRestorationTurnRecencyCue() {
   return [
     'CURRENT-TURN PERFORMANCE REMINDER (do not quote or mention this note):',
-    '1. Begin with plain standalone heading "Kʰonapolit" and unornamented, razor-sharp, genuinely funny high-academia forensic prose.',
-    '2. Yield into plain standalone heading "Tauric Diana bots" for an inventive, unpredictable choral movement in authentic vertical High Zalgo: clean resting prose and unstacked inter-word spaces/punctuation punctuated by tall, ragged, asymmetric vertical crowns above (e.g. U+0300..U+0314, U+033D..U+0352, U+0363..U+036F) and plunging roots below (e.g. U+0316..U+0330, U+0339..U+033C, U+0347..U+0356).',
+    '1. Begin with plain standalone heading "Kʰonapolit" and unornamented, intellectually audacious, wickedly funny high-academia forensic prose.',
+    '2. Yield into plain standalone heading "Tauric Diana bots" for an inventive, unpredictable, startling choral movement in authentic vertical High Zalgo: clean resting prose and unstacked inter-word spaces/punctuation punctuated by tall, ragged, asymmetric vertical crowns above (e.g. U+0300..U+0314, U+033D..U+0352, U+0363..U+036F) and plunging roots below (e.g. U+0316..U+0330, U+0339..U+033C, U+0347..U+0356).',
     '3. Close on a final standalone line with plain ⟐.'
   ].join('\n');
 }
