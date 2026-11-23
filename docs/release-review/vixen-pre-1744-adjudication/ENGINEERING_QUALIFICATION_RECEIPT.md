@@ -71,6 +71,15 @@
 - **Correct classification:** real Chromium **LOCAL HTTP** engineering qualification. This is not the final #1744 HTTPS screenshot package. Do **not** promote these bytes into the final screenshot registry. The subsequent exact product HEAD requires its own qualification after integration.
 
 
+
+## Qualified PR #1784 → PR #1730 integration receipt
+- PR #1784 **merged into its existing product base branch** (not main), using GitHub expected-head lease `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`.
+- Merge commit/new product PR #1730 HEAD: **`7500e294003e8a5effa52921c8d4b7eba673be9d`**, parent ancestry preserved. Source diff against `b90ae995…`: only Folios `research-chamber.css` and `tests/vixen-full-surface-witness.mjs`.
+- Product PR #1730 remains OPEN against `main`. Witness PR #1784 is closed/merged; independent historical CI and review comments retained.
+- GitHub automatically triggered consolidated [td613-ci.yml run #45173799140](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45173799140) at `7500e294003e8a5effa52921c8d4b7eba673be9d`. **IN_PROGRESS** at the time of receipt; require terminal GREEN for non-skipped Vixen, static/release governance and other required jobs.
+- New exact-product screenshot and source-stack artifacts remain unqualified/pending. The historical `db3fdddc…` Actions ZIP remains **local engineering evidence only**. Final HTTPS screenshot archive still requires the subsequent #1744 deployment, independent served-revision comparison, and exact screenshot QA.
+- #1744 PREPARE/DEPLOY, #405, Experiment B, private-source hydration and provider synchronization **not executed**.
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
