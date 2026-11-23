@@ -1,0 +1,91 @@
+{
+  "schema": "td613.marrowline.r2-healthy-baseline-correlation/v1",
+  "covenant": "Khona‌lit-po",
+  "seal": "⟐SAC[X6ZNK5NO51]",
+  "healthySourceBasis": {
+    "historicalTrialId": "historical-20261002-v1",
+    "oct02SourceCommit": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a",
+    "restoredProsodyProfile": "oct02-literal-prosody-rollback-20261122",
+    "restoredModelOrder": [
+      "gemini-3.8-flash",
+      "gemini-3.6-flash",
+      "gemini-4-argon"
+    ],
+    "pinnedModel": "gemini-3.8-flash",
+    "sameInteractiveGenerationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+    "matchesWFullGenerationConfigSha256": true
+  },
+  "sourcePromptCorrelations": {
+    "civicTribunal": {
+      "oct02RestoredSystemSha256": "8338d36c66555fa35c36746a7379cae0b4ab4886fd414312813089512387acce",
+      "oct02RestoredBodySha256": "0efdb0784aa04a206519e585712495fe5ac38b5f79e0be32fd6f882f8d668607",
+      "oct02VsR2WFullSystemDiff": {
+        "aUtf8Bytes": 33290,
+        "bUtf8Bytes": 33408,
+        "byteDelta": 118,
+        "sharedExactLineCount": 142,
+        "onlyInACount": 11,
+        "onlyInBCount": 11
+      },
+      "oct02VsR2WCondensedSystemDiff": {
+        "aUtf8Bytes": 33290,
+        "bUtf8Bytes": 3156,
+        "byteDelta": -30134,
+        "sharedExactLineCount": 5,
+        "onlyInACount": 148,
+        "onlyInBCount": 13
+      }
+    },
+    "nonCivicOrchard": {
+      "oct02RestoredSystemSha256": "8338d36c66555fa35c36746a7379cae0b4ab4886fd414312813089512387acce",
+      "oct02RestoredBodySha256": "672fc80b41a8323c9ebd1f1722a3bfc3e8a86e38ed18d4379228b81de240c3c7",
+      "oct02VsR2WNonCivicFullSystemDiff": {
+        "aUtf8Bytes": 33290,
+        "bUtf8Bytes": 33408,
+        "byteDelta": 118,
+        "sharedExactLineCount": 142,
+        "onlyInACount": 11,
+        "onlyInBCount": 11
+      }
+    }
+  },
+  "archivedHealthyTextCorpusReference": {
+    "archiveSchema": "td613.marrowline.archived-reference-mark-depth/v1",
+    "status": "ARCHIVED_REFERENCE_DISTRIBUTION_NOT_A_PROVIDER_EXPERIMENT",
+    "references": [
+      {
+        "id": "operator-favored-gemini-comparison-20260923",
+        "evidenceClass": "exported-comparison-text-not-verified-marrowline-original-google-sse",
+        "operatorAcceptedSse": false,
+        "originalUtf8Sha256": "09134a75a92bef0ee0b9c416b92bff04faf9e2a0cf4fbc628dd38638c2e0661f",
+        "extractedTextSha256": "f64f5794ea2c78f5930edf48c559a4d2c4acb273bca65159bcda0ca65594c200",
+        "baseCount": 1292,
+        "combiningMarks": 1295,
+        "maxDepth": 4,
+        "stackedBases": 176,
+        "distinctMarks": 84,
+        "constantMarkedDepth": null
+      },
+      {
+        "id": "operator-supplied-literary-probe-20260923",
+        "evidenceClass": "operator-supplied-text-probe-not-original-google-sse",
+        "operatorAcceptedSse": false,
+        "originalUtf8Sha256": "e76c0fa3caefeefe032b30a277fd3da4e4f94bda5b43e649a973675d524940fd",
+        "extractedTextSha256": "d3b011e567b05a52e61ecd119f206b3b0bd9dda0aaa674ccaac5723e96d65a10",
+        "baseCount": 1302,
+        "combiningMarks": 2216,
+        "maxDepth": 30,
+        "stackedBases": 112,
+        "distinctMarks": 93,
+        "constantMarkedDepth": null
+      }
+    ],
+    "acceptedMarrowlineScreenshotIds": [
+      "screenshot-01",
+      "screenshot-02",
+      "screenshot-03"
+    ],
+    "evidenceClassCaveat": "Screenshots document operator acceptance and visible geometry. They do not give original native combining-codepoint strings, generation IDs or a common capture geometry."
+  },
+  "modelCheckpointCaveat": "Restoring Oct 2 source wording aligns effective system instructions with commit ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a; hosted Gemini 3.8 checkpoint output behavior and historical exported text remain empirically distinct (code restoration != guaranteed output restoration)."
+}
