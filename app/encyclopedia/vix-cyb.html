@@ -3464,8 +3464,24 @@ body[data-view="overview"] .reading-back{display:none}
       }
       for(const [selector,direction] of [['#vixFolioPrevious',-1],['#vixFolioNext',1]]){
         mountEl.querySelector(selector)?.addEventListener('click',()=>{
-          folio.scrollBy({top:direction*Math.max(160,folio.clientHeight*.82),
-            behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+          const behavior=matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth';
+          const style=getComputedStyle(folio);
+          const nested=folio.scrollHeight>folio.clientHeight+3 &&
+            (style.overflowY==='auto'||style.overflowY==='scroll');
+          if(nested){
+            folio.scrollBy({top:direction*Math.max(160,folio.clientHeight*.82),behavior});
+          }else{
+            // In editorial full-page reading, page the actual document,
+            // not a non-scrollable element. Source text remains unchanged.
+            const top=window.scrollY+folio.getBoundingClientRect().top-116;
+            const bottom=Math.max(top,top+folio.offsetHeight-window.innerHeight*.4);
+            const step=Math.max(180,window.innerHeight*.76);
+            const current=window.scrollY;
+            const next=direction>0
+              ? (current>=bottom-12?top:Math.min(bottom,Math.max(top,current)+step))
+              : (current<=top+12?top:Math.max(top,current-step));
+            window.scrollTo({top:next,behavior});
+          }
           folio.focus({preventScroll:true});
         });
       }
