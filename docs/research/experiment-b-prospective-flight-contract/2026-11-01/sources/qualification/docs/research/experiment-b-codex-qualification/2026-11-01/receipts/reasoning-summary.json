@@ -1,0 +1,24 @@
+{
+  "ARM_2A_MODULAR": {
+    "calls": 6,
+    "usage": {
+      "input_tokens": 70378,
+      "cached_input_tokens": 55296,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1828,
+      "reasoning_output_tokens": 129
+    },
+    "retention_method": "Explicit replay of exact prior observed final messages within each arm; separate fresh ephemeral threads per invocation; not provider-persisted thread continuity"
+  },
+  "ARM_2B_MATCHED_UNION": {
+    "calls": 6,
+    "usage": {
+      "input_tokens": 72443,
+      "cached_input_tokens": 46080,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1701,
+      "reasoning_output_tokens": 37
+    },
+    "retention_method": "Explicit replay of exact prior observed final messages within each arm; separate fresh ephemeral threads per invocation; not provider-persisted thread continuity"
+  }
+}

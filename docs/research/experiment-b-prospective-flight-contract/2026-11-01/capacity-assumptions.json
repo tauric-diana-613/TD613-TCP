@@ -1,0 +1,47 @@
+{
+  "status": "PROPOSED_NOT_ADOPTED",
+  "historical_token_ceiling_per_arm": 60000,
+  "prospective_authorized_token_ceiling_per_arm": 720000,
+  "earlier_prospective_authorized_token_ceiling_per_arm": 180000,
+  "budget_steer_history": [
+    {"tokens_per_arm":180000,"status":"EARLIER_PROSPECTIVE_STEER_PRESERVED"},
+    {"tokens_per_arm":540000,"status":"SUPERSEDED_BY_IMMEDIATE_OPERATOR_CORRECTION","basis":"triple 180000"},
+    {"tokens_per_arm":720000,"status":"CURRENT_PROSPECTIVE_CEILING","basis":"operator corrected triple to quadruple: 4 x 180000"}
+  ],
+  "prospective_ceiling_scope_default": "Entire commission-wide arm attribution across all conditions, orders and replications, including that arm's allocated evaluation/retry usage; no automatic per-condition reset",
+  "historical_limit_exceedance_preserved": true,
+  "observations": {
+    "reasoning_turns_per_arm": 6,
+    "arm_2a_input": 70378,
+    "arm_2a_output": 1828,
+    "arm_2b_input": 72443,
+    "arm_2b_output": 1701,
+    "review_input": 12430,
+    "review_output": 733,
+    "historical_effort": "medium",
+    "high_effort_observations": 0
+  },
+  "matched_schedule": {"calls_per_document_per_arm":2,"baseline_calls_per_arm_per_condition":1,"final_synthesis_calls_per_arm_per_condition":1},
+  "retry_reserve_fraction": 0.2,
+  "retry_policy": "At most three transient retries per logical call, subject to the smaller global reserved-attempt/token pool; no retries for substantive or malformed answers. Uncertain execution is not silently replayed.",
+  "replay_forecast_assumptions": {
+    "harness_tokens_per_call":11000,
+    "instruction_tokens_per_call":512,
+    "source_tokens_per_document":1500,
+    "previous_output_tokens_per_call":512,
+    "new_output_tokens_per_call":512,
+    "meaning":"Hypothetical sensitivity inputs, not measured decomposition of the qualification or estimates of protected document lengths"
+  },
+  "hard_envelope_assumptions": {"maximum_total_input_tokens_per_call":64000,"maximum_total_output_tokens_per_call":4096,"reasoning_tokens_in_output":"Must be verified for actual telemetry; if disjoint, add explicit reasoning bound or refuse dispatch","enforcement_demonstrated":false},
+  "stage2_forecast": {"candidates_per_arm_per_condition":5,"independent_calls_per_candidate":3,"tokens_per_independent_call":8000,"blinding_audit_calls_per_condition":1,"tokens_per_blinding_audit":8000,"allocation":"Half of shared blinding cost to each reasoning arm; all candidate-specific costs to generating arm","candidate_cap_policy":"Capacity assumption, never silent top-k selection; if exceeded, hold all candidates pending operator-authorized additional capacity","external_human_review_cost":"Not tokenized here; reviewer time, credentials and formal verification must be budgeted separately"},
+  "scenarios": [
+    {"id":"HISTORICAL_PLANNER_24x3","documents":24,"orders":3,"factorial_cells":1,"replications":1,"schedule":"legacy_no_baseline_no_synthesis","scope":"Source planner arithmetic only; unequal opportunities; not full RCA-01"},
+    {"id":"FULL_20","documents":20,"orders":3,"factorial_cells":4,"replications":3,"schedule":"matched","scope":"20 documents, both architectures in all four RCA-01 cells; three orders; three run replications, not a power guarantee"},
+    {"id":"FULL_24","documents":24,"orders":3,"factorial_cells":4,"replications":3,"schedule":"matched","scope":"24 documents, both architectures in all four RCA-01 cells; three orders; three run replications, not a power guarantee"},
+    {"id":"FACTORIAL_ONE_ORDER","documents":24,"orders":1,"factorial_cells":4,"replications":1,"schedule":"matched","scope":"Factorial coverage but no order contrast or replication inference"},
+    {"id":"SINGLE_PASS_24","documents":24,"orders":1,"factorial_cells":1,"replications":1,"schedule":"matched","scope":"Longitudinal case study only; omits factorial/order/replication claims"},
+    {"id":"MINIMAL_LONGITUDINAL_3","documents":3,"orders":1,"factorial_cells":1,"replications":1,"schedule":"matched","scope":"Smallest proposition-contradiction-revision follow-up; different bounded research scope, NOT original full Flight"}
+  ],
+  "earlier_180k_microstudy_illustration": {"documents":3,"orders":1,"cells":1,"replications":1,"base_generation_calls_per_arm":8,"maximum_attempts_including_transient_failures_per_arm":10,"maximum_total_input_per_attempt":12904,"maximum_total_output_per_attempt":4096,"maximum_generation_tokens_per_arm":170000,"evaluation_tokens_allocated_per_arm":10000,"maximum_total_tokens_per_arm":180000,"stage2_total_shared_tokens":20000,"candidate_limit":"One final candidate per arm; no full RCA-01/order/replication claim","enforcement_demonstrated":false},
+  "minimal_alternative_conditional_envelope": {"documents":3,"orders":1,"cells":1,"replications":1,"base_generation_calls_per_arm":8,"maximum_attempts_including_transient_failures_per_arm":10,"maximum_total_input_per_attempt":52000,"maximum_total_output_per_attempt":4096,"maximum_generation_tokens_per_arm":560960,"evaluation_tokens_allocated_per_arm":152000,"maximum_total_tokens_per_arm":712960,"authorized_ceiling_per_arm":720000,"maximum_candidates_per_arm":5,"stage2_maximum_attempts":38,"stage2_total_shared_tokens":304000,"enforcement_demonstrated":false,"warning":"Conditional hard bounds only; platform must enforce all generation and review caps. Future source prefixes must fit without truncation. Does not provide full RCA-01, order sensitivity, replication or seven-dimension coverage; candidate overflow holds the study rather than silently selecting favorable findings."}
+}
