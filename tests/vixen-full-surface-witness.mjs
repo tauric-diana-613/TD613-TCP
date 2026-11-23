@@ -173,6 +173,20 @@ try{
     await page.locator('#vixenRoomRail button[data-view="'+route+'"]').click({force:true,timeout:15000});
     await page.waitForFunction(r=>document.body.dataset.view===r,route,{timeout:10000});
     await page.waitForTimeout(150);
+    if(route==='reference'){
+     const stacking=await page.evaluate(()=>{
+      const folio=document.querySelector('#view-reference>.page-pad');
+      const mesh=document.getElementById('vixenLivingMesh');
+      if(!folio||!mesh)return {error:'MISSING_FOLIOS_OR_MESH'};
+      return {folioZ:getComputedStyle(folio).zIndex,
+       meshZ:getComputedStyle(mesh).zIndex,
+       folioIsolation:getComputedStyle(folio).isolation};
+     });
+     if(stacking.error||!(Number(stacking.folioZ)>Number(stacking.meshZ)))
+      throw Error('FOLIOS_FOREGROUND_BELOW_OPTICAL_FIELD '+JSON.stringify(stacking));
+     matrix.push({profile:profile.name,route:'folios-optical-layer-check',
+      observed:stacking,covered_bottom:true,tiles:0});
+    }
     matrix.push({profile:profile.name,...await scrollCapture(page,profile,route)});
    }catch(e){failure.push({profile:profile.name,route,error:String(e)});}
   }
