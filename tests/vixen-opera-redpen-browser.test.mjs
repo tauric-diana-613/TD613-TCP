@@ -31,7 +31,7 @@ try{
    const entrance=await page.evaluate(()=>{
      const root=document.getElementById('view-works');
      const body=root?.innerText||'';
-     const backstage=/(?:EXPERIMENT[-_ ]A|PREVIEW[_ -]AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|VOLUNTEER\\s*\\/\\s*DEV AUTHORIZED|Empirical_REPLICATION_CREDIT)/i;
+     const backstage=/(?:EXPERIMENT[-_ ]A|PREVIEW[_ -]AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|VOLUNTEER\s*\/\s*DEV AUTHORIZED|Empirical_REPLICATION_CREDIT)/i;
      return {visibleText:body.slice(0,1200),backstageFound:backstage.test(body)};
    });
    assert.equal(entrance.backstageFound,false,name+' Works entrance exposed internal release copy: '+entrance.visibleText);
@@ -39,7 +39,7 @@ try{
    const target=page.locator('#worksListContainer button[data-select-work]').filter({hasText:/The Architecture of Control/i}).first();
    await target.click({force:true,timeout:20000});
    const mount=page.locator('#worksExperimentAReaderMount');
-   const pdf=mount.locator('[data-select-manifestation]').filter({hasText:/Algedonic Systems Deep Research\\.pdf/i}).first();
+   const pdf=mount.locator('[data-select-manifestation]').filter({hasText:/Algedonic Systems Deep Research\.pdf/i}).first();
    await pdf.waitFor({state:'visible',timeout:20000});
    await pdf.click({force:true,timeout:20000});
    await page.waitForFunction(()=>{
@@ -51,11 +51,11 @@ try{
       const paragraphs=[...el.querySelectorAll('.vix-reader-paragraph')];
       const rootRect=el.getBoundingClientRect(),css=getComputedStyle(el),first=paragraphs[0];
       const p=first&&getComputedStyle(first);
-      const avgWords=paragraphs.reduce((sum,x)=>sum+x.textContent.trim().split(/\\s+/).length,0)/paragraphs.length;
+      const avgWords=paragraphs.reduce((sum,x)=>sum+x.textContent.trim().split(/\s+/).length,0)/paragraphs.length;
       const firstTen=paragraphs.slice(0,10).map(n=>{
         const range=document.createRange(),node=[...n.childNodes].find(x=>x.nodeType===3&&x.textContent.length>40);
         if(!node)return {lines:0,wordsPerLine:null};
-        const words=[...node.textContent.matchAll(/\\S+/g)].slice(0,100),rows=new Map();
+        const words=[...node.textContent.matchAll(/\S+/g)].slice(0,100),rows=new Map();
         for(const m of words){
            range.setStart(node,m.index);range.setEnd(node,m.index+m[0].length);
            const rect=range.getBoundingClientRect();
@@ -85,6 +85,7 @@ try{
    if(isMobile){
      assert(metric.width>=width*.72,'Phone needs actual readable text measure: '+JSON.stringify(metric));
      assert(metric.fontSize>=14.8&&metric.fontSize<=17,'Compact editorial body text: '+JSON.stringify(metric));
+     assert(metric.firstTen.filter(p=>p.wordsPerLine!==null).length>=6,'Insufficient real paragraphs for line-density witness: '+JSON.stringify(metric.firstTen));
      assert(metric.firstTen.filter(p=>p.wordsPerLine!==null).every(p=>p.wordsPerLine>3),
       'One-word-per-line behavior persists: '+JSON.stringify(metric.firstTen));
      assert(metric.overflowWrap==='normal'&&metric.wordBreak==='normal',
@@ -108,6 +109,6 @@ try{
    await context.close();
  }
 }finally{await browser.close();}
-const report=JSON.stringify({schema:'td613.vixen.opera-redpen-browser/v1',head,baseline:'PR1730_BEFORE_HEAD_7500e294003e8a5effa52921c8d4b7eba673be9d',comparison:'After screenshots only; baseline provided by earlier qualified run, not falsely recreated here',physical_device:false,human_aesthetic_approval:'RESERVED',samples},null,2)+'\\n';
+const report=JSON.stringify({schema:'td613.vixen.opera-redpen-browser/v1',head,baseline:'PR1730_BEFORE_HEAD_7500e294003e8a5effa52921c8d4b7eba673be9d',comparison:'After screenshots only; baseline provided by earlier qualified run, not falsely recreated here',physical_device:false,human_aesthetic_approval:'RESERVED',samples},null,2)+'\n';
 await writeFile(path.join(out,'METRICS.json'),report);
 console.log('VIXEN_OPERA_REDPEN_SCREENSHOTS_AND_MEASURE_PASS',head,samples.map(x=>x.name).join(','));
