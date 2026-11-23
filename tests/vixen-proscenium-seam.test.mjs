@@ -44,7 +44,8 @@ test('Human operator route owns presentation history, diagnostics and machine-bo
  assert(op.querySelector('#vixOperatorPodium'));
  assert(op.querySelector('a[href="./vix-cyb/llms.txt"]'),'Human operator route must point at the source-first research guide, not privileged machine routes');
  assert(op.querySelector('button[data-action="inspector"]'));
- assert.match(op.textContent,/human approval|human authorization/i);
+ assert.doesNotMatch(op.textContent,/EXPERIMENT[_ -]?A|PREVIEW[_ -]?AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|human approval|human authorization/i,
+  'Podium public copy must omit backstage release-gate notes; approval remains enforced by machine contracts');
  assert(source.includes("'reference', 'operator'"),'Operator hash must be included in routing whitelist');
  assert(one('.footer [data-view="operator"]'));
  assert(one('#mobileNav [data-view="operator"]'));
