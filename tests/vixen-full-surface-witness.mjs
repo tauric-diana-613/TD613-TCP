@@ -239,18 +239,29 @@ try{
   // Render the actual Observatory inspector, not a fictional proof route.
   try{
    await page.locator('#vixenRoomRail button[data-view="observatory"]').click({force:true,timeout:8000});
-   await page.locator('.ef-inspector-switch').first().waitFor({state:'visible',timeout:10000});
-   await page.locator('.ef-inspector-switch').first().click({force:true,timeout:6000});
-   await page.waitForTimeout(120);
-   const expanded=await page.locator('.ef-inspector-switch').first().getAttribute('aria-expanded');
-   if(expanded!=='true')throw Error('OBSERVATORY_PROOF_NOT_EXPANDED');
+   const proofSelector='#vixenElectricFoundry .ef-inspector-switch';
+   const proof=()=>page.locator(proofSelector).first();
+   await proof().waitFor({state:'visible',timeout:10000});
+   // The instrument may retain an open proof state across room navigation.
+   // Establish a known closed baseline, then exercise both real transitions.
+   const prior=await proof().getAttribute('aria-expanded');
+   if(prior==='true'){
+    await proof().click({force:true,timeout:6000});
+    await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='false',null,{timeout:8000});
+   }
+   await proof().click({force:true,timeout:6000});
+   await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='true',null,{timeout:8000});
+   const expanded=await proof().getAttribute('aria-expanded');
+   const proofVisible=await page.locator('#vixenElectricFoundry [data-inspector-open="true"]').count();
+   if(expanded!=='true'||!proofVisible)throw Error('OBSERVATORY_PROOF_NOT_EXPANDED '+JSON.stringify({expanded,prior,proofVisible}));
    await capture(page,path.join(profile.name,'observatory-proof','proof-open.jpg'),{
     profile:profile.name,surface:'observatory-proof',kind:'source_proof_open',
     aria_expanded:expanded
    });
    matrix.push({profile:profile.name,route:'observatory-proof-open',covered_bottom:true,tiles:1});
-   await page.locator('.ef-inspector-switch').first().click({force:true,timeout:6000});
-   if(await page.locator('.ef-inspector-switch').first().getAttribute('aria-expanded')!=='false')
+   await proof().click({force:true,timeout:6000});
+   await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='false',null,{timeout:8000});
+   if(await proof().getAttribute('aria-expanded')!=='false')
     throw Error('OBSERVATORY_PROOF_CLOSE_FAILED');
   }catch(e){failure.push({profile:profile.name,route:'observatory-proof',error:String(e)});}
   // Search is an actual dialog, not a fictional dedicated Advanced Search room.
@@ -347,7 +358,21 @@ try{
    // Start a synthetic COMPOSER session and stop at AWAITING permission.
    await page.locator('#vmaGoal').fill('Compare original source routes without writing notes.');
    await page.locator('#vmaStart').click({force:true,timeout:7000});
-   await page.locator('#vmaNotesRequest').waitFor({state:'visible',timeout:8000});
+   // Starting a source-backed Podium route can await read-only host calls.
+   // A hidden notes control before session activation is neither a consent
+   // failure nor grounds for inventing an active session. Await the real UI.
+   try{
+    await page.waitForFunction(()=>{const panel=document.getElementById('vmaPlayPanel');return !!panel&&!panel.hidden;},null,{timeout:30000});
+   }catch(e){
+    const observed=await page.evaluate(()=>({
+     status:document.getElementById('vmaStatus')?.textContent?.slice(0,300),
+     start_hidden:document.getElementById('vmaStartPanel')?.hidden,
+     play_hidden:document.getElementById('vmaPlayPanel')?.hidden,
+     button_disabled:document.getElementById('vmaStart')?.disabled
+    }));
+    throw Error('PODIUM_SESSION_NEVER_ACTIVATED '+JSON.stringify(observed)+' '+String(e));
+   }
+   await page.locator('#vmaNotesRequest').waitFor({state:'visible',timeout:10000});
    const notesOff=(await page.locator('#vmaNotesState').innerText()).trim();
    if(!/Notes OFF/i.test(notesOff))throw Error('PROGRAM_NOTES_DEFAULT_NOT_OFF '+notesOff);
    await capture(page,path.join(profile.name,'podium-roles','program-notes-off.jpg'),{
