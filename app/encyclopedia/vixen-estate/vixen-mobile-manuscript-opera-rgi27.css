@@ -101,7 +101,7 @@
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading {
     display:block!important;width:auto!important;max-width:100%!important;
-    margin:18px 0 7px!important;padding:0!important;color:#292128!important;
+    margin:18px 0 7px!important;padding:0!important;color:#292d30!important;
     font-family:"Iowan Old Style","New York",Georgia,serif!important;
     font-weight:600!important;line-height:1.22!important;letter-spacing:-.018em!important;
     word-break:normal!important;overflow-wrap:normal!important;text-wrap:wrap!important;
@@ -131,7 +131,7 @@
     border-top:1px solid #d8cbc3!important;background:transparent!important;
     color:#555056!important;font:500 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
   }
-  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-raw summary {color:#5d5158!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-raw summary {color:#555a5b!important}
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-folio-density="comfort"] {
     font-size:16.5px!important;line-height:1.63!important;
   }
