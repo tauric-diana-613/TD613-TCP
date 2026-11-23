@@ -1075,7 +1075,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span>Explore the full mathematical wardrobe</span>
             <span class="formula-gallery-count" aria-hidden="true">+ source-backed Works</span>
           </button>
-          <p class="formula-gallery-fidelity">Original mathematical passages are derived from admitted Work manuscripts; missing or unverifiable text stays held. Host engineering records remain outside this wardrobe, and synthetic candidate rankings confer zero empirical or authorship authority.</p>
+          
         </div>
       </div>
     </div>
@@ -1656,7 +1656,7 @@ body[data-view="overview"] .reading-back{display:none}
 <!-- Operator route exists within the ONE shared SPA. No duplicate research state. -->
 <section class="view vixen-inquiry-stage vix-operator-view" id="view-operator" data-page="operator" aria-label="Podium Settings and Ledger" hidden>
 <div class="vixen-inquiry-inner">
-<header class="ci-head"><div><p class="ci-kicker">OPERATOR WORKSPACE · EVIDENCE AND CONSEQUENCE BOUNDARIES</p><h1 class="ci-title">Podium Settings &amp; Ledger</h1><p class="vix-operator-dek">Inspect history, measurements and machine contracts without granting permission to persist research, alter the source estate, or deploy.</p></div><div class="badge-row"><span class="tag gold" id="ciActiveEntryBadge">CURRENT PRESENTATION</span><span class="tag porcelain">PERSISTENT COMPOSE · HELD FOR HUMAN APPROVAL</span></div></header>
+<header class="ci-head"><div><h1 class="ci-title">Podium Settings</h1></div><div class="badge-row"><span class="tag gold" id="ciActiveEntryBadge">CURRENT PRESENTATION</span></div></header>
 <nav class="vix-operator-jump" aria-label="Operator workspace sections"><button type="button" data-vix-operator-jump="vixOperatorHistory">History &amp; review</button><button type="button" data-vix-operator-jump="vixOperatorDiagnostics">Diagnostics</button><button type="button" data-vix-operator-jump="vixOperatorPodium">Podium &amp; approvals</button></nav>
 <div class="ci-main-grid vix-operator-grid">
 <section id="vixOperatorHistory" aria-label="Presentation history"><h2 class="vix-operator-section-title">01 · Presentation history</h2><div class="ci-card" aria-label="Official Podium Synthesis Log and Non-Retroactive Rollback">
@@ -1669,7 +1669,7 @@ body[data-view="overview"] .reading-back{display:none}
             </p>
             <div class="ci-log-list" id="ciSynthesisLogList" role="list"></div>
           </div><button type="button" class="ci-btn vix-operator-reset" id="ciResetBtn">Review return to baseline</button></section>
-<section id="vixOperatorDiagnostics" aria-label="Bounded instrument telemetry"><h2 class="vix-operator-section-title">02 · Instrument diagnostics</h2><div class="ci-card"><h3 class="ci-card-title"><span>Live Readouts</span><span>MODEL MEASUREMENTS · NOT EMPIRICAL PROOF</span></h3><p class="vix-operator-dek">Clock, matrix and information measurements reflect local research model settings. They do not establish causal or external witness truth.</p><div class="ci-telemetry-strip" aria-label="Live Engine Observatory Telemetry">
+<section id="vixOperatorDiagnostics" aria-label="Bounded instrument telemetry"><h2 class="vix-operator-section-title">02 · Instrument diagnostics</h2><div class="ci-card"><h3 class="ci-card-title"><span>Live Readouts</span></h3><div class="ci-telemetry-strip" aria-label="Live Engine Observatory Telemetry">
               <div class="ci-metric">
                 <div class="ci-metric-label">5-CLOCK VERNIER</div>
                 <div class="ci-metric-val" id="ciMetricVernier">3 inv · |Δτ|=72</div>
@@ -1688,7 +1688,7 @@ body[data-view="overview"] .reading-back{display:none}
               </div>
             </div><button type="button" class="ci-btn" data-action="inspector" data-open-inspector-tab="bench">Open Diagnostic Inspector</button></div></section>
 </div>
-<section class="ci-card vix-operator-machine" id="vixOperatorPodium" aria-label="Research handoff and human approvals"><h2 class="vix-operator-section-title">03 · Research handoff &amp; human approvals</h2><p>Invite an AI collaborator to investigate the original Vixen Works, examine rival explanations, and return source-linked proposals. Independent references remain outside the original Work roster. The Podium's machine methods remain separate from this visitor interface.</p><div class="ci-actions-row"><button class="ci-btn" type="button" data-action="inspector" data-open-inspector-tab="podium">Review research handoff</button><a class="ci-btn" href="./vix-cyb/llms.txt">AI Research Guide</a><button class="ci-btn" type="button" data-view="collection">Back to Salon</button></div><p class="vix-operator-boundary-note">Machine suggestions cannot approve manuscript attribution, source import, publication, deployment or human Compose. Review remains yours.</p></section>
+<section class="ci-card vix-operator-machine" id="vixOperatorPodium" aria-label="Research handoff and human approvals"><h2 class="vix-operator-section-title">03 · Research handoff</h2><p>Explore the original Vixen Works and compare source-linked interpretations.</p><div class="ci-actions-row"><button class="ci-btn" type="button" data-action="inspector" data-open-inspector-tab="podium">Review research handoff</button><a class="ci-btn" href="./vix-cyb/llms.txt">AI Research Guide</a><button class="ci-btn" type="button" data-view="collection">Back to Salon</button></div></section>
 </div>
 </section>
 <dialog class="dialog inspector-dialog vix-restore-dialog" id="vixenRestoreReviewDialog" aria-labelledby="vixRestoreReviewTitle" closedby="any"><div class="dialog-shell"><div class="dialog-header"><h2 id="vixRestoreReviewTitle">Review Local Presentation Restore</h2><button type="button" class="hdr-pill" id="vixRestoreReviewCancelTop">Close ✕</button></div><div class="dialog-body"><p>Compare the current and proposed presentation. Confirming appends a NEW local rollback event without erasing history. It does not grant persistent Compose approval.</p><div id="vixRestoreComparison" class="vix-restore-comparison" role="list"></div><label class="vix-restore-ack"><input id="vixRestoreScopeAcknowledge" type="checkbox"> I authorize this local presentation change only; persisted composition remains held.</label><div class="ci-actions-row"><button type="button" class="ci-btn" id="vixRestoreReviewCancel">Keep Current</button><button type="button" class="ci-btn primary" id="vixRestoreReviewConfirm" disabled>Restore Local Presentation</button></div></div></div></dialog>
