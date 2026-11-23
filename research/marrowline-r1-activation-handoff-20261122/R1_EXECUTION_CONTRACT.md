@@ -45,6 +45,7 @@ node research/marrowline-r1-activation-handoff-20261122/run-r1-original-sse-obse
 - `--execute` without both `--grant-file` and `--public-key-file` fails immediately (`R1_AUTH_MISSING`) before accessing `GEMINI_API_KEY` or calling `fetch`.
 - `--out` opens exclusively with `'wx'` (`mode: 0o600`) so an existing evidence packet can never be silently overwritten.
 - `--nonce-dir` and `--out` are mandatory absolute paths for live CLI execution; the final output path is reserved using exclusive `wx` before credential use and network dispatch.
+- The live CLI additionally reserves an exclusive custody packet at the required absolute `--out` path and a separate `<out>.blinded.json` readout containing **only** blinded Section-II items (or HELD), with zero treatment-unblinding map. The full `--out` packet is for trusted custody only and MUST NOT be distributed to blind readers.
 - Raw SSE chunks are fsynced to exclusive files named `r1-<nonce>-R1_S01.sse` and `r1-<nonce>-R1_S02.sse` under the explicit nonce/evidence directory before parsing; `r1-<nonce>-journal.jsonl` records pre-call intent, source digest, observed HTTP outcome, usage, stop reason and closure. This is local durability, **not** distributed custody or a tamperproof external log.
 - `GEMINI_API_KEY` is supplied only at execution time via environment variable (`process.env.GEMINI_API_KEY`) and read **only after** frozen plan parity, Ed25519 signature verification, exact checked-out `HEAD` verification, and single-host `wx` nonce redemption all pass.
 
