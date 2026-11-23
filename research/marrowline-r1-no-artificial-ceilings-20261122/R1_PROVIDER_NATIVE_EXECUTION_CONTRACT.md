@@ -5,7 +5,7 @@
 - **Executable Module:** `research/marrowline-r1-no-artificial-ceilings-20261122/run-r1-provider-native-observation.mjs`
 - **Core Engine:** `research/marrowline-r1-no-artificial-ceilings-20261122/r1-provider-native-core.mjs`
 - **Experiment ID:** `HYDROGEN_R1_PROVIDER_NATIVE_UNCAPPED`
-- **Grant Schema:** `td613.marrowline.r1-provider-native-authorization/v1-ed25519`
+- **Grant Schema:** `td613.marrowline.r1-provider-native-authorization/v2-ed25519` *(supersedes `v1-ed25519` omitted-default schema under `AMEND_CONFIG: 65,536`)*
 - **Covenant / Seal:** `Khona‌lit-po` (literal `U+200C` preserved) · `⟐SAC[X6ZNK5NO51]`
 - **Authority Posture:** **FAIL-CLOSED OFFLINE BY DEFAULT.** Zero provider calls, zero credential reads, zero filesystem mutations without valid source-pinned human Ed25519 authority. Zero TD613 resource caps on tokens, spend, attempts, repetitions, elapsed time, or SSE capture bytes.
 
@@ -46,28 +46,28 @@ The executable boundary separates network/HEAD privilege from offline testing st
 
 ---
 
-## 2. Regenerated Provider-Native Exact-Wire Manifest
+## 2. Regenerated Provider-Native Exact-Wire Manifest (`AMEND_CONFIG`: Official `65,536` Capacity)
 
-Derived from repository builders once with inherited `maxOutputTokens` explicitly removed (`generationConfig: { thinkingConfig: { thinkingLevel: "medium" } }`, `"maxOutputTokens"` strictly absent from serialized bodies):
+Derived cleanly from repository builders using the official Gemini 3.8 Flash published output capacity (`generationConfig: { maxOutputTokens: 65536, thinkingConfig: { thinkingLevel: "medium" } }`), avoiding smaller artificial research caps and preventing fallback to a lower omitted provider default:
 
 | Condition | Arm | Wire `bodySha256` | `modelAndBodySha256` | `:countTokens` SHA-256 | UTF-8 Bytes |
 |---|---|---|---|---|---:|
-| `R1_NATIVE_A` | `R1_TWO_HEADINGS_ZALGO_BOTH` | `b4e1e7598fe1ff38221e47be3e63492e6fa7890d910df12f8d870b2bbadef46f` | `044467bcaa2482fac644e0e05b993dffb830639727bd6470df7de82187a68bbd` | `dc67f8f279f647b47e30c39c87b14df0348770944802e1313465faf4f360c330` | `1,746` |
-| `R1_NATIVE_B` | `R1_TWO_HEADINGS_PLAIN_FIRST` | `257be8467d5d827e8ac1a20f29beb56f1627f4603a84c9ccfdcbaadeb14e51f6` | `96220184f79f4eae1436944e8ad4fb92f7a74166c4994febeada1eb4b176fdf3` | `e34cbd9ab2bde2e505deb03744029a11411cb5ee357289a285e7ccd957a646b9` | `1,912` |
+| `R1_NATIVE_A` | `R1_TWO_HEADINGS_ZALGO_BOTH` | `eec7a1a36b042f410e2c7eb9cd914cfd10ba529b59df556120cb061b298bac8d` | `0e5524d1ac5061fbd4642db89dacf7fa43308c6753bd5ce9fc19c25c9becdf62` | `5a721fc5a7565b2ae7a29da4635b3f884ee0c5b38b1880b81a0148175cf397f5` | `1,770` |
+| `R1_NATIVE_B` | `R1_TWO_HEADINGS_PLAIN_FIRST` | `b4a0ce028a96bcc6a971d68bcb5eaa2f8e6118d3bbfa6c60a33bdd8c05a60e85` | `a1d6ca5df24225f0fd9f9c5994aa53c4d9f38b967296cbaca29d1dd17c745403` | `670efc88dd98a2b50dbe92f4c6a37f6363a74522569fdaa34fc6ccdae8c6e64c` | `1,936` |
 
 Shared invariants:
-- `contentsSha256`: `e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998`
-- `generationConfigSha256`: `425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5`
+- `contentsSha256`: `e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998` *(unchanged)*
+- `generationConfigSha256`: `4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34` *(`maxOutputTokens: 65536`)*
 
-Old PR `#1778` / `#1779` digests (`f2fcdf77...`, `29b3265a...`) and old capped grant schemas are explicitly rejected.
+Superseded omitted-default digests (`b4e1e759...`, `257be846...`, `425eee50...`, `v1-ed25519` at `56189bbf1`) and historical PR `#1778` / `#1779` bounded digests (`f2fcdf77...`, `29b3265a...`) are explicitly rejected.
 
 ---
 
 ## 3. Ed25519 Authority, Active Session Revocation & Non-Distributed Nonce Boundary
 
 - **Signing Domain:** `TD613_R1_NATIVE_AUTH_V1\n<canonical JSON(payload)>`
-- **Mandatory Payload Fields:** `schema` (`td613.marrowline.r1-provider-native-authorization/v1-ed25519`), `experimentId`, `pinnedModel` (`gemini-3.8-flash`), `thinkingLevel` (`medium`), `sessionMode` (`OPERATOR_CONTROLLED_UNBOUNDED_PAIRED_OBSERVATION`), `permittedPurpose`, `sessionId`, `checkedOutHeadSha`, `generationConfigSha256`, `generationConfig`, `conditions` (`R1_NATIVE_A`, `R1_NATIVE_B`), `issuedAt`, `nonce`, `authorizedBy`, `covenant` (`Khona‌lit-po` with literal `U+200C`), `seal` (`⟐SAC[X6ZNK5NO51]`).
-- **Forbidden Grant Fields:** Any attempt to smuggle `maxCalls`, `maxOutputTokens`, `perSlotMaxOutputTokens`, `perSlotHardPromptTokenCeiling`, `combinedOutputAndThoughtCeiling`, `maxUsdCeiling`, `requestTimeoutMs`, or `maxRawSseCaptureBytes` fails closed with `R1_AUTH_FORBIDDEN_ARTIFICIAL_CEILING_IN_GRANT`.
+- **Mandatory Payload Fields:** `schema` (`td613.marrowline.r1-provider-native-authorization/v2-ed25519`), `experimentId`, `pinnedModel` (`gemini-3.8-flash`), `thinkingLevel` (`medium`), `sessionMode` (`OPERATOR_CONTROLLED_UNBOUNDED_PAIRED_OBSERVATION`), `permittedPurpose`, `sessionId`, `checkedOutHeadSha`, `generationConfigSha256`, `generationConfig` (`{ maxOutputTokens: 65536, thinkingConfig: { thinkingLevel: "medium" } }`), `conditions` (`R1_NATIVE_A`, `R1_NATIVE_B`), `issuedAt`, `nonce`, `authorizedBy`, `covenant` (`Khona‌lit-po` with literal `U+200C`), `seal` (`⟐SAC[X6ZNK5NO51]`).
+- **Forbidden Grant Fields:** Any attempt to smuggle top-level artificial cap fields (`maxCalls`, `maxOutputTokens`, `perSlotMaxOutputTokens`, `perSlotHardPromptTokenCeiling`, `combinedOutputAndThoughtCeiling`, `maxUsdCeiling`, `requestTimeoutMs`, or `maxRawSseCaptureBytes`) fails closed with `R1_AUTH_FORBIDDEN_ARTIFICIAL_CEILING_IN_GRANT`; omitted or non-`65,536` `generationConfig.maxOutputTokens` fails with `R1_AUTH_CONFIG_MISMATCH`.
 - **Operator Session Control & Mid-Stream Revocation:** No forced 30-minute timer cap (`notAfter` is respected only if explicitly supplied by the operator). Runtime `operatorAbortSignal` (wired to `SIGINT`/`SIGTERM` in the CLI) or live edits to `--revocation-file` (`fs.watch` + `25ms` unref'd monitor cancelling active `reader.read()` via `AbortController` + `reader.cancel()`) interrupt even an active open SSE stream immediately, `fsync`ing partial `.sse` bytes to disk and closing cleanly with `STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED`.
 - **Single-Host Replay Guard Limitation:** `claimSingleHostNonceAtomically()` uses `fs.writeFileSync(..., { flag: 'wx', mode: 0o600 })` (`SINGLE_HOST_FILESYSTEM_ATOMIC_WX_ONLY_NOT_CROSS_HOST`) — local host filesystem exclusion only, **zero** cross-host distributed guarantee.
 
@@ -91,6 +91,6 @@ Old PR `#1778` / `#1779` digests (`f2fcdf77...`, `29b3265a...`) and old capped g
 
 - Unprovisioned trust anchor (`R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED`), untrusted key, bad signature, HEAD mismatch, old grant/digest, replayed nonce, missing/revoked session.
 - Manual operator STOP / session revocation (`STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED`).
-- Unavailable pinned model metadata, non-200 HTTP, network/stream interruption, disk IO failure (`STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED` — retaining all already-fsynced chunks on disk), missing SSE frame delimiter / trailing fragment, duplicate substantive SSE, dual-parser mismatch, wrong `modelVersion`, policy termination (`PROHIBITED_CONTENT`, `SAFETY`, etc.), non-`STOP` finish, missing provider `usageMetadata`, or post-capture Unicode alteration (`STOP_ON_ALTERED_UNICODE_TEXT`).
+- Unavailable or capacity-mismatched pinned model metadata (`STOP_ON_MODEL_METADATA_UNAVAILABLE`, `STOP_ON_PROVIDER_CAPACITY_MISMATCH`), non-200 HTTP, network/stream interruption, disk IO failure (`STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED` — retaining all already-fsynced chunks on disk), missing SSE frame delimiter / trailing fragment, duplicate substantive SSE, dual-parser mismatch, wrong `modelVersion`, policy termination (`PROHIBITED_CONTENT`, `SAFETY`, etc.), non-`STOP` finish, missing provider `usageMetadata`, or post-capture Unicode alteration (`STOP_ON_ALTERED_UNICODE_TEXT`).
 
 𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Unbounded Contract STAGED · Public Trust Anchor Pinned (`840a7162...`) · No Grant Signed · Provider HELD ⟐

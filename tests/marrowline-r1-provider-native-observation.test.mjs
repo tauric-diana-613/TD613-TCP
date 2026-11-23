@@ -7,8 +7,10 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import {
   HISTORICAL_BOUNDED_R1_PROVENANCE,
+  HISTORICAL_OMITTED_MAX_OUTPUT_TOKENS_PROVENANCE,
   R1_NATIVE_COVENANT,
   R1_NATIVE_PINNED_MODEL,
+  R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
   R1_NATIVE_SEAL,
   R1_NATIVE_THINKING_LEVEL,
   R1_PROVIDER_NATIVE_EXPERIMENT_ID,
@@ -134,17 +136,21 @@ function makeVariableMultistackPhrase() {
   ].join(' ');
 }
 
-test('Preflight & Wire Manifest: no hidden maxOutputTokens, byte-identical manifest JSON, distinct from bounded historical digests', () => {
+test('Preflight & Wire Manifest: official 65,536 provider capacity, byte-identical manifest JSON, distinct from bounded & omitted historical digests', () => {
   const rawRequests = buildProviderNativeR1Requests();
+  assert.equal(R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS, 65536);
   for (const key of ['R1_NATIVE_A', 'R1_NATIVE_B']) {
     const req = rawRequests[key];
-    assert.equal(Object.hasOwn(req.generationConfig, 'maxOutputTokens'), false);
+    assert.equal(req.generationConfig.maxOutputTokens, 65536);
     assert.equal(Object.hasOwn(req.generationConfig, 'temperature'), false);
-    assert.deepEqual(req.generationConfig, { thinkingConfig: { thinkingLevel: 'medium' } });
+    assert.deepEqual(req.generationConfig, { maxOutputTokens: 65536, thinkingConfig: { thinkingLevel: 'medium' } });
     const serialized = serializeGeminiRequest(req, R1_NATIVE_PINNED_MODEL);
-    assert.equal(serialized.body.includes('maxOutputTokens'), false);
+    assert.equal(serialized.body.includes('"maxOutputTokens":65536'), true);
     assert.equal(serialized.observation.bodySha256, FROZEN_PROVIDER_NATIVE_CONDITIONS[key].bodySha256);
+    assert.equal(serialized.observation.generationConfigSha256, FROZEN_PROVIDER_NATIVE_CONDITIONS[key].generationConfigSha256);
     assert.notEqual(serialized.observation.bodySha256, HISTORICAL_BOUNDED_R1_PROVENANCE.slots[key === 'R1_NATIVE_A' ? 'R1_S01' : 'R1_S02'].bodySha256);
+    assert.notEqual(serialized.observation.bodySha256, HISTORICAL_OMITTED_MAX_OUTPUT_TOKENS_PROVENANCE.conditions[key].bodySha256);
+    assert.notEqual(serialized.observation.generationConfigSha256, HISTORICAL_OMITTED_MAX_OUTPUT_TOKENS_PROVENANCE.generationConfigSha256);
   }
 
   const rawManifestBytes = fs.readFileSync(MANIFEST_JSON_PATH);
@@ -192,6 +198,8 @@ test('Architectural Security Proof: production executable has ZERO test trust ov
     // Default offline CLI runs with zero network or credentials and reports pinned trust anchor
     const offlineJson = JSON.parse(execFileSync(process.execPath, [EXECUTABLE_PATH], { encoding: 'utf8' }));
     assert.equal(offlineJson.status, 'SOURCE_ONLY_QUALIFIED');
+    assert.equal(offlineJson.grantSchema, R1_NATIVE_GRANT_SCHEMA);
+    assert.equal(offlineJson.publishedOutputCapacityTokens, 65536);
     assert.equal(offlineJson.paidProviderCallsExecuted, 0);
     assert.equal(offlineJson.countTokensCallsExecuted, 0);
     assert.equal(offlineJson.modelDiscoveryCallsExecuted, 0);
@@ -286,13 +294,20 @@ test('Authority Negative Controls: rejects old capped grants, forbidden cap fiel
   });
 
   try {
-    // 1. Old capped R1 grant schema rejected
+    // 1. Old capped R1 grant schema & superseded omitted-default v1 schema both rejected
     await assert.rejects(
       () => runCore({
         grant: signGrant(buildValidNativePayload({ schema: 'td613.marrowline.r1-live-observation-authorization/v1-ed25519' }), privateKey),
         publicKeyPem: publicKey
       }),
       (e) => e.code === 'R1_AUTH_OLD_CAPPED_GRANT_REJECTED'
+    );
+    await assert.rejects(
+      () => runCore({
+        grant: signGrant(buildValidNativePayload({ schema: 'td613.marrowline.r1-provider-native-authorization/v1-ed25519' }), privateKey),
+        publicKeyPem: publicKey
+      }),
+      (e) => e.code === 'R1_AUTH_OMITTED_DEFAULT_GRANT_SUPERSEDED'
     );
 
     // 2. Old Argon grant rejected
@@ -304,8 +319,8 @@ test('Authority Negative Controls: rejects old capped grants, forbidden cap fiel
       (e) => e.code === 'R1_AUTH_ARGON_GRANT_FORBIDDEN'
     );
 
-    // 3. Grant with any artificial ceiling field rejected
-    for (const capField of ['maxCalls', 'perSlotMaxOutputTokens', 'maxUsdCeiling', 'requestTimeoutMs', 'maxRawSseCaptureBytes']) {
+    // 3. Grant with any top-level artificial ceiling field rejected (including top-level maxOutputTokens)
+    for (const capField of ['maxCalls', 'maxOutputTokens', 'perSlotMaxOutputTokens', 'maxUsdCeiling', 'requestTimeoutMs', 'maxRawSseCaptureBytes']) {
       await assert.rejects(
         () => runCore({
           grant: signGrant(buildValidNativePayload({ [capField]: 1 }), privateKey),
@@ -315,12 +330,37 @@ test('Authority Negative Controls: rejects old capped grants, forbidden cap fiel
       );
     }
 
-    // 4. Old bounded wire digest rejected
+    // 4. Old bounded wire digest, old omitted-default digest, and mismatched generationConfig rejected
     const badConds = structuredClone(buildValidNativePayload().conditions);
     badConds.R1_NATIVE_A.bodySha256 = HISTORICAL_BOUNDED_R1_PROVENANCE.slots.R1_S01.bodySha256;
     await assert.rejects(
       () => runCore({ grant: signGrant(buildValidNativePayload({ conditions: badConds }), privateKey), publicKeyPem: publicKey }),
       (e) => e.code === 'R1_AUTH_DIGEST_MISMATCH'
+    );
+    const omittedConds = structuredClone(buildValidNativePayload().conditions);
+    omittedConds.R1_NATIVE_A.bodySha256 = HISTORICAL_OMITTED_MAX_OUTPUT_TOKENS_PROVENANCE.conditions.R1_NATIVE_A.bodySha256;
+    await assert.rejects(
+      () => runCore({ grant: signGrant(buildValidNativePayload({ conditions: omittedConds }), privateKey), publicKeyPem: publicKey }),
+      (e) => e.code === 'R1_AUTH_DIGEST_MISMATCH'
+    );
+    await assert.rejects(
+      () => runCore({
+        grant: signGrant(buildValidNativePayload({
+          generationConfig: { thinkingConfig: { thinkingLevel: 'medium' } },
+          generationConfigSha256: HISTORICAL_OMITTED_MAX_OUTPUT_TOKENS_PROVENANCE.generationConfigSha256
+        }), privateKey),
+        publicKeyPem: publicKey
+      }),
+      (e) => e.code === 'R1_AUTH_CONFIG_MISMATCH'
+    );
+    await assert.rejects(
+      () => runCore({
+        grant: signGrant(buildValidNativePayload({
+          generationConfig: { maxOutputTokens: 16384, thinkingConfig: { thinkingLevel: 'medium' } }
+        }), privateKey),
+        publicKeyPem: publicKey
+      }),
+      (e) => e.code === 'R1_AUTH_CONFIG_MISMATCH'
     );
 
     // 5. Public-key substitution / untrusted key rejected
@@ -499,7 +539,7 @@ test('Unbounded Paired Episodes & Integrity Controls: allows >2 repeated pairs, 
       transportFetch: async (url) => {
         if (url.includes(':countTokens')) return makeJsonResponse({ totalTokens: 210 });
         if (url.endsWith(`/models/${R1_NATIVE_PINNED_MODEL}`)) {
-          return makeJsonResponse({ name: `models/${R1_NATIVE_PINNED_MODEL}`, supportedGenerationMethods: ['generateContent', 'countTokens'] });
+          return makeJsonResponse({ name: `models/${R1_NATIVE_PINNED_MODEL}`, outputTokenLimit: 65536, supportedGenerationMethods: ['generateContent', 'countTokens'] });
         }
         callNum += 1;
         if (callNum === 2) return makeJsonResponse({ error: { message: 'overloaded' } }, 503);
@@ -845,6 +885,27 @@ test('Red Pen #4 (HTTP Non-2XX Wire Custody): persists unmodified raw error byte
     const journalText = fs.readFileSync(errRun.evidenceJournalPath, 'utf8');
     assert.ok(journalText.includes('trace-503'));
     assert.ok(journalText.includes(errRun.attemptRecords[0].httpErrorCustody.rawErrorBodySha256));
+
+    // Also halt cleanly before any generation dispatch if live model metadata reports outputTokenLimit !== 65536
+    const capMismatch = await executeProviderNativeCore({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(buildValidNativePayload(), privateKey),
+      publicKeyPem: publicKey,
+      pinnedTrustFingerprintSha256: fp,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir,
+      apiKey: 'fake-key',
+      checkModelDiscovery: true,
+      transportFetch: async () => makeJsonResponse({
+        name: `models/${R1_NATIVE_PINNED_MODEL}`,
+        outputTokenLimit: 32768,
+        supportedGenerationMethods: ['generateContent', 'countTokens']
+      })
+    });
+    assert.equal(capMismatch.integritySessionHaltReason, 'STOP_ON_PROVIDER_CAPACITY_MISMATCH');
+    assert.equal(capMismatch.dispatchCounts.generationCalls, 0);
+    assert.equal(capMismatch.metadataDiscovery.outputTokenLimitReportedByProvider, 32768);
+    assert.equal(capMismatch.metadataDiscovery.outputTokenLimitMatchesAmendedWire, false);
   } finally {
     fs.rmSync(evidenceDir, { recursive: true, force: true });
   }

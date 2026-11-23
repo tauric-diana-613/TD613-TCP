@@ -7,7 +7,7 @@
   "paidProviderCallsExecuted": 0,
   "liveDispatchSupportedByManifest": false,
   "resourceCeilingsImposedByTD613": {
-    "maxOutputTokens": null,
+    "maxOutputTokensArtificialResearchCap": null,
     "promptTokenCeiling": null,
     "outputPlusThoughtCeiling": null,
     "spendingUsdCeiling": null,
@@ -15,23 +15,28 @@
     "durationTimeoutMs": null,
     "rawSseCaptureBytesCeiling": null
   },
+  "providerPublishedCapacity": {
+    "maxOutputTokensOnWire": 65536,
+    "classification": "PROVIDER_PUBLISHED_OUTPUT_CAPACITY_NOT_TD613_RESEARCH_CAP"
+  },
   "modelPolicy": {
     "alias": "gemini-3.8-flash",
     "thinkingLevel": "medium",
     "samplingPolicy": "provider-default (temperature/topP/topK omitted)",
-    "maxOutputTokensPolicy": "omitted from client payload; inherits active provider-native behavior unless separately amended with verified official model outputTokenLimit"
+    "maxOutputTokensPolicy": "explicitly set to 65536 (official Gemini 3.8 Flash published output capacity) under AMEND_CONFIG"
   },
-  "providerNativeOutputComparisonOfflineNote": {
-    "activeConfiguration": "maxOutputTokens_omitted",
-    "alternativeEvaluatedOffline": "explicit_provider_reported_outputTokenLimit_after_live_GET_models",
-    "rationale": "Because live model-metadata verification is withheld in offline preparation, omitting maxOutputTokens ensures zero invented or client-truncated cap in wire bytes; if future live metadata indicates omitting maxOutputTokens applies a smaller provider default than outputTokenLimit, setting maxOutputTokens to the verified official outputTokenLimit requires a separate signed manifest revision."
+  "configAmendmentProvenance": {
+    "amendedFromConfiguration": "maxOutputTokens_omitted",
+    "activeConfiguration": "explicit_provider_published_output_capacity_65536",
+    "rationale": "Under Google GenerationConfig docs, omitting maxOutputTokens triggers a model-dependent default rather than guaranteeing the published 65,536 output capacity. Setting maxOutputTokens explicitly to 65,536 aligns the wire payload with the official published Gemini 3.8 Flash capacity while imposing zero TD613 research caps on episodes, attempts, spending, duration, or SSE bytes."
   },
   "soleAlteredFactor": "Section-I coverage clause in systemInstruction (Condition A: native Zalgo in both sections; Condition B: plain undecorated English prose with ZERO combining marks under Kʰonapolit followed by native Zalgo under Tauric Diana bots).",
   "pairedComparisonUnit": "Paired A/B conditions (order preregistrable across episodes); unbounded number of operator-controlled repetitions; all attempts retained in denominator.",
   "sharedInvariants": {
     "contentsSha256": "e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998",
-    "generationConfigSha256": "425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5",
+    "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
     "generationConfig": {
+      "maxOutputTokens": 65536,
       "thinkingConfig": {
         "thinkingLevel": "medium"
       }
@@ -44,15 +49,15 @@
       "observation": {
         "schema": "td613.marrowline.submitted-request/v1",
         "model": "gemini-3.8-flash",
-        "bodySha256": "b4e1e7598fe1ff38221e47be3e63492e6fa7890d910df12f8d870b2bbadef46f",
-        "modelAndBodySha256": "044467bcaa2482fac644e0e05b993dffb830639727bd6470df7de82187a68bbd",
+        "bodySha256": "eec7a1a36b042f410e2c7eb9cd914cfd10ba529b59df556120cb061b298bac8d",
+        "modelAndBodySha256": "0e5524d1ac5061fbd4642db89dacf7fa43308c6753bd5ce9fc19c25c9becdf62",
         "systemInstructionSha256": "78df5f9b5ad6ceefa8ce10071b40194e8ace56226fefef186ba4e1e5c7a1079c",
         "contentsSha256": "e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998",
-        "generationConfigSha256": "425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5",
-        "utf8Bytes": 1746,
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 1770,
         "contentTurnCount": 1
       },
-      "countTokensRequestSha256": "dc67f8f279f647b47e30c39c87b14df0348770944802e1313465faf4f360c330"
+      "countTokensRequestSha256": "5a721fc5a7565b2ae7a29da4635b3f884ee0c5b38b1880b81a0148175cf397f5"
     },
     {
       "condition": "R1_NATIVE_B",
@@ -60,15 +65,15 @@
       "observation": {
         "schema": "td613.marrowline.submitted-request/v1",
         "model": "gemini-3.8-flash",
-        "bodySha256": "257be8467d5d827e8ac1a20f29beb56f1627f4603a84c9ccfdcbaadeb14e51f6",
-        "modelAndBodySha256": "96220184f79f4eae1436944e8ad4fb92f7a74166c4994febeada1eb4b176fdf3",
+        "bodySha256": "b4a0ce028a96bcc6a971d68bcb5eaa2f8e6118d3bbfa6c60a33bdd8c05a60e85",
+        "modelAndBodySha256": "a1d6ca5df24225f0fd9f9c5994aa53c4d9f38b967296cbaca29d1dd17c745403",
         "systemInstructionSha256": "7c48aeda766e4e10c63b048f6cee990ec126baac8f5cd419769e410d0ca0274b",
         "contentsSha256": "e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998",
-        "generationConfigSha256": "425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5",
-        "utf8Bytes": 1912,
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 1936,
         "contentTurnCount": 1
       },
-      "countTokensRequestSha256": "e34cbd9ab2bde2e505deb03744029a11411cb5ee357289a285e7ccd957a646b9"
+      "countTokensRequestSha256": "670efc88dd98a2b50dbe92f4c6a37f6363a74522569fdaa34fc6ccdae8c6e64c"
     }
   ],
   "historicalNonExecutableReferences": {
@@ -83,6 +88,27 @@
       "R1_S02": {
         "bodySha256": "29b3265a5060666c1b19f905a7a528a7613c6d6b9e8566156da3c2b5cb022399",
         "modelAndBodySha256": "903d9aef749b34ffdb46b65c3c3766e5219497d5778900c06a7f599811e01d8e"
+      }
+    }
+  },
+  "supersededOmittedDefaultReferences": {
+    "experimentId": "HYDROGEN_R1_PROVIDER_NATIVE_UNCAPPED",
+    "supersededHeadSha": "56189bbf1d2d6f623d5d852447e580beee3cfa8a",
+    "executableUnderAmendedConfig": false,
+    "note": "Prior PR #1780 configuration omitting maxOutputTokens (subject to model-dependent provider default rather than published 65,536 outputTokenLimit); superseded by AMEND_CONFIG.",
+    "generationConfigSha256": "425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5",
+    "conditions": {
+      "R1_NATIVE_A": {
+        "bodySha256": "b4e1e7598fe1ff38221e47be3e63492e6fa7890d910df12f8d870b2bbadef46f",
+        "modelAndBodySha256": "044467bcaa2482fac644e0e05b993dffb830639727bd6470df7de82187a68bbd",
+        "countTokensRequestSha256": "dc67f8f279f647b47e30c39c87b14df0348770944802e1313465faf4f360c330",
+        "utf8Bytes": 1746
+      },
+      "R1_NATIVE_B": {
+        "bodySha256": "257be8467d5d827e8ac1a20f29beb56f1627f4603a84c9ccfdcbaadeb14e51f6",
+        "modelAndBodySha256": "96220184f79f4eae1436944e8ad4fb92f7a74166c4994febeada1eb4b176fdf3",
+        "countTokensRequestSha256": "e34cbd9ab2bde2e505deb03744029a11411cb5ee357289a285e7ccd957a646b9",
+        "utf8Bytes": 1912
       }
     }
   }

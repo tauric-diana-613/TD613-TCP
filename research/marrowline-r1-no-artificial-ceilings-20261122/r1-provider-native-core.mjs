@@ -26,6 +26,7 @@ import {
 import {
   R1_NATIVE_COVENANT,
   R1_NATIVE_PINNED_MODEL,
+  R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
   R1_NATIVE_SEAL,
   R1_NATIVE_THINKING_LEVEL,
   R1_PROVIDER_NATIVE_EXPERIMENT_ID,
@@ -36,34 +37,34 @@ import {
 } from './r1-provider-native-preflight.mjs';
 
 export const R1_NATIVE_RUNNER_SCHEMA = 'td613.marrowline.r1-provider-native-observation/v1';
-export const R1_NATIVE_GRANT_SCHEMA = 'td613.marrowline.r1-provider-native-authorization/v1-ed25519';
+export const R1_NATIVE_GRANT_SCHEMA = 'td613.marrowline.r1-provider-native-authorization/v2-ed25519';
 export const R1_NATIVE_AUTH_DOMAIN_SEPARATOR = 'TD613_R1_NATIVE_AUTH_V1';
 export const R1_NATIVE_SECTION1_HEADING = 'Kʰonapolit';
 export const R1_NATIVE_SECTION2_HEADING = 'Tauric Diana bots';
 export const MAX_FUTURE_ISSUED_SKEW_MS = 60 * 1000;
 export const STREAM_READBACK_CHUNK_BYTES = 64 * 1024;
 
-// Frozen provider-native condition digests (maxOutputTokens omitted cleanly)
+// Frozen provider-native condition digests (AMEND_CONFIG: explicit official 65,536 Gemini 3.8 Flash capacity)
 export const FROZEN_PROVIDER_NATIVE_CONDITIONS = Object.freeze({
   R1_NATIVE_A: Object.freeze({
     arm: 'R1_TWO_HEADINGS_ZALGO_BOTH',
-    bodySha256: 'b4e1e7598fe1ff38221e47be3e63492e6fa7890d910df12f8d870b2bbadef46f',
-    modelAndBodySha256: '044467bcaa2482fac644e0e05b993dffb830639727bd6470df7de82187a68bbd',
+    bodySha256: 'eec7a1a36b042f410e2c7eb9cd914cfd10ba529b59df556120cb061b298bac8d',
+    modelAndBodySha256: '0e5524d1ac5061fbd4642db89dacf7fa43308c6753bd5ce9fc19c25c9becdf62',
     systemInstructionSha256: '78df5f9b5ad6ceefa8ce10071b40194e8ace56226fefef186ba4e1e5c7a1079c',
     contentsSha256: 'e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998',
-    generationConfigSha256: '425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5',
-    countTokensRequestSha256: 'dc67f8f279f647b47e30c39c87b14df0348770944802e1313465faf4f360c330',
-    utf8Bytes: 1746
+    generationConfigSha256: '4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34',
+    countTokensRequestSha256: '5a721fc5a7565b2ae7a29da4635b3f884ee0c5b38b1880b81a0148175cf397f5',
+    utf8Bytes: 1770
   }),
   R1_NATIVE_B: Object.freeze({
     arm: 'R1_TWO_HEADINGS_PLAIN_FIRST',
-    bodySha256: '257be8467d5d827e8ac1a20f29beb56f1627f4603a84c9ccfdcbaadeb14e51f6',
-    modelAndBodySha256: '96220184f79f4eae1436944e8ad4fb92f7a74166c4994febeada1eb4b176fdf3',
+    bodySha256: 'b4a0ce028a96bcc6a971d68bcb5eaa2f8e6118d3bbfa6c60a33bdd8c05a60e85',
+    modelAndBodySha256: 'a1d6ca5df24225f0fd9f9c5994aa53c4d9f38b967296cbaca29d1dd17c745403',
     systemInstructionSha256: '7c48aeda766e4e10c63b048f6cee990ec126baac8f5cd419769e410d0ca0274b',
     contentsSha256: 'e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998',
-    generationConfigSha256: '425eee5014c42dcb66bb7553a9381935f97bb4eb87f61d335f9bfca6dc6fead5',
-    countTokensRequestSha256: 'e34cbd9ab2bde2e505deb03744029a11411cb5ee357289a285e7ccd957a646b9',
-    utf8Bytes: 1912
+    generationConfigSha256: '4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34',
+    countTokensRequestSha256: '670efc88dd98a2b50dbe92f4c6a37f6363a74522569fdaa34fc6ccdae8c6e64c',
+    utf8Bytes: 1936
   })
 });
 
@@ -192,8 +193,11 @@ export function buildProviderNativeConditionPlans({
     if (entry.model !== R1_NATIVE_PINNED_MODEL) {
       throw new R1ProviderNativeError('R1_MODEL_MISMATCH', `Pinned model ${R1_NATIVE_PINNED_MODEL} required; received ${entry.model}`);
     }
-    if (Object.hasOwn(entry.request.generationConfig || {}, 'maxOutputTokens')) {
-      throw new R1ProviderNativeError('R1_FORBIDDEN_HIDDEN_MAX_OUTPUT_TOKENS', `${entry.condition} must not embed hidden maxOutputTokens`);
+    if (entry.request?.generationConfig?.maxOutputTokens !== R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS) {
+      throw new R1ProviderNativeError(
+        'R1_CONFIG_MAX_OUTPUT_TOKENS_MISMATCH',
+        `${entry.condition} must set official published maxOutputTokens=${R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS}`
+      );
     }
 
     const userText = entry.request?.contents?.[0]?.parts?.[0]?.text || '';
@@ -202,8 +206,11 @@ export function buildProviderNativeConditionPlans({
     }
 
     const serialized = serializeGeminiRequest(entry.request, entry.model);
-    if (serialized.body.includes('maxOutputTokens')) {
-      throw new R1ProviderNativeError('R1_FORBIDDEN_HIDDEN_MAX_OUTPUT_TOKENS', `Serialized body for ${entry.condition} contains forbidden maxOutputTokens`);
+    if (!serialized.body.includes(`"maxOutputTokens":${R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS}`)) {
+      throw new R1ProviderNativeError(
+        'R1_CONFIG_MAX_OUTPUT_TOKENS_MISMATCH',
+        `Serialized body for ${entry.condition} missing exact published maxOutputTokens=${R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS}`
+      );
     }
     const countTokensReq = buildProviderNativeCountTokensRequest(entry.request, entry.model);
     const countTokensWireBody = JSON.stringify(countTokensReq);
@@ -297,6 +304,12 @@ export function verifyProviderNativeOperatorAuthorization({
   if (payload.schema.startsWith('td613.marrowline.r1-live-observation-authorization')) {
     throw new R1ProviderNativeError('R1_AUTH_OLD_CAPPED_GRANT_REJECTED', `Legacy capped R1 grant schema ${payload.schema} is rejected under no-artificial-ceilings policy`);
   }
+  if (payload.schema === 'td613.marrowline.r1-provider-native-authorization/v1-ed25519') {
+    throw new R1ProviderNativeError(
+      'R1_AUTH_OMITTED_DEFAULT_GRANT_SUPERSEDED',
+      `Superseded omitted-maxOutputTokens schema ${payload.schema} cannot authorize amended 65,536 provider-capacity configuration; expected ${R1_NATIVE_GRANT_SCHEMA}`
+    );
+  }
   if (payload.schema !== R1_NATIVE_GRANT_SCHEMA) {
     throw new R1ProviderNativeError('R1_AUTH_SCHEMA_MISMATCH', `Expected ${R1_NATIVE_GRANT_SCHEMA}; got ${payload.schema}`);
   }
@@ -383,9 +396,12 @@ export function verifyProviderNativeOperatorAuthorization({
   if (
     payload.generationConfigSha256 !== cA.observation.generationConfigSha256
     || canonicalJson(payload.generationConfig) !== canonicalJson(cA.request.generationConfig)
-    || Object.hasOwn(payload.generationConfig || {}, 'maxOutputTokens')
+    || payload.generationConfig?.maxOutputTokens !== R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS
   ) {
-    throw new R1ProviderNativeError('R1_AUTH_CONFIG_MISMATCH', 'Grant generationConfig must match provider-native config with zero maxOutputTokens');
+    throw new R1ProviderNativeError(
+      'R1_AUTH_CONFIG_MISMATCH',
+      `Grant generationConfig must match amended provider-capacity config (maxOutputTokens: ${R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS})`
+    );
   }
   if (typeof payload.nonce !== 'string' || !/^[A-Za-z0-9_-]{16,128}$/.test(payload.nonce)) {
     throw new R1ProviderNativeError('R1_AUTH_INVALID_NONCE', 'Grant nonce must match /^[A-Za-z0-9_-]{16,128}$/');
@@ -2333,17 +2349,27 @@ async function captureHttpErrorCustodyToDisk({
           } else {
             const metaJson = await metaResp.json().catch(() => ({}));
             const methods = Array.isArray(metaJson?.supportedGenerationMethods) ? metaJson.supportedGenerationMethods : [];
+            const reportedOutLimit = Number.isInteger(metaJson?.outputTokenLimit) ? metaJson.outputTokenLimit : null;
             if (!methods.includes('generateContent')) {
               integritySessionHaltReason = 'STOP_ON_MODEL_METHODS_MISSING';
             } else {
               metadataDiscovery = Object.freeze({
                 status: Number(metaResp.status),
                 name: metaJson.name || `models/${R1_NATIVE_PINNED_MODEL}`,
-                outputTokenLimitReportedByProvider: Number.isInteger(metaJson?.outputTokenLimit) ? metaJson.outputTokenLimit : null,
+                outputTokenLimitReportedByProvider: reportedOutLimit,
+                outputTokenLimitMatchesAmendedWire: reportedOutLimit === null ? null : reportedOutLimit === R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
+                maxOutputTokensOnWire: R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
                 inputTokenLimitReportedByProvider: Number.isInteger(metaJson?.inputTokenLimit) ? metaJson.inputTokenLimit : null,
                 supportedGenerationMethods: Object.freeze([...methods])
               });
               appendJournal('R1_NATIVE_MODEL_METADATA_OBSERVED', metadataDiscovery);
+              if (reportedOutLimit !== null && reportedOutLimit !== R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS) {
+                integritySessionHaltReason = 'STOP_ON_PROVIDER_CAPACITY_MISMATCH';
+                appendJournal('R1_NATIVE_PROVIDER_CAPACITY_MISMATCH', {
+                  expectedOutputTokenLimit: R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
+                  reportedOutputTokenLimit: reportedOutLimit
+                });
+              }
             }
           }
         } catch (error) {

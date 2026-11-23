@@ -12,10 +12,12 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
   R1ProviderNativeError,
+  R1_NATIVE_GRANT_SCHEMA,
   R1_NATIVE_RUNNER_SCHEMA,
   buildProviderNativeConditionPlans,
   executeProviderNativeCore
 } from './r1-provider-native-core.mjs';
+import { R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS } from './r1-provider-native-preflight.mjs';
 
 // Operator-attested Ed25519 SPKI DER SHA-256 public-key fingerprint (non-secret trust anchor).
 // Private key and passphrase remain strictly under offline human operator custody.
@@ -210,12 +212,14 @@ async function runCli(argv = process.argv.slice(2)) {
   const checkedOutHeadSha = resolveCheckedOutGitHeadSha(process.cwd());
   return Object.freeze({
     schema: R1_NATIVE_RUNNER_SCHEMA,
+    grantSchema: R1_NATIVE_GRANT_SCHEMA,
     status: 'SOURCE_ONLY_QUALIFIED',
     trustAnchorProvisioned: R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 !== null,
     paidProviderCallsExecuted: 0,
     countTokensCallsExecuted: 0,
     modelDiscoveryCallsExecuted: 0,
     resourceCeilingsImposedByTD613: 'NONE',
+    publishedOutputCapacityTokens: R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
     checkedOutHeadSha,
     experimentId: plan.experimentId,
     pinnedModel: plan.pinnedModel,
