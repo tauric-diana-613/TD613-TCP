@@ -353,3 +353,26 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference>.page-pad{
  z-index:2;
  isolation:isolate;
 }
+
+
+/* RGI-06C / FOLIOS OPTICAL FOREGROUND CONTRAST.
+   Independent failed Chromium screenshots at 1440px showed the optical lines
+   crossing title, instruction, and Work selector despite correct z-index.
+   A stacking-order fix alone cannot make a transparent reading plane legible.
+   Give only authored reading/selection surfaces a nearly opaque black-chrome
+   ground; keep the animated filaments visible in surrounding negative space.
+   Separate OPERAHOUSE/OPERA/PERFORMER jurisdictions and original folios remain
+   completely untouched. */
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference :is(.vxe-heading,.vxe-steps,.vxe-status,.vxe-work-selector){
+  background:linear-gradient(115deg,rgba(8,12,16,.992),rgba(12,17,21,.986));
+  isolation:isolate;
+  box-shadow:0 0 0 4px rgba(8,12,16,.94),0 12px 22px rgba(0,0,0,.22);
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-heading :is(h1,.vxe-eyebrow,.vxe-lede),
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-work-selector :is(.vxe-work-identity,.vxe-source-note){
+  position:relative;
+  z-index:1;
+}
