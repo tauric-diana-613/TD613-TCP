@@ -1,0 +1,162 @@
+{
+  "schema": "td613/preflight-engineering-staging/v1",
+  "docket_id": "PEFB-20261103-v1",
+  "principal": "tauric.diana.613",
+  "created_on": "2026-11-03",
+  "approval_state": "STAGED_NOT_AUTHORIZED",
+  "authorizes_now": [],
+  "engineering_authority_after_explicit_operator_gesture": [
+    "isolated_draft_branches",
+    "bounded_new_draft_prs",
+    "source_free_fixture_tests",
+    "source_free_engineering",
+    "exact_head_ci",
+    "documentary_receipts"
+  ],
+  "frozen_refs": {
+    "main": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+    "wendbine": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+    "wendbine_snapshot": "wendbine-20261102175835-2861f2e0326f",
+    "wendbine_gatee": "d8f4d8482ce5bd347926e510f91af905e87913dc",
+    "prospective_product": "12bfc82d2276bc8496d1e548f658f7070ea21dd5",
+    "reciprocal_receiver": "c6874a2c10cfd92b2c2b528853724ceb991b0352",
+    "flight_resumable": "c7ee69abc9800d0abdf21bbb957c5534f86b01ad"
+  },
+  "work_orders": [
+    {
+      "id": "PE01",
+      "track": "wendbine_research",
+      "title": "Gate E kernel independent exact-head review",
+      "depends_on": [],
+      "exit": "executed source-free hostile tests and exact-head receipt"
+    },
+    {
+      "id": "PE02",
+      "track": "wendbine_research",
+      "title": "offline restorer host and rights storage synthetic implementation",
+      "depends_on": [
+        "PE01"
+      ],
+      "exit": "runnable synthetic local package and independent crash/rights/security tests"
+    },
+    {
+      "id": "PE03",
+      "track": "wendbine_research",
+      "title": "checkpointed incremental sync and historical backfill engineering",
+      "depends_on": [],
+      "exit": "complete fixture-tested design; no live gesture"
+    },
+    {
+      "id": "PE04",
+      "track": "atelier_research",
+      "title": "SRC Wendbine Em native fixtures and 44-operation fidelity map",
+      "depends_on": [],
+      "exit": "direct source-native synthetic operations and versioned limitations"
+    },
+    {
+      "id": "PE05",
+      "track": "atelier_research",
+      "title": "instantiate two separate empty prospective products",
+      "depends_on": [
+        "PE04"
+      ],
+      "exit": "runnable empty fixture-only Atelier and Encyclopedia; real grants zero"
+    },
+    {
+      "id": "PE06",
+      "track": "atelier_research",
+      "title": "two-direction reciprocal study synthetic chassis",
+      "depends_on": [
+        "PE05"
+      ],
+      "exit": "preregistration-ready matched controls and no real ingress"
+    },
+    {
+      "id": "PE07",
+      "track": "flight_critical",
+      "title": "flight source-free trust isolation custody and recovery infrastructure",
+      "depends_on": [],
+      "exit": "hostile source-free tests; external trust witness held"
+    },
+    {
+      "id": "PE08",
+      "track": "flight_critical",
+      "title": "freeze-ready D01-D20 decision and evaluator design",
+      "depends_on": [
+        "PE07"
+      ],
+      "exit": "complete decision blanks and independent evaluator requirements not fabricated"
+    },
+    {
+      "id": "PE09",
+      "track": "both",
+      "title": "independent integration audit and operator decision packet",
+      "depends_on": [
+        "PE01",
+        "PE02",
+        "PE03",
+        "PE04",
+        "PE05",
+        "PE06",
+        "PE07",
+        "PE08"
+      ],
+      "exit": "exact-head review and per-work-order supported/held/unexecuted dispositions"
+    }
+  ],
+  "separate_authority_gates": [
+    {
+      "code": "G-A",
+      "name": "actual private offline restoration",
+      "state": "HELD"
+    },
+    {
+      "code": "G-B",
+      "name": "live public sync and historical acquisition",
+      "state": "HELD"
+    },
+    {
+      "code": "G-C",
+      "name": "real-source admission and reciprocal activation",
+      "state": "HELD"
+    },
+    {
+      "code": "G-D",
+      "name": "provider paid inference evaluator and external trust-root provisioning",
+      "state": "HELD"
+    },
+    {
+      "code": "G-E",
+      "name": "protected Experiment B final D20 grant",
+      "state": "HELD"
+    },
+    {
+      "code": "G-F",
+      "name": "merge deployment publication release",
+      "state": "HELD"
+    }
+  ],
+  "not_authorized": [
+    "private_decryption",
+    "keys_or_private_bodies_in_model_environment",
+    "live_sync",
+    "protected_archive_open",
+    "source_admission",
+    "paid_external_provider_calls",
+    "external_service_or_trustroot_provisioning",
+    "real_reciprocal_transfer",
+    "experiment_b_flight",
+    "merge",
+    "deploy",
+    "publish",
+    "release",
+    "automatic_successor",
+    "scheduled_agent",
+    "unbounded_engineering"
+  ],
+  "human_closure_required": true,
+  "source_free_originals_admitted": 0,
+  "protected_experiment_flight_state": "HELD",
+  "stage_iii_repaired_product_state": "PRESERVE_ENGINEERING_REST",
+  "remark": "This JSON is a staging declaration, not an issued engineering or experimental authorization. A later fresh explicit operator instruction must identify this docket and exact reviewed PR HEAD."
+}
