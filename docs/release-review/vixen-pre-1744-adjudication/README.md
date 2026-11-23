@@ -14,6 +14,13 @@ This branch is the persistent cross-thread review address for the **final, indep
 
 Publish **exactly one** final screenshot package and **one** final integrity/coverage receipt after full local/hosted attribution, four viewport validation, nested scroll image audit, error/failure register, and SHA-256 inventory. Intermediate, historical, failed or partial capture ZIPs belong in CI history or labeled external evidence, **never** in this branch's final evidence directory. If an archive exceeds GitHub Git's 100 MB file limit, keep the complete byte-for-byte archive as the exact-head Actions artifact and persist its artifact ID, run URL, archive SHA-256, retrieval instructions, and any durable authorized external copy here. A link or pointer alone must never be described as a Git-embedded ZIP.
 
+
+## Reproducible validation tools — preparation, not accepted final evidence
+
+- [Post-deployment HTTPS witness protocol](POST_DEPLOYMENT_WITNESS_PROTOCOL.md): verifies actual served revision and records the owner-held #1744 release boundary.
+- [Independent screenshot archive auditor](audit_final_surface.py): run `python audit_final_surface.py Vixen_Chromium_Full_Surface_<SHA>.zip <SHA>` with Pillow installed; must pass separately from GitHub Actions.
+- Historical RED archives and local HTTP sources are explicitly excluded from the accepted final screenshot archive. `retention-days: 30` applies to generated visual and full-stack CI artifacts.
+
 ## Release and adjudication status
 
 HUMAN REVIEW PENDING. **No #1744 PREPARE or DEPLOY action from this branch.** Final package promotion and any product merge require separate qualified checks and authorization.
