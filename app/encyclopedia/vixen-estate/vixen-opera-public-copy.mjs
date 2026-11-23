@@ -37,7 +37,7 @@ const PUBLIC_TERMS=Object.freeze([
 // Remove the offending ribbon/label rather than disguising a release or lab
 // status as decorative reader prose. Original manuscript and machine records
 // remain immutable and are explicitly excluded from this presentation guard.
-const BACKSTAGE_CHROME = /(?:\\bExperiment[\\s_-]*[ABC]\\b|EXPERIMENT[_-]A_PREVIEW_AUTHORIZED|PREVIEW[_ -]AUTHORIZED|PRODUCTION\\s+REQUIRES|OPERATOR[_ -]ONLY|OPERATOR\\s+SECRET|Emergence\\s+HQ|\\bAtelier\\b|\\bEMSTD613\\b|\\bSignalRupture\\b|\\bWendbine\\b|\\bSRC\\b|\\bAmari\\b|\\bPaul\\b|\\bChatGPT\\b|\\bGemini\\b|\\bAntigravity\\b|\\bCodex\\b|\\bOpenAI\\b|debug\\s+prose|release[_ -]state|adjudication\\s+ribbon)/i;
+const BACKSTAGE_CHROME = /(?:\bExperiment[\s_-]*[ABC]\b|EXPERIMENT[_-]A_PREVIEW_AUTHORIZED|PREVIEW[_ -]AUTHORIZED|PRODUCTION\s+REQUIRES|OPERATOR[_ -]ONLY|OPERATOR\s+SECRET|Emergence\s+HQ|\bAtelier\b|\bEMSTD613\b|\bSignalRupture\b|\bWendbine\b|\bSRC\b|\bAmari\b|\bPaul\b|\bChatGPT\b|\bGemini\b|\bAntigravity\b|\bCodex\b|\bOpenAI\b|debug\s+prose|release[_ -]state|adjudication\s+ribbon)/i;
 const PUBLIC_CHROME_SELECTORS='.tag,.badge,.eyebrow,.ci-kicker,.vix-reading-atelier-eyebrow,.vix-folio-topline,.vixen-manuscript-kicker,.expa-aperture-bar,.status-ribbon,.release-ribbon,.vix-operator-dek';
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);
 export const PUBLIC_COPY_VERSION='vixen-public-copy/v1';
