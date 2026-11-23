@@ -1,0 +1,18 @@
+file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:16
+const fail=code=>{throw Object.assign(Error(code),{code})};
+                                      ^
+
+Error: B91_ACCESSOR_REFUSED
+    at fail (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:16:39)
+    at need (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:17:31)
+    at data (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:42:3)
+    at copy (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:79:53)
+    at copy (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:92:50)
+    at copy (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:92:50)
+    at snapshotRequest (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs:96:9)
+    at Object.request (file:///workspace/scratch/427b1641e444/td613-b91/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs:118:5)
+    at file:///tmp/td613-b91-after-p6_hldjt/minimal-reproducer.mjs:21:18 {
+  code: 'B91_ACCESSOR_REFUSED'
+}
+
+Node.js v24.22.1

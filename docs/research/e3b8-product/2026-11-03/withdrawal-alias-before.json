@@ -1,0 +1,32 @@
+{
+  "schema": "td613.b8-development-withdrawal-alias-probe/v1",
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+  "before_binding": "9e79ab8120c0a0debcbaf6da6d7d69a93714da98999193f045434a3e8bc59d8e",
+  "observations": [
+    {
+      "fixture_id": "TD_REFERENCE",
+      "same_catalog_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+      "post_withdrawal_new_alias_status": "STAGED_UNADMITTED",
+      "real_source_admitted": false
+    },
+    {
+      "fixture_id": "SRC_SPANISH_EXACT",
+      "same_catalog_sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+      "post_withdrawal_new_alias_status": "STAGED_UNADMITTED",
+      "real_source_admitted": false
+    },
+    {
+      "fixture_id": "W_PUBLIC",
+      "same_catalog_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+      "post_withdrawal_new_alias_status": "STAGED_UNADMITTED",
+      "real_source_admitted": false
+    },
+    {
+      "fixture_id": "EM_METHODS",
+      "same_catalog_sha256": "1834e182743423e853d15e260a35d53de4773e570adedf621498248dae135210",
+      "post_withdrawal_new_alias_status": "STAGED_UNADMITTED",
+      "real_source_admitted": false
+    }
+  ],
+  "interpretation": "ID_LOCAL_WITHDRAWAL_ALLOWS_KNOWN_CATALOG_FIXTURE_RESTAGING_UNDER_NEW_ALIAS; NO_REAL_SOURCE_AUTHORITY"
+}

@@ -1,0 +1,101 @@
+{
+  "node": "v24.22.1",
+  "python": "Python 3.12.14",
+  "git_head_during_tests": "b9bf0df0b06edf82b0d4c3d910fec8fd9405209a",
+  "test_identity": "B8 parent plus reviewed B91 working-tree delta, reconciled by prospective finite manifest and later exact-tree publication",
+  "new_tests": {
+    "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/request-conformance.test.mjs",
+    "exit_code": 0,
+    "tests": 23,
+    "pass": 23,
+    "fail": 0,
+    "skipped": 0
+  },
+  "separate_regressions": [
+    {
+      "suite": "b8-final",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.test.mjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log_sha256": "154c00d52912de224786a4d1d967aceb9837c9f8482dd1dae8eca7fd42c68117"
+    },
+    {
+      "suite": "b6",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-method-inheritance-v01.test.mjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log_sha256": "4e27a707020100b068cea1fdbf9e8777a5f882aaa640ad74e6153f45bf09c734"
+    },
+    {
+      "suite": "b5",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.test.mjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log_sha256": "5dd488a14daa4d93895ea385d85179ffc7f1d24a5583a54dc97443e824c16e70"
+    },
+    {
+      "suite": "b3",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log_sha256": "e5753bf52a7b4583c890a2d8985a59570613e5d4a1d8dd886a322244dc98daae"
+    },
+    {
+      "suite": "b41-b4",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 30,
+        "pass": 30,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log_sha256": "aac1f867a174ba3becb38efdc1edb1ba71bfdcd3fc90557a7084d5f1a41e6f4c"
+    }
+  ],
+  "parser_checks": {
+    "commands": [
+      "node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs",
+      "node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs",
+      "node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/request-conformance.test.mjs",
+      "node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/verify-original-reproducer.mjs"
+    ],
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "workflow_estate": {
+    "command": "node tests/workflow-estate.test.mjs",
+    "exit_code": 0,
+    "result": "Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct."
+  },
+  "diff_check": {
+    "command": "git diff --check",
+    "exit_code": 0
+  },
+  "historical_git_witness": "d7319f9d1c600a47cb1467ccb071971ca33a3444 authentically present: native routing regression executed, not substituted",
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY"
+}

@@ -1,0 +1,31 @@
+✔ B9 UNCHANGED: exact archived reproducer now retains F01 binding and stops at F02 typed refusal (147.651202ms)
+✔ F02: array getter refused with zero getter invocations and zero state reads or delegation (53.738606ms)
+✔ F01: pending execute owns complete request and parameters: TD_REFERENCE (55.855938ms)
+✔ F01: pending execute owns complete request and parameters: SRC_SPANISH_EXACT (46.284266ms)
+✔ F01: pending execute owns complete request and parameters: W_PUBLIC (50.098492ms)
+✔ F01: pending execute owns complete request and parameters: EM_METHODS (43.731012ms)
+✔ F01: staging owns mutable Buffer, identity and rights before suspension: TD_REFERENCE (35.755034ms)
+✔ F01: staging owns mutable Buffer, identity and rights before suspension: SRC_SPANISH_EXACT (34.274734ms)
+✔ F01: staging owns mutable Buffer, identity and rights before suspension: W_PUBLIC (32.148464ms)
+✔ F01: staging owns mutable Buffer, identity and rights before suspension: EM_METHODS (35.671009ms)
+✔ F01: readback and withdrawal keep original binding; unrelated source survives (59.484451ms)
+✔ F01: nested trace bindings, route and strings are snapshotted before pending execution (82.706291ms)
+✔ F01: issued citation remains usable and owned across await: TD_REFERENCE (75.78112ms)
+✔ F01: issued citation remains usable and owned across await: EM_METHODS (58.722358ms)
+✔ DESCRIPTORS: nested accessors, hidden and symbol keys, custom arrays and objects refuse without evaluation (37.739271ms)
+✔ BOUNDS: finite scalar, cycle, depth, node, key, array and string limits fail closed (59.342732ms)
+✔ NESTED PUBLIC FIELDS: accessors in citation ancestry, trace route and binding arrays never execute (34.368382ms)
+✔ PENDING PAIR: simultaneous requests retain distinct source, method and receipt identities (49.220469ms)
+✔ BUFFERS: oversized, shared, decorated and accessor-bearing byte buffers refuse before copying or staging (5.527689ms)
+✔ PROXY: Node-recognized root, nested, array and Buffer proxies refuse with zero handler traps (23.899768ms)
+✔ DENY FIRST: nine real classes and eleven forbidden actions never inspect supplied path, body or profile (7.860944ms)
+✔ ENTRY: constructor and all otherwise read-only action structures reject accessors before evaluation (3.806835ms)
+✔ BINDING: new snapshot dependency is bound; old implementation checkpoints refuse without migration (35.310809ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1178.040358

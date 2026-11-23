@@ -1,0 +1,56 @@
+{
+  "schema": "td613.e3b6-source-import-audit/v1",
+  "original_em_bodies_read": 0,
+  "modules": [
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-native-parity-v02.mjs",
+      "commit": "50c35cceb50f483c7c36a1497fed9de9377b89d9",
+      "git_blob": "d93179853a9f79b3140c56f4621722cedf9d67fe",
+      "inspection": "COMPLETE_SOFTWARE_ONLY_STATIC_REVIEW",
+      "protected_reads_at_import": "NONE_IN_REVIEWED_MODULE_AND_STATIC_IMPORT_CLOSURE",
+      "executed": false,
+      "allowed_calls": [],
+      "blocked_calls": "ALL_ORIGINAL_REGISTER_OR_DERIVATIVE_READING_PATHS",
+      "preimport_signature": "HELD"
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-semantic-polycompiler-v02.mjs",
+      "commit": "50c35cceb50f483c7c36a1497fed9de9377b89d9",
+      "git_blob": "af17f8397ec8fbc4367f508598e5ae13f4400a14",
+      "inspection": "COMPLETE_SOFTWARE_ONLY_STATIC_REVIEW",
+      "protected_reads_at_import": "NONE_IN_REVIEWED_MODULE_AND_STATIC_IMPORT_CLOSURE",
+      "executed": false,
+      "allowed_calls": [],
+      "blocked_calls": "ALL_ORIGINAL_REGISTER_OR_DERIVATIVE_READING_PATHS",
+      "preimport_signature": "HELD"
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-mechanism-discrimination-v02.mjs",
+      "commit": "50c35cceb50f483c7c36a1497fed9de9377b89d9",
+      "git_blob": "d5ba4381b7cea3b7521b729a6f87d83783e4a77f",
+      "inspection": "COMPLETE_SOFTWARE_ONLY_STATIC_REVIEW",
+      "protected_reads_at_import": "NONE_IN_REVIEWED_MODULE_AND_STATIC_IMPORT_CLOSURE",
+      "executed": false,
+      "allowed_calls": [],
+      "blocked_calls": "ALL_ORIGINAL_REGISTER_OR_DERIVATIVE_READING_PATHS",
+      "preimport_signature": "HELD"
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-atelier-parity.mjs",
+      "commit": "50c35cceb50f483c7c36a1497fed9de9377b89d9",
+      "git_blob": "70b4c35c9f75bbf95247a20d9e58954d33a170a2",
+      "inspection": "COMPLETE_SOFTWARE_ONLY_STATIC_REVIEW",
+      "protected_reads_at_import": "NONE_IN_REVIEWED_MODULE_AND_STATIC_IMPORT_CLOSURE",
+      "executed": true,
+      "allowed_calls": [
+        "stageSourceIntake",
+        "compileTypedGraph",
+        "withdrawSource",
+        "makeBlurbHypothesis"
+      ],
+      "blocked_calls": "ALL_ORIGINAL_REGISTER_OR_DERIVATIVE_READING_PATHS",
+      "preimport_signature": "HELD"
+    }
+  ],
+  "original_native_test_suites": "NOT_EVALUATED_MODULE_LEVEL_PROTECTED_READS"
+}
