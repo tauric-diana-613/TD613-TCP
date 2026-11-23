@@ -1,0 +1,51 @@
+{
+  "schema": "td613.blind-capacity.aggregate/v1",
+  "status": "HELD_LIMITS_OR_MODEL_MAPPING_UNVERIFIED",
+  "template_version": "td613-capacity-renderer/v1-PROPOSED_NOT_ADOPTED",
+  "requested_model": "gpt-6.1-sol",
+  "requested_effort": "high",
+  "encoding": "o200k_base",
+  "forecast_basis": "PR1616_REQUEST_CONDITION_REFERENCE_RATE_ONLY",
+  "matches_observed_request_condition": false,
+  "effort_support_independently_verified": false,
+  "input_count_scope": "LOCAL_RENDERED_JSON_TEXT_ONLY",
+  "source_text_disclosed": false,
+  "provider_input_exact": false,
+  "model_mapping_verified": false,
+  "gate_f": "HELD",
+  "empirical_credit": 0,
+  "document_count": 3,
+  "source_token_total_bucket": 1000,
+  "capacity_by_arm": [
+    {
+      "arm": "ARM_2A_MODULAR",
+      "base_generation_calls": 8,
+      "reserved_generation_attempts": 10,
+      "observed_mean_forecast_bucket": 273000,
+      "hypothetical_body_forecast_bucket": 213000,
+      "imposed_conditional_envelope_bucket": 713000,
+      "evaluation_allocation_bucket": 152000,
+      "known_text_input_breach": false,
+      "unknown_history_upper_may_exceed_input_cap": true,
+      "evaluator_future_payload_unbounded": true,
+      "provider_overhead_unbounded": true,
+      "hard_controls_verified": false,
+      "fits_imposed_envelope": true
+    },
+    {
+      "arm": "ARM_2B_MATCHED_UNION",
+      "base_generation_calls": 8,
+      "reserved_generation_attempts": 10,
+      "observed_mean_forecast_bucket": 276000,
+      "hypothetical_body_forecast_bucket": 214000,
+      "imposed_conditional_envelope_bucket": 713000,
+      "evaluation_allocation_bucket": 152000,
+      "known_text_input_breach": false,
+      "unknown_history_upper_may_exceed_input_cap": true,
+      "evaluator_future_payload_unbounded": true,
+      "provider_overhead_unbounded": true,
+      "hard_controls_verified": false,
+      "fits_imposed_envelope": true
+    }
+  ]
+}

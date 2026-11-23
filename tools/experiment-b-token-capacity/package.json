@@ -1,0 +1,9 @@
+{
+  "name": "td613-blind-token-capacity-instrument",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=22"},
+  "scripts": {"test": "node test/run.mjs", "demo": "node bin/size-synthetic.mjs"},
+  "dependencies": {"js-tiktoken": "1.0.21"}
+}

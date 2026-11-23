@@ -1,0 +1,25 @@
+{
+  "authority_lane": "INTERACTIVE_OPERATOR_DIRECT",
+  "detached_agents_spawned": 0,
+  "gate_p_reopened": false,
+  "guidance": [
+    {
+      "path": "AGENTS.md",
+      "revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+      "git_blob_sha1": "63abc5dc679715ea3370a8b289e930abb940efd5",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/AGENTS.md"
+    },
+    {
+      "path": "PEDAGOGUE.md",
+      "revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+      "git_blob_sha1": "256b2d36fdac2a924b2d804d4f4671e79457e316",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/PEDAGOGUE.md"
+    },
+    {
+      "path": "APERTURE.md",
+      "revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+      "git_blob_sha1": "25d8391361f84c90bf7476684ad2171b5626538e",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/APERTURE.md"
+    }
+  ]
+}
