@@ -3105,20 +3105,21 @@ body[data-view="overview"] .reading-back{display:none}
 
         listEl.innerHTML = filtered.map((w) => {
           const current = w.work_id === sel.work_id;
-          const gateNote = w.human_gate_required ? ' · Gate #' + w.gate_num + ' [UNADJUDICATED_PAIR]' : '';
-          let projLine = w.cluster + ' · ' + w.identity_status + ' · ' + w.manifestations_count + ' file(s)' + gateNote;
+          // Catalogue typography carries reader-oriented metadata only.
+          // Canonical IDs, gate states and source relations stay in DATA.
+          let projLine = w.cluster + ' · ' + w.manifestations_count + ' manuscript version(s)';
           if (state.aiaProjection === 'CUSTODIAL') {
-            projLine = w.identity_status + ' · Recorded Manifestations';
+            projLine = 'Recorded source versions · ' + w.manifestations_count;
           } else if (state.aiaProjection === 'AUDIT') {
-            projLine = w.protocols.join(', ') + ' · interval [' + w.contribution_interval[0] + ',' + w.contribution_interval[1] + ']';
+            projLine = 'Related documentary methods · ' + w.protocols.length;
           } else if (state.aiaProjection === 'IMPLEMENTATION') {
-            projLine = w.linked_sources.map((s) => s.source_file_id).join(' + ');
+            projLine = 'Source manifestations · ' + w.linked_sources.length;
           }
           return '<li class="lexicon-item" data-membrane="RESEARCH_OBJECT"><button type="button" data-select-work="' + esc(w.work_id) + '" aria-current="' + current + '">' +
             '<span class="record-num">' + String(w.order_num).padStart(2, '0') + '</span>' +
             '<span style="flex:1;min-width:0">' +
               '<span class="term-name">' + esc(w.declared_title) + '</span>' +
-              '<span class="term-sub">' + esc(w.work_id) + ' · ' + esc(projLine) + '</span>' +
+              '<span class="term-sub">' + esc(projLine) + '</span>' +
             '</span>' +
           '</button></li>';
         }).join('');
