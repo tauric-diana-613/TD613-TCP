@@ -340,3 +340,16 @@
  body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
  #view-reference .vxe-work-selector .vxe-source-note { color:#f3e5ec; }
 }
+
+
+/* RGI-06B / FOLIOS OPTICAL STACKING:
+   The fixed optical canvas is a later sibling at z-index:1. The preexisting
+   page-pad z-index:1 created a containing stacking context, so descendants'
+   local z-index:2 could never rise above the canvas. Place the entire Folios
+   reading surface at z-index:2 instead, across desktop and mobile. Keep the
+   ambient field behind the source without hiding its surrounding animation. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference>.page-pad{
+ position:relative;
+ z-index:2;
+ isolation:isolate;
+}
