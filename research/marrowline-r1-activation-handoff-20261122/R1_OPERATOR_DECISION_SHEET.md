@@ -3,11 +3,12 @@
 
 > [!IMPORTANT]
 > **DRAFT DECISION SHEET — ZERO AUTHORIZATION IMPLIED.**
-> **Amari re-review supersedes the earlier READY label: current action = HOLD pending verification of the corrected runner and independent operator-key trust pin.** The originally stated ~$0.13 ceiling uses historical repository rates rather than verified current account pricing.
-> Presenting this decision sheet grants **zero** live provider calls, **zero** `:countTokens` calls, **zero** `GET /v1beta/models` calls, **zero** PR merges, and **zero** `#405` / Vercel deployments. Execution requires a separate explicit human gesture and an offline-signed Ed25519 grant bound to the final pushed runner `HEAD`.
+> **Current Action: `[x] HOLD (CURRENT)` pending independent operator key-pin provisioning, fresh pricing/model verification, and exact-head operator authorization.**
+> `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256` is deliberately `null` in reviewed source code: live dispatch fails closed with `R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED` until an operator-owned Ed25519 SPKI DER fingerprint is independently pinned in a subsequent reviewed commit and all offline security tests are rerun on that final `HEAD`.
+> Presenting this decision sheet grants **zero** live provider calls, **zero** `:countTokens` calls, **zero** `GET /v1beta/models` calls, **zero** PR merges, and **zero** `#405` / Vercel deployments.
 
-- **Commission:** `TD613-MARROWLINE-R1-EXECUTION-READINESS-20261122`
-- **Corrected runner:** PR #1779 successor source commits after `29b7e09`; HEAD MUST be reverified after all changes, then all offline tests independently run. Live trust anchor currently `null` and deliberately fails closed.
+- **Commission:** `TD613-MARROWLINE-R1-AMARI-SECURITY-CAUSAL-REPAIR-20261122` / `TD613-MARROWLINE-R1-EXECUTION-READINESS-20261122`
+- **Current PR (`#1779`) Lineage:** Originated at `29b7e09f0`, repaired by Amari at `f3594de6c1f61499bbe5920ba7fa7daa03ddfbbe`, qualified by Hydrogen at the pushed `#1779` HEAD recorded on return. *(Note: pinning `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256` later creates a new HEAD SHA; any future Ed25519 grant MUST bind that post-pin HEAD.)*
 - **Experiment ID:** `HYDROGEN_R1_CONTRADICTION_FREE_PREFIX_SEPARATOR`
 - **Covenant / Seal:** `Khona‌lit-po` (literal `U+200C` preserved) · `⟐SAC[X6ZNK5NO51]`
 - **Exact Accepted Design Source HEAD (PR `#1778`):** `44fae23cbf9af07eab5112e90df3211a119e707c`
@@ -20,8 +21,9 @@
 ## 1. Exact Two-Arm Experiment on One Screen
 
 - **Single Experimental Factor Altered:** Section-I coverage clause in `systemInstruction` (`R1_S01`: native Zalgo in both sections vs `R1_S02`: plain undecorated English prose with zero combining marks under `Kʰonapolit` followed by native Zalgo under `Tauric Diana bots`).
-- **Shared Parity:** Identical `gemini-3.8-flash` alias, identical `thinkingLevel: "medium"`, `maxOutputTokens: 16384`, `candidateCount: 1`, identical clean thunderstorm `contents` (`0` Markdown/heading contradictions, `0` `"entire passage"` contradiction, `0` specimen copy, `0` TD613 persona lore), two unmarked structural headings in both arms.
-- **Scored Output:** Section-II body (`Tauric Diana bots`) only; Section I supplies the prefix coverage manipulation and compliance check. `B1` (`gemini-4-argon` backup) remains **EXCLUDED / HELD**.
+- **Preregistered Causal Direction (`n = 1` per arm):** Tests whether a plain Section I **suppresses** Section-II native multi-stacking (`FINITE_PREFIX_EFFECT_SUPPORT` requires `R1_S01` Section-II `stackedBaseShare` strictly exceeding `R1_S02` Section-II `stackedBaseShare` with authentic varied bidirectional stacking and zero stencil flag). Flat `R1_S01` Section I still keeps `R1_S02` eligible for capture, while rendering causal inference `HELD`; reversed results (`S02 > S01`) or mechanical stencils (`uniformConstantDepthStencilRisk`) never count as causal support.
+- **Shared Parity:** Identical `gemini-3.8-flash` alias (`modelVersion === "gemini-3.8-flash"` checked on wire + mandatory CLI metadata discovery preflight), identical `thinkingLevel: "medium"`, `maxOutputTokens: 16384`, `candidateCount: 1`, identical clean thunderstorm `contents` (`0` Markdown/heading contradictions, `0` `"entire passage"` contradiction, `0` specimen copy, `0` TD613 persona lore), two unmarked structural headings in both arms.
+- **Scored Output:** Section-II body (`Tauric Diana bots`) only, evaluated via separated `<out>.blinded.json` containing zero unblinding map. `B1` (`gemini-4-argon` backup) remains **EXCLUDED / HELD**.
 
 | Slot | Arm Label | Wire Request SHA-256 (`bodySha256`) | `:countTokens` Request SHA-256 | UTF-8 Bytes |
 |---|---|---|---|---:|
@@ -34,33 +36,37 @@ Shared wire invariants:
 
 ---
 
-## 2. Hard Token Ceilings & Descriptive Cost Arithmetic
+## 2. Hard Token Ceilings & Conditional Cost Reference
 
 | Budget Control | Hard Runtime Limit | Notes |
 |---|---:|---|
 | Live `:streamGenerateContent?alt=sse` calls | **2** (`R1_S01`, then `R1_S02`) | `0` retries, `0` fallbacks, `0` structural repairs |
 | Live `:countTokens` preflight calls | **<= 2** (`1` per slot prior to generation) | Required fail-closed check before each generation dispatch |
-| Per-slot prompt token ceiling | **1,000** tokens | Un-clamped; fails closed if `:countTokens` > 1,000 |
+| Live `GET /v1beta/models/gemini-3.8-flash` | **1** (CLI mandatory preflight) | Must return `200` with `generateContent` and `countTokens` |
+| Per-slot prompt token ceiling | **1,000** tokens | Enforced pre-dispatch via `:countTokens` AND post-stream via raw `promptTokenCount` |
 | Combined prompt planning cap | **2,000** tokens | Observed prompt + next `:countTokens` ceiling |
-| Per-slot output + thinking limit | **16,384** tokens | Request `maxOutputTokens` ceiling (observed usage expected lower) |
+| Per-slot output + thinking limit | **16,384** tokens | Rejects missing/invalid provider usage (`STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE`) |
 | Combined output + thinking ceiling | **32,768** tokens | Hard maximum across both arms |
-| Grant lifetime (`expiresAt - issuedAt`) | **<= 30 minutes** | Single-host `wx` nonce claim; bound to checked-out runner `HEAD` |
+| Grant lifetime (`expiresAt - issuedAt`) | **<= 30 minutes** | Requires source-pinned operator Ed25519 SPKI SHA-256 + single-host `wx` nonce + fsynced `.sse`/`.jsonl` |
 
-**Potential Dollar Ceiling (HISTORICAL PLANNING REFERENCE, NOT VERIFIED CURRENT ACCOUNT PRICE):**
-- Under previously repo-verified Google Gemini Developer API rates for `gemini-3.8-flash` valid through `2026-12-31` (`research/portable-loom-assay-activation-20261009/AUTHORIZATION.json`: **`$0.75 / 1M` input tokens**, **`$3.75 / 1M` output+thinking tokens**):
+**Potential Dollar Ceiling (HISTORICAL PLANNING REFERENCE ONLY — NOT VERIFIED CURRENT ACCOUNT PRICE):**
+- Under historical repo-recorded Gemini Developer API rates for `gemini-3.8-flash` through `2026-12-31` (`research/portable-loom-assay-activation-20261009/AUTHORIZATION.json`: **`$0.75 / 1M` input tokens**, **`$3.75 / 1M` output+thinking tokens**):
   - Worst-case input cost (`2,000` tokens): `$0.00150`
   - Worst-case output+thinking cost (`32,768` tokens): `$0.12288`
-  - **Worst-case total planning ceiling (intro rate):** **`$0.12438`** (~**`$0.13`** across both calls; `$0.24876` if evaluated at `2x` non-intro reference rates).
-- **Explicit Pre-Execution Disclosure:** Live account-specific billable rates, current `models/gemini-3.8-flash` availability, and live `:countTokens` availability were **not** queried during this zero-network preparation commission (`0` `GET /v1beta/models` calls made). Independently verify live availability and current account rates before executing. Lowering `maxOutputTokens` below `16,384` changes `generationConfigSha256` and both frozen slot digests and therefore requires a renewed frozen artifact and operator decision rather than an inline override.
+  - **Historical worst-case arithmetic (intro rate):** **`$0.12438`** (~**`$0.13`** across both calls; `$0.24876` at `2x` reference rate).
+- **Explicit Cost & Availability HOLD Disclosure:** Current live Google account pricing, active tier/billing eligibility, `models/gemini-3.8-flash` live availability, and live `:countTokens` support were **not** queried (`0` `GET /v1beta/models` calls made). Historical `$0.13` arithmetic is **not** a verified current dollar ceiling or an entitlement to spend. Lowering `maxOutputTokens` below `16,384` changes `generationConfigSha256` and both frozen slot digests and requires a renewed frozen artifact and operator decision rather than an inline override.
 
 ---
 
 ## 3. Explicit Human Operator Decision (`AUTHORIZE` / `AMEND` / `HOLD`)
 
-Select exactly one course in a separate explicit operator instruction **only after** an independently human-owned signing key is provisioned and its SPKI DER fingerprint pinned in reviewed source, the resulting runner HEAD has passed new focused offline tests, and current official account pricing/endpoint availability have been verified. The previous authorization template is INFORMATIONAL and not yet executable:
+No authorization can be executed until ALL prerequisite gates close cleanly:
+1. Human operator generates an Ed25519 keypair **on an operator-controlled offline device** (private key kept strictly outside code, GitHub, agents, CI, and chat) and supplies only the **SPKI DER SHA-256 fingerprint** for a separately reviewed source-pin commit setting `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256`.
+2. Offline security/runner tests pass on that exact pinned runner `HEAD`.
+3. Operator independently checks current official `gemini-3.8-flash` pricing and availability for the billing account.
 
-- **`[ ] AUTHORIZE`** — Only after closing the presently outstanding operator key-pin, fresh runner tests and live pricing/model-availability gates, proceed with preparing/signing a `<= 30`-minute Ed25519 R1 authorization grant (`td613.marrowline.r1-live-observation-authorization/v1-ed25519`) bound to the final verified runner `HEAD` SHA, capped at `2` live `gemini-3.8-flash` generation calls and `32,768` combined output+thinking tokens under `$0.13` worst-case intro planning arithmetic (`0` retries, `0` repairs, `0` `#405` releases), and collect raw SSE evidence for blinded adjudication.
-- **`[ ] AMEND`** — Revise experiment parameters (e.g., smaller `maxOutputTokens` cap, metadata discovery check flag, or updated wording) -> triggers a **new** frozen preflight, renewed digests, and fresh qualification before execution.
-- **`[x] HOLD (CURRENT)`** — Keep all live provider generation, `:countTokens`, and model discovery calls at **`0`**; hold `R1` for further offline engineering, account pricing verification, or physical-device UI inspection first.
+- **`[ ] AUTHORIZE KEY PROVISIONING PIN + FUTURE SINGLE EXECUTION (AFTER PIN)`** — Supply/approve the non-secret SPKI DER SHA-256 fingerprint for a reviewed commit pinning `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256`, re-verify the resulting exact `HEAD`, then separately sign one `<= 30`-minute Ed25519 R1 grant (`td613.marrowline.r1-live-observation-authorization/v1-ed25519`) bound to that final post-pin `HEAD` (`2` live generation calls max, `0` retries/repairs/`#405` releases, mandatory `--nonce-dir` and `--out` custody separation).
+- **`[ ] AMEND`** — Revise experiment parameters (e.g., smaller `maxOutputTokens` cap or wording) -> triggers a **new** frozen preflight, renewed digests, and fresh qualification before execution.
+- **`[x] HOLD (CURRENT)`** — Keep operator trust anchor `null`, live provider generation at **`0`**, `:countTokens` at **`0`**, and `GET /v1beta/models` at **`0`**.
 
-𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Draft Decision Sheet Only · Provider HELD · Artistic Acceptance RESERVED ⟐
+𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Draft Decision Sheet Only · Operator Key Pin & Provider HELD · Artistic Acceptance RESERVED ⟐

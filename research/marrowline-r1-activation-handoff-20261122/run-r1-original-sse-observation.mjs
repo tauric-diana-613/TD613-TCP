@@ -1427,10 +1427,13 @@ export async function executeR1OriginalSseObservation({
   let modelDiscoveryResult = null;
 
   if (checkModelDiscovery) {
+    const metaController = new AbortController();
+    const metaTimer = setTimeout(() => metaController.abort(), requestTimeoutMs);
     try {
       const metaResp = await guardedFetch('modelMetadata', 'PREFLIGHT', geminiModelMetadataUrl(R1_PINNED_MODEL), {
         method: 'GET',
-        headers: geminiRequestHeaders(resolvedApiKey)
+        headers: geminiRequestHeaders(resolvedApiKey),
+        signal: metaController.signal
       });
       if (!metaResp?.ok) {
         terminalStopReason = 'STOP_ON_MODEL_METADATA_UNAVAILABLE';
@@ -1449,7 +1452,11 @@ export async function executeR1OriginalSseObservation({
       }
     } catch (error) {
       if (error instanceof R1ObservationError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
-      terminalStopReason = 'STOP_ON_MODEL_METADATA_TRANSPORT_EXCEPTION';
+      terminalStopReason = metaController.signal.aborted || error?.name === 'AbortError' || error?.name === 'TimeoutError'
+        ? 'STOP_ON_MODEL_METADATA_TIMEOUT'
+        : 'STOP_ON_MODEL_METADATA_TRANSPORT_EXCEPTION';
+    } finally {
+      clearTimeout(metaTimer);
     }
     if (terminalStopReason) {
       for (const s of plan.slots) skippedSlots.push(Object.freeze({ slot: s.slot, arm: s.arm, skippedBecause: terminalStopReason }));
@@ -1478,6 +1485,8 @@ export async function executeR1OriginalSseObservation({
     // Live :countTokens preflight for this arm
     let preDispatchCountTokens = null;
     let countTokensStatus = null;
+    const ctController = new AbortController();
+    const ctTimer = setTimeout(() => ctController.abort(), requestTimeoutMs);
     try {
       appendEvidenceJournal('R1_COUNT_TOKENS_ATTEMPT', {
         slot: slotPlan.slot,
@@ -1486,7 +1495,8 @@ export async function executeR1OriginalSseObservation({
       const ctResp = await guardedFetch('countTokens', slotPlan.slot, geminiCountTokensUrl(slotPlan.model), {
         method: 'POST',
         headers: geminiRequestHeaders(resolvedApiKey),
-        body: slotPlan.countTokensWireBody
+        body: slotPlan.countTokensWireBody,
+        signal: ctController.signal
       });
       countTokensStatus = Number(ctResp?.status || 0);
       if (!ctResp?.ok) {
@@ -1508,8 +1518,12 @@ export async function executeR1OriginalSseObservation({
       });
     } catch (error) {
       if (error instanceof R1ObservationError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
-      skipRemaining('STOP_ON_COUNT_TOKENS_TRANSPORT_EXCEPTION');
+      skipRemaining(ctController.signal.aborted || error?.name === 'AbortError' || error?.name === 'TimeoutError'
+        ? 'STOP_ON_COUNT_TOKENS_TIMEOUT'
+        : 'STOP_ON_COUNT_TOKENS_TRANSPORT_EXCEPTION');
       break;
+    } finally {
+      clearTimeout(ctTimer);
     }
 
     const dispatchGate = enforceR1ObservationBudget({
@@ -1570,11 +1584,18 @@ export async function executeR1OriginalSseObservation({
       if (error instanceof R1ObservationError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
       callError = {
         name: String(error?.name || 'Error'),
+        ...(error?.code ? { code: String(error.code) } : {}),
         message: String(error?.message || error)
       };
-      terminalStopReason = controller.signal.aborted || error?.name === 'AbortError' || error?.name === 'TimeoutError'
-        ? 'STOP_ON_STREAM_TIMEOUT'
-        : 'STOP_ON_TRANSPORT_EXCEPTION';
+      if (error instanceof R1ObservationError && error.code === 'R1_DURABLE_RAW_SSE_WRITE_FAILED') {
+        terminalStopReason = 'STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED';
+      } else if (error instanceof R1ObservationError && error.code === 'R1_RAW_SSE_OVERFLOW') {
+        terminalStopReason = 'STOP_ON_RAW_SSE_OVERFLOW';
+      } else {
+        terminalStopReason = controller.signal.aborted || error?.name === 'AbortError' || error?.name === 'TimeoutError'
+          ? 'STOP_ON_STREAM_TIMEOUT'
+          : 'STOP_ON_TRANSPORT_EXCEPTION';
+      }
     } finally {
       clearTimeout(timer);
       if (rawCaptureFd !== null) {
@@ -1596,6 +1617,7 @@ export async function executeR1OriginalSseObservation({
       slotRecords.push(Object.freeze({
         slot: slotPlan.slot,
         arm: slotPlan.arm,
+        rawSseFilePath,
         model: slotPlan.model,
         requestBodySha256: slotPlan.observation.bodySha256,
         preDispatchCountTokens,
@@ -1763,13 +1785,56 @@ async function runCli(argv = process.argv.slice(2)) {
     fs.closeSync(outputFd);
     const blindFd = fs.openSync(blindedOutPath, 'wx', 0o600);
     fs.closeSync(blindFd);
-    const result = await executeR1OriginalSseObservation({
-      acknowledgeLiveExecution: true,
-      grant,
-      publicKeyPem,
-      nonceDir,
-      checkModelDiscovery: true // compulsory live CLI preflight; no implicit model capability assumptions
-    });
+    const result = await (async () => {
+      try {
+        return await executeR1OriginalSseObservation({
+          acknowledgeLiveExecution: true,
+          grant,
+          publicKeyPem,
+          nonceDir,
+          checkModelDiscovery: true // compulsory live CLI preflight; no implicit model capability assumptions
+        });
+      } catch (error) {
+        const code = String(error?.code || '');
+        const isPreCustodyRefusal = (
+          code.startsWith('R1_AUTH_')
+          || code === 'R1_LIVE_EXECUTION_NOT_ACKNOWLEDGED'
+          || code.startsWith('R1_FORBIDDEN_')
+          || code.startsWith('R1_INVALID_')
+          || code.startsWith('R1_CONTENTS_')
+          || code.startsWith('R1_CONFIG_')
+          || code.startsWith('R1_SYSTEM_')
+          || code.startsWith('R1_FROZEN_')
+          || code.startsWith('R1_REQUEST_')
+          || code.startsWith('R1_PREFLIGHT_')
+          || code.startsWith('R1_BETWEEN_')
+        );
+        if (isPreCustodyRefusal) {
+          for (const reserved of [outPath, blindedOutPath]) {
+            try {
+              if (fs.existsSync(reserved) && fs.statSync(reserved).size === 0) {
+                fs.unlinkSync(reserved);
+              }
+            } catch { /* ignore cleanup errors */ }
+          }
+        } else {
+          const heldErr = JSON.stringify({
+            schema: 'td613.marrowline.r1-error-held/v1',
+            classification: 'HELD',
+            error: { code: code || 'ERROR', message: String(error?.message || error) }
+          }, null, 2) + '\n';
+          try { fs.writeFileSync(outPath, heldErr, { encoding: 'utf8', flag: 'w', mode: 0o600 }); } catch { /* ignore */ }
+          try {
+            fs.writeFileSync(
+              blindedOutPath,
+              `${JSON.stringify({ schema: 'td613.marrowline.r1-blind-witness-held/v1', classification: 'HELD', blindedItems: [] }, null, 2)}\n`,
+              { encoding: 'utf8', flag: 'w', mode: 0o600 }
+            );
+          } catch { /* ignore */ }
+        }
+        throw error;
+      }
+    })();
     const rendered = `${JSON.stringify(result, null, 2)}\n`;
     if (outPath) {
       fs.writeFileSync(outPath, rendered, { encoding: 'utf8', flag: 'w', mode: 0o600 });

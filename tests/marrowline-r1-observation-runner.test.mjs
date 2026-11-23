@@ -835,7 +835,13 @@ test('Gate D & Section VI: valid complete S01 with zero vertical marks leaves S0
     for (const slot of ['R1_S01', 'R1_S02']) {
       const rawPath = path.join(nonceDir, `r1-${correctlyDirected.authorization.nonce}-${slot}.sse`);
       assert.equal(fs.existsSync(rawPath), true);
-      assert.equal(fs.readFileSync(rawPath).length > 0, true);
+      const rawDiskBytes = fs.readFileSync(rawPath);
+      assert.equal(rawDiskBytes.length > 0, true);
+      const slotRecord = correctlyDirected.slotRecords.find((r) => r.slot === slot);
+      assert.equal(
+        crypto.createHash('sha256').update(rawDiskBytes).digest('hex'),
+        slotRecord.wire.rawSseSha256
+      );
     }
 
     // 4. Uniform depth-3 stencil on S02 -> flagged stencil risk & NOT awarded EMPIRICAL_NATIVE_MULTISTACK_OBSERVED!
@@ -857,5 +863,113 @@ test('Gate D & Section VI: valid complete S01 with zero vertical marks leaves S0
     assert.equal(morphDirect.totalCombiningMarks, 0);
   } finally {
     fs.rmSync(nonceDir, { recursive: true, force: true });
+  }
+});
+
+test('Adversarial trust-anchor & CLI boundary: testOnlyTrustedPublicKeySha256 cannot bypass CLI or reach live fetch/HEAD; partial & durable custody invariants hold', async () => {
+  const { publicKey, privateKey } = createEphemeralTestSigner();
+  const nonceDir = makeTempNonceDir();
+  const tmpWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-r1-cli-adv-'));
+  const realHead = resolveCheckedOutGitHeadSha(process.cwd());
+  const grant = signGrant(buildValidUnsignedPayload({ checkedOutHeadSha: realHead }), privateKey);
+  const grantFile = path.join(tmpWorkDir, 'grant.json');
+  const pubFile = path.join(tmpWorkDir, 'pub.pem');
+  const outFile = path.join(tmpWorkDir, 'custody-out.json');
+  fs.writeFileSync(grantFile, `${JSON.stringify(grant, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(pubFile, publicKey, 'utf8');
+
+  try {
+    // 1. Live CLI inside node --test with valid signed files still fails closed on unprovisioned trust anchor,
+    // without claiming nonce or leaving empty 0-byte orphan out/blinded files.
+    let cliStderr = '';
+    let cliExit = 0;
+    try {
+      execFileSync(process.execPath, [
+        RUNNER_PATH,
+        '--execute',
+        '--ack-live-r1-observation',
+        '--grant-file', grantFile,
+        '--public-key-file', pubFile,
+        '--nonce-dir', nonceDir,
+        '--out', outFile
+      ], {
+        encoding: 'utf8',
+        env: { ...process.env, GEMINI_API_KEY: 'must-not-be-used' },
+        stdio: ['ignore', 'pipe', 'pipe']
+      });
+    } catch (err) {
+      cliExit = err.status;
+      cliStderr = String(err.stderr || '');
+    }
+    assert.equal(cliExit, 1);
+    assert.match(cliStderr, /R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED/);
+    assert.equal(fs.existsSync(outFile), false);
+    assert.equal(fs.existsSync(`${outFile}.blinded.json`), false);
+    assert.deepEqual(fs.readdirSync(nonceDir), []);
+
+    // 2. Relative paths in live CLI fail closed before touching files or auth
+    let relStderr = '';
+    try {
+      execFileSync(process.execPath, [
+        RUNNER_PATH,
+        '--execute',
+        '--ack-live-r1-observation',
+        '--grant-file', grantFile,
+        '--public-key-file', pubFile,
+        '--nonce-dir', 'relative-nonces',
+        '--out', 'relative-out.json'
+      ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    } catch (err) {
+      relStderr = String(err.stderr || '');
+    }
+    assert.match(relStderr, /R1_EXPLICIT_DURABLE_EVIDENCE_PATHS_REQUIRED/);
+
+    // 3. Programmatic testOnlyTrustedPublicKeySha256 cannot apply when checkedOutHeadShaOverride or fetchImpl is absent
+    await assert.rejects(
+      () => executeR1OriginalSseObservation({
+        acknowledgeLiveExecution: true,
+        grant,
+        publicKeyPem: publicKey,
+        testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
+        checkedOutHeadShaOverride: null,
+        nonceDir,
+        env: makeCredentialTrapEnv(),
+        fetchImpl: makePoisonFetch()
+      }),
+      (e) => e.code === 'R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED'
+    );
+    await assert.rejects(
+      () => executeR1OriginalSseObservation({
+        acknowledgeLiveExecution: true,
+        grant: signGrant(buildValidUnsignedPayload(), privateKey),
+        publicKeyPem: publicKey,
+        testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
+        checkedOutHeadShaOverride: TEST_HEAD_SHA,
+        nonceDir,
+        env: makeCredentialTrapEnv(),
+        fetchImpl: null
+      }),
+      (e) => e.code === 'R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED'
+    );
+
+    // 4. Compulsory modelDiscovery 404 fails closed cleanly before :countTokens or generation
+    const metaFail = await executeR1OriginalSseObservation({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(buildValidUnsignedPayload(), privateKey),
+      publicKeyPem: publicKey,
+      testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
+      checkedOutHeadShaOverride: TEST_HEAD_SHA,
+      nonceDir,
+      apiKey: 'fake-test-key',
+      checkModelDiscovery: true,
+      fetchImpl: async () => makeJsonResponse({ error: { message: 'missing' } }, 404)
+    });
+    assert.equal(metaFail.terminalStopReason, 'STOP_ON_MODEL_METADATA_UNAVAILABLE');
+    assert.equal(metaFail.dispatchCounts.modelMetadataCalls, 1);
+    assert.equal(metaFail.dispatchCounts.countTokensCalls, 0);
+    assert.equal(metaFail.dispatchCounts.generationCalls, 0);
+  } finally {
+    fs.rmSync(nonceDir, { recursive: true, force: true });
+    fs.rmSync(tmpWorkDir, { recursive: true, force: true });
   }
 });
