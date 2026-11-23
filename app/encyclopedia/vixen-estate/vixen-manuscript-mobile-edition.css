@@ -192,7 +192,11 @@
     border: 0 !important;
     box-shadow: none !important;
   }
-  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #vixFolioProgress[hidden] { display: none !important; }
+  /* Native mobile pages scroll continuously; desktop alone uses folio pagination. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #vixFolioProgress,
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-footer {
+    display: none !important;
+  }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-topline,.vix-folio-footer) {
     display: flex !important;
     flex-wrap: wrap !important;
