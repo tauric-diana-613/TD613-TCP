@@ -1,0 +1,15 @@
+[2026-10-29T18:08:23.370Z] === TD613 ASSAY A-RC1-R1: GENUINE TWO-WAY RECIPIENT OPERATION (EXACT UTF-8 OFFSETS) ===
+[2026-10-29T18:08:23.383Z] P1 manuscript verified: bytes=40418, sha256=8f76e72c164f36bcc3d82fcd13ab1a371235979824d51b45343ba3d60288ba99
+[2026-10-29T18:08:23.385Z] Em Optimal Gamma note verified: bytes=48225, sha256=e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3
+[2026-10-29T18:08:23.497Z] Em reference state verified: 147 records, admission=OPERATOR_AUTHORIZED_ISOLATED_RESEARCH_IMPORT_NOT_PRODUCTION
+[2026-10-29T18:08:23.498Z] Atelier Receiver: Initializing isolated empty snapshot...
+[2026-10-29T18:08:23.498Z] P1 lawfully admitted to Atelier receiver.
+[2026-10-29T18:08:23.498Z] P1 Section 6 UTF-8 slice verified: bytes 18656..20574, len=1918, sha256=e9d259d718bf66ab4436553cbf232fe1c6222787688e740822a2368829d3ff41
+[2026-10-29T18:08:23.498Z] Executing unbridged cross-domain query in Atelier...
+[2026-10-29T18:08:23.498Z] Atelier cross-domain query returned: STAGED_REFUSED_UNBRIDGED
+[2026-10-29T18:08:23.498Z] Encyclopedia Receiver: Initializing isolated empty snapshot...
+[2026-10-29T18:08:23.499Z] Encyclopedia receiver admitted 147 records.
+[2026-10-29T18:08:23.504Z] Encyclopedia receiver state persistence and reload verified (147/147 records).
+[2026-10-29T18:08:23.504Z] Em BESS UTF-8 slice verified: bytes 24923..27575, len=2652, sha256=141f67a1b54869bc6de65086e88a57e696cd3590dee072c00a2a487ec353f222
+[2026-10-29T18:08:23.504Z] Executing reverse staging of P1 passages into Encyclopedia receiver...
+[2026-10-29T18:08:23.504Z] Reverse staging complete: AUTONOMOUS_SYNTHESIS_ABSENT

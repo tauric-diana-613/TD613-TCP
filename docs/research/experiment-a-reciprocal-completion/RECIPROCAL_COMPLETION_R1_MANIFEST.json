@@ -1,0 +1,112 @@
+{
+  "schema": "td613.experiment-a.reciprocal-completion-r1-manifest/v1",
+  "generated_at": "2026-10-29T18:09:11.668Z",
+  "entry_count": 21,
+  "entries": [
+    {
+      "path": "01_coordinate_repair/P1_UTF8_COORDINATE_RECONCILIATION.json",
+      "bytes": 2910,
+      "sha256": "434940dad832a14384b9a29ed76b4dd564e568bf70603a0c2cd115ac847f6ef4"
+    },
+    {
+      "path": "02_assay_rc1_repaired/ASSAY_RC1_R1_RECEIPT.json",
+      "bytes": 26845,
+      "sha256": "b5e693c49676fd2254fe049dea18a80731b2a3ea92288e88dd43eae4accf5df6"
+    },
+    {
+      "path": "02_assay_rc1_repaired/encyclopedia_receiver_persisted_state_r1.json",
+      "bytes": 18394,
+      "sha256": "2bb841c45441974f63519737b1962df98722c584bb52284111f7a63b3eb25389"
+    },
+    {
+      "path": "02_assay_rc1_repaired/run-assay-rc1-r1.mjs",
+      "bytes": 10794,
+      "sha256": "d0bbc876d291a6b4238b95d789d34e9d0b572cb4c573613913b876e23fdff865"
+    },
+    {
+      "path": "02_assay_rc1_repaired/traces/a_rc1_r1_raw_trace.log",
+      "bytes": 1625,
+      "sha256": "40df2fd56030ecb167f7c1a7c3cae65937820f909350efdcdd84f6dd42b10efb"
+    },
+    {
+      "path": "03_assay_rc2_repaired/ASSAY_RC2_R1_RECEIPT.json",
+      "bytes": 5512,
+      "sha256": "072dad3b9370c1006203d3ca2345c367ea31c4c69f2199f2d66bc5fef1499936"
+    },
+    {
+      "path": "03_assay_rc2_repaired/run-assay-rc2-r1.mjs",
+      "bytes": 14738,
+      "sha256": "a0153e032e6af4fe8efe353d473cf2c439cdf3cc715e1d8d2b051fd8791927f1"
+    },
+    {
+      "path": "03_assay_rc2_repaired/traces/a_rc2_r1_raw_trace.log",
+      "bytes": 1442,
+      "sha256": "696afcf75ba517803b17b312d9be8ee133a790f636c01cec37bba7aea47fad77"
+    },
+    {
+      "path": "04_assay_rc3_repaired/ASSAY_RC3_R1_RECEIPT.json",
+      "bytes": 16289,
+      "sha256": "e25f97c9383c5c79ff2eed80cc91dc6e68591c8b53e5bd8c4bc8352597c8277a"
+    },
+    {
+      "path": "04_assay_rc3_repaired/run-assay-rc3-r1.mjs",
+      "bytes": 8533,
+      "sha256": "f25cfffb04b110820a85f0e3868b4edd4fce95472cb80e497d2c373c2b770d54"
+    },
+    {
+      "path": "04_assay_rc3_repaired/traces/a_rc3_r1_raw_trace.log",
+      "bytes": 1052,
+      "sha256": "beca8e2ebfbbcfedfd8f4c3ae0cc18a258b324eae16541862ab34b2b638e06d1"
+    },
+    {
+      "path": "05_blinded_adversarial_packet_r1/BLINDED_ADVERSARIAL_REVIEW_PACKET_R1.json",
+      "bytes": 13979,
+      "sha256": "a6df21f9ff6b6345c379ad301c2ff66f95c1cc585768fe02858f207ed14d349c"
+    },
+    {
+      "path": "05_blinded_adversarial_packet_r1/build-blinded-packet-r1.mjs",
+      "bytes": 4739,
+      "sha256": "1cb2007854ed500d6265ecde1b34d14085a8fd3fc8ff6e322f4fac0c16cbf941"
+    },
+    {
+      "path": "05_blinded_adversarial_packet_r1/SEALED_UNBLINDING_KEY_R1.json",
+      "bytes": 801,
+      "sha256": "b80cc6e89b3d8da6dd91f934bcb16c2b14f6cba0b62acfa35ea66c468bb74ddc"
+    },
+    {
+      "path": "06_reconciled_charter_and_matrix_r1/build-r1-ledger.mjs",
+      "bytes": 3444,
+      "sha256": "decc9b6122736d5950ee826212f1c38f61ba261f6f458d2668d978ee5670bd78"
+    },
+    {
+      "path": "06_reconciled_charter_and_matrix_r1/CORRECTED_BOUNDED_SCIENCE_CLAIM_LEDGER_R1.json",
+      "bytes": 12930,
+      "sha256": "d6440103d9c468c47c9d108d14782767c3baaceb7f03f93dedd47d9e367c6228"
+    },
+    {
+      "path": "06_reconciled_charter_and_matrix_r1/EXPERIMENT_A_BASELINE_CHARTER_FOR_EXPERIMENT_B_R1.md",
+      "bytes": 6832,
+      "sha256": "6cf3601fc226f3af7e36e121d84dd7454764deb066459f5cd1c818056e09adb6"
+    },
+    {
+      "path": "06_reconciled_charter_and_matrix_r1/ORIGINAL_MANDATE_RECONCILIATION_MATRIX_R1.md",
+      "bytes": 9300,
+      "sha256": "60159e4034e7d5979923d89d2472ab652122056ca0746d0b42f49dcb6c625c30"
+    },
+    {
+      "path": "07_executable_verifiers_r1/MASTER_RECIPROCAL_COMPLETION_R1_RECEIPT.json",
+      "bytes": 3158,
+      "sha256": "6957bb37554b075f5c0ff82ab72224ed102ab8ef5a2a2a4d4afbe9b7194cce8c"
+    },
+    {
+      "path": "07_executable_verifiers_r1/run-reciprocal-completion-r1.mjs",
+      "bytes": 3175,
+      "sha256": "cf7bb2d2a6ee4578da50b35db0460d7fbacdeff2c2bfb2b46d58f41be77a8d95"
+    },
+    {
+      "path": "07_executable_verifiers_r1/verify-reciprocal-completion-r1.mjs",
+      "bytes": 8753,
+      "sha256": "aff36ff20d7c4be872ea29b6d304f0899640dc0c12c9a36425dea8a17edc56de"
+    }
+  ]
+}

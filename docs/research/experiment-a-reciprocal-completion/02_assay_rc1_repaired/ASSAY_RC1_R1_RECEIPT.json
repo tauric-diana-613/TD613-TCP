@@ -1,0 +1,872 @@
+{
+  "schema": "td613.experiment-a.assay-rc1-two-way-recipient/v2-r1",
+  "assay_id": "A-RC1-R1-TWO-WAY-RECIPIENT-EXACT-COORDINATES",
+  "timestamp": "2026-10-29T18:08:23.504Z",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "epistemic_disposition": "TWO_WAY_RECIPIENT_OPERATIONAL_VERIFIED · UTF8_COORDINATES_EXACT · HONEST_NEGATIVE_SYNTHESIS_CONFIRMED",
+  "sources": {
+    "p1": {
+      "path": "eclipse-omega-admissibility-regime.md",
+      "byte_length": 40418,
+      "sha256": "8f76e72c164f36bcc3d82fcd13ab1a371235979824d51b45343ba3d60288ba99",
+      "section_6_utf8_range": [
+        18656,
+        20574
+      ],
+      "section_6_slice_bytes": 1918,
+      "section_6_slice_sha256": "e9d259d718bf66ab4436553cbf232fe1c6222787688e740822a2368829d3ff41"
+    },
+    "em_optimal_gamma": {
+      "path": "Optimal Gamma Smoothing Factor.md",
+      "byte_length": 48225,
+      "sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+      "bess_utf8_range": [
+        24923,
+        27575
+      ],
+      "bess_slice_bytes": 2652,
+      "bess_slice_sha256": "141f67a1b54869bc6de65086e88a57e696cd3590dee072c00a2a487ec353f222"
+    },
+    "em_reference_state": {
+      "record_count": 147,
+      "admission": "OPERATOR_AUTHORIZED_ISOLATED_RESEARCH_IMPORT_NOT_PRODUCTION"
+    }
+  },
+  "atelier_receiver": {
+    "snapshot": {
+      "receiver_id": "atelier_receiver_v1_r1",
+      "chamber": "ATELIER",
+      "state_transition": "UNINITIALIZED_EMPTY -> STAGED -> ACTIVE_ADMITTED",
+      "pre_intake_state": "UNINITIALIZED_EMPTY",
+      "admitted_record_count": 1,
+      "staged_record_count": 1,
+      "catalog": [
+        {
+          "id": "td613_p1_eclipse_omega",
+          "byte_length": 40418,
+          "sha256": "8f76e72c164f36bcc3d82fcd13ab1a371235979824d51b45343ba3d60288ba99",
+          "status": "ADMITTED"
+        }
+      ],
+      "current_state": "ACTIVE_ADMITTED"
+    },
+    "primary_citation": {
+      "document": "eclipse-omega-admissibility-regime.md",
+      "section": "6",
+      "utf8_byte_range": [
+        18656,
+        20574
+      ],
+      "byte_length": 1918,
+      "slice_sha256": "e9d259d718bf66ab4436553cbf232fe1c6222787688e740822a2368829d3ff41",
+      "heading": "# 6. The “0-Bounce” Anomaly and Why It Matters More Than Any Clean Loop",
+      "key_phrase": "admissibility capture",
+      "verbatim_quote": "The 0-state therefore names not pure absence, but unregistered activity under structured constraint."
+    },
+    "unbridged_query": {
+      "query": "Find optimal gamma smoothing factor in industrial battery systems",
+      "query_receiver": "atelier_receiver_v1_r1",
+      "disposition": "STAGED_REFUSED_UNBRIDGED",
+      "reason": "Jurisdictional boundary enforced; query references Encyclopedia coordinate concepts without declared bridge.",
+      "admitted_results": []
+    }
+  },
+  "encyclopedia_receiver": {
+    "snapshot": {
+      "receiver_id": "encyclopedia_receiver_v1_r1",
+      "chamber": "ENCYCLOPEDIA",
+      "state_transition": "UNINITIALIZED_EMPTY -> ACTIVE_ADMITTED",
+      "pre_intake_state": "UNINITIALIZED_EMPTY",
+      "admitted_record_count": 147,
+      "admission_authority": "OPERATOR_AUTHORIZED_ISOLATED_RESEARCH_IMPORT_NOT_PRODUCTION",
+      "catalog": [
+        {
+          "id": "emsrc_ae5d4155056773c8a50db1b9",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_ae5d4155056773c8a50db1b9",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_db43deb1f616beed44e042c4",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_c01c49eb755108563b9e58c6",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_c01c49eb755108563b9e58c6",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_b20ff4bfe278f8cf39d805f6",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_b20ff4bfe278f8cf39d805f6",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_b7e4e42924d33bdaf666a4f8",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_b7e4e42924d33bdaf666a4f8",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_63897276d473f6147166ca90",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_63897276d473f6147166ca90",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_8846b63345a07422139815fb",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_8846b63345a07422139815fb",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_15cead109dfe2886a22f8320",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_15cead109dfe2886a22f8320",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_fc1c117130df363bba90b5c1",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_fc1c117130df363bba90b5c1",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_8e672cb8123058c8fa47d8d9",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_8e672cb8123058c8fa47d8d9",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_e76a321b3df071303fe41538",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_e76a321b3df071303fe41538",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_0b285152e5c5268e658c59e8",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_0b285152e5c5268e658c59e8",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_6c9e38d8872e3fab6ae8a0c3",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_6c9e38d8872e3fab6ae8a0c3",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_1f16bbf644e7fa9b057ca122",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_1f16bbf644e7fa9b057ca122",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_265f3181ee73ce04b8240885",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_265f3181ee73ce04b8240885",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_20228928591ae11052bf2622",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_20228928591ae11052bf2622",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_6205df11a1e35b1a7828c7e7",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_6205df11a1e35b1a7828c7e7",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_4753469dce968cf7c48bd1fe",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_4753469dce968cf7c48bd1fe",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_f9d7bff007dd9547d42db2c1",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_f9d7bff007dd9547d42db2c1",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a87fa4366209a707705beb16",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_a87fa4366209a707705beb16",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_31ed6fb3bdc15d3c29b8ae13",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_31ed6fb3bdc15d3c29b8ae13",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_2ddaf8197adecc8c5ba09c33",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_2ddaf8197adecc8c5ba09c33",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a32017341296da30079229dc",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_a32017341296da30079229dc",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_24e3ec262e064fe98ed974b8",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_24e3ec262e064fe98ed974b8",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_fb1c9ba084467b28d6106148",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_fb1c9ba084467b28d6106148",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_80724e9a6c5be3004c6385f4",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_80724e9a6c5be3004c6385f4",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_cf77e65eeefe19ca69b44064",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_cf77e65eeefe19ca69b44064",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_1a5f7e8bd71f3b1914d9dfc0",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_1a5f7e8bd71f3b1914d9dfc0",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_d785210930150a03fed14930",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_d785210930150a03fed14930",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_9fcc229e5404e76d30c5726f",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_9fcc229e5404e76d30c5726f",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_2adcca73b83fb64e8cf22fd9",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_2adcca73b83fb64e8cf22fd9",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_58fa977424385e8b9892de77",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_58fa977424385e8b9892de77",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_d7c7ed8ff483a72d2bf48bda",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_d7c7ed8ff483a72d2bf48bda",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_57021f0d10d938f524b738c5",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_57021f0d10d938f524b738c5",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_29e2a5ad82a264b7bcd03941",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_61a505e286c5ca0c21b9f61c",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_5bf808dad657207621de9cb2",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_21b462721ec759642bcc58cc",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_1ffe710b2e8bdfe6139b9ad7",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_6767976f58748618c803c686",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_17d106f9333c607176032632",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_37e9343e7f31cf38cae768f0",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_508f1f31d00c5d4fc5e20fa2",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_1ea3f98cc0b382391fe4742c",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_63db5b9062ec9ec5516b6f8d",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_d18308cb9ed007bbcb455bd7",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_ec05f51bbed6b6da3906bf8e",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_97a708d8f26466bd282b6790",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_da8ae264a46e31f6995601c8",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_71112db9eb68bebd2342af63",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_99e9739955d2bdadc7479290",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_44798c9aef7a94799a157405",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_22a3a9f36ade567ca06a0f75",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_c6f8c9ad8de141b799df9ee5",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_651371c761f2a299df79eb50",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_3f6e6e0feac5b2b057bd43c3",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_2aa1198bee3008c9dba45518",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_bb0f419fec4c9c93ab7f9af5",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_b15398d8e73c2d070c8b0e18",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_012a1054d9c99bce7c293966",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_7e8f43d3f3135ebfe8104a3d",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a857a71856026ced9e51c3c6",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_48ed1adbd9b1ffa99297e62a",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_734feb614e7954f50c535748",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_2a2d7b0c3925cf358f06b207",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_58c79cb12c61abf523701b19",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_139ba514da490d44efbe83de",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_8925ddeda663016b041255dc",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_8925ddeda663016b041255dc",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_cb7da53c98ed3a010af186a1",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_cb7da53c98ed3a010af186a1",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_96d522b0d573766dfb0f3c0e",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_96d522b0d573766dfb0f3c0e",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_7b3a68bdf0d263ae74751b99",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_7b3a68bdf0d263ae74751b99",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_1b44cb39e440056ed325b372",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_1b44cb39e440056ed325b372",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_67937de5ebf818d8bc7c4e68",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_67937de5ebf818d8bc7c4e68",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_536415ee2a02f2530392c78e",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_536415ee2a02f2530392c78e",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a3675ad3117d3d35cb099ceb",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_a3675ad3117d3d35cb099ceb",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_0a76dce5fd8dc8ddcd2bd7f1",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_0a76dce5fd8dc8ddcd2bd7f1",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a1aa372da945a7db22e73f4c",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_a1aa372da945a7db22e73f4c",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_f336eedac7c12acb372b7929",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_f336eedac7c12acb372b7929",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_ba63df8a7bab4ca14b1d21e0",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_ba63df8a7bab4ca14b1d21e0",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_c2a22c120e32b746513447b5",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_c2a22c120e32b746513447b5",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_66bc27767a635cd4b2ce3e21",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_66bc27767a635cd4b2ce3e21",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_9fecefb1208f278c7ba0d4d5",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_9fecefb1208f278c7ba0d4d5",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_0769dac7cdd95a5ca0577963",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_0769dac7cdd95a5ca0577963",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a794c13e8e0b9bd6d7be3ca6",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_a794c13e8e0b9bd6d7be3ca6",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_5f9ca473b3a0f7694bca742c",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_5f9ca473b3a0f7694bca742c",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_a6aca36fd835bdb7157a6551",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_a6aca36fd835bdb7157a6551",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emsrc_199220ad2cfb300f96ed3ab6",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emder_emsrc_199220ad2cfb300f96ed3ab6",
+          "kind": "artifact",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_c56744fae0f7",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_7c568aaf6e78",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_6c888365fa73",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_fe1c355b4e7a",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_87ee5e995742",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_c90233bf09f6",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        },
+        {
+          "id": "emb_20260911_811766eb1387",
+          "kind": "source",
+          "admission_status": "ADMITTED"
+        }
+      ],
+      "current_state": "ACTIVE_ADMITTED"
+    },
+    "primary_citation": {
+      "document": "Optimal Gamma Smoothing Factor.md",
+      "section": "Industrial Power Systems: PV+BESS Ramp-Rate Control Integration",
+      "utf8_byte_range": [
+        24923,
+        27575
+      ],
+      "byte_length": 2652,
+      "slice_sha256": "141f67a1b54869bc6de65086e88a57e696cd3590dee072c00a2a487ec353f222",
+      "key_phrase": "100% SOC saturation",
+      "verbatim_quote": "utilizing an \\alpha = 0.04 forces the battery to absorb so much continuous energy that it reaches 100% SOC saturation. Once the storage medium is fully saturated, the control loop structurally fails",
+      "parameter_bindings": {
+        "alpha_low_saturation": 0.04,
+        "alpha_optimal": 0.05,
+        "alpha_high_noncompliant": 0.07,
+        "ramp_rate_limit": "10%/min"
+      }
+    },
+    "persistence_verified": true
+  },
+  "reverse_staging_test": {
+    "payload": "P1 Section 6 excerpt (0-bounce anomaly, admissibility capture)",
+    "staging_mode": "TRANSIENT_QUERY_PAYLOAD_IMMUTABLE_CATALOG",
+    "catalog_before_count": 147,
+    "catalog_after_count": 147,
+    "catalog_mutated": false,
+    "lexical_search": {
+      "query": "0-bounce anomaly admissibility capture",
+      "status": "LEXICAL_RETRIEVAL_VERIFIED",
+      "matches": [
+        {
+          "source": "transient_query_payload",
+          "section": "6",
+          "match_count": 1
+        }
+      ]
+    },
+    "autonomous_synthesis_evaluation": {
+      "cross_chamber_edges_attempted": true,
+      "autonomous_edges_discovered": 0,
+      "status": "AUTONOMOUS_SYNTHESIS_ABSENT",
+      "finding": "Encyclopedia indexing runtime matches lexical tokens within the transient payload, but generates zero autonomous ontological edges connecting P1 admissibility capture to Em smoothing factors."
+    }
+  },
+  "scientific_findings": [
+    "1. RC-02 Resolved: P1 Section 6 is verified at exact UTF-8 half-open byte range 18656..20574 (1,918 B, SHA-256 e9d259d7...).",
+    "2. RC-02 Resolved: Em BESS section is verified at exact UTF-8 half-open byte range 24923..27575 (2,652 B, SHA-256 141f67a1...).",
+    "3. Atelier receiver isolates P1 and strictly enforces jurisdictional boundary (STAGED_REFUSED_UNBRIDGED).",
+    "4. Encyclopedia receiver maintains persistent idempotence for 147 candidate items across disk serialization/reload.",
+    "5. Reverse staging of P1 into Encyclopedia confirms lexical queryability while preserving catalog immutability (147 records) and demonstrating zero autonomous cross-chamber edge synthesis (AUTONOMOUS_SYNTHESIS_ABSENT)."
+  ]
+}

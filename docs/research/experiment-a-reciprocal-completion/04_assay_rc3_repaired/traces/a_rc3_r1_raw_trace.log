@@ -1,0 +1,8 @@
+[2026-10-29T18:08:23.861Z] === TD613 ASSAY A-RC3-R1: MATCHED STRONG-UNION WITH TYPED PARITY COMPARATOR ===
+[2026-10-29T18:08:23.875Z] kappa=1024 B | Arm1=2 | Arm2=4 | Arm3A(Untyped)=4 | Arm3B(Typed)=4 | Arm4(Modular)=4 -> Delta(vs Typed)=0
+[2026-10-29T18:08:23.876Z] kappa=2048 B | Arm1=4 | Arm2=4 | Arm3A(Untyped)=6 | Arm3B(Typed)=6 | Arm4(Modular)=6 -> Delta(vs Typed)=0
+[2026-10-29T18:08:23.878Z] kappa=4096 B | Arm1=4 | Arm2=4 | Arm3A(Untyped)=8 | Arm3B(Typed)=8 | Arm4(Modular)=8 -> Delta(vs Typed)=0
+[2026-10-29T18:08:23.879Z] kappa=8192 B | Arm1=6 | Arm2=4 | Arm3A(Untyped)=8 | Arm3B(Typed)=8 | Arm4(Modular)=8 -> Delta(vs Typed)=0
+[2026-10-29T18:08:23.882Z] kappa=16384 B | Arm1=6 | Arm2=4 | Arm3A(Untyped)=10 | Arm3B(Typed)=10 | Arm4(Modular)=10 -> Delta(vs Typed)=0
+[2026-10-29T18:08:23.886Z] kappa=32768 B | Arm1=6 | Arm2=17 | Arm3A(Untyped)=10 | Arm3B(Typed)=10 | Arm4(Modular)=10 -> Delta(vs Typed)=0
+[2026-10-29T18:08:23.891Z] kappa=65536 B | Arm1=18 | Arm2=23 | Arm3A(Untyped)=20 | Arm3B(Typed)=23 | Arm4(Modular)=23 -> Delta(vs Typed)=0
