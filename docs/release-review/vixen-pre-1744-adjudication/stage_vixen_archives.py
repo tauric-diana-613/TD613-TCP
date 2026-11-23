@@ -14,11 +14,14 @@ from argparse import ArgumentParser
 from pathlib import Path
 from hashlib import sha256
 from zipfile import ZipFile
-import subprocess,sys,json,re,shutil
+import subprocess,sys,json,re
 
 def run(*cmd,cwd=None):return subprocess.check_output(cmd,cwd=cwd,text=True).strip()
 def digest(path):
-    with path.open('rb') as f:return sha256(f.read()).hexdigest()
+    h=sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda:f.read(4*1024*1024),b''):h.update(chunk)
+    return h.hexdigest()
 def safe_file(root,path):
     x=(root/path).resolve()
     if not x.is_relative_to(root.resolve()) or not x.is_file() or x.is_symlink():raise ValueError('UNSAFE_OR_MISSING '+str(path))
@@ -55,7 +58,7 @@ def main():
             raise SystemExit('SERVED_SOURCE_MISMATCH')
         if attestation.get('independent_served_revision_verified') is not True:
             raise SystemExit('INDEPENDENT_SERVED_REVISION_NOT_VERIFIED')
-        if not str(attestation.get('served_html_sha256','')).isalnum() or len(attestation['served_html_sha256'])!=64:
+        if not re.fullmatch(r'[0-9a-f]{64}',str(attestation.get('served_html_sha256',''))):
             raise SystemExit('SERVED_HTML_SHA256_RECEIPT_REQUIRED')
         records=report.get('images') or []
         if not records:raise SystemExit('ZERO_WITNESS_IMAGES')
