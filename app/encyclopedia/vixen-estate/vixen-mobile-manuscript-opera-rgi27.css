@@ -165,7 +165,7 @@
     width:auto!important;max-width:100%!important;
     margin:0 0 10px!important;padding:0 0 8px!important;
     border-bottom:1px solid #d0c5ba!important;
-    letter-spacing:-.013em!important;text-transform:capitalize!important;
+    letter-spacing:-.013em!important;text-transform:none!important;
     text-wrap:wrap!important;overflow-wrap:normal!important;word-break:normal!important;
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-lineation="pdf-source-wordflow-reconstructed"]>.vix-reader-paragraph:first-of-type::first-letter {
