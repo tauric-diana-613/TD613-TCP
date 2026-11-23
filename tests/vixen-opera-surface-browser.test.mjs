@@ -71,14 +71,23 @@ async function visit(profile,phase){
  assert.equal(response?.status(),200,'HTTP source '+phase);
  await page.locator('#vixenRoomRail button[data-view="works"]').waitFor({state:'attached',timeout:25000});
  await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true});
+ await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:15000});
  const workButtons=page.locator('#worksListContainer button[data-select-work]');
  await workButtons.first().waitFor({state:'attached',timeout:25000});
  let found=false;
+ let hiddenSetupGestures=0;
  const count=Math.min(12,await workButtons.count());
  for(let i=0;i<count;i++){
-  await workButtons.nth(i).click({force:true,timeout:20000});
+  // Phone/desktop split-index CSS can hide the catalogue while the reader is
+  // active. DOM click is a *setup gesture* only, never counted as UI usability.
+  const select=workButtons.nth(i);
+  if(await select.isVisible())await select.click({force:true,timeout:20000});
+  else {await select.evaluate(node=>node.click());hiddenSetupGestures++;}
   const phaseButton=page.locator('[data-reader-phase="WORLD_ANSWERS"]').first();
-  if(await phaseButton.count())await phaseButton.click({force:true,timeout:10000});
+  if(await phaseButton.count()){
+   if(await phaseButton.isVisible())await phaseButton.click({force:true,timeout:10000});
+   else {await phaseButton.evaluate(node=>node.click());hiddenSetupGestures++;}
+  }
   try {
    await page.locator('#expaCompanionBodyPre .vix-reader-paragraph').first().waitFor({state:'attached',timeout:4500});
    found=true;break;
@@ -127,7 +136,7 @@ async function visit(profile,phase){
  const name=phase+'-'+profile.id+'.png',dest=path.join(root,name);
  await page.screenshot({path:dest,type:'png',animations:'disabled',timeout:30000});
  const bytes=await readFile(dest);
- screens.push({file:name,sha256:createHash('sha256').update(bytes).digest('hex'),bytes:bytes.length,phase,profile:profile.id,...observation,page_errors:pageErrors});
+ screens.push({hidden_setup_gestures:hiddenSetupGestures,file:name,sha256:createHash('sha256').update(bytes).digest('hex'),bytes:bytes.length,phase,profile:profile.id,...observation,page_errors:pageErrors});
  await context.close();
  return observation;
 }
