@@ -311,3 +311,32 @@
  #view-reference .vxe-vixen-pair .vxe-estate h2{font-size:1.8rem;margin:.1rem 0}
  #view-reference .vxe-vixen-pair .vxe-source-folio{padding:.8rem}
 }
+
+
+/* RGI-06 / MOBILE FOLIOS FIELD-SEPARATION.
+   Optical filaments remain visible around the authored source. Reading and
+   source-selection text receives an opaque black-chrome ground so the live
+   mesh cannot reduce contrast. Keep the original Work/folio controls and
+   OPERAHOUSE stage entirely untouched. */
+@media (max-width:780px) {
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-steps,
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-status {
+  background:rgba(8,12,16,.965);
+  box-shadow:0 8px 26px rgba(0,0,0,.42);
+ }
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-work-selector {
+  background:linear-gradient(145deg,rgba(17,24,29,.99),rgba(8,13,18,.99));
+  border-color:rgba(245,216,186,.42);
+  box-shadow:0 15px 36px rgba(0,0,0,.58);
+ }
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-work-identity {
+  color:#fff9fb;
+  text-shadow:0 2px 8px rgba(0,0,0,.82);
+ }
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-work-selector .vxe-source-note { color:#f3e5ec; }
+}
