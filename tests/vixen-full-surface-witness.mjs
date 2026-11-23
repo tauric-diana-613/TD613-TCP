@@ -168,7 +168,15 @@ try{
   const page=await context.newPage();
   const pageErrors=[];
   const httpFailures=[];
+  const consoleErrors=[];
   page.on('pageerror',e=>pageErrors.push(String(e.message||e)));
+  page.on('crash',()=>pageErrors.push('BROWSER_PAGE_CRASH'));
+  page.on('console',message=>{
+   if(message.type()==='error'){
+    const loc=message.location();
+    consoleErrors.push({text:message.text().slice(0,900),source_url:loc.url||null,line:loc.lineNumber,column:loc.columnNumber});
+   }
+  });
   page.on('requestfailed',req=>httpFailures.push({path:new URL(req.url()).pathname,error:req.failure()?.errorText??'FAILED'}));
   page.on('response',resp=>{if(resp.status()>=400)httpFailures.push({path:new URL(resp.url()).pathname,status:resp.status()});});
   const response=await page.goto(origin,{waitUntil:'domcontentloaded',timeout:60000});
@@ -438,8 +446,9 @@ try{
    matrix.push({profile:profile.name,route:'collection-scrolling-motion',covered_bottom:false,tiles:3,
      limits:'frames document scroll positions and visible states, not FPS or physical-device performance'});
   }catch(e){failure.push({profile:profile.name,route:'collection-scrolling-motion',error:String(e)});}
-  if(pageErrors.length)failure.push({profile:profile.name,route:'browser',errors:pageErrors.slice(0,25)});
-  if(httpFailures.length)failure.push({profile:profile.name,route:'http',errors:httpFailures.slice(0,25)});
+  if(pageErrors.length)failure.push({profile:profile.name,route:'browser',count:pageErrors.length,errors:pageErrors.slice(0,25)});
+  if(httpFailures.length)failure.push({profile:profile.name,route:'http',count:httpFailures.length,errors:httpFailures.slice(0,25)});
+  if(consoleErrors.length)failure.push({profile:profile.name,route:'console',count:consoleErrors.length,errors:consoleErrors.slice(0,25)});
   await context.close();
  }
 }finally{await browser.close();}
