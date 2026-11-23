@@ -479,8 +479,10 @@ jobs:
           DEPLOYMENT_EXIT=$?
           vercel api "/v3/deployments/$FAILED_DEPLOYMENT_ID/events?teamId=$VERCEL_ORG_ID&builds=1" --method GET > events.json 2> events.err
           EVENTS_EXIT=$?
+          vercel api "/v1/deployments/$FAILED_DEPLOYMENT_ID/checks?teamId=$VERCEL_ORG_ID" --method GET > checks.json 2> checks.err
+          CHECKS_EXIT=$?
           set -e
-          INSPECT_EXIT="$INSPECT_EXIT" DEPLOYMENT_EXIT="$DEPLOYMENT_EXIT" EVENTS_EXIT="$EVENTS_EXIT" python - <<'PY'
+          INSPECT_EXIT="$INSPECT_EXIT" DEPLOYMENT_EXIT="$DEPLOYMENT_EXIT" EVENTS_EXIT="$EVENTS_EXIT" CHECKS_EXIT="$CHECKS_EXIT" python - <<'PY'
           import json, os, re
           from pathlib import Path
           def clean(s):
@@ -489,8 +491,8 @@ jobs:
               return s[:380]
           print('CHECK_DIAGNOSTIC_ONLY: true')
           print('TARGET: original failed Preview DYr8M6wJMiwyxQUUmaHizRkxH874')
-          for k in ('INSPECT_EXIT','DEPLOYMENT_EXIT','EVENTS_EXIT'): print(k,os.environ[k])
-          for fname in ('deployment.json','events.json'):
+          for k in ('INSPECT_EXIT','DEPLOYMENT_EXIT','EVENTS_EXIT','CHECKS_EXIT'): print(k,os.environ[k])
+          for fname in ('deployment.json','events.json','checks.json'):
               try: data=json.loads(Path(fname).read_text())
               except Exception as e: print(fname,'JSON_UNAVAILABLE',clean(e)); continue
               if isinstance(data,dict):
@@ -499,6 +501,14 @@ jobs:
                       print('DEPLOYMENT_FIELDS',json.dumps({k:clean(source[k]) for k in ('id','readyState','state','errorCode','errorMessage','projectId','url','checksState') if k in source},sort_keys=True))
                       for key in ('checks','checksState','checkStatus','buildError'):
                           if key in source:print('CHECK_FIELD',key,clean(json.dumps(source[key])))
+                  elif fname=='checks.json':
+                      entries=data.get('checks',data.get('data',[]))
+                      if isinstance(entries,dict): entries=entries.get('checks',[])
+                      if isinstance(entries,list):
+                          print('CHECKS_COUNT',len(entries))
+                          for entry in entries[:50]:
+                              if isinstance(entry,dict):
+                                  print('DEPLOYMENT_CHECK',json.dumps({k:clean(entry[k]) for k in ('name','status','state','conclusion','blocking','id','detailsUrl','output') if k in entry},sort_keys=True))
                   else:
                       events=data.get('events',data.get('data',[]))
                       if isinstance(events,dict):events=events.get('events',[])
@@ -513,7 +523,7 @@ jobs:
           lines=[clean(l) for l in t.splitlines() if re.search('error|failed|check|build|limit|bundle|memory|size|invalid|python|quota',l,re.I)]
           print('INSPECT_RELEVANT_LINES',len(lines))
           for line in lines[-55:]: print('INSPECT',line)
-          if not t.strip() and all(not Path(f).stat().st_size for f in ('deployment.json','events.json')):
+          if not t.strip() and all(not Path(f).stat().st_size for f in ('deployment.json','events.json','checks.json')):
               raise SystemExit('FAILED_TO_ACQUIRE_ANY_CHECK_LOGS')
           print('READ_ONLY_NO_DEPLOY_NO_ALIAS_CHANGE')
           PY
