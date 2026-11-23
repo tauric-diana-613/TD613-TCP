@@ -41,6 +41,13 @@ function jpegPixelDimensions(bytes){
  }
  throw Error('SCREENSHOT_JPEG_DIMENSIONS_MISSING');
 }
+// A forced click can hit the fixed mobile dock instead of its intended
+// control. Center critical actions, require a real Playwright hit-test, then
+// separately verify the resulting application state.
+async function clickExposed(target,timeout=15000){
+ await target.evaluate(el=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}),null,{timeout});
+ await target.click({noWaitAfter:true,timeout});
+}
 async function capture(target,rel,details,screenshotOptions={}){
  const dest=path.join(root,rel);
  await mkdir(path.dirname(dest),{recursive:true});
@@ -271,10 +278,10 @@ try{
    // Establish a known closed baseline, then exercise both real transitions.
    const prior=await proof().getAttribute('aria-expanded');
    if(prior==='true'){
-    await proof().click({force:true,noWaitAfter:true,timeout:6000});
+    await clickExposed(proof(),12000);
     await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='false',null,{timeout:8000});
    }
-   await proof().click({force:true,noWaitAfter:true,timeout:6000});
+   await clickExposed(proof(),12000);
    await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='true',null,{timeout:8000});
    const expanded=await proof().getAttribute('aria-expanded');
    const proofVisible=await page.locator('#vixenElectricFoundry [data-inspector-open="true"]').count();
@@ -284,7 +291,7 @@ try{
     aria_expanded:expanded
    });
    matrix.push({profile:profile.name,route:'observatory-proof-open',covered_bottom:true,tiles:1});
-   await proof().click({force:true,noWaitAfter:true,timeout:6000});
+   await clickExposed(proof(),12000);
    await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='false',null,{timeout:8000});
    if(await proof().getAttribute('aria-expanded')!=='false')
     throw Error('OBSERVATORY_PROOF_CLOSE_FAILED');
@@ -351,7 +358,7 @@ try{
     }));
     throw Error('INDEPENDENT_READING_ROOM_INVITATION_NOT_MOUNTED '+JSON.stringify(status));
    });
-   await invitation.first().click({force:true,noWaitAfter:true,timeout:7000});
+   await clickExposed(invitation.first(),12000);
    await page.waitForFunction(()=>document.body.dataset.activeResearchStage==='OPERAHOUSE',null,{timeout:10000});
    const opened=await page.evaluate(()=>document.body.dataset.activeResearchStage==='OPERAHOUSE');
    if(!opened)throw Error('SEPARATE_READING_ROOM_NOT_OPEN');
@@ -385,7 +392,7 @@ try{
    // Role selection alone must never count as Program Notes consent.
    // Start a synthetic COMPOSER session and stop at AWAITING permission.
    await page.locator('#vmaGoal').fill('Compare original source routes without writing notes.');
-   await page.locator('#vmaStart').click({force:true,noWaitAfter:true,timeout:7000});
+   await clickExposed(page.locator('#vmaStart'),15000);
    // Starting a source-backed Podium route can await read-only host calls.
    // A hidden notes control before session activation is neither a consent
    // failure nor grounds for inventing an active session. Await the real UI.
@@ -408,7 +415,7 @@ try{
     program_notes_permission:'NOT_REQUESTED',grant_performed:false
    });
    matrix.push({profile:profile.name,route:'program-notes-off',covered_bottom:true,tiles:1});
-   await page.locator('#vmaNotesRequest').click({force:true,noWaitAfter:true,timeout:6000});
+   await clickExposed(page.locator('#vmaNotesRequest'),12000);
    await page.locator('#vmaNotesApprove').waitFor({state:'visible',timeout:8000});
    await capture(page,path.join(profile.name,'podium-roles','program-notes-awaiting-human.jpg'),{
     profile:profile.name,surface:'program-notes-pending',kind:'consent_pending',
