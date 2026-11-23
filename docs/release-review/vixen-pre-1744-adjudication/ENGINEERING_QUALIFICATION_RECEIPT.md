@@ -23,6 +23,12 @@
 - `d1cb3651b36d3220fb5bed1092e611914392e64e`: from known CLOSED proof state, exercise proof open/close; await genuine Podium session activation and record failure diagnostics rather than bypass.
 - CI run for latest `d1cb3651…`: [45164763788](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45164763788), in progress when this ledger was authored. Earlier runs stay immutable.
 
+## Concurrent witness continuation (2026-11-23, post-snapshot)
+- New fast-forward commit `86664aecaa00951ffd085004c3db99ee256aa36b` was independently compared against `d1cb3651…`: one additional commit, exclusively modifying the witness JS.
+- It distinguishes a truly visible **arriving** loading veil from transitional/absent state, captures decoded frontispiece separately, and raises a failure if two phases have identical image SHA. Preserve it; this supersedes the older `d1cb3651…` exact-head candidate once qualified.
+- New exact-head CI: [45166406492](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45166406492), IN_PROGRESS at this receipt. **Full independent screenshot audit still required.**
+- The operator-authorized engineering branch may evolve: always re-read PR #1784 HEAD before any integration gesture.
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
