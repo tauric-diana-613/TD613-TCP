@@ -123,6 +123,12 @@ try{
              failures.push({profile:profile.name,problem:'LIVING_MESH_OVERLAY_OVER_READING',value:measurement.mesh_display});
            if(profile.width<500&&measurement.pdf_title_font_px>21)
              failures.push({profile:profile.name,problem:'OVERSIZED_PDF_POSTER_TITLE',value:measurement.pdf_title_font_px});
+           if(profile.width>=681&&(!(measurement.pdf_title_font_px>=22&&measurement.pdf_title_font_px<=33)))
+             failures.push({profile:profile.name,problem:'DESKTOP_TITLE_DISPLAY_SCALE',value:measurement.pdf_title_font_px});
+           if(profile.width>=681&&parseFloat(measurement.body_font_px)<15.4)
+             failures.push({profile:profile.name,problem:'DESKTOP_MANUSCRIPT_TOO_SMALL',value:measurement.body_font_px});
+           if(profile.width>=681&&measurement.paragraph_width_px>profile.width*.7)
+             failures.push({profile:profile.name,problem:'DESKTOP_PROSE_MEASURE_TOO_WIDE',value:measurement.paragraph_width_px});
            if(measurement.document_scroll_width>profile.width+3)
              failures.push({profile:profile.name,problem:'DOCUMENT_HORIZONTAL_OVERFLOW',value:measurement.document_scroll_width});
          }
