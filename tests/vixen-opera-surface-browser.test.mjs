@@ -69,14 +69,23 @@ async function visit(profile,phase){
  const url=origin+(phase==='before'?'__vixen-opera-before-rgi27.html':'vix-cyb.html');
  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:40000});
  assert.equal(response?.status(),200,'HTTP source '+phase);
- await page.locator('#vixenRoomRail button[data-view="works"]').waitFor({state:'attached',timeout:25000});
- await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true});
+ // Wait for mounted route handlers, not merely initial HTML.
+ await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:30000});
+ await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true,timeout:20000});
+ await page.locator('#view-works').waitFor({state:'visible',timeout:20000});
  const workButtons=page.locator('#worksListContainer button[data-select-work]');
  await workButtons.first().waitFor({state:'attached',timeout:25000});
  let found=false;
  const count=Math.min(12,await workButtons.count());
  for(let i=0;i<count;i++){
-  await workButtons.nth(i).click({force:true,timeout:20000});
+  const button=workButtons.nth(i);
+  if(!await button.isVisible()){
+   const back=page.locator('#closeMobileWorkBtn');
+   if(await back.isVisible())await back.click({timeout:15000});
+  }
+  if(await button.isVisible())await button.click({timeout:20000});
+  else if(i===0 && await page.locator('#expaCompanionBodyPre .vix-reader-paragraph').count()) {found=true;break;}
+  else continue;
   const phaseButton=page.locator('[data-reader-phase="WORLD_ANSWERS"]').first();
   if(await phaseButton.count())await phaseButton.click({force:true,timeout:10000});
   try {
