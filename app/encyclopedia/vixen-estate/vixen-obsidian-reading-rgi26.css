@@ -352,7 +352,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
    max-width:76ch!important;width:auto!important;
    margin:0 auto .85em!important;padding:0!important;
    font:inherit!important;line-height:1.61!important;
-   word-break:normal!important;overflow-wrap:normal!important;
+   word-break:normal!important;overflow-wrap:break-word!important;
    text-wrap:pretty!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
@@ -361,6 +361,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
    width:auto!important;max-width:76ch!important;
    margin:0 auto 18px!important;padding:0 0 13px!important;
    font:400 clamp(23px,2.05vw,30px)/1.20 "Iowan Old Style","New York",Georgia,serif!important;
+   color:#efd18a!important;
    letter-spacing:-.025em!important;text-align:left!important;
    text-wrap:pretty!important;white-space:normal!important;
    word-break:normal!important;overflow-wrap:normal!important;
