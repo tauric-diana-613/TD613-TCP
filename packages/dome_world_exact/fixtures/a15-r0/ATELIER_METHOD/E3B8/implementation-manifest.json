@@ -1,0 +1,216 @@
+{
+  "schema": "td613.b8-finite-code-binding/v1",
+  "scope": "EXPLICIT_SOURCE_FREE_SOFTWARE_AND_INVENTED_CATALOG_ONLY",
+  "preimport_signed_root": "HELD",
+  "files": [
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/originals/encyclopedia-reference-runtime.js",
+      "sha256": "92bcf30f1900f4336e7c0a175c00db32c5bd9334e7e4e7339dcee76aff438e69",
+      "git_blob": "fbad686706139be6f4cb1bb8e021a55fe65f381e",
+      "bytes": 10909
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/originals/wendbine-compile.mjs",
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be",
+      "bytes": 9876
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/originals/wendbine-query.mjs",
+      "sha256": "405f6ad6ccfc781f2cda4edb5ad7e7fb6c273203573eb676c7c0b307723def05",
+      "git_blob": "1900a395238f7e6dbc8d2a6b17b28b4726a7de11",
+      "bytes": 12783
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/scripts/e3b3-authentic-chamber-v01.mjs",
+      "sha256": "7f973c34118ebf199736c3fe464817cc5ade2ab052431f8a812d80abc1113259",
+      "git_blob": "1898e3bb32e99c156ba3c9fe68606bb2ba61e572",
+      "bytes": 14916
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/scripts/e3b3-source-native-oracle-v01.mjs",
+      "sha256": "8e1c65c725b43a74c538536ec661e43161b414c434608f04413ee92986d9d569",
+      "git_blob": "739b621786359e9cd7739a4354a9553f9609e2cc",
+      "bytes": 3667
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/seed/atelier-core-v02.mjs",
+      "sha256": "48596debe4722600c2ed436fb316581fd30a1f76175a580b2ab7a09006178970",
+      "git_blob": "48a8f0eaa224e9850897a91028dbb63ab25c70ad",
+      "bytes": 15054
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/seed/atelier-method-v0.2-candidate.json",
+      "sha256": "1f150a2f0ca80316aea5a78f36b8f6e3c2ee8a7ce2b61f4472ef127c6ca88211",
+      "git_blob": "471048d73dac00f7b419b28d168f75567e89f150",
+      "bytes": 10341
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/seed/atelier-scaffold-v02.mjs",
+      "sha256": "941a7442f1d1d332bf4e2b2e4c34fd83749ff04c9b312d4416bac02561ab0156",
+      "git_blob": "c1e541cb84c37d105642535c52c12a45c674f1ff",
+      "bytes": 4778
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs",
+      "sha256": "93a52ccbdbf30d5058d9d2bcc362b24e965d999652e1a636632d963205870b2b",
+      "git_blob": "b7ab8f4985708452d5cf1721bbda2637d62b7a60",
+      "bytes": 10388
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+      "sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "git_blob": "74cc9385785c3bb13660222d623f9f7ff0187013",
+      "bytes": 21376
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-core-v02.mjs",
+      "sha256": "48596debe4722600c2ed436fb316581fd30a1f76175a580b2ab7a09006178970",
+      "git_blob": "48a8f0eaa224e9850897a91028dbb63ab25c70ad",
+      "bytes": 15054
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-mechanism-discrimination-v02.mjs",
+      "sha256": "334ae2ff59febad38b5544f7752298d32d5465a95d6892508f4c1b33e341038b",
+      "git_blob": "ed7866467ab030a56373fc92d4b87bbf9bab3c00",
+      "bytes": 12005
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-method-v0.2-candidate.json",
+      "sha256": "1f150a2f0ca80316aea5a78f36b8f6e3c2ee8a7ce2b61f4472ef127c6ca88211",
+      "git_blob": "471048d73dac00f7b419b28d168f75567e89f150",
+      "bytes": 10341
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-parity-operators-v02.mjs",
+      "sha256": "e1dd4d335d33a68abeec62deb88e5fd41b02e8272da8bad8764410395a8c73c6",
+      "git_blob": "39ff91ae97a1064be33dbff210d1fb2a72116d81",
+      "bytes": 28830
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-prospective-controls-v02.mjs",
+      "sha256": "078cf37e9f6c0afe4c293b3e19f09666e22a02f97b0f0b874182b1a418d280f5",
+      "git_blob": "5e1a439e9c9abb94c1dac4d9320f9a3eb41d84ed",
+      "bytes": 4495
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-scaffold-v02.mjs",
+      "sha256": "941a7442f1d1d332bf4e2b2e4c34fd83749ff04c9b312d4416bac02561ab0156",
+      "git_blob": "c1e541cb84c37d105642535c52c12a45c674f1ff",
+      "bytes": 4778
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-semantic-polycompiler-v02.mjs",
+      "sha256": "70b1ac1dff3cbbe3a15c87bb49e620aaf8d517a532870c8f757122082b148206",
+      "git_blob": "b0b607dd19a5c655b42139ee53be3ae9c040a748",
+      "bytes": 8724
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/source-native-oracle-v01.mjs",
+      "sha256": "5e3ed21ce99e5199c8a1257a916ae374247ca52e98a2e3f0496d09262a51f6ca",
+      "git_blob": "a79775d32074d48687ac16c76fa493acd9cbbccd",
+      "bytes": 3216
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "sha256": "0c063c0192911e8620eca36c9828b3595d2ce1b873b5114f1bb6ff1cea9cfbe9",
+      "git_blob": "7284e1df2ca5a4393d49f0309855c28f87f48a83",
+      "bytes": 22914
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-native-routing-v01.mjs",
+      "sha256": "589e90f63d19835729ef6b43c3ae7c6cc557bc25624d2dbaac0a0d50de32873f",
+      "git_blob": "78fba229c0334559fcfacfa52e325235e3609372",
+      "bytes": 9315
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/native-routing-differential.mjs",
+      "sha256": "897a0a3977db158f3218bd3a7098bd25f86253afcfec710c7d8d927f4ab5f1b9",
+      "git_blob": "de6bedc437621847d0d7eff8838819be7b641237",
+      "bytes": 4434
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "sha256": "d6e2732242c4b5d5206ca09130bdbbabb80c2a430e70306d393de57c8b190c43",
+      "git_blob": "43dc0266c9a7fd975003090e4a7276575acac0c6",
+      "bytes": 17666
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs",
+      "sha256": "5837dfae1f8191ffdf43fe4eb9af522e2010e0c6849b83a69a959a2b6f376508",
+      "git_blob": "c87513524408d02941df1094e9df610bb3675478",
+      "bytes": 8719
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/dependencies.json",
+      "sha256": "ec8fddb878051384e389df8855f52bf71bf0659f665597fe2a30ada81213f182",
+      "git_blob": "9c4630de7f8508ad9bca3d8bc3c51cf0d7fd2705",
+      "bytes": 7930
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.mjs",
+      "sha256": "fda16d99b8c82d06fb137c3a70d5fc46dadac37beb0573c26301a2a00f71c96d",
+      "git_blob": "9ee9443178925bab933d9f0463189db924b07f68",
+      "bytes": 18547
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/dependencies.json",
+      "sha256": "c8aaebac9607bbaeb210f449777f7eadc9dc8edb549694f03281f35cf9475ece",
+      "git_blob": "209a7d30e21b74da9cfbe382fa35ba60dce634d2",
+      "bytes": 9848
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-methods-v01.mjs",
+      "sha256": "6b81765849953aa4677e80433f404522b6e00efec3c134d47930aee049e7132f",
+      "git_blob": "c0afdd35ab35018422b196461437f347b7d2b5bf",
+      "bytes": 17037
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-portable-oracle-v01.mjs",
+      "sha256": "1b67065f75c2494a1cc15f49d46b5fa60205db391ba08a1fe8758bd3a5f66d18",
+      "git_blob": "ce8404ec0b170607e8e76339f5bf88be6016f228",
+      "bytes": 1352
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/native/em-atelier-parity.mjs",
+      "sha256": "d213840b1299a10062260b5c0d9ebb3506e130d640f52f6ede7482f79ec6314a",
+      "git_blob": "70b4c35c9f75bbf95247a20d9e58954d33a170a2",
+      "bytes": 14688
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/recipient-em-assembly-v01.mjs",
+      "sha256": "97e9838218c59e199398bff4fe48e3b5440e3091d00cd426d683707b6ea2d5ee",
+      "git_blob": "f52d9c9a526cd4eba19f3b8dcb7678fe0c12b1ff",
+      "bytes": 10948
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/fixture-catalog.json",
+      "sha256": "49ea161d6d6fddbb8d02c50716fb4f2b795601bd82465bab7b21cb35ec8d5dcc",
+      "git_blob": "b577aa2b26a731b432b0e1a42a19fd0a1712da63",
+      "bytes": 62483
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/gate-policy.json",
+      "sha256": "4762965b723e5e522edb45f5846160272a0af7c6569faf261f6147f1a013dfe9",
+      "git_blob": "406cbc2f3e0365babd8f903aeb8765df16e8de0d",
+      "bytes": 13836
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs",
+      "sha256": "0ca9d747df5f738d1d694a4389590c75a0b04dcb1d36921d75f3ae03bc528bf6",
+      "git_blob": "d71be90f92b4a9c760645984f67b8ada92f463dd",
+      "bytes": 18392
+    }
+  ],
+  "source_pins": {
+    "main": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+    "original_1605": "441ce7e974a76685a212552c1da610ea30fd1efc",
+    "b3": "fff4f7426e21a42b272351f32c65baa1be11c749",
+    "b41": "4948a1c9c23b738d326b07cfc7d208604c305973",
+    "b5": "3b0c4d1c2e5af86521dde480b69398a2028ebd87",
+    "b6": "6b5dff12fe9a527164763088e46d5a2eefe66791",
+    "original_src": "638bb78523fa7f156c7c5e5243d71e5df26cb0e0",
+    "em_software": "50c35cceb50f483c7c36a1497fed9de9377b89d9",
+    "em_original_software_coordinate": "70b5a0f9e94626cba6068f41c6117e7978800bbd"
+  }
+}
