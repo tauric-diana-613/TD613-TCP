@@ -150,6 +150,17 @@ async function runCli(argv = process.argv.slice(2)) {
     const blindFd = fs.openSync(blindedOutPath, 'wx', 0o600);
     fs.closeSync(blindFd);
 
+    const cliAbortController = new AbortController();
+    const onStopSignal = (sigName) => {
+      if (!cliAbortController.signal.aborted) {
+        cliAbortController.abort(new R1ProviderNativeError('R1_OPERATOR_SIGINT_OR_SIGTERM', `Operator ${sigName} manual stop`));
+      }
+    };
+    const onSigint = () => onStopSignal('SIGINT');
+    const onSigterm = () => onStopSignal('SIGTERM');
+    process.on('SIGINT', onSigint);
+    process.on('SIGTERM', onSigterm);
+
     let result;
     try {
       result = await executeProviderNativeR1Observation({
@@ -159,7 +170,8 @@ async function runCli(argv = process.argv.slice(2)) {
         evidenceDir,
         revocationFilePath,
         episodes,
-        measureCountTokens: !args.has('--skip-count-tokens')
+        measureCountTokens: !args.has('--skip-count-tokens'),
+        operatorAbortSignal: cliAbortController.signal
       });
     } catch (error) {
       const code = String(error?.code || '');
@@ -180,6 +192,9 @@ async function runCli(argv = process.argv.slice(2)) {
         } catch { /* ignore */ }
       }
       throw error;
+    } finally {
+      process.off('SIGINT', onSigint);
+      process.off('SIGTERM', onSigterm);
     }
 
     fs.writeFileSync(outPath, `${JSON.stringify(result, null, 2)}\n`, { encoding: 'utf8', flag: 'w', mode: 0o600 });

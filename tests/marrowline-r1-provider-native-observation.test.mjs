@@ -553,3 +553,284 @@ test('Unbounded Paired Episodes & Integrity Controls: allows >2 repeated pairs, 
     fs.rmSync(evidenceDir, { recursive: true, force: true });
   }
 });
+
+test('Red Pen #2 (In-Flight Operator STOP & Live Revocation): interrupts active original-Google-SSE stream mid-flight, preserves partial raw bytes, and stops session', async () => {
+  const { publicKey, privateKey } = createEphemeralTestSigner();
+  const fp = spkiFingerprint(publicKey);
+  const evidenceDir = makeTempEvidenceDir();
+
+  try {
+    // Case A: Mid-stream operatorAbortSignal fires while reader.read() is blocked waiting on chunk #2
+    const abortCtrl = new AbortController();
+    const partialChunk = `data: ${JSON.stringify({ modelVersion: R1_NATIVE_PINNED_MODEL, candidates: [{ content: { parts: [{ text: 'Kʰonapolit\nPartial chunk before operator stop' }] } }] })}\n\n`;
+    let streamCancelled = false;
+    let pullCount = 0;
+
+    const stoppedBySignal = await executeProviderNativeCore({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(buildValidNativePayload(), privateKey),
+      publicKeyPem: publicKey,
+      pinnedTrustFingerprintSha256: fp,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir,
+      apiKey: 'fake-key',
+      checkModelDiscovery: false,
+      measureCountTokens: false,
+      operatorAbortSignal: abortCtrl.signal,
+      episodes: [{ episodeId: 1, order: 'A_THEN_B' }, { episodeId: 2, order: 'B_THEN_A' }],
+      transportFetch: async () => new Response(new ReadableStream({
+        pull(controller) {
+          pullCount += 1;
+          if (pullCount === 1) {
+            controller.enqueue(new TextEncoder().encode(partialChunk));
+            setTimeout(() => abortCtrl.abort(), 30);
+            return undefined;
+          }
+          // Intentionally stay pending forever unless operator STOP cancels the stream
+          return new Promise(() => {});
+        },
+        cancel() {
+          streamCancelled = true;
+        }
+      }), { status: 200, headers: { 'content-type': 'text/event-stream; charset=utf-8' } })
+    });
+
+    assert.equal(streamCancelled, true);
+    assert.equal(stoppedBySignal.dispatchCounts.generationCalls, 1);
+    assert.equal(stoppedBySignal.integritySessionHaltReason, 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED');
+    const attA = stoppedBySignal.attemptRecords[0];
+    assert.equal(attA.wire.operatorStopped, true);
+    assert.equal(attA.integrityStopReason, 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED');
+    assert.equal(fs.readFileSync(attA.rawSseFilePath, 'utf8'), partialChunk);
+    assert.equal(crypto.createHash('sha256').update(Buffer.from(partialChunk, 'utf8')).digest('hex'), attA.wire.rawSseSha256);
+    assert.equal(stoppedBySignal.episodeSummaries[0].outcome.classification, 'HELD');
+    assert.equal(stoppedBySignal.episodeSummaries.length, 1);
+
+    // Case B: Live revocation file update arrives mid-stream and aborts without waiting for provider EOF
+    const revocationFile = path.join(evidenceDir, 'revocations.json');
+    fs.writeFileSync(revocationFile, JSON.stringify({ revokedSessionIds: [] }), 'utf8');
+    const payloadB = buildValidNativePayload();
+    let liveRevocationCancelled = false;
+    let livePullCount = 0;
+
+    const stoppedByRevocation = await executeProviderNativeCore({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(payloadB, privateKey),
+      publicKeyPem: publicKey,
+      pinnedTrustFingerprintSha256: fp,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir,
+      revocationFilePath: revocationFile,
+      apiKey: 'fake-key',
+      checkModelDiscovery: false,
+      measureCountTokens: false,
+      episodes: [{ episodeId: 1, order: 'A_THEN_B' }],
+      transportFetch: async () => new Response(new ReadableStream({
+        pull(controller) {
+          livePullCount += 1;
+          if (livePullCount === 1) {
+            controller.enqueue(new TextEncoder().encode(partialChunk));
+            setTimeout(() => {
+              fs.writeFileSync(revocationFile, JSON.stringify({ revokedSessionIds: [payloadB.sessionId] }), 'utf8');
+            }, 30);
+            return undefined;
+          }
+          return new Promise(() => {});
+        },
+        cancel() {
+          liveRevocationCancelled = true;
+        }
+      }), { status: 200, headers: { 'content-type': 'text/event-stream; charset=utf-8' } })
+    });
+
+    assert.equal(liveRevocationCancelled, true);
+    assert.equal(stoppedByRevocation.dispatchCounts.generationCalls, 1);
+    assert.equal(stoppedByRevocation.integritySessionHaltReason, 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED');
+    assert.equal(stoppedByRevocation.attemptRecords[0].wire.operatorStopped, true);
+    assert.equal(stoppedByRevocation.attemptRecords[0].integrityStopReason, 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED');
+    assert.equal(fs.readFileSync(stoppedByRevocation.attemptRecords[0].rawSseFilePath, 'utf8'), partialChunk);
+    assert.equal(stoppedByRevocation.episodeSummaries[0].outcome.classification, 'HELD');
+  } finally {
+    fs.rmSync(evidenceDir, { recursive: true, force: true });
+  }
+});
+
+test('Red Pen #3 (Single Giant SSE Event & Giant Single Authored Line): streams >2.5 MiB single event and >2.2 MiB single newline-free line with unordered thought keys & zero leftover spools', async () => {
+  const { publicKey, privateKey } = createEphemeralTestSigner();
+  const fp = spkiFingerprint(publicKey);
+  const evidenceDir = makeTempEvidenceDir();
+
+  try {
+    const giantThoughtText = `SECRET_THOUGHT_DO_NOT_EMIT ${'t\u0301\u0323'.repeat(60000)}`;
+    const unitZalgo = 'z\u0301\u0323\u0335a\u0302\u0327l ';
+    const expectedLineBody = unitZalgo.repeat(260000).trimEnd();
+    assert.ok(Buffer.byteLength(expectedLineBody, 'utf8') > 2.2 * 1024 * 1024);
+
+    const s1Expected = makeVariableMultistackPhrase();
+    const expectedAuthored = `Kʰonapolit\n${s1Expected}\n\nTauric Diana bots\n${expectedLineBody}`;
+
+    // Single massive SSE `data:` frame (>2.5 MiB), unordered `"thought": true` after `"text"`,
+    // sliced into arbitrary ~17 KiB UTF-8 byte chunks (splitting mid-character and mid-JSON escape)
+    const singleGiantEventJson = JSON.stringify({
+      modelVersion: R1_NATIVE_PINNED_MODEL,
+      candidates: [{
+        content: {
+          role: 'model',
+          parts: [
+            { text: giantThoughtText, thought: true },
+            { text: expectedAuthored }
+          ]
+        },
+        finishReason: 'STOP'
+      }],
+      usageMetadata: { promptTokenCount: 215, candidatesTokenCount: 950000, thoughtsTokenCount: 55000, totalTokenCount: 1005215 }
+    });
+    const giantSseBytes = Buffer.from(`data: ${singleGiantEventJson}\n\n`, 'utf8');
+    assert.ok(giantSseBytes.byteLength > 2.5 * 1024 * 1024);
+
+    const chunkSliceBytes = 17321;
+    let callIdx = 0;
+    const obs = await executeProviderNativeCore({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(buildValidNativePayload(), privateKey),
+      publicKeyPem: publicKey,
+      pinnedTrustFingerprintSha256: fp,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir,
+      apiKey: 'fake-key',
+      checkModelDiscovery: false,
+      measureCountTokens: false,
+      episodes: [{ episodeId: 1, order: 'A_THEN_B' }],
+      transportFetch: async () => {
+        callIdx += 1;
+        if (callIdx === 1) {
+          let offset = 0;
+          return new Response(new ReadableStream({
+            pull(controller) {
+              if (offset >= giantSseBytes.byteLength) {
+                controller.close();
+                return;
+              }
+              const nextEnd = Math.min(giantSseBytes.byteLength, offset + chunkSliceBytes);
+              controller.enqueue(giantSseBytes.subarray(offset, nextEnd));
+              offset = nextEnd;
+            }
+          }), { status: 200, headers: { 'content-type': 'text/event-stream; charset=utf-8' } });
+        }
+        return makeSseResponse([{
+          modelVersion: R1_NATIVE_PINNED_MODEL,
+          candidates: [{ content: { parts: [{ text: `Kʰonapolit\nPlain thunder.\n\nTauric Diana bots\n${makeVariableMultistackPhrase()}` }] }, finishReason: 'STOP' }],
+          usageMetadata: { promptTokenCount: 230, candidatesTokenCount: 120, thoughtsTokenCount: 25, totalTokenCount: 375 }
+        }]);
+      }
+    });
+
+    const aRecord = obs.attemptRecords[0];
+    assert.equal(aRecord.wire.parserA.eventCount, 1);
+    assert.equal(aRecord.wire.parserB.eventCount, 1);
+    assert.equal(aRecord.wire.parserAgreement, true);
+    assert.equal(aRecord.wire.rawDiskVerified, true);
+    assert.equal(aRecord.wire.authoredDiskVerified, true);
+    assert.equal(aRecord.textIntegrityOk, true);
+    assert.equal(aRecord.integrityStopReason, null);
+    assert.equal(aRecord.analysis.structuralComplianceOk, true);
+    assert.equal(aRecord.wire.thoughtUtf8Bytes, Buffer.byteLength(giantThoughtText, 'utf8'));
+    assert.equal(aRecord.wire.authoredTextSha256, crypto.createHash('sha256').update(Buffer.from(expectedAuthored, 'utf8')).digest('hex'));
+    assert.equal(aRecord.analysis.section2Morphology.sha256, crypto.createHash('sha256').update(Buffer.from(expectedLineBody, 'utf8')).digest('hex'));
+    assert.equal(aRecord.analysis.section2Morphology.stackedBaseCount, 520000);
+    assert.equal(fs.readFileSync(aRecord.authoredTextFilePath, 'utf8').includes('SECRET_THOUGHT_DO_NOT_EMIT'), false);
+
+    // Ensure zero temporary spool files were left behind in evidenceDir
+    const leftoverTmps = fs.readdirSync(evidenceDir).filter((name) => name.includes('.tmp'));
+    assert.deepEqual(leftoverTmps, []);
+  } finally {
+    fs.rmSync(evidenceDir, { recursive: true, force: true });
+  }
+});
+
+test('Red Pen #4 (HTTP Non-2XX Wire Custody): persists unmodified raw error bytes, headers, and status for 503 streamGenerateContent, countTokens, and 429 modelMetadata', async () => {
+  const { publicKey, privateKey } = createEphemeralTestSigner();
+  const fp = spkiFingerprint(publicKey);
+  const evidenceDir = makeTempEvidenceDir();
+
+  try {
+    const rawMetaErr = '{"error":{"code":429,"message":"Rate limited metadata check","status":"RESOURCE_EXHAUSTED"}}';
+    const metaFail = await executeProviderNativeCore({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(buildValidNativePayload(), privateKey),
+      publicKeyPem: publicKey,
+      pinnedTrustFingerprintSha256: fp,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir,
+      apiKey: 'fake-key',
+      checkModelDiscovery: true,
+      transportFetch: async () => new Response(rawMetaErr, {
+        status: 429,
+        statusText: 'Too Many Requests',
+        headers: { 'content-type': 'application/json', 'retry-after': '17' }
+      })
+    });
+
+    assert.equal(metaFail.integritySessionHaltReason, 'STOP_ON_MODEL_METADATA_UNAVAILABLE');
+    assert.equal(metaFail.dispatchCounts.generationCalls, 0);
+    assert.ok(metaFail.metadataHttpErrorCustody);
+    assert.equal(metaFail.metadataHttpErrorCustody.httpStatus, 429);
+    assert.equal(metaFail.metadataHttpErrorCustody.responseHeaders['retry-after'], '17');
+    assert.equal(fs.readFileSync(metaFail.metadataHttpErrorCustody.rawErrorBodyPath, 'utf8'), rawMetaErr);
+    assert.equal(JSON.parse(fs.readFileSync(metaFail.metadataHttpErrorCustody.metaFilePath, 'utf8')).httpStatus, 429);
+
+    const rawCountTokensErr = '{"error":{"code":400,"message":"countTokens rejected"}}';
+    const rawStream503Body = 'UPSTREAM_503_RAW_WIRE_BODY::{"error":{"code":503,"status":"UNAVAILABLE"}}';
+    const errRun = await executeProviderNativeCore({
+      acknowledgeLiveExecution: true,
+      grant: signGrant(buildValidNativePayload(), privateKey),
+      publicKeyPem: publicKey,
+      pinnedTrustFingerprintSha256: fp,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir,
+      apiKey: 'fake-key',
+      checkModelDiscovery: false,
+      measureCountTokens: true,
+      episodes: [{ episodeId: 1, order: 'A_THEN_B' }],
+      transportFetch: async (url) => {
+        if (url.includes(':countTokens')) {
+          return new Response(rawCountTokensErr, {
+            status: 400,
+            statusText: 'Bad Request',
+            headers: { 'content-type': 'application/json', 'x-debug-id': 'ct-400' }
+          });
+        }
+        if (url.includes('streamGenerateContent')) {
+          return new Response(rawStream503Body, {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: { 'content-type': 'text/plain; charset=utf-8', 'retry-after': '42', 'x-provider-trace': 'trace-503' }
+          });
+        }
+        throw new Error(`Unexpected URL: ${url}`);
+      }
+    });
+
+    assert.equal(errRun.dispatchCounts.generationCalls, 2);
+    for (const rec of errRun.attemptRecords) {
+      assert.equal(rec.integrityStopReason, 'PROVIDER_HTTP_503_UNAVAILABLE');
+      assert.ok(rec.httpErrorCustody);
+      assert.equal(rec.httpErrorCustody.httpStatus, 503);
+      assert.equal(rec.httpErrorCustody.responseHeaders['retry-after'], '42');
+      assert.equal(rec.httpErrorCustody.responseHeaders['x-provider-trace'], 'trace-503');
+      assert.equal(fs.readFileSync(rec.httpErrorCustody.rawErrorBodyPath, 'utf8'), rawStream503Body);
+      assert.equal(
+        rec.httpErrorCustody.rawErrorBodySha256,
+        crypto.createHash('sha256').update(Buffer.from(rawStream503Body, 'utf8')).digest('hex')
+      );
+      assert.equal(JSON.parse(fs.readFileSync(rec.httpErrorCustody.metaFilePath, 'utf8')).rawErrorBodyBytes, Buffer.byteLength(rawStream503Body));
+      assert.equal(fs.readFileSync(rec.countTokensMeasurement.httpErrorCustody.rawErrorBodyPath, 'utf8'), rawCountTokensErr);
+      assert.equal(rec.countTokensMeasurement.httpErrorCustody.httpStatus, 400);
+    }
+    const journalText = fs.readFileSync(errRun.evidenceJournalPath, 'utf8');
+    assert.ok(journalText.includes('trace-503'));
+    assert.ok(journalText.includes(errRun.attemptRecords[0].httpErrorCustody.rawErrorBodySha256));
+  } finally {
+    fs.rmSync(evidenceDir, { recursive: true, force: true });
+  }
+});

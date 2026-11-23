@@ -488,11 +488,416 @@ function writeAllSync(fd, buffer) {
   }
 }
 
-function createStreamingSseConsumerA({ authoredFd }) {
-  const decoder = new TextDecoder('utf-8', { fatal: false });
+const PART_MEMORY_SPILL_BYTES = 64 * 1024;
+const TEXT_FLUSH_CHUNK_CHARS = 16 * 1024;
+const HEADING_MAX_CHARS = 512;
+const GIANT_LINE_FLUSH_CHARS = 32 * 1024;
+
+function createPartSpool(tempFilePath) {
+  let chunks = [];
+  let memoryBytes = 0;
+  let spilled = false;
+  let spoolFd = null;
+  let totalBytes = 0;
+
+  return {
+    appendUtf8(buf) {
+      if (!buf || buf.byteLength === 0) return;
+      totalBytes += buf.byteLength;
+      if (!spilled) {
+        if (memoryBytes + buf.byteLength <= PART_MEMORY_SPILL_BYTES) {
+          chunks.push(buf);
+          memoryBytes += buf.byteLength;
+          return;
+        }
+        spilled = true;
+        spoolFd = fs.openSync(tempFilePath, 'w+', 0o600);
+        for (const existing of chunks) writeAllSync(spoolFd, existing);
+        chunks = [];
+        memoryBytes = 0;
+      }
+      writeAllSync(spoolFd, buf);
+    },
+    drainChunks(onChunk) {
+      if (!spilled) {
+        for (const buf of chunks) onChunk(buf);
+      } else if (spoolFd !== null) {
+        const readBuf = Buffer.allocUnsafe(STREAM_READBACK_CHUNK_BYTES);
+        let pos = 0;
+        while (pos < totalBytes) {
+          const toRead = Math.min(readBuf.length, totalBytes - pos);
+          const n = fs.readSync(spoolFd, readBuf, 0, toRead, pos);
+          if (n <= 0) break;
+          onChunk(readBuf.subarray(0, n));
+          pos += n;
+        }
+      }
+      chunks = [];
+      memoryBytes = 0;
+      if (spoolFd !== null) {
+        try { fs.closeSync(spoolFd); } catch { /* ignore */ }
+        spoolFd = null;
+        try { fs.unlinkSync(tempFilePath); } catch { /* ignore */ }
+      }
+      spilled = false;
+      totalBytes = 0;
+    },
+    cleanup() {
+      chunks = [];
+      if (spoolFd !== null) {
+        try { fs.closeSync(spoolFd); } catch { /* ignore */ }
+        spoolFd = null;
+        try { fs.unlinkSync(tempFilePath); } catch { /* ignore */ }
+      }
+    }
+  };
+}
+
+// Pure streaming RFC-8259 JSON parser tailored for arbitrary-size Gemini SSE events.
+// Keeps scalar metadata in primitives and streams arbitrarily large parts[*].text
+// into bounded <=64 KiB scratch/disk spool without building giant strings in heap.
+function createStreamingGeminiJsonFrameParser({ spoolPath, onPartCompleted }) {
+  const stack = [];
+  let mode = 'VALUE'; // VALUE | KEY | COLON | COMMA_OR_END | STRING | NUMBER | LITERAL | DONE
+  let parseError = false;
+  let strPurpose = null; // 'KEY' | 'SCALAR' | 'TEXT_PART' | 'SKIP'
+  let strEscaping = false;
+  let strUnicodeDigits = '';
+  let scalarBuf = '';
+  let primBuf = '';
+  let literalTarget = '';
+  let literalIdx = 0;
+  let partSeq = 0;
+
+  let textOutAcc = '';
+  let activePartSpool = null;
+  let tailSample = '';
+
+  const metadata = {
+    modelVersion: null,
+    finishReason: null,
+    finishMessage: null,
+    promptBlockReason: null,
+    usageMetadata: null,
+    hasAuthoredOrFinish: false
+  };
+
+  function isPartTextField() {
+    // candidates[0].content.parts[k] object, where current key is 'text'
+    return stack.length === 6
+      && stack[0].kind === 'object' && stack[0].pendingKey === 'candidates'
+      && stack[1].kind === 'array' && stack[1].index === 0
+      && stack[2].kind === 'object' && stack[2].pendingKey === 'content'
+      && stack[3].kind === 'object' && stack[3].pendingKey === 'parts'
+      && stack[4].kind === 'array'
+      && stack[5].kind === 'object' && stack[5].pendingKey === 'text' && stack[5].partSpool;
+  }
+
+  function classifyScalarPath() {
+    if (stack.length === 1 && stack[0].kind === 'object') {
+      if (stack[0].pendingKey === 'modelVersion') return 'modelVersion';
+    }
+    if (stack.length === 2 && stack[0].kind === 'object' && stack[0].pendingKey === 'promptFeedback' && stack[1].kind === 'object' && stack[1].pendingKey === 'blockReason') {
+      return 'promptBlockReason';
+    }
+    if (stack.length === 3 && stack[0].kind === 'object' && stack[0].pendingKey === 'candidates' && stack[1].kind === 'array' && stack[1].index === 0 && stack[2].kind === 'object') {
+      if (stack[2].pendingKey === 'finishReason') return 'finishReason';
+      if (stack[2].pendingKey === 'finishMessage') return 'finishMessage';
+    }
+    if (stack.length === 2 && stack[0].kind === 'object' && stack[0].pendingKey === 'usageMetadata' && stack[1].kind === 'object') {
+      return `usage:${stack[1].pendingKey}`;
+    }
+    if (
+      stack.length === 6
+      && stack[0].pendingKey === 'candidates'
+      && stack[1].kind === 'array' && stack[1].index === 0
+      && stack[2].pendingKey === 'content'
+      && stack[3].pendingKey === 'parts'
+      && stack[4].kind === 'array'
+      && stack[5].kind === 'object' && stack[5].pendingKey === 'thought'
+    ) {
+      return 'partThought';
+    }
+    return null;
+  }
+
+  function flushTextAcc(forceAll = false) {
+    if (!textOutAcc || !activePartSpool) return;
+    let flushLen = textOutAcc.length;
+    if (!forceAll) {
+      if (flushLen < TEXT_FLUSH_CHUNK_CHARS) return;
+      const lastCode = textOutAcc.charCodeAt(flushLen - 1);
+      if (lastCode >= 0xD800 && lastCode <= 0xDBFF && flushLen > 1) flushLen -= 1;
+    }
+    const piece = textOutAcc.slice(0, flushLen);
+    textOutAcc = textOutAcc.slice(flushLen);
+    activePartSpool.appendUtf8(Buffer.from(piece, 'utf8'));
+    if (piece.length > 0) {
+      tailSample = (tailSample + piece.slice(-256)).slice(-256);
+    }
+  }
+
+  function afterValueCompleted() {
+    if (stack.length === 0) {
+      mode = 'DONE';
+      return;
+    }
+    mode = 'COMMA_OR_END';
+  }
+
+  function commitScalarValue(val) {
+    const slot = classifyScalarPath();
+    if (!slot) return;
+    if (slot === 'modelVersion' && typeof val === 'string' && val.trim()) metadata.modelVersion = val.trim();
+    else if (slot === 'promptBlockReason' && typeof val === 'string' && val.trim()) metadata.promptBlockReason = val.trim();
+    else if (slot === 'finishReason' && typeof val === 'string' && val.trim()) {
+      metadata.finishReason = val.trim();
+      metadata.hasAuthoredOrFinish = true;
+    } else if (slot === 'finishMessage' && typeof val === 'string' && val.trim()) {
+      metadata.finishMessage = val.trim();
+    } else if (slot === 'partThought' && typeof val === 'boolean') {
+      stack[5].isThought = val === true;
+    } else if (slot.startsWith('usage:') && typeof val === 'number') {
+      if (!metadata.usageMetadata) metadata.usageMetadata = {};
+      metadata.usageMetadata[slot.slice(6)] = val;
+    }
+  }
+
+  function onBeginValue(ch) {
+    if (ch === '{') {
+      const isPartsElem = stack.length === 5
+        && stack[0].pendingKey === 'candidates'
+        && stack[1].kind === 'array' && stack[1].index === 0
+        && stack[2].pendingKey === 'content'
+        && stack[3].pendingKey === 'parts'
+        && stack[4].kind === 'array';
+      const frame = {
+        kind: 'object',
+        pendingKey: null,
+        isPartObj: isPartsElem,
+        isThought: false,
+        partSpool: isPartsElem ? createPartSpool(`${spoolPath}.${partSeq++}`) : null
+      };
+      stack.push(frame);
+      mode = 'KEY';
+    } else if (ch === '[') {
+      stack.push({ kind: 'array', index: 0, empty: true });
+      mode = 'VALUE';
+    } else if (ch === '"') {
+      if (isPartTextField()) {
+        strPurpose = 'TEXT_PART';
+        activePartSpool = stack[5].partSpool;
+        stack[5].hasText = true;
+      } else {
+        const scalarSlot = classifyScalarPath();
+        strPurpose = scalarSlot ? 'SCALAR' : 'SKIP';
+        scalarBuf = '';
+      }
+      strEscaping = false;
+      strUnicodeDigits = '';
+      mode = 'STRING';
+    } else if (ch === 't') {
+      literalTarget = 'true'; literalIdx = 1; mode = 'LITERAL';
+    } else if (ch === 'f') {
+      literalTarget = 'false'; literalIdx = 1; mode = 'LITERAL';
+    } else if (ch === 'n') {
+      literalTarget = 'null'; literalIdx = 1; mode = 'LITERAL';
+    } else if (ch === '-' || (ch >= '0' && ch <= '9')) {
+      primBuf = ch; mode = 'NUMBER';
+    } else {
+      parseError = true;
+    }
+  }
+
+  function closeTopContainer(ch) {
+    const top = stack.pop();
+    if (!top) { parseError = true; return; }
+    if (ch === '}' && top.kind !== 'object') { parseError = true; return; }
+    if (ch === ']' && top.kind !== 'array') { parseError = true; return; }
+    if (top.isPartObj && top.partSpool) {
+      if (top.hasText && !top.isThought) metadata.hasAuthoredOrFinish = true;
+      try {
+        onPartCompleted({
+          isThought: top.isThought === true,
+          spool: top.partSpool
+        });
+      } finally {
+        top.partSpool.cleanup();
+      }
+    }
+    afterValueCompleted();
+  }
+
+  function appendStringChar(ch) {
+    if (strPurpose === 'TEXT_PART') {
+      textOutAcc += ch;
+      if (textOutAcc.length >= TEXT_FLUSH_CHUNK_CHARS) flushTextAcc(false);
+    } else if (strPurpose === 'KEY' || strPurpose === 'SCALAR') {
+      if (scalarBuf.length < 4096) scalarBuf += ch;
+    }
+  }
+
+  function pushText(strChunk) {
+    for (let i = 0; !parseError && i < strChunk.length; i += 1) {
+      const ch = strChunk[i];
+
+      if (mode === 'STRING') {
+        if (strUnicodeDigits.length > 0 || (strEscaping && ch === 'u')) {
+          if (ch === 'u' && strEscaping && strUnicodeDigits.length === 0) {
+            strEscaping = false;
+            strUnicodeDigits = 'WAIT';
+            continue;
+          }
+          const hex = strUnicodeDigits === 'WAIT' ? ch : strUnicodeDigits + ch;
+          if (!/^[0-9a-fA-F]{1,4}$/.test(hex)) { parseError = true; break; }
+          if (hex.length === 4) {
+            strUnicodeDigits = '';
+            appendStringChar(String.fromCharCode(parseInt(hex, 16)));
+          } else {
+            strUnicodeDigits = hex;
+          }
+          continue;
+        }
+        if (strEscaping) {
+          strEscaping = false;
+          if (ch === '"' || ch === '\\' || ch === '/') appendStringChar(ch);
+          else if (ch === 'b') appendStringChar('\b');
+          else if (ch === 'f') appendStringChar('\f');
+          else if (ch === 'n') appendStringChar('\n');
+          else if (ch === 'r') appendStringChar('\r');
+          else if (ch === 't') appendStringChar('\t');
+          else parseError = true;
+          continue;
+        }
+        if (ch === '\\') { strEscaping = true; continue; }
+        if (ch === '"') {
+          if (strPurpose === 'TEXT_PART') {
+            flushTextAcc(true);
+            activePartSpool = null;
+          } else if (strPurpose === 'KEY') {
+            stack[stack.length - 1].pendingKey = scalarBuf;
+            mode = 'COLON';
+            continue;
+          } else if (strPurpose === 'SCALAR') {
+            commitScalarValue(scalarBuf);
+          }
+          afterValueCompleted();
+          continue;
+        }
+        if (ch.charCodeAt(0) < 0x20) { parseError = true; break; }
+        appendStringChar(ch);
+        continue;
+      }
+
+      if (mode === 'NUMBER') {
+        if (/[0-9eE+\-.]/.test(ch)) {
+          if (primBuf.length < 64) primBuf += ch;
+          continue;
+        }
+        const num = Number(primBuf);
+        if (!Number.isFinite(num)) { parseError = true; break; }
+        commitScalarValue(num);
+        afterValueCompleted();
+        i -= 1; // reprocess delimiter in COMMA_OR_END / DONE
+        continue;
+      }
+
+      if (mode === 'LITERAL') {
+        if (ch === literalTarget[literalIdx]) {
+          literalIdx += 1;
+          if (literalIdx === literalTarget.length) {
+            const val = literalTarget === 'true' ? true : (literalTarget === 'false' ? false : null);
+            commitScalarValue(val);
+            afterValueCompleted();
+          }
+          continue;
+        }
+        parseError = true;
+        break;
+      }
+
+      if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') continue;
+
+      if (mode === 'VALUE') {
+        if (ch === ']') {
+          const top = stack[stack.length - 1];
+          if (top && top.kind === 'array' && top.empty) {
+            closeTopContainer(']');
+            continue;
+          }
+          parseError = true;
+          break;
+        }
+        if (stack.length > 0 && stack[stack.length - 1].kind === 'array') {
+          stack[stack.length - 1].empty = false;
+        }
+        onBeginValue(ch);
+      } else if (mode === 'KEY') {
+        if (ch === '}') {
+          if (stack.length > 0 && stack[stack.length - 1].kind === 'object' && stack[stack.length - 1].pendingKey === null) {
+            closeTopContainer('}');
+            continue;
+          }
+          parseError = true;
+          break;
+        }
+        if (ch === '"') {
+          strPurpose = 'KEY';
+          scalarBuf = '';
+          strEscaping = false;
+          strUnicodeDigits = '';
+          mode = 'STRING';
+        } else {
+          parseError = true;
+        }
+      } else if (mode === 'COLON') {
+        if (ch === ':') mode = 'VALUE';
+        else parseError = true;
+      } else if (mode === 'COMMA_OR_END') {
+        const top = stack[stack.length - 1];
+        if (ch === ',') {
+          if (top?.kind === 'object') mode = 'KEY';
+          else if (top?.kind === 'array') { top.index += 1; mode = 'VALUE'; }
+          else parseError = true;
+        } else if (ch === '}' || ch === ']') {
+          closeTopContainer(ch);
+        } else {
+          parseError = true;
+        }
+      } else if (mode === 'DONE') {
+        parseError = true;
+      }
+    }
+  }
+
+  return {
+    pushText,
+    finish() {
+      if (mode === 'NUMBER') {
+        const num = Number(primBuf);
+        if (!Number.isFinite(num)) parseError = true;
+        else { commitScalarValue(num); afterValueCompleted(); }
+      }
+      if (mode !== 'DONE' || stack.length !== 0) parseError = true;
+      for (const frame of stack) frame.partSpool?.cleanup?.();
+      if (activePartSpool) activePartSpool.cleanup();
+      return { parseError, metadata, tailSample };
+    }
+  };
+}
+
+// Parser A: Reads completed raw SSE frame byte ranges [frameStart, frameEnd] directly
+// from the on-disk `.sse` file in 64 KiB chunks so single frames of arbitrary MiB size
+// never accumulate as multi-MiB JS strings in heap.
+function createDiskBackedSseParserA({ rawSseFilePath, authoredFd }) {
   const authoredHash = crypto.createHash('sha256');
   const thoughtHash = crypto.createHash('sha256');
-  let buffer = '';
+  const readBuf = Buffer.allocUnsafe(STREAM_READBACK_CHUNK_BYTES);
+  const completedFrameRanges = [];
+  let frameStartOffset = 0;
+  let totalSeenOffset = 0;
+  let trailingTailBytes = Buffer.alloc(0);
+
   let authoredBytes = 0;
   let thoughtBytes = 0;
   let eventCount = 0;
@@ -503,69 +908,165 @@ function createStreamingSseConsumerA({ authoredFd }) {
   let promptBlockReason = null;
   let usageMetadata = null;
 
-  function consumeEvent(eventBlock) {
-    if (!eventBlock || !eventBlock.trim()) return;
-    const dataLines = [];
-    for (const line of eventBlock.split(/\r?\n/)) {
-      if (line.startsWith(':')) continue;
-      if (line.startsWith('data:')) dataLines.push(line.slice(5).trimStart());
-    }
-    if (!dataLines.length) return;
-    const rawJson = dataLines.join('\n').trim();
-    if (!rawJson || rawJson === '[DONE]') return;
+  function parseFrameRange(readFd, startByte, endByte) {
+    if (endByte <= startByte) return;
+    const decoder = new TextDecoder('utf-8', { fatal: false });
+    const frameParser = createStreamingGeminiJsonFrameParser({
+      spoolPath: `${rawSseFilePath}.partA.tmp`,
+      onPartCompleted: ({ isThought, spool }) => {
+        spool.drainChunks((buf) => {
+          if (isThought) {
+            thoughtHash.update(buf);
+            thoughtBytes += buf.byteLength;
+          } else {
+            authoredHash.update(buf);
+            authoredBytes += buf.byteLength;
+            writeAllSync(authoredFd, buf);
+          }
+        });
+      }
+    });
 
-    let parsed;
-    try {
-      parsed = JSON.parse(rawJson);
-    } catch {
-      parseErrors += 1;
+    // Line-prefix state scanner across 64 KiB byte reads: skips SSE comments, handles multi-line data:
+    let lineAtStart = true;
+    let lineState = 'UNKNOWN'; // UNKNOWN | COMMENT | DATA_PREFIX | DATA_BODY | OTHER
+    let prefixCarry = '';
+    let hasAnyJsonPayload = false;
+    let payloadFirstChars = '';
+    let firstDataLineSeen = false;
+
+    function pushDataPayloadPiece(piece) {
+      if (!piece) return;
+      if (payloadFirstChars.length < 16) payloadFirstChars += piece.trimStart();
+      hasAnyJsonPayload = true;
+      frameParser.pushText(piece);
+    }
+
+    function consumeDecodedSlice(strSlice) {
+      let i = 0;
+      while (i < strSlice.length) {
+        if (lineAtStart) {
+          const nlIdx = strSlice.indexOf('\n', i);
+          const candidateEnd = nlIdx === -1 ? strSlice.length : nlIdx + 1;
+          const combined = prefixCarry + strSlice.slice(i, Math.min(candidateEnd, i + 16));
+          if (nlIdx === -1 && combined.length < 6 && !combined.startsWith(':')) {
+            prefixCarry = combined;
+            i = candidateEnd;
+            continue;
+          }
+          prefixCarry = '';
+          const fullSegmentStart = i;
+          // Evaluate line prefix cleanly from reconstructed start
+          const probe = combined;
+          if (probe.startsWith('\n') || probe.startsWith('\r\n')) {
+            lineAtStart = true;
+            lineState = 'UNKNOWN';
+            i += probe.startsWith('\r\n') ? 2 : 1;
+            continue;
+          }
+          if (probe.startsWith(':')) {
+            lineState = 'COMMENT';
+            lineAtStart = false;
+          } else if (probe.startsWith('data:')) {
+            if (firstDataLineSeen) pushDataPayloadPiece('\n');
+            firstDataLineSeen = true;
+            lineState = 'DATA_BODY';
+            lineAtStart = false;
+            const consumeFromChunk = Math.max(0, 5 - (combined.length - (Math.min(candidateEnd, i + 16) - i)));
+            i = fullSegmentStart + consumeFromChunk;
+            while (i < strSlice.length && strSlice[i] === ' ') i += 1;
+            continue;
+          } else {
+            lineState = 'OTHER';
+            lineAtStart = false;
+          }
+        }
+
+        const nlIdx = strSlice.indexOf('\n', i);
+        if (nlIdx === -1) {
+          if (lineState === 'DATA_BODY') pushDataPayloadPiece(strSlice.slice(i));
+          i = strSlice.length;
+        } else {
+          if (lineState === 'DATA_BODY') pushDataPayloadPiece(strSlice.slice(i, nlIdx));
+          lineAtStart = true;
+          lineState = 'UNKNOWN';
+          i = nlIdx + 1;
+        }
+      }
+    }
+
+    let pos = startByte;
+    while (pos < endByte) {
+      const toRead = Math.min(readBuf.length, endByte - pos);
+      const n = fs.readSync(readFd, readBuf, 0, toRead, pos);
+      if (n <= 0) break;
+      consumeDecodedSlice(decoder.decode(readBuf.subarray(0, n), { stream: true }));
+      pos += n;
+    }
+    consumeDecodedSlice(decoder.decode());
+    if (prefixCarry.trim()) parseErrors += 1;
+    if (!hasAnyJsonPayload || payloadFirstChars.trim() === '[DONE]') {
+      frameParser.finish();
       return;
     }
 
+    const res = frameParser.finish();
+    if (res.parseError) {
+      parseErrors += 1;
+      return;
+    }
     eventCount += 1;
-    if (typeof parsed?.modelVersion === 'string' && parsed.modelVersion.trim()) {
-      modelVersion = parsed.modelVersion.trim();
-    }
-    if (typeof parsed?.promptFeedback?.blockReason === 'string' && parsed.promptFeedback.blockReason.trim()) {
-      promptBlockReason = parsed.promptFeedback.blockReason.trim();
-    }
-    const candidate = parsed?.candidates?.[0] || null;
-    if (typeof candidate?.finishReason === 'string' && candidate.finishReason.trim()) {
-      finishReason = candidate.finishReason.trim();
-    }
-    if (typeof candidate?.finishMessage === 'string' && candidate.finishMessage.trim()) {
-      finishMessage = candidate.finishMessage.trim();
-    }
-    if (parsed?.usageMetadata && typeof parsed.usageMetadata === 'object') {
-      usageMetadata = { ...parsed.usageMetadata };
-    }
-
-    const parts = Array.isArray(candidate?.content?.parts) ? candidate.content.parts : [];
-    for (const part of parts) {
-      if (typeof part?.text !== 'string') continue;
-      if (part.thought === true) {
-        const buf = Buffer.from(part.text, 'utf8');
-        thoughtHash.update(buf);
-        thoughtBytes += buf.byteLength;
-      } else if (part.text.length > 0) {
-        const buf = Buffer.from(part.text, 'utf8');
-        authoredHash.update(buf);
-        authoredBytes += buf.byteLength;
-        writeAllSync(authoredFd, buf);
-      }
-    }
+    if (res.metadata.modelVersion) modelVersion = res.metadata.modelVersion;
+    if (res.metadata.promptBlockReason) promptBlockReason = res.metadata.promptBlockReason;
+    if (res.metadata.finishReason) finishReason = res.metadata.finishReason;
+    if (res.metadata.finishMessage) finishMessage = res.metadata.finishMessage;
+    if (res.metadata.usageMetadata) usageMetadata = res.metadata.usageMetadata;
   }
+
+  let scanLastByte = -1;
+  let scanPrevByte = -1;
+  let scanPrev2Byte = -1;
 
   return {
     pushChunk(uint8Chunk) {
-      buffer += decoder.decode(uint8Chunk, { stream: true });
-      const blocks = buffer.split(/\r?\n\r?\n/);
-      buffer = blocks.pop() ?? '';
-      for (const block of blocks) consumeEvent(block);
+      const baseOffset = totalSeenOffset;
+      for (let i = 0; i < uint8Chunk.length; i += 1) {
+        const b = uint8Chunk[i];
+        const absPos = baseOffset + i;
+        // Detect `\n\n` or `\r\n\r\n` without buffering bytes
+        if (b === 0x0A && (scanLastByte === 0x0A || (scanLastByte === 0x0D && scanPrevByte === 0x0A))) {
+          const endOffset = absPos + 1;
+          completedFrameRanges.push([frameStartOffset, endOffset]);
+          frameStartOffset = endOffset;
+        }
+        scanPrev2Byte = scanPrevByte;
+        scanPrevByte = scanLastByte;
+        scanLastByte = b;
+      }
+      totalSeenOffset += uint8Chunk.length;
+      if (completedFrameRanges.length > 0) {
+        const readFd = fs.openSync(rawSseFilePath, 'r');
+        try {
+          while (completedFrameRanges.length > 0) {
+            const [s, e] = completedFrameRanges.shift();
+            parseFrameRange(readFd, s, e);
+          }
+        } finally {
+          fs.closeSync(readFd);
+        }
+      }
+      trailingTailBytes = uint8Chunk.length ? Buffer.from(uint8Chunk.subarray(Math.max(0, uint8Chunk.length - 4))) : trailingTailBytes;
     },
     finish() {
-      buffer += decoder.decode();
-      if (buffer.trim()) consumeEvent(buffer);
+      if (frameStartOffset < totalSeenOffset) {
+        const readFd = fs.openSync(rawSseFilePath, 'r');
+        try {
+          parseFrameRange(readFd, frameStartOffset, totalSeenOffset);
+        } finally {
+          fs.closeSync(readFd);
+        }
+        frameStartOffset = totalSeenOffset;
+      }
       fs.fsyncSync(authoredFd);
       return Object.freeze({
         authoredTextSha256: authoredHash.digest('hex'),
@@ -584,97 +1085,149 @@ function createStreamingSseConsumerA({ authoredFd }) {
   };
 }
 
-function createStreamingSseConsumerB() {
+// Parser B: Independent chunk-bounded streaming SSE parser directly on network bytes
+// with strict UTF-8 decoding, chunk-bounded duplicate frame hash, and streaming JSON lexer.
+function createStreamingSseParserB({ tempSpoolBasePath }) {
   const decoder = new TextDecoder('utf-8', { fatal: true });
   const authoredHash = crypto.createHash('sha256');
-  const tailAuthoredSampleChunks = [];
-  let lineBuffer = '';
-  let currentDataLines = [];
-  let endedWithBlankLine = false;
+  const seenSubstantiveHashes = new Set();
+
   let invalidUtf8Detected = false;
   let parseErrors = 0;
   let eventCount = 0;
   let duplicateEventCount = 0;
   let duplicateFinishEventCount = 0;
   let authoredBytes = 0;
+  let authoredTail = '';
   const finishReasons = [];
   const promptBlockReasons = [];
   const modelVersions = new Set();
-  const seenSubstantiveHashes = new Set();
   let lastUsageMetadata = null;
-  let totalCandidateLengthTail = 0;
 
-  function flushEventBlock() {
-    if (currentDataLines.length === 0) return;
-    const rawData = currentDataLines.join('\n').trim();
-    currentDataLines = [];
-    if (!rawData || rawData === '[DONE]') return;
+  let lineAtStart = true;
+  let prefixCarry = '';
+  let lineKind = 'NONE'; // NONE | COMMENT | DATA | OTHER
+  let endedWithBlankLine = false;
+  let activeFrameParser = null;
+  let activeFrameHash = null;
+  let firstDataLineInFrame = false;
+  let frameHeadSnippet = '';
+  let frameSawNonWhitespace = false;
+  let endedWithoutDelimiter = false;
+  let frameSeq = 0;
 
-    let parsed;
-    try {
-      parsed = JSON.parse(rawData);
-    } catch {
+  function ensureFrameActive() {
+    if (activeFrameParser) return;
+    activeFrameHash = crypto.createHash('sha256');
+    firstDataLineInFrame = false;
+    frameHeadSnippet = '';
+    frameSawNonWhitespace = false;
+    activeFrameParser = createStreamingGeminiJsonFrameParser({
+      spoolPath: `${tempSpoolBasePath}.partB.${frameSeq++}.tmp`,
+      onPartCompleted: ({ isThought, spool }) => {
+        if (isThought) {
+          spool.cleanup();
+          return;
+        }
+        spool.drainChunks((buf) => {
+          authoredHash.update(buf);
+          authoredBytes += buf.byteLength;
+        });
+      }
+    });
+  }
+
+  function closeCurrentFrame() {
+    if (!activeFrameParser) return;
+    const res = activeFrameParser.finish();
+    const rawFrameDigest = activeFrameHash.digest('hex');
+    if (res.tailSample) authoredTail = (authoredTail + res.tailSample).slice(-256);
+    activeFrameParser = null;
+    activeFrameHash = null;
+
+    if (!frameSawNonWhitespace || frameHeadSnippet.trim() === '[DONE]') return;
+    if (res.parseError) {
       parseErrors += 1;
       return;
     }
 
     eventCount += 1;
-    const candidate = parsed?.candidates?.[0] || null;
-    const parts = Array.isArray(candidate?.content?.parts) ? candidate.content.parts : [];
-    const hasAuthoredOrFinish = Boolean(candidate?.finishReason)
-      || parts.some((p) => typeof p?.text === 'string' && p.text.length > 0);
-
-    if (hasAuthoredOrFinish) {
-      const frameHash = sha256Hex(rawData);
-      if (seenSubstantiveHashes.has(frameHash)) {
-        duplicateEventCount += 1;
-      } else {
-        seenSubstantiveHashes.add(frameHash);
-      }
+    if (res.metadata.hasAuthoredOrFinish) {
+      if (seenSubstantiveHashes.has(rawFrameDigest)) duplicateEventCount += 1;
+      else seenSubstantiveHashes.add(rawFrameDigest);
     }
-
-    if (typeof parsed?.modelVersion === 'string' && parsed.modelVersion.trim()) {
-      modelVersions.add(parsed.modelVersion.trim());
-    }
-    if (typeof parsed?.promptFeedback?.blockReason === 'string' && parsed.promptFeedback.blockReason.trim()) {
-      promptBlockReasons.push(parsed.promptFeedback.blockReason.trim());
-    }
-    if (typeof candidate?.finishReason === 'string' && candidate.finishReason.trim()) {
-      finishReasons.push(candidate.finishReason.trim());
+    if (res.metadata.modelVersion) modelVersions.add(res.metadata.modelVersion);
+    if (res.metadata.promptBlockReason) promptBlockReasons.push(res.metadata.promptBlockReason);
+    if (res.metadata.finishReason) {
+      finishReasons.push(res.metadata.finishReason);
       if (finishReasons.length > 1) duplicateFinishEventCount += 1;
     }
-    if (parsed?.usageMetadata && typeof parsed.usageMetadata === 'object') {
-      lastUsageMetadata = { ...parsed.usageMetadata };
-    }
-
-    for (const part of parts) {
-      if (typeof part?.text !== 'string' || part.thought === true) continue;
-      if (part.text.length > 0) {
-        const buf = Buffer.from(part.text, 'utf8');
-        authoredHash.update(buf);
-        authoredBytes += buf.byteLength;
-        // Keep only a tiny tail sample in memory (<= 256 bytes) for surface-tail checks
-        tailAuthoredSampleChunks.push(part.text);
-        totalCandidateLengthTail += part.text.length;
-        while (totalCandidateLengthTail > 512 && tailAuthoredSampleChunks.length > 1) {
-          const removed = tailAuthoredSampleChunks.shift();
-          totalCandidateLengthTail -= removed.length;
-        }
-      }
-    }
+    if (res.metadata.usageMetadata) lastUsageMetadata = res.metadata.usageMetadata;
   }
 
-  function consumeLine(rawLine) {
-    const line = rawLine.replace(/\r$/, '');
-    if (line === '') {
-      flushEventBlock();
-      endedWithBlankLine = true;
-      return;
-    }
-    endedWithBlankLine = false;
-    if (line.startsWith(':')) return;
-    if (line.startsWith('data:')) {
-      currentDataLines.push(line.slice(5).trimStart());
+  function feedDataText(slice) {
+    if (!slice) return;
+    ensureFrameActive();
+    if (!frameSawNonWhitespace && /\S/.test(slice)) frameSawNonWhitespace = true;
+    if (frameHeadSnippet.length < 16) frameHeadSnippet += slice.trim();
+    activeFrameHash.update(Buffer.from(slice, 'utf8'));
+    activeFrameParser.pushText(slice);
+  }
+
+  function processDecodedChunk(text) {
+    let i = 0;
+    while (i < text.length) {
+      if (lineAtStart) {
+        const nl = text.indexOf('\n', i);
+        const segEnd = nl === -1 ? text.length : nl;
+        const needed = 6 - prefixCarry.length;
+        const sample = prefixCarry + text.slice(i, Math.min(segEnd, i + needed + 2));
+        if (nl === -1 && sample.length < 6 && !sample.startsWith(':')) {
+          prefixCarry = sample;
+          i = segEnd;
+          continue;
+        }
+        prefixCarry = '';
+        const cleanSample = sample.replace(/\r$/, '');
+        if (nl !== -1 && cleanSample === '') {
+          // Blank line terminates current SSE frame
+          closeCurrentFrame();
+          endedWithBlankLine = true;
+          lineAtStart = true;
+          lineKind = 'NONE';
+          i = nl + 1;
+          continue;
+        }
+        endedWithBlankLine = false;
+        if (cleanSample.startsWith(':')) {
+          lineKind = 'COMMENT';
+          lineAtStart = false;
+        } else if (cleanSample.startsWith('data:')) {
+          lineKind = 'DATA';
+          lineAtStart = false;
+          ensureFrameActive();
+          if (firstDataLineInFrame) feedDataText('\n');
+          firstDataLineInFrame = true;
+          const skip = Math.max(0, 5 - (sample.length - (Math.min(segEnd, i + needed + 2) - i)));
+          i += skip;
+          while (i < text.length && text[i] === ' ') i += 1;
+          continue;
+        } else {
+          lineKind = 'OTHER';
+          lineAtStart = false;
+        }
+      }
+
+      const nl = text.indexOf('\n', i);
+      if (nl === -1) {
+        if (lineKind === 'DATA') feedDataText(text.slice(i).replace(/\r$/, ''));
+        i = text.length;
+      } else {
+        if (lineKind === 'DATA') feedDataText(text.slice(i, nl).replace(/\r$/, ''));
+        lineAtStart = true;
+        lineKind = 'NONE';
+        i = nl + 1;
+      }
     }
   }
 
@@ -687,10 +1240,7 @@ function createStreamingSseConsumerB() {
         invalidUtf8Detected = true;
         decoded = new TextDecoder('utf-8', { fatal: false }).decode(uint8Chunk);
       }
-      lineBuffer += decoded;
-      const lines = lineBuffer.split('\n');
-      lineBuffer = lines.pop() ?? '';
-      for (const l of lines) consumeLine(l);
+      processDecodedChunk(decoded);
     },
     finish() {
       let tail = '';
@@ -699,18 +1249,16 @@ function createStreamingSseConsumerB() {
       } catch {
         invalidUtf8Detected = true;
       }
-      lineBuffer += tail;
-      let hasTrailingFragment = false;
-      if (lineBuffer.trim()) {
-        hasTrailingFragment = true;
-        consumeLine(lineBuffer);
-        lineBuffer = '';
+      if (tail) processDecodedChunk(tail);
+      const hasTrailingFragment = Boolean(prefixCarry.trim()) || Boolean(activeFrameParser);
+      if (prefixCarry.trim()) {
+        parseErrors += 1;
+        prefixCarry = '';
       }
-      if (currentDataLines.length > 0) {
-        hasTrailingFragment = true;
-        flushEventBlock();
+      if (activeFrameParser) {
+        endedWithoutDelimiter = true;
+        closeCurrentFrame();
       }
-      const authoredTail = tailAuthoredSampleChunks.join('').slice(-256);
       return Object.freeze({
         authoredTextSha256: authoredHash.digest('hex'),
         authoredUtf8Bytes: authoredBytes,
@@ -721,7 +1269,7 @@ function createStreamingSseConsumerB() {
         duplicateFinishEventCount,
         duplicateSseDetected: duplicateEventCount > 0 || duplicateFinishEventCount > 0,
         invalidUtf8Detected,
-        endsWithEventDelimiter: endedWithBlankLine && !hasTrailingFragment,
+        endsWithEventDelimiter: endedWithBlankLine && !hasTrailingFragment && !endedWithoutDelimiter,
         hasTrailingFragment,
         finishReasons: Object.freeze([...new Set(finishReasons)]),
         finalFinishReason: finishReasons.at(-1) ?? null,
@@ -750,6 +1298,29 @@ function hashFileChunkedSync(filePath) {
     fs.closeSync(fd);
   }
   return { sha256: hash.digest('hex'), bytes };
+}
+
+function readNextChunkOrAbort(reader, abortSignal) {
+  if (!abortSignal) return reader.read();
+  if (abortSignal.aborted) {
+    return Promise.reject(abortSignal.reason ?? Object.assign(new Error('Aborted'), { name: 'AbortError' }));
+  }
+  return new Promise((resolve, reject) => {
+    const onAbort = () => {
+      reject(abortSignal.reason ?? Object.assign(new Error('Aborted by operator'), { name: 'AbortError' }));
+    };
+    abortSignal.addEventListener('abort', onAbort, { once: true });
+    reader.read().then(
+      (res) => {
+        abortSignal.removeEventListener('abort', onAbort);
+        resolve(res);
+      },
+      (err) => {
+        abortSignal.removeEventListener('abort', onAbort);
+        reject(err);
+      }
+    );
+  });
 }
 
 export async function streamAndDualParseProviderSseToDisk({
@@ -786,12 +1357,20 @@ export async function streamAndDualParseProviderSseToDisk({
   let streamErrorMessage = null;
   let diskWriteError = null;
 
-  const consumerA = createStreamingSseConsumerA({ authoredFd });
-  const consumerB = createStreamingSseConsumerB();
+  const parserA = createDiskBackedSseParserA({ rawSseFilePath, authoredFd });
+  const parserB = createStreamingSseParserB({ tempSpoolBasePath: rawSseFilePath });
 
   try {
     while (true) {
-      const { value, done } = await reader.read();
+      if (operatorAbortSignal?.aborted) {
+        try { await reader.cancel(); } catch { /* ignore */ }
+        streamInterrupted = true;
+        operatorStopped = true;
+        streamErrorName = 'OPERATOR_ABORT_OR_REVOCATION';
+        streamErrorMessage = String(operatorAbortSignal.reason?.message || 'Aborted by operator');
+        break;
+      }
+      const { value, done } = await readNextChunkOrAbort(reader, operatorAbortSignal);
       if (done) break;
       if (value && value.byteLength > 0) {
         const chunkBuf = Buffer.from(value.buffer, value.byteOffset, value.byteLength);
@@ -808,8 +1387,8 @@ export async function streamAndDualParseProviderSseToDisk({
         rawSseHash.update(chunkBuf);
         rawSseBytes += chunkBuf.byteLength;
 
-        consumerA.pushChunk(value);
-        consumerB.pushChunk(value);
+        parserA.pushChunk(value);
+        parserB.pushChunk(value);
       }
     }
   } catch (error) {
@@ -819,7 +1398,14 @@ export async function streamAndDualParseProviderSseToDisk({
       streamErrorMessage = error.message;
     } else {
       streamInterrupted = true;
-      operatorStopped = Boolean(operatorAbortSignal?.aborted || error?.name === 'AbortError');
+      operatorStopped = Boolean(
+        operatorAbortSignal?.aborted
+        || error?.name === 'AbortError'
+        || error?.code === 'R1_OPERATOR_SESSION_REVOKED'
+      );
+      if (operatorStopped) {
+        try { await reader.cancel(); } catch { /* ignore */ }
+      }
       streamErrorName = String(error?.name || 'STREAM_READ_ERROR').slice(0, 64);
       streamErrorMessage = String(error?.message || error);
     }
@@ -829,11 +1415,11 @@ export async function streamAndDualParseProviderSseToDisk({
 
   let resA;
   try {
-    resA = consumerA.finish();
+    resA = parserA.finish();
   } finally {
     fs.closeSync(authoredFd);
   }
-  const resB = consumerB.finish();
+  const resB = parserB.finish();
 
   const rawSseSha256 = rawSseHash.digest('hex');
   const rawDiskStat = hashFileChunkedSync(rawSseFilePath);
@@ -886,7 +1472,7 @@ export async function streamAndDualParseProviderSseToDisk({
   const observedModelVersions = resB.modelVersions;
   const exactServedModelMatch = observedModelVersions.length === 1 && observedModelVersions[0] === expectedModel;
 
-  // Use completion witness purely on bounded tail string + observed metadata cleanly without 5 MiB string allocation
+  // Use completion witness purely on bounded tail string + observed metadata cleanly without multi-MiB string allocation
   const tailRepresentative = resA.authoredUtf8Bytes > 0 ? (resB.authoredTail || 'x.') : '';
   const completion = observeMarrowlineCompletion(tailRepresentative, {
     finishReason: resB.finalFinishReason,
@@ -1119,34 +1705,161 @@ function classifyHeadingLine(trimmedLine) {
   return null;
 }
 
-function forEachLineChunkedFromFile(filePath, onLine) {
+function boundaryCrossesProtectedToken(text, i) {
+  const windowStart = Math.max(0, i - 24);
+  const windowSlice = text.slice(windowStart, Math.min(text.length, i + 24));
+  const localIdx = i - windowStart;
+  for (const token of [R1_NATIVE_COVENANT, R1_NATIVE_SEAL]) {
+    let pos = windowSlice.indexOf(token);
+    while (pos !== -1) {
+      if (localIdx > pos && localIdx < pos + token.length) return true;
+      pos = windowSlice.indexOf(token, pos + 1);
+    }
+  }
+  return false;
+}
+
+function findSafeGraphemeFlushLength(text, targetLen) {
+  const maxScan = Math.min(text.length - 1, targetLen);
+  for (let i = maxScan; i >= 1024; i -= 1) {
+    const prev = text.charCodeAt(i - 1);
+    if (
+      (text[i] === ' ' || text[i] === '\t')
+      && prev !== 0x200D
+      && prev !== 0x200C
+      && (prev < 0xD800 || prev > 0xDBFF)
+      && !boundaryCrossesProtectedToken(text, i)
+    ) {
+      return i;
+    }
+  }
+  for (let i = maxScan; i >= 1024; i -= 1) {
+    const ch = text[i];
+    const prev = text.charCodeAt(i - 1);
+    // Avoid splitting surrogate pairs, CR/LF, ZWJ/ZWNJ, protected tokens, or before combining marks / variation selectors
+    if (
+      prev !== 0x0D
+      && prev !== 0x200D
+      && prev !== 0x200C
+      && (prev < 0xD800 || prev > 0xDBFF)
+      && /^[^\p{M}\uDC00-\uDFFF\uFE00-\uFE0F\u200C\u200D]$/u.test(ch)
+      && !boundaryCrossesProtectedToken(text, i)
+    ) {
+      return i;
+    }
+  }
+  // If entire 32 KiB window is one continuous combining-mark cloud, allow larger window unless hitting non-mark
+  return -1;
+}
+
+// Pass 1: Scans strictly line indices of potential headings (`<= HEADING_MAX_CHARS`),
+// discarding oversized non-heading bytes without buffering giant lines in RAM.
+function scanHeadingIndicesFromFile(filePath) {
+  const fd = fs.openSync(filePath, 'r');
+  const decoder = new TextDecoder('utf-8', { fatal: false });
+  const chunkBuf = Buffer.allocUnsafe(STREAM_READBACK_CHUNK_BYTES);
+  const headingsFound = [];
+  let lineBuffer = '';
+  let oversizedLine = false;
+  let lineIndex = 0;
+
+  function checkLine(rawLine) {
+    const match = classifyHeadingLine(rawLine.replace(/\r$/, '').trim());
+    if (match) headingsFound.push(Object.freeze({ lineIndex, ...match }));
+  }
+
+  try {
+    while (true) {
+      const read = fs.readSync(fd, chunkBuf, 0, chunkBuf.length, null);
+      if (read <= 0) break;
+      const decoded = decoder.decode(chunkBuf.subarray(0, read), { stream: true });
+      let pos = 0;
+      while (pos < decoded.length) {
+        const nl = decoded.indexOf('\n', pos);
+        if (nl === -1) {
+          if (!oversizedLine) {
+            if (lineBuffer.length + (decoded.length - pos) > HEADING_MAX_CHARS) {
+              oversizedLine = true;
+              lineBuffer = '';
+            } else {
+              lineBuffer += decoded.slice(pos);
+            }
+          }
+          pos = decoded.length;
+        } else {
+          if (!oversizedLine && lineBuffer.length + (nl - pos) <= HEADING_MAX_CHARS) {
+            checkLine(lineBuffer + decoded.slice(pos, nl));
+          }
+          lineBuffer = '';
+          oversizedLine = false;
+          lineIndex += 1;
+          pos = nl + 1;
+        }
+      }
+    }
+    const tail = decoder.decode();
+    if (tail) {
+      if (!oversizedLine && lineBuffer.length + tail.length <= HEADING_MAX_CHARS) lineBuffer += tail;
+      else oversizedLine = true;
+    }
+    if (!oversizedLine && lineBuffer.length > 0) checkLine(lineBuffer);
+  } finally {
+    fs.closeSync(fd);
+  }
+  return headingsFound;
+}
+
+// Pass 2: Emits chunk-bounded segments `(segmentTextWithOptionalNewline, lineIndex)`,
+// flushing lines > GIANT_LINE_FLUSH_CHARS incrementally at safe grapheme boundaries.
+function forEachBoundedSegmentFromFile(filePath, onSegment) {
   const fd = fs.openSync(filePath, 'r');
   const decoder = new TextDecoder('utf-8', { fatal: false });
   const chunkBuf = Buffer.allocUnsafe(STREAM_READBACK_CHUNK_BYTES);
   let carry = '';
+  let lineIndex = 0;
+
+  function drainCarry(eof = false) {
+    while (true) {
+      const nl = carry.indexOf('\n');
+      if (nl !== -1 && nl <= GIANT_LINE_FLUSH_CHARS) {
+        const seg = carry.slice(0, nl + 1);
+        onSegment(seg, lineIndex);
+        carry = carry.slice(nl + 1);
+        lineIndex += 1;
+        continue;
+      }
+      const pendingLen = nl === -1 ? carry.length : nl;
+      if (pendingLen > GIANT_LINE_FLUSH_CHARS) {
+        const cut = findSafeGraphemeFlushLength(carry, GIANT_LINE_FLUSH_CHARS);
+        if (cut > 0) {
+          onSegment(carry.slice(0, cut), lineIndex);
+          carry = carry.slice(cut);
+          continue;
+        }
+      }
+      if (eof && carry.length > 0) {
+        if (nl !== -1) {
+          onSegment(carry.slice(0, nl + 1), lineIndex);
+          carry = carry.slice(nl + 1);
+          lineIndex += 1;
+          continue;
+        }
+        onSegment(carry, lineIndex);
+        carry = '';
+      }
+      break;
+    }
+  }
+
   try {
     while (true) {
       const read = fs.readSync(fd, chunkBuf, 0, chunkBuf.length, null);
       if (read <= 0) break;
       carry += decoder.decode(chunkBuf.subarray(0, read), { stream: true });
-      let start = 0;
-      let nlIdx;
-      while ((nlIdx = carry.indexOf('\n', start)) !== -1) {
-        onLine(carry.slice(start, nlIdx), true);
-        start = nlIdx + 1;
-      }
-      carry = carry.slice(start);
+      drainCarry(false);
     }
     carry += decoder.decode();
-    if (carry.length > 0) {
-      let start = 0;
-      let nlIdx;
-      while ((nlIdx = carry.indexOf('\n', start)) !== -1) {
-        onLine(carry.slice(start, nlIdx), true);
-        start = nlIdx + 1;
-      }
-      if (start < carry.length) onLine(carry.slice(start), false);
-    }
+    drainCarry(true);
   } finally {
     fs.closeSync(fd);
   }
@@ -1158,28 +1871,21 @@ export function analyzeProviderNativeTwoSectionFile({
   section2OutFilePath = null
 } = {}) {
   const fileStat = hashFileChunkedSync(authoredTextFilePath);
-  const headingsFound = [];
+  const headingsFound = scanHeadingIndicesFromFile(authoredTextFilePath);
   let sec1Count = 0;
   let sec2Count = 0;
   let firstSec1Idx = -1;
   let firstSec2Idx = -1;
-  let lineIndex = 0;
 
-  forEachLineChunkedFromFile(authoredTextFilePath, (rawLine) => {
-    const cleanLine = rawLine.replace(/\r$/, '');
-    const match = classifyHeadingLine(cleanLine.trim());
-    if (match) {
-      headingsFound.push(Object.freeze({ lineIndex, ...match }));
-      if (match.section === 1) {
-        sec1Count += 1;
-        if (firstSec1Idx === -1) firstSec1Idx = lineIndex;
-      } else {
-        sec2Count += 1;
-        if (firstSec2Idx === -1) firstSec2Idx = lineIndex;
-      }
+  for (const h of headingsFound) {
+    if (h.section === 1) {
+      sec1Count += 1;
+      if (firstSec1Idx === -1) firstSec1Idx = h.lineIndex;
+    } else {
+      sec2Count += 1;
+      if (firstSec2Idx === -1) firstSec2Idx = h.lineIndex;
     }
-    lineIndex += 1;
-  });
+  }
 
   const exactHeadingCountOk = sec1Count === 1 && sec2Count === 1;
   const headingOrderOk = exactHeadingCountOk && firstSec1Idx < firstSec2Idx;
@@ -1194,23 +1900,19 @@ export function analyzeProviderNativeTwoSectionFile({
     sec2Fd = fs.openSync(section2OutFilePath, 'wx', 0o600);
   }
 
-  let curLineIdx = 0;
   try {
-    forEachLineChunkedFromFile(authoredTextFilePath, (rawLine, hasNewline) => {
-      const lineWithSep = hasNewline ? `${rawLine}\n` : rawLine;
-      if (exactHeadingCountOk && curLineIdx < firstSec1Idx) {
-        if (rawLine.trim().length > 0) nonEmptyPreamble = true;
-      } else if (headingOrderOk && curLineIdx > firstSec1Idx && curLineIdx < firstSec2Idx) {
-        sec1Acc.addRawSegment(lineWithSep);
-      } else if (headingOrderOk && curLineIdx > firstSec2Idx) {
-        sec2Acc.addRawSegment(lineWithSep);
+    forEachBoundedSegmentFromFile(authoredTextFilePath, (segmentText, lineIndex) => {
+      if (exactHeadingCountOk && lineIndex < firstSec1Idx) {
+        if (segmentText.trim().length > 0) nonEmptyPreamble = true;
+      } else if (headingOrderOk && lineIndex > firstSec1Idx && lineIndex < firstSec2Idx) {
+        sec1Acc.addRawSegment(segmentText);
+      } else if (headingOrderOk && lineIndex > firstSec2Idx) {
+        sec2Acc.addRawSegment(segmentText);
         if (sec2Fd !== null) {
-          // Strip trailing line separator after previous line only faithfully by writing exact slice
-          writeAllSync(sec2Fd, Buffer.from(lineWithSep, 'utf8'));
+          writeAllSync(sec2Fd, Buffer.from(segmentText, 'utf8'));
           sec2WrittenAny = true;
         }
       }
-      curLineIdx += 1;
     });
     if (sec2Fd !== null && sec2WrittenAny) fs.fsyncSync(sec2Fd);
   } finally {
@@ -1474,6 +2176,79 @@ export async function executeProviderNativeCore({
     }
   });
 
+async function captureHttpErrorCustodyToDisk({
+  response,
+  endpointKind,
+  model,
+  bodyFilePath,
+  metaFilePath
+}) {
+  const httpStatus = Number(response?.status || 0);
+  const statusText = typeof response?.statusText === 'string' ? response.statusText : '';
+  const responseHeaders = response?.headers && typeof response.headers.entries === 'function'
+    ? Object.freeze(Object.fromEntries([...response.headers.entries()].map(([k, v]) => [String(k).toLowerCase(), String(v)])))
+    : Object.freeze({});
+
+  const hash = crypto.createHash('sha256');
+  let rawErrorBodyBytes = 0;
+  let bodyReadError = null;
+  const bodyFd = fs.openSync(bodyFilePath, 'wx', 0o600);
+  try {
+    const reader = response?.body?.getReader?.();
+    if (reader) {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        if (value && value.byteLength > 0) {
+          const buf = Buffer.from(value.buffer, value.byteOffset, value.byteLength);
+          writeAllSync(bodyFd, buf);
+          fs.fsyncSync(bodyFd);
+          hash.update(buf);
+          rawErrorBodyBytes += buf.byteLength;
+        }
+      }
+    } else if (typeof response?.arrayBuffer === 'function') {
+      const ab = await response.arrayBuffer();
+      const buf = Buffer.from(ab);
+      if (buf.byteLength > 0) {
+        writeAllSync(bodyFd, buf);
+        hash.update(buf);
+        rawErrorBodyBytes += buf.byteLength;
+      }
+    }
+    fs.fsyncSync(bodyFd);
+  } catch (error) {
+    bodyReadError = String(error?.message || error);
+  } finally {
+    fs.closeSync(bodyFd);
+  }
+
+  const rawErrorBodySha256 = hash.digest('hex');
+  const custody = Object.freeze({
+    schema: 'td613.marrowline.r1-provider-http-error-custody/v1',
+    endpointKind,
+    model,
+    httpStatus,
+    statusText,
+    responseHeaders,
+    rawErrorBodyPath: bodyFilePath,
+    rawErrorBodySha256,
+    rawErrorBodyBytes,
+    metaFilePath,
+    ...(bodyReadError ? { bodyReadError } : {}),
+    capturedAt: new Date().toISOString()
+  });
+
+  const metaFd = fs.openSync(metaFilePath, 'wx', 0o600);
+  try {
+    writeAllSync(metaFd, Buffer.from(`${JSON.stringify(custody, null, 2)}\n`, 'utf8'));
+    fs.fsyncSync(metaFd);
+  } finally {
+    fs.closeSync(metaFd);
+  }
+  return custody;
+}
+
   // 5. Read API key ONLY after authority + nonce + journal initialized
   const resolvedApiKey = String(apiKey ?? env?.GEMINI_API_KEY ?? '').trim();
   if (!resolvedApiKey) {
@@ -1486,48 +2261,45 @@ export async function executeProviderNativeCore({
     }
   }
 
-  let metadataDiscovery = null;
-  let integritySessionHaltReason = null;
-
-  if (checkModelDiscovery) {
-    if (operatorAbortSignal?.aborted || isSessionRevokedOnDisk(authVerification.sessionId, revocationFilePath)) {
-      integritySessionHaltReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
-    } else {
-      const metaUrl = geminiModelMetadataUrl(R1_NATIVE_PINNED_MODEL);
-      assertUrlMatchesPinnedModel(metaUrl);
-      try {
-        const metaResp = await transportFetch(metaUrl, {
-          method: 'GET',
-          headers: geminiRequestHeaders(resolvedApiKey),
-          ...(operatorAbortSignal ? { signal: operatorAbortSignal } : {})
-        });
-        if (!metaResp?.ok) {
-          integritySessionHaltReason = 'STOP_ON_MODEL_METADATA_UNAVAILABLE';
-        } else {
-          const metaJson = await metaResp.json().catch(() => ({}));
-          const methods = Array.isArray(metaJson?.supportedGenerationMethods) ? metaJson.supportedGenerationMethods : [];
-          if (!methods.includes('generateContent')) {
-            integritySessionHaltReason = 'STOP_ON_MODEL_METHODS_MISSING';
-          } else {
-            metadataDiscovery = Object.freeze({
-              status: Number(metaResp.status),
-              name: metaJson.name || `models/${R1_NATIVE_PINNED_MODEL}`,
-              outputTokenLimitReportedByProvider: Number.isInteger(metaJson?.outputTokenLimit) ? metaJson.outputTokenLimit : null,
-              inputTokenLimitReportedByProvider: Number.isInteger(metaJson?.inputTokenLimit) ? metaJson.inputTokenLimit : null,
-              supportedGenerationMethods: Object.freeze([...methods])
-            });
-            appendJournal('R1_NATIVE_MODEL_METADATA_OBSERVED', metadataDiscovery);
-          }
-        }
-      } catch (error) {
-        if (error instanceof R1ProviderNativeError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
-        integritySessionHaltReason = operatorAbortSignal?.aborted
-          ? 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED'
-          : 'STOP_ON_MODEL_METADATA_TRANSPORT_EXCEPTION';
-      }
+  // Live operator STOP / revocation AbortController: monitors caller abort signal AND live
+  // revocation file updates continuously so in-flight HTTP requests or SSE streams stop immediately.
+  const sessionAbortController = new AbortController();
+  const triggerOperatorStop = (reasonCode = 'R1_OPERATOR_SESSION_STOPPED') => {
+    if (!sessionAbortController.signal.aborted) {
+      sessionAbortController.abort(new R1ProviderNativeError(reasonCode, 'Stopped by active operator signal or revocation'));
+    }
+  };
+  let onCallerAbort = null;
+  if (operatorAbortSignal) {
+    if (operatorAbortSignal.aborted) triggerOperatorStop('R1_OPERATOR_ABORT_SIGNAL');
+    else {
+      onCallerAbort = () => triggerOperatorStop('R1_OPERATOR_ABORT_SIGNAL');
+      operatorAbortSignal.addEventListener('abort', onCallerAbort, { once: true });
     }
   }
+  let revocationWatcher = null;
+  let revocationPollTimer = null;
+  const checkRevocationLive = () => {
+    if (revocationFilePath && isSessionRevokedOnDisk(authVerification.sessionId, revocationFilePath)) {
+      triggerOperatorStop('R1_OPERATOR_SESSION_REVOKED');
+    }
+  };
+  if (revocationFilePath) {
+    checkRevocationLive();
+    try {
+      const watchTarget = fs.existsSync(revocationFilePath) ? revocationFilePath : path.dirname(revocationFilePath);
+      if (fs.existsSync(watchTarget)) {
+        revocationWatcher = fs.watch(watchTarget, { persistent: false }, () => checkRevocationLive());
+        revocationWatcher.unref?.();
+      }
+    } catch { /* ignore watch setup errors; interval fallback still runs */ }
+    revocationPollTimer = setInterval(checkRevocationLive, 25);
+    revocationPollTimer.unref?.();
+  }
 
+  let metadataDiscovery = null;
+  let metadataHttpErrorCustody = null;
+  let integritySessionHaltReason = null;
   const allAttemptRecords = [];
   const episodeSummaries = [];
   const blindedEpisodes = [];
@@ -1535,215 +2307,313 @@ export async function executeProviderNativeCore({
   let totalCountTokensCalls = 0;
   let totalGenerationCalls = 0;
 
-  for (let epIdx = 0; !integritySessionHaltReason && epIdx < episodes.length; epIdx += 1) {
-    const ep = episodes[epIdx];
-    const episodeId = ep.episodeId ?? (epIdx + 1);
-    const orderedConditionKeys = ep.order === 'B_THEN_A'
-      ? ['R1_NATIVE_B', 'R1_NATIVE_A']
-      : ['R1_NATIVE_A', 'R1_NATIVE_B'];
-
-    const epRecordsByCondition = {};
-
-    for (const conditionKey of orderedConditionKeys) {
-      if (operatorAbortSignal?.aborted || isSessionRevokedOnDisk(authVerification.sessionId, revocationFilePath)) {
+  try {
+    if (checkModelDiscovery) {
+      if (sessionAbortController.signal.aborted) {
         integritySessionHaltReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
-        appendJournal('R1_NATIVE_OPERATOR_STOP_OBSERVED', { episodeId, beforeCondition: conditionKey });
-        break;
-      }
-
-      const condPlan = plan.conditions[conditionKey];
-      attemptCounter += 1;
-      const attemptId = attemptCounter;
-
-      // Optional observational :countTokens telemetry ONLY — NEVER a token cap or stopping gate!
-      let countTokensMeasurement = null;
-      if (measureCountTokens) {
-        const ctUrl = geminiCountTokensUrl(condPlan.model);
-        assertUrlMatchesPinnedModel(ctUrl);
-        totalCountTokensCalls += 1;
-        appendJournal('R1_NATIVE_COUNT_TOKENS_ATTEMPT', {
-          attemptId,
-          episodeId,
-          condition: conditionKey,
-          countTokensRequestSha256: condPlan.countTokensRequestSha256
-        });
+      } else {
+        const metaUrl = geminiModelMetadataUrl(R1_NATIVE_PINNED_MODEL);
+        assertUrlMatchesPinnedModel(metaUrl);
         try {
-          const ctResp = await transportFetch(ctUrl, {
-            method: 'POST',
+          const metaResp = await transportFetch(metaUrl, {
+            method: 'GET',
             headers: geminiRequestHeaders(resolvedApiKey),
-            body: condPlan.countTokensWireBody,
-            ...(operatorAbortSignal ? { signal: operatorAbortSignal } : {})
+            signal: sessionAbortController.signal
           });
-          const ctStatus = Number(ctResp?.status || 0);
-          const ctJson = ctResp?.ok ? await ctResp.json().catch(() => ({})) : {};
-          const totalTokens = Number.isInteger(ctJson?.totalTokens) ? ctJson.totalTokens : null;
-          countTokensMeasurement = Object.freeze({
-            httpStatus: ctStatus,
-            available: Boolean(ctResp?.ok && totalTokens !== null && totalTokens > 0),
-            totalTokens
-          });
-        } catch {
-          countTokensMeasurement = Object.freeze({ httpStatus: 0, available: false, totalTokens: null });
-        }
-        appendJournal('R1_NATIVE_COUNT_TOKENS_MEASURED', {
-          attemptId,
-          episodeId,
-          condition: conditionKey,
-          ...countTokensMeasurement
-        });
-      }
-
-      const rawSseFilePath = path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}.sse`);
-      const authoredTextFilePath = path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}.authored.txt`);
-      const blindToken = sha256Hex(`${authVerification.nonce}:ep${episodeId}:att${attemptId}:${conditionKey}:${condPlan.observation.bodySha256}`).slice(0, 12);
-      const section2BlindFilePath = path.join(evidenceDir, `r1-blind-${authVerification.sessionId}-ep${episodeId}-${blindToken}.section2.txt`);
-
-      const genUrl = geminiStreamGenerateContentUrl(condPlan.model);
-      assertUrlMatchesPinnedModel(genUrl);
-      totalGenerationCalls += 1;
-      const startedAt = new Date().toISOString();
-      appendJournal('R1_NATIVE_GENERATION_ATTEMPT_PREPARED', {
-        attemptId,
-        episodeId,
-        condition: conditionKey,
-        requestBodySha256: condPlan.observation.bodySha256,
-        rawSseFilePath
-      });
-
-      let httpStatus = null;
-      let wire = null;
-      let callError = null;
-      let integrityStopReason = null;
-
-      try {
-        const sseResp = await transportFetch(genUrl, {
-          method: 'POST',
-          headers: geminiRequestHeaders(resolvedApiKey),
-          body: condPlan.wireBody,
-          ...(operatorAbortSignal ? { signal: operatorAbortSignal } : {})
-        });
-        httpStatus = Number(sseResp?.status || 0);
-        if (!sseResp?.ok) {
-          integrityStopReason = httpStatus === 503
-            ? 'PROVIDER_HTTP_503_UNAVAILABLE'
-            : `PROVIDER_HTTP_${httpStatus || 'ERROR'}`;
-        } else {
-          wire = await streamAndDualParseProviderSseToDisk({
-            response: sseResp,
-            expectedModel: condPlan.model,
-            rawSseFilePath,
-            authoredTextFilePath,
-            operatorAbortSignal
-          });
-        }
-      } catch (error) {
-        if (error instanceof R1ProviderNativeError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
-        callError = {
-          name: String(error?.name || 'Error'),
-          ...(error?.code ? { code: String(error.code) } : {}),
-          message: String(error?.message || error)
-        };
-        integrityStopReason = operatorAbortSignal?.aborted || error?.name === 'AbortError'
-          ? 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED'
-          : 'STOP_ON_TRANSPORT_EXCEPTION';
-      }
-
-      const finishedAt = new Date().toISOString();
-
-      if (!integrityStopReason && wire) {
-        if (wire.diskWriteError) integrityStopReason = 'STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED';
-        else if (wire.operatorStopped) integrityStopReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
-        else if (wire.streamInterrupted) integrityStopReason = 'STOP_ON_STREAM_INTERRUPTED';
-        else if (!wire.parserAgreement) integrityStopReason = 'STOP_ON_DUAL_PARSER_DISAGREEMENT';
-        else if (wire.parserB.duplicateSseDetected) integrityStopReason = 'STOP_ON_DUPLICATE_SSE_STREAM';
-        else if (!wire.exactServedModelMatch) integrityStopReason = 'STOP_ON_SERVED_MODEL_VERSION_MISMATCH';
-        else if (wire.completion.policyTerminated) {
-          integrityStopReason = `STOP_ON_POLICY_TERMINATION_${wire.completion.promptBlockReason || wire.completion.finishReason || 'UNKNOWN'}`;
-        } else if (!wire.completion.complete) {
-          integrityStopReason = `STOP_ON_INCOMPLETE_COMPLETION_${wire.completion.reason}`;
-        } else if (!wire.validUsageMetadata) {
-          integrityStopReason = 'STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE';
+          if (!metaResp?.ok) {
+            integritySessionHaltReason = 'STOP_ON_MODEL_METADATA_UNAVAILABLE';
+            metadataHttpErrorCustody = await captureHttpErrorCustodyToDisk({
+              response: metaResp,
+              endpointKind: 'modelMetadata',
+              model: R1_NATIVE_PINNED_MODEL,
+              bodyFilePath: path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-model-metadata-http-error.body`),
+              metaFilePath: path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-model-metadata-http-error.meta.json`)
+            });
+            appendJournal('R1_NATIVE_MODEL_METADATA_HTTP_ERROR', metadataHttpErrorCustody);
+          } else {
+            const metaJson = await metaResp.json().catch(() => ({}));
+            const methods = Array.isArray(metaJson?.supportedGenerationMethods) ? metaJson.supportedGenerationMethods : [];
+            if (!methods.includes('generateContent')) {
+              integritySessionHaltReason = 'STOP_ON_MODEL_METHODS_MISSING';
+            } else {
+              metadataDiscovery = Object.freeze({
+                status: Number(metaResp.status),
+                name: metaJson.name || `models/${R1_NATIVE_PINNED_MODEL}`,
+                outputTokenLimitReportedByProvider: Number.isInteger(metaJson?.outputTokenLimit) ? metaJson.outputTokenLimit : null,
+                inputTokenLimitReportedByProvider: Number.isInteger(metaJson?.inputTokenLimit) ? metaJson.inputTokenLimit : null,
+                supportedGenerationMethods: Object.freeze([...methods])
+              });
+              appendJournal('R1_NATIVE_MODEL_METADATA_OBSERVED', metadataDiscovery);
+            }
+          }
+        } catch (error) {
+          if (error instanceof R1ProviderNativeError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
+          integritySessionHaltReason = sessionAbortController.signal.aborted
+            ? 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED'
+            : 'STOP_ON_MODEL_METADATA_TRANSPORT_EXCEPTION';
         }
       }
-
-      if (typeof textIntegrityProbe === 'function' && wire && fs.existsSync(authoredTextFilePath)) {
-        // Allows adversarial tests to inject post-capture normalization/tampering on disk to verify fail-closed detection
-        textIntegrityProbe(authoredTextFilePath, conditionKey, episodeId);
-      }
-
-      let analysis = null;
-      let textIntegrityOk = true;
-      if (wire && fs.existsSync(authoredTextFilePath)) {
-        const postDiskCheck = hashFileChunkedSync(authoredTextFilePath);
-        if (postDiskCheck.sha256 !== wire.authoredTextSha256) {
-          textIntegrityOk = false;
-          if (!integrityStopReason) integrityStopReason = 'STOP_ON_ALTERED_UNICODE_TEXT';
-        }
-        analysis = analyzeProviderNativeTwoSectionFile({
-          authoredTextFilePath,
-          condition: conditionKey,
-          section2OutFilePath: section2BlindFilePath
-        });
-      }
-
-      const record = Object.freeze({
-        attemptId,
-        episodeId,
-        condition: conditionKey,
-        arm: condPlan.arm,
-        model: condPlan.model,
-        requestBodySha256: condPlan.observation.bodySha256,
-        countTokensRequestSha256: condPlan.countTokensRequestSha256,
-        countTokensMeasurement,
-        httpStatus,
-        startedAt,
-        finishedAt,
-        rawSseFilePath: wire?.rawSseFilePath || null,
-        authoredTextFilePath: wire?.authoredTextFilePath || null,
-        error: callError,
-        wire,
-        textIntegrityOk,
-        integrityStopReason,
-        analysis
-      });
-
-      allAttemptRecords.push(record);
-      epRecordsByCondition[conditionKey] = record;
-
-      appendJournal('R1_NATIVE_ATTEMPT_RECORDED', {
-        attemptId,
-        episodeId,
-        condition: conditionKey,
-        httpStatus,
-        rawSseSha256: wire?.rawSseSha256 ?? null,
-        rawSseBytes: wire?.rawSseBytes ?? null,
-        authoredTextSha256: wire?.authoredTextSha256 ?? null,
-        usageMetadata: wire?.usageMetadata ?? null,
-        integrityStopReason,
-        structuralComplianceOk: analysis?.structuralComplianceOk ?? false
-      });
     }
 
-    const epOutcome = classifyProviderNativeEpisodeOutcome({
-      attemptA: epRecordsByCondition.R1_NATIVE_A || null,
-      attemptB: epRecordsByCondition.R1_NATIVE_B || null,
-      totalEpisodesObserved: episodes.length
-    });
-    const blindPair = (epRecordsByCondition.R1_NATIVE_A?.analysis && epRecordsByCondition.R1_NATIVE_B?.analysis)
-      ? buildProviderNativeBlindedEpisodePacket({
-        attemptA: epRecordsByCondition.R1_NATIVE_A,
-        attemptB: epRecordsByCondition.R1_NATIVE_B,
-        episodeId,
-        nonceSeed: authVerification.nonce
-      })
-      : null;
+    for (let epIdx = 0; !integritySessionHaltReason && epIdx < episodes.length; epIdx += 1) {
+      const ep = episodes[epIdx];
+      const episodeId = ep.episodeId ?? (epIdx + 1);
+      const orderedConditionKeys = ep.order === 'B_THEN_A'
+        ? ['R1_NATIVE_B', 'R1_NATIVE_A']
+        : ['R1_NATIVE_A', 'R1_NATIVE_B'];
 
-    episodeSummaries.push(Object.freeze({
-      episodeId,
-      order: ep.order,
-      outcome: epOutcome
-    }));
-    if (blindPair) blindedEpisodes.push(blindPair);
+      const epRecordsByCondition = {};
+
+      for (const conditionKey of orderedConditionKeys) {
+        checkRevocationLive();
+        if (sessionAbortController.signal.aborted) {
+          integritySessionHaltReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
+          appendJournal('R1_NATIVE_OPERATOR_STOP_OBSERVED', { episodeId, beforeCondition: conditionKey });
+          break;
+        }
+
+        const condPlan = plan.conditions[conditionKey];
+        attemptCounter += 1;
+        const attemptId = attemptCounter;
+
+        // Optional observational :countTokens telemetry ONLY — NEVER a token cap or stopping gate!
+        let countTokensMeasurement = null;
+        if (measureCountTokens) {
+          const ctUrl = geminiCountTokensUrl(condPlan.model);
+          assertUrlMatchesPinnedModel(ctUrl);
+          totalCountTokensCalls += 1;
+          appendJournal('R1_NATIVE_COUNT_TOKENS_ATTEMPT', {
+            attemptId,
+            episodeId,
+            condition: conditionKey,
+            countTokensRequestSha256: condPlan.countTokensRequestSha256
+          });
+          try {
+            const ctResp = await transportFetch(ctUrl, {
+              method: 'POST',
+              headers: geminiRequestHeaders(resolvedApiKey),
+              body: condPlan.countTokensWireBody,
+              signal: sessionAbortController.signal
+            });
+            const ctStatus = Number(ctResp?.status || 0);
+            if (!ctResp?.ok) {
+              const ctErrCustody = await captureHttpErrorCustodyToDisk({
+                response: ctResp,
+                endpointKind: 'countTokens',
+                model: condPlan.model,
+                bodyFilePath: path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}-count-tokens-http-error.body`),
+                metaFilePath: path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}-count-tokens-http-error.meta.json`)
+              });
+              countTokensMeasurement = Object.freeze({
+                httpStatus: ctStatus,
+                available: false,
+                totalTokens: null,
+                httpErrorCustody: ctErrCustody
+              });
+            } else {
+              const ctJson = await ctResp.json().catch(() => ({}));
+              const totalTokens = Number.isInteger(ctJson?.totalTokens) ? ctJson.totalTokens : null;
+              countTokensMeasurement = Object.freeze({
+                httpStatus: ctStatus,
+                available: totalTokens !== null && totalTokens > 0,
+                totalTokens
+              });
+            }
+          } catch {
+            countTokensMeasurement = Object.freeze({ httpStatus: 0, available: false, totalTokens: null });
+          }
+          appendJournal('R1_NATIVE_COUNT_TOKENS_MEASURED', {
+            attemptId,
+            episodeId,
+            condition: conditionKey,
+            ...countTokensMeasurement
+          });
+          if (sessionAbortController.signal.aborted) {
+            integritySessionHaltReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
+            appendJournal('R1_NATIVE_OPERATOR_STOP_OBSERVED', { episodeId, afterCountTokensCondition: conditionKey });
+            break;
+          }
+        }
+
+        const rawSseFilePath = path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}.sse`);
+        const authoredTextFilePath = path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}.authored.txt`);
+        const httpErrorBodyPath = path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}.http-error.body`);
+        const httpErrorMetaPath = path.join(evidenceDir, `r1-native-${authVerification.sessionId}-${authVerification.nonce}-ep${episodeId}-att${attemptId}-${conditionKey}.http-error.meta.json`);
+        const blindToken = sha256Hex(`${authVerification.nonce}:ep${episodeId}:att${attemptId}:${conditionKey}:${condPlan.observation.bodySha256}`).slice(0, 12);
+        const section2BlindFilePath = path.join(evidenceDir, `r1-blind-${authVerification.sessionId}-ep${episodeId}-${blindToken}.section2.txt`);
+
+        const genUrl = geminiStreamGenerateContentUrl(condPlan.model);
+        assertUrlMatchesPinnedModel(genUrl);
+        totalGenerationCalls += 1;
+        const startedAt = new Date().toISOString();
+        appendJournal('R1_NATIVE_GENERATION_ATTEMPT_PREPARED', {
+          attemptId,
+          episodeId,
+          condition: conditionKey,
+          requestBodySha256: condPlan.observation.bodySha256,
+          rawSseFilePath
+        });
+
+        let httpStatus = null;
+        let wire = null;
+        let httpErrorCustody = null;
+        let callError = null;
+        let integrityStopReason = null;
+
+        try {
+          const sseResp = await transportFetch(genUrl, {
+            method: 'POST',
+            headers: geminiRequestHeaders(resolvedApiKey),
+            body: condPlan.wireBody,
+            signal: sessionAbortController.signal
+          });
+          httpStatus = Number(sseResp?.status || 0);
+          if (!sseResp?.ok) {
+            integrityStopReason = httpStatus === 503
+              ? 'PROVIDER_HTTP_503_UNAVAILABLE'
+              : `PROVIDER_HTTP_${httpStatus || 'ERROR'}`;
+            httpErrorCustody = await captureHttpErrorCustodyToDisk({
+              response: sseResp,
+              endpointKind: 'streamGenerateContent',
+              model: condPlan.model,
+              bodyFilePath: httpErrorBodyPath,
+              metaFilePath: httpErrorMetaPath
+            });
+          } else {
+            wire = await streamAndDualParseProviderSseToDisk({
+              response: sseResp,
+              expectedModel: condPlan.model,
+              rawSseFilePath,
+              authoredTextFilePath,
+              operatorAbortSignal: sessionAbortController.signal
+            });
+          }
+        } catch (error) {
+          if (error instanceof R1ProviderNativeError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
+          callError = {
+            name: String(error?.name || 'Error'),
+            ...(error?.code ? { code: String(error.code) } : {}),
+            message: String(error?.message || error)
+          };
+          integrityStopReason = (
+            sessionAbortController.signal.aborted
+            || error?.name === 'AbortError'
+            || error?.code === 'R1_OPERATOR_SESSION_REVOKED'
+          )
+            ? 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED'
+            : 'STOP_ON_TRANSPORT_EXCEPTION';
+        }
+
+        const finishedAt = new Date().toISOString();
+
+        if (!integrityStopReason && wire) {
+          if (wire.diskWriteError) integrityStopReason = 'STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED';
+          else if (wire.operatorStopped) integrityStopReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
+          else if (wire.streamInterrupted) integrityStopReason = 'STOP_ON_STREAM_INTERRUPTED';
+          else if (!wire.parserAgreement) integrityStopReason = 'STOP_ON_DUAL_PARSER_DISAGREEMENT';
+          else if (wire.parserB.duplicateSseDetected) integrityStopReason = 'STOP_ON_DUPLICATE_SSE_STREAM';
+          else if (!wire.exactServedModelMatch) integrityStopReason = 'STOP_ON_SERVED_MODEL_VERSION_MISMATCH';
+          else if (wire.completion.policyTerminated) {
+            integrityStopReason = `STOP_ON_POLICY_TERMINATION_${wire.completion.promptBlockReason || wire.completion.finishReason || 'UNKNOWN'}`;
+          } else if (!wire.completion.complete) {
+            integrityStopReason = `STOP_ON_INCOMPLETE_COMPLETION_${wire.completion.reason}`;
+          } else if (!wire.validUsageMetadata) {
+            integrityStopReason = 'STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE';
+          }
+        }
+
+        if (typeof textIntegrityProbe === 'function' && wire && fs.existsSync(authoredTextFilePath)) {
+          // Allows adversarial tests to inject post-capture normalization/tampering on disk to verify fail-closed detection
+          textIntegrityProbe(authoredTextFilePath, conditionKey, episodeId);
+        }
+
+        let analysis = null;
+        let textIntegrityOk = true;
+        if (wire && fs.existsSync(authoredTextFilePath)) {
+          const postDiskCheck = hashFileChunkedSync(authoredTextFilePath);
+          if (postDiskCheck.sha256 !== wire.authoredTextSha256) {
+            textIntegrityOk = false;
+            if (!integrityStopReason) integrityStopReason = 'STOP_ON_ALTERED_UNICODE_TEXT';
+          }
+          analysis = analyzeProviderNativeTwoSectionFile({
+            authoredTextFilePath,
+            condition: conditionKey,
+            section2OutFilePath: section2BlindFilePath
+          });
+        }
+
+        const record = Object.freeze({
+          attemptId,
+          episodeId,
+          condition: conditionKey,
+          arm: condPlan.arm,
+          model: condPlan.model,
+          requestBodySha256: condPlan.observation.bodySha256,
+          countTokensRequestSha256: condPlan.countTokensRequestSha256,
+          countTokensMeasurement,
+          httpStatus,
+          startedAt,
+          finishedAt,
+          rawSseFilePath: wire?.rawSseFilePath || null,
+          authoredTextFilePath: wire?.authoredTextFilePath || null,
+          httpErrorCustody,
+          error: callError,
+          wire,
+          textIntegrityOk,
+          integrityStopReason,
+          analysis
+        });
+
+        allAttemptRecords.push(record);
+        epRecordsByCondition[conditionKey] = record;
+
+        appendJournal('R1_NATIVE_ATTEMPT_RECORDED', {
+          attemptId,
+          episodeId,
+          condition: conditionKey,
+          httpStatus,
+          rawSseSha256: wire?.rawSseSha256 ?? null,
+          rawSseBytes: wire?.rawSseBytes ?? null,
+          authoredTextSha256: wire?.authoredTextSha256 ?? null,
+          httpErrorCustody,
+          usageMetadata: wire?.usageMetadata ?? null,
+          integrityStopReason,
+          structuralComplianceOk: analysis?.structuralComplianceOk ?? false
+        });
+
+        if (integrityStopReason === 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED') {
+          integritySessionHaltReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
+          break;
+        }
+      }
+
+      const epOutcome = classifyProviderNativeEpisodeOutcome({
+        attemptA: epRecordsByCondition.R1_NATIVE_A || null,
+        attemptB: epRecordsByCondition.R1_NATIVE_B || null,
+        totalEpisodesObserved: episodes.length
+      });
+      const blindPair = (epRecordsByCondition.R1_NATIVE_A?.analysis && epRecordsByCondition.R1_NATIVE_B?.analysis)
+        ? buildProviderNativeBlindedEpisodePacket({
+          attemptA: epRecordsByCondition.R1_NATIVE_A,
+          attemptB: epRecordsByCondition.R1_NATIVE_B,
+          episodeId,
+          nonceSeed: authVerification.nonce
+        })
+        : null;
+
+      episodeSummaries.push(Object.freeze({
+        episodeId,
+        order: ep.order,
+        outcome: epOutcome
+      }));
+      if (blindPair) blindedEpisodes.push(blindPair);
+    }
+  } finally {
+    if (revocationPollTimer) clearInterval(revocationPollTimer);
+    if (revocationWatcher) try { revocationWatcher.close(); } catch { /* ignore */ }
+    if (operatorAbortSignal && onCallerAbort) {
+      try { operatorAbortSignal.removeEventListener('abort', onCallerAbort); } catch { /* ignore */ }
+    }
   }
 
   appendJournal('R1_NATIVE_SESSION_CLOSED', {
@@ -1763,6 +2633,7 @@ export async function executeProviderNativeCore({
     nonceClaim,
     evidenceJournalPath,
     metadataDiscovery,
+    ...(metadataHttpErrorCustody ? { metadataHttpErrorCustody } : {}),
     integritySessionHaltReason,
     dispatchCounts: Object.freeze({
       countTokensCalls: totalCountTokensCalls,
