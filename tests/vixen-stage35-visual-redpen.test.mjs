@@ -58,3 +58,12 @@ test('Desktop editorial folio supersedes obsolete poster-scale title without tou
   'Desktop editorial CSS must load after its inherited theatrical rules');
  assert.match(reading,/vix-reader-paragraph/);
 });
+
+
+test('Public Opera footer contains editorial navigation, never operator adjudication or replication status',()=>{
+ const section=html.match(/<footer class="footer" role="contentinfo">([\s\S]*?)<\/footer>/)?.[1];
+ assert.ok(section,'Public footer must remain available');
+ assert.match(section,/<strong>VIXEN CYBERNETICS<\/strong>/);
+ assert.doesNotMatch(section,/Recorded Work Status|Human Closure Required|Empirical Replication Credit|<code>HELD<\/code>/i,
+  'Backstage release and replication state must remain outside visitor-facing Opera furniture');
+});
