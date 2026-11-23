@@ -1,0 +1,108 @@
+{
+  "schema": "td613.marrowline.r2-offline-verification/v1",
+  "commission": "TD613-MARROWLINE-R2-DUAL-ESTATE-OFFLINE-20261123",
+  "status": "R2_OFFLINE_QUALIFIED_HELD_FOR_HUMAN_DESIGN_REVIEW",
+  "empiricalProviderReturnsIncluded": false,
+  "paidProviderCallsExecuted": 0,
+  "credentialsAccessed": false,
+  "nonceClaimsWritten": 0,
+  "r1CustodyTouched": false,
+  "estates": {
+    "r2U": {
+      "experimentId": "HYDROGEN_R2_U_NATIVE_UNICODE_CAPABILITY",
+      "armCount": 5,
+      "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+      "plannedContrastIds": [
+        "U_C1_RULES_VS_CONTRAST_EXAMPLES",
+        "U_C2_PLAIN_VS_GUIDED_RULES",
+        "U_C3_FREE_VS_GUIDED_RULES"
+      ],
+      "counterbalancePreview": {
+        "schema": "td613.marrowline.r2-u-counterbalance-plan/v1",
+        "contrastId": "U_C1_RULES_VS_CONTRAST_EXAMPLES",
+        "episodes": [
+          {
+            "episodeId": 1,
+            "contrastId": "U_C1_RULES_VS_CONTRAST_EXAMPLES",
+            "order": "FORWARD",
+            "sequence": [
+              "R2_U_GUIDED_RULES",
+              "R2_U_GUIDED_CONTRAST"
+            ],
+            "planDigest": "17328bf966375fcac3a1d4a698e98287960aef7549c8d035fc2ee63b7e51e203"
+          },
+          {
+            "episodeId": 2,
+            "contrastId": "U_C1_RULES_VS_CONTRAST_EXAMPLES",
+            "order": "REVERSED",
+            "sequence": [
+              "R2_U_GUIDED_CONTRAST",
+              "R2_U_GUIDED_RULES"
+            ],
+            "planDigest": "61ac7a596a241f9c5d9e224b0543c9399b0853bddde562cc094c2cf5d3c4978e"
+          }
+        ]
+      },
+      "armBodySha256": {
+        "R2_U_LITERAL_COPY": "27746d792927d057b055c4ce3291da0af998e00b2b3d62b628909e91cf1c07e0",
+        "R2_U_PLAIN_BASELINE": "e41b20ae66f799187ea909fed4a7129f3f5e4087ba8428940e8c802c39405922",
+        "R2_U_GUIDED_RULES": "fdd2dc24180ca4c6caca884f025e882171e137adb79533fa8ee0542886eaf09a",
+        "R2_U_GUIDED_CONTRAST": "0f2419154850b9941a5cfd4ed52a17e43a61187ce581c5ca7921769a168e8e60",
+        "R2_U_FREE_SYNTHESIS": "2550eacaa8b55b5832da8a90136a130823dfdbcd7b35f39923daa150f309e815"
+      }
+    },
+    "r2W": {
+      "experimentId": "HYDROGEN_R2_W_AUTHENTIC_WHOLE_FRAME_ART",
+      "conditionCount": 2,
+      "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+      "provenanceDiffSummary": {
+        "fullUtf8Bytes": 33408,
+        "condensedUtf8Bytes": 3156,
+        "byteDelta": -30252,
+        "protectedAnchorsAllPreserved": true
+      },
+      "conditionBodySha256": {
+        "W_FULL_PRODUCTION_FRAME": "ab1e157553ffa434e0bb11fceccc2bba35f554c08c470495c9fb9bdbd9296f03",
+        "W_CONDENSED_WHOLE_FRAME": "eafd9ff9f1b4cdfbf7e43bfac7bdfbbc9cc9c8a3130c402230d4dd5757956470"
+      }
+    }
+  },
+  "calibratedControlChecks": {
+    "plainCombiningMarks": 0,
+    "stencilMaxDepth": 1,
+    "stencilDetected": true,
+    "multistackMaxDepth": 4,
+    "multistackDetected": true,
+    "altNotationTokens": 3,
+    "copyExactOk": true,
+    "copyNfcMutationCaught": true
+  },
+  "syntheticBlindPreviewPacket": {
+    "schema": "td613.marrowline.r2-w-blind-packet/v1",
+    "episodeId": 1,
+    "humanArtisticAuthority": "RESERVED_HUMAN_ONLY",
+    "blindWorks": [
+      {
+        "blindLabel": "BLIND_WORK_1",
+        "episodeId": 1,
+        "authoredText": "Kʰonapolit\nSynthetic offline calibration fixture: compact framing baseline.\n\nTauric Diana bots\nT́h́é ẃíńt́éŕ ĺéd́ǵéŕ śt́óód́ śt́íĺĺ.\n\n⟐",
+        "authoredTextSha256": "a7c79fac9715832e22b97aaeb2f5cf643370ae85b78b068213b33fefe3779981"
+      },
+      {
+        "blindLabel": "BLIND_WORK_2",
+        "episodeId": 1,
+        "authoredText": "Kʰonapolit\nSynthetic offline calibration fixture: tracing denominator erasure along the winter tribunal.\n\nTauric Diana bots\nṬ̵́ḩ̂̄ë w̩̌í̸̖n̥̊ṭ̭̀̋ē̮r l̶̗̃ė̩ḍ̂̌ḡé̱r b̵̥̈ú̮ŗ̀ṇ̊̄s.\n\n⟐",
+        "authoredTextSha256": "e935ff9a961c7f7dbd403aca81c1bad5b65f393cca6f01ac6d56cf82804eaf08"
+      }
+    ]
+  },
+  "syntheticRubricVetoDemo": {
+    "note": "SYNTHETIC_OFFLINE_FIXTURE_ONLY_NOT_PROVIDER_DATA",
+    "technicalGatePassed": true,
+    "humanArtisticVerdict": "ARTISTIC_REJECTED"
+  },
+  "gateChecks": {
+    "stagedDisposition": "SOURCE_STAGED",
+    "prematureSuccessRejected": true
+  }
+}

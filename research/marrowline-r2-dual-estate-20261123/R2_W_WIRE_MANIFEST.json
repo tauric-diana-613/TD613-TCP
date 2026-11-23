@@ -1,0 +1,143 @@
+{
+  "schema": "td613.marrowline.r2-w-wire-manifest/v1",
+  "experimentId": "HYDROGEN_R2_W_AUTHENTIC_WHOLE_FRAME_ART",
+  "estate": "R2-W_AUTHENTIC_WHOLE_FRAME_ART",
+  "covenant": "Khona‌lit-po",
+  "seal": "⟐SAC[X6ZNK5NO51]",
+  "status": "OFFLINE_STAGED_ZERO_CALLS",
+  "paidProviderCallsExecuted": 0,
+  "syntheticAssaySystemExcluded": true,
+  "sharedInvariants": {
+    "model": "gemini-3.8-flash",
+    "contentsSha256": "95edce3705b86d27e23c813afb063a85925bcd6a411b6684a6561a7728d918de",
+    "generationConfig": {
+      "maxOutputTokens": 65536,
+      "thinkingConfig": {
+        "thinkingLevel": "medium"
+      }
+    },
+    "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+    "reasoningNote": "Real buildGeminiRequest(..., gemini-3.8-flash) under GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE calls khonapolitReasoning (passes level \"high\") which geminiThinkingConfig resolves for gemini-3.8-flash to thinkingLevel: \"medium\" and maxOutputTokens: 65536 (generationConfigSha256: 4785e46e...).",
+    "td613ArtificialCaps": null
+  },
+  "provenanceDiff": {
+    "schema": "td613.marrowline.r2-w-provenance-diff/v1",
+    "sharedFields": [
+      "model",
+      "contents (real frameMarrowlineUserTurn)",
+      "generationConfig"
+    ],
+    "alteredField": "systemInstruction.parts[0].text (whole-frame structural contrast — NOT single-sentence isolation)",
+    "fullUtf8Bytes": 33408,
+    "condensedUtf8Bytes": 3156,
+    "byteDelta": -30252,
+    "fullLineCount": 153,
+    "condensedLineCount": 18,
+    "linesOnlyInFullCount": 148,
+    "linesOnlyInCondensedCount": 13,
+    "exactSharedLineCount": 5,
+    "sectionInventory": [
+      {
+        "id": "covenantHeader",
+        "inFullProductionFrame": true,
+        "inCondensedWholeFrame": false
+      },
+      {
+        "id": "lorePrimer",
+        "inFullProductionFrame": true,
+        "inCondensedWholeFrame": false
+      },
+      {
+        "id": "redDeerMissionAnchor",
+        "inFullProductionFrame": true,
+        "inCondensedWholeFrame": false
+      },
+      {
+        "id": "taskGuidance",
+        "inFullProductionFrame": false,
+        "inCondensedWholeFrame": false
+      },
+      {
+        "id": "relayCue",
+        "inFullProductionFrame": true,
+        "inCondensedWholeFrame": false
+      },
+      {
+        "id": "apertureAddendum",
+        "inFullProductionFrame": true,
+        "inCondensedWholeFrame": false
+      }
+    ],
+    "protectedAnchorPreservation": [
+      {
+        "anchor": "Tauric Diana",
+        "inFull": true,
+        "inCondensed": true
+      },
+      {
+        "anchor": "Tauric Diana — Crimean heritage custodianship",
+        "inFull": true,
+        "inCondensed": true
+      },
+      {
+        "anchor": "Khona‌lit-po",
+        "inFull": true,
+        "inCondensed": true
+      },
+      {
+        "anchor": "U+10D613",
+        "inFull": true,
+        "inCondensed": true
+      },
+      {
+        "anchor": "􍘓",
+        "inFull": true,
+        "inCondensed": true
+      },
+      {
+        "anchor": "Kʰonapolit",
+        "inFull": true,
+        "inCondensed": true
+      },
+      {
+        "anchor": "Tauric Diana bots",
+        "inFull": true,
+        "inCondensed": true
+      }
+    ]
+  },
+  "conditions": [
+    {
+      "conditionId": "W_FULL_PRODUCTION_FRAME",
+      "sourceDerivation": "buildInvocationPacket(issued-conjunction) + buildGeminiRequest(khonapolit-interactive)",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "ab1e157553ffa434e0bb11fceccc2bba35f554c08c470495c9fb9bdbd9296f03",
+        "modelAndBodySha256": "31f995bf0d07d54321f2d76e958f41d3a848256462c0adff30baef02a8850c5e",
+        "systemInstructionSha256": "85cdac1eafad4b3acc86da29d32e7d65b7a480dc34d7ea60c752b1d4439b906d",
+        "contentsSha256": "95edce3705b86d27e23c813afb063a85925bcd6a411b6684a6561a7728d918de",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 34543,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "ebf5a82e61ce5e8cbc0c55bd9a5744555651bbd03359df48edaa5678495f1e67"
+    },
+    {
+      "conditionId": "W_CONDENSED_WHOLE_FRAME",
+      "sourceDerivation": "buildCompactWholeFrame() replacing systemInstruction.parts[0].text only",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "eafd9ff9f1b4cdfbf7e43bfac7bdfbbc9cc9c8a3130c402230d4dd5757956470",
+        "modelAndBodySha256": "d7e4b16a7e5b476a408e0a50e353a0b9471b906bf673458191565692fe4e4e09",
+        "systemInstructionSha256": "bd595efc301b874a8fa91a53f6760b1979fdec6d2bcf60426a47f58b0a79e577",
+        "contentsSha256": "95edce3705b86d27e23c813afb063a85925bcd6a411b6684a6561a7728d918de",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 4152,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "4b7509f97aba88f858e7efe7d5ff3a2624fa2bfaac3df83f9ca12f8118b7ff29"
+    }
+  ]
+}
