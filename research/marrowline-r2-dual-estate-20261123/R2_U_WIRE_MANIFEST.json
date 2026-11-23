@@ -1,0 +1,147 @@
+{
+  "schema": "td613.marrowline.r2-u-wire-manifest/v1",
+  "experimentId": "HYDROGEN_R2_U_NATIVE_UNICODE_CAPABILITY",
+  "estate": "R2-U_NATIVE_UNICODE_CAPABILITY",
+  "covenant": "Khona‌lit-po",
+  "seal": "⟐SAC[X6ZNK5NO51]",
+  "status": "OFFLINE_STAGED_ZERO_CALLS",
+  "paidProviderCallsExecuted": 0,
+  "voicePersonasExcluded": true,
+  "sharedInvariants": {
+    "model": "gemini-3.8-flash",
+    "systemInstruction": "Synthetic Unicode text-generation conformance assay.\nFollow the user request directly and return plain UTF-8 text.\nDo not include extra titles, commentary, Markdown formatting, JSON, safety prefaces, explanations or code fences.\nUnicode combining characters are part of the writing system; preserve or author them as requested.\nNo TD613 narrative, no fictional personas, no user-specific history, and no fictional municipality.",
+    "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
+    "generationConfig": {
+      "maxOutputTokens": 65536,
+      "thinkingConfig": {
+        "thinkingLevel": "medium"
+      }
+    },
+    "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+    "td613ArtificialCaps": null
+  },
+  "plannedPairwiseContrasts": [
+    {
+      "contrastId": "U_C1_RULES_VS_CONTRAST_EXAMPLES",
+      "armLeft": "R2_U_GUIDED_RULES",
+      "armRight": "R2_U_GUIDED_CONTRAST",
+      "soleChangedFactor": "registered contrast example block appended to contents[0].parts[0].text",
+      "counterbalancedOrders": [
+        "FORWARD",
+        "REVERSED"
+      ]
+    },
+    {
+      "contrastId": "U_C2_PLAIN_VS_GUIDED_RULES",
+      "armLeft": "R2_U_PLAIN_BASELINE",
+      "armRight": "R2_U_GUIDED_RULES",
+      "soleChangedFactor": "High-Zalgo vertical grammar specification vs plain undecorated directive on shared civic harbor scenario",
+      "counterbalancedOrders": [
+        "FORWARD",
+        "REVERSED"
+      ]
+    },
+    {
+      "contrastId": "U_C3_FREE_VS_GUIDED_RULES",
+      "armLeft": "R2_U_FREE_SYNTHESIS",
+      "armRight": "R2_U_GUIDED_RULES",
+      "soleChangedFactor": "open High-Zalgo invitation without grammar rules vs explicit towering vertical grammar rules on shared scenario",
+      "counterbalancedOrders": [
+        "FORWARD",
+        "REVERSED"
+      ]
+    }
+  ],
+  "arms": [
+    {
+      "armId": "R2_U_LITERAL_COPY",
+      "taskFamily": "literal_reproduction",
+      "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
+      "userPromptSha256": "9108ce15eead9fc4abb75b7878dcf504fcd3a5534872993b520bdffef7b9e8cb",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "83b156e7599f3e96b8938dab78c504b0519ea1c205132f3179bd61b627b95b2f",
+        "modelAndBodySha256": "e130fcef13311eac001e8fb36a6ec6192b784e21cb00abd342afbc2644008ee3",
+        "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
+        "contentsSha256": "8f89e163f9a75e8a7b23da777ac245ba1d58563618194f15f68ca9d1101ee5fa",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 1088,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "12bcfd08fa981a8727269376291c6018bdea7bad9b3d6740dd3b60cd003ec0f9"
+    },
+    {
+      "armId": "R2_U_PLAIN_BASELINE",
+      "taskFamily": "plain_control",
+      "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
+      "userPromptSha256": "2cb57e4f328453b836c7628727ccbdf288c9123be1aa13d16a3abba5ffad7132",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "e41b20ae66f799187ea909fed4a7129f3f5e4087ba8428940e8c802c39405922",
+        "modelAndBodySha256": "f25a3f89d6bd646fcfdc5d7a22368b0e325e17fc7c80d0ac3716278ec2ca7bb2",
+        "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
+        "contentsSha256": "cef2bd5add2db3d25ad2b60a4e26c06cae32869c462b647f796c172bdfd14812",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 918,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "7cbce26c17a36e4994ba2a92591250628e83e4251e858319aa0004465acf5370"
+    },
+    {
+      "armId": "R2_U_GUIDED_RULES",
+      "taskFamily": "guided_synthesis",
+      "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
+      "userPromptSha256": "0db36fd9b4569bb01dc5c7832b01dd7c3afe42354219cda6dad0a9a2962e92f5",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "777333f211984c3b729918a68d3ab7120af6b1d96a6a0d82c1508a5efc49cd59",
+        "modelAndBodySha256": "5c40388fb2a6b8af6d118fa90381454a7412c48cb831888c4135e80d65a6e7e6",
+        "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
+        "contentsSha256": "8a7ef288483ffc4d262c19c1edfdbc883d5945d850fb3e2f327a83281c1f1e21",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 1775,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "69217f189201af83dc5ad6587e763f100dbf7dd38d26dde44eab351a63ca84cc"
+    },
+    {
+      "armId": "R2_U_GUIDED_CONTRAST",
+      "taskFamily": "guided_synthesis",
+      "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
+      "userPromptSha256": "039cfcf7dfe448dcab34874cc3962c1afa73be28730aca157f6281df813bd3d9",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "0f547de86ef1dea488700c629af674b209f67032bb5367a617d5df98c256db08",
+        "modelAndBodySha256": "cd8d3de7f2a50bd83d6337b423082995eaeb7ebf54f4bc5c27d88be2c47e923c",
+        "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
+        "contentsSha256": "51c73253021fa41dc1a7dae82ac61066a8a97b957969e41be09618472e0d6021",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 2256,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "528a2229b21b009ee7da1f56608dcd03d3b47b3857405210701ec786547a5210"
+    },
+    {
+      "armId": "R2_U_FREE_SYNTHESIS",
+      "taskFamily": "free_synthesis",
+      "systemInstructionTextSha256": "0ba1fddb536515b139576649ea6c21cd4ac3914ed55a66ea37969522b1aefce9",
+      "userPromptSha256": "98ac66bf6ea91b3ef1990f4495440f9748406628a46f69fa9de8ab7279b8e4ca",
+      "observation": {
+        "schema": "td613.marrowline.submitted-request/v1",
+        "model": "gemini-3.8-flash",
+        "bodySha256": "5b738b60e0944081716e4b454ba3bb44784b3e755ec7c0c50496901da62a411c",
+        "modelAndBodySha256": "ca0169e00591084d1367d0993dba78bb63a8c59811a20262305c42723c6aa4d4",
+        "systemInstructionSha256": "f95496026c13d3d105f4c7381f3c259fbba07726216b656ca184c65367fa7b2e",
+        "contentsSha256": "0b3dc4f53ef3555bdcbaa616ff66845698baaac072893dbede2ede71a039bc3c",
+        "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
+        "utf8Bytes": 1068,
+        "contentTurnCount": 1
+      },
+      "countTokensRequestSha256": "0df89644be8455741a8679ecffc9b486bb33c0278155c216eb6d911b9fe9bc09"
+    }
+  ]
+}
