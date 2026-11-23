@@ -815,6 +815,8 @@ export async function executeR2ObservationCore({
             integrityStopReason = `STOP_ON_POLICY_TERMINATION_${wire.completion.promptBlockReason || wire.completion.finishReason || 'UNKNOWN'}`;
           } else if (!wire.completion?.complete) {
             integrityStopReason = `STOP_ON_INCOMPLETE_COMPLETION_${wire.completion?.reason || 'UNKNOWN'}`;
+          } else if (streamDiagnostics?.postFinishEofTimeoutTriggered === true || streamDiagnostics?.eofObserved === false) {
+            integrityStopReason = 'STOP_ON_TRANSPORT_EOF_UNWITNESSED_AFTER_FINISH';
           } else if (!wire.validUsageMetadata) {
             integrityStopReason = 'STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE';
           }
@@ -900,6 +902,7 @@ export async function executeR2ObservationCore({
             streamElapsedMs: streamDiagnostics.totalElapsedMs,
             streamPostFinishEofWaitMs: streamDiagnostics.postFinishEofWaitMs,
             streamPostFinishEofTimeoutTriggered: streamDiagnostics.postFinishEofTimeoutTriggered,
+            streamTransportEofUnwitnessed: Boolean(streamDiagnostics.transportEofUnwitnessed),
             streamInactivityWarningsCount: streamDiagnostics.inactivityWarningsCount
           } : {})
         });

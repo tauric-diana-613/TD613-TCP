@@ -666,6 +666,9 @@ function verifyPhysicalAttemptRecord(attempt, { estate, expectedPlan }) {
   if (!reParsed.usageCountsValid) {
     failures.push(`INVALID_PROVIDER_USAGE_METADATA:${slotId}`);
   }
+  if (attempt?.streamDiagnostics && (attempt.streamDiagnostics.postFinishEofTimeoutTriggered === true || attempt.streamDiagnostics.eofObserved === false)) {
+    failures.push(`TRANSPORT_EOF_UNWITNESSED:${reParsed.finalFinishReason || 'UNKNOWN'}:${slotId}`);
+  }
 
   return {
     valid: failures.length === 0,

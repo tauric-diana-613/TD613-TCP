@@ -277,12 +277,100 @@ test('MAX_TOKENS Terminates Promptly (Normal & Hung Post-Finish EOF), Preserves 
   assert.ok(elapsedMs < 2000, `Expected prompt post-finish EOF timeout closure, took ${elapsedMs}ms`);
   assert.equal(hungEofRes.attemptRecords[0].streamDiagnostics.postFinishEofTimeoutTriggered, true);
   assert.equal(hungEofRes.attemptRecords[0].streamDiagnostics.eofObserved, false);
+  assert.equal(hungEofRes.attemptRecords[0].streamDiagnostics.transportEofUnwitnessed, true);
   assert.equal(hungEofRes.attemptRecords[0].streamDiagnostics.terminationClass, 'POST_FINISH_EOF_TIMEOUT_CLOSED_CLEANLY');
   assert.equal(hungEofRes.attemptRecords[0].wire.parserAgreement, true);
   assert.equal(hungEofRes.attemptRecords[0].wire.parserB.finalFinishReason, 'MAX_TOKENS');
   assert.equal(hungEofRes.attemptRecords[0].evaluation, null);
   assert.equal(hungEofRes.physicalCustodyGate.gateResult.held, true);
   assert.ok(hungEofRes.physicalCustodyGate.physicalFailures.includes('NON_STOP_OR_BLOCKED_GENERATION:MAX_TOKENS:R2_U_LITERAL_COPY'));
+  assert.ok(hungEofRes.physicalCustodyGate.physicalFailures.includes('TRANSPORT_EOF_UNWITNESSED:MAX_TOKENS:R2_U_LITERAL_COPY'));
+
+  fs.rmSync(tmpRoot, { recursive: true, force: true });
+});
+
+test('finishReason=STOP with Complete Terminal SSE Frame but Missing Upstream EOF Holds Fail-Closed with Zero Valid Slot Credit and Preserved Raw Bytes', async () => {
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-r2-rec-stop-noeof-'));
+  const hostRegDir = path.join(tmpRoot, 'host-reg');
+  const kp = makeEphemeralTestKeyPair();
+  const dirStopNoEof = path.join(tmpRoot, 'stop-missing-eof');
+  const grantStopNoEof = signGrantForTest({ privateKey: kp.privateKey });
+
+  const exactRawSseFrame = `data: ${JSON.stringify({
+    modelVersion: 'gemini-3.8-flash',
+    candidates: [{ content: { parts: [{ text: R2_U_PINNED_COPY_SPECIMEN }] }, finishReason: 'STOP' }],
+    usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 40, thoughtsTokenCount: 5, totalTokenCount: 145 }
+  })}\r\n\r\n`;
+
+  const stopHungEofTransport = async (url) => {
+    if (url.includes(':countTokens')) return makeCountTokensOkResponse();
+    if (url.includes(':streamGenerateContent')) {
+      return makeStreamResponseFromFactory(() => new ReadableStream({
+        start(controller) {
+          controller.enqueue(Buffer.from(exactRawSseFrame, 'utf8'));
+          // Intentionally omit controller.close() to simulate missing upstream transport EOF after STOP
+        }
+      }));
+    }
+    return makeMetadataOkResponse();
+  };
+
+  const t0 = Date.now();
+  const res = await executeR2ObservationCore({
+    estate: 'R2-U',
+    acknowledgeLiveExecution: true,
+    grant: grantStopNoEof,
+    publicKeyPem: kp.publicKeyPem,
+    pinnedTrustFingerprintSha256: kp.fingerprintSha256,
+    checkedOutHeadSha: TEST_HEAD_SHA,
+    evidenceDir: dirStopNoEof,
+    hostNonceRegistryDir: hostRegDir,
+    transportFetch: stopHungEofTransport,
+    apiKey: 'mock-offline-key',
+    planId: 'INITIAL_SINGLE_ARM_LITERAL_CHECK',
+    postFinishEofTimeoutMs: 60
+  });
+  const elapsedMs = Date.now() - t0;
+
+  assert.ok(elapsedMs < 2000, `Expected prompt post-finish EOF timeout closure, took ${elapsedMs}ms`);
+
+  // Preserved raw SSE & authored UTF-8 bytes and truthful parser results
+  const att = res.attemptRecords[0];
+  assert.equal(fs.readFileSync(att.rawSseFilePath, 'utf8'), exactRawSseFrame);
+  assert.equal(fs.readFileSync(att.authoredTextFilePath, 'utf8'), R2_U_PINNED_COPY_SPECIMEN);
+  assert.equal(att.wire.rawDiskVerified, true);
+  assert.equal(att.wire.authoredDiskVerified, true);
+  assert.equal(att.wire.parserAgreement, true);
+  assert.equal(att.wire.parserB.finalFinishReason, 'STOP');
+  assert.equal(att.wire.parserB.endsWithEventDelimiter, true);
+  assert.equal(att.wire.completion.complete, true);
+
+  // Transport EOF explicitly unwitnessed
+  assert.equal(att.streamDiagnostics.postFinishEofTimeoutTriggered, true);
+  assert.equal(att.streamDiagnostics.eofObserved, false);
+  assert.equal(att.streamDiagnostics.transportEofUnwitnessed, true);
+  assert.equal(att.streamDiagnostics.terminationClass, 'POST_FINISH_EOF_TIMEOUT_CLOSED_CLEANLY');
+
+  // Fail-closed: zero valid slot credit, zero qualified episodes, HELD Gate
+  assert.equal(att.integrityStopReason, 'STOP_ON_TRANSPORT_EOF_UNWITNESSED_AFTER_FINISH');
+  assert.equal(att.evaluation, null);
+  assert.equal(res.episodeSummaries[0].validSlotsCount, 0);
+  assert.equal(res.episodeSummaries[0].allSlotsValid, false);
+  assert.equal(res.episodeSummaries[0].held, true);
+  assert.equal(res.dispatchCounts.episodesCompletedValid, 0);
+  assert.equal(res.acquisitionScope.validAttemptsCount, 0);
+  assert.equal(res.acquisitionScope.completedValidEpisodeCount, 0);
+  assert.equal(res.acquisitionScope.classification, 'NO_VALID_OBSERVATION');
+
+  assert.equal(res.physicalCustodyGate.physicalVerificationPassed, false);
+  assert.equal(res.physicalCustodyGate.reportedVsVerified.independentlyVerifiedPhysicalEvidence.verifiedAttemptCount, 0);
+  assert.ok(res.physicalCustodyGate.physicalFailures.includes('TRANSPORT_EOF_UNWITNESSED:STOP:R2_U_LITERAL_COPY'));
+  assert.ok(res.physicalCustodyGate.physicalFailures.includes('NO_VERIFIED_COMPLETED_SSE_CAPTURE'));
+  assert.equal(res.physicalCustodyGate.gateResult.overallDisposition, 'HELD');
+  assert.equal(res.physicalCustodyGate.gateResult.held, true);
+  assert.equal(res.physicalCustodyGate.gateResult.lifecycleCapabilities.EMPIRICALLY_QUALIFIED, false);
+  assert.equal(res.physicalCustodyGate.gateResult.securityAndSafeHarbor.externalAdmissionProved, false);
+  assert.equal(res.physicalCustodyGate.gateResult.holdReasons.includes('DUAL_PARSER_DISAGREEMENT'), false);
 
   fs.rmSync(tmpRoot, { recursive: true, force: true });
 });

@@ -433,6 +433,7 @@ export function instrumentSseResponseForObservability({
       observedFinishReason,
       terminalDelimiterSeen,
       eofObserved,
+      transportEofUnwitnessed: !eofObserved,
       postFinishEofTimeoutTriggered,
       inactivityAbortTriggered,
       operatorAborted,
