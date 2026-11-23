@@ -181,6 +181,23 @@ try{
    await page.waitForFunction(()=>document.body.dataset.view==='operator',null,{timeout:9000});
    matrix.push({profile:profile.name,...await scrollCapture(page,profile,'operator-settings')});
   }catch(e){failure.push({profile:profile.name,route:'operator-settings',error:String(e)});}
+  // Render the actual Observatory inspector, not a fictional proof route.
+  try{
+   await page.locator('#vixenRoomRail button[data-view="observatory"]').click({force:true,timeout:8000});
+   await page.locator('.ef-inspector-switch').first().waitFor({state:'visible',timeout:10000});
+   await page.locator('.ef-inspector-switch').first().click({force:true,timeout:6000});
+   await page.waitForTimeout(120);
+   const expanded=await page.locator('.ef-inspector-switch').first().getAttribute('aria-expanded');
+   if(expanded!=='true')throw Error('OBSERVATORY_PROOF_NOT_EXPANDED');
+   await capture(page,path.join(profile.name,'observatory-proof','proof-open.jpg'),{
+    profile:profile.name,surface:'observatory-proof',kind:'source_proof_open',
+    aria_expanded:expanded
+   });
+   matrix.push({profile:profile.name,route:'observatory-proof-open',covered_bottom:true,tiles:1});
+   await page.locator('.ef-inspector-switch').first().click({force:true,timeout:6000});
+   if(await page.locator('.ef-inspector-switch').first().getAttribute('aria-expanded')!=='false')
+    throw Error('OBSERVATORY_PROOF_CLOSE_FAILED');
+  }catch(e){failure.push({profile:profile.name,route:'observatory-proof',error:String(e)});}
   // Search is an actual dialog, not a fictional dedicated Advanced Search room.
   try{
    await page.locator('[data-action="search"]').first().click({force:true,timeout:6000});
@@ -200,6 +217,18 @@ try{
     });
     matrix.push({profile:profile.name,route:'search-'+mode,covered_bottom:true,tiles:1,modal:true});
    }
+   // Negative query preserves an actually observed result/empty state; never
+   // fabricate an error or claim the search layer returned zero without data.
+   await page.locator('#globalSearchInput').fill('TD613__UNLIKELY_NEGATIVE_QUERY__Q8X19');
+   await page.waitForTimeout(200);
+   const negativeText=(await page.locator('#globalSearchResults').innerText()).slice(0,400);
+   await capture(page,path.join(profile.name,'search-dialog','negative-query.jpg'),{
+    profile:profile.name,surface:'search-negative-query',kind:'negative_query_observed',
+    query:'TD613__UNLIKELY_NEGATIVE_QUERY__Q8X19',result_excerpt:negativeText
+   });
+   matrix.push({profile:profile.name,route:'search-negative-query',covered_bottom:true,tiles:1,modal:true});
+   await page.locator('#globalSearchInput').fill('provenance');
+   await page.waitForTimeout(180);
    await page.locator('#vixenFusionConsole summary').click({force:true,timeout:5000});
    await page.waitForTimeout(120);
    await capture(page,path.join(profile.name,'search-dialog','fusion-laboratory.jpg'),{
@@ -249,6 +278,25 @@ try{
     });
     matrix.push({profile:profile.name,route:'podium-'+role.toLowerCase(),covered_bottom:true,tiles:1});
    }
+   // Role selection alone must never count as Program Notes consent.
+   // Start a synthetic COMPOSER session and stop at AWAITING permission.
+   await page.locator('#vmaGoal').fill('Compare original source routes without writing notes.');
+   await page.locator('#vmaStart').click({force:true,timeout:7000});
+   await page.locator('#vmaNotesRequest').waitFor({state:'visible',timeout:8000});
+   const notesOff=(await page.locator('#vmaNotesState').innerText()).trim();
+   if(!/Notes OFF/i.test(notesOff))throw Error('PROGRAM_NOTES_DEFAULT_NOT_OFF '+notesOff);
+   await capture(page,path.join(profile.name,'podium-roles','program-notes-off.jpg'),{
+    profile:profile.name,surface:'program-notes-off',kind:'consent_off',
+    program_notes_permission:'NOT_REQUESTED',grant_performed:false
+   });
+   matrix.push({profile:profile.name,route:'program-notes-off',covered_bottom:true,tiles:1});
+   await page.locator('#vmaNotesRequest').click({force:true,timeout:6000});
+   await page.locator('#vmaNotesApprove').waitFor({state:'visible',timeout:8000});
+   await capture(page,path.join(profile.name,'podium-roles','program-notes-awaiting-human.jpg'),{
+    profile:profile.name,surface:'program-notes-pending',kind:'consent_pending',
+    program_notes_permission:'AWAITING_HUMAN_PERMISSION',grant_performed:false
+   });
+   matrix.push({profile:profile.name,route:'program-notes-pending',covered_bottom:true,tiles:1});
   }catch(e){failure.push({profile:profile.name,route:'podium-role-choices',error:String(e)});}
   // Inspect every public research-inspector pane, including scrollable
   // dialog content. A hidden/pinned developer panel is not omitted silently.
@@ -308,13 +356,38 @@ try{
    failure.push({profile:profile.name,route:'motion-comparison',error:String(e)});
    await page.emulateMedia({reducedMotion:'no-preference'}).catch(()=>{});
   }
+  // Overlapping instant tiles are structural coverage, not proof of live
+  // mesh/corset behavior while scrolling. This separate interleaved series
+  // captures browser frames during smooth scrolling and contemporaneous mesh.
+  try{
+   await page.locator('#vixenRoomRail button[data-view="collection"]').click({force:true,timeout:8000});
+   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   const maxScroll=await page.evaluate(()=>Math.max(0,Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)-innerHeight));
+   if(maxScroll<350)throw Error('SALON_PAGE_TOO_SHORT_FOR_SCROLL_MOTION_WITNESS '+maxScroll);
+   let previous=0;
+   for(const i of [1,2,3]){
+    const target=Math.floor(maxScroll*i/4);
+    await page.evaluate(y=>window.scrollTo({top:y,behavior:'smooth'}),target);
+    await page.waitForTimeout(170);
+    const observed=await page.evaluate(()=>({y:Math.round(window.scrollY),mesh:window.VixenLivingMesh?.status?.()??null}));
+    if(observed.y<=previous+5)throw Error('SALON_INTERLEAVED_SCROLL_NOT_MOVING '+JSON.stringify({previous,observed,target}));
+    previous=observed.y;
+    await capture(page,path.join(profile.name,'motion','collection-scrolling-'+i+'.jpg'),{
+     profile:profile.name,surface:'collection-scrolling-motion',kind:'interleaved_salon_scroll',
+     requested_y:target,observed_y:observed.y,mesh_status:observed.mesh,
+     motion_mode:'smooth',prefers_reduced_motion:false
+    });
+   }
+   matrix.push({profile:profile.name,route:'collection-scrolling-motion',covered_bottom:false,tiles:3,
+     limits:'frames document scroll positions and visible states, not FPS or physical-device performance'});
+  }catch(e){failure.push({profile:profile.name,route:'collection-scrolling-motion',error:String(e)});}
   if(pageErrors.length)failure.push({profile:profile.name,route:'browser',errors:pageErrors.slice(0,25)});
   if(httpFailures.length)failure.push({profile:profile.name,route:'http',errors:httpFailures.slice(0,25)});
   await context.close();
  }
 }finally{await browser.close();}
 const report={
- schema:'td613.vixen.full-surface-witness/v3',source_revision:revision,
+ schema:'td613.vixen.full-surface-witness/v4',source_revision:revision,
  mode:isHostedPreview?'CHROMIUM_HTTPS_PREVIEW_NEEDS_SERVED_SOURCE_AUDIT':'REAL_CHROMIUM_LOCAL_HTTP_NOT_PHYSICAL_DEVICE',
  witness_url_origin:isHostedPreview?new URL(origin).origin:'LOCAL_HTTP',captured_at:new Date().toISOString(),elapsed_ms:Date.now()-startedAt,
  vertical_tile_stride_fraction:.58,conservative_tile_overlap_fraction:.42,
