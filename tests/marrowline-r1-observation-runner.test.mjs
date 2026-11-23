@@ -751,7 +751,7 @@ test('Gate D: halts cleanly as HELD on policy finish, wrong served model, partia
         {
           modelVersion: R1_PINNED_MODEL,
           candidates: [{ content: { parts: [{ text: `Kʰonapolit\n${makeMultiStackSample()}\n\nTauric Diana bots\n${makeMultiStackSample()}` }] }, finishReason: 'STOP' }],
-          usageMetadata: { promptTokenCount: 220, candidatesTokenCount: 12000, thoughtsTokenCount: 4385 }
+          usageMetadata: { promptTokenCount: 220, candidatesTokenCount: 12000, thoughtsTokenCount: 4385, totalTokenCount: 16605 }
         }
       ]);
     });
