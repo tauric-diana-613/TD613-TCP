@@ -452,12 +452,25 @@ try{
   await context.close();
  }
 }finally{await browser.close();}
+const requiredSurfaceRoutes=[
+ ...primaryRoutes,'operator-settings','folios-optical-layer-check',
+ 'decoded-frontispiece','observatory-proof-open',
+ 'search-hybrid','search-lexical','search-phrase','search-exact','search-src_projective',
+ 'search-negative-query','fusion-laboratory','independent-reading-room','works-original-reader',
+ 'podium-maestro','podium-composer','program-notes-off','program-notes-pending',
+ 'inspector-census','inspector-bench','inspector-provenance','inspector-podium',
+ 'collection-reduced-motion','collection-live-motion','collection-scrolling-motion'
+];
+const missingSurfaceRoutes=profiles.flatMap(profile=>requiredSurfaceRoutes
+ .filter(route=>!matrix.some(item=>item.profile===profile.name&&item.route===route))
+ .map(route=>({profile:profile.name,route,error:'REQUIRED_ROUTE_UNOBSERVED'})));
+failure.push(...missingSurfaceRoutes);
 const report={
  schema:'td613.vixen.full-surface-witness/v4',source_revision:revision,
  mode:isHostedPreview?'CHROMIUM_HTTPS_PREVIEW_NEEDS_SERVED_SOURCE_AUDIT':'REAL_CHROMIUM_LOCAL_HTTP_NOT_PHYSICAL_DEVICE',
  witness_url_origin:isHostedPreview?new URL(origin).origin:'LOCAL_HTTP',captured_at:new Date().toISOString(),elapsed_ms:Date.now()-startedAt,
  vertical_tile_stride_fraction:.58,conservative_tile_overlap_fraction:.42,
- profiles,primary_routes:primaryRoutes,matrices:matrix,images:records,
+ profiles,primary_routes:primaryRoutes,required_surface_routes:requiredSurfaceRoutes,missing_surface_routes:missingSurfaceRoutes,matrices:matrix,images:records,
  errors:failure,
  limits:['Tiled coverage includes four viewports and reachable principal routes; it is not all 32 original manuscript permutations.',
  'Human aesthetic and native-device acceptance remain reserved.',
