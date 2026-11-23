@@ -77,6 +77,9 @@ async function visit(profile,phase){
  const url=origin+'vix-cyb.html';
  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:40000});
  assert.equal(response?.status(),200,'HTTP source '+phase);
+ // Static DOM arrival precedes source-bound event binding. Wait for the
+ // foyer's established readiness contract before invoking a real navigation.
+ await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:25000,polling:250});
  await page.locator('#vixenRoomRail button[data-view="works"]').waitFor({state:'attached',timeout:25000});
  await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true});
  try {await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:15000});}
