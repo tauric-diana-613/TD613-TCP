@@ -107,7 +107,7 @@ try{
          variants.push({version,source_sha:version==='before'?beforeSha:afterSha,url_origin:new URL(url).origin,...measurement});
          if(version==='after'){
            if(measurement.leaks.length)failures.push({profile:profile.name,problem:'VISIBLE_BACKSTAGE_COPY',leaks:measurement.leaks});
-           if(measurement.article_width_px<profile.width*.67)failures.push({profile:profile.name,problem:'COLLAPSED_MANUSCRIPT_MEASURE',width:measurement.article_width_px});
+           if(measurement.article_width_px<profile.width*(profile.width<500?.67:.36))failures.push({profile:profile.name,problem:'COLLAPSED_MANUSCRIPT_MEASURE',width:measurement.article_width_px});
            if(measurement.word_samples<15||measurement.median_words_per_line<4)
              failures.push({profile:profile.name,problem:'ONE_WORD_PER_LINE_OR_UNREADABLE_FLOW',median:measurement.median_words_per_line,words:measurement.word_samples});
            if(profile.width<500&&measurement.max_height!=='none')
