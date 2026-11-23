@@ -52,6 +52,13 @@
 - `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`: mobile critical controls use actual Playwright hit-testing with center scroll instead of `force:true`, covering Podium start, proof, reading-room and notes request; corresponding exact-head [CI 45169186165](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45169186165) requires full qualification.
 - Last observed PR #1784 HEAD when this note was staged: `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`; always re-check live HEADs before integration. Historical RED remains outside final evidence.
 
+
+### Arrival-state pixel provenance — independent four-profile inspection
+- Historical [CI 45166406492](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45166406492), source `86664aecaa00951ffd085004c3db99ee256aa36b`, full-scroll Actions artifact **14816966301**; **RED** for interaction state failures, not final.
+- Independent audit read `COVERAGE.json` and all 999 indexed JPEGs: byte lengths, SHA-256, decoded dimensions, source revision, four viewport identities, nested scroll motion. Source reported 127 route entries, 9 errors including absent routes, retained as historical negatives.
+- Actual rendered arrival frames independently inspected across 1440×900, 1920×1080, 390×844 and 428×926. The 1440px runner observed a stable genuine `arriving` veil; the other three observed the arrival-to-`revealed` transition. Each profile independently captured a distinct `arrival_ready_frontispiece` with decoded original fox artwork and veil absent. No transition was promoted as an actual loading state.
+- This confirms bounded screenshot-phase fidelity of the historical source. Exact-head combined GREEN and final HTTPS served-revision attestation remain HELD.
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
