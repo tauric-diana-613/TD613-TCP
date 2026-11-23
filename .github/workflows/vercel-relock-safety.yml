@@ -432,6 +432,101 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"
 
+  # Single-failure Vercel check investigation. This job reads but never deploys.
+  # Original PREPARE/DEPLOY and production authorization remain unchanged.
+  vixen-preview-check-diagnose:
+    name: Vixen failed-preview check forensics — READ ONLY
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'issue_comment' &&
+      github.event.issue.number == 1744 &&
+      github.event.issue.pull_request == null &&
+      (
+        github.event.comment.user.login == github.repository_owner ||
+        github.event.comment.user.login == 'chatgpt-codex-connector[bot]'
+      ) &&
+      github.event.comment.body == '/td613-vixen-preview CHECK-LOGS DYr8M6wJMiwyxQUUmaHizRkxH874'
+    permissions:
+      contents: read
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: vixen-preview
+    env:
+      VERCEL_SCOPE: tauric-diana-s-projects
+      VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
+      VERCEL_PROJECT_ID: prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7
+      FAILED_DEPLOYMENT_ID: DYr8M6wJMiwyxQUUmaHizRkxH874
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Set up Node 22 for the pinned diagnostic CLI
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the already-reviewed Vercel CLI version
+        run: npm install --global vercel@65.16.0
+      - name: Inspect only the known failed preview's checks and build events
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "${VERCEL_TOKEN:-}" ]] || { echo 'Vercel diagnostic credentials missing' >&2; exit 1; }
+          mkdir -p "$RUNNER_TEMP/vixen-check-diagnostics"
+          cd "$RUNNER_TEMP/vixen-check-diagnostics"
+          set +e
+          vercel inspect "$FAILED_DEPLOYMENT_ID" --logs --scope "$VERCEL_SCOPE" > inspect.txt 2>&1
+          INSPECT_EXIT=$?
+          vercel api "/v13/deployments/$FAILED_DEPLOYMENT_ID?teamId=$VERCEL_ORG_ID" --method GET > deployment.json 2> deployment.err
+          DEPLOYMENT_EXIT=$?
+          vercel api "/v3/deployments/$FAILED_DEPLOYMENT_ID/events?teamId=$VERCEL_ORG_ID&builds=1" --method GET > events.json 2> events.err
+          EVENTS_EXIT=$?
+          vercel api "/v1/deployments/$FAILED_DEPLOYMENT_ID/checks?teamId=$VERCEL_ORG_ID" --method GET > checks.json 2> checks.err
+          CHECKS_EXIT=$?
+          set -e
+          INSPECT_EXIT="$INSPECT_EXIT" DEPLOYMENT_EXIT="$DEPLOYMENT_EXIT" EVENTS_EXIT="$EVENTS_EXIT" CHECKS_EXIT="$CHECKS_EXIT" python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          def clean(s):
+              s = str(s).replace(os.getenv('VERCEL_TOKEN','<unset>'),'[REDACTED]')
+              s = re.sub(r'(?i)(token|secret|password|authorization)(\s*[:=]\s*)([^\s,;]+)',r'\1\2[REDACTED]',s)
+              return s[:380]
+          print('CHECK_DIAGNOSTIC_ONLY: true')
+          print('TARGET: original failed Preview DYr8M6wJMiwyxQUUmaHizRkxH874')
+          for k in ('INSPECT_EXIT','DEPLOYMENT_EXIT','EVENTS_EXIT','CHECKS_EXIT'): print(k,os.environ[k])
+          for fname in ('deployment.json','events.json','checks.json'):
+              try: data=json.loads(Path(fname).read_text())
+              except Exception as e: print(fname,'JSON_UNAVAILABLE',clean(e)); continue
+              if isinstance(data,dict):
+                  source=data.get('deployment',data)
+                  if fname=='deployment.json':
+                      print('DEPLOYMENT_FIELDS',json.dumps({k:clean(source[k]) for k in ('id','readyState','state','errorCode','errorMessage','projectId','url','checksState') if k in source},sort_keys=True))
+                      for key in ('checks','checksState','checkStatus','buildError'):
+                          if key in source:print('CHECK_FIELD',key,clean(json.dumps(source[key])))
+                  elif fname=='checks.json':
+                      entries=data.get('checks',data.get('data',[]))
+                      if isinstance(entries,dict): entries=entries.get('checks',[])
+                      if isinstance(entries,list):
+                          print('CHECKS_COUNT',len(entries))
+                          for entry in entries[:50]:
+                              if isinstance(entry,dict):
+                                  print('DEPLOYMENT_CHECK',json.dumps({k:clean(entry[k]) for k in ('name','status','state','conclusion','blocking','id','detailsUrl','output') if k in entry},sort_keys=True))
+                  else:
+                      events=data.get('events',data.get('data',[]))
+                      if isinstance(events,dict):events=events.get('events',[])
+                      if isinstance(events,list):
+                          print('EVENT_COUNT',len(events))
+                          for event in events[-100:]:
+                              if not isinstance(event,dict):continue
+                              info=' '.join(str(event.get(k,'')) for k in ('type','level','text','message','payload'))
+                              if re.search('error|failed|check|build|limit|bundle|memory|size|invalid|python|install|quota',info,re.I):
+                                  print('BUILD_EVENT',clean(info))
+          t=Path('inspect.txt').read_text(errors='replace') if Path('inspect.txt').exists() else ''
+          lines=[clean(l) for l in t.splitlines() if re.search('error|failed|check|build|limit|bundle|memory|size|invalid|python|quota',l,re.I)]
+          print('INSPECT_RELEVANT_LINES',len(lines))
+          for line in lines[-55:]: print('INSPECT',line)
+          if not t.strip() and all(not Path(f).stat().st_size for f in ('deployment.json','events.json','checks.json')):
+              raise SystemExit('FAILED_TO_ACQUIRE_ANY_CHECK_LOGS')
+          print('READ_ONLY_NO_DEPLOY_NO_ALIAS_CHANGE')
+          PY
   # PR #1730 source-only preflight: no Vercel credentials, no deployment.
 
   vixen-preview-prepare:
