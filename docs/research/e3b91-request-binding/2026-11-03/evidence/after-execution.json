@@ -1,0 +1,6 @@
+{
+  "exit_code": 1,
+  "unchanged_reproducer_sha256": "16282510387a92fdc0b24030a311321537233431a65b9136970222ea2cfa4a66",
+  "stdout_sha256": "6d649cc2e936178733882d6b8f0a2eef53c96d77fb1f602d06137571f7847cf9",
+  "stderr_sha256": "4727c5c4ea03eaedd98ac9a2bbd4a2590c845e3b73ac38cf2b0d731b81c4aa8c"
+}

@@ -1,0 +1,40 @@
+✔ ENTRY: fresh prospective constitution, separate products and nine real-source classes remain denied (20.146678ms)
+✔ ENTRY: B7 shape-valid forged 44-callable profile cannot authorize execution, real admission or historical identity (100.909503ms)
+✔ DENIAL: all nine source classes and forbidden real operations refuse before path reads or native engine initialization (9.875879ms)
+✔ DENIAL: exact catalog, synthetic rights, epoch and byte hash precede all native staging (87.603929ms)
+✔ METHOD: TD reference search/get/cite/integrity execute through the new entry with independent expected records (115.639667ms)
+✔ METHOD: original SRC Explore sentence grammar preserves later, preexisting, unresolved and raw Spanish results (105.331487ms)
+✔ METHOD: SRC typed two-hop route executes while direct, genealogical and causal lifts refuse (81.513315ms)
+✔ METHOD: Wendbine public compiler and query remain in the independent Encyclopedia candidate (49.486924ms)
+✔ METHOD: Em Work split/collapse, motif-mechanism/null and genealogy execute without identity or science promotion (63.423067ms)
+✔ DENIAL: wrong Em parent/hash or Work ancestry cannot enter through the finite invented catalog (53.566779ms)
+✔ METHOD: Em finite model falsification retains null abstention and a genuinely nonunique supplied-case control (36.727632ms)
+✔ METHOD: actual three-origin public trace preserves separate envelopes and HELD bridge (65.600101ms)
+✔ COMPARE: independently initialized source-native, candidate and transport lanes execute distinguishable operations (387.802461ms)
+✔ STATE: genuine executed zero, absent, unavailable, held, unexecuted and staged states remain distinct (107.910732ms)
+✔ STATE: original seed profile remains byte-identical under all four source routes and a fresh-process reopen (202.32654ms)
+✔ STATE: retained receipts and exact replay survive fresh process without duplicating staged fixtures (537.087228ms)
+✔ DENIAL: all origin receipts reject cross-source, wrong-product, stale and counterfeit bindings (71.749674ms)
+✔ DENIAL: cross-product citations and source-identical false citation ancestry refuse (65.352597ms)
+✔ DENIAL: identical fixture bytes under unrelated IDs never transfer receipt, rights or source authority (131.890554ms)
+✔ DENIAL: conflicting duplicate IDs across distinct origins and cross-lane receipts remain isolated (48.827002ms)
+✔ STATE: withdrawal and post-withdrawal replay refuse across every origin and a separate process (413.745443ms)
+✔ STATE: withdrawn canonical fixture cannot return through a fresh ID or an already-staged alias (589.281477ms)
+✔ STATE: forged restart gate flags fail even with a recomputed caller-supplied root digest (243.33322ms)
+✔ STATE: wrong mode/version/root and caller-edited profile fail across fresh-process entry (210.244189ms)
+✔ DENIAL: each real-source class remains closed after caller edits its held state and forges a new root (773.187457ms)
+✔ IO: symlinked fixture receipt and source-path injection refuse without opening linked fake files (34.573831ms)
+✔ IO: lazy-read/root parameters are rejected before source-specific research execution (60.017444ms)
+✔ STATE: interrupted staging/engine creation remains held without reconstructing missing state (16.026651ms)
+✔ STATE: changed or missing live engine receipt fails closed without silently rebuilding it (52.271642ms)
+✔ IO: finite implementation closure rejects post-import code drift, missing files and mandatory dependency substitution (22.374625ms)
+✔ IO: entry import and blocked real request expose only finite code/catalog reads, no engine/archive reader (95.46379ms)
+✔ IO: allowed four-family product execution reads only pinned software and owned synthetic state (230.809481ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5197.650401

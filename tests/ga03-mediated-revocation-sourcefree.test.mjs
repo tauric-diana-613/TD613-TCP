@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {openSourceFreeCohortPolicy} from '../scripts/ga03-sourcefree-revocation-and-td-projection-v01.mjs';
+const make=t=>{const root=fs.mkdtempSync(path.join(os.tmpdir(),'td613-ga03-policy-'));t.after(()=>fs.rmSync(root,{force:true,recursive:true}));return root};
+test('GA03 coordinated cohort access is denied after durable synthetic tombstone',async t=>{
+ const root=make(t),gate=openSourceFreeCohortPolicy({root,create:true});
+ gate.assertAllowed('FIXTURE-W-GA01');
+ gate.assertAllowed('FIXTURE:W-GA01-ORIGINAL');
+ assert.equal(gate.indexAllow('FIXTURE-W-GA01-INDEX'),true);
+ const withdrawn=gate.withdraw();
+ assert.equal(withdrawn.status,'WITHDRAWN_MEDIATED_API');
+ assert.equal(gate.indexAllow('FIXTURE-W-GA01-INDEX'),false);
+ assert.throws(()=>gate.assertAllowed('FIXTURE:W-GA01-ORIGINAL'),/GA03_COHORT_ACCESS_WITHDRAWN/);
+ assert.throws(()=>gate.assertAllowed('FIXTURE-W-GA01'),/GA03_COHORT_ACCESS_WITHDRAWN/);
+ const reopened=openSourceFreeCohortPolicy({root,retainedReceipt:gate.rootReceipt});
+ assert.throws(()=>reopened.assertAllowed('FIXTURE:W-GA01-ORIGINAL'),/GA03_COHORT_ACCESS_WITHDRAWN/);
+ assert.equal(reopened.state().external_antirollback,'HELD');
+ assert.equal(reopened.state().global_unmediated_revocation,'HELD');
+});
+test('GA03 interrupted product finalization leaves mediated policy closed',async t=>{
+ const root=make(t),gate=openSourceFreeCohortPolicy({root,create:true});
+ const api={request:async q=>{if(q.action==='withdraw')throw Error('synthetic interruption');return {status:'SYNTHETIC_READBACK'}}};
+ const view=gate.controlledProduct({productApi:api,productId:'TEST_PRODUCT',sourceId:'FIXTURE-W-GA01',sourceReceipt:'TEST_RECEIPT'});
+ assert.equal((await view.readback()).status,'SYNTHETIC_READBACK');
+ const result=await view.withdraw();
+ assert.equal(result.status,'MEDIATED_REVOKED_PRODUCT_FINALIZATION_HELD');
+ await assert.rejects(view.readback(),/GA03_COHORT_ACCESS_WITHDRAWN/);
+});

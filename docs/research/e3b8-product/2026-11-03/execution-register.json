@@ -1,0 +1,82 @@
+{
+  "schema": "td613.b8-local-source-free-execution-register/v1",
+  "source_identity": "PRECOMMIT_LOCAL_RUNTIME_MANIFEST; PUBLISHED_EXACT_HEAD_CI_REPORTED_SEPARATELY",
+  "implementation_sha256": "99bd06f1ccf71138f3546acac38d02c3c380fd31c2db4f1c0477936523fc3c92",
+  "node": "v24.22.1",
+  "python": "Python 3.12.14",
+  "commands": [
+    {
+      "suite": "B8",
+      "command": "TD613_E3B8_EVIDENCE_OUTPUT=docs/research/e3b8-product/2026-11-03/observed-product-entry.json node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.test.mjs",
+      "exit_code": 0,
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0,
+      "local_log": "b8-tests.txt",
+      "log_sha256": "6c7ab1866700ffa5506b32f864ef782055d114ff5e49f423cac46b66b3e2c7f0",
+      "evidence": "NEW_PUBLIC_ENTRY",
+      "pass_count": 32
+    },
+    {
+      "suite": "B6",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-method-inheritance-v01.test.mjs",
+      "exit_code": 0,
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "local_log": "b6-regression.txt",
+      "log_sha256": "b5a6d6454f9ac10811369b31cb3ec6c140edb4987c75f045b487803f4226be3f",
+      "evidence": "FROZEN_REGRESSION"
+    },
+    {
+      "suite": "B5",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.test.mjs",
+      "exit_code": 0,
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "local_log": "b5-regression.txt",
+      "log_sha256": "88b810c47f30377d9ffd3e14de8eba6a0d6ff983954cd65d6b1871f1be2b0ee7",
+      "evidence": "FROZEN_REGRESSION"
+    },
+    {
+      "suite": "B3",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs",
+      "exit_code": 0,
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "local_log": "b3-regression.txt",
+      "log_sha256": "dd8af1f405978c7517783c5ef4774251d7dc0276764e7abdf488506a47b81475",
+      "evidence": "FROZEN_REGRESSION"
+    },
+    {
+      "suite": "B41_B4",
+      "command": "node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "exit_code": 0,
+      "tests": 30,
+      "pass": 30,
+      "fail": 0,
+      "skipped": 0,
+      "local_log": "b41-regression.txt",
+      "log_sha256": "21006879f3275a0579d2bf4472ded6e4d6cbeb02a36f1af99de60051ecd32351",
+      "evidence": "FROZEN_REGRESSION"
+    }
+  ],
+  "new_test_categories": {
+    "ENTRY": 2,
+    "DENIAL": 8,
+    "METHOD": 7,
+    "COMPARE": 1,
+    "STATE": 9,
+    "IO": 5
+  },
+  "observations": 40,
+  "recorded_expected_refusals": 178,
+  "independent_empirical_replications": 0,
+  "real_sources_admitted": 0
+}

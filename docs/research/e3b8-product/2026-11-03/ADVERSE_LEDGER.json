@@ -1,0 +1,54 @@
+{
+  "schema": "td613.b8-adverse-history/v1",
+  "historical_b6": {
+    "head": "6b5dff12fe9a527164763088e46d5a2eefe66791",
+    "run_id": 41579512391,
+    "attempt_1_job": 125730861668,
+    "attempt_1": "ALL_COMMISSIONED_SUITES_PASSED_THEN_UNCHANGED_CLASSIC79_ASYNC_TEARDOWN_FAILED",
+    "message": "AnimationCoordinator is destroyed / unhandled rejection",
+    "attempt_2_job": 125732055076,
+    "attempt_2": "SUCCESS_IDENTICAL_HEAD",
+    "repaired_or_quarantined": false,
+    "conditional_jobs_skipped": 17,
+    "M2_WindowLatch_skip_occurrences": 2,
+    "M2_distinct_existing_skipped_cases": 1,
+    "evidence_class": "RETAINED_INDEPENDENT_PREFLIGHT_AND_B7_RECORD; COMMIT_CI_SUCCESS_REQUERIED; NOT_RERUN_HISTORICAL_ATTEMPTS"
+  },
+  "b8_development": [
+    {
+      "case": "Workflow-estate tooling not initially populated in no-checkout worktree",
+      "outcome": "MODULE_NOT_FOUND; selected main tooling restored, workflow estate passed; no test-code edit"
+    },
+    {
+      "case": "VM-array strict prototype comparison",
+      "tests": 31,
+      "pass": 30,
+      "fail": 1,
+      "skipped": 0,
+      "log": "b8-dev-vm-assertion-failure.json",
+      "correction": "Assert Array.isArray and length 0 together with verified/total 2; no native implementation change"
+    },
+    {
+      "case": "Post-withdrawal new alias for same explicitly catalogued fixture",
+      "probe": "withdrawal-alias-before.json",
+      "affected_invented_families": 4,
+      "before": "STAGED_UNADMITTED under fresh alias; real_source_admitted false",
+      "correction": "Revoke explicit catalog identity for this instance before delegate withdrawal; existing/future aliases refuse, unrelated catalog IDs retained",
+      "final_regression": "STATE: withdrawn canonical fixture cannot return through a fresh ID or an already-staged alias"
+    },
+    {
+      "case": "Diff whitespace check on raw failure log",
+      "outcome": "Two whitespace-only original log lines failed staged diff check",
+      "preservation": "Full exact UTF-8 bytes and SHA-256 retained losslessly inside b8-dev-vm-assertion-failure.json; no failure content removed",
+      "final_check": "Final staged diff checked separately"
+    }
+  ],
+  "final_local": {
+    "new_tests": 32,
+    "pass": 32,
+    "fail": 0,
+    "skipped": 0,
+    "empirical_replications": 0
+  },
+  "published_head_ci": "REPORTED_SEPARATELY_AFTER_PUBLICATION"
+}
