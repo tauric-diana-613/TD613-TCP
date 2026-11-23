@@ -1759,7 +1759,7 @@ async function runCli(argv = process.argv.slice(2)) {
       grant,
       publicKeyPem,
       nonceDir,
-      checkModelDiscovery: args.has('--check-model-discovery')
+      checkModelDiscovery: true // compulsory live CLI preflight; no implicit model capability assumptions
     });
     const rendered = `${JSON.stringify(result, null, 2)}\n`;
     if (outPath) {
