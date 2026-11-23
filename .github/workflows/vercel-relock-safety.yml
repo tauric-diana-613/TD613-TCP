@@ -901,6 +901,27 @@ jobs:
           }
           NODE
 
+      # Keep immutable source identity while recovering the real tracked Git
+      # branch name; Neon preview branching cannot resolve a detached HEAD.
+      - name: Restore verified Git branch identity for Neon preview check
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          EXPECTED_BRANCH='research/vixen-dual-estate-encyclopedia-20261108'
+          [[ "$(git rev-parse HEAD)" == "$INPUT_SHA" ]] || { echo 'Checkout drift before local branch restoration.' >&2; exit 1; }
+          PR="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730")"
+          jq -e --arg sha "$INPUT_SHA" --arg branch "$EXPECTED_BRANCH" --arg repo "$GITHUB_REPOSITORY" \
+            '.state == "open" and .merged == false and .head.sha == $sha and .head.ref == $branch and
+             .head.repo.full_name == $repo and .base.ref == "main"' <<< "$PR" >/dev/null || {
+            echo 'Remote branch, PR or exact SHA changed. Preview remains HELD.' >&2; exit 1;
+          }
+          git switch -c "$EXPECTED_BRANCH" "$INPUT_SHA"
+          [[ "$(git rev-parse --abbrev-ref HEAD)" == "$EXPECTED_BRANCH" ]] || exit 1
+          [[ "$(git rev-parse HEAD)" == "$INPUT_SHA" ]] || exit 1
+          git diff --quiet && git diff --cached --quiet || { echo 'Local branch restoration modified source bytes.' >&2; exit 1; }
+          echo 'Verified source SHA retained; named Git branch restored locally for Vercel/Neon preview metadata.'
       - name: Set up Node 22
         uses: actions/setup-node@v4
         with:
