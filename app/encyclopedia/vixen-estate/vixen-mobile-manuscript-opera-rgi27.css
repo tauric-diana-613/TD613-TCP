@@ -3,6 +3,11 @@
  * manuscript rules are retired. No source text or desktop CSS is changed.
  */
 @media screen and (max-width:680px) {
+  /* Immersive mesh must yield completely to documentary reading. The visual
+     field remains untouched in Observatory, Salon, and every other room. */
+  body[data-view="works"] #vixenLivingMesh.vixen-living-mesh {
+    display:none!important;visibility:hidden!important;pointer-events:none!important;
+  }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works>.page-pad {
     box-sizing:border-box!important;width:100%!important;max-width:100%!important;
     padding-inline:12px!important;
@@ -106,7 +111,22 @@
     font-weight:600!important;line-height:1.22!important;letter-spacing:-.018em!important;
     word-break:normal!important;overflow-wrap:normal!important;text-wrap:wrap!important;
   }
-  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre h3.vix-reader-heading {font-size:22px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre h3.vix-reader-heading {font-size:19px!important}
+  /* The extracted PDF's long uppercase title is source text, not a cover
+     poster. Keep its characters but reduce its visual scale and ornament. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title {
+    font:500 18.5px/1.27 "Iowan Old Style","New York",Georgia,serif!important;
+    letter-spacing:-.012em!important;color:#303636!important;
+    background:transparent!important;text-shadow:none!important;
+    padding:0!important;margin:12px 0 11px!important;
+    border:0!important;max-width:100%!important;
+    text-transform:none!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph::first-letter {
+    float:none!important;font:inherit!important;line-height:inherit!important;
+    color:inherit!important;margin:0!important;padding:0!important;
+    text-shadow:none!important;
+  }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(h4,h5,h6).vix-reader-heading {font-size:18px!important}
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-pdf-source-title::before {
     display:none!important;content:none!important;
