@@ -160,6 +160,8 @@ test('Gate B: runner contains zero private keys, zero Argon grant imports, and s
   assert.match(source, /R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null/);
   assert.match(source, /R1_DURABLE_RAW_SSE_WRITE_FAILED/);
   assert.match(source, /R1_EXPLICIT_DURABLE_EVIDENCE_PATHS_REQUIRED/);
+  assert.match(source, /blindedOutPath/);
+  assert.match(source, /BLIND_READERS_ONLY/);
 
   const originalFetch = globalThis.fetch;
   globalThis.fetch = makePoisonFetch();
@@ -709,7 +711,29 @@ test('Gate D: halts cleanly as HELD on policy finish, wrong served model, partia
     assert.equal(missingUsage.dispatchCounts.generationCalls, 1);
     assert.ok(fs.existsSync(path.join(nonceDir, `r1-${missingUsage.authorization.nonce}-R1_S01.sse`)));
 
-    // 9. Truncated SSE JSON parse error -> dual-parser disagreement HELD
+    // 9. If a stream drops after sending a chunk, raw upstream bytes remain
+    // in the exclusive fsynced evidence file despite the HELD outcome.
+    const droppedAfterChunk = await runFresh(async (url) => {
+      if (url.endsWith(':countTokens')) return makeJsonResponse({ totalTokens: 215 });
+      let pullNumber = 0;
+      const body = new ReadableStream({
+        pull(controller) {
+          pullNumber += 1;
+          if (pullNumber === 1) {
+            controller.enqueue(new TextEncoder().encode('data: {"modelVersion":"gemini-3.8-flash"}\\n\\n'));
+          } else {
+            controller.error(new Error('SYNTHETIC_STREAM_BREAK_AFTER_FIRST_CHUNK'));
+          }
+        }
+      });
+      return new Response(body, { status: 200, headers: { 'content-type': 'text/event-stream' } });
+    });
+    assert.equal(droppedAfterChunk.outcome.classification, 'HELD');
+    const droppedRaw = path.join(nonceDir, `r1-${droppedAfterChunk.authorization.nonce}-R1_S01.sse`);
+    assert.equal(fs.existsSync(droppedRaw), true);
+    assert.ok(fs.readFileSync(droppedRaw).length > 0);
+
+    // 10. Truncated SSE JSON parse error -> dual-parser disagreement HELD
     const truncatedSseRes = await runFresh(async (url) => {
       if (url.endsWith(':countTokens')) return makeJsonResponse({ totalTokens: 215 });
       return new Response('data: {"modelVersion":"gemini-3.8-flash","candidates":[{"content":{"parts":[{"text":"Kʰonapolit', {
