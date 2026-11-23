@@ -765,7 +765,7 @@ function parseGeminiSseIndependently(rawBuffer) {
 
 export async function captureAndDualParseGeminiSse(
   response,
-  { expectedModel = R1_PINNED_MODEL, abortSignal = null } = {}
+  { expectedModel = R1_PINNED_MODEL, abortSignal = null, rawCaptureFileDescriptor = null } = {}
 ) {
   const reader = response?.body?.getReader?.();
   if (!reader) {
@@ -784,6 +784,21 @@ export async function captureAndDualParseGeminiSse(
       if (value && value.byteLength > 0) {
         if (totalBytes + value.byteLength > R1_HARD_LIMITS.maxRawSseCaptureBytes) {
           throw new R1ObservationError('R1_RAW_SSE_OVERFLOW', `Raw SSE exceeded ${R1_HARD_LIMITS.maxRawSseCaptureBytes} bytes`);
+        }
+        // Append ORIGINAL bytes to a durable, exclusive, fsynced file before
+        // parsing and before accepting another chunk. A crash leaves the
+        // partial original wire rather than an unprovable reconstructed text.
+        if (rawCaptureFileDescriptor !== null) {
+          try {
+            const rawChunk = Buffer.from(value);
+            let written = 0;
+            while (written < rawChunk.length) {
+              written += fs.writeSync(rawCaptureFileDescriptor, rawChunk, written, rawChunk.length - written);
+            }
+            fs.fsyncSync(rawCaptureFileDescriptor);
+          } catch (error) {
+            throw new R1ObservationError('R1_DURABLE_RAW_SSE_WRITE_FAILED', String(error?.message || error));
+          }
         }
         rawChunks.push(Buffer.from(value));
         totalBytes += value.byteLength;
@@ -1328,6 +1343,35 @@ export async function executeR1OriginalSseObservation({
     expiresAt: authVerification.expiresAt
   });
 
+  // Persist an append-only intent/result journal before ANY provider access.
+  // The operator must archive this local directory; it is not distributed custody.
+  const evidenceJournalPath = path.join(nonceDir, `r1-${authVerification.nonce}-journal.jsonl`);
+  function appendEvidenceJournal(event, details = {}) {
+    const line = JSON.stringify({
+      schema: 'td613.marrowline.r1-local-evidence-journal/v1',
+      event,
+      at: new Date().toISOString(),
+      grantSha256: authVerification.grantSha256,
+      checkedOutHeadSha,
+      ...details
+    }) + '\n';
+    const fd = fs.openSync(evidenceJournalPath, 'a', 0o600);
+    try {
+      fs.writeSync(fd, line);
+      fs.fsyncSync(fd);
+    } finally {
+      fs.closeSync(fd);
+    }
+  }
+  // Refuse an existing journal (avoid accidental mixing across grants).
+  const journalFd = fs.openSync(evidenceJournalPath, 'wx', 0o600);
+  fs.closeSync(journalFd);
+  appendEvidenceJournal('R1_AUTHORITY_REDEEMED_BEFORE_PROVIDER_ACCESS', {
+    experimentId: R1_EXPERIMENT_ID,
+    model: R1_PINNED_MODEL,
+    slots: plan.slots.map((p) => ({ slot: p.slot, bodySha256: p.observation.bodySha256 }))
+  });
+
   // 4. Read credential ONLY after authority + nonce custody succeeded
   const resolvedApiKey = String(apiKey ?? env?.GEMINI_API_KEY ?? '').trim();
   if (!resolvedApiKey) {
@@ -1430,6 +1474,10 @@ export async function executeR1OriginalSseObservation({
     let preDispatchCountTokens = null;
     let countTokensStatus = null;
     try {
+      appendEvidenceJournal('R1_COUNT_TOKENS_ATTEMPT', {
+        slot: slotPlan.slot,
+        countTokensRequestSha256: slotPlan.countTokensRequestSha256
+      });
       const ctResp = await guardedFetch('countTokens', slotPlan.slot, geminiCountTokensUrl(slotPlan.model), {
         method: 'POST',
         headers: geminiRequestHeaders(resolvedApiKey),
@@ -1448,6 +1496,11 @@ export async function executeR1OriginalSseObservation({
         break;
       }
       preDispatchCountTokens = ctPayload.totalTokens;
+      appendEvidenceJournal('R1_COUNT_TOKENS_OBSERVED', {
+        slot: slotPlan.slot,
+        httpStatus: countTokensStatus,
+        totalTokens: preDispatchCountTokens
+      });
     } catch (error) {
       if (error instanceof R1ObservationError && error.code.startsWith('R1_FORBIDDEN_')) throw error;
       skipRemaining('STOP_ON_COUNT_TOKENS_TRANSPORT_EXCEPTION');
@@ -1472,6 +1525,17 @@ export async function executeR1OriginalSseObservation({
     let wire = null;
     let callError = null;
     const startedAt = new Date().toISOString();
+    const rawSseFilePath = path.join(nonceDir, `r1-${authVerification.nonce}-${slotPlan.slot}.sse`);
+    let rawCaptureFd = null;
+    try {
+      rawCaptureFd = fs.openSync(rawSseFilePath, 'wx', 0o600);
+      appendEvidenceJournal('R1_GENERATION_ATTEMPT_PREPARED', {
+        slot: slotPlan.slot, rawSseFilePath, requestBodySha256: slotPlan.observation.bodySha256
+      });
+    } catch (error) {
+      if (rawCaptureFd !== null) fs.closeSync(rawCaptureFd);
+      throw new R1ObservationError('R1_DURABLE_EVIDENCE_SETUP_FAILED', String(error?.message || error));
+    }
 
     try {
       const sseResp = await guardedFetch(
@@ -1493,7 +1557,8 @@ export async function executeR1OriginalSseObservation({
       } else {
         wire = await captureAndDualParseGeminiSse(sseResp, {
           expectedModel: slotPlan.model,
-          abortSignal: controller.signal
+          abortSignal: controller.signal,
+          rawCaptureFileDescriptor: rawCaptureFd
         });
       }
     } catch (error) {
@@ -1507,9 +1572,21 @@ export async function executeR1OriginalSseObservation({
         : 'STOP_ON_TRANSPORT_EXCEPTION';
     } finally {
       clearTimeout(timer);
+      if (rawCaptureFd !== null) {
+        try { fs.fsyncSync(rawCaptureFd); } finally { fs.closeSync(rawCaptureFd); }
+      }
     }
 
     const finishedAt = new Date().toISOString();
+    appendEvidenceJournal('R1_GENERATION_RESPONSE_CAPTURED', {
+      slot: slotPlan.slot,
+      httpStatus,
+      rawSseFilePath,
+      rawSseSha256: wire?.rawSseSha256 ?? null,
+      rawSseBytes: wire?.rawSseBytes ?? null,
+      error: callError,
+      terminalStopReason
+    });
     if (terminalStopReason) {
       slotRecords.push(Object.freeze({
         slot: slotPlan.slot,
@@ -1567,6 +1644,7 @@ export async function executeR1OriginalSseObservation({
     slotRecords.push(Object.freeze({
       slot: slotPlan.slot,
       arm: slotPlan.arm,
+      rawSseFilePath,
       model: slotPlan.model,
       requestBodySha256: slotPlan.observation.bodySha256,
       countTokensRequestSha256: slotPlan.countTokensRequestSha256,
@@ -1581,6 +1659,13 @@ export async function executeR1OriginalSseObservation({
       analysis
     }));
 
+    appendEvidenceJournal('R1_SLOT_ADJUDICATED', {
+      slot: slotPlan.slot,
+      textSha256: wire.authoredTextSha256,
+      usageMetadata: wire.usageMetadata,
+      structuralComplianceOk: analysis.structuralComplianceOk,
+      terminalStopReason
+    });
     if (terminalStopReason) {
       for (const rem of plan.slots.slice(i + 1)) {
         skippedSlots.push(Object.freeze({ slot: rem.slot, arm: rem.arm, skippedBecause: terminalStopReason }));
@@ -1591,6 +1676,13 @@ export async function executeR1OriginalSseObservation({
   }
 
   const outcome = classifyR1ObservationOutcome({ slotRecords, terminalStopReason });
+  appendEvidenceJournal('R1_RUN_CLOSED', {
+    classification: outcome.classification,
+    terminalStopReason,
+    generationDispatches,
+    countTokensDispatches,
+    observedSlots: slotRecords.map((r) => r.slot)
+  });
   const blindedPacket = (slotRecords.length === 2 && slotRecords[0].analysis && slotRecords[1].analysis && !terminalStopReason)
     ? buildR1BlindedEvaluationPacket({
       s01Record: slotRecords[0],
@@ -1606,6 +1698,7 @@ export async function executeR1OriginalSseObservation({
     seal: R1_SEAL,
     authorization: authVerification,
     nonceClaim,
+    evidenceJournalPath,
     modelDiscovery: modelDiscoveryResult,
     dispatchCounts: Object.freeze({
       modelMetadataCalls: modelMetadataDispatches,
@@ -1652,8 +1745,15 @@ async function runCli(argv = process.argv.slice(2)) {
     }
     const grant = JSON.parse(fs.readFileSync(grantFile, 'utf8'));
     const publicKeyPem = fs.readFileSync(publicKeyFile, 'utf8');
-    const nonceDir = getCliFlagValue(argv, '--nonce-dir') || DEFAULT_NONCE_DIR;
+    const nonceDir = getCliFlagValue(argv, '--nonce-dir');
     const outPath = getCliFlagValue(argv, '--out');
+    if (!nonceDir || !outPath || !path.isAbsolute(nonceDir) || !path.isAbsolute(outPath)) {
+      throw new R1ObservationError('R1_EXPLICIT_DURABLE_EVIDENCE_PATHS_REQUIRED',
+        'Live CLI requires explicit absolute --nonce-dir and --out, checked for durable custody before provider dispatch');
+    }
+    // Reserve the final output exclusively BEFORE consuming grant/provider calls.
+    const outputFd = fs.openSync(outPath, 'wx', 0o600);
+    fs.closeSync(outputFd);
     const result = await executeR1OriginalSseObservation({
       acknowledgeLiveExecution: true,
       grant,
@@ -1663,7 +1763,7 @@ async function runCli(argv = process.argv.slice(2)) {
     });
     const rendered = `${JSON.stringify(result, null, 2)}\n`;
     if (outPath) {
-      fs.writeFileSync(outPath, rendered, { encoding: 'utf8', flag: 'wx', mode: 0o600 });
+      fs.writeFileSync(outPath, rendered, { encoding: 'utf8', flag: 'w', mode: 0o600 });
     }
     return result;
   }
