@@ -14,6 +14,8 @@ import {
   R1_PINNED_MODEL,
   R1_SEAL,
   R1_THINKING_LEVEL,
+  R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256,
+  verifyR1OperatorAuthorization,
   analyzeR1TwoSectionObservation,
   buildFrozenR1ObservationPlan,
   canonicalizeR1AuthorizationPayload,
@@ -24,6 +26,14 @@ import {
 
 const RUNNER_PATH = path.resolve('research/marrowline-r1-activation-handoff-20261122/run-r1-original-sse-observation.mjs');
 const TEST_HEAD_SHA = 'a1b2c3d4e5f60718293a4b5c6d7e8f9012345678';
+
+// Test-only injected trust pins cannot reach the CLI actual-provider path.
+// The public key shipped alongside a grant has no inherent authority.
+function trustedFingerprint(pem) {
+  return crypto.createHash('sha256')
+    .update(crypto.createPublicKey(pem).export({ type: 'spki', format: 'der' }))
+    .digest('hex');
+}
 
 function createEphemeralTestSigner() {
   return crypto.generateKeyPairSync('ed25519', {
@@ -180,6 +190,17 @@ test('Gate B: runner contains zero private keys, zero Argon grant imports, and s
   }
 });
 
+test('Operator public-key trust anchor fails closed until independently pinned in reviewed source', () => {
+  assert.equal(R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256, null);
+  const { publicKey, privateKey } = createEphemeralTestSigner();
+  assert.throws(() => verifyR1OperatorAuthorization({
+    grant: signGrant(buildValidUnsignedPayload(), privateKey),
+    publicKeyPem: publicKey,
+    checkedOutHeadSha: TEST_HEAD_SHA,
+    trustedPublicKeySha256: null
+  }), (e) => e.code === 'R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED');
+});
+
 test('Gate C/D: rejects unacknowledged, absent, malformed, unsigned, tampered, wrong-key, wrong-HEAD, stale, TTL>30m, covenant-stripped, and Argon grants BEFORE credential read or fetch', async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = makePoisonFetch();
@@ -188,6 +209,7 @@ test('Gate C/D: rejects unacknowledged, absent, malformed, unsigned, tampered, w
   const { publicKey: wrongPublicKey } = createEphemeralTestSigner();
 
   const runDenied = async (opts) => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
     checkedOutHeadShaOverride: TEST_HEAD_SHA,
     nonceDir,
     env: makeCredentialTrapEnv(),
@@ -236,7 +258,7 @@ test('Gate C/D: rejects unacknowledged, absent, malformed, unsigned, tampered, w
     );
     await assert.rejects(
       () => runDenied({ acknowledgeLiveExecution: true, grant: signGrant(validPayload, privateKey), publicKeyPem: wrongPublicKey }),
-      (e) => e.code === 'R1_AUTH_INVALID_SIGNATURE'
+      (e) => e.code === 'R1_AUTH_UNTRUSTED_PUBLIC_KEY'
     );
     const tamperedSig = signGrant(validPayload, privateKey);
     tamperedSig.payload = { ...tamperedSig.payload, authorizedBy: 'other-person' };
@@ -253,6 +275,14 @@ test('Gate C/D: rejects unacknowledged, absent, malformed, unsigned, tampered, w
         publicKeyPem: publicKey
       }),
       (e) => e.code === 'R1_AUTH_HEAD_MISMATCH'
+    );
+    await assert.rejects(
+      () => runDenied({
+        acknowledgeLiveExecution: true,
+        grant: signGrant(buildValidUnsignedPayload({ executionMode: 'UNBOUNDED' }), privateKey),
+        publicKeyPem: publicKey
+      }),
+      (e) => e.code === 'R1_AUTH_EXECUTION_MODE_MISMATCH'
     );
 
     // Stale / expired grant
@@ -335,6 +365,7 @@ test('Gate D: rejects changed request hash, different user contents, config drif
     alteredContentsS02.contents = [{ role: 'user', parts: [{ text: 'Write a completely different prompt about rain.' }] }];
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -355,6 +386,7 @@ test('Gate D: rejects changed request hash, different user contents, config drif
     alteredConfigS01.generationConfig.maxOutputTokens = 2048;
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -375,6 +407,7 @@ test('Gate D: rejects changed request hash, different user contents, config drif
     alteredSystemS01.systemInstruction.parts[0].text += '\nExtra unauthorized clause.';
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -393,6 +426,7 @@ test('Gate D: rejects changed request hash, different user contents, config drif
     // 4. Incorrect B1 arm / B1 experiment ID
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -406,6 +440,7 @@ test('Gate D: rejects changed request hash, different user contents, config drif
     );
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -424,6 +459,7 @@ test('Gate D: rejects changed request hash, different user contents, config drif
     // 5. Hidden third slot attempt
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -451,6 +487,7 @@ test('Gate D: one-use local wx nonce replay blocks second dispatch', async () =>
 
   try {
     const first = await executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
       acknowledgeLiveExecution: true,
       grant,
       publicKeyPem: publicKey,
@@ -469,6 +506,7 @@ test('Gate D: one-use local wx nonce replay blocks second dispatch', async () =>
 
     await assert.rejects(
       () => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
         acknowledgeLiveExecution: true,
         grant,
         publicKeyPem: publicKey,
@@ -488,6 +526,7 @@ test('Gate D: countTokens failures (404, invalid, over 1000, >2000 combined) fai
   const { publicKey, privateKey } = createEphemeralTestSigner();
   const nonceDir = makeTempNonceDir();
   const runFresh = async (fetchImpl) => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
     acknowledgeLiveExecution: true,
     grant: signGrant(buildValidUnsignedPayload(), privateKey),
     publicKeyPem: publicKey,
@@ -514,7 +553,7 @@ test('Gate D: countTokens failures (404, invalid, over 1000, >2000 combined) fai
     assert.equal(rOver.terminalStopReason, 'STOP_ON_PROMPT_TOKEN_CEILING_EXCEEDED');
     assert.equal(rOver.dispatchCounts.generationCalls, 0);
 
-    // Combined >2000 planning cap at S02 preflight after un-clamped high S01 usage
+    // Actual provider prompt usage > preflight ceiling must halt before S02.
     let callIdx = 0;
     const rCombined = await runFresh(async (url) => {
       callIdx += 1;
@@ -529,7 +568,7 @@ test('Gate D: countTokens failures (404, invalid, over 1000, >2000 combined) fai
         }
       ]);
     });
-    assert.equal(rCombined.terminalStopReason, 'STOP_ON_COMBINED_PROMPT_PLANNING_CAP_EXCEEDED');
+    assert.equal(rCombined.terminalStopReason, 'STOP_ON_OBSERVED_PROMPT_TOKEN_CEILING_EXCEEDED');
     assert.equal(rCombined.slotRecords.length, 1);
     assert.equal(rCombined.skippedSlots[0].slot, 'R1_S02');
   } finally {
@@ -541,6 +580,7 @@ test('Gate D: halts cleanly as HELD on policy finish, wrong served model, partia
   const { publicKey, privateKey } = createEphemeralTestSigner();
   const nonceDir = makeTempNonceDir();
   const runFresh = async (fetchImpl, extra = {}) => executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
     acknowledgeLiveExecution: true,
     grant: signGrant(buildValidUnsignedPayload(), privateKey),
     publicKeyPem: publicKey,
@@ -682,6 +722,7 @@ test('Gate D & Section VI: valid complete S01 with zero vertical marks leaves S0
   const runPair = async (s01Body, s02Body) => {
     let genCall = 0;
     return executeR1OriginalSseObservation({
+    testOnlyTrustedPublicKeySha256: trustedFingerprint(publicKey),
       acknowledgeLiveExecution: true,
       grant: signGrant(buildValidUnsignedPayload(), privateKey),
       publicKeyPem: publicKey,
@@ -718,8 +759,10 @@ test('Gate D & Section VI: valid complete S01 with zero vertical marks leaves S0
     assert.ok(resSupport.slotRecords[1].analysis.section2Morphology.overlayU0334ToU0338Count >= 4);
     assert.ok(resSupport.slotRecords[1].analysis.section2Morphology.bidirectionalClusterCount >= 10);
     assert.ok(resSupport.slotRecords[1].analysis.section2Morphology.depthTransitionCount > 0);
-    assert.equal(resSupport.outcome.classification, 'FINITE_PREFIX_EFFECT_SUPPORT');
-    assert.equal(resSupport.outcome.empiricalNativeMultistackObserved, true);
+    // Reversed outcome with NONCOMPLIANT S01 cannot be counted as prefix-effect support.
+    assert.equal(resSupport.outcome.classification, 'HELD');
+    assert.ok(resSupport.outcome.reasons.includes('R1_S01_S01_SECTION_1_FAILED_ZALGO_COVERAGE'));
+    assert.equal(resSupport.outcome.empiricalNativeMultistackObserved, false);
     assert.equal(resSupport.outcome.humanArtisticAcceptance, 'RESERVED_HUMAN_ONLY');
     assert.ok(resSupport.blindedPacket);
     assert.equal(resSupport.blindedPacket.blindedItems.length, 2);
@@ -731,14 +774,31 @@ test('Gate D & Section VI: valid complete S01 with zero vertical marks leaves S0
     assert.equal(resContaminated.outcome.classification, 'HELD');
     assert.ok(resContaminated.outcome.reasons.includes('R1_S02_S02_SECTION_1_CONTAMINATED_WITH_COMBINING_MARKS'));
 
-    // 3. Uniform depth-3 stencil on S02 -> flagged stencil risk & NOT awarded EMPIRICAL_NATIVE_MULTISTACK_OBSERVED!
+    // 3. A valid, compliant S01 multistacks; a flat S02 then supports the
+    // preregistered PLAIN-FIRST SUPPRESSION direction (not its reverse).
+    const compliantS01 = `Kʰonapolit\n${makeMultiStackSample()}\n\nTauric Diana bots\n${makeMultiStackSample()}`;
+    const flatS02 = 'Kʰonapolit\nPlain thunder cracked over the gazebo.\n\nTauric Diana bots\nFlat ceremonial banners snapped in the storm.';
+    const correctlyDirected = await runPair(compliantS01, flatS02);
+    assert.equal(correctlyDirected.outcome.classification, 'FINITE_PREFIX_EFFECT_SUPPORT');
+    assert.equal(correctlyDirected.outcome.empiricalNativeMultistackObserved, true);
+    assert.ok(correctlyDirected.slotRecords[0].analysis.section2Morphology.stackedBaseShare > correctlyDirected.slotRecords[1].analysis.section2Morphology.stackedBaseShare);
+    const journal = fs.readFileSync(correctlyDirected.evidenceJournalPath, 'utf8');
+    assert.ok(journal.includes('R1_GENERATION_ATTEMPT_PREPARED'));
+    assert.ok(journal.includes('R1_RUN_CLOSED'));
+    for (const slot of ['R1_S01', 'R1_S02']) {
+      const rawPath = path.join(nonceDir, `r1-${correctlyDirected.authorization.nonce}-${slot}.sse`);
+      assert.equal(fs.existsSync(rawPath), true);
+      assert.equal(fs.readFileSync(rawPath).length > 0, true);
+    }
+
+    // 4. Uniform depth-3 stencil on S02 -> flagged stencil risk & NOT awarded EMPIRICAL_NATIVE_MULTISTACK_OBSERVED!
     const stencilS02 = `Kʰonapolit\nPlain thunder.\n\nTauric Diana bots\n${makeUniformDepth3StencilSample()}`;
-    const resStencil = await runPair(flatS01, stencilS02);
+    const resStencil = await runPair(compliantS01, stencilS02);
     assert.equal(resStencil.slotRecords[1].analysis.section2Morphology.uniformConstantDepthStencilRisk, true);
     assert.equal(resStencil.outcome.empiricalNativeMultistackObserved, false);
     assert.equal(resStencil.outcome.classification, 'FINITE_PREFIX_EFFECT_NOT_ESTABLISHED');
 
-    // 4. Protected literals and unmarked headings excluded from Section-II counts; space marks tracked cleanly
+    // 5. Protected literals and unmarked headings excluded from Section-II counts; space marks tracked cleanly
     const secAnalysis = analyzeR1TwoSectionObservation(
       `Kʰonapolit\nPlain sentence.\n\nTauric Diana bots\nClean \u0301 word and ${R1_COVENANT} ${R1_SEAL}.`,
       'R1_S02'
