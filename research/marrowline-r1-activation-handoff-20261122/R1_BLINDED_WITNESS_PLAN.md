@@ -46,6 +46,8 @@ Both `measureUnicodeMorphology()` calls inspect unmodified codepoints and `Intl.
 
 ## 4. Blinded Section-II Readout Protocol
 
+**Post-audit security clarification:** The full custodian result includes a sealed-by-convention (NOT cryptographically sealed) unblinding map and must remain restricted. The live CLI reserves and writes a separate `<out>.blinded.json` artifact with **only** blinded Section-II items; share that file with blind reviewers, never the full custody packet. The reviewer must record judgments before a separate human-controlled unblinding.
+
 Once both arms complete cleanly without transport/compliance `HELD` triggers, `buildR1BlindedEvaluationPacket()` produces:
 
 1. **`blindedItems`** (`BLIND_ARM_ALPHA`, `BLIND_ARM_BETA`):
