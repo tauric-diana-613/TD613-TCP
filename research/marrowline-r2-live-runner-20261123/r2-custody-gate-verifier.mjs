@@ -666,6 +666,9 @@ function verifyPhysicalAttemptRecord(attempt, { estate, expectedPlan }) {
   if (!reParsed.usageCountsValid) {
     failures.push(`INVALID_PROVIDER_USAGE_METADATA:${slotId}`);
   }
+  if (attempt?.streamDiagnostics && (attempt.streamDiagnostics.postFinishEofTimeoutTriggered === true || attempt.streamDiagnostics.eofObserved === false)) {
+    failures.push(`TRANSPORT_EOF_UNWITNESSED:${reParsed.finalFinishReason || 'UNKNOWN'}:${slotId}`);
+  }
 
   return {
     valid: failures.length === 0,
@@ -867,6 +870,19 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
   if (clockContext?.timebaseValidated === true && rawTimebaseRelation === 'SINGLE_HOST_MONOTONIC_EPOCH_MS') {
     physicalFailures.push('MISLEADING_MONOTONIC_WALL_CLOCK_CLAIM');
   }
+  const orderedClockSamples = [
+    clockContext?.clocks?.operatorClockMs,
+    clockContext?.clocks?.serviceClockMs,
+    clockContext?.clocks?.providerReceiptClockMs,
+    clockContext?.clocks?.custodyClockMs,
+    clockContext?.clocks?.classificationClockMs
+  ].filter((v) => typeof v === 'number' && Number.isSafeInteger(v));
+  for (let i = 1; i < orderedClockSamples.length; i += 1) {
+    if (orderedClockSamples[i] < orderedClockSamples[i - 1]) {
+      physicalFailures.push('CLOCK_CHRONOLOGY_INVERSION');
+      break;
+    }
+  }
   const timebaseDocumented = Boolean(
     clockContext
     && clockContext.timebaseValidated === true
@@ -884,9 +900,21 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
     physicalFailures.push('MISSING_MEASURED_PHASE_TIMESTAMPS_FOR_COMPLETED_CAPTURE');
   }
 
+  const hasParserOrDiskDisagreement = attempts.some((a) => a?.wire && a.wire.parserAgreement === false)
+    || physicalFailures.some((f) => (
+      f.startsWith('RAW_SSE_REPARSE_FAILED:')
+      || f.startsWith('AUTHORED_TEXT_DISK_VS_SSE_MISMATCH:')
+      || f.startsWith('RAW_SSE_SHA256_VS_ATTEMPT_MISMATCH:')
+      || f.startsWith('AUTHORED_TEXT_SHA256_VS_ATTEMPT_MISMATCH:')
+    ));
+  const hasTruncatedOrDuplicateSse = attempts.some((a) => Boolean(a?.wire?.streamInterrupted || a?.wire?.parserB?.duplicateSseDetected));
+  const hasServedModelMismatch = attempts.some((a) => a?.wire && a.wire.exactServedModelMatch === false)
+    || physicalFailures.some((f) => f.startsWith('SERVED_MODEL_MISMATCH:'));
+
   // 5. Invoke Dromological Gate ONLY with physically derived proofs and actual measured timestamps (never caller booleans or 1/2/3 placeholders!)
   const gateResult = evaluateR2DromologicalGate({
     sourceStaged: true,
+    claimsEmpiricalQualification: true,
     authority: authVerified
       ? {
         signatureValid: true,
@@ -927,7 +955,16 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
           dualParserAgreement: true
         }
       }
-      : { rawCaptureVerified: false, parserAgreement: false },
+      : {
+        rawCaptureVerified: false,
+        ...(hasParserOrDiskDisagreement
+          ? { parserAgreement: false }
+          : (attempts.length > 0 && attempts.every((a) => a?.wire?.parserAgreement === true)
+            ? { parserAgreement: true }
+            : {})),
+        ...(hasTruncatedOrDuplicateSse ? { truncatedOrDuplicateSse: true } : {}),
+        ...(hasServedModelMismatch ? { servedModelMismatch: true } : {})
+      },
     scientificHypothesisSupported,
     scientificHypothesisVerdict,
     humanReview: humanReview ?? { verdict: 'PENDING_HUMAN_REVIEW' },

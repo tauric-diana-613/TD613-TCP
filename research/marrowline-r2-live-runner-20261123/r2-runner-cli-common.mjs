@@ -35,8 +35,20 @@ const ALLOWED_EXECUTABLE_OPTIONS = new Set([
   'episodes',
   'measureCountTokens',
   'operatorAbortSignal',
-  'onProgress'
+  'onProgress',
+  'streamHeartbeatIntervalMs',
+  'inactivityWarnMs',
+  'inactivityAbortMs',
+  'postFinishEofTimeoutMs'
 ]);
+
+function normalizeOptionalPositiveIntOption(val, name) {
+  if (val === undefined || val === null) return undefined;
+  if (!Number.isSafeInteger(val) || val <= 0) {
+    throw new R2ObservationError('R2_INVALID_OPTIONS', `Option "${name}" must be a positive safe integer or null`);
+  }
+  return val;
+}
 
 export function resolveCheckedOutGitHeadSha(repoRoot = process.cwd()) {
   try {
@@ -88,7 +100,11 @@ export async function executeR2ObservationExecutable(estate, options = {}) {
     measureCountTokens: options.measureCountTokens !== false,
     checkModelDiscovery: true,
     operatorAbortSignal: options.operatorAbortSignal ?? null,
-    onProgress: options.onProgress ?? null
+    onProgress: options.onProgress ?? null,
+    ...(options.streamHeartbeatIntervalMs !== undefined ? { streamHeartbeatIntervalMs: normalizeOptionalPositiveIntOption(options.streamHeartbeatIntervalMs, 'streamHeartbeatIntervalMs') } : {}),
+    ...(options.inactivityWarnMs !== undefined ? { inactivityWarnMs: normalizeOptionalPositiveIntOption(options.inactivityWarnMs, 'inactivityWarnMs') } : {}),
+    ...(options.inactivityAbortMs !== undefined ? { inactivityAbortMs: options.inactivityAbortMs === null ? null : normalizeOptionalPositiveIntOption(options.inactivityAbortMs, 'inactivityAbortMs') } : {}),
+    ...(options.postFinishEofTimeoutMs !== undefined ? { postFinishEofTimeoutMs: normalizeOptionalPositiveIntOption(options.postFinishEofTimeoutMs, 'postFinishEofTimeoutMs') } : {})
   });
 }
 
@@ -117,8 +133,15 @@ export function formatNonSecretOperatorSummary({ result, outPath, blindedOutPath
     `External Admission Proved: ${Boolean(gate.securityAndSafeHarbor?.externalAdmissionProved)}`,
     `Human Artistic Authority: ${result.humanArtisticAcceptance}`,
     `Evidence Directory: ${result.evidenceDir}`,
+    `Progress Log: ${result.progressLogPath || 'NONE'}`,
     `Custody Receipt JSON: ${outPath}`
   ];
+  const physicalFailures = Array.isArray(result.physicalCustodyGate?.physicalFailures)
+    ? result.physicalCustodyGate.physicalFailures
+    : [];
+  if (physicalFailures.length > 0) {
+    lines.push(`Physical Custody Failures: ${physicalFailures.join(', ')}`);
+  }
   if (blindedOutPath) {
     lines.push(`Blinded Artistic Packet JSON (read this first before inspecting ${outPath}): ${blindedOutPath}`);
   }
@@ -224,7 +247,7 @@ export async function runEstateRunnerCli(estate, argv = process.argv.slice(2)) {
         episodes: customEpisodes,
         measureCountTokens: !args.has('--skip-count-tokens'),
         operatorAbortSignal: cliAbortController.signal,
-        onProgress: (line) => { process.stderr.write(`${line}\n`); }
+        onProgress: (line) => { try { process.stderr.write(`${line}\n`); } catch { /* ignore console pipe failure */ } }
       });
     } catch (error) {
       const code = String(error?.code || '');

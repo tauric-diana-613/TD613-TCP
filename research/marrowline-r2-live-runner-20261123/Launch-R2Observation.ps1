@@ -2,15 +2,18 @@
 <#
 .SYNOPSIS
 TD613 Marrowline R2 Operator Launch Workflow (Windows PowerShell)
-Commission: TD613-MARROWLINE-R2-LIVE-RUNNER-20261123
+Commission: TD613-MARROWLINE-R2-POST-ACQ-RECOVERY-20261123
+Predecessor: a48d2556ed946e01d4925dee93c463c73712d590 (PR #1783, pilot r2_r2u_036ef18ebc2e)
 
 .DESCRIPTION
-Provides a safe, friction-minimized Windows PowerShell launcher for independent R2-U or R2-W observations:
+Provides a safe, friction-minimized Windows PowerShell 5.1 launcher for independent R2-U or R2-W observations:
 1. Default offline preflight (zero credentials, zero network calls) showing exact HEAD, digests, and plan.
 2. Separate estate-isolated local directories under %LOCALAPPDATA%\TD613\marrowline-r2\<estate>\<sessionId>.
-3. Explicit single-use Ed25519 human authorization (either external signed -GrantFile or human interactive signing prompt).
-4. Readable progress output, mid-flight Ctrl+C / revocation-file STOP support, non-secret summary output,
-   and automatic in-process API key / passphrase cleanup in finally.
+3. Explicit single-use Ed25519 human authorization (external signed -GrantFile or interactive signing).
+4. Repaired PS 5.1 full-key masked ingestion (Ctrl+V/Shift+Insert clipboard interception, -ApiKeyFromClipboard,
+   -ApiKeyFile, or Env:\GEMINI_API_KEY) with non-secret pre-dispatch length/control-byte validation.
+5. QuickEdit console lock guard during streaming, live progress log, Ctrl+C / revocation-file STOP support,
+   non-secret summary output, and automatic in-process API key / passphrase cleanup in finally.
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -38,6 +41,15 @@ param(
   [string]$PrivateKeyFile = '',
 
   [Parameter(Mandatory = $false)]
+  [string]$ApiKeyFile = '',
+
+  [Parameter(Mandatory = $false)]
+  [switch]$ApiKeyFromClipboard,
+
+  [Parameter(Mandatory = $false)]
+  [switch]$ClearClipboardAfterRead,
+
+  [Parameter(Mandatory = $false)]
   [switch]$SignInteractively,
 
   [Parameter(Mandatory = $false)]
@@ -52,6 +64,9 @@ $ErrorActionPreference = 'Stop'
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = (Resolve-Path (Join-Path $ScriptDir '..\..')).Path
+$CredModulePath = Join-Path $ScriptDir 'R2-CredentialInput.psm1'
+Import-Module -Name $CredModulePath -Force
+
 $RunnerScript = if ($Estate -eq 'R2-U') {
   Join-Path $ScriptDir 'run-r2-u-observation.mjs'
 } else {
@@ -134,12 +149,10 @@ if ($SignInteractively) {
   $GrantFile = Join-Path $SessionDir "$EstateSlug-single-use.grant.json"
   $PublicKeyFile = Join-Path $SessionDir "$EstateSlug-operator.pub.pem"
 
-  $secPass = Read-Host -AsSecureString 'Enter Ed25519 private-key passphrase (hidden, not stored)'
-  $bstr = [System.IntPtr]::Zero
-  $plainPass = ''
+  $passResult = Read-R2MaskedSecretInteractive -Prompt 'Enter Ed25519 private-key passphrase (hidden, not stored)' -Kind 'Passphrase' -MinLength 1
+  $plainPass = $passResult.NormalizedValue
+  $passResult = $null
   try {
-    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secPass)
-    $plainPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
     $signArgs = @(
       $SignerScript,
       '--sign-interactively',
@@ -163,10 +176,6 @@ if ($SignInteractively) {
       throw 'Interactive Ed25519 grant signing failed.'
     }
   } finally {
-    if ($bstr -ne [System.IntPtr]::Zero) {
-      [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
-    }
-    if ($secPass) { $secPass.Dispose() }
     $plainPass = $null
     [System.GC]::Collect()
   }
@@ -192,15 +201,28 @@ if ($confirm -cne "EXECUTE $Estate") {
 }
 
 $hadExistingApiKey = Test-Path Env:\GEMINI_API_KEY
-$secApiKey = $null
-$apiBstr = [System.IntPtr]::Zero
+$consoleModeState = $null
 try {
-  if (-not $hadExistingApiKey) {
-    $secApiKey = Read-Host -AsSecureString 'Enter Gemini API key (memory-only for this run, auto-cleared on exit)'
-    $apiBstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secApiKey)
-    $env:GEMINI_API_KEY = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($apiBstr)
-    [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($apiBstr)
-    $apiBstr = [System.IntPtr]::Zero
+  if ($hadExistingApiKey) {
+    $envCheck = Test-R2CredentialCandidate -Value $env:GEMINI_API_KEY -Kind 'GeminiApiKey'
+    if (-not $envCheck.Valid) {
+      throw "Pre-existing Env:\GEMINI_API_KEY failed validation ($($envCheck.FailureCode)): $($envCheck.SafeDiagnostic)"
+    }
+    Write-Host $envCheck.SafeDiagnostic -ForegroundColor DarkGray
+  } elseif ($ApiKeyFile) {
+    $keyRes = Read-R2SecretFromFile -Path ([System.IO.Path]::GetFullPath($ApiKeyFile)) -Kind 'GeminiApiKey'
+    $env:GEMINI_API_KEY = $keyRes.NormalizedValue
+    Write-Host $keyRes.SafeDiagnostic -ForegroundColor DarkGray
+    $keyRes = $null
+  } elseif ($ApiKeyFromClipboard) {
+    $keyRes = Read-R2SecretFromClipboard -Kind 'GeminiApiKey' -ClearClipboard:$ClearClipboardAfterRead
+    $env:GEMINI_API_KEY = $keyRes.NormalizedValue
+    Write-Host $keyRes.SafeDiagnostic -ForegroundColor DarkGray
+    $keyRes = $null
+  } else {
+    $keyRes = Read-R2MaskedSecretInteractive -Prompt 'Enter Gemini API key (memory-only for this run, auto-cleared on exit)' -Kind 'GeminiApiKey'
+    $env:GEMINI_API_KEY = $keyRes.NormalizedValue
+    $keyRes = $null
   }
 
   $nodeArgs = @(
@@ -221,6 +243,7 @@ try {
     $nodeArgs += '--skip-count-tokens'
   }
 
+  $consoleModeState = Disable-R2ConsoleQuickEdit
   Push-Location $RepoRoot
   try {
     $null = & node @nodeArgs
@@ -239,12 +262,9 @@ try {
     throw "Runner exited with code $runExit. Check custody receipt at $OutReceiptPath"
   }
 } finally {
-  if ($apiBstr -ne [System.IntPtr]::Zero) {
-    [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($apiBstr)
-  }
-  if ($secApiKey) { $secApiKey.Dispose() }
+  Restore-R2ConsoleMode -State $consoleModeState
   if (-not $hadExistingApiKey) {
-    Clear-SensitiveEnvAndVars -VarNames @('apiBstr', 'secApiKey', 'plainPass')
+    Clear-SensitiveEnvAndVars -VarNames @('keyRes', 'envCheck', 'plainPass')
   } else {
     Write-Host 'Note: GEMINI_API_KEY existed before launch; clearing transient local script buffers only.' -ForegroundColor DarkGray
   }

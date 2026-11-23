@@ -1,0 +1,89 @@
+{
+  "schema": "td613.marrowline.r2-pilot-evidence-inventory/v1",
+  "exploratoryNote": "Read-only cryptographic inventory preserving original acquisition artifacts untouched.",
+  "predecessorCommitSha": "a48d2556ed946e01d4925dee93c463c73712d590",
+  "sessionId": "r2_r2u_036ef18ebc2e",
+  "nonce": "wx_d770faf5fca9a123ff6f7e0d",
+  "historicalDisposition": "HELD",
+  "historicalPilotFileCount": 12,
+  "files": [
+    {
+      "name": "r2-u-custody-receipt.json",
+      "bytes": 18560,
+      "mtimeUtc": "2026-11-23T12:14:10.943Z",
+      "sha256": "d7aee895b46db77fc9069c8c23bebd5378ef52fed1fc7610db246819efac85a3"
+    },
+    {
+      "name": "r2-u-custody-receipt.json.summary.txt",
+      "bytes": 834,
+      "mtimeUtc": "2026-11-23T12:14:10.945Z",
+      "sha256": "579541adf8c143fe41f4dc5b0d5ce158692ac6d2b64c716fc9ea5a5286676f4e"
+    },
+    {
+      "name": "r2-u-nonce-ref-wx_d770faf5fca9a123ff6f7e0d.json",
+      "bytes": 457,
+      "mtimeUtc": "2026-11-23T11:29:51.832Z",
+      "sha256": "37753241556f858249350a116e5ad7361e0c24eae32d5d216c4f15f65ea42310"
+    },
+    {
+      "name": "r2-u-operator.pub.pem",
+      "bytes": 113,
+      "mtimeUtc": "2026-11-23T11:29:37.770Z",
+      "sha256": "28a45cb5f34225aeef13a02072a12b27c2a56fc3a367d56f0ff01ca2dc5c2f83"
+    },
+    {
+      "name": "r2-u-r2_r2u_036ef18ebc2e-wx_d770faf5fca9a123ff6f7e0d-counters.json",
+      "bytes": 403,
+      "mtimeUtc": "2026-11-23T12:14:10.939Z",
+      "sha256": "8f9b911c35d354baebff09c58da35d2bfeae4503f1ea558dea200447b146b6c1"
+    },
+    {
+      "name": "r2-u-r2_r2u_036ef18ebc2e-wx_d770faf5fca9a123ff6f7e0d-ep1-att1-R2_U_GUIDED_RULES.authored.txt",
+      "bytes": 61393,
+      "mtimeUtc": "2026-11-23T11:35:06.651Z",
+      "sha256": "f8bdba8cff91f2d8ea0daddeea28b16793219cbe21315e745e3443e7235a7f5e"
+    },
+    {
+      "name": "r2-u-r2_r2u_036ef18ebc2e-wx_d770faf5fca9a123ff6f7e0d-ep1-att1-R2_U_GUIDED_RULES.sse",
+      "bytes": 525472,
+      "mtimeUtc": "2026-11-23T11:35:07.267Z",
+      "sha256": "3391f2e33e68264010d97eecc5c3192e108f65337f7f58860b3e5d567d650450"
+    },
+    {
+      "name": "r2-u-r2_r2u_036ef18ebc2e-wx_d770faf5fca9a123ff6f7e0d-ep1-att2-R2_U_GUIDED_CONTRAST.authored.txt",
+      "bytes": 128821,
+      "mtimeUtc": "2026-11-23T11:46:55.131Z",
+      "sha256": "48222d880f8435c2913ac3e4e84a7ec97fa1cf9eae0b51fa7c4a5c2489cb9a8d"
+    },
+    {
+      "name": "r2-u-r2_r2u_036ef18ebc2e-wx_d770faf5fca9a123ff6f7e0d-ep1-att2-R2_U_GUIDED_CONTRAST.sse",
+      "bytes": 1087673,
+      "mtimeUtc": "2026-11-23T11:46:55.584Z",
+      "sha256": "62a024b4d9fd5c9cb1b6e651da9e064ee5447a7a173a6c0589adaaaaf81bda6d"
+    },
+    {
+      "name": "r2-u-r2_r2u_036ef18ebc2e-wx_d770faf5fca9a123ff6f7e0d-journal.jsonl",
+      "bytes": 6200,
+      "mtimeUtc": "2026-11-23T12:14:10.940Z",
+      "sha256": "0c15266884412691646befb6ec67cedf5d1ec5cd990d1cc7d4ee5d2fb4fc11a8"
+    },
+    {
+      "name": "r2-u-revocation.json",
+      "bytes": 18,
+      "mtimeUtc": "2026-11-23T12:10:15.461Z",
+      "sha256": "836ac664ecd8f0cc9158307b3387b85f46deeab03391e0453d0c9bcc055081e5"
+    },
+    {
+      "name": "r2-u-single-use.grant.json",
+      "bytes": 3158,
+      "mtimeUtc": "2026-11-23T11:29:37.769Z",
+      "sha256": "87b2044271996b6f481b23b0a99dc41d5e19d44e53f589108ec66fba35347cfd"
+    }
+  ],
+  "hostNonceRegistryRecord": {
+    "name": "r2-u-nonce-wx_d770faf5fca9a123ff6f7e0d.json",
+    "bytes": 742,
+    "mtimeUtc": "2026-11-23T11:29:51.831Z",
+    "sha256": "0582edc5315876da6319f0da5a5b5f71cc4704ff2d8112b9e4a87d461f9c1dbf"
+  }
+}
