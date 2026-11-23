@@ -1,0 +1,75 @@
+{
+  "schema": "td613.antigravity.prospective-compatibility/v1",
+  "author": "𝌋 TD613",
+  "status": "HELD_UNEXECUTED",
+  "runtime_version": null,
+  "os_image_digest": null,
+  "provider_identity": null,
+  "model_revision": null,
+  "actual_model_availability_verified": false,
+  "candidate_allocations": {
+    "Experiment_A": [
+      "Flash",
+      "Argon"
+    ],
+    "Experiment_B_flight": [
+      "GPT-6.1 Sol Extra High",
+      "GPT-6 Astra Max"
+    ],
+    "Experiment_B_postflight": [
+      "Claude Opus 5.5"
+    ]
+  },
+  "allocations_authorized_by_this_contract": false,
+  "genuine_source_admission_authorized": false,
+  "model_sessions_authorized": false,
+  "required_local_dependencies": [
+    "Python 3.12 pinned executable + stdlib + linked libraries",
+    "Node 24 pinned executable + linked libraries",
+    "read-only eleven-member synthetic export",
+    "fresh exclusive output directory",
+    "independent origin/evaluation stores inaccessible to worker"
+  ],
+  "required_runtime_witnesses": [
+    "OS/filesystem/process/network/provider isolation independently challenged",
+    "exact model endpoint revision effort tools context retention/account terms",
+    "no fallback or automatic context/session recovery",
+    "credential broker outside worker; all other credentials absent",
+    "deny repository/history/LFS and supervisor/evaluator/sealed corpus paths",
+    "deny network except separately approved minimal provider broker route",
+    "owned forbidden canaries challenged through every tool and subprocess",
+    "positive allowlisted read and output tests",
+    "immutable pre/post payload and runtime hashes",
+    "append-only external attempt receipts with controlled interruption/no retries",
+    "verified budget enforcement",
+    "independent retained-origin comparison and exposure audit"
+  ],
+  "private_runtime_record_fields": [
+    "version/build",
+    "installation/source provenance",
+    "OS/image",
+    "runtime_binary_hashes",
+    "all configuration and system instructions hashes",
+    "rules/skills/hooks/MCP/tool registry",
+    "model/provider revision and response headers",
+    "reasoning effort",
+    "memory/context/history policy",
+    "mounts and permissions",
+    "network rules + observed probes",
+    "credential broker grant",
+    "provider logging/retention contract witness",
+    "budget ceiling + retry policy",
+    "custodian signatures + input/output/attempt digests"
+  ],
+  "missing_in_work": [
+    "qualified Antigravity runtime",
+    "provider/model identity and availability witness",
+    "effective OS and tool isolation",
+    "enforced egress and broker contract",
+    "applicable account privacy/retention determination",
+    "independent origin/recipient/evaluator custody",
+    "genuine admission and activation decisions"
+  ],
+  "source_free_calibration_only": true,
+  "sealed": "⟐"
+}

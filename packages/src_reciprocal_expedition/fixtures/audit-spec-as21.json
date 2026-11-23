@@ -1,0 +1,118 @@
+{
+  "source_revision": "a9d2c3bdf9ffccfd87135acf386e8ddf81fc7778",
+  "task_scope": "EXPERIMENT_A_STAGE_AS21_EVIDENCE_TRIBUNAL_AUDIT",
+  "evidence_class": "REPARATIVE_TRIBUNAL_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/src_reciprocal_expedition/STAGE_1_DISCREPANCY_TRIBUNAL_LEDGER.md",
+    "packages/src_reciprocal_expedition/STAGE_2_MEASUREMENT_REHABILITATION.md",
+    "packages/src_reciprocal_expedition/STAGE_3_NATIVE_ORACLE_COMPLETION.md",
+    "packages/src_reciprocal_expedition/STAGE_4_SAFE_SHADOW_GRAPH.md",
+    "packages/src_reciprocal_expedition/STAGE_5_STRICT_UTF8_CUSTODY.md",
+    "packages/src_reciprocal_expedition/STAGE_6_CAUSALITY_BOUNDS.md"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-stage-as21-tribunal",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Material handoff vs machine receipt contradiction uncovered in Review #5786588723 (receipt recorded C1 recall/precision 0.6667, handoff claimed 1.0)"
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Convened Stage 1 Evidence Tribunal, audited root causes, rebuilt measurement instrument v2, connected native Python oracles, repaired shadow graph, enforced fatal UTF-8 decoding"
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Machine receipts corroborated 17 mutation tests, 18 UTF-8 custody tests, 27 shadow graph tests; multi-seed permutations confirmed trajectory divergence"
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "General algebraic commutativity and reverse crossing T losslessness formally withdrawn; findings bounded to OBSERVED_IN_SYNTHETIC_CONFIGURATION"
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.8, 0.4],
+        [0.2, 1.1]
+      ],
+      "candidate_probe": [1.0, 0.5],
+      "noise_covariance": [
+        [0.1111, 0.02],
+        [0.02, 0.1111]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [1.8, 0.4],
+        [0.2, 1.1]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:rehabilitated_relation_set_v2",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:rehabilitated_relation_set_v2",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": { "a": 3, "b": 2, "s": 1, "path": ["D", "E"] },
+        "right": { "a": 3, "b": 2, "s": 1, "path": ["D", "E"] }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "with_shadow_graph_v2",
+          "support": [
+            "ADMITTED",
+            "ATTEMPTED_REJECTED",
+            "NEVER_GENERATED",
+            "WITHHELD_LACK_OF_EVIDENCE",
+            "WITHDRAWN_SCOPE_CHANGE",
+            "AWAITING_UNRESOLVED_EXTERNAL"
+          ]
+        },
+        {
+          "state_id": "without_shadow_graph_erased",
+          "support": ["ADMITTED"]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "STAGE_1_TRIBUNAL_LEDGER",
+        "STAGE_2_MEASUREMENT_REHABILITATION",
+        "STAGE_3_NATIVE_ORACLE_COMPLETION",
+        "STAGE_4_SAFE_SHADOW_GRAPH",
+        "STAGE_5_STRICT_UTF8_CUSTODY",
+        "STAGE_6_CAUSALITY_BOUNDS"
+      ],
+      "phases": {
+        "STAGE_1_TRIBUNAL_LEDGER": { "status": "PASS", "entry_id": "stage1_tribunal_ledger" },
+        "STAGE_2_MEASUREMENT_REHABILITATION": { "status": "PASS", "entry_id": "stage2_measurement_rehabilitation" },
+        "STAGE_3_NATIVE_ORACLE_COMPLETION": { "status": "PASS", "entry_id": "stage3_native_oracle_completion" },
+        "STAGE_4_SAFE_SHADOW_GRAPH": { "status": "PASS", "entry_id": "stage4_safe_shadow_graph" },
+        "STAGE_5_STRICT_UTF8_CUSTODY": { "status": "PASS", "entry_id": "stage5_strict_utf8_custody" },
+        "STAGE_6_CAUSALITY_BOUNDS": { "status": "PASS", "entry_id": "stage6_causality_bounds" }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}

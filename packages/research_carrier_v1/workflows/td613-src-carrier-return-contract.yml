@@ -1,0 +1,66 @@
+name: TD613 clean SRC carrier and return contract (read-only)
+on:
+  push:
+    branches: [research/src-carrier-return-contract-20261104]
+  pull_request:
+    paths:
+      - 'packages/research_carrier_v1/**'
+      - 'tests/test_src_method_carrier_v1.py'
+      - 'scripts/export-src-method-carrier-v1.py'
+      - 'scripts/qualify-src-carrier-origin-v1.py'
+      - 'scripts/inventory-src-research-continuity-v1.py'
+      - 'scripts/inspect-src-carrier-isolation-v1.py'
+      - '.github/workflows/td613-src-carrier-return-contract.yml'
+permissions:
+  contents: read
+jobs:
+  carrier-controls:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout: |
+            packages/research_carrier_v1
+            scripts
+            tests
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-free carrier, native semantic controls and separate synthetic recipient process
+        run: python -B -m unittest discover -s tests -p 'test_src_method_carrier_v1.py' -v
+      - name: Read immutable public source-side records independently
+        uses: actions/checkout@v4
+        with:
+          ref: b3e69acf587d534eeef2e01d0bb5bdbdecdbd320
+          path: origin-src
+          persist-credentials: false
+          sparse-checkout: |
+            packages/dome_world_exact/fixtures/a15-r0/SRC/01-MANIFESTS/phase2
+            packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS
+            packages/dome_world_exact/fixtures/a15-r0/SRC/05-OPERATIONS
+            packages/dome_world_exact/fixtures/a15-r0/SRC/06-INSTRUMENTS
+            packages/dome_world_exact/fixtures/a15-r0/SRC/aia
+      - name: One original-side method comparison; all genuine recipient gates remain closed
+        run: python -B scripts/qualify-src-carrier-origin-v1.py --src-checkout origin-src --output "$RUNNER_TEMP/carrier-origin.json"
+      - name: Bounded continuity inventory without migration or runtime reconstruction
+        run: python -B scripts/inventory-src-research-continuity-v1.py --src-checkout origin-src --output "$RUNNER_TEMP/src-continuity-inventory.json"
+      - name: Clean allowlist and independently pinned package verification
+        run: |
+          python -B scripts/export-src-method-carrier-v1.py "$RUNNER_TEMP/src-method-carrier" > "$RUNNER_TEMP/export-manifest.json"
+          PACKAGE_PIN="$(sha256sum "$RUNNER_TEMP/src-method-carrier/MANIFEST.json" | cut -d ' ' -f 1)"
+          python -B scripts/export-src-method-carrier-v1.py "$RUNNER_TEMP/src-method-carrier" --verify-manifest-sha256 "$PACKAGE_PIN"
+      - name: No repository or original-source mutation
+        run: |
+          git diff --exit-code
+          git -C origin-src diff --exit-code
+      - uses: actions/upload-artifact@v4
+        with:
+          name: src-carrier-sourcefree-and-origin-side-evidence
+          path: |
+            ${{ runner.temp }}/carrier-origin.json
+            ${{ runner.temp }}/src-continuity-inventory.json
+            ${{ runner.temp }}/export-manifest.json

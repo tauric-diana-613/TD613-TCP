@@ -1,0 +1,340 @@
+{
+  "schema": "td613.dollhouse-design.return-receipt/v0.2",
+  "version": "v0.2-candidate",
+  "commission_id": "COMM-99dc3d39",
+  "commission_digest": "99dc3d39e9022362871a892f3a77023ae042924ef745f74023f97931e0bd19c1",
+  "seed": "Universal Atelier Reverse Crossing: Directional Entropy Loss, Reference Corpus Topology (1141 records, 2131 edges), Empty Prospective Receiver, and Khona‌lit-po Invariant",
+  "medium": "SCHOLARLY",
+  "human_coordinates": {
+    "what": "Declared artifact form",
+    "who": "Intended human encounter & authority",
+    "where": "Material site & viewport",
+    "how": "Operational & rhetorical mechanism",
+    "when": "Temporal cadence & transform sequence",
+    "why": "Teleological & consequential purpose"
+  },
+  "selected_instruments": [
+    "SEDGWICK_REPARATIVE_TEXTURE",
+    "CARO_INSTITUTIONAL_RECONSTRUCTION",
+    "PHASONIC_COUNTERPOINT",
+    "BUTLER_PERFORMATIVE_ITERATION"
+  ],
+  "output_contract": {
+    "requested_deliverables": 1,
+    "cardinality_authority": "OPERATOR_COMMISSION_ONLY",
+    "default_deliverables": 1,
+    "candidates_are_internal_scaffolding": true,
+    "refraction_is_internal_scaffolding": true,
+    "unrequested_extra_files_or_modes_authorized": false,
+    "instruction": "Materialize and return exactly the commissioned number of coherent finished artifacts; do not deliver Candidate B, refraction, receipts, or bonus modes as separate artifacts unless the operator specifically requests them."
+  },
+  "historical_references": [],
+  "candidates": [
+    {
+      "id": "COMM-99dc3d39-CAND-A",
+      "concept_title": "The Loss Shelter",
+      "governing_instrument": "SEDGWICK_REPARATIVE_TEXTURE",
+      "formal_proposition": "Assembles paratactic fragments beside the sovereign baseline, prioritizing affective survival and tactile care.",
+      "structural_mechanisms": [
+        "Baseline Cadence: Maps universal into a structured recursive invariant",
+        "Counter-Pressure: Introduces atelier as an aperiodic strain vector",
+        "Causal Interference: Measures observable displacement where universal and atelier collide"
+      ],
+      "medium_consequence": "In SCHOLARLY, the work refuses singular closure by presenting distinct rival paths.",
+      "scaffolding_class": "DETERMINISTIC_FRAMEWORK",
+      "proposal_origin": "COMMISSION_DERIVED",
+      "seed_anchor_terms": [
+        "universal",
+        "atelier",
+        "reverse"
+      ]
+    },
+    {
+      "id": "COMM-99dc3d39-CAND-B",
+      "concept_title": "The Applicant's Corridor",
+      "governing_instrument": "CARO_INSTITUTIONAL_RECONSTRUCTION",
+      "formal_proposition": "Reframes the work through the sensory exhaustion of the delayed subject rather than the sovereign designer's blueprint.",
+      "structural_mechanisms": [
+        "Procedural Inversion: Consequence displayed at ingress; terminal loss visible prior to operational cause",
+        "Friction Accounting: Each interaction demands explicit recognition of past energetic cost",
+        "Asymmetric Recovery: Historical traversal is fully recordable but structurally irreversible"
+      ],
+      "medium_consequence": "In SCHOLARLY, the work subverts institutional arrival by foregrounding retained loss.",
+      "scaffolding_class": "DETERMINISTIC_FRAMEWORK",
+      "proposal_origin": "COMMISSION_DERIVED",
+      "seed_anchor_terms": [
+        "atelier",
+        "reverse"
+      ]
+    }
+  ],
+  "primary_materialization": {
+    "selected_concept": "COMM-99dc3d39-CAND-A",
+    "title": "Composition on: Universal Atelier Reverse Crossing: Directional Entropy Loss, Reference Corpus Topology (1141 records, 2131 edges), Empty Prospective Receiver, and Khona‌lit-po Invariant",
+    "medium": "SCHOLARLY",
+    "instruments": [
+      "SEDGWICK_REPARATIVE_TEXTURE",
+      "CARO_INSTITUTIONAL_RECONSTRUCTION",
+      "PHASONIC_COUNTERPOINT",
+      "BUTLER_PERFORMATIVE_ITERATION"
+    ],
+    "formal_architecture": {
+      "ingress": "Coupling WHAT (Declared artifact form) with WHO (Intended human encounter & authority)",
+      "cadence": "Choreographing WHEN (Temporal cadence & transform sequence) against WHY (Teleological & consequential purpose)",
+      "execution": "Resolving WHERE (Material site & viewport) through HOW (Operational & rhetorical mechanism)"
+    },
+    "operative_verbs": [
+      {
+        "verb": "PROPAGATION",
+        "action": "Derived dual commission-grounded proposals (The Loss Shelter / The Applicant's Corridor)"
+      },
+      {
+        "verb": "COMPRESSION",
+        "action": "Retained path-sensitive distinctions without decorative surplus"
+      },
+      {
+        "verb": "COUPLING",
+        "action": "Bound human coordinates into mutually consequential pairs"
+      },
+      {
+        "verb": "TRANSITION",
+        "action": "Shifted projection into declared medium without losing invariants"
+      },
+      {
+        "verb": "STABILIZATION",
+        "action": "Anchored final form with inspectable boundaries and human closure"
+      }
+    ]
+  },
+  "refractive_variant": {
+    "id": "COMM-99dc3d39-REFRACT-01",
+    "governing_instrument": "CARO_INSTITUTIONAL_RECONSTRUCTION",
+    "mutated_parameter": "hermeneutic_posture",
+    "mutation_description": "Shifts from paranoid exposure of sovereign harm to paratactic affective survival.",
+    "formal_consequence": "Gathers discarded textures and communal practices beside the official ledger.",
+    "material_difference": "Replaces forensic prosecution of the censor with an inhabitable shelter of shared memory.",
+    "instruction_trace": "Assemble unofficial communal survival fragments in side-by-side parataxis with the sovereign decree.",
+    "status": "INTERNAL_COMPARATIVE_DESIGN_STUDY_NOT_A_DELIVERABLE"
+  },
+  "comparative_analysis": {
+    "shared_invariants": [
+      "The core intellectual seed (\"Universal Atelier Reverse Crossing: Directional Entropy Loss, Reference Corpus Topology (1141 records, 2131 edges), Empty Prospective Receiver, and Khona‌lit-po Invariant\") is held invariant across internal design alternatives",
+      "Internal studies inhabit the declared medium: SCHOLARLY",
+      "No scalar utility score or automatic aesthetic crown is applied"
+    ],
+    "divergent_qualities": [
+      "Candidate A (The Loss Shelter): SEDGWICK_REPARATIVE_TEXTURE — Assembles paratactic fragments beside the sovereign baseline, prioritizing affective survival and tactile care.",
+      "Candidate B (The Applicant's Corridor): CARO_INSTITUTIONAL_RECONSTRUCTION — Reframes the work through the sensory exhaustion of the delayed subject rather than the sovereign designer's blueprint.",
+      "Refractive Variant mutates [hermeneutic_posture]: Gathers discarded textures and communal practices beside the official ledger."
+    ],
+    "candidate_evaluations": [
+      {
+        "candidate_id": "CANDIDATE_A",
+        "concept_title": "The Loss Shelter",
+        "governing_instrument": "SEDGWICK_REPARATIVE_TEXTURE",
+        "status": "COMPARATIVE_DESIGN_HEURISTIC_CANDIDATE",
+        "evaluation_nature": "HEURISTIC_COMPARATIVE_ANALYSIS_NOT_INDEPENDENT_EXECUTION",
+        "formal_proposition": "Assembles paratactic fragments beside the sovereign baseline, prioritizing affective survival and tactile care.",
+        "distinctive_formal_mechanism": "Paratactic spatial beside-ness (delta) and tactile/sensory fragments gathered beside official ledgers, prioritizing communal care and affective survival",
+        "trade_offs": {
+          "gains": "Protective shelter, affective survival, rich tactile/textural granularity, non-persecutory spatial arrangement",
+          "sacrifices": "Sacrifices forensic accountability, legalistic prosecution, and diagnostic exposure of the censor in favor of reparative assembly"
+        },
+        "counterfactual_consequence": "Serves as primary materialization anchor; intellectual seed is experienced through SEDGWICK_REPARATIVE_TEXTURE formal grammar and immediate sensory staging.",
+        "divergence_vector": "AFFECTIVE_SHELTER_OVER_FORENSIC_PROSECUTION",
+        "structural_mechanisms": [
+          "Baseline Cadence: Maps universal into a structured recursive invariant",
+          "Counter-Pressure: Introduces atelier as an aperiodic strain vector",
+          "Causal Interference: Measures observable displacement where universal and atelier collide"
+        ],
+        "seed_anchor_terms": [
+          "universal",
+          "atelier",
+          "reverse"
+        ]
+      },
+      {
+        "candidate_id": "CANDIDATE_B",
+        "concept_title": "The Applicant's Corridor",
+        "governing_instrument": "CARO_INSTITUTIONAL_RECONSTRUCTION",
+        "status": "COMPARATIVE_DESIGN_HEURISTIC_CANDIDATE",
+        "evaluation_nature": "HEURISTIC_COMPARATIVE_ANALYSIS_NOT_INDEPENDENT_EXECUTION",
+        "formal_proposition": "Reframes the work through the sensory exhaustion of the delayed subject rather than the sovereign designer's blueprint.",
+        "distinctive_formal_mechanism": "Procedural clearance latency (T_clearance = mu * latency) and progressive document omission (lambda) materializing administrative friction and archival resistance",
+        "trade_offs": {
+          "gains": "Visceral institutional realism, measurable procedural resistance, authentic documentation of power differentials and archival suppression",
+          "sacrifices": "Sacrifices immediate spatial transit and rapid aesthetic consumption for administrative exhaustion and opacity"
+        },
+        "counterfactual_consequence": "If selected over Candidate A (SEDGWICK_REPARATIVE_TEXTURE): shifts core experience from SEDGWICK_REPARATIVE_TEXTURE to CARO_INSTITUTIONAL_RECONSTRUCTION, relocating consequence along the axis of PROCEDURAL_FRICTION_OVER_IMMEDIATE_TRANSIT.",
+        "divergence_vector": "PROCEDURAL_FRICTION_OVER_IMMEDIATE_TRANSIT",
+        "structural_mechanisms": [
+          "Procedural Inversion: Consequence displayed at ingress; terminal loss visible prior to operational cause",
+          "Friction Accounting: Each interaction demands explicit recognition of past energetic cost",
+          "Asymmetric Recovery: Historical traversal is fully recordable but structurally irreversible"
+        ],
+        "seed_anchor_terms": [
+          "atelier",
+          "reverse"
+        ]
+      }
+    ],
+    "evaluation_type": "COMPARATIVE_DESIGN_HEURISTIC_INVENTORY",
+    "governing_interaction_topology": {
+      "spatial_interpolation": "CONTINUOUS_MANIFOLD_WHERE_REQUIRED",
+      "grammatical_state_transitions": "DISCRETE_STATE_PERMUTATIONS",
+      "motion_policy": "USER_CONTROLLED_STILL_STATE_UNDER_REDUCED_MOTION",
+      "mobile_legibility_profile": {
+        "minimum_telemetry_font_px": 12,
+        "minimum_hit_target_px": 44,
+        "viewport_stack_boundary_px": 480
+      }
+    },
+    "open_aesthetic_questions": [
+      "Does the materialization of [hermeneutic_posture] successfully alter the observer's understanding of the seed?",
+      "Which counterfactual insights improve the commissioned work without creating unauthorized outputs?"
+    ]
+  },
+  "instrument_provenance": [
+    {
+      "instrument_id": "SEDGWICK_REPARATIVE_TEXTURE",
+      "lineage": "Thinkers Bin (Eve Kosofsky Sedgwick / Reparative Reading)",
+      "material_contribution": "Supplied paratactic beside-ness, textural granularity, and affective survival",
+      "causal_contract": {
+        "instrument_id": "SEDGWICK_REPARATIVE_TEXTURE",
+        "governing_theory": "Eve Kosofsky Sedgwick Paratactic Beside-ness & Affective Survival",
+        "target_domains": [
+          "LAYOUT_TOPOLOGY",
+          "MATERIAL_SURFACE",
+          "READING_ORDER"
+        ],
+        "causal_bindings": [
+          {
+            "parameter": "paratactic_proximity_delta",
+            "target_component": "marginal_fragment_placement",
+            "transfer_law": "x_marginal = x_sovereign_edge + delta * sensory_salience",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "delta = 0.0 collapses beside-ness into subordinating vertical footnote hierarchy"
+          }
+        ],
+        "causality_class": "OPERATIVE_TRANSFER",
+        "execution_status": "PROPOSED_TRANSFER_LAW",
+        "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL"
+      }
+    },
+    {
+      "instrument_id": "CARO_INSTITUTIONAL_RECONSTRUCTION",
+      "lineage": "Thinkers Bin (Robert Caro / Institutional Power)",
+      "material_contribution": "Supplied procedural friction, statutory cross-referencing, and corridor resistance",
+      "causal_contract": {
+        "instrument_id": "CARO_INSTITUTIONAL_RECONSTRUCTION",
+        "governing_theory": "Robert Caro Archival Reconstruction & Procedural Resistance",
+        "target_domains": [
+          "SPATIAL_TOPOLOGY",
+          "INTERACTION_FRICTION",
+          "DOCUMENT_CUSTODY"
+        ],
+        "causal_bindings": [
+          {
+            "parameter": "procedural_friction_coefficient_mu",
+            "target_component": "archival_friction_resistance",
+            "transfer_law": "citation_depth = mu * base_archival_depth (procedural resistance in bibliographic access)",
+            "declarative_alternative": "scroll_delta_effective = scroll_delta_raw / (1 + mu * bureaucratic_layers)",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "mu = 0.0 collapses procedural clearance latency to 0ms (immediate transition across corridor)"
+          },
+          {
+            "parameter": "archive_omission_index_lambda",
+            "target_component": "archival_omission_disclosure",
+            "transfer_law": "suppressed_records = floor(lambda * total_dossier_entries)",
+            "declarative_alternative": "text_opacity = 1.0 - lambda * sovereign_censure_level",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "lambda = 0.0 restores all recorded elements to full visibility"
+          }
+        ],
+        "optional_historical_demonstration": {
+          "artifact": "tests/fixtures/dollhouse/caro_corridor_primary.html",
+          "historical_scope": "qualification_demonstration_only",
+          "demonstration_parameters": "4 chambers, T_clearance = mu * 400ms, 16-word petition with chamber_index * 4 redactions"
+        },
+        "causality_class": "OPERATIVE_TRANSFER",
+        "execution_status": "PROPOSED_TRANSFER_LAW",
+        "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL"
+      }
+    },
+    {
+      "instrument_id": "PHASONIC_COUNTERPOINT",
+      "lineage": "Aperture v3.2-alpha Triple Overlay",
+      "material_contribution": "Supplied D₃ periodic scaffold, φ quasiperiodic detour equations, and interference field",
+      "causal_contract": {
+        "instrument_id": "PHASONIC_COUNTERPOINT",
+        "governing_theory": "Triple Overlay (D₃ Periodic Lattice × φ Quasiperiodic Modulation × Heterostratigraphic Interference)",
+        "target_domains": [
+          "GEOMETRY",
+          "MOTION",
+          "GRAMMAR"
+        ],
+        "causal_bindings": [
+          {
+            "parameter": "scalar_interference_H",
+            "target_component": "spatial_lattice_geometry",
+            "transfer_law": "dx(k) = 24.0 * H(u) * cos(2*pi*phi*k*0.05); dy(k) = 24.0 * H(u) * sin(2*pi*phi*k*0.05); where H(u) = 0.5*(1 - cos(2*pi*u)) + 0.5*(1 - cos(2*pi*phi*u))",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "H = 0.0000 collapses all vertex displacement to 0.00px, restoring unperturbed D3 equilateral triangular mesh"
+          },
+          {
+            "parameter": "scalar_interference_H",
+            "target_component": "clause_syntax_selection",
+            "transfer_law": "syntax_state = H >= 1.30 ? SEMICOLON_EQUIPOLLENCE : (H >= 0.75 ? EM_DASH_SHEAR : (H >= 0.25 ? COLON_SUSPENSION : PERIODIC_BASELINE))",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "Forcing H = 0.0000 resets syntax_state to PERIODIC_BASELINE (\"The king arrived.\") and font weight to 400"
+          }
+        ],
+        "causality_class": "OPERATIVE_TRANSFER",
+        "execution_status": "PROPOSED_TRANSFER_LAW",
+        "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL"
+      }
+    },
+    {
+      "instrument_id": "BUTLER_PERFORMATIVE_ITERATION",
+      "lineage": "Thinkers Bin (Judith Butler / Performative Subversion)",
+      "material_contribution": "Supplied ritualized citational reiteration and subversive slippage across repetitions",
+      "causal_contract": {
+        "instrument_id": "BUTLER_PERFORMATIVE_ITERATION",
+        "governing_theory": "Judith Butler Citational Reiteration & Normative Subversion",
+        "target_domains": [
+          "TYPOGRAPHY",
+          "ITERATIVE_CADENCE",
+          "SYNTAX"
+        ],
+        "causal_bindings": [
+          {
+            "parameter": "citational_slippage_epsilon",
+            "target_component": "glyph_variance_and_kerning",
+            "transfer_law": "kerning(n) = kerning_0 + epsilon * log(1 + n)",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "epsilon = 0.0 forces mechanical conformity across all repetitions"
+          }
+        ],
+        "causality_class": "OPERATIVE_TRANSFER",
+        "execution_status": "PROPOSED_TRANSFER_LAW",
+        "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL"
+      }
+    }
+  ],
+  "scientific_companion_audit": null,
+  "governance": {
+    "discourse_mode": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+    "scientific_proof": false,
+    "palate_status": "UNBORN",
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true,
+    "governing_law": "Make the unresolved relation productive. Let distinct forms meet without forcing them to merge. Allow the work to discover its medium through consequence."
+  }
+}

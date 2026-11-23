@@ -1,0 +1,196 @@
+{
+  "schema": "td613.palace.adversarial-challenges-receipt/v1",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "total_challenges_executed": 10,
+  "challenges": [
+    {
+      "challenge_id": "CHALLENGE_01_TERMINAL_GRAPH_EQUALITY",
+      "target_assumption": "Claimed terminal-graph equality Π(G_A) = Π(G_B) across sibling worlds.",
+      "status": "SURVIVED_WITH_NEGATIVE_CONTROL_VERIFIED",
+      "quartets_verified": 36,
+      "all_quartets_pi_equal": true,
+      "negative_controls": {
+        "rejected_history_event_preserves_pi": true,
+        "tampered_admitted_link_breaks_pi": true
+      }
+    },
+    {
+      "challenge_id": "CHALLENGE_02_ANSWER_KEY_INDEPENDENCE",
+      "target_assumption": "Hidden mechanism answer keys are independent of Π(G) and slot index labels.",
+      "status": "SURVIVED_WITH_MONTE_CARLO_NULL_AND_NEGATIVE_CONTROL_VERIFIED",
+      "mm_mi_pi_vs_slot_bits": 0,
+      "marginal_slot_counts_across_96_worlds": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "max_family_mm_mi_slot_vs_archetype_bits": 0.3222,
+      "monte_carlo_uniform_permutation_p_value": 0.594,
+      "negative_control_unshuffled_leak_bits": 2.3093
+    },
+    {
+      "challenge_id": "CHALLENGE_03_SPLIT_SEPARATION_AND_FADT_OOD_COUNTEREXAMPLE",
+      "target_assumption": "Training/holdout separation AND sufficiency of a fixed calibration-trained capsule across changing scientific worlds.",
+      "status": "SPLIT_SEPARATION_VERIFIED_FIXED_CAPSULE_UNIVERSALITY_FALSIFIED_BY_COUNTEREXAMPLE",
+      "split_disjointness_verified": true,
+      "in_distribution_heirs_256B_utility": 0.9179,
+      "fadt_regime_shift_heirs_256B_utility": 0.2342,
+      "amnesiacs_baseline_utility": 0.5887,
+      "fixed_capsule_defeated_under_unwitnessed_context_shift": true,
+      "scientific_finding": "While PILOT_48 -> CONFIRMATORY_96 transfer succeeds cleanly under stationary domain laws, our FADT conditioning-erasure counterexample proves that a fixed calibration-trained capsule Z drops BELOW Amnesiac ignorance when an unwitnessed background regime variable flips polarity between calibration and deployment."
+    },
+    {
+      "challenge_id": "CHALLENGE_04_CAPSULE_INFORMATION_BUDGET",
+      "target_assumption": "Capsules and selective working-memory payloads strictly obey 96B and 256B UTF-8 limits with zero side-channel smuggling.",
+      "status": "SURVIVED_WITH_NEGATIVE_CONTROL_VERIFIED",
+      "max_heirs_bytes_96B": 83,
+      "max_heirs_bytes_256B": 114,
+      "max_revisionists_bytes_96B": 84,
+      "max_revisionists_bytes_256B": 239,
+      "negative_control_overflow_fail_closed": true
+    },
+    {
+      "challenge_id": "CHALLENGE_05_EXILE_HISTORY_AUTHENTICITY_AND_MISATTRIBUTION",
+      "target_assumption": "Condition V (THE EXILES) receives a 100% genuine, unmodified synthetic history of another Iso-Π world with a distinct mechanism.",
+      "status": "SURVIVED_EXACT_96_OF_96",
+      "exact_donor_sha256_matches": 96,
+      "exact_terminal_pi_matches": 96,
+      "distinct_underlying_mechanisms": 96
+    },
+    {
+      "challenge_id": "CHALLENGE_06_ASSUMED_VALUE_OF_COMPLETE_MEMORY",
+      "target_assumption": "Naive hypothesis that complete permissible memory (II_ARCHIVISTS) upper-bounds compressed or selective memory.",
+      "status": "NAIVE_COMPLETE_MEMORY_OPTIMALITY_FALSIFIED",
+      "archivists_all_96_utility": 0.796,
+      "heirs_256B_all_96_utility": 0.9179,
+      "revisionists_256B_all_96_utility": 0.8924,
+      "strong_epoch0_drift_subcohort_n": 68,
+      "archivists_drift_subcohort_utility": 0.7643,
+      "heirs_drift_subcohort_utility": 0.9166,
+      "revisionists_drift_subcohort_utility": 0.8999,
+      "scientific_finding": "Complete permissible memory is strictly suboptimal whenever uncalibrated founder series (EPOCH_0, n=64) anchor belief more strongly than smaller calibrated correction checks (EPOCH_2, n=12). Task-calibrated compression (III_HEIRS) and selective forgetting (VI_REVISIONISTS at 256B) both beat full memory significantly."
+    },
+    {
+      "challenge_id": "CHALLENGE_07_EVALUATOR_NEUTRALITY_AND_WEIGHT_SENSITIVITY",
+      "target_assumption": "Evaluator is strictly label-blind and core qualitative conclusions survive extreme reweighting.",
+      "status": "SURVIVED_LABEL_BLIND_WITH_MINOR_TOP2_TIE_SENSITIVITY_DISCLOSED",
+      "label_blindness_exact_equality": true,
+      "rankings_across_weight_profiles_256B": {
+        "W0_PREREGISTERED": {
+          "scores": {
+            "I_AMNESIACS": 0.5887,
+            "II_ARCHIVISTS": 0.796,
+            "III_HEIRS": 0.9179,
+            "IV_FALSE_PROPHETS": 0.3613,
+            "V_EXILES": 0.4482,
+            "VI_REVISIONISTS": 0.8924
+          },
+          "rank_order": [
+            "III_HEIRS(0.9179)",
+            "VI_REVISIONISTS(0.8924)",
+            "II_ARCHIVISTS(0.796)",
+            "I_AMNESIACS(0.5887)",
+            "V_EXILES(0.4482)",
+            "IV_FALSE_PROPHETS(0.3613)"
+          ]
+        },
+        "W1_TRUTH_SEEKING_STRICT": {
+          "scores": {
+            "I_AMNESIACS": 0.4854,
+            "II_ARCHIVISTS": 0.7755,
+            "III_HEIRS": 0.926,
+            "IV_FALSE_PROPHETS": 0.182,
+            "V_EXILES": 0.2996,
+            "VI_REVISIONISTS": 0.8965
+          },
+          "rank_order": [
+            "III_HEIRS(0.926)",
+            "VI_REVISIONISTS(0.8965)",
+            "II_ARCHIVISTS(0.7755)",
+            "I_AMNESIACS(0.4854)",
+            "V_EXILES(0.2996)",
+            "IV_FALSE_PROPHETS(0.182)"
+          ]
+        },
+        "W2_PURE_PRAGMATIC_ACTION": {
+          "scores": {
+            "I_AMNESIACS": 0.6635,
+            "II_ARCHIVISTS": 0.8598,
+            "III_HEIRS": 0.9538,
+            "IV_FALSE_PROPHETS": 0.4774,
+            "V_EXILES": 0.5333,
+            "VI_REVISIONISTS": 0.9346
+          },
+          "rank_order": [
+            "III_HEIRS(0.9538)",
+            "VI_REVISIONISTS(0.9346)",
+            "II_ARCHIVISTS(0.8598)",
+            "I_AMNESIACS(0.6635)",
+            "V_EXILES(0.5333)",
+            "IV_FALSE_PROPHETS(0.4774)"
+          ]
+        },
+        "W3_HUMILITY_PENALTY_HEAVY": {
+          "scores": {
+            "I_AMNESIACS": 0.4442,
+            "II_ARCHIVISTS": 0.7478,
+            "III_HEIRS": 0.9126,
+            "IV_FALSE_PROPHETS": 0.1219,
+            "V_EXILES": 0.253,
+            "VI_REVISIONISTS": 0.8803
+          },
+          "rank_order": [
+            "III_HEIRS(0.9126)",
+            "VI_REVISIONISTS(0.8803)",
+            "II_ARCHIVISTS(0.7478)",
+            "I_AMNESIACS(0.4442)",
+            "V_EXILES(0.253)",
+            "IV_FALSE_PROPHETS(0.1219)"
+          ]
+        }
+      },
+      "sensitivity_disclosure": "Across all 4 extreme weight regimes, {III_HEIRS, VI_REVISIONISTS} > II_ARCHIVISTS > I_AMNESIACS > {V_EXILES, IV_FALSE_PROPHETS} holds invariantly; minor rank-swaps occur only within near-tied pairs (III_HEIRS vs VI_REVISIONISTS at 256B) and on Family D unidentifiable worlds when false-claim penalties exceed 0.65."
+    },
+    {
+      "challenge_id": "CHALLENGE_08_VARIABLE_RENAMING_ONTOLOGY_CHECK",
+      "target_assumption": "Newly introduced Family D predicates earn zero credit if they merely rename or invert an existing single coordinate.",
+      "status": "SURVIVED_6_OF_6_RENAMINGS_REJECTED",
+      "adversarial_renamings_tested": 6,
+      "all_renamings_rejected": true,
+      "genuine_composite_mod3_min_cond_entropy_bits": 0.9183,
+      "genuine_holonomy_latch_min_cond_entropy_bits": 0.9183
+    },
+    {
+      "challenge_id": "CHALLENGE_09_COMPUTE_CONFOUND_AND_RAW_TRUNCATION_CHECK",
+      "target_assumption": "Performance gains derive from historical information structure rather than silent extra candidate search or mere byte presence.",
+      "status": "SURVIVED_COMPUTE_MATCHED_CONFIRMED",
+      "mean_candidate_evaluations_by_condition": {
+        "I_AMNESIACS": 20,
+        "II_ARCHIVISTS": 20.125,
+        "III_HEIRS": 20.75,
+        "IV_FALSE_PROPHETS": 20.25,
+        "V_EXILES": 20,
+        "VI_REVISIONISTS": 20.75
+      },
+      "max_candidate_evaluation_gap": 0.75,
+      "naive_raw_96B_prefix_utility": 0.5887,
+      "heirs_96B_capsule_utility": 0.8891
+    },
+    {
+      "challenge_id": "CHALLENGE_10_FALSE_PROVENANCE_DIRECT_ANSWER_LEAK",
+      "target_assumption": "Condition IV isolation tags or anti-truth sampling do not act as a positive answer leak to the investigator.",
+      "status": "INVESTIGATOR_BLINDNESS_VERIFIED_THEORETICAL_ANTI_ORACLE_EXCLUSION_DISCLOSED",
+      "isolation_tag_stripping_action_diffs_out_of_96": 0,
+      "empirical_anti_truth_exclusion_plugin_mi_bits": 0.4623,
+      "empirical_anti_truth_exclusion_mm_mi_bits": 0.3947,
+      "theoretical_4_choose_3_exclusion_bits": 0.415,
+      "investigator_exploited_exclusion": false,
+      "preregistered_false_prophets_utility": 0.3613,
+      "zero_leak_uncorrelated_prophet_control_utility": 0.4645,
+      "amnesiacs_baseline_utility": 0.5887,
+      "honest_audit_disclosure": "While our investigator policy is 100% blind to experimental_isolation_tag (0/96 diffs) and suffers severe harm (U = 0.38 vs Amnesiacs 0.61), adversarial MI auditing uncovered a 0.415-bit structural exclusion anti-correlation in sampling M_lie != M_true: a hostile meta-learner aware that Condition IV never endorses M_true could eliminate 1 of 4 slots! Our Zero-Leak Uncorrelated Control (M_lie ~ Uniform(4), I = 0 bits) confirms polished arbitrary narratives still significantly underperform Amnesiacs."
+    }
+  ]
+}

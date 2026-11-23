@@ -1,0 +1,154 @@
+{
+  "schema": "td613.shadow-graph-receipt/v1",
+  "evaluated_at": "2026-11-05T14:22:21.211Z",
+  "test_count": 12,
+  "all_passed": true,
+  "graph_summary": {
+    "total_nodes": 7,
+    "admitted_nodes": 6,
+    "total_edges_tracked": 9,
+    "edge_counts_by_state": {
+      "ADMITTED": 3,
+      "ATTEMPTED_REJECTED": 4,
+      "NEVER_GENERATED": 0,
+      "WITHHELD_LACK_OF_EVIDENCE": 1,
+      "WITHDRAWN_SCOPE_CHANGE": 1,
+      "AWAITING_UNRESOLVED_EXTERNAL": 0
+    },
+    "attempt_log_length": 9
+  },
+  "tests": [
+    {
+      "id": "TEST_01_ADMITTED_RELATION",
+      "description": "Valid endpoints admitted to graph",
+      "status": "PASS",
+      "details": {
+        "state": "ADMITTED",
+        "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY"
+      },
+      "timestamp": "2026-11-05T14:22:21.207Z"
+    },
+    {
+      "id": "TEST_02_REJECTED_ATTEMPT",
+      "description": "Unadmitted ghost target rejected and recorded",
+      "status": "PASS",
+      "details": {
+        "state": "ATTEMPTED_REJECTED",
+        "reason": "TARGET_ENDPOINT_UNADMITTED: doc:ghost_gamma",
+        "attempt_preserved_in_shadow": true
+      },
+      "timestamp": "2026-11-05T14:22:21.207Z"
+    },
+    {
+      "id": "TEST_03_WITHHELD_RELATION",
+      "description": "Candidate below evidence ceiling withheld",
+      "status": "PASS",
+      "details": {
+        "state": "WITHHELD_LACK_OF_EVIDENCE",
+        "reason": "INSUFFICIENT_EVIDENCE_FOR_ADMISSION"
+      },
+      "timestamp": "2026-11-05T14:22:21.207Z"
+    },
+    {
+      "id": "TEST_04_CONTEXT_WITHDRAWAL",
+      "description": "Context withdrawal preserves historical attempt transition",
+      "status": "PASS",
+      "details": {
+        "withdrawn_edge_count": 1,
+        "state": "WITHDRAWN_SCOPE_CHANGE",
+        "history_depth": 2
+      },
+      "timestamp": "2026-11-05T14:22:21.208Z"
+    },
+    {
+      "id": "TEST_05_AWAITING_EXTERNAL",
+      "description": "Expected object gap tracked under awaiting state",
+      "status": "PASS",
+      "details": {
+        "state": "AWAITING_UNRESOLVED_EXTERNAL",
+        "reason": "TARGET_EXPECTED_BUT_UNRESOLVED: obj:expected_series_3"
+      },
+      "timestamp": "2026-11-05T14:22:21.208Z"
+    },
+    {
+      "id": "TEST_06_LATE_ADMISSION_RECOVERY",
+      "description": "Forward recovery of historical attempt upon delayed admission",
+      "status": "PASS",
+      "details": {
+        "recovered_edges": 1,
+        "new_state": "ADMITTED",
+        "observational_advantage": "Historical citation intent was retained without rescanning full document bodies."
+      },
+      "timestamp": "2026-11-05T14:22:21.209Z"
+    },
+    {
+      "id": "TEST_07_INVALID_REFERENCE_STRESS",
+      "description": "Invalid external reference rejected; existence not manufactured",
+      "status": "PASS",
+      "details": {
+        "state": "ATTEMPTED_REJECTED",
+        "target_admitted_invariant": false
+      },
+      "timestamp": "2026-11-05T14:22:21.209Z"
+    },
+    {
+      "id": "TEST_08_MISLEADING_CITATION_REJECTION",
+      "description": "Unwarranted noise citation rejected from admitted graph",
+      "status": "PASS",
+      "details": {
+        "state": "ATTEMPTED_REJECTED",
+        "reason": "UNWARRANTED_COOCCURRENCE_REJECTED"
+      },
+      "timestamp": "2026-11-05T14:22:21.209Z"
+    },
+    {
+      "id": "TEST_09_BROKEN_FORMER_LINKS",
+      "description": "Broken historical links maintained in separate state",
+      "status": "PASS",
+      "details": {
+        "withdrawn_state_distinct": true,
+        "broken_link_target": "doc:beta"
+      },
+      "timestamp": "2026-11-05T14:22:21.209Z"
+    },
+    {
+      "id": "TEST_10_DUPLICATE_TARGET_NAMES",
+      "description": "Homonymous titles preserved as distinct nodes in shadow topology",
+      "status": "PASS",
+      "details": {
+        "node1": "doc:entity_homonym_1",
+        "node2": "doc:entity_homonym_2",
+        "homonym_distinct": true
+      },
+      "timestamp": "2026-11-05T14:22:21.210Z"
+    },
+    {
+      "id": "TEST_11_FICTIONAL_TITLES_CONFINEMENT",
+      "description": "Fictional titles confined to rejected attempts",
+      "status": "PASS",
+      "details": {
+        "state": "ATTEMPTED_REJECTED",
+        "hallucination_prevented": true
+      },
+      "timestamp": "2026-11-05T14:22:21.210Z"
+    },
+    {
+      "id": "TEST_12_EPISTEMIC_INVARIANTS",
+      "description": "Attempt does not imply existence invariant verified",
+      "status": "PASS",
+      "details": {
+        "total_edges": 9,
+        "admitted": 3,
+        "rejected": 4,
+        "withheld": 1,
+        "withdrawn": 1
+      },
+      "timestamp": "2026-11-05T14:22:21.210Z"
+    }
+  ],
+  "scientific_findings": {
+    "informational_advantage": "The Shadow Graph preserves authorial inquiry intent and enables O(1) historical relation recovery upon late document admission without raw corpus rescanning.",
+    "safety_boundary": "Attempt(u, v) does NOT imply Existence(v). All attempted links to unadmitted, invalid, or fictional targets remain strictly confined to ATTEMPTED_REJECTED and never pollute the admitted relation graph.",
+    "order_independence": "This advantage is a property of retaining an attempt ledger; when logged in both Encyclopedia->Atelier and Atelier->Encyclopedia, the information retained is identical."
+  }
+}

@@ -1,0 +1,257 @@
+{
+  "schema": "td613.four-crossing-capstone.encyclopedia-matched-receipt/v1",
+  "evaluated_at": "2026-11-05T19:52:15.739Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "fixture": {
+    "total_records": 26,
+    "canonical_stratum_records": 23,
+    "accession_stratum_records": 3,
+    "total_inter_record_links": 14
+  },
+  "summary": {
+    "total_dimensions": 12,
+    "concordant_dimensions_count": 7,
+    "measured_differential_dimensions_count": 5,
+    "all_dimensions_accounted_for": true
+  },
+  "dimensions": [
+    {
+      "dimension_index": 1,
+      "dimension_name": "SEARCH_RANKING_AND_CANDIDATE_SETS",
+      "evaluation_status": "MEASURED_DIFFERENTIAL",
+      "concordant": false,
+      "path_t1_authentic": {
+        "total_hits": 2,
+        "top_hit": "G-001",
+        "top_score": 15.3989,
+        "ranking_type": "BM25_LEXICAL_WITH_BOOSTS"
+      },
+      "path_t2_receiver": {
+        "total_hits": 2,
+        "top_hit": "SRC-P1",
+        "top_score": 1,
+        "ranking_type": "FACET_CHRONOLOGICAL"
+      },
+      "measured_differential": "T1 applies BM25 document length normalization and exact title/ID boosts; T2 applies chronological facet matching with ceiling score.",
+      "notes": "Candidate sets intersect at top hits, but score semantics differ intentionally."
+    },
+    {
+      "dimension_index": 2,
+      "dimension_name": "EXACT_RECORD_LOOKUP",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "id": "G-001",
+        "label": "Eclipse–Omega",
+        "kind": "glossary"
+      },
+      "path_t2_receiver": {
+        "id": "G-001",
+        "label": "Eclipse–Omega",
+        "kind": "glossary"
+      },
+      "measured_differential": "Exact record lookup achieves 100% field identity for ID, label, and ontology kind.",
+      "notes": null
+    },
+    {
+      "dimension_index": 3,
+      "dimension_name": "TYPED_OUTGOING_EDGES",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "outgoing_count": 3,
+        "targets": [
+          "SRC-P1",
+          "SRC-APERTURE",
+          "M-01"
+        ]
+      },
+      "path_t2_receiver": {
+        "outgoing_count": 3,
+        "targets": [
+          "SRC-P1",
+          "SRC-APERTURE",
+          "M-01"
+        ]
+      },
+      "measured_differential": "Both systems accurately represent typed outgoing edges to admitted endpoints.",
+      "notes": null
+    },
+    {
+      "dimension_index": 4,
+      "dimension_name": "INCOMING_CITATIONS_TRACKING",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "incoming_citations": 7,
+        "citing_sources": [
+          "G-001",
+          "G-002",
+          "G-003",
+          "G-004",
+          "G-005",
+          "M-01",
+          "LAB-01"
+        ]
+      },
+      "path_t2_receiver": {
+        "incoming_citations": 7,
+        "citing_sources": [
+          "G-001",
+          "G-002",
+          "G-003",
+          "G-004",
+          "G-005",
+          "M-01",
+          "LAB-01"
+        ]
+      },
+      "measured_differential": "Automatic reverse citation indexing produces identical citedBy tracking.",
+      "notes": null
+    },
+    {
+      "dimension_index": 5,
+      "dimension_name": "BOUNDED_GRAPH_ROUTES",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "found": true,
+        "path_length": 1
+      },
+      "path_t2_receiver": {
+        "found": true,
+        "depth": 1,
+        "path": [
+          "G-001",
+          "SRC-P1"
+        ]
+      },
+      "measured_differential": "Both discover identical depth-1 directed edge path between G-001 and SRC-P1.",
+      "notes": null
+    },
+    {
+      "dimension_index": 6,
+      "dimension_name": "CONTEXT_BUDGET_TRUNCATION",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "records_count": 2,
+        "truncated": true
+      },
+      "path_t2_receiver": {
+        "records_count": 2,
+        "truncated": true
+      },
+      "measured_differential": "Both systems enforce strict maximum-records budget and explicitly flag truncation boolean.",
+      "notes": null
+    },
+    {
+      "dimension_index": 7,
+      "dimension_name": "CITATION_FORMAT_AND_SOURCE_ATTRIBUTION",
+      "evaluation_status": "MEASURED_DIFFERENTIAL",
+      "concordant": false,
+      "path_t1_authentic": {
+        "format": "ORIGINAL_BROWSER_EDITION_FORMAT",
+        "record_sha256": "4b0295698c82aea2a33a14b85a40e2e8c32953043ae1564c75320d6d829617b6",
+        "pointer": "/glossary/0"
+      },
+      "path_t2_receiver": {
+        "format": "TD613·UA[G-001]::sha256(7c69a124b7c6e68c)",
+        "evidence_class": "TEST_ONLY_SYNTHETIC_WITNESS",
+        "jurisdiction": "TEST_ONLY_SYNTHETIC_ADJUDICATION"
+      },
+      "measured_differential": "T1 cites Git edition commit, line number, and JSON pointer; T2 formats structured cryptographic reference TD613·UA[...]::sha256(...) with jurisdiction.",
+      "notes": "Intentional representation evolution: receiver formats are self-contained and jurisdiction-bound."
+    },
+    {
+      "dimension_index": 8,
+      "dimension_name": "STATUS_AND_CLAIM_CEILING_PRESERVATION",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "status": "THEORY",
+        "claim_ceiling": null
+      },
+      "path_t2_receiver": {
+        "status": "THEORY",
+        "claim_ceiling": "Consult source record for limitations."
+      },
+      "measured_differential": "Record status is concordant (ACTIVE === ACTIVE). Claim ceiling is an intentional structural adaptation rather than verbatim parity: Reference Edition 1.4 records lack an explicit claim_ceiling property (returning undefined), whereas Universal Atelier mandates an explicit claim_ceiling on all admitted records (falling back to \"Consult source record for limitations\" if not explicitly specified).",
+      "notes": null
+    },
+    {
+      "dimension_index": 9,
+      "dimension_name": "MISSING_REFERENCE_HANDLING",
+      "evaluation_status": "MEASURED_DIFFERENTIAL",
+      "concordant": false,
+      "path_t1_authentic": {
+        "result": null,
+        "behavior": "RETURNS_NULL"
+      },
+      "path_t2_receiver": {
+        "error": "RECORD_NOT_FOUND",
+        "behavior": "THROWS_FAIL_CLOSED_EXCEPTION"
+      },
+      "measured_differential": "T1 returns null on missing record; T2 fails closed with RECORD_NOT_FOUND exception.",
+      "notes": null
+    },
+    {
+      "dimension_index": 10,
+      "dimension_name": "TEMPORAL_CLASSIFICATION_AND_TIME_BASES",
+      "evaluation_status": "MEASURED_DIFFERENTIAL",
+      "concordant": false,
+      "path_t1_authentic": {
+        "time_model": "STATIC_EDITION_SNAPSHOT",
+        "separate_time_bases": false
+      },
+      "path_t2_receiver": {
+        "time_model": "SIX_SEPARATED_TIME_BASES",
+        "creation_time": null,
+        "publication_time": "2026-10-23T00:00:00Z",
+        "observation_time": null,
+        "recording_time": "2026-11-05T19:52:15.673Z",
+        "admission_time": "2026-11-05T19:52:15.673Z"
+      },
+      "measured_differential": "T1 has a static edition snapshot without temporal tracking; T2 tracks 6 distinct time-bases.",
+      "notes": null
+    },
+    {
+      "dimension_index": 11,
+      "dimension_name": "REVISIONS_AND_WITHDRAWALS_HANDLING",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_t1_authentic": {
+        "policy": "REVISIONS_REQUIRE_FRESH_ID",
+        "duplicate_rejected": true
+      },
+      "path_t2_receiver": {
+        "policy": "IMMUTABLE_RECORD_ID_WITH_REPARATIVE_OVERRIDE",
+        "duplicate_rejected": true
+      },
+      "measured_differential": "Both systems reject silent in-place overwrite of existing record IDs.",
+      "notes": null
+    },
+    {
+      "dimension_index": 12,
+      "dimension_name": "RETURN_PACKAGE_PROVENANCE_AND_SCHEMA",
+      "evaluation_status": "MEASURED_DIFFERENTIAL",
+      "concordant": false,
+      "path_t1_authentic": {
+        "schema": "td613.encyclopedia.reference/v1",
+        "total_records": 26
+      },
+      "path_t2_receiver": {
+        "schema": "td613.universal-atelier-export/v1",
+        "total_records": 26,
+        "zero_row_witness": true
+      },
+      "measured_differential": "T1 exports td613.encyclopedia.reference/v1; T2 exports td613.universal-atelier-export/v1 with cryptographic initial zero-row witness.",
+      "notes": null
+    }
+  ],
+  "scientific_finding": {
+    "finding_code": "ENCYCLOPEDIA_AUTHENTIC_VERSUS_RECEIVER_DIFFERENTIAL_ESTABLISHED",
+    "determination": "Executing authentic TD613Reference runtime against Universal Atelier on identical common-input fixtures confirms exact concordance in record identity, typed edges, citedBy reverse citations, bounded routing, context truncation, and status preservation. Intentional differentials exist in BM25 vs facet ranking, fail-closed exception handling, structured citation formatting, and 6-phase time-base separation."
+  }
+}

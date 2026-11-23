@@ -1,0 +1,296 @@
+{
+  "schema": "td613.accident-of-inheritance.source-standing-factorial-receipt/v1.0",
+  "classification": "AUXILIARY_RANDOMIZED_SYNTHETIC_FACTORIAL_ANALYSIS",
+  "covenant": "Khona‌lit-po",
+  "authorization_ref": "SAC[X6ZNK5NO51]",
+  "master_seed": "TD613_ACT2_STANDING_FACTORIAL_96_20261105_SAC_X6ZNK5NO51",
+  "n_worlds": 96,
+  "n_clusters": 24,
+  "evaluated_grid_cell": {
+    "cell_id": "H_MOD__L3_MODERATE__V_ACCELERATED",
+    "h_id": "H_MOD",
+    "h": 0.08,
+    "lat_id": "L3_MODERATE",
+    "tau0": 3,
+    "delta_obs": 1,
+    "delta_adm": 2,
+    "delta_avail": 0,
+    "nu_id": "V_ACCELERATED",
+    "interval_ticks": 2,
+    "nu": 0.5
+  },
+  "content_byte_identity_verified_worlds": 96,
+  "vault_access_ledger": {
+    "instrumentation_type": "DYNAMIC_JS_PROXY_PROPERTY_TRAP",
+    "simulator_property_reads": 6896,
+    "oracle_property_reads": 0,
+    "post_episode_scorer_reads": 57970,
+    "unauthorized_investigator_reads": 0,
+    "unauthorized_attempts": []
+  },
+  "synthetic_attribution_boundary": "Interpreted strictly within the randomized synthetic assignment procedure. Source labels are formal institutional-role treatments and never represent real-world demographic or social groups.",
+  "policy_standing_contrasts": {
+    "A_MONUMENTALISTS": {
+      "cell_means_utility": {
+        "Q_HIGH__S_HIGH": 0.4415,
+        "Q_HIGH__S_LOW": 0.306,
+        "Q_LOW__S_HIGH": 0.306,
+        "Q_LOW__S_LOW": 0.4415
+      },
+      "delta_u_status_given_Q_HIGH_calibrated": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0.1355,
+        "cluster_sd": 0.3454,
+        "ci95_low": -0.0008,
+        "ci95_high": 0.2772,
+        "cluster_cohens_dz": 0.3921,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 588,
+        "total_permutations": 8192,
+        "two_sided_p_value": 0.071891
+      },
+      "delta_u_status_given_Q_LOW_misleading": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": -0.1355,
+        "cluster_sd": 0.3454,
+        "ci95_low": -0.2711,
+        "ci95_high": -0.0045,
+        "cluster_cohens_dz": -0.3921,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 571,
+        "total_permutations": 8192,
+        "two_sided_p_value": 0.069816
+      },
+      "delta_u_status_pooled_counterbalanced": {
+        "n_paired_episodes": 192,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "mechanism_shifts_given_Q_HIGH": {
+        "mean_focal_prior_prob_shift": 0.9973,
+        "mean_probes_used_shift": -1.0417,
+        "decision_trajectory_changed_rate": 1,
+        "mean_censored_eval_latency_shift_ticks": 2.2
+      },
+      "mechanism_shifts_given_Q_LOW": {
+        "mean_focal_prior_prob_shift": 0.997,
+        "mean_probes_used_shift": 1.0417,
+        "decision_trajectory_changed_rate": 1,
+        "mean_censored_eval_latency_shift_ticks": -2.2
+      }
+    },
+    "B_EVIDENTIALISTS": {
+      "cell_means_utility": {
+        "Q_HIGH__S_HIGH": 0.4959,
+        "Q_HIGH__S_LOW": 0.4959,
+        "Q_LOW__S_HIGH": 0.4959,
+        "Q_LOW__S_LOW": 0.4959
+      },
+      "delta_u_status_given_Q_HIGH_calibrated": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "delta_u_status_given_Q_LOW_misleading": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "delta_u_status_pooled_counterbalanced": {
+        "n_paired_episodes": 192,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "mechanism_shifts_given_Q_HIGH": {
+        "mean_focal_prior_prob_shift": 0,
+        "mean_probes_used_shift": 0,
+        "decision_trajectory_changed_rate": 0,
+        "mean_censored_eval_latency_shift_ticks": 0
+      },
+      "mechanism_shifts_given_Q_LOW": {
+        "mean_focal_prior_prob_shift": 0,
+        "mean_probes_used_shift": 0,
+        "decision_trajectory_changed_rate": 0,
+        "mean_censored_eval_latency_shift_ticks": 0
+      }
+    },
+    "C_PROVISIONALISTS": {
+      "cell_means_utility": {
+        "Q_HIGH__S_HIGH": 0.5904,
+        "Q_HIGH__S_LOW": 0.5904,
+        "Q_LOW__S_HIGH": 0.5904,
+        "Q_LOW__S_LOW": 0.5904
+      },
+      "delta_u_status_given_Q_HIGH_calibrated": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "delta_u_status_given_Q_LOW_misleading": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "delta_u_status_pooled_counterbalanced": {
+        "n_paired_episodes": 192,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "mechanism_shifts_given_Q_HIGH": {
+        "mean_focal_prior_prob_shift": 0,
+        "mean_probes_used_shift": 0,
+        "decision_trajectory_changed_rate": 0,
+        "mean_censored_eval_latency_shift_ticks": 0
+      },
+      "mechanism_shifts_given_Q_LOW": {
+        "mean_focal_prior_prob_shift": 0,
+        "mean_probes_used_shift": 0,
+        "decision_trajectory_changed_rate": 0,
+        "mean_censored_eval_latency_shift_ticks": 0
+      }
+    },
+    "D_TEMPORAL_CUSTODIANS": {
+      "cell_means_utility": {
+        "Q_HIGH__S_HIGH": 0.6036,
+        "Q_HIGH__S_LOW": 0.6036,
+        "Q_LOW__S_HIGH": 0.6036,
+        "Q_LOW__S_LOW": 0.6036
+      },
+      "delta_u_status_given_Q_HIGH_calibrated": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "delta_u_status_given_Q_LOW_misleading": {
+        "n_paired_episodes": 96,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "delta_u_status_pooled_counterbalanced": {
+        "n_paired_episodes": 192,
+        "n_independent_clusters": 24,
+        "mean_diff": 0,
+        "cluster_sd": 0,
+        "ci95_low": 0,
+        "ci95_high": 0,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "PHIPSON_SMYTH_MONTE_CARLO_8192_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 8192,
+        "total_permutations": 8192,
+        "two_sided_p_value": 1
+      },
+      "mechanism_shifts_given_Q_HIGH": {
+        "mean_focal_prior_prob_shift": 0,
+        "mean_probes_used_shift": 0,
+        "decision_trajectory_changed_rate": 0,
+        "mean_censored_eval_latency_shift_ticks": 0
+      },
+      "mechanism_shifts_given_Q_LOW": {
+        "mean_focal_prior_prob_shift": 0,
+        "mean_probes_used_shift": 0,
+        "decision_trajectory_changed_rate": 0,
+        "mean_censored_eval_latency_shift_ticks": 0
+      }
+    }
+  },
+  "exact_24_standing_permutation_audit": {
+    "A_MONUMENTALISTS": {
+      "permutations_evaluated": 24,
+      "max_abs_posterior_shift_across_24_standing_permutations": 0.8782,
+      "exact_standing_invariance_verified": false,
+      "distinct_induced_map_slots": 4
+    },
+    "B_EVIDENTIALISTS": {
+      "permutations_evaluated": 24,
+      "max_abs_posterior_shift_across_24_standing_permutations": 0,
+      "exact_standing_invariance_verified": true,
+      "distinct_induced_map_slots": 1
+    },
+    "C_PROVISIONALISTS": {
+      "permutations_evaluated": 24,
+      "max_abs_posterior_shift_across_24_standing_permutations": 0,
+      "exact_standing_invariance_verified": true,
+      "distinct_induced_map_slots": 1
+    },
+    "D_TEMPORAL_CUSTODIANS": {
+      "permutations_evaluated": 24,
+      "max_abs_posterior_shift_across_24_standing_permutations": 0,
+      "exact_standing_invariance_verified": true,
+      "distinct_induced_map_slots": 1
+    }
+  }
+}

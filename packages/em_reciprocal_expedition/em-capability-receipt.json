@@ -1,0 +1,42 @@
+{
+  "schema": "td613.em-capability-receipt/v1",
+  "evaluated_at": "2026-11-05T15:28:00Z",
+  "estate": "EMSTD613",
+  "original_revision": "70b5a0f9e94626cba6068f41c6117e7978800bbd",
+  "checkpoint_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
+  "audit_authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona\u200Clit-po",
+  "verified_quantities": {
+    "tracked_files": 246,
+    "source_files": 87,
+    "source_bytes": 7938934,
+    "extracted_derivatives": 53,
+    "unsupported_format_derivatives": 34,
+    "work_routes": 32,
+    "work_count_bounds": [32, 40],
+    "human_gates_count": 8,
+    "manifestations_extracted": 53,
+    "manifestations_total": 87,
+    "documentary_instruments": 21,
+    "identity_partitions_evaluated": 256,
+    "continuity_surfaces": 81,
+    "original_standalone_executors_found": 0
+  },
+  "taxonomy_census": {
+    "original_documentary_methods": 21,
+    "standalone_executors": 0,
+    "work_practices_routes": 32,
+    "candidate_unexecuted_proposals": 8
+  },
+  "human_gated_work_ids": [
+    "emwork_074ccf9ad783c9c9047d73a8",
+    "emwork_085223e721130117f5510975",
+    "emwork_0885af7e4851a2e81618b37a",
+    "emwork_6377a9e4c9fd59e427517771",
+    "emwork_834ed287303df08a7a955877",
+    "emwork_85db62061b1e1bd0a4f6038e",
+    "emwork_d536dc230d89ac9fef9fa13a",
+    "emwork_f0154bf9da11f273a2d6cb18"
+  ],
+  "disposition": "EMSTD613_ESTATE_INVENTORY_VERIFIED_EXACT_ZERO_STANDALONE_EXECUTORS_CONFIRMED"
+}

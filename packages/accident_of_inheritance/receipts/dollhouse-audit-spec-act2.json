@@ -1,0 +1,136 @@
+{
+  "source_revision": "8ea7727a5b68269bae46408bfa42d82ddafc6db7",
+  "task_scope": "ACCIDENT_OF_INHERITANCE_ACT2_POSTFLIGHT_AUDIT",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/accident_of_inheritance/preregistration/preregistration-manifest-act2-v1.json",
+    "packages/accident_of_inheritance/preregistration/frozen-confirmatory-lock-act2.json",
+    "packages/accident_of_inheritance/schemas/temporal-and-authority-schemas.json",
+    "packages/accident_of_inheritance/src/temporal-lattice.mjs",
+    "packages/accident_of_inheritance/src/world-generator.mjs",
+    "packages/accident_of_inheritance/src/authority-policies.mjs",
+    "packages/accident_of_inheritance/src/evaluator-and-stats.mjs",
+    "packages/accident_of_inheritance/src/source-standing-factorial.mjs",
+    "packages/accident_of_inheritance/src/dead-civilization-wing.mjs",
+    "packages/accident_of_inheritance/src/adversarial-counterexamples.mjs",
+    "packages/accident_of_inheritance/scripts/run-confirmatory-192.mjs",
+    "packages/accident_of_inheritance/receipts/pilot-48-receipt.json",
+    "packages/accident_of_inheritance/receipts/confirmatory-192-receipt.json",
+    "packages/accident_of_inheritance/receipts/source-standing-factorial-receipt.json",
+    "packages/accident_of_inheritance/receipts/dead-civilization-wing-receipt.json",
+    "packages/accident_of_inheritance/receipts/adversarial-counterexamples-receipt.json",
+    "packages/accident_of_inheritance/receipts/act1-errata-reproducer-receipt.json",
+    "packages/accident_of_inheritance/docs/00_INHERITED_PALACE_ACT1_ERRATA_AND_REVIEW_AUDIT.md",
+    "packages/accident_of_inheritance/docs/07_CONFIRMATORY_RESULTS_AND_RESPONSE_SURFACES.md",
+    "packages/accident_of_inheritance/docs/10_ADVERSARIAL_COUNTEREXAMPLES_AND_NEGATIVE_REGISTER.md",
+    "packages/accident_of_inheritance/docs/11_THE_ACCIDENT_OF_INHERITANCE_MANUSCRIPT.md",
+    "packages/accident_of_inheritance/tests/test-accident-of-inheritance.mjs"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Ingest identical Universal Atelier terminal projection Pi(G) and byte-identical 8-claim archive across non-retroactive membrane."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Select EIG diagnostic probe or conserve probe budget under matched candidate evaluations."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Admit Common-Random-Number observations only when t_available <= t_decision with zero secret-vault reads."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Commit consequential intervention and emit calibrated mechanism claim or ABSTAIN_UNIDENTIFIABLE."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.4, 0.0],
+        [0.0, 1.18]
+      ],
+      "noise_covariance": [
+        [0.0784, 0.0],
+        [0.0, 0.0784]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "ISO_PI_QUARTET_TERMINAL_PROJECTION",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "ISO_PI_QUARTET_TERMINAL_PROJECTION",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": [
+            "PROBE_SELECT",
+            "CONSEQUENTIAL_INTERVENE",
+            "ABSTAIN_IF_NULLSPACE"
+          ],
+          "condition": "CALIBRATED_CANON_FIBER"
+        },
+        {
+          "support": [
+            "PROBE_SELECT",
+            "CONSEQUENTIAL_INTERVENE",
+            "ABSTAIN_IF_NULLSPACE"
+          ],
+          "condition": "TEMPORAL_CUSTODIAN_SCOPED_FIBER"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "DOLLHOUSE_DESIGN_QUALIFICATION": {
+          "status": "PASS",
+          "entry_id": "COMM-PALACE-ACT2-ACCIDENT-OF-INHERITANCE-01"
+        },
+        "PILOT_48_CALIBRATION": {
+          "status": "PASS",
+          "entry_id": "pilot-48-bcd80239"
+        },
+        "FROZEN_CONFIRMATORY_LOCK_8EA7727A5": {
+          "status": "PASS",
+          "entry_id": "commit-8ea7727a5"
+        },
+        "CONFIRMATORY_192_EVALUATION": {
+          "status": "PASS",
+          "entry_id": "confirmatory-192-6b880734"
+        },
+        "ADVERSARIAL_12_OF_12_AND_RESERVED_CLOSURE": {
+          "status": "PASS",
+          "entry_id": "adv-12-of-12-closure-reserved"
+        }
+      },
+      "required_phases": [
+        "DOLLHOUSE_DESIGN_QUALIFICATION",
+        "PILOT_48_CALIBRATION",
+        "FROZEN_CONFIRMATORY_LOCK_8EA7727A5",
+        "CONFIRMATORY_192_EVALUATION",
+        "ADVERSARIAL_12_OF_12_AND_RESERVED_CLOSURE"
+      ]
+    }
+  }
+}

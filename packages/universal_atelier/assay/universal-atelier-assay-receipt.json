@@ -1,0 +1,194 @@
+{
+  "schema": "td613.universal-atelier.reciprocal-assay-receipt/v1",
+  "evaluated_at": "2026-11-05T18:13:44.920Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "experimental_status": "QUALIFIED_WITH_REVERSE_CROSSING_LIMITATIONS",
+  "path_t1_reference_baseline": {
+    "classification": "PATH_T1_AUTHENTIC_REFERENCE_ENCYCLOPEDIA",
+    "manifest_version": "1.4",
+    "total_records": 1141,
+    "total_graph_edges": 2131,
+    "unresolved_graph_edges": 0,
+    "sample_operations_exercised": {
+      "search_hit_count": 4,
+      "sample_retrieved_id": "APT-01",
+      "sample_citation": "TD613·UA[APT-01]",
+      "outgoing_neighbors_count": 0,
+      "incoming_neighbors_count": 0
+    }
+  },
+  "path_t2_receiver_execution": {
+    "recipient_id": "ua_rcp_synth_assay_t01",
+    "episode_id": "ua_ep_assay_crossing_t",
+    "initial_zero_row_witness_hash": "19d4d7f810e3c0baba191f79357a12ad04ea0a2f4d4861a0ea76bb84805dee83",
+    "admitted_records_count": 3,
+    "admitted_links_count": 2,
+    "negative_controls": [
+      {
+        "control_id": "UA_NEG_01_MISSING_HUMAN_REVIEW_REF",
+        "blocked": true,
+        "reason": "HUMAN_REVIEW_REF_REQUIRED enforced on record admission"
+      },
+      {
+        "control_id": "UA_NEG_02_UNREGISTERED_ADJUDICATOR_RECEIPT",
+        "blocked": true,
+        "reason": "UNREGISTERED_ADJUDICATION_EVENT enforced against version-bound adjudication table"
+      },
+      {
+        "control_id": "UA_NEG_03_ADJUDICATOR_HASH_MISMATCH",
+        "blocked": true,
+        "reason": "ADJUDICATOR_HASH_MISMATCH enforced between proposal hash and registered event"
+      },
+      {
+        "control_id": "UA_NEG_04_MISSING_SPAN_PROOF",
+        "blocked": true,
+        "reason": "MISSING_SPAN_PROOF enforced on directed link admission"
+      },
+      {
+        "control_id": "UA_NEG_05_INVALID_SPAN_BOUNDS",
+        "blocked": true,
+        "reason": "INVALID_SPAN_BOUNDS enforced on negative start coordinate"
+      },
+      {
+        "control_id": "UA_NEG_06_TAMPERED_SPAN_DIGEST",
+        "blocked": true,
+        "reason": "INVALID_SPAN_PROOF_DIGEST enforced by live raw byte SHA-256 recomputation"
+      },
+      {
+        "control_id": "UA_NEG_07_TARGET_ENDPOINT_UNADMITTED",
+        "blocked": true,
+        "reason": "TARGET_ENDPOINT_UNADMITTED enforced; target record must exist in ua_records"
+      }
+    ],
+    "negative_controls_all_blocked": true,
+    "bfs_route_discovery": {
+      "found": true,
+      "depth": 2,
+      "path": [
+        "ua:contract:khonalit_po_governance",
+        "ua:evidence:khonalit_po_attestation",
+        "ua:formula:directional_entropy_loss"
+      ]
+    },
+    "integrity_verification": {
+      "total_records_checked": 3,
+      "matches": 3,
+      "mismatches": 0,
+      "valid": true,
+      "verified_at": "2026-11-05T18:13:44.919Z"
+    }
+  },
+  "path_t3_matched_union_comparator": {
+    "total_dimensions_evaluated": 10,
+    "concordant_dimensions_count": 10,
+    "all_concordant": true,
+    "discordance_detector_sensitive": true,
+    "dimensions": [
+      {
+        "dimension_index": 1,
+        "dimension_name": "EXACT_RECORD_IDENTITY_RETENTION",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Record IDs and content SHA-256 digests remain immutable across storage boundaries.",
+        "receiver_outcome": "Admitted records retain exact ID and content SHA-256 verified against raw payload.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 2,
+        "dimension_name": "TYPED_EDGE_PRESERVATION_ACROSS_PROJECTIONS",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "All graph edges maintain strict from_id, to_id, and link_type typography.",
+        "receiver_outcome": "Admitted links conform to typed directed schema: WARRANTED_BY, EXEMPLIFIES.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 3,
+        "dimension_name": "REVERSE_CITATION_TRACKING",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Citing relationships must automatically index target reverse citations (citedBy).",
+        "receiver_outcome": "Automatic ua_reverse_citations created for every admitted link; queried via get().cited_by.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 4,
+        "dimension_name": "NON_RETROACTIVITY",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Causal and temporal directionality cannot cite future records retroactively.",
+        "receiver_outcome": "Temporal classification gates enforced on link admission.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 5,
+        "dimension_name": "FAIL_CLOSED_DEFAULT_DENY_MISSINGNESS",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Unadmitted records or missing endpoints must fail closed with explicit rejection.",
+        "receiver_outcome": "Unadmitted target endpoint rejected: true.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 6,
+        "dimension_name": "LIVE_CRYPTOGRAPHIC_SPAN_RECOMPUTATION",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Span proofs must recompute cryptographic SHA-256 over raw source payload bytes.",
+        "receiver_outcome": "Tampered span digest rejected: true; Valid spans recomputed successfully.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 7,
+        "dimension_name": "SAFE_COORDINATE_BOUNDS",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Span coordinates must be safe non-negative integers bounded by source payload length.",
+        "receiver_outcome": "Negative coordinate bounds rejected: true.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 8,
+        "dimension_name": "EPISTEMIC_CONTEXT_BUDGET_TRUNCATION",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Neighborhood context assembly must respect explicit budget bounds and flag truncation.",
+        "receiver_outcome": "context() packages root + neighbors and reports boolean truncation flag.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 9,
+        "dimension_name": "STRICT_CLAIM_CEILINGS",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Zero genuine private source admission; research witness only; Experiment B strictly HELD.",
+        "receiver_outcome": "All admitted records declare explicit claim_ceiling and evidence_class.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      },
+      {
+        "dimension_index": 10,
+        "dimension_name": "REVERSE_CROSSING_LIMITATION_AWARENESS",
+        "evaluation_type": "LIVE_EXECUTION",
+        "reference_rule": "Reverse traversal from receiver into reference corpus cannot claim lossless bijection without explicit mapping.",
+        "receiver_outcome": "Atelier acknowledges directional ontology gap; prospective receiver does not overwrite reference baseline.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
+      }
+    ]
+  },
+  "reverse_crossing_scientific_finding": {
+    "finding_code": "CROSSING_T_QUALIFIED_DIRECTIONAL_LIMITATIONS",
+    "summary": "Universal Atelier functions as an independent empty receiver with zero-row witness attestation, custodial human review ref gates, live cryptographic span verification, and reverse citation tracking. Reverse crossing from prospective receiver into historical reference corpora is inherently directional and subject to ontology projection gaps rather than claiming lossless isomorphism."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "td613.clean-method-carrier-export/v1",
+  "files": 13,
+  "closure_verified": true,
+  "history_and_network_isolation": "UNESTABLISHED",
+  "worker_admission": "HELD",
+  "manifest_sha256": "477b6432692f0b6ad4e1d0050ec6aa11f5c29c832edaee5d2bdb25825df05cc8"
+}

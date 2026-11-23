@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.local/schemas/accident-of-inheritance/temporal-and-authority-schemas-v1.json",
+  "title": "TD613 Accident of Inheritance — Temporal Coordinate, Historical Claim, Observation, and Authority Policy Schemas",
+  "description": "Formal schema governing the 8-coordinate non-retroactive temporal lattice, permissible synthetic historical claims, prospective episode observations, and epistemic authority policies (SAC[X6ZNK5NO51], Khona‌lit-po).",
+  "$defs": {
+    "TemporalCoordinates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "t_event",
+        "t_observed",
+        "t_admitted",
+        "t_available",
+        "t_decision",
+        "t_action",
+        "t_contradiction",
+        "t_correction"
+      ],
+      "properties": {
+        "t_event": {
+          "type": "integer",
+          "description": "Physical tick of underlying mechanism state or event occurrence."
+        },
+        "t_observed": {
+          "type": "integer",
+          "description": "Tick of sensor or active-probe observation acquisition (must satisfy t_observed >= t_event)."
+        },
+        "t_admitted": {
+          "type": "integer",
+          "description": "Tick of formal custodial admission into the research record (must satisfy t_admitted >= t_observed)."
+        },
+        "t_available": {
+          "type": "integer",
+          "description": "Earliest tick at which an investigator may lawfully access the admitted record (must satisfy t_available >= t_admitted)."
+        },
+        "t_decision": {
+          "type": ["integer", "null"],
+          "description": "Tick at which an investigator selects a probe or consequential action (must satisfy t_decision >= t_available for all consumed records)."
+        },
+        "t_action": {
+          "type": ["integer", "null"],
+          "description": "Tick at which consequential intervention commits resources (must satisfy t_action >= t_decision)."
+        },
+        "t_contradiction": {
+          "type": ["integer", "null"],
+          "description": "Earliest t_observed of evidence objectively challenging the inherited pre-shift claim."
+        },
+        "t_correction": {
+          "type": ["integer", "null"],
+          "description": "Earliest tick >= t_contradiction_available at which the investigator revises to the post-shift optimal action under its declared policy."
+        }
+      }
+    },
+    "CalibrationMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "measured_calibration_score",
+        "sample_replicates",
+        "reproducibility_pass_rate",
+        "residual_variance",
+        "independently_calibrated"
+      ],
+      "properties": {
+        "measured_calibration_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sample_replicates": { "type": "integer", "minimum": 1 },
+        "reproducibility_pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "residual_variance": { "type": "number", "minimum": 0 },
+        "independently_calibrated": { "type": "boolean" }
+      }
+    },
+    "HistoricalClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_kind",
+        "claim_id",
+        "world_public_id",
+        "endorsed_slot_id",
+        "log_likelihood_by_slot",
+        "source_standing",
+        "calibration_metrics",
+        "conditioning_regime_tag",
+        "temporal_coordinates"
+      ],
+      "properties": {
+        "record_kind": { "const": "HISTORICAL_CLAIM" },
+        "claim_id": { "type": "string" },
+        "world_public_id": { "type": "string" },
+        "endorsed_slot_id": {
+          "enum": ["M_SLOT_0", "M_SLOT_1", "M_SLOT_2", "M_SLOT_3"]
+        },
+        "log_likelihood_by_slot": {
+          "type": "object",
+          "required": ["M_SLOT_0", "M_SLOT_1", "M_SLOT_2", "M_SLOT_3"],
+          "properties": {
+            "M_SLOT_0": { "type": "number" },
+            "M_SLOT_1": { "type": "number" },
+            "M_SLOT_2": { "type": "number" },
+            "M_SLOT_3": { "type": "number" }
+          }
+        },
+        "source_standing": {
+          "enum": [
+            "FOUNDING_AUTHORITY",
+            "ESTABLISHED_COUNCIL",
+            "INDEPENDENT_AUDITOR",
+            "JUNIOR_OR_CONTESTED"
+          ]
+        },
+        "calibration_metrics": { "$ref": "#/$defs/CalibrationMetrics" },
+        "conditioning_regime_tag": {
+          "enum": ["REGIME_SIG_ALPHA", "REGIME_SIG_BETA", "BASELINE_UNCALIBRATED"]
+        },
+        "temporal_coordinates": { "$ref": "#/$defs/TemporalCoordinates" }
+      }
+    },
+    "EpisodeObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_kind",
+        "obs_kind",
+        "obs_id",
+        "probe_id",
+        "scalar_value",
+        "observable_context_tag",
+        "temporal_coordinates"
+      ],
+      "properties": {
+        "record_kind": { "const": "EPISODE_OBSERVATION" },
+        "obs_kind": { "enum": ["AMBIENT_MONITOR", "ACTIVE_DIAGNOSTIC_PROBE"] },
+        "obs_id": { "type": "string" },
+        "probe_id": {
+          "type": ["string", "null"],
+          "enum": ["PROBE_P0", "PROBE_P1", "PROBE_P2", "PROBE_P3", null]
+        },
+        "scalar_value": { "type": "number" },
+        "observable_context_tag": { "enum": ["REGIME_SIG_ALPHA", "REGIME_SIG_BETA"] },
+        "temporal_coordinates": { "$ref": "#/$defs/TemporalCoordinates" }
+      }
+    },
+    "AuthorityPolicyId": {
+      "type": "string",
+      "enum": [
+        "A_MONUMENTALISTS",
+        "B_EVIDENTIALISTS",
+        "C_PROVISIONALISTS",
+        "D_TEMPORAL_CUSTODIANS",
+        "CTRL_NO_HISTORY",
+        "CTRL_RANDOM",
+        "CTRL_DYNAMIC_ORACLE"
+      ]
+    }
+  }
+}

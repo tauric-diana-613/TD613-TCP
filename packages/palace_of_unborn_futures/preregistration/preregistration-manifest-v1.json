@@ -1,0 +1,165 @@
+{
+  "schema": "td613.palace-of-unborn-futures.preregistration/v1",
+  "title": "THE PALACE OF UNBORN FUTURES: COUNTERFACTUAL SCIENTIFIC INHERITANCE AND THE LIMITS OF FINITE RESEARCH MEMORY",
+  "commission_id": "ARGON-POSTFLIGHT-EXP-A-20261105",
+  "principal": "Tawanna C. Miller",
+  "operator": "tauric.diana.613",
+  "heritage_custodianship": "Tauric Diana — Crimean heritage custodianship",
+  "covenant": "Khona‌lit-po",
+  "authorization": "SAC[X6ZNK5NO51]",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "jurisdiction": "SOURCE_FREE_EXPERIMENT_A_POSTFLIGHT_ONLY",
+  "protected_experiment_b": "HELD",
+  "human_closure_and_release": "RESERVED",
+  "supervision_and_blinding_declaration": {
+    "supervision_mode": "INTERNALLY_SEPARATED_SINGLE_SUPERVISING_MODEL",
+    "supervising_model": "Gemini 4 Argon (High)",
+    "independent_external_blinding": false,
+    "software_masking_equated_to_external_replication": false,
+    "runtime_separation_enforcement": "Strict module separation between world-generator.mjs/evaluator.mjs and heirs-and-policies.mjs, enforced by assertNoSecretLeakage() canary & key-denylist guard."
+  },
+  "inherited_experiment_a_estate": {
+    "pr_1697_head": {
+      "commit_sha": "20df004c4997689d33ed614b42ab8b683c1da22a",
+      "tree_sha": "b3c44b6ad9669b9219d2261d3f317134515f376e",
+      "files": {
+        "packages/universal_atelier/receiver/universal-atelier-receiver.mjs": {
+          "bytes": 37334,
+          "sha256": "42551b62831af942beb87c824a09ac07f00b0058e978715d2d070aac5e08afe4"
+        },
+        "packages/four_crossing_capstone/run-twin-world-assay.mjs": {
+          "bytes": 24672,
+          "sha256": "f2622d137f14c336a308fa522b2c99b82e67e3167f2c23eaea06a23d38d15e90"
+        },
+        "packages/four_crossing_capstone/twin-world-assay-receipt.json": {
+          "bytes": 3002,
+          "sha256": "9b1ffb234f13180d8717363921b1c75fe7b16a932c32a3805fbe3f098b11c595"
+        },
+        "packages/four_crossing_capstone/FOUR_CROSSING_FINAL_ADJUDICATION.md": {
+          "bytes": 13361,
+          "sha256": "4b757a6cdcdd5922fb0b0f54fd3cdc839adb6096c621cc30222886c907dfd6dc"
+        },
+        "packages/four_crossing_capstone/FOUR_ESTATE_PROVENANCE_MATRIX.md": {
+          "bytes": 7211,
+          "sha256": "e65ffc155bd1a5fcae4bb0ea54911e1ef2b7775a3530d840686e9977a1b5b873"
+        },
+        "packages/four_crossing_capstone/custodial-gate-and-time-receipt.json": {
+          "bytes": 3308,
+          "sha256": "4a5f47b42e2321da3a185b064d73fbc4947dffed38cc759fb07c30a980f42edd"
+        }
+      }
+    },
+    "pr_1698_head": {
+      "commit_sha": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+      "tree_sha": "981b4cfe2bbb5c440959a3193a7807db6ad2700d",
+      "independent_review_url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1698#pullrequestreview-5791217965",
+      "files": {
+        "packages/universal_atelier/receiver/universal-atelier-receiver.mjs": {
+          "bytes": 42341,
+          "sha256": "0829338cec24b2f2bea94b6bf1c0ccecd830a68d299c9223f0d102e7cf948daf"
+        },
+        "packages/four_crossing_capstone/run-twin-world-assay.mjs": {
+          "bytes": 25261,
+          "sha256": "5e042c7e05af133fe27f28f9b9b68e974ecb9845f3dcb7b859ad9fa63afc1c87"
+        },
+        "packages/four_crossing_capstone/twin-world-assay-receipt.json": {
+          "bytes": 4315,
+          "sha256": "4ae82eae3304cf78e6cf80e5fcc696878925e344b3f8ee1c24c845aa4874a93b"
+        },
+        "packages/four_crossing_capstone/FOUR_CROSSING_FINAL_ADJUDICATION.md": {
+          "bytes": 14039,
+          "sha256": "6a8f19cbe4566656e3183534f607c64abdbdd93edfe6b10880c4cb7d1e4f1632"
+        },
+        "packages/four_crossing_capstone/FOUR_ESTATE_PROVENANCE_MATRIX.md": {
+          "bytes": 7419,
+          "sha256": "7de57e0a504f0a28678dccf2f24075f7232d71cd4329ae813bc20bdd2b7fa356"
+        },
+        "packages/four_crossing_capstone/custodial-gate-and-time-receipt.json": {
+          "bytes": 5388,
+          "sha256": "a96dfa1fd3d7faacffa628d475f81d584ef30e20fcee8e6cac2ff642d60ac42a"
+        }
+      }
+    }
+  },
+  "experimental_design": {
+    "pilot_suite": {
+      "suite_name": "PILOT_48",
+      "master_seed": "TD613_PALACE_PILOT_48_SEED_V1",
+      "total_worlds": 48,
+      "worlds_per_family": 12,
+      "iso_pi_quartets_per_family": 3
+    },
+    "confirmatory_suite": {
+      "suite_name": "CONFIRMATORY_96",
+      "master_seed": "TD613_PALACE_CONFIRMATORY_96_SEED_V1",
+      "total_worlds": 96,
+      "worlds_per_family": 24,
+      "iso_pi_quartets_per_family": 6
+    },
+    "matched_memory_budgets_utf8_bytes": {
+      "B_TIGHT": 96,
+      "B_STANDARD": 256
+    },
+    "matched_action_budget_per_world": {
+      "diagnostic_probes": 1,
+      "consequential_interventions": 1,
+      "terminal_naming_or_abstention": 1,
+      "unseen_holdout_predictions": 16
+    },
+    "noninferiority_margin_delta_U": 0.05,
+    "exclusion_criteria": "Zero post-hoc world exclusions permitted. Any violation of Iso-Π digest equality or taint separation aborts execution fail-closed.",
+    "paid_api_calls_authorized": false
+  },
+  "confirmatory_hypotheses": [
+    {
+      "id": "H1_HISTORY_UTILITY",
+      "statement": "Access to authentic research history H (Condition II: Archivists) yields strictly positive expected utility gain ΔU_H = E[U(a(G,H), M) - U(a(G), M)] > 0 relative to terminal Encyclopedia alone (Condition I: Amnesiacs), while exhibiting measurable drag on legacy-drift worlds.",
+      "directional_test": "Two-sided quartet-clustered bootstrap 95% CI for ΔU_H excludes 0."
+    },
+    {
+      "id": "H2_CAPSULE_NONINFERIORITY",
+      "statement": "Under B_STANDARD (256 UTF-8 bytes), the calibration-trained capsule Z (Condition III: Heirs) achieves preregistered noninferiority to full history H (lower 95% CI bound of E[U(Z) - U(H)] > -0.05) at >= 10x byte compression, whereas under extreme B_TIGHT (96 UTF-8 bytes) quantization loss degrades performance in higher-order and rupture families.",
+      "directional_test": "Lower 95% CI bound > -0.05 tested separately at 256B and 96B."
+    },
+    {
+      "id": "H3_TOXIC_INHERITANCE_BELOW_IGNORANCE",
+      "statement": "Both fabricated misleading history (Condition IV: False Prophets) and authentic misattributed foreign history (Condition V: Exiles) degrade expected utility strictly below zero-history ignorance (Condition I: Amnesiacs), i.e., ΔU < 0.",
+      "directional_test": "Upper 95% CI bound of E[U(IV) - U(I)] < 0 and E[U(V) - U(I)] < 0."
+    },
+    {
+      "id": "H4_SELECTIVE_FORGETTING_DUALITY",
+      "statement": "Rule-based selective forgetting (Condition VI: Revisionists) exhibits budget-dependent duality: at B_STANDARD (256B), forgetting uncalibrated legacy authority improves or matches utility relative to unselective Archivists, whereas at B_TIGHT (96B), category truncation evicts residual anomalies and introduces unacceptable omissions in Family D.",
+      "directional_test": "Paired contrasts E[U(VI) - U(II)] at 256B vs 96B and Family D omission rate."
+    },
+    {
+      "id": "H5_PRIVACY_COMPRESSION_SHIELD",
+      "statement": "Strong Bayesian stylometric/timing reconstruction recovers synthetic sensitive attribute S from full history H (and from naive key-redacted history) well above the 25% chance baseline, while mathematical sufficiency compression in Heirs reduces out-of-sample attack accuracy toward chance.",
+      "directional_test": "Out-of-sample CONFIRMATORY_96 attack accuracy & Miller-Madow MI."
+    },
+    {
+      "id": "H6_ONTOLOGICAL_RUPTURE_AND_ABSTENTION",
+      "statement": "History-preserving conditions with residual variance retention detect missing ontology elements (M_D1, M_D2), synthesize non-renaming composite/holonomic predicates that generalize to held-out states, and abstain on unidentifiable exterior nullspace worlds (M_D3) significantly more reliably than Amnesiacs.",
+      "directional_test": "Family D rupture invention rate, non-renaming conditional entropy >= 0.20 bits, and M_D3 abstention rate."
+    }
+  ],
+  "forbidden_wing_exploratory_hypotheses": [
+    {
+      "id": "E1_THE_MISINHERITED_TRUTH",
+      "status": "PREREGISTERED_EXPLORATORY",
+      "statement": "Exiles (authentic history of matched sibling world w') exhibit higher overconfident error (higher mean confidence when wrong and worse Brier calibration error) than False Prophets (explicitly fabricated history), because authentic foreign traces satisfy physical variance floors and evade forensic skepticism.",
+      "adversarial_countercase": "Construct a Noise-Matched Adaptive Fabricator whose synthetic variance matches the Aperture noise floor and steers Step-1 probing into an aliasing subspace, inverting the ranking."
+    },
+    {
+      "id": "E2_THE_MERCIFUL_AMNESIA",
+      "status": "PREREGISTERED_EXPLORATORY",
+      "statement": "Excluding historically accurate legacy trials (CAT_EPOCH0_DRIFT_TRIALS) improves decision utility over complete memory on the subset of worlds with authentic early instrument drift.",
+      "adversarial_countercase": "Construct a Stationary-Calibration Counter-Suite where Epoch-0 trials were well-calibrated and high-sample, making selective deletion discard genuine signal and underperform Archivists."
+    },
+    {
+      "id": "E3_THE_ONTOLOGICAL_PRISON",
+      "status": "PREREGISTERED_EXPLORATORY",
+      "statement": "Detection of ontological inadequacy (recognizing that no inherited predicate fits deterministic variation) strictly exceeds and separates from successful invention of the replacement predicate when active probe resolution is restricted.",
+      "adversarial_countercase": "Construct a High-Multiplicity Aliasing Rupture (modulo-5 composite invariant under 3-point probing) where rupture detection succeeds ~100% while replacement predicate invention collapses to chance."
+    }
+  ]
+}

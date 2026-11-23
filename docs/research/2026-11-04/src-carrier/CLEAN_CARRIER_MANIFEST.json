@@ -1,0 +1,368 @@
+{
+  "authority": {
+    "deployment": false,
+    "flight": false,
+    "human_closure_required": true,
+    "release": false,
+    "source_admission": false
+  },
+  "corpus_payload": "SYNTHETIC_FIXTURE_ONLY",
+  "dependency_closure": "EXPLICIT_LOCAL_IMPORTS_AND_FIXED_NATIVE_REGISTRY_PLUS_PYTHON_STDLIB",
+  "dynamic_native_loads": [
+    "research_carrier_v1/native/phase2.py",
+    "research_carrier_v1/native/query.py",
+    "research_carrier_v1/native/projective.py"
+  ],
+  "files": [
+    {
+      "bytes": 90,
+      "imports": [],
+      "path": "research_carrier_v1/__init__.py",
+      "sha256": "d5e081e1eea8e0277db2ca0816c1f51f5b0fc791c6bdaebb92ec9739d5b7aa61"
+    },
+    {
+      "bytes": 16319,
+      "imports": [
+        "base64",
+        "copy",
+        "datetime",
+        "hashlib",
+        "json",
+        "math",
+        "pathlib",
+        "re"
+      ],
+      "path": "research_carrier_v1/core.py",
+      "sha256": "7900a6a2b84674c1952c57a00fa9bb6e8a303f5e1dff285d1039a0cf1d0bcf69"
+    },
+    {
+      "bytes": 10331,
+      "imports": [
+        ".core",
+        "importlib",
+        "json",
+        "pathlib",
+        "re",
+        "sys",
+        "tempfile"
+      ],
+      "path": "research_carrier_v1/native_runner.py",
+      "sha256": "235d89bb2c6a0ceb56c0757102ff4ca251fa2f60107aa3aeba8222dae876285f"
+    },
+    {
+      "bytes": 3502,
+      "imports": [
+        ".core",
+        ".native_runner",
+        "base64"
+      ],
+      "path": "research_carrier_v1/fixture_factory.py",
+      "sha256": "1ccd329cde447bd719068f55a76060b0d2b3335f2c22cd097ef9ce15e739a326"
+    },
+    {
+      "bytes": 690,
+      "imports": [
+        ".core",
+        ".native_runner",
+        "argparse",
+        "pathlib"
+      ],
+      "path": "research_carrier_v1/worker.py",
+      "sha256": "236ed3b0ecdc966d3d68f8adab9277d916bfae6d9d4f30ac92178fa871737679"
+    },
+    {
+      "bytes": 14182,
+      "imports": [
+        "__future__",
+        "argparse",
+        "base64",
+        "contextlib",
+        "hashlib",
+        "json",
+        "math",
+        "pathlib",
+        "re",
+        "sqlite3"
+      ],
+      "path": "research_carrier_v1/synthetic_receiver.py",
+      "sha256": "b119f477b5fa28cf594350164f41ee657003a46de71df02433726def9361ac33"
+    },
+    {
+      "bytes": 29814,
+      "imports": [
+        "__future__",
+        "argparse",
+        "collections",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "sqlite3",
+        "typing"
+      ],
+      "path": "research_carrier_v1/native/phase2.py",
+      "sha256": "fe9354825da2612271e8626e77a882563eb14f577a374e956066df84178a0577"
+    },
+    {
+      "bytes": 21376,
+      "imports": [
+        "__future__",
+        "argparse",
+        "collections",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "typing",
+        "unicodedata"
+      ],
+      "path": "research_carrier_v1/native/projective.py",
+      "sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43"
+    },
+    {
+      "bytes": 10225,
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "sys",
+        "typing"
+      ],
+      "path": "research_carrier_v1/native/query.py",
+      "sha256": "1b106e5091f7d90d70ac0beb4a97d28065e257691bd8d92ec14a2370d693ba8c"
+    },
+    {
+      "bytes": 2267,
+      "imports": [],
+      "path": "research_carrier_v1/ORIGINAL_CODE_PINS.json",
+      "sha256": "bbbd2232459049282ce9bab40737a8de309e4ce2685eb86ba7f0a08a4f54d32b"
+    },
+    {
+      "bytes": 4188,
+      "imports": [],
+      "path": "research_carrier_v1/METHOD_DEPENDENCIES.json",
+      "sha256": "022a7450b1e4256074d9aa3a4a56e7aaec9571a1c3630b2a0fa79718e88ee261"
+    },
+    {
+      "bytes": 4169,
+      "imports": [],
+      "path": "research_carrier_v1/fixtures/synthetic-tomography.json",
+      "sha256": "24012088ae23edc9df650f444a161dd0763f84c96ed52aa5cf3af983a5aa2344"
+    },
+    {
+      "bytes": 143,
+      "imports": [
+        "sys",
+        "pathlib",
+        "research_carrier_v1.worker"
+      ],
+      "path": "run.py",
+      "sha256": "78b526e516d3c8634102f3c97e03be30509a718e68ff8578c4b88566307f336a"
+    }
+  ],
+  "forbidden_context": [
+    ".git",
+    "AGENTS.md",
+    "DOLLHOUSE.md",
+    "DOLLHOUSE_MACHINE_RECEIPT.json",
+    "eighteen-witnesses",
+    "rankings",
+    "gold",
+    "supervision",
+    "conversation_history"
+  ],
+  "isolation": {
+    "network_access": "NOT_ENFORCED_BY_EXPORT",
+    "package_git_metadata": "ABSENT",
+    "repository_history_access": "NOT_ENFORCED_BY_EXPORT",
+    "worker_admission": "HELD"
+  },
+  "method_dependencies": {
+    "SRC_NATIVE_QUERY": {
+      "data_dependencies": {
+        "authority": [
+          "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl"
+        ],
+        "resolve": [
+          "01-MANIFESTS/phase2/entity-resolver-v2.jsonl"
+        ],
+        "summary": [
+          "01-MANIFESTS/phase2/acquisition-outcomes.jsonl",
+          "05-OPERATIONS/phase2/expected-object-observations.jsonl",
+          "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+          "05-OPERATIONS/phase2/compilation-passes.jsonl",
+          "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl",
+          "05-OPERATIONS/phase2/evidence-lineage-assertions.jsonl",
+          "04-RECEIPTS/assays/2026-08-24-phase2-kiln/coverage-ledger.jsonl"
+        ],
+        "trace": [
+          "01-MANIFESTS/entity-index.jsonl",
+          "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
+          "01-MANIFESTS/phase2/capture-v2.jsonl",
+          "01-MANIFESTS/phase2/derivative-v1.jsonl",
+          "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/witnessed-evidence.jsonl",
+          "05-OPERATIONS/relations/typed-edges.jsonl",
+          "05-OPERATIONS/relations/recompilation-edges.jsonl",
+          "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+          "05-OPERATIONS/phase2/compilation-passes.jsonl",
+          "05-OPERATIONS/phase2/reference-assertions.jsonl",
+          "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl"
+        ]
+      },
+      "dynamic_context": "resolve/trace derive referenced paths from original resolver results; require exact staged bytes or explicit absent_paths; withheld_paths hold execution",
+      "entrypoint": "query_dispatch",
+      "epoch_control_paths": [
+        "04-RECEIPTS/phase2/current-seal.json",
+        "04-RECEIPTS/phase2/projection-seal.json"
+      ],
+      "executable": "native/query.py",
+      "external_packages": [],
+      "filesystem_scope": "new temporary input tree only",
+      "network_dependency": false,
+      "semantic_contract": {
+        "authority": "NO_LATEST_WINS",
+        "missing_hops": "EXPLICIT",
+        "operator": "original_exact_identifier_readonly_query",
+        "path_context": "EXACT_STAGED_BYTES_OR_EXPLICIT_ABSENCE;_WITHHELD_CONTEXT_HELD",
+        "scientific_ceiling": "WITNESSED_RECORDS_ONLY"
+      }
+    },
+    "SRC_PHASE2_CONTEXT_ROLES": {
+      "data_dependencies": [
+        "05-OPERATIONS/relations/recompilation-edges.jsonl",
+        "05-OPERATIONS/relations/compiler-input-candidates.jsonl"
+      ],
+      "dynamic_context": "none",
+      "entrypoint": "contextual_roles_and_compilers",
+      "executable": "native/phase2.py",
+      "external_packages": [],
+      "filesystem_scope": "new temporary input tree only",
+      "network_dependency": false,
+      "semantic_contract": {
+        "candidate_status": "PRESERVED",
+        "operator": "compiler_scope_time_context_roles",
+        "role": "CONTEXTUAL_NOT_INTRINSIC",
+        "scientific_ceiling": "RECORDED_CONTEXT_ONLY"
+      }
+    },
+    "SRC_PHASE2_TOMOGRAPHY": {
+      "data_dependencies": [
+        "05-OPERATIONS/relations/representation-lift-candidates.jsonl"
+      ],
+      "dynamic_context": "none",
+      "entrypoint": "conservation_and_tomography",
+      "executable": "native/phase2.py",
+      "external_packages": [],
+      "filesystem_scope": "new temporary input tree only",
+      "network_dependency": false,
+      "semantic_contract": {
+        "authority_delta": "UNKNOWN_AS_ORIGINAL",
+        "composite": "NULL_AS_ORIGINAL",
+        "evidence_delta": "UNKNOWN_AS_ORIGINAL",
+        "operator": "claim_effect_dimensions_forward",
+        "scientific_ceiling": "DECLARED_EFFECTS_ONLY"
+      }
+    },
+    "SRC_PROJECTIVE_ROUTING": {
+      "data_dependencies": [
+        "03-DERIVATIVES/text/zenodo/zenodo-{record_id}-file-0.md",
+        "03-DERIVATIVES/text/zenodo/zenodo-{record_id}-metadata.md"
+      ],
+      "dynamic_context": "none",
+      "entrypoint": "summary",
+      "executable": "native/projective.py",
+      "external_packages": [],
+      "filesystem_scope": "new temporary input tree only",
+      "network_dependency": false,
+      "semantic_contract": {
+        "candidates": "NO_SEMANTIC_OR_CAUSAL_PROMOTION",
+        "native_cue": "Explore X.",
+        "native_epoch": "FIXED_LITERAL_NOT_AUTHENTICATION",
+        "operator": "original_lexical_projective_census"
+      }
+    }
+  },
+  "native_code_pins": [
+    {
+      "class": "PUBLIC_EXECUTABLE_CODE_ONLY",
+      "git_blob": "681444a032db7f3904f82ab677778ced740d6c31",
+      "imports": [
+        "__future__",
+        "argparse",
+        "base64",
+        "contextlib",
+        "hashlib",
+        "json",
+        "math",
+        "pathlib",
+        "re",
+        "sqlite3"
+      ],
+      "path": "synthetic_receiver.py",
+      "sha256": "b119f477b5fa28cf594350164f41ee657003a46de71df02433726def9361ac33",
+      "source_path": "scripts/atelier-universal-encyclopedia-receiver-v1.py",
+      "source_revision": "583c2b24a0680fcc1c3fba15dbace26dfe6c636e"
+    },
+    {
+      "class": "PUBLIC_EXECUTABLE_CODE_ONLY",
+      "git_blob": "4de177108f61a441321b484c2fdf3ab9aabeadc8",
+      "imports": [
+        "__future__",
+        "argparse",
+        "collections",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "sqlite3",
+        "typing"
+      ],
+      "path": "native/phase2.py",
+      "sha256": "fe9354825da2612271e8626e77a882563eb14f577a374e956066df84178a0577",
+      "source_path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/build-phase2-assays.py",
+      "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320"
+    },
+    {
+      "class": "PUBLIC_EXECUTABLE_CODE_ONLY",
+      "git_blob": "33d8524da5614c3fc74b850531f26e74c416f934",
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "sys",
+        "typing"
+      ],
+      "path": "native/query.py",
+      "sha256": "1b106e5091f7d90d70ac0beb4a97d28065e257691bd8d92ec14a2370d693ba8c",
+      "source_path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/srcquery.py",
+      "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320"
+    },
+    {
+      "class": "PUBLIC_EXECUTABLE_CODE_ONLY",
+      "git_blob": "74cc9385785c3bb13660222d623f9f7ff0187013",
+      "imports": [
+        "__future__",
+        "argparse",
+        "collections",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "typing",
+        "unicodedata"
+      ],
+      "path": "native/projective.py",
+      "sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "source_path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/run-projective-routing-grammar-assay.py",
+      "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320"
+    }
+  ],
+  "schema": "td613.clean-method-carrier-export/v1",
+  "selected_source_base": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff"
+}

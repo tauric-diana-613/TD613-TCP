@@ -1,0 +1,24 @@
+{
+  "executable_revision": "6827a0bd2f59d77706a55fad0b98ad475bcec31f",
+  "base_revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "implementation_paths": [
+    ".github/workflows/td613-src-carrier-return-contract.yml",
+    "packages/research_carrier_v1/METHOD_DEPENDENCIES.json",
+    "packages/research_carrier_v1/ORIGINAL_CODE_PINS.json",
+    "packages/research_carrier_v1/__init__.py",
+    "packages/research_carrier_v1/core.py",
+    "packages/research_carrier_v1/fixture_factory.py",
+    "packages/research_carrier_v1/fixtures/synthetic-tomography.json",
+    "packages/research_carrier_v1/native/phase2.py",
+    "packages/research_carrier_v1/native/projective.py",
+    "packages/research_carrier_v1/native/query.py",
+    "packages/research_carrier_v1/native_runner.py",
+    "packages/research_carrier_v1/synthetic_receiver.py",
+    "packages/research_carrier_v1/worker.py",
+    "scripts/export-src-method-carrier-v1.py",
+    "scripts/inspect-src-carrier-isolation-v1.py",
+    "scripts/inventory-src-research-continuity-v1.py",
+    "scripts/qualify-src-carrier-origin-v1.py",
+    "tests/test_src_method_carrier_v1.py"
+  ]
+}

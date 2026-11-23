@@ -1,0 +1,171 @@
+{
+  "schema": "td613.test-receiver-utf8-v2-receipt/v1",
+  "generated_at": "2026-11-05T14:22:19.670Z",
+  "test_count": 12,
+  "all_passed": true,
+  "results": [
+    {
+      "test_id": "TEST_01_AE_B_COUNTEREXAMPLE",
+      "description": "AéB exact byte intervals vs string slices",
+      "status": "PASS",
+      "details": {
+        "raw_byte_length": 4,
+        "code_unit_length": 3,
+        "span_A": "A",
+        "span_E_exact": "é",
+        "span_B": "B",
+        "invalid_split_rejected": true
+      },
+      "timestamp": "2026-11-05T14:22:19.653Z"
+    },
+    {
+      "test_id": "TEST_02_COVENANT_KHONALIT_PO",
+      "description": "Khona‌lit-po U+200C 3-byte custody",
+      "status": "PASS",
+      "details": {
+        "total_bytes": 14,
+        "zwnj_byte_span": [
+          5,
+          8
+        ],
+        "zwnj_bytes_hex": "e2808c",
+        "zwnj_split_rejected": true
+      },
+      "timestamp": "2026-11-05T14:22:19.656Z"
+    },
+    {
+      "test_id": "TEST_03_SUPPLEMENTARY_TETRAGRAM",
+      "description": "Supplementary plane 4-byte character custody",
+      "status": "PASS",
+      "details": {
+        "tetra_span": [
+          6,
+          10
+        ],
+        "tetra_text": "𝌋",
+        "surrogate_split_rejected": true
+      },
+      "timestamp": "2026-11-05T14:22:19.657Z"
+    },
+    {
+      "test_id": "TEST_04_COMBINING_MARKS",
+      "description": "Combining marks explicit byte separation",
+      "status": "PASS",
+      "details": {
+        "base_span": [
+          0,
+          1
+        ],
+        "mark_span": [
+          1,
+          3
+        ],
+        "mark_split_rejected": true
+      },
+      "timestamp": "2026-11-05T14:22:19.659Z"
+    },
+    {
+      "test_id": "TEST_05_MULTILINGUAL_CORPUS",
+      "description": "Multilingual scripts exact byte offsets",
+      "status": "PASS",
+      "details": {
+        "cyrillic_bytes": [
+          10,
+          24
+        ],
+        "arabic_bytes": [
+          58,
+          66
+        ],
+        "cjk_search_matched": true
+      },
+      "timestamp": "2026-11-05T14:22:19.662Z"
+    },
+    {
+      "test_id": "TEST_06_CHUNK_BOUNDARY_INTEGRITY",
+      "description": "Chunk boundary code point split prevention",
+      "status": "PASS",
+      "details": {
+        "chunk_count": 2,
+        "chunk_0_bytes": [
+          0,
+          32
+        ],
+        "chunk_1_bytes": [
+          32,
+          60
+        ]
+      },
+      "timestamp": "2026-11-05T14:22:19.663Z"
+    },
+    {
+      "test_id": "TEST_07_EMPTY_BODY",
+      "description": "Zero-length body capture handling",
+      "status": "PASS",
+      "details": {
+        "chunk_count": 0,
+        "raw_byte_length": 0
+      },
+      "timestamp": "2026-11-05T14:22:19.664Z"
+    },
+    {
+      "test_id": "TEST_08_INVALID_RANGES",
+      "description": "Range bounds validation",
+      "status": "PASS",
+      "details": {
+        "negative_start_caught": true,
+        "out_of_bounds_caught": true,
+        "inverted_range_caught": true
+      },
+      "timestamp": "2026-11-05T14:22:19.665Z"
+    },
+    {
+      "test_id": "TEST_09_ASCII_CONTROLS",
+      "description": "ASCII control characters byte custody",
+      "status": "PASS",
+      "details": {
+        "null_byte_span": [
+          7,
+          8
+        ],
+        "null_retrieved": true
+      },
+      "timestamp": "2026-11-05T14:22:19.666Z"
+    },
+    {
+      "test_id": "TEST_10_COORDINATE_DIVERGENCE",
+      "description": "NFD raw vs NFC normalized coordinate custody",
+      "status": "PASS",
+      "details": {
+        "raw_byte_len": 3,
+        "normalized_byte_len": 2,
+        "coordinates_diverged": true,
+        "unsupported_translation_refused": true
+      },
+      "timestamp": "2026-11-05T14:22:19.668Z"
+    },
+    {
+      "test_id": "TEST_11_DUPLICATE_BODY_CARRIER_ISOLATION",
+      "description": "Duplicate body detected across distinct carriers",
+      "status": "PASS",
+      "details": {
+        "carrier_a_id": "doc:carrier_alpha",
+        "carrier_b_id": "doc:carrier_beta",
+        "identical_body_detected": true,
+        "ancestral_lineage_refused": true
+      },
+      "timestamp": "2026-11-05T14:22:19.669Z"
+    },
+    {
+      "test_id": "TEST_12_SOURCE_IDENTITY_VERIFICATION",
+      "description": "Evidence span source and capture verification",
+      "status": "PASS",
+      "details": {
+        "verified": true,
+        "capture_id_present": true,
+        "non_existent_source_rejected": true
+      },
+      "timestamp": "2026-11-05T14:22:19.670Z"
+    }
+  ]
+}

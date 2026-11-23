@@ -1,0 +1,23 @@
+[
+  {
+    "revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+    "path": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-compile.mjs",
+    "export_path": "native/wendbine-compile.mjs",
+    "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+    "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be"
+  },
+  {
+    "revision": "6ec4d6ebac2025e47222166b8050c55a26c5268d",
+    "path": "scripts/wendbine-native-method-adapter-v1.mjs",
+    "export_path": "native/wendbine-native-method-adapter-v1.mjs",
+    "sha256": "cd3b7784f5660925993e66c66251fc6311984c3aed8d8c8224e0872837acb453",
+    "git_blob": "a8eb7ea3e81c4975f000cd96089b6aac48f18e2c"
+  },
+  {
+    "revision": "6ec4d6ebac2025e47222166b8050c55a26c5268d",
+    "path": "scripts/wendbine-native-compiler-contract-v1.json",
+    "export_path": "native/wendbine-native-compiler-contract-v1.json",
+    "sha256": "de33e16dc6d5fa445217e547b745d934301c96c6946b0b2ea93f3e5339236918",
+    "git_blob": "2e9d1b7fe045e9f31f2479be452d37dcfbe72ba3"
+  }
+]

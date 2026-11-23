@@ -1,0 +1,63 @@
+{
+  "schema": "td613.manifest-native-boundary-canary-receipt/v1",
+  "execution_time": "2026-11-06T03:21:08.647Z",
+  "environment": {
+    "node_version": "v26.7.0",
+    "sqlite_version": "3.53.4",
+    "platform": "win32",
+    "arch": "x64",
+    "git_revision": "c11c5d7f017f8370b20b173f2b557ef2316a5d3a"
+  },
+  "code_hashes": {
+    "wendbine_empty_receiver_sha256": "97f0cb808e5ddfc8410245095f6275b8558aad3e3f5674a9307b9f6cb77f2935",
+    "universal_atelier_receiver_sha256": "0829338cec24b2f2bea94b6bf1c0ccecd830a68d299c9223f0d102e7cf948daf"
+  },
+  "probes": {
+    "W-RG-03": {
+      "probe_id": "W-RG-03",
+      "target": "WendbineEmptyEncyclopediaReceiver.admitTypedRelation",
+      "description": "Zero-length spanProof (start=end=0) with SHA-256 of empty bytes",
+      "status": "DEFECT_REPRODUCED",
+      "empty_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "admission_succeeded": true,
+      "exception_code": null,
+      "exception_message": null,
+      "finding": "Unrepaired candidate admitted zero-length spanProof (start=end=0) because bounds test is end < start."
+    },
+    "W-RG-04": {
+      "probe_id": "W-RG-04",
+      "target": "WendbineEmptyEncyclopediaReceiver.admitTypedRelation",
+      "description": "Two different valid relations reusing one local ADMIT receipt with relation_id=null (NONEMPTY span)",
+      "status": "DEFECT_REPRODUCED",
+      "span_length_bytes": 10,
+      "span_sha256": "bc948ac3b96fde69c9b9af74aca57ac018c7466e92eb6d1e6662226303d11625",
+      "relation_1_admitted": true,
+      "relation_2_admitted": true,
+      "relation_1_exception": null,
+      "relation_2_exception": null,
+      "finding": "Unrepaired candidate permitted two distinct valid relations to reuse one local ADMIT receipt where relation_id was null."
+    },
+    "U-RG-01": {
+      "probe_id": "U-RG-01",
+      "target": "UniversalAtelierReceiver.route",
+      "description": "route('fictional:never_admitted', 'fictional:never_admitted') self-route vs get() negative control",
+      "status": "DEFECT_REPRODUCED",
+      "route_result": {
+        "found": true,
+        "depth": 0,
+        "path": [
+          "fictional:never_admitted"
+        ]
+      },
+      "get_negative_control_threw": true,
+      "get_exception_code": "RECORD_NOT_FOUND",
+      "get_exception_message": "[RECORD_NOT_FOUND] Record fictional:never_admitted is not admitted.",
+      "finding": "Unrepaired candidate returned successful zero-length route { found: true, depth: 0, path: ['fictional:never_admitted'] } despite node absence, while get() confirmed rejection."
+    }
+  },
+  "summary": {
+    "total": 3,
+    "defects_reproduced": 3,
+    "proper_rejections": 0
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "source_revision": "ce9b6c6e053505e8f005e27ad2af4631ce2ed140",
+  "task_scope": "EXPERIMENT_A_STAGE_AS2_MECHANISM_FALSIFICATION_DOLLHOUSE_AUDIT",
+  "evidence_class": "REPARATIVE_FALSIFICATION_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/src_reciprocal_expedition/STAGE_1_BASELINE_LEDGER.md",
+    "packages/src_reciprocal_expedition/STAGE_2_UTF8_COORDINATE_REPAIR.md",
+    "packages/src_reciprocal_expedition/STAGE_3_METHOD_FIDELITY.md",
+    "packages/src_reciprocal_expedition/STAGE_4_MECHANISM_ASSAY.md",
+    "packages/src_reciprocal_expedition/STAGE_5_SHADOW_GRAPH.md"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-stage-as2-falsification",
+      "events": [
+        { "phase": "NOTICE", "at": 10, "label": "UTF-8 byte bug and order confounding noticed in PR #1689 review" },
+        { "phase": "ACT", "at": 20, "label": "Executed UTF-8 v2 repair, Python interop differential, 2x2 assay, Shadow Graph" },
+        { "phase": "WORLD_ANSWERS", "at": 30, "label": "Order causality falsified; affordance explains delta; exact byte spans verified" },
+        { "phase": "NAME", "at": 40, "label": "Findings named strictly after empirical observation; negative results preserved" }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.0, 0.0],
+        [0.0, 1.0]
+      ],
+      "candidate_probe": [1.0, 0.0],
+      "noise_covariance": [
+        [0.01, 0.0],
+        [0.0, 0.01]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [2.0, 0.0],
+        [0.0, 1.0]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:beta_relation_set",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:beta_relation_set",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": { "a": 1, "b": 1, "s": 1, "path": ["D"] },
+        "right": { "a": 1, "b": 1, "s": 1, "path": ["D"] }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        { "state_id": "with_shadow_graph", "support": ["ADMITTED", "ATTEMPTED_REJECTED", "WITHDRAWN"] },
+        { "state_id": "with_shadow_graph_c2", "support": ["ADMITTED", "ATTEMPTED_REJECTED", "WITHDRAWN"] }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "STAGE_1_BASELINE",
+        "STAGE_2_UTF8_REPAIR",
+        "STAGE_3_METHOD_FIDELITY",
+        "STAGE_4_MECHANISM_ASSAY",
+        "STAGE_5_SHADOW_GRAPH"
+      ],
+      "phases": {
+        "STAGE_1_BASELINE": { "status": "PASS", "entry_id": "stage1_baseline_ledger" },
+        "STAGE_2_UTF8_REPAIR": { "status": "PASS", "entry_id": "stage2_utf8_repair" },
+        "STAGE_3_METHOD_FIDELITY": { "status": "PASS", "entry_id": "stage3_differential_matrix" },
+        "STAGE_4_MECHANISM_ASSAY": { "status": "PASS", "entry_id": "stage4_mechanism_assay" },
+        "STAGE_5_SHADOW_GRAPH": { "status": "PASS", "entry_id": "stage5_shadow_graph" }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}

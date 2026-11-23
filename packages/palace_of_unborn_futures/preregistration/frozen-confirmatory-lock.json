@@ -1,0 +1,54 @@
+{
+  "schema": "td613.palace.frozen-confirmatory-lock/v1",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona\u200clit-po",
+  "supervision_mode": "INTERNALLY_SEPARATED_SINGLE_SUPERVISING_MODEL",
+  "independent_external_blinding": false,
+  "lock_stage": "PRE_CONFIRMATORY_COMMIT_GATE",
+  "pilot_suite_completed": "PILOT_48",
+  "confirmatory_suite_target": {
+    "suite_name": "CONFIRMATORY_96",
+    "master_seed": "TD613_PALACE_CONFIRMATORY_96_SEED_V1",
+    "evaluation_seed": "TD613_PALACE_CONFIRMATORY_EVAL_V1",
+    "total_worlds": 96,
+    "worlds_per_family": 24,
+    "quartets_per_family": 6,
+    "memory_budgets_bytes": [96, 256],
+    "preregistered_noninferiority_margin": 0.05,
+    "confirmatory_worlds_scored_prior_to_lock": 0
+  },
+  "locked_artifacts": {
+    "src/prng.mjs": {
+      "bytes": 2929,
+      "sha256": "cc738d7bf933700149c91ce813ac463056b1ef5a14e62a9b56de33100d1cfbc6"
+    },
+    "src/world-generator.mjs": {
+      "bytes": 56254,
+      "sha256": "6dee220d143a42f572bc94c0e2a0a4a92b8fb80b5dda6f41acb5f520b34b8be9"
+    },
+    "src/capsule-compressor.mjs": {
+      "bytes": 14610,
+      "sha256": "a76f1a38ee59c390d51f51512b413871f4bbfbbc600da5f108d9d39ea2bee1f9"
+    },
+    "src/heirs-and-policies.mjs": {
+      "bytes": 29790,
+      "sha256": "9aaf8393b5de02b115bd1ca601d96386bc327a418043cbb2a25b65f598d0a463"
+    },
+    "src/evaluator.mjs": {
+      "bytes": 28770,
+      "sha256": "0160872f1666ae4c972778f72be6ac42402e83d21b4f0ac8fb75f04003f4aaee"
+    },
+    "src/privacy-disclosure-assay.mjs": {
+      "bytes": 10720,
+      "sha256": "33b7e4443ba773757509b5ecd1d51f9bcfe8216bd06aa95ed1dc842e2cab465f"
+    },
+    "receipts/trained-capsule-codec-v1.json": {
+      "bytes": 3780,
+      "sha256": "cda4959058a48c8ea901b311bd47f71fe02072a7fd8dab88d56e1de740de6f19"
+    },
+    "receipts/pilot-48-receipt.json": {
+      "bytes": 89779,
+      "sha256": "8a2041a65716d26073b202b0e328cafeeece5f5c1c5f73e3001b4ce7c6a35c16"
+    }
+  }
+}

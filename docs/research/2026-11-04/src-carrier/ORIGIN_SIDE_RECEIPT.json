@@ -1,0 +1,31 @@
+{
+  "authority": {
+    "deployment": false,
+    "execute_on_restore": false,
+    "flight": false,
+    "human_closure_required": true,
+    "merge": false,
+    "release": false,
+    "source_admission": false
+  },
+  "carrier_serialization": "PRESERVED_ON_ORIGIN_SIDE",
+  "epoch_binding": "ORIGIN_CONSUMED_DATA_AND_EXECUTABLE_SEAL_MEMBERSHIP_VERIFIED_NOT_EXTERNAL_CUSTODY",
+  "genuine_receiver_admissions": 0,
+  "genuine_reciprocal_returns": 0,
+  "input_git_blob": "3e9fe0fdc540e346bc3157f5eb35944536fef7e1",
+  "input_sha256": "4db525d5ec791ff42315acd4df0b0dce97b9484c1ab1cfb5c28af36e82459146",
+  "method_result_sha256": "af4ea3891d5ff50dd65522f436224486e156657fd661ab48e587f74d7795540f",
+  "native_executable_sha256": "fe9354825da2612271e8626e77a882563eb14f577a374e956066df84178a0577",
+  "native_rows_equal": 34,
+  "original_witness_references_preserved": 56,
+  "receiver_admission_refusals": [
+    "synthetic_receiver_packet",
+    "recipient_make_return",
+    "recipient_native_runner"
+  ],
+  "schema": "td613.src.carrier-origin-qualification/v1",
+  "scientific_interpretation": "UNESTABLISHED",
+  "source_capture_identity_kind": "REPOSITORY_SNAPSHOT_NOT_ORIGINAL_EPHEMERAL_CAPTURE",
+  "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+  "witness_registry_sha256": "917afc759cf7fddd4b008a87da4fd8e5b1e0db92c9619fab657f736fb6d8889f"
+}

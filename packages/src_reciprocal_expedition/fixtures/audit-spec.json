@@ -1,0 +1,86 @@
+{
+  "source_revision": "3bad9aade0d90e6786ea7df11cae962ec3bc4726",
+  "task_scope": "EXPERIMENT_A_SRC_RECIPROCAL_EXPEDITION_ADVERSARIAL_REDPEN",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "docs/research/2026-11-05/src-reciprocal/SIGNALRUPTURE_NATIVE_RESEARCH_METHOD_EXECUTION_ATLAS.md",
+    "docs/research/2026-11-05/src-reciprocal/EMPTY_ENCYCLOPEDIA_RESEARCH_RECEIVER.md",
+    "docs/research/2026-11-05/src-reciprocal/SRC_RECIPROCAL_CALIBRATION_RUN.md",
+    "docs/research/2026-11-05/src-reciprocal/ARCHITECTURE_ORDER_RESEARCH_ASSAY.md",
+    "docs/research/2026-11-05/src-reciprocal/SIGNALRUPTURE_RECIPROCAL_WILD_FIELD_LEDGER.md"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-src-reciprocal-01",
+      "events": [
+        { "phase": "NOTICE", "at": 10 },
+        { "phase": "ACT", "at": 20 },
+        { "phase": "WORLD_ANSWERS", "at": 30 },
+        { "phase": "NAME", "at": 40 }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.0, 0.0],
+        [0.0, 1.0]
+      ],
+      "candidate_probe": [1.0, 0.0],
+      "noise_covariance": [
+        [0.01, 0.0],
+        [0.0, 0.01]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [1.0, 0.0],
+        [0.0, 1.0]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "coord-omega",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "coord-omega",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": { "a": 1, "b": 1, "s": 1, "path": ["D"] },
+        "right": { "a": 1, "b": 1, "s": 1, "path": ["D"] }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        { "state_id": "state-1", "support": ["ACTION_ADMIT", "ACTION_QUERY"] },
+        { "state_id": "state-2", "support": ["ACTION_ADMIT", "ACTION_QUERY"] }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "CHAMBER_1_ATLAS",
+        "CHAMBER_2_RECEIVER",
+        "CHAMBER_3_CALIBRATION",
+        "CHAMBER_4_ORDER_ASSAY",
+        "CHAMBER_5_WILD_FIELD"
+      ],
+      "phases": {
+        "CHAMBER_1_ATLAS": { "status": "PASS", "entry_id": "entry_ch1" },
+        "CHAMBER_2_RECEIVER": { "status": "PASS", "entry_id": "entry_ch2" },
+        "CHAMBER_3_CALIBRATION": { "status": "PASS", "entry_id": "entry_ch3" },
+        "CHAMBER_4_ORDER_ASSAY": { "status": "PASS", "entry_id": "entry_ch4" },
+        "CHAMBER_5_WILD_FIELD": { "status": "PASS", "entry_id": "entry_ch5" }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}

@@ -1,0 +1,72 @@
+name: TD613 Experiment A source-free preparation
+on:
+  pull_request:
+    paths:
+      - 'packages/experiment_a_preparation_v1/**'
+      - 'scripts/*experiment-a-preparation*'
+      - 'scripts/*wendbine-custody-local*'
+      - 'scripts/reconcile-three-atelier-register-v2.py'
+      - 'tests/test_experiment_a_preparation_v1.py'
+      - 'docs/research/2026-11-04/THREE_ATELIER_NATIVE_QUALIFICATION*'
+      - 'docs/research/2026-11-04/experiment-a-preparation/**'
+      - '.github/workflows/td613-experiment-a-preparation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-free-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+          sparse-checkout: |
+            packages/experiment_a_preparation_v1
+            packages/research_carrier_v1
+            scripts
+            tests
+            docs/research/2026-11-04
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Preserve clean ancestry and predecessor receiver
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 50cc9d161f8f72c2d4b6ea33ece17ace88f35eff HEAD
+          git cat-file -e 640b472cb1c03609d1fb9c181dd0200725277ccc^{commit}
+          if git merge-base --is-ancestor 640b472cb1c03609d1fb9c181dd0200725277ccc HEAD; then
+            echo 'Forbidden supervisory gold ancestry'; exit 1
+          fi
+          git diff --exit-code eb9bf1e8a837737bb50d0d0add11ca4de70f7be6 -- packages/research_carrier_v1
+      - name: Source-free regression controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m unittest discover -s tests -p test_experiment_a_preparation_v1.py -v 2>&1 | tee "$RUNNER_TEMP/preparation-tests.log"
+          python -B scripts/reconcile-three-atelier-register-v2.py
+          git diff --exit-code -- docs/research/2026-11-04/THREE_ATELIER_NATIVE_QUALIFICATION_REGISTER_V2.json
+      - name: Fictional process calibration and owned isolation challenges
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B scripts/qualify-experiment-a-preparation-v1.py "$RUNNER_TEMP/ea-synthetic-attempt" --receipt "$RUNNER_TEMP/preparation-receipt.json"
+          python -B scripts/qualify-wendbine-custody-local-v1.py --availability-only | tee "$RUNNER_TEMP/genuine-db-held.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: preparation-synthetic-receipts-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/preparation-tests.log
+            ${{ runner.temp }}/preparation-receipt.json
+            ${{ runner.temp }}/genuine-db-held.json
+          if-no-files-found: error

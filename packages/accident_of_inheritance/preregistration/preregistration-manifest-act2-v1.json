@@ -1,0 +1,150 @@
+{
+  "schema": "td613.accident-of-inheritance.preregistration-manifest/v1.0",
+  "experiment_id": "TD613-PALACE-ACT2-ACCIDENT-OF-INHERITANCE-20261105",
+  "title": "The Accident of Inheritance: Time–Space Compression, Epistemic Authority, and the Revision-Latency Crossover",
+  "commission_stage": "Palace of Unborn Futures, Act II",
+  "principal": "Tawanna C. Miller",
+  "operator": "tauric.diana.613",
+  "heritage": "Tauric Diana — Crimean heritage custodianship",
+  "covenant": "Khona‌lit-po",
+  "covenant_u200c_verified": true,
+  "authorization_ref": "SAC[X6ZNK5NO51]",
+  "inherited_predecessor": {
+    "draft_pr": 1699,
+    "exact_head": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+    "independent_review_id": 5792614762,
+    "frozen_palace_modified": false
+  },
+  "dollhouse_design_qualification": {
+    "commission_id": "COMM-PALACE-ACT2-ACCIDENT-OF-INHERITANCE-01",
+    "receipt_path": "packages/accident_of_inheritance/receipts/dollhouse-design-receipt-act2.json",
+    "selected_instruments": [
+      "CARO_INSTITUTIONAL_RECONSTRUCTION",
+      "DIALECTICAL_TENSION"
+    ]
+  },
+  "supervision_classification": {
+    "mode": "INTERNALLY_SEPARATED_SINGLE_SUPERVISING_MODEL",
+    "independent_external_blinding": false,
+    "external_empirical_replication": false,
+    "paid_api_calls": 0,
+    "protected_experiment_b_status": "HELD",
+    "human_scientific_closure": "RESERVED"
+  },
+  "seed_namespace": {
+    "pilot_48_world_seed": "TD613_ACT2_PILOT_48_WORLDS_20261105_SAC_X6ZNK5NO51",
+    "pilot_48_eval_seed": "TD613_ACT2_PILOT_48_EVAL_20261105_SAC_X6ZNK5NO51",
+    "confirmatory_192_world_seed": "TD613_ACT2_CONFIRMATORY_192_WORLDS_20261105_SAC_X6ZNK5NO51",
+    "confirmatory_192_eval_seed": "TD613_ACT2_CONFIRMATORY_192_EVAL_20261105_SAC_X6ZNK5NO51",
+    "standing_factorial_96_seed": "TD613_ACT2_STANDING_FACTORIAL_96_20261105_SAC_X6ZNK5NO51",
+    "dead_civilization_wing_seed": "TD613_ACT2_DEAD_CIVILIZATION_WING_20261105_SAC_X6ZNK5NO51",
+    "adversarial_counterexamples_seed": "TD613_ACT2_ADVERSARIAL_10_20261105_SAC_X6ZNK5NO51"
+  },
+  "experimental_design": {
+    "horizon_ticks": 24,
+    "probe_budget_per_episode": 6,
+    "world_families": [
+      "FAM_A_STATIONARY_INHERITANCE",
+      "FAM_B_ABRUPT_TRANSITION",
+      "FAM_C_GRADUAL_DRIFT",
+      "FAM_D_ACTION_INVARIANT_CHANGE",
+      "FAM_E_RECURRENT_REGIMES",
+      "FAM_F_DELAYED_CONTRADICTION"
+    ],
+    "primary_authority_policies": [
+      "A_MONUMENTALISTS",
+      "B_EVIDENTIALISTS",
+      "C_PROVISIONALISTS",
+      "D_TEMPORAL_CUSTODIANS"
+    ],
+    "noncompeting_reference_controls": [
+      "CTRL_NO_HISTORY",
+      "CTRL_RANDOM",
+      "CTRL_DYNAMIC_ORACLE"
+    ],
+    "pilot_suite": {
+      "base_worlds": 48,
+      "worlds_per_family": 8,
+      "iso_pi_clusters": 12,
+      "calibration_grid_cells": 6,
+      "total_trajectories": 288,
+      "total_episodes": 2016
+    },
+    "confirmatory_suite": {
+      "base_worlds": 192,
+      "worlds_per_family": 32,
+      "iso_pi_clusters": 48,
+      "grid_dimensions": {
+        "hazard_h": [0.02, 0.08, 0.20],
+        "infrastructure_latency_tau0": [
+          { "id": "L0_IMMEDIATE", "tau0": 0, "delta_obs": 0, "delta_adm": 0 },
+          { "id": "L3_MODERATE", "tau0": 3, "delta_obs": 1, "delta_adm": 2 },
+          { "id": "L6_DELAYED", "tau0": 6, "delta_obs": 2, "delta_adm": 4 }
+        ],
+        "action_frequency_nu": [
+          { "id": "V_DELIBERATIVE", "interval_ticks": 6, "nu": 0.1667, "actions_per_episode": 4 },
+          { "id": "V_ACCELERATED", "interval_ticks": 2, "nu": 0.5, "actions_per_episode": 12 }
+        ]
+      },
+      "total_grid_cells": 18,
+      "total_trajectories": 3456,
+      "total_episodes": 24192
+    }
+  },
+  "utility_and_penalties": {
+    "action_payoffs": {
+      "optimal_intervention": 1.0,
+      "safe_hedge_intervention": 0.52,
+      "benign_suboptimal_intervention": 0.15,
+      "catastrophic_invalidated_intervention": -0.25
+    },
+    "composite_weights": {
+      "mean_action_utility": 0.55,
+      "terminal_claim_validity": 0.20,
+      "holdout_prediction_accuracy": 0.17,
+      "probe_conservation": 0.08,
+      "overconfident_false_claim_penalty": -0.15
+    },
+    "regret_definition": "UNCLIPPED_SIGNED_REGRET_U_ORACLE_MINUS_U_POLICY"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "name": "Contingent Authority-Reversal Interaction",
+      "primary_estimand": "DeltaU(h, tau0, nu) = E[U_Monumentalists - U_Evidentialists | h, tau0, nu]",
+      "falsifier": "Falsified if DeltaU does not shift negatively with hazard h in consequential non-stationary families {B, C, F} or if high commitment fails to preserve positive/non-negative value in calibrated stationary {A} and action-invariant {D} regimes."
+    },
+    {
+      "id": "H2",
+      "name": "Infrastructure Delay vs. Institutional Validation Inertia",
+      "primary_estimand": "Errors before t_contradiction_available (O3) vs. Errors after t_contradiction_available (O4)",
+      "falsifier": "Falsified if post-availability consequential error rates (O4) do not diverge across authority policies despite identical observation availability times."
+    },
+    {
+      "id": "H3",
+      "name": "Cost of Premature Skepticism",
+      "primary_estimand": "E[U_Provisionalists - U_Evidentialists | Family in {A, D}] and E[U_Provisionalists - U_Monumentalists | Family A]",
+      "falsifier": "Falsified if Provisionalists match or exceed Evidentialists/Monumentalists in stationary and action-invariant worlds without excess probe depletion."
+    },
+    {
+      "id": "H4",
+      "name": "Conditioned Recurrence Recovery vs. Spurious Context Vulnerability",
+      "primary_estimand": "E[U_TemporalCustodians - U_Monumentalists | Family E] and adversarial spurious-context falsifier",
+      "falsifier": "Falsified if Temporal Custodians fail to outperform unconditioned Monumentalists in Family E or prove immune to spurious context-tag recurrence in adversarial testing."
+    },
+    {
+      "id": "H5",
+      "name": "Auxiliary Source-Standing Attribution Contrast",
+      "primary_estimand": "DeltaU_status = E[U | FOUNDING_AUTHORITY, Q] - E[U | JUNIOR_OR_CONTESTED, Q] holding Q and observations byte-identical",
+      "falsifier": "Falsified if Evidentialists or Temporal Custodians exhibit nonzero DeltaU_status under standing permutation, or if Monumentalists show zero sensitivity when standing conflicts with reliability."
+    }
+  ],
+  "statistical_plan": {
+    "clustering_unit": "cluster_public_id (4-world Iso-Pi cluster; K=48 confirmatory, K_f=8 per family)",
+    "bootstrap_resamples": 4000,
+    "exact_signflip_threshold_k": 16,
+    "monte_carlo_signflip_draws": 8192,
+    "monte_carlo_p_value_estimator": "PHIPSON_SMYTH_EXACT_UPPER_BOUND_(k+1)/(B+1)",
+    "exclusion_criteria": "NONE_PERMITTED_FAIL_CLOSED_ON_RUNTIME_ERROR"
+  }
+}

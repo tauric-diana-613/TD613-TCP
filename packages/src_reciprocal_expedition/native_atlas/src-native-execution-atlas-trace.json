@@ -1,0 +1,145 @@
+{
+  "schema": "td613.src-native-execution-atlas/v1",
+  "timestamp": "2026-11-05T08:47:02.301Z",
+  "environment": "Node.js v26.7.0",
+  "total_points": 10,
+  "verified_points": 10,
+  "inventory_results": [
+    {
+      "point": 1,
+      "name": "PROJECTIVE_ROUTING_AND_EXPLORE_CUES",
+      "status": "VERIFIED",
+      "observed": {
+        "cues_detected": 3,
+        "field_markers_found": 7,
+        "candidate_links_generated": 3,
+        "malformed_cues_refused": true,
+        "temporal_order_preserved": true
+      }
+    },
+    {
+      "point": 2,
+      "name": "CONTEXTUAL_ROLE_COMPILATION",
+      "status": "VERIFIED",
+      "observed": {
+        "roles_asserted": 3,
+        "compiler_passes": 2,
+        "contextual_not_intrinsic_enforced": true
+      }
+    },
+    {
+      "point": 3,
+      "name": "FORWARD_CLAIM_EVIDENCE_TOMOGRAPHY",
+      "status": "VERIFIED",
+      "observed": {
+        "transformations_evaluated": 3,
+        "composite_scoring_refused": true,
+        "dimensions_kept_separate": true,
+        "delta_outcomes": [
+          "NARROWED",
+          "EXPANDED",
+          "UNKNOWN"
+        ]
+      }
+    },
+    {
+      "point": 4,
+      "name": "TOPOLOGICAL_RELATIONSHIPS_AND_ROUTE_IDENTITIES",
+      "status": "VERIFIED",
+      "observed": {
+        "formal_layers_preserved": 9,
+        "reader_routes_preserved": 8,
+        "no_flattening_to_monolithic_ontology": true
+      }
+    },
+    {
+      "point": 5,
+      "name": "CARTOGRAPHIC_AND_RELATIONAL_MAPPINGS",
+      "status": "VERIFIED",
+      "observed": {
+        "witnessed_resolution_success": true,
+        "unresolved_target_handled_safely": true,
+        "path_existence_verified": true
+      }
+    },
+    {
+      "point": 6,
+      "name": "HETEROSTRATIGRAPHIC_DISTINCTIONS",
+      "status": "VERIFIED",
+      "observed": {
+        "platforms_kept_distinct": [
+          "zenodo",
+          "github"
+        ],
+        "states_preserved": true,
+        "admitted_vs_refused_separated": true
+      }
+    },
+    {
+      "point": 7,
+      "name": "CHRONOLOGICAL_WITHDRAWAL_AND_SOURCE_VERSION_EFFECTS",
+      "status": "VERIFIED",
+      "observed": {
+        "withdrawal_tested": true,
+        "dangling_cues_refused_linking": true,
+        "no_phantom_relations_generated": true
+      }
+    },
+    {
+      "point": 8,
+      "name": "RECURSIVE_OR_MULTISTEP_OPERATIONS",
+      "status": "VERIFIED",
+      "observed": {
+        "deterministic_witnessed_trace": "CALLABLE",
+        "missing_hops_explicitly_declared": true,
+        "autonomous_speculative_graph_inference": "PROPOSED_OR_UNIMPLEMENTED_IN_ORIGINAL_SRC"
+      }
+    },
+    {
+      "point": 9,
+      "name": "TYPED_NULL_UNKNOWN_ABSENT_UNSUPPORTED",
+      "status": "VERIFIED",
+      "observed": {
+        "seal_mismatch_refused": true,
+        "unresolved_target_returned": true,
+        "composite_scoring_set_null": true,
+        "delta_evidence_unknown_preserved": true
+      }
+    },
+    {
+      "point": 10,
+      "name": "EVIDENCE_SOURCE_PROVENANCE_AND_ORIGINAL_CODE_IDENTITY",
+      "status": "VERIFIED",
+      "observed": {
+        "pins_count": 4,
+        "pins": [
+          {
+            "path": "synthetic_receiver.py",
+            "source_revision": "583c2b24a0680fcc1c3fba15dbace26dfe6c636e",
+            "sha256": "b119f477b5fa28cf594350164f41ee657003a46de71df02433726def9361ac33",
+            "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+          },
+          {
+            "path": "native/phase2.py",
+            "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+            "sha256": "fe9354825da2612271e8626e77a882563eb14f577a374e956066df84178a0577",
+            "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+          },
+          {
+            "path": "native/query.py",
+            "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+            "sha256": "1b106e5091f7d90d70ac0beb4a97d28065e257691bd8d92ec14a2370d693ba8c",
+            "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+          },
+          {
+            "path": "native/projective.py",
+            "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+            "sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+            "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+          }
+        ],
+        "no_external_dependency_drift": true
+      }
+    }
+  ]
+}

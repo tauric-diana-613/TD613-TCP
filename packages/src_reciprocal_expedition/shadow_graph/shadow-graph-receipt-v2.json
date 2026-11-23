@@ -1,0 +1,28 @@
+{
+  "schema": "td613.shadow-graph-receipt/v2",
+  "evaluated_at": "2026-11-05T14:54:52.011Z",
+  "engine_version": "BoundaryAttemptGraphV2",
+  "rehabilitations_verified": [
+    "O(1) target index candidate lookup via this.targetIndex",
+    "Strict rejection of auto-promotion on late admission (chronology and warrant re-evaluated)",
+    "Attempt retention without map overwriting (full attempt history array per edge key)",
+    "Declared comparison universe measuring NEVER_GENERATED relations"
+  ],
+  "epistemic_census": {
+    "total_nodes": 5,
+    "admitted_nodes": 4,
+    "withdrawn_nodes": 1,
+    "total_attempts_recorded": 5,
+    "distinct_edges_attempted": 4,
+    "comparison_universe_size": 5,
+    "counts_by_epistemic_state": {
+      "ADMITTED": 0,
+      "ATTEMPTED_REJECTED": 2,
+      "NEVER_GENERATED": 2,
+      "WITHHELD_LACK_OF_EVIDENCE": 1,
+      "WITHDRAWN_SCOPE_CHANGE": 1,
+      "AWAITING_UNRESOLVED_EXTERNAL": 0
+    }
+  },
+  "verification_verdict": "ALL_INVARIANTS_HELD_AND_AUTO_PROMOTION_VULNERABILITY_ELIMINATED"
+}

@@ -1,0 +1,145 @@
+{
+  "source_revision": "349517d78898fa6c976c5813497f417cda82db53",
+  "task_scope": "CROSS_ATELIER_OPERATIONAL_INTEROPERABILITY_QUALIFICATION",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/cross_atelier_interoperability/CROSS_ATELIER_INTEROPERABILITY_QUALIFICATION.md",
+    "packages/cross_atelier_interoperability/cross-atelier-orchestrator.mjs",
+    "packages/cross_atelier_interoperability/provenance-sensitive-comparator.mjs",
+    "packages/cross_atelier_interoperability/curiosity-throttled-policy.mjs",
+    "packages/cross_atelier_interoperability/test-cross-atelier-interoperability.mjs",
+    "packages/cross_atelier_interoperability/run-cross-atelier-qualification.mjs",
+    "packages/cross_atelier_interoperability/cross_atelier_qualification_receipt.json",
+    "packages/accident_of_inheritance/src/palace-operationalization-interface.mjs",
+    "packages/src_s01_falsification_null/src_s01_development_pilot_receipt.json"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Ingest sealed Wendbine epoch and extract projective explore cues with byte SHA-256 custody."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Attempt relational admission under default-deny warrant contracts, least-fixed-point closure, and 256B capsule compression."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Execute admission-time availability membrane (t_avail <= current_tick) and Bayesian policy with curiosity throttle."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Cascade non-retroactive source withdrawal to tombstone ledger and emit terminal graph with SHA-256 digest."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.25, 0.0],
+        [0.0, 1.15]
+      ],
+      "noise_covariance": [
+        [0.0625, 0.0],
+        [0.0, 0.0625]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "IDENTICAL_CROSS_ATELIER_TERMINAL_RELATIONS",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "IDENTICAL_CROSS_ATELIER_TERMINAL_RELATIONS",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": [
+            "PROJECTIVE_CUE_EXTRACT",
+            "WARRANT_DEFAULT_DENY",
+            "CAPSULE_SALIENT_COMPRESS",
+            "BAYESIAN_UPDATE_THROTTLE"
+          ],
+          "condition": "CROSS_ATELIER_INTEGRATED_FIBER"
+        },
+        {
+          "support": [
+            "PROJECTIVE_CUE_EXTRACT",
+            "WARRANT_DEFAULT_DENY",
+            "CAPSULE_SALIENT_COMPRESS",
+            "BAYESIAN_UPDATE_THROTTLE"
+          ],
+          "condition": "REPRESENTATIVE_SYNTHETIC_FIBER"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "ESTATE_LINEAGE_AND_CORRECTED_PINS": {
+          "status": "PASS",
+          "entry_id": "corrected-shas-pr1705-pr1706"
+        },
+        "SAME_EPISODE_ROUTE_EXECUTION": {
+          "status": "PASS",
+          "entry_id": "same-episode-circuit-pass"
+        },
+        "STRICT_256B_CAPSULE_BUDGET": {
+          "status": "PASS",
+          "entry_id": "pr1705-r01-219b-pass"
+        },
+        "ADMISSION_AVAILABILITY_AND_CHRONOLOGY": {
+          "status": "PASS",
+          "entry_id": "pr1705-r03-chronology-pass"
+        },
+        "PROVENANCE_SENSITIVE_COMPARISON": {
+          "status": "PASS",
+          "entry_id": "pr1706-r01-comparator-pass"
+        },
+        "OPERATOR_DECISIONS_THROTTLE_LATENCY": {
+          "status": "PASS",
+          "entry_id": "decision-1-2-pass"
+        },
+        "CASCADING_NON_RETROACTIVE_WITHDRAWAL": {
+          "status": "PASS",
+          "entry_id": "tombstone-cascade-pass"
+        },
+        "FAIL_CLOSED_NEGATIVE_CONTROLS": {
+          "status": "PASS",
+          "entry_id": "5-negative-controls-pass"
+        },
+        "FROZEN_CANDIDATE_STOPPING_BOUNDARY": {
+          "status": "PASS",
+          "entry_id": "whole-system-held-boundary"
+        }
+      },
+      "required_phases": [
+        "ESTATE_LINEAGE_AND_CORRECTED_PINS",
+        "SAME_EPISODE_ROUTE_EXECUTION",
+        "STRICT_256B_CAPSULE_BUDGET",
+        "ADMISSION_AVAILABILITY_AND_CHRONOLOGY",
+        "PROVENANCE_SENSITIVE_COMPARISON",
+        "OPERATOR_DECISIONS_THROTTLE_LATENCY",
+        "CASCADING_NON_RETROACTIVE_WITHDRAWAL",
+        "FAIL_CLOSED_NEGATIVE_CONTROLS",
+        "FROZEN_CANDIDATE_STOPPING_BOUNDARY"
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "commission_id": "COMM-PALACE-ACT2-ACCIDENT-OF-INHERITANCE-01",
+  "seed": "Four civilizations inherit byte-identical scientific history under changing worlds, institutional clearance delays, and accelerating consequential action cadences: determine when inherited epistemic authority protects inquiry from transient noise and when correction latency turns accumulated knowledge into its own characteristic accident.",
+  "medium": "SCHOLARLY",
+  "instruments": [
+    "CARO_INSTITUTIONAL_RECONSTRUCTION",
+    "DIALECTICAL_TENSION"
+  ],
+  "human_coordinates": {
+    "what": "Scholarly research monograph and preregistered computational design for Palace of Unborn Futures, Act II: The Accident of Inheritance",
+    "who": "Four epistemic authority civilizations (Monumentalists, Evidentialists, Provisionalists, Temporal Custodians), three reference controls, auxiliary source-standing witnesses, and sovereign human scientific review",
+    "where": "Isolated Act II research laboratory over Universal Atelier terminal projections, strictly separated from frozen Palace Act I receipts",
+    "how": "Pairing an 8-coordinate non-retroactive temporal lattice (χ = h·τ, κ = ν·τ) with matched Bayesian inference, dynamic vault access instrumentation, and adversarial self-falsification",
+    "when": "Across ancestral claim generation (t < 0), delayed observation/admission/availability gates, and prospective intervention horizons (t = 1..24)",
+    "why": "To distinguish empirical access delay from institutional validation inertia, engage Virilio, Collins, Dotson, and McKittrick without collapsing lived epistemology into scalar weights, and preserve every failure mode where skepticism, prestige, calibration, or temporal conditioning errs"
+  },
+  "historical_references": [
+    {
+      "reference_id": "REF-AGENTS-ENTRY-LAW",
+      "source_path": "AGENTS.md",
+      "source_revision": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "TD613 Agent Entry Contract: interactive operator-direct scope, consequence before ontology, trigger hygiene, and sovereign human closure."
+    },
+    {
+      "reference_id": "REF-PEDAGOGUE-DROMOLOGY",
+      "source_path": "PEDAGOGUE.md",
+      "source_revision": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Flow-Core Pedagogue institutional time clocks, preemption gap, NOTICE -> ACT -> WORLD ANSWERS -> NAME partial order, and non-inflation of provenance lenses."
+    },
+    {
+      "reference_id": "REF-APERTURE-IDENTIFIABILITY",
+      "source_path": "APERTURE.md",
+      "source_revision": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Aperture v3.2-alpha observability vs identifiability, rank/nullspace deficits, noise geometry, and mandatory abstention."
+    },
+    {
+      "reference_id": "REF-FADT-DESCENT",
+      "source_path": "FADT.md",
+      "source_revision": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Finite Admissibility Descent Theorem: union/intersection gap when stage or regime conditioning is erased."
+    },
+    {
+      "reference_id": "REF-ATLAS-CONTINUITY",
+      "source_path": "ATLAS.md",
+      "source_revision": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Atlas receiver-relative continuity, history quotients, and invariant control-plane discipline."
+    },
+    {
+      "reference_id": "REF-PALACE-ACT1-PACKET",
+      "source_path": "packages/palace_of_unborn_futures/docs/10_OPERATOR_DECISION_PACKET.md",
+      "source_revision": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Frozen Palace Act I decision packet and SHA-256 artifact ledger preserved unchanged."
+    }
+  ],
+  "deliverable_count": 1,
+  "scientific_audit_requested": false
+}

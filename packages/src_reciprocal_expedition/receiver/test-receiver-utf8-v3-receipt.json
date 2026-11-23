@@ -1,0 +1,17 @@
+{
+  "schema": "td613.receiver-v3-utf8-receipt/v1",
+  "evaluated_at": "2026-11-05T16:22:24.236Z",
+  "receiver_version": "EmptyEncyclopediaReceiverV3",
+  "verified_rehabilitations": [
+    "Fatal UTF-8 decoding throws on malformed bytes; no silent \\uFFFD substitution",
+    "Arbitrary binary data explicitly classified as BYTE_EVIDENCE",
+    "Number.isSafeInteger enforced on all byte coordinates (rejects NaN, Infinity, fractional)",
+    "translateCoordinates bounds checks enforce 0 <= start <= end <= length",
+    "Strict UTF-8 code point boundary enforcement and byte-level roundtrip verification"
+  ],
+  "test_census": {
+    "total_tests": 23,
+    "passed_tests": 23
+  },
+  "verdict": "ALL_UTF8_CUSTODY_AND_COORDINATE_INVARIANTS_HELD"
+}

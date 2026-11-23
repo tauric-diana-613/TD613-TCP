@@ -117,6 +117,10 @@ async function parseArgs(args) {
       options.strict_provenance = true;
     } else if (arg === '--format') {
       options.format = String(args[++i] || 'human').toLowerCase();
+    } else if (arg.startsWith('-')) {
+      throw new Error(`Unrecognized option: ${arg}`);
+    } else {
+      throw new Error(`Unrecognized positional argument '${arg}'. Use --input or -i to supply an audit specification file.`);
     }
   }
 
@@ -125,7 +129,18 @@ async function parseArgs(args) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const cliOpts = await parseArgs(args);
+  let cliOpts;
+  try {
+    cliOpts = await parseArgs(args);
+  } catch (err) {
+    if (args.includes('--format') && args[args.indexOf('--format') + 1] === 'json') {
+      console.log(JSON.stringify({ error: err.message, code: 'CLI_USAGE_ERROR' }, null, 2));
+    } else {
+      console.error(`CLI Usage Error: ${err.message}`);
+      printHelp();
+    }
+    process.exit(2);
+  }
 
   if (cliOpts.help) {
     printHelp();

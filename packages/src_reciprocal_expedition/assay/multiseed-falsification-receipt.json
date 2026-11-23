@@ -1,0 +1,41 @@
+{
+  "schema": "td613.multiseed-falsification-receipt/v1",
+  "evaluated_at": "2026-11-05T14:54:53.021Z",
+  "scope_of_claims": "BOUNDED_SYNTHETIC_CONFIGURATION_ONLY",
+  "seeds_evaluated": [
+    {
+      "seed_id": "SEED_01_CANONICAL",
+      "description": "Canonical order from challenge_corpus_v2.json",
+      "retrieval_on_set_difference": 0,
+      "retrieval_off_set_difference": 0,
+      "intermediate_trajectories_identical": false,
+      "admitted_edge_count_retrieval_on": 5,
+      "admitted_edge_count_retrieval_off": 2
+    },
+    {
+      "seed_id": "SEED_02_REVERSED_INGESTION",
+      "description": "Reversed document ingestion array order",
+      "retrieval_on_set_difference": 0,
+      "retrieval_off_set_difference": 0,
+      "intermediate_trajectories_identical": false,
+      "admitted_edge_count_retrieval_on": 5,
+      "admitted_edge_count_retrieval_off": 2
+    },
+    {
+      "seed_id": "SEED_03_PERMUTED_INTERLEAVED",
+      "description": "Interleaved explore and target documents",
+      "retrieval_on_set_difference": 0,
+      "retrieval_off_set_difference": 0,
+      "intermediate_trajectories_identical": false,
+      "admitted_edge_count_retrieval_on": 5,
+      "admitted_edge_count_retrieval_off": 2
+    }
+  ],
+  "formal_disposition": {
+    "general_algebraic_commutativity_claim": "FORMALLY_WITHDRAWN",
+    "reverse_crossing_t_lossless_claim": "FORMALLY_WITHDRAWN",
+    "reverse_crossing_t_status": "PROSPECTIVE_REVERSE_CROSSING_HELD",
+    "controlled_finding": "OBSERVED_IN_SYNTHETIC_CONFIGURATION",
+    "scientific_qualification": "Across all tested permutation seeds on the static synthetic corpus, final admitted relation sets converged (|Delta(C1, C2)| = 0, |Delta(C3, C4)| = 0) under matched retrieval affordances. However, intermediate trajectories differed between execution orders. In open, unbounded, or non-monotonic systems with state-dependent side effects, order commutativity cannot be claimed algebraically."
+  }
+}

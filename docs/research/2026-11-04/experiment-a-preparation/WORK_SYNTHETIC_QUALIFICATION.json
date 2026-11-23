@@ -1,0 +1,135 @@
+{
+  "calibration_run_id": "3f3dde9da3704f169b984503bf60a568",
+  "schema": "td613.experiment-a.preparation-qualification/v1",
+  "source_class": "SYNTHETIC",
+  "export": {
+    "files": 11,
+    "payload_closure": "QUALIFIED_SYNTHETIC_ONLY",
+    "expected_result_in_task": false,
+    "runtime_isolation": "UNESTABLISHED"
+  },
+  "manifest_sha256": "80d7abd81313f5683f6ee32e0ce0a78d440de52a4c87f41bcdff1a93e93732c5",
+  "task_sha256": "2ec1401eda8929d3aa1d68fc8af7184bc10f2b34e6fae709bedee8417261df0d",
+  "native_code_pins": [
+    {
+      "revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "path": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-compile.mjs",
+      "export_path": "native/wendbine-compile.mjs",
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be"
+    },
+    {
+      "revision": "6ec4d6ebac2025e47222166b8050c55a26c5268d",
+      "path": "scripts/wendbine-native-method-adapter-v1.mjs",
+      "export_path": "native/wendbine-native-method-adapter-v1.mjs",
+      "sha256": "cd3b7784f5660925993e66c66251fc6311984c3aed8d8c8224e0872837acb453",
+      "git_blob": "a8eb7ea3e81c4975f000cd96089b6aac48f18e2c"
+    },
+    {
+      "revision": "6ec4d6ebac2025e47222166b8050c55a26c5268d",
+      "path": "scripts/wendbine-native-compiler-contract-v1.json",
+      "export_path": "native/wendbine-native-compiler-contract-v1.json",
+      "sha256": "de33e16dc6d5fa445217e547b745d934301c96c6946b0b2ea93f3e5339236918",
+      "git_blob": "2e9d1b7fe045e9f31f2479be452d37dcfbe72ba3"
+    }
+  ],
+  "observed_software_process": {
+    "exit_code": 0,
+    "python": "3.12.14",
+    "python_executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "node_version": "v24.22.1",
+    "node_executable_sha256": "61ab14cd750fc24d5db53490ec5fc40f756e4b6e136b78cf7004265471d9bd1d"
+  },
+  "comparison": {
+    "result_match": true,
+    "origin_receipt_id": "origin-calibration-3f3dde9da3704f169b984503bf60a568",
+    "return_id": "return-calibration-3f3dde9da3704f169b984503bf60a568",
+    "recipient_id": "recipient-calibration-3f3dde9da3704f169b984503bf60a568",
+    "recipient_execution_authenticated": false,
+    "scientific_inference": "UNESTABLISHED",
+    "automatic_authorization": false
+  },
+  "attempt_ledger_checkpoint": {
+    "bytes": 3406,
+    "sha256": "801ab931e8fe0b7d749ab03dfb4fbc1d5e21d379a63d27596cccac159f170971",
+    "last_digest": "5a5d6ca3bc1ff408dabb9277db0b34a13f2c7aa7e21566ec3fe3d08c99508569",
+    "events": 5
+  },
+  "separation_manifest": {
+    "schema": "td613.experiment-a.artifact-separation/v1",
+    "classes": {
+      "supervisory": {
+        "id": "supervisory-calibration-3f3dde9da3704f169b984503bf60a568",
+        "directory": "supervisory",
+        "mode": "0o700",
+        "ledger_pin": {
+          "bytes": 3406,
+          "sha256": "801ab931e8fe0b7d749ab03dfb4fbc1d5e21d379a63d27596cccac159f170971",
+          "last_digest": "5a5d6ca3bc1ff408dabb9277db0b34a13f2c7aa7e21566ec3fe3d08c99508569",
+          "events": 5
+        }
+      },
+      "execution": {
+        "id": "execution-calibration-3f3dde9da3704f169b984503bf60a568",
+        "directory": "execution",
+        "manifest_sha256": "80d7abd81313f5683f6ee32e0ce0a78d440de52a4c87f41bcdff1a93e93732c5",
+        "task_sha256": "2ec1401eda8929d3aa1d68fc8af7184bc10f2b34e6fae709bedee8417261df0d"
+      },
+      "evaluation": {
+        "id": "evaluation-calibration-3f3dde9da3704f169b984503bf60a568",
+        "directory": "evaluation",
+        "mode": "0o700",
+        "origin_witness_sha256": "82b963fb4deca73adb2765d006f417b5a1590945a3988cfdea6ddaaccd513522",
+        "material_class": "SYNTHETIC_EXPECTATION_ONLY"
+      }
+    },
+    "logical_separation": true,
+    "os_independent_custody": "UNQUALIFIED",
+    "synthetic_evaluation_readable_from_child": true
+  },
+  "isolation": {
+    "schema": "td613.execution-boundary-adversarial-inspection/v1",
+    "probe_input_class": "OWNED_FICTIONAL_SENTINELS_ONLY",
+    "observed": {
+      "forbidden_sentinel_readable": {
+        "repository_history": true,
+        "unapproved_source": true,
+        "provider_credential": true,
+        "experiment_b_corpus": true,
+        "experiment_b_prompt": true,
+        "gold": true,
+        "rankings": true,
+        "prior_experiment_a_unblinding": true,
+        "supervisory_context": true,
+        "withheld_evaluation": true,
+        "shared_storage": true
+      },
+      "host_loopback_reachable": true,
+      "environment_keys": [
+        "LANG"
+      ],
+      "shared_network_namespace": true
+    },
+    "candidate_os_sandbox_bootstraps": {
+      "bubblewrap": {
+        "status": "TIMEOUT",
+        "seconds": 5
+      },
+      "unshare": {
+        "exit_code": 1,
+        "stderr": "unshare: write failed /proc/self/uid_map: Operation not permitted",
+        "qualification": "BOOTSTRAP_ONLY_NOT_FULL_ISOLATION_PROOF"
+      }
+    },
+    "package_os_isolation": "HELD",
+    "provider_context_and_retention_isolation": "UNOBSERVED",
+    "external_egress_test": "NOT_PERFORMED; host loopback and namespace only",
+    "model_sessions_started": 0,
+    "genuine_source_admissions": 0,
+    "automatic_authorization": false
+  },
+  "genuine_database_execution": "HELD",
+  "genuine_source_admissions": 0,
+  "model_sessions_started": 0,
+  "protected_flights": "HELD"
+}

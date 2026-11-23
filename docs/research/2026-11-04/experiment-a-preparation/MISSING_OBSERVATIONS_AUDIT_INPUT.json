@@ -1,0 +1,17 @@
+{
+  "source_revision": "WORKING_TREE_UNCOMMITTED",
+  "task_scope": "EXPERIMENT_A_PREPARATION_MISSING_EMPIRICAL_RUNTIME_OBSERVATIONS",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "audit-spec.json"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {}
+}

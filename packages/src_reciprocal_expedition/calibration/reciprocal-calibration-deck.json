@@ -1,0 +1,177 @@
+{
+  "schema": "td613.src-reciprocal-calibration-deck/v1",
+  "calibration_deck_id": "deck-src-reciprocal-20261105",
+  "challenges": [
+    {
+      "id": "CHALLENGE_01_VALID_EXPLORE_CUE",
+      "category": "PROJECTIVE_ROUTING",
+      "description": "Standard well-formed Explore X. cue with trailing period.",
+      "input_document": {
+        "record_id": "cal-doc-01",
+        "entity_id": "cal:entity:01",
+        "title": "Alpha Research Record",
+        "created": "2026-08-01T10:00:00Z",
+        "body": "Investigating coordinates. Explore Beta Topology Specification. Machine-readable field verified."
+      },
+      "target_document": {
+        "record_id": "cal-doc-02",
+        "entity_id": "cal:entity:02",
+        "title": "Beta Topology Specification",
+        "created": "2026-08-03T12:00:00Z",
+        "body": "Specification of topology beta with detailed coordinates."
+      },
+      "expected_outcome": "CUE_DETECTED_AND_LINKED_LATER"
+    },
+    {
+      "id": "CHALLENGE_02_MALFORMED_EXPLORE_CUE",
+      "category": "PROJECTIVE_ROUTING",
+      "description": "Malformed Explore cue missing punctuation or exceeding length.",
+      "input_document": {
+        "record_id": "cal-doc-03",
+        "entity_id": "cal:entity:03",
+        "title": "Malformed Cue Probe",
+        "created": "2026-08-05T10:00:00Z",
+        "body": "Testing invalid syntax: Explore NoPeriodHere and nothing else"
+      },
+      "expected_outcome": "REFUSED_NO_CUE_DETECTED"
+    },
+    {
+      "id": "CHALLENGE_03_PROJECTIVE_PATH_RESOLUTION",
+      "category": "PROJECTIVE_ROUTING",
+      "description": "Matching target title via exact or substring normalization.",
+      "input_document": {
+        "record_id": "cal-doc-04",
+        "entity_id": "cal:entity:04",
+        "title": "Gamma Traversal",
+        "created": "2026-08-06T10:00:00Z",
+        "body": "Traversing paths. Explore Beta Topology Specification."
+      },
+      "target_document": {
+        "record_id": "cal-doc-02",
+        "entity_id": "cal:entity:02",
+        "title": "Beta Topology Specification",
+        "created": "2026-08-03T12:00:00Z",
+        "body": "Target body."
+      },
+      "expected_outcome": "LINK_RESOLVED_AS_SUBSTRING_OR_EXACT"
+    },
+    {
+      "id": "CHALLENGE_04_CHRONOLOGICAL_INVALIDATION",
+      "category": "TEMPORAL_ORDERING",
+      "description": "Target was created BEFORE source; must not be marked LATER.",
+      "source_document": {
+        "record_id": "cal-doc-05",
+        "title": "Late Origin Document",
+        "created": "2026-08-25T10:00:00Z",
+        "body": "Explore Early Target Document."
+      },
+      "target_document": {
+        "record_id": "cal-doc-06",
+        "title": "Early Target Document",
+        "created": "2026-08-01T10:00:00Z",
+        "body": "Early body."
+      },
+      "expected_outcome": "TEMPORAL_RELATION_PREEXISTING"
+    },
+    {
+      "id": "CHALLENGE_05_CONTRADICTORY_PROPOSITIONS",
+      "category": "RELATIONAL_COMPILATION",
+      "description": "Two distinct sources assert opposing scope deltas on the same transformation.",
+      "propositions": [
+        {
+          "transformation_id": "trans-contra-01",
+          "from_id": "ent:alpha",
+          "to_id": "ent:beta",
+          "claim_effects": { "scope": "NARROWED", "semantic_core": "PRESERVED" }
+        },
+        {
+          "transformation_id": "trans-contra-01",
+          "from_id": "ent:alpha",
+          "to_id": "ent:beta",
+          "claim_effects": { "scope": "BROADENED", "semantic_core": "MUTATED" }
+        }
+      ],
+      "expected_outcome": "RETAIN_BOTH_SEPARATE_WITHOUT_COLLAPSE"
+    },
+    {
+      "id": "CHALLENGE_06_ALTERNATIVE_CONTEXTUAL_ROLES",
+      "category": "CONTEXT_ROLES",
+      "description": "Entity holds role X in Compiler Alpha and role Y in Compiler Beta.",
+      "compiler_inputs": [
+        {
+          "compiler_id": "compiler-alpha",
+          "input_id": "ent:shared",
+          "assigned_role": "PRIMARY_GROUND_WITNESS"
+        },
+        {
+          "compiler_id": "compiler-beta",
+          "input_id": "ent:shared",
+          "assigned_role": "SECONDARY_CONSERVATIVE_CONTROL"
+        }
+      ],
+      "expected_outcome": "PRESERVE_CONTEXTUAL_ROLES_SEPARATE"
+    },
+    {
+      "id": "CHALLENGE_07_CONTEXT_WITHDRAWAL_SOURCE_REMOVAL",
+      "category": "SOURCE_WITHDRAWAL",
+      "description": "Withdrawal of a bridge entity breaks transitive navigation.",
+      "full_deck_ids": ["cal-doc-01", "cal-doc-02"],
+      "withdrawn_id": "cal-doc-02",
+      "expected_outcome": "TARGET_UNRESOLVABLE_AFTER_WITHDRAWAL"
+    },
+    {
+      "id": "CHALLENGE_08_EQUIVALENT_TEXT_DISTINCT_SOURCES",
+      "category": "EVIDENCE_LINEAGE",
+      "description": "Two distinct records contain identical normalized text body.",
+      "source_a": {
+        "record_id": "cal-doc-07a",
+        "title": "Original Publication",
+        "body": "Exact identical body text for testing duplicate evidence lineage."
+      },
+      "source_b": {
+        "record_id": "cal-doc-07b",
+        "title": "Reprint Mirror Publication",
+        "body": "Exact identical body text for testing duplicate evidence lineage."
+      },
+      "expected_outcome": "INDEPENDENCE_REFUSED_ANCESTRAL_PROMOTION_BLOCKED"
+    },
+    {
+      "id": "CHALLENGE_09_UNSUPPORTED_INTERMEDIATE_LINK",
+      "category": "GRAPH_TOPOLOGY",
+      "description": "A graph path with an unwitnessed intermediate node.",
+      "path_nodes": ["ent:alpha", "ent:MISSING_INTERMEDIATE", "ent:gamma"],
+      "expected_outcome": "MISSING_HOPS_EXPLICITLY_DECLARED"
+    },
+    {
+      "id": "CHALLENGE_10_MISSING_ENDPOINT_RELATION",
+      "category": "RELATION_REGISTRATION",
+      "description": "Register relation where target endpoint is not admitted.",
+      "from_source_id": "cal-doc-01",
+      "to_source_id": "cal-doc-NONEXISTENT",
+      "expected_outcome": "REFUSED_UNSUPPORTED_GRAPH_LINK"
+    },
+    {
+      "id": "CHALLENGE_11_NULL_UNKNOWN_EVIDENCE",
+      "category": "TOMOGRAPHY",
+      "description": "Tomography candidate with scope UNKNOWN and no falsifiers.",
+      "candidate": {
+        "transformation_id": "trans-null-01",
+        "from_id": "ent:alpha",
+        "to_id": "ent:omega",
+        "claim_effects": { "scope": "UNKNOWN", "semantic_core": "UNKNOWN", "falsifiers": "NONE" }
+      },
+      "expected_outcome": "UNKNOWN_DELTA_AND_NULL_COMPOSITE_SCORE"
+    },
+    {
+      "id": "CHALLENGE_12_IMPOSSIBLE_REQUEST_WRONG_SEAL",
+      "category": "NATIVE_QUERY",
+      "description": "Query dispatch requesting mismatched seal epoch.",
+      "query": {
+        "action": "summarize",
+        "requestedSnapshot": "src-20260824-p2-001",
+        "requestedSeal": "src-seal:mismatched_foreign_seal_epoch"
+      },
+      "expected_outcome": "REFUSED_SEAL_MISMATCH"
+    }
+  ]
+}

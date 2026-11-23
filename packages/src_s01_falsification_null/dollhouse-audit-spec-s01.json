@@ -1,0 +1,125 @@
+{
+  "source_revision": "a18ddb101208383b3b14435ba0a8523027ab989a",
+  "task_scope": "SRC_S011_MEASUREMENT_REHABILITATION_AND_COMPETENT_NULL_AUDIT",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/src_s01_falsification_null/SRC_METHOD_INVENTORY_AND_SOURCE_PINS.md",
+    "packages/src_s01_falsification_null/COMPETENT_UNION_FAIRNESS_AND_AFFORDANCE_MATRIX.md",
+    "packages/src_s01_falsification_null/PREREGISTRATION_SRC_S01.md",
+    "packages/src_s01_falsification_null/competent-src-union.mjs",
+    "packages/src_s01_falsification_null/reciprocal-src-engine.mjs",
+    "packages/src_s01_falsification_null/synthetic-development-suite.mjs",
+    "packages/src_s01_falsification_null/run-src-s01-development-pilot.mjs",
+    "packages/src_s01_falsification_null/src_s01_development_pilot_receipt.json",
+    "packages/src_s01_falsification_null/ADVERSARIAL_NEGATIVE_RESULTS_REGISTER.md",
+    "packages/src_s01_falsification_null/INDEPENDENT_FALSIFICATION_HANDOFF.md",
+    "packages/src_s01_falsification_null/EXPERIMENT_B_CONSEQUENCE_MATRIX.md"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Ingest authenticated source roots and extract projective explore cues with strict fatal UTF-8 boundary checks."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Attempt relational admission under default-deny warrant contracts and execute least-fixed-point closure."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Witness two-phase delayed readjudication upon late node admission and log rejected attempts in Shadow Graph."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Emit grounded claim relations and audit trail or fail closed with explicit non-convergence / retroactivity errors."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.35, 0.0],
+        [0.0, 1.12]
+      ],
+      "noise_covariance": [
+        [0.0625, 0.0],
+        [0.0, 0.0625]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "EQUAL_FINAL_RELATIONS_UNEQUAL_RESEARCH_HISTORIES",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "EQUAL_FINAL_RELATIONS_UNEQUAL_RESEARCH_HISTORIES",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": [
+            "PROJECTIVE_CUE_EXTRACT",
+            "WARRANT_DEFAULT_DENY",
+            "MONOTONE_LFP_CLOSURE"
+          ],
+          "condition": "COMPETENT_UNION_FIBER"
+        },
+        {
+          "support": [
+            "PROJECTIVE_CUE_EXTRACT",
+            "WARRANT_DEFAULT_DENY",
+            "MONOTONE_LFP_CLOSURE"
+          ],
+          "condition": "RECIPROCAL_CANDIDATE_FIBER"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "METHOD_INVENTORY_AND_SOURCE_PINS": {
+          "status": "PASS",
+          "entry_id": "COMM-SRC-S01-METHOD-INVENTORY"
+        },
+        "EQUAL_AFFORDANCE_AND_PREREGISTRATION": {
+          "status": "PASS",
+          "entry_id": "preregistration-src-s01-v1"
+        },
+        "DEVELOPMENT_PILOT_EXECUTION": {
+          "status": "PASS",
+          "entry_id": "pilot-16-7d12f0"
+        },
+        "NEGATIVE_RESULTS_REGISTER": {
+          "status": "PASS",
+          "entry_id": "neg-results-reg-s01"
+        },
+        "FROZEN_CANDIDATE_STOPPING_BOUNDARY": {
+          "status": "PASS",
+          "entry_id": "frozen-handoff-review-pending"
+        }
+      },
+      "required_phases": [
+        "METHOD_INVENTORY_AND_SOURCE_PINS",
+        "EQUAL_AFFORDANCE_AND_PREREGISTRATION",
+        "DEVELOPMENT_PILOT_EXECUTION",
+        "NEGATIVE_RESULTS_REGISTER",
+        "FROZEN_CANDIDATE_STOPPING_BOUNDARY"
+      ]
+    }
+  }
+}

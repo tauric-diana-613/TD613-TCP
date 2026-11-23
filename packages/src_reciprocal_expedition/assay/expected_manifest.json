@@ -1,0 +1,61 @@
+{
+  "schema": "td613.mechanism-assay-expected-manifest/v1",
+  "expected_warranted_relations": {
+    "retrieval_enabled": [
+      {
+        "from": "doc:explicit_explore_1",
+        "to": "doc:target_beta",
+        "relation_type": "EXPLORE_PROJECTIVE",
+        "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY"
+      },
+      {
+        "from": "doc:grounded_cooccurrence",
+        "to": "doc:target_beta",
+        "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+        "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE"
+      },
+      {
+        "from": "doc:unicode_span_witness",
+        "to": "doc:target_beta",
+        "relation_type": "EXPLORE_PROJECTIVE",
+        "warrant": "UNICODE_PRESERVED_EXPLORE_CUE"
+      }
+    ],
+    "retrieval_disabled": [
+      {
+        "from": "doc:explicit_explore_1",
+        "to": "doc:target_beta",
+        "relation_type": "EXPLORE_PROJECTIVE",
+        "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY"
+      },
+      {
+        "from": "doc:unicode_span_witness",
+        "to": "doc:target_beta",
+        "relation_type": "EXPLORE_PROJECTIVE",
+        "warrant": "UNICODE_PRESERVED_EXPLORE_CUE"
+      }
+    ]
+  },
+  "expected_rejections": [
+    {
+      "source_id": "doc:unadmitted_target",
+      "attempted_target": "doc:ghost_gamma",
+      "expected_reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT"
+    },
+    {
+      "source_id": "doc:chronological_inversion",
+      "attempted_target": "doc:ancient_alpha",
+      "expected_reason": "PREEXISTING_CHRONOLOGY_BLOCKED"
+    },
+    {
+      "source_id": "doc:duplicate_carrier_2",
+      "attempted_target": "doc:duplicate_carrier_1",
+      "expected_reason": "DUPLICATE_BODY_ANCESTRAL_LINEAGE_REFUSED"
+    },
+    {
+      "source_id": "doc:misleading_cooccurrence",
+      "attempted_target": "doc:target_beta",
+      "expected_reason": "UNWARRANTED_NOISE_REJECTED"
+    }
+  ]
+}

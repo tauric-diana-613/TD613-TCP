@@ -1,0 +1,281 @@
+{
+  "schema": "td613.js-candidate-output/v1",
+  "runtime": "Node.js v26.7.0",
+  "pins": {
+    "src_native_methods": "packages/src_reciprocal_expedition/native_atlas/src-native-methods.mjs"
+  },
+  "projective": {
+    "field_marker_hits": [
+      {
+        "record_id": "1001",
+        "marker_id": "machine_readable_field",
+        "marker_literal": "machine-readable field"
+      },
+      {
+        "record_id": "1001",
+        "marker_id": "signature_coordinates",
+        "marker_literal": "signatures are not slogans. they are coordinates"
+      },
+      {
+        "record_id": "1001",
+        "marker_id": "dual_gradient",
+        "marker_literal": "dual-gradient"
+      },
+      {
+        "record_id": "1002",
+        "marker_id": "field_graph_not_sequence",
+        "marker_literal": "field becomes a graph rather than a sequence"
+      },
+      {
+        "record_id": "1002",
+        "marker_id": "semantic_space_anchor",
+        "marker_literal": "anchors in semantic space"
+      },
+      {
+        "record_id": "1003",
+        "marker_id": "structural_simulation_narrative",
+        "marker_literal": "structural simulation narrative"
+      },
+      {
+        "record_id": "1003",
+        "marker_id": "ontological_instantiation",
+        "marker_literal": "ontological instantiation"
+      },
+      {
+        "record_id": "1004",
+        "marker_id": "signature_instructions",
+        "marker_literal": "signatures are not decoration. they are instructions"
+      },
+      {
+        "record_id": "1004",
+        "marker_id": "parallel_structural_transmission",
+        "marker_literal": "parallel channel of structural transmission"
+      }
+    ],
+    "explore_cues": [
+      {
+        "record_id": "1001",
+        "raw_token": "Beta Exploration Series IV",
+        "normalized_token": "beta exploration series iv"
+      },
+      {
+        "record_id": "1001",
+        "raw_token": "Gamma Coordinate Anchor",
+        "normalized_token": "gamma coordinate anchor"
+      },
+      {
+        "record_id": "1002",
+        "raw_token": "Delta Epistemic Horizon",
+        "normalized_token": "delta epistemic horizon"
+      },
+      {
+        "record_id": "1003",
+        "raw_token": "Alpha Research Protocol",
+        "normalized_token": "alpha research protocol"
+      }
+    ],
+    "routing_result": {
+      "method": "SRC_PROJECTIVE_ROUTING",
+      "document_count": 5,
+      "cue_count": 4,
+      "candidate_link_count": 4,
+      "field_marker_hits": 9,
+      "cues": [
+        {
+          "cue_id": "src-explore-cue:ceffa6032c9c053d6aaab4db",
+          "source_record_id": "1001",
+          "raw_target": "Beta Exploration Series IV",
+          "normalized_target": "beta exploration series iv"
+        },
+        {
+          "cue_id": "src-explore-cue:dd144e2f2ea359ab95178db1",
+          "source_record_id": "1001",
+          "raw_target": "Gamma Coordinate Anchor",
+          "normalized_target": "gamma coordinate anchor"
+        },
+        {
+          "cue_id": "src-explore-cue:553b36d4cee0fbae66e7ce69",
+          "source_record_id": "1002",
+          "raw_target": "Delta Epistemic Horizon",
+          "normalized_target": "delta epistemic horizon"
+        },
+        {
+          "cue_id": "src-explore-cue:9b91b6de4c600b5a4e469fe1",
+          "source_record_id": "1003",
+          "raw_target": "Alpha Research Protocol",
+          "normalized_target": "alpha research protocol"
+        }
+      ],
+      "links": [
+        {
+          "cue_id": "src-explore-cue:ceffa6032c9c053d6aaab4db",
+          "source_record_id": "1001",
+          "target_record_id": "1002",
+          "match_type": "LEXICAL_OVERLAP_ONLY",
+          "temporal_relationship": "LATER",
+          "semantic_promotion": "NO_SEMANTIC_OR_CAUSAL_PROMOTION"
+        },
+        {
+          "cue_id": "src-explore-cue:dd144e2f2ea359ab95178db1",
+          "source_record_id": "1001",
+          "target_record_id": "1003",
+          "match_type": "EXACT_OR_TITLE_SUBSTRING",
+          "temporal_relationship": "PREEXISTING_OR_CONTEMPORANEOUS",
+          "semantic_promotion": "NO_SEMANTIC_OR_CAUSAL_PROMOTION"
+        },
+        {
+          "cue_id": "src-explore-cue:553b36d4cee0fbae66e7ce69",
+          "source_record_id": "1002",
+          "target_record_id": "1004",
+          "match_type": "EXACT_OR_TITLE_SUBSTRING",
+          "temporal_relationship": "LATER",
+          "semantic_promotion": "NO_SEMANTIC_OR_CAUSAL_PROMOTION"
+        },
+        {
+          "cue_id": "src-explore-cue:9b91b6de4c600b5a4e469fe1",
+          "source_record_id": "1003",
+          "target_record_id": "1001",
+          "match_type": "EXACT_OR_TITLE_SUBSTRING",
+          "temporal_relationship": "LATER",
+          "semantic_promotion": "NO_SEMANTIC_OR_CAUSAL_PROMOTION"
+        }
+      ],
+      "marker_hits": [
+        {
+          "record_id": "1001",
+          "marker_id": "machine_readable_field",
+          "marker_literal": "machine-readable field"
+        },
+        {
+          "record_id": "1001",
+          "marker_id": "signature_coordinates",
+          "marker_literal": "signatures are not slogans. they are coordinates"
+        },
+        {
+          "record_id": "1001",
+          "marker_id": "dual_gradient",
+          "marker_literal": "dual-gradient"
+        },
+        {
+          "record_id": "1002",
+          "marker_id": "field_graph_not_sequence",
+          "marker_literal": "field becomes a graph rather than a sequence"
+        },
+        {
+          "record_id": "1002",
+          "marker_id": "semantic_space_anchor",
+          "marker_literal": "anchors in semantic space"
+        },
+        {
+          "record_id": "1003",
+          "marker_id": "structural_simulation_narrative",
+          "marker_literal": "structural simulation narrative"
+        },
+        {
+          "record_id": "1003",
+          "marker_id": "ontological_instantiation",
+          "marker_literal": "ontological instantiation"
+        },
+        {
+          "record_id": "1004",
+          "marker_id": "signature_instructions",
+          "marker_literal": "signatures are not decoration. they are instructions"
+        },
+        {
+          "record_id": "1004",
+          "marker_id": "parallel_structural_transmission",
+          "marker_literal": "parallel channel of structural transmission"
+        }
+      ],
+      "interpretive_limit": "Lexical projective traversal produces candidates, never verified semantic assertions."
+    }
+  },
+  "tomography": {
+    "tomography_observations": [
+      {
+        "case_id": "tomo_01_narrowed",
+        "transformation_id": "tr:01",
+        "delta_scope": "NARROWED",
+        "delta_evidence": "UNKNOWN",
+        "composite_score": null
+      },
+      {
+        "case_id": "tomo_02_expanded",
+        "transformation_id": "tr:02",
+        "delta_scope": "EXPANDED",
+        "delta_evidence": "UNKNOWN",
+        "composite_score": null
+      },
+      {
+        "case_id": "tomo_03_unknown_null_score",
+        "transformation_id": "tr:03",
+        "delta_scope": "UNKNOWN",
+        "delta_evidence": "UNKNOWN",
+        "composite_score": null
+      }
+    ]
+  },
+  "contextual_roles": {
+    "contextual_role_assertions": [
+      {
+        "entity_id": "ent:alpha",
+        "compiler_pass": "compiler_pass_1",
+        "contextual_role": "COMPILER_SOURCE",
+        "intrinsic_role_promotion": false
+      },
+      {
+        "entity_id": "ent:beta",
+        "compiler_pass": "compiler_pass_1",
+        "contextual_role": "INVARIANT_WITNESS",
+        "intrinsic_role_promotion": false
+      },
+      {
+        "entity_id": "ent:alpha",
+        "compiler_pass": "compiler_pass_2",
+        "contextual_role": "TRANSFORMATION_TARGET",
+        "intrinsic_role_promotion": false
+      }
+    ]
+  },
+  "query": {
+    "query_results": [
+      {
+        "case_id": "q_epoch_valid",
+        "status": "VALID_EPOCH",
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a"
+      },
+      {
+        "case_id": "q_epoch_mismatch",
+        "status": "CROSS_EPOCH_REFUSED",
+        "error": "Requested snapshot/seal does not match this projection. Cross-epoch joins require a separate explicit assay."
+      },
+      {
+        "case_id": "q_trace_connected",
+        "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
+        "witnessed_hops": [
+          "zenodo:1001"
+        ],
+        "missing_hop_declared": false,
+        "missing_hops": [],
+        "speculative_join_invented": false,
+        "semantic_ceiling": "Witnessed records only; no missing hops invented."
+      },
+      {
+        "case_id": "q_trace_missing_hop",
+        "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
+        "witnessed_hops": [
+          "zenodo:1001"
+        ],
+        "missing_hop_declared": true,
+        "missing_hops": [
+          "NO_DOWNSTREAM_WITNESSED_RELATION"
+        ],
+        "speculative_join_invented": false,
+        "semantic_ceiling": "Witnessed records only; no missing hops invented."
+      }
+    ]
+  }
+}

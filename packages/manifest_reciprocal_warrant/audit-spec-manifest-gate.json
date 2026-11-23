@@ -1,0 +1,182 @@
+{
+  "source_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
+  "task_scope": "MANIFEST_GATE_M01_REMOTE_CUSTODY_COMPETENT_NULL_INDEPENDENT_FALSIFICATION",
+  "evidence_class": "MANIFEST_RECIPROCAL_WARRANT_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "scripts/manifest_native_boundary_canary.mjs",
+    "artifacts/td613_manifest_native_canary.original.json",
+    "artifacts/td613_manifest_native_canary.repaired.json",
+    "packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs",
+    "packages/wendbine_reciprocal_expedition/wendbine-sourcebound-epoch.mjs",
+    "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
+    "packages/manifest_reciprocal_warrant/manifest-warrant-engine.mjs",
+    "packages/manifest_reciprocal_warrant/competent-strong-union.mjs",
+    "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
+    "artifacts/manifest_comparison_assay_receipt.json",
+    "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
+    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md",
+    "scripts/generate-concealed-manifest-falsification-suite.mjs",
+    "scripts/run-concealed-manifest-falsification-assay.mjs"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-manifest-gate-m01",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "M-01.1: Recovered and published local candidate 377db211b to remote branch research/manifest-reciprocal-warrant-gate-20261105 via draft PR #1702."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "M-01.2: Corrected scientific record by removing unsupported p < 0.001 claim, documenting paired discordances, distinguishing descriptive scores from population inference, and separating deterministic algorithms from emergence."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "M-01.3: Implemented Competent Strong Union Comparator (V2) equipped with equalized algorithms; confirmed null hypothesis on development suite (16/16 vs 16/16, delta = 0)."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "M-01.4 & M-01.5: Preregistered independent falsification protocol with 8 measurement dimensions and concealed test requirements; halted candidate before executing concealed evaluation."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1.8,
+          0.2
+        ],
+        [
+          0.1,
+          1.5
+        ]
+      ],
+      "candidate_probe": [
+        1.0,
+        0.5
+      ],
+      "noise_covariance": [
+        [
+          0.05,
+          0.01
+        ],
+        [
+          0.01,
+          0.05
+        ]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [
+          1.8,
+          0.2
+        ],
+        [
+          0.1,
+          1.5
+        ]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:manifest_reciprocal_warrant_topology",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:manifest_reciprocal_warrant_topology",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": {
+          "records": 1141,
+          "edges": 2131,
+          "operations": 12,
+          "path": [
+            "W_NATIVE",
+            "W_RECIPIENT",
+            "UNIVERSAL_ENCYCLOPEDIA",
+            "MANIFEST"
+          ]
+        },
+        "right": {
+          "records": 1141,
+          "edges": 2131,
+          "operations": 12,
+          "path": [
+            "W_NATIVE",
+            "W_RECIPIENT",
+            "UNIVERSAL_ENCYCLOPEDIA",
+            "MANIFEST"
+          ]
+        }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "authenticated_admissible_source_roots_P0",
+          "support": [
+            "ZERO_LENGTH_SPAN_REFUSED",
+            "SINGLE_RELATION_USE_ONLY",
+            "QUERY_TIME_BYTE_VERIFICATION",
+            "MANDATORY_ADMIT_RELATION_ID"
+          ]
+        },
+        {
+          "state_id": "least_fixed_point_derivation_closure_Pstar",
+          "support": [
+            "CIRCULAR_LOOP_REJECTED",
+            "WITHDRAWAL_CASCADE_INVALIDATION",
+            "CONJUNCTION_COUNTED_AS_SINGLE_PROOF",
+            "SINGLE_ACQUISITION_COLLAPSE",
+            "EQUALIZED_COMPETENT_STRONG_UNION_V2"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "M01_1_RECOVER_AND_PUBLISH_CANDIDATE",
+        "M01_2_CORRECT_SCIENTIFIC_RECORD",
+        "M01_3_CONSTRUCT_COMPETENT_STRONG_UNION",
+        "M01_4_PREREGISTER_INDEPENDENT_FALSIFICATION",
+        "M01_5_HALT_BEFORE_CONCEALED_EVALUATION"
+      ],
+      "phases": {
+        "M01_1_RECOVER_AND_PUBLISH_CANDIDATE": {
+          "status": "PASS",
+          "entry_id": "m01_1_recover_and_publish_candidate"
+        },
+        "M01_2_CORRECT_SCIENTIFIC_RECORD": {
+          "status": "PASS",
+          "entry_id": "m01_2_correct_scientific_record"
+        },
+        "M01_3_CONSTRUCT_COMPETENT_STRONG_UNION": {
+          "status": "PASS",
+          "entry_id": "m01_3_construct_competent_strong_union"
+        },
+        "M01_4_PREREGISTER_INDEPENDENT_FALSIFICATION": {
+          "status": "PASS",
+          "entry_id": "m01_4_preregister_independent_falsification"
+        },
+        "M01_5_HALT_BEFORE_CONCEALED_EVALUATION": {
+          "status": "PASS",
+          "entry_id": "m01_5_halt_before_concealed_evaluation"
+        }
+      }
+    }
+  }
+}
