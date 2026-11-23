@@ -25,7 +25,10 @@ test('Opera templates remove authorization badges and lab claims, retain source 
 test('boundary removes backstage furniture and never rewrites original manuscripts',()=>{
  assert.ok(boundary.includes('REMOVABLE_PUBLIC_FURNITURE'));
  assert.ok(boundary.includes('el.remove()'));
- assert.ok(boundary.includes('.vix-manuscript, .expa-body-pre'));
+ assert.ok(boundary.includes('.vix-manuscript, .vix-reader-code'));
+ assert.ok(!boundary.includes('.vix-manuscript, .expa-body-pre'));
+ // Protocols display editorial projections; exact protocol source resides
+ // exclusively in the immutable source corpus, separate from visitor labels.
  assert.equal(translatePublicCopy('EXPERIMENT_A_PREVIEW_AUTHORIZED'),'');
  assert.equal(translatePublicCopy('Codex'),'');
  assert.equal(translatePublicCopy('Gemini'),'');
