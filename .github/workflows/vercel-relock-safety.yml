@@ -541,6 +541,10 @@ jobs:
             ['DEPLOYMENT',`/v13/deployments/${id}?teamId=${encodeURIComponent(team)}`],
             ['CHECKS',`/v1/deployments/${id}/checks?teamId=${encodeURIComponent(team)}`],
             ['BUILD_EVENTS',`/v3/deployments/${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
+            ['DEPLOYMENT_CANONICAL',`/v13/deployments/dpl_${id}?teamId=${encodeURIComponent(team)}`],
+            ['CHECKS_CANONICAL',`/v1/deployments/dpl_${id}/checks?teamId=${encodeURIComponent(team)}`],
+            ['BUILD_EVENTS_CANONICAL',`/v3/deployments/dpl_${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
+            ['CONTROL_READY',`/v13/deployments/dpl_DeZXgMdYYPmT9GZHL66aQtixeL5m?teamId=${encodeURIComponent(team)}`],
           ];
           console.log('READ_ONLY_FAILED_DEPLOYMENT_DIAGNOSTIC',id);
           for(const [label,path] of paths){
@@ -555,7 +559,7 @@ jobs:
                 console.log('VERCEL_REST_ERROR',label,clean(er?.code??''),clean(er?.message??''));
                 continue;
               }
-              if(label==='DEPLOYMENT'){
+              if(label.startsWith('DEPLOYMENT')||label==='CONTROL_READY'){
                 const d=data?.deployment??data;
                 const fields=['id','url','state','readyState','errorCode','errorMessage','checksState','projectId','target','buildingAt','ready'];
                 console.log('DEPLOYMENT_STATE',JSON.stringify(Object.fromEntries(fields.filter(k=>k in d).map(k=>[k,clean(d[k])]))));
@@ -564,7 +568,7 @@ jobs:
                   const compact=Array.isArray(val)?val.slice(-8):val;
                   console.log('DEPLOYMENT_DIAGNOSTIC_FIELD',field,clean(compact));
                 }
-              }else if(label==='CHECKS'){
+              }else if(label.startsWith('CHECKS')){
                 let c=Array.isArray(data)?data:data?.checks??data?.data??data?.results??[];
                 if(!Array.isArray(c)&&Array.isArray(c?.checks))c=c.checks;
                 if(!Array.isArray(c)){console.log('CHECKS_SHAPE',Object.keys(data??{}));continue;}
