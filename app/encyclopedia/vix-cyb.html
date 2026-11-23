@@ -778,12 +778,12 @@ body[data-view="overview"] .reading-back{display:none}
               <span class="tag dark">CUSTODIAL MEMBRANE</span>
               <span class="tag porcelain">ATTRIBUTION.md · VERBATIM</span>
               
-              <span class="tag dark">32/32 AUTHORSHIP: HELD</span>
+              
             </div>
             <p style="margin-top:8px">Em / Vix / Cass / Cassie and every other stated author retain authorship of their respective works. The hosting service, its technical operators, and its documentary research tools claim no authorship, ownership, institutional affiliation, endorsement, or origin over the preserved source corpus merely by storing or assaying it here.</p>
             <p style="margin-top:8px">The catalogue includes readable Markdown and extracted PDF texts, alongside twenty-one documentary methods. Explore the source documents in Works, Folios, and Methods; original authorship and provenance remain attributed.</p>
             <details class="attribution-more">
-              <summary>Full alias preservation &amp; anti-inference custody boundary</summary>
+              <summary>Preserved authorship notes</summary>
               <p style="margin-top:8px">This research chamber hosts Em’s preserved works and open constitutive synthesis inquiries on their own terms. Preservation here is not a declaration of membership, coauthorship, derivation, or incorporation into the host infrastructure.</p>
               <p style="margin-top:8px">A human provenance statement that a work was selected as “derivative,” “branching,” “in-lineage,” or similar enters the archive as a provenance assertion to be tested. The statement remains distinct from a demonstrated textual, conceptual, methodological, genealogical, or empirical relation.</p>
               <p style="margin-top:8px">When multiple aliases appear, preserve the alias exactly as present in the source or human-supplied provenance record. Do not infer civil identity or merge authorship identities without explicit evidence.</p>
@@ -827,9 +827,9 @@ body[data-view="overview"] .reading-back{display:none}
         </div>
         <div class="vixen-rest-bar" role="region" aria-label="Pacing and Stage Separation Rest Stop">
           <button type="button" class="secondary-btn" id="restBtn" aria-pressed="false">Pause here · Nothing expires ‖</button>
-          <span class="vixen-rest-note">NOW / WHY / EXACT · Take any sequence without time penalty. Stage role: <code>OPERA</code> (strictly separated from <code>OPERAHOUSE</code> &amp; <code>PERFORMER</code>).</span>
+          <span class="vixen-rest-note">Pause and return to the page whenever you wish.</span>
         </div>
-        <details class="vixen-overview-drawer" id="overviewTableDrawer">
+        <details class="vixen-overview-drawer" id="overviewTableDrawer" hidden aria-hidden="true" style="display:none!important">
           <summary>Compare all 8 Research Rooms &amp; Custody Boundaries (Table Overview)</summary>
           <div class="comp-table-wrap" role="region" tabindex="0" aria-labelledby="overviewTableCaption">
             <table id="overviewTable" class="comp-table comp-table-overview">
@@ -1193,7 +1193,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div>
           <p class="eyebrow">04 · COMMITTED 06-INSTRUMENTS REGISTRY · BIJECTIVE 6 + 7 + 4 + 4 = 21</p>
           <h1>THE APPARATUS.<span class="title-annotation">21 documentary methods · 6 prospective giveback routes</span></h1>
-          <p class="intro">Exact 1-to-1 registry of the 21 documentary instruments committed in <code>original_methods_inventory.json</code> (<code>standalone_executors_count: 0</code>). Non-registry custodial duties are quarantined to the Concealed Inspector (<code>Alt+I</code>) so zero phantom IDs enter <code>06-INSTRUMENTS</code>.</p>
+          <p class="intro">Twenty-one recorded documentary methods. Explore each method and the Works connected to it.</p>
         </div>
         <div class="view-number" aria-hidden="true">21</div>
       </div>
@@ -1221,7 +1221,7 @@ body[data-view="overview"] .reading-back{display:none}
             <li>Internal integrity vs. External empirical confirmation distinguished</li>
           </ol>
         </details>
-        <p class="vix-method-dek" style="font-size:12px;margin:17px 0 0">Registry witness: <code>original_methods_inventory.json</code> · Standalone executors: <strong>0</strong>. Explore all 21 documentary instruments below.</p>
+        <p class="vix-method-dek" style="font-size:12px;margin:17px 0 0">Twenty-one methods, their questions, and their documentary context.</p>
       </section>
 
       <div class="toolbar">
@@ -3021,7 +3021,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<div class="badge-row">' +
             '<span class="tag dark">PROSPECTIVE_BATCH_B</span>' +
             '' +
-            '<span class="tag gold">NO FABRICATED BODY</span>' +
+            '' +
           '</div>' +
           '<h2>' + esc(selB.original_filename) + '</h2>' +
           '<p style="font:500 10.5px/1.7 var(--font-mono)">ID: ' + esc(selB.source_file_id) + ' · Batch: ' + esc(selB.batch_id) + '</p>' +
@@ -3272,7 +3272,7 @@ body[data-view="overview"] .reading-back{display:none}
       const loc = state.localInspectedDoc;
       return '<div class="expa-local-drop">' +
         '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">' +
-          '<span><strong>LOCAL / VOLUNTEER FILE ADAPTER</strong> (.md, .txt, .docx OOXML, .pdf, image metadata — client-only, zero telemetry upload)</span>' +
+          '<span>Read a document from your device</span>' +
           '<label class="secondary-btn" style="cursor:pointer;min-height:32px;padding:4px 10px;font-size:10px">' +
             'Open Local File…<input type="file" id="expaLocalFileInput" accept=".md,.txt,.docx,.pdf,.png,.jpg,.jpeg,.webp" style="display:none">' +
           '</label>' +
@@ -3783,8 +3783,8 @@ body[data-view="overview"] .reading-back{display:none}
           '<div data-membrane="HOST_INFRASTRUCTURE" class="badge-row">' +
             '<span class="tag pink">FAMILY ' + esc(sel.family) + '</span>' +
             '' +
-            '<span class="tag porcelain">0 Standalone Executors · Documentary Only</span>' +
-            (sel.is_key_synthesis_protocol ? '<span class="tag gold">KEY_SYNTHESIS_PROTOCOL</span>' : '') +
+            '' +
+            '' +
           '</div>' +
           '<div data-membrane="RESEARCH_OBJECT">' +
             '<h2 style="font:600 clamp(20px,2.2vw,28px)/1.2 var(--font-mono);margin-top:16px">' + esc(sel.instrument_id) + '</h2>' +
