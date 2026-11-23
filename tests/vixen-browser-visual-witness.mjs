@@ -185,16 +185,25 @@ try {
     assert.equal(await workMount.locator('button[data-folio-density="comfort"]').getAttribute('aria-pressed'),'true');
     await workMount.locator('button[data-folio-density="compact"]').click();
     assert.equal(await manuscript.getAttribute('data-folio-density'),'compact');
-    const readingPosition=()=>width<=680?page.evaluate(()=>window.scrollY):manuscript.evaluate(el=>el.scrollTop);
-    const beforeScroll=await readingPosition();
-    await workMount.locator('#vixFolioNext').click();
-    await page.waitForTimeout(440);
-    const afterScroll=await readingPosition();
-    assert(afterScroll>beforeScroll+20,'NEXT must genuinely advance the manuscript '+JSON.stringify({width,beforeScroll,afterScroll}));
-    await workMount.locator('#vixFolioPrevious').click();
-    await page.waitForTimeout(440);
-    assert(Number(await readingPosition())<afterScroll,
-      'PREVIOUS must return toward the manuscript start');
+    if(width>680){
+      const readingPosition=()=>manuscript.evaluate(el=>el.scrollTop);
+      const beforeScroll=await readingPosition();
+      await workMount.locator('#vixFolioNext').click();
+      await page.waitForTimeout(440);
+      const afterScroll=await readingPosition();
+      assert(afterScroll>beforeScroll+20,'Desktop NEXT must advance the paginated folio');
+      await workMount.locator('#vixFolioPrevious').click();
+      await page.waitForTimeout(440);
+      assert(Number(await readingPosition())<afterScroll,'Desktop PREVIOUS must return toward the beginning');
+    }else{
+      const mobileFlow=await manuscript.evaluate(el=>({
+        height:el.getBoundingClientRect().height,
+        pageScrollable:document.documentElement.scrollHeight>window.innerHeight*4,
+        footerVisible:getComputedStyle(document.querySelector('.vix-folio-footer')).display!=='none'
+      }));
+      assert(mobileFlow.pageScrollable&&!mobileFlow.footerVisible,
+        'Mobile manuscripts should be continuous documents without paginated footer: '+JSON.stringify(mobileFlow));
+    }
     await page.evaluate(()=>{
       const n=document.querySelector('#expaCompanionBodyPre');
       n.scrollTop=0;
