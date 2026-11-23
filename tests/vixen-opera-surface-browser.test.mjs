@@ -147,7 +147,7 @@ try{
    assert.ok(after.paragraph_width>=profile.width-110,'mobile paragraph width collapsed: '+JSON.stringify(after));
    assert.ok(after.words_per_line>=3.8,'near one-word-per-line on phone: '+JSON.stringify(after));
    assert.equal(after.word_break,'normal','prose word breaking');
-   assert.equal(after.paragraph_overflow_wrap,'normal','no break-anywhere prose');
+   assert.equal(after.paragraph_overflow_wrap,'break-word','prose wraps normally while oversize citation URLs cannot overflow');
    assert.equal(after.max_height,'none','no fixed-height reader strip');
   } else {
    assert.equal(after.max_height,'none','desktop manuscript must read as a document, not a scrollbox');
