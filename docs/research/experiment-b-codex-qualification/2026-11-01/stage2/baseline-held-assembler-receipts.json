@@ -1,0 +1,108 @@
+[
+  {
+    "adjudicated_candidate": {
+      "candidate_id": "BLIND-460d5705388844670f75cefd",
+      "proposition_summary": "[{\"document\":\"D1\",\"proposition\":\"The universal rule is consistent with the supplied observations but is not proved. If the rule holds, x_3=14.\",\"calculation\":\"8−5=3; 11−8=3. Conditional prediction: x_3=11+3=14. For example, an unmeasured x_3=15 would also fit all supplied measurements while violating the universal rule.\"},{\"document\":\"D2\",\"proposition\":\"The universal increment-3 proposition is false for the same invented relay. The exact observation x_3=15 contradicts its conditional prediction x_3=14.\",\"calculation\":\"8−5=3; 11−8=3; 15−11=4≠3; 19−15=4≠3. The observed x_3 exceeds the predicted 14 by 1. Either increment-4 transition independently falsifies the universal increment-3 proposition.\"},{\"document\":\"D3\",\"proposition\":\"The proposed recurrence fits all supplied observations. Conditional on the hypothesis, x_n=5+3n+max(0,n−2) for every nonnegative integer n, predicting x_5=23. The false twin x_n=5+4n is falsified.\",\"calculation\":\"Among n transitions, max(0,n−2) have index at least 2. Summation gives x_n=5+3n+max(0,n−2), hence x_5=5+15+3=23. The false twin predicts x_1=9, contradicting observed x_1=8.\"}]",
+      "status": "HELD_INSUFFICIENT_DATA",
+      "warrant_class": "WARRANT_PENDING_EVALUATION",
+      "adjudication_ancestry": {
+        "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+        "scoring_rule_version": "v1.0-flight",
+        "rca01_cell": "CELL_B_AUTH_DOLL",
+        "rca01_evaluation_vector": {
+          "discovery_occurrence": "PENDING_EVALUATION",
+          "mathematical_warrant": "PENDING_EVALUATION",
+          "causal_contribution": "PENDING_EVALUATION",
+          "novelty": "PENDING_EVALUATION",
+          "instrument_integrity": "PENDING_EVALUATION",
+          "claim_status": "PENDING_EVALUATION"
+        },
+        "rca01_outcome_archetypes": [
+          "OUTCOME_UNEVALUATED"
+        ],
+        "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+        "dissent_recorded": false,
+        "adjudication_receipt_ref": "STAGE2-RECEIPT-20261101-a21d14",
+        "disposition": "EVALUATION_HELD_INSUFFICIENT_EVIDENCE",
+        "missing_evidence_fields": [
+          "groundTruthWarrant",
+          "negativeControlRejected",
+          "discoveredInCellA",
+          "discoveredInCellB",
+          "isNovel",
+          "instrumentAnomalies"
+        ],
+        "evaluator_notes": "Evaluation held: incomplete evidence criteria supplied."
+      }
+    },
+    "adjudication_receipt": {
+      "receipt_id": "STAGE2-RECEIPT-20261101-a21d14",
+      "candidate_id": "BLIND-460d5705388844670f75cefd",
+      "timestamp": "2026-11-01T15:56:01.304Z",
+      "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+      "disposition": "EVALUATION_HELD_INSUFFICIENT_EVIDENCE",
+      "missing_evidence_fields": [
+        "groundTruthWarrant",
+        "negativeControlRejected",
+        "discoveredInCellA",
+        "discoveredInCellB",
+        "isNovel",
+        "instrumentAnomalies"
+      ],
+      "negative_control_passed": null
+    }
+  },
+  {
+    "adjudicated_candidate": {
+      "candidate_id": "BLIND-df02586a2e83ba751342a723",
+      "proposition_summary": "[{\"document\":\"D1\",\"proposition\":\"The proposed relation is x_(n+1) = x_n + 3 for every nonnegative integer n. Its equivalent closed form, given x_0 = 5, is x_n = 5 + 3n. Both remain hypotheses beyond the supplied observations.\",\"calculation\":\"8 - 5 = 3 and 11 - 8 = 3. If the recurrence holds at n = 2, then x_3 = 11 + 3 = 14.\"},{\"document\":\"D2\",\"proposition\":\"The audited relation is x_(n+1)=x_n+3 for every nonnegative integer n, equivalently x_n=5+3n given x_0=5. The supplied observations falsify this universal claim.\",\"calculation\":\"Adjacent increments are 3,3,4,4. At n=2, x_3-(x_2+3)=15-14=1. At n=3, x_4-(x_3+3)=19-18=1. Either failure independently falsifies the universal recurrence.\"},{\"document\":\"D3\",\"proposition\":\"The handoff's formula implies x_(n+1)=x_n+3+1_{n>=2}, with x_0=5. This differs from the falsified universal +3 rule and fits every supplied observation.\",\"calculation\":\"Observed increments are 3,3,4,4. Summing the proposed increments yields x_n=5+3n+max(0,n-2). Conditional on universal adoption, x_5=23. The candidate 5+4n predicts 9,13,17,21 at indices 1–4 and is falsified.\"}]",
+      "status": "HELD_INSUFFICIENT_DATA",
+      "warrant_class": "WARRANT_PENDING_EVALUATION",
+      "adjudication_ancestry": {
+        "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+        "scoring_rule_version": "v1.0-flight",
+        "rca01_cell": "CELL_B_AUTH_DOLL",
+        "rca01_evaluation_vector": {
+          "discovery_occurrence": "PENDING_EVALUATION",
+          "mathematical_warrant": "PENDING_EVALUATION",
+          "causal_contribution": "PENDING_EVALUATION",
+          "novelty": "PENDING_EVALUATION",
+          "instrument_integrity": "PENDING_EVALUATION",
+          "claim_status": "PENDING_EVALUATION"
+        },
+        "rca01_outcome_archetypes": [
+          "OUTCOME_UNEVALUATED"
+        ],
+        "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+        "dissent_recorded": false,
+        "adjudication_receipt_ref": "STAGE2-RECEIPT-20261101-8e0ef7",
+        "disposition": "EVALUATION_HELD_INSUFFICIENT_EVIDENCE",
+        "missing_evidence_fields": [
+          "groundTruthWarrant",
+          "negativeControlRejected",
+          "discoveredInCellA",
+          "discoveredInCellB",
+          "isNovel",
+          "instrumentAnomalies"
+        ],
+        "evaluator_notes": "Evaluation held: incomplete evidence criteria supplied."
+      }
+    },
+    "adjudication_receipt": {
+      "receipt_id": "STAGE2-RECEIPT-20261101-8e0ef7",
+      "candidate_id": "BLIND-df02586a2e83ba751342a723",
+      "timestamp": "2026-11-01T15:56:01.305Z",
+      "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+      "disposition": "EVALUATION_HELD_INSUFFICIENT_EVIDENCE",
+      "missing_evidence_fields": [
+        "groundTruthWarrant",
+        "negativeControlRejected",
+        "discoveredInCellA",
+        "discoveredInCellB",
+        "isNovel",
+        "instrumentAnomalies"
+      ],
+      "negative_control_passed": null
+    }
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "authority": "Sovereign Operator Direct, subsequent in-chat instruction",
+  "instruction": "then double or triple that limit (unless the limit needs to be higher than that)",
+  "received_after_completed_inference": true,
+  "prospective_per_reasoning_arm_token_ceiling": 180000,
+  "reason": "Triple the historical 60000; no further inference needed for this qualification",
+  "historical_registered_ceiling": 60000,
+  "historical_findings_unchanged": true,
+  "whole_protocol_amendment_adopted": false,
+  "additional_model_calls": 0,
+  "remaining_requirement": "Prospective schedule and enforcement definition still require reconciliation before protected Flight"
+}

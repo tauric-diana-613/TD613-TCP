@@ -1,0 +1,22 @@
+{
+  "utc": "2026-11-01T15:52:37.798Z",
+  "client_timezone": "America/New_York",
+  "platform": "win32",
+  "architecture": "x64",
+  "node": "v26.7.0",
+  "working_directory": "<LOCAL_PATH>",
+  "executable": "<LOCAL_PATH>",
+  "executable_sha256": "3097c909fb6d5cd63510d44aceb1d42df9f6e85722a3e447e477def1ecf60e16",
+  "env_variable_names": [
+    "PATH",
+    "USERPROFILE",
+    "TMP",
+    "TEMP",
+    "LANG",
+    "LC_ALL",
+    "SystemRoot",
+    "SYSTEMROOT"
+  ],
+  "api_keys_forwarded": false,
+  "config_ignored": true
+}

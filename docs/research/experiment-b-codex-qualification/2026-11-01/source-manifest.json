@@ -1,0 +1,50 @@
+[
+  {
+    "path": "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
+    "bytes": 13116,
+    "sha256": "eaba08cdd1bcdf8c1d64dec90903b157b16847b356b7526191aba7326bd4a9d7",
+    "git_blob_sha1": "3effb998cca006bf6bf43ab48ff4bc5bd6a51164",
+    "github_blob_matches": true,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md"
+  },
+  {
+    "path": "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/CODEX_NATIVE_PROTOCOL_AMENDMENT_CANDIDATE.md",
+    "bytes": 1564,
+    "sha256": "780948844ea698e362be98a72953033280fd39c74a3e4afb87b9b436df2a7133",
+    "git_blob_sha1": "7abfe5e96171f5f70e06355216ee01d0a19ab1e3",
+    "github_blob_matches": true,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/CODEX_NATIVE_PROTOCOL_AMENDMENT_CANDIDATE.md"
+  },
+  {
+    "path": "scripts/experiment-b-codex-exec-adapter.mjs",
+    "bytes": 5121,
+    "sha256": "439edabf1e55e17b98d63ab465e1610324fc78cab9bf91508a1f2688ffc02986",
+    "git_blob_sha1": "69ea8b1a1d4f0a745058341a6d6dd707f3f99936",
+    "github_blob_matches": true,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/scripts/experiment-b-codex-exec-adapter.mjs"
+  },
+  {
+    "path": "scripts/experiment-b-codex-flight-controls.mjs",
+    "bytes": 2968,
+    "sha256": "03be97e0a49e2796ed8a4ce6cf553fd0ed59b0b399a20f49dc696cf0575c89a4",
+    "git_blob_sha1": "942957388303063c9d4b907b1411a09bbd296647",
+    "github_blob_matches": true,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/scripts/experiment-b-codex-flight-controls.mjs"
+  },
+  {
+    "path": "scripts/run-experiment-b-flight.mjs",
+    "bytes": 62784,
+    "sha256": "456f9f107a8ddb0e6df7c7c3f963bc2bcb0eef177915a55594c2b7f9164e4458",
+    "git_blob_sha1": "bc0f1369f4dec9a249fa8d9185fdc5f09d88b8fb",
+    "github_blob_matches": true,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/scripts/run-experiment-b-flight.mjs"
+  },
+  {
+    "path": "docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
+    "bytes": 33467,
+    "sha256": "95fdcb447e28cae13bf4cdeea3b2527b6531e120db1a2f3b3b68f1d668051922",
+    "git_blob_sha1": "b09306703c91186e439d35599175e2bd86cb2fcf",
+    "github_blob_matches": true,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs"
+  }
+]
