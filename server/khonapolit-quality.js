@@ -1466,7 +1466,8 @@ export default async function handler(req, res) {
   };
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
-    if (releaseCanary || singleShotAudition) return null;
+    if (releaseCanary) return null;
+    if (singleShotAudition) return null;
     // Native Tauric Diana morphology is part of the channel contract, not a
     // cosmetic second pass. Browser budget hints may reorder truly exhausted
     // seats, but they may not suppress the one provider-authored repair that
