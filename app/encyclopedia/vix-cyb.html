@@ -532,6 +532,7 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-reading-rgi17.css" data-visual-system="VIXEN_MOBILE_EDITORIAL_READING_RGI17">
 <link rel="stylesheet" href="./vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
 <link rel="stylesheet" href="./vixen-estate/vixen-obsidian-reading-rgi26.css" data-visual-system="VIXEN_OBSIDIAN_EDITORIAL_READING_AND_PEDAGOGICAL_SCORING_RGI26">
+<link rel="stylesheet" href="./vixen-estate/vixen-mobile-manuscript-opera-rgi27.css" data-visual-system="VIXEN_MOBILE_MANUSCRIPT_OPERA_RGI27">
 <link rel="stylesheet" href="./vixen-estate/vixen-proscenium-seam.css">
 <link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
 <link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
@@ -870,7 +871,7 @@ body[data-view="overview"] .reading-back{display:none}
                   <th scope="row">04 · Methods</th>
                   <td>21 Documentary Instruments (06-INSTRUMENTS · 0 Executors)</td>
                   <td><code>OPERA</code></td>
-                  <td><code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code></td>
+                  <td>—</td>
                 </tr>
                 <tr>
                   <th scope="row">05 · Refusals</th>
@@ -1085,9 +1086,9 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">02 · EXHAUSTIVE 32-WORK CATALOGUE · EXPERIMENT-A COMPANION PREVIEW</p>
+          <p class="eyebrow">02 · 32-WORK CATALOGUE</p>
           <h1>THE WORKS.<span class="title-annotation">32 recorded Works · 53 linked manifestations</span></h1>
-          <p class="intro">The preserved catalogue comprises thirty-two canonical works across five research clusters. Under Em’s Experiment-A preview authorization (<code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code>), all 53 readable <code>.md</code> / extracted <code>.pdf</code> texts and 21 <code>06-INSTRUMENTS</code> bodies are searchable and inspectable here (a separate Giving-style server gate will be required before any future Experiment C main-branch client release).</p>
+          <p class="intro">Thirty-two canonical works across five research clusters. Read their recorded manuscripts, explore linked manifestations, and follow the documentary methods.</p>
         </div>
         <div class="view-number" aria-hidden="true">32</div>
       </div>
@@ -1750,16 +1751,13 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="vix-fusion-readout" id="globalFusionReadout" aria-live="polite">
           FULL INDEX: hybrid L 0.50 · S 0.30 · Σ 0.20 · Documentary routes conditioned by the inquiry.
         </div>
-        <details class="vix-fusion-machine-preview" id="globalFusionTaskTray">
+        <details class="vix-fusion-machine-preview" id="globalFusionTaskTray" hidden aria-hidden="true">
           <summary>Machine-readable task preview (copy-only)</summary>
           <pre id="globalFusionTaskPreview"></pre>
         </details>
       </div>
     </details>
-    <div class="expa-aperture-bar" id="globalSearchObservabilityBar" aria-live="polite">
-      <span>SEMANTIC-SEMIOTIC ENGINE · READY · EXPERIMENT-A CORPUS READABLE</span>
-      <span>EMPIRICAL_REPLICATION_CREDIT: 0</span>
-    </div>
+    <div id="globalSearchObservabilityBar" hidden aria-hidden="true"></div>
     <div class="command-results" id="globalSearchResults"></div>
   </div>
 </dialog>
@@ -3022,19 +3020,19 @@ body[data-view="overview"] .reading-back{display:none}
           '<button type="button" class="secondary-btn reader-close-mobile" id="closeMobileWorkBtn">← Back to Batch-B Index</button>' +
           '<div class="badge-row">' +
             '<span class="tag dark">PROSPECTIVE_BATCH_B</span>' +
-            '<span class="tag porcelain">EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</span>' +
+            '' +
             '<span class="tag gold">NO FABRICATED BODY</span>' +
           '</div>' +
           '<h2>' + esc(selB.original_filename) + '</h2>' +
           '<p style="font:500 10.5px/1.7 var(--font-mono)">ID: ' + esc(selB.source_file_id) + ' · Batch: ' + esc(selB.batch_id) + '</p>' +
           '<div class="reader-section">' +
-            '<h3>PROVENANCE &amp; EXPERIMENT-A CUSTODY METADATA</h3>' +
+            '<h3>RECORDED SOURCE PROVENANCE</h3>' +
             '<div class="manifest-card">' +
               '<div><strong>Bytes:</strong> ' + fmtBytes(selB.byte_length) + ' (' + selB.page_count + ' pages · ' + esc(selB.media_type) + ')</div>' +
               '<div><strong>SHA-256:</strong> <code>' + esc(selB.sha256) + '</code></div>' +
               '<div><strong>Provenance Basis:</strong> ' + esc(selB.provenance_basis) + '</div>' +
               '<div><strong>Source Clock:</strong> ' + esc(selB.source_clock) + ' (never backfilled)</div>' +
-              '<div><strong>Custody Status:</strong> <code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code> — Searchable by filename &amp; directory inventory in Experiment-A preview; original PDF binary awaits git upload (zero fabricated OCR). Experiment A applies no secret gate.</div>' +
+              '<div>Original PDF file not supplied. Filename and catalog metadata remain available; manuscript text was not reconstructed.</div>' +
             '</div>' +
           '</div>';
 
@@ -3109,7 +3107,7 @@ body[data-view="overview"] .reading-back{display:none}
           const gateNote = w.human_gate_required ? ' · Gate #' + w.gate_num + ' [UNADJUDICATED_PAIR]' : '';
           let projLine = w.cluster + ' · ' + w.identity_status + ' · ' + w.manifestations_count + ' file(s)' + gateNote;
           if (state.aiaProjection === 'CUSTODIAL') {
-            projLine = 'Experiment-A Preview · ' + w.identity_status + ' · Readable Original Manifestations';
+            projLine = w.identity_status + ' · Recorded Manifestations';
           } else if (state.aiaProjection === 'AUDIT') {
             projLine = w.protocols.join(', ') + ' · interval [' + w.contribution_interval[0] + ',' + w.contribution_interval[1] + ']';
           } else if (state.aiaProjection === 'IMPLEMENTATION') {
@@ -3137,17 +3135,17 @@ body[data-view="overview"] .reading-back{display:none}
           return '<div class="manifest-card">' +
             '<div class="badge-row" style="justify-content:space-between;margin-bottom:6px">' +
               '<strong>' + esc(s.original_filename) + '</strong>' +
-              '<span class="tag gold">EXPERIMENT_A_PREVIEW_AUTHORIZED</span>' +
+              '' +
             '</div>' +
             '<div>source_file_id: <code>' + esc(s.source_file_id) + '</code> · ' + fmtBytes(s.byte_length) + ' · ' + esc(s.media_type) + '</div>' +
             '<div>SHA-256: <code>' + esc(s.sha256) + '</code> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-copy-hash="' + esc(s.sha256) + '">Copy</button> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-inspect-manifestation="' + esc(s.source_file_id) + '">' + (isActiveManifest ? 'Inspecting Below ✓' : 'Open Manifestation Below ↓') + '</button></div>' +
-            '<div>Available now: full Experiment-A manuscript text opens in the reader below (when a recorded text body exists).</div>' +
+            '<div>Open the recorded manuscript below when a text body is available.</div>' +
           '</div>';
         }).join('');
 
         const LENS_HEADINGS = {
           EXPERIENTIAL: 'Reading Guide · Inquiry & Conceptual Context',
-          CUSTODIAL: 'Experiment-A Source Provenance · Reader Access',
+          CUSTODIAL: 'Source Provenance · Reader Access',
           AUDIT: 'Evidence & Verification · Protocols & Interval Bounds',
           IMPLEMENTATION: 'System Architecture · Transduction & Manifestation Files'
         };
@@ -3157,7 +3155,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<button type="button" class="secondary-btn reader-close-mobile" id="closeMobileWorkBtn">← Back to 32-Work Index</button>' +
           '<div data-membrane="HOST_INFRASTRUCTURE" class="badge-row">' +
             '<span class="tag pink">' + esc(sel.cluster + ' · ' + sel.cluster_short) + '</span>' +
-            '<span class="tag gold">EXPERIMENT_A_PREVIEW_AUTHORIZED</span>' +
+            '' +
             '<span class="tag porcelain">Recorded Authorship: ' + esc(sel.authorship) + '</span>' +
             (sel.human_gate_required ? '<span class="tag gold">Gate #' + sel.gate_num + ' · UNADJUDICATED_PAIR</span>' : '') +
           '</div>' +
@@ -3373,7 +3371,7 @@ body[data-view="overview"] .reading-back{display:none}
 
     const custodyBody =
       '<div style="font:500 10px/1.6 var(--font-mono);color:#d8cbb8;margin-bottom:8px">' +
-        '<span>Policy: <code>' + esc(bodyRec?.custody_status || 'EXPERIMENT_A_PREVIEW_AUTHORIZED') + '</code></span> · ' +
+        '' +
         '<span>Representation: <code>' + esc(bodyRec?.body_representation || 'UNLOADED') + '</code></span>' +
         (bodyRec?.page_count ? ' · <span>PDF Pages: <code>' + esc(String(bodyRec.page_count)) + '</code></span>' : '') +
         (isPaired ? ' · <span style="color:#FFF0A8">[32, 40] Manifestation Pair Preserved Separately</span>' : '') +
@@ -3596,7 +3594,7 @@ body[data-view="overview"] .reading-back{display:none}
         '<div class="bilateral-seam">' +
           '<div class="gate-folio">' +
             '<h3>LEFT FOLIO · MARKDOWN SURFACE (.md)</h3>' +
-            '<div class="badge-row" style="margin-bottom:8px"><span class="tag gold">EXPERIMENT_A_PREVIEW_AUTHORIZED</span><span class="tag porcelain">Native Markdown Companion</span></div>' +
+            '<div class="badge-row" style="margin-bottom:8px"><span class="tag porcelain">Native Markdown Companion</span></div>' +
             '<div><strong>File:</strong> ' + esc(mdSrc.original_filename) + '</div>' +
             '<div><strong>ID:</strong> <code>' + esc(mdSrc.source_file_id) + '</code> · ' + fmtBytes(mdSrc.byte_length) + '</div>' +
             '<div style="font:500 9.5px/1.5 var(--font-mono);margin-top:6px">SHA-256: <code>' + esc(mdSrc.sha256) + '</code></div>' +
@@ -3604,7 +3602,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<div class="optical-seam" aria-hidden="true"><span>' + (cur === 'HYP_SPLIT' ? '≠' : (cur === 'HYP_MERGED' ? '≡' : '||')) + '</span></div>' +
           '<div class="gate-folio">' +
             '<h3>RIGHT FOLIO · TYPESET PDF SURFACE (.pdf)</h3>' +
-            '<div class="badge-row" style="margin-bottom:8px"><span class="tag gold">EXPERIMENT_A_PREVIEW_AUTHORIZED</span><span class="tag porcelain">Extracted PDF Companion</span></div>' +
+            '<div class="badge-row" style="margin-bottom:8px"><span class="tag porcelain">Extracted PDF Companion</span></div>' +
             '<div><strong>File:</strong> ' + esc(pdfSrc.original_filename) + '</div>' +
             '<div><strong>ID:</strong> <code>' + esc(pdfSrc.source_file_id) + '</code> · ' + fmtBytes(pdfSrc.byte_length) + '</div>' +
             '<div style="font:500 9.5px/1.5 var(--font-mono);margin-top:6px">SHA-256: <code>' + esc(pdfSrc.sha256) + '</code></div>' +
@@ -3743,7 +3741,7 @@ body[data-view="overview"] .reading-back{display:none}
         filtered.sort((a, b) => (semInstScores.get(b.instrument_id) || 0) - (semInstScores.get(a.instrument_id) || 0) || a.order - b.order);
       }
       if (summaryEl) {
-        summaryEl.textContent = 'Showing ' + filtered.length + ' of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · EXPERIMENT_A_PREVIEW_AUTHORIZED · 0 Phantom IDs)';
+        summaryEl.textContent = 'Showing ' + filtered.length + ' of 21 documentary methods';
       }
 
       if (filtered.length === 0) {
@@ -3784,7 +3782,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<button type="button" class="secondary-btn reader-close-mobile" id="closeMobileInstBtn">← Back to 21-Protocol Registry</button>' +
           '<div data-membrane="HOST_INFRASTRUCTURE" class="badge-row">' +
             '<span class="tag pink">FAMILY ' + esc(sel.family) + '</span>' +
-            '<span class="tag gold">EXPERIMENT_A_PREVIEW_AUTHORIZED</span>' +
+            '' +
             '<span class="tag porcelain">0 Standalone Executors · Documentary Only</span>' +
             (sel.is_key_synthesis_protocol ? '<span class="tag gold">KEY_SYNTHESIS_PROTOCOL</span>' : '') +
           '</div>' +
@@ -3801,7 +3799,7 @@ body[data-view="overview"] .reading-back{display:none}
               '<div><strong>Standalone Executors in Lineage:</strong> <code>' + sel.standalone_executors_in_lineage + '</code></div>' +
               '<div><strong>Committed Byte Length:</strong> ' + fmtBytes(sel.byte_length) + '</div>' +
               '<div><strong>SHA-256:</strong> <code>' + esc(sel.sha256) + '</code> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-copy-hash="' + esc(sel.sha256) + '">Copy</button></div>' +
-              '<div><strong>Experiment-A Preview Status:</strong> Full documentary protocol script accessible under <code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code> (<code>0</code> standalone executors). Experiment-A protocol bodies remain readable during this experiment.</div>' +
+              '' +
             '</div>' +
             '<div id="protocolExperimentAReaderMount" class="expa-reader-shell" data-instrument-id="' + esc(sel.instrument_id) + '"></div>' +
           '</div>' +
@@ -3869,7 +3867,7 @@ body[data-view="overview"] .reading-back{display:none}
     if (!mountEl.isConnected || mountEl.dataset.instrumentId !== instrumentId) return;
     mountEl.innerHTML =
       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">' +
-        '<strong style="font:600 11px/1.4 var(--font-mono);letter-spacing:.08em;color:#FF91AF">DOCUMENTARY PROTOCOL TEXT · ' + esc(instRec.custody_status || 'EXPERIMENT_A_PREVIEW_AUTHORIZED') + '</strong>' +
+        '<strong style="font:600 11px/1.4 var(--font-mono);letter-spacing:.08em;color:#FF91AF">DOCUMENTARY PROTOCOL TEXT</strong>' +
         '<span style="font:500 9.5px/1.4 var(--font-mono);color:#d8cbb8">' + esc(instRec.filename || instrumentId) + ' · ' + cleanText.length.toLocaleString('en-US') + ' chars · 0 Standalone Executors</span>' +
       '</div>' +
       '<div style="font:500 9.5px/1.5 var(--font-mono);color:#cfd3d6;margin-bottom:8px">' +
@@ -4310,7 +4308,7 @@ body[data-view="overview"] .reading-back{display:none}
         : '';
       obsBar.innerHTML =
         '<span>' + esc(engineLane) + ' · MODE: <code>' + esc(modeTag) + '</code>' + srcRegimeNote + ' · STATUS: <code>' + esc(result.status) + '</code> · ' + esc(obsSummary) + ' · SHOWING ' + _lastGlobalSearchHits.length + '/' + (result.total_hits ?? _lastGlobalSearchHits.length) + '</span>' +
-        '<span>EMPIRICAL_REPLICATION_CREDIT: 0 · EXPERIMENT A: READABLE</span>';
+        '';
     }
 
     if (_lastGlobalSearchHits.length === 0) {
