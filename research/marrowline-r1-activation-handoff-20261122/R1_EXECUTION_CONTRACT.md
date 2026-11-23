@@ -6,6 +6,7 @@
 - **Grant Schema:** `td613.marrowline.r1-live-observation-authorization/v1-ed25519`
 - **Experiment ID:** `HYDROGEN_R1_CONTRADICTION_FREE_PREFIX_SEPARATOR`
 - **Covenant:** `Khona‌lit-po` (literal `U+200C` preserved) · **Seal:** `⟐SAC[X6ZNK5NO51]`
+- **Independent Amari safety amendment (post-29b7e09):** operator signing-key trust is now source-pinned and deliberately UNPROVISIONED; durably fsynced per-slot original SSE files and a local journal are required; live CLI model-discovery preflight is mandatory. **Execution remains HELD until a human-owned key fingerprint is explicitly pinned and offline tests are rerun.**
 - **Authority Posture:** **FAIL-CLOSED OFFLINE BY DEFAULT.** Importing or invoking the runner without a valid human-signed Ed25519 grant stops before reading `GEMINI_API_KEY`, claiming any nonce, or touching network transport.
 
 ---
@@ -43,6 +44,8 @@ node research/marrowline-r1-activation-handoff-20261122/run-r1-original-sse-obse
 - `--execute` without `--ack-live-r1-observation` fails immediately (`R1_LIVE_EXECUTION_NOT_ACKNOWLEDGED`).
 - `--execute` without both `--grant-file` and `--public-key-file` fails immediately (`R1_AUTH_MISSING`) before accessing `GEMINI_API_KEY` or calling `fetch`.
 - `--out` opens exclusively with `'wx'` (`mode: 0o600`) so an existing evidence packet can never be silently overwritten.
+- `--nonce-dir` and `--out` are mandatory absolute paths for live CLI execution; the final output path is reserved using exclusive `wx` before credential use and network dispatch.
+- Raw SSE chunks are fsynced to exclusive files named `r1-<nonce>-R1_S01.sse` and `r1-<nonce>-R1_S02.sse` under the explicit nonce/evidence directory before parsing; `r1-<nonce>-journal.jsonl` records pre-call intent, source digest, observed HTTP outcome, usage, stop reason and closure. This is local durability, **not** distributed custody or a tamperproof external log.
 - `GEMINI_API_KEY` is supplied only at execution time via environment variable (`process.env.GEMINI_API_KEY`) and read **only after** frozen plan parity, Ed25519 signature verification, exact checked-out `HEAD` verification, and single-host `wx` nonce redemption all pass.
 
 ---
@@ -69,6 +72,10 @@ Shared invariants: `contentsSha256 = e056b75319141b145903441d1156bbf4f7fa3f15e14
 ## 3. Ed25519 Human-Authority Verification Boundary
 
 No private signing key is ever stored in the repository, CI workflows, GitHub comments, PR bodies, Vercel environment variables, or agent prompts. An offline operator signs a grant JSON packet with an operator-held Ed25519 private key and passes only the **signed grant** and the **separate SPKI Ed25519 public key** to the runner.
+
+### 3.0 Independently pinned operator trust anchor (NEW mandatory gate)
+
+The reviewed runner now initializes `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null` and **rejects live execution** with `R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED` until an operator-controlled, independently reviewed commit pins the SHA-256 fingerprint of the intended operator-held Ed25519 **SPKI DER** public key. The `--public-key-file` supplied with the grant must hash to that committed fingerprint. A self-generated key and signature presented together by an agent have zero authority. The private signing key stays wholly outside GitHub, CI, Vercel, agent files, and the ChatGPT conversation. The test-only dependency-injection path accepts an ephemeral fingerprint exclusively in a Node test process with a supplied mock transport; production CLI has no such override. After pinning, the exact runner HEAD changes and **must** be rebound in a newly signed authorization; any prior grant becomes obsolete. Do not use a dynamic env variable as the production trust anchor.
 
 ### 3.1 Canonical Signing Domain
 
@@ -132,6 +139,7 @@ scopeGuarantee = "SINGLE_HOST_FILESYSTEM_ATOMIC_WX_ONLY_NOT_CROSS_HOST"
   - Observed `usageMetadata` counts are recorded verbatim and **never clamped downward**.
   - Per-slot `> 16384` halts immediately (`STOP_ON_PER_SLOT_OUTPUT_CEILING_EXCEEDED`) and skips remaining slots.
   - Combined `>= 32768` across completed slots blocks any subsequent slot.
+- A complete provider STOP without valid nonnegative integer prompt/candidate/thought/total usage fields leads to `STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE`; missing fields cannot silently become zero spend. Observed prompt tokens above 1,000 similarly cause `STOP_ON_OBSERVED_PROMPT_TOKEN_CEILING_EXCEEDED`.
 
 ---
 
@@ -139,11 +147,11 @@ scopeGuarantee = "SINGLE_HOST_FILESYSTEM_ATOMIC_WX_ONLY_NOT_CROSS_HOST"
 
 1. **Plan & Digest Lock:** Verify `R1_S01` and `R1_S02` exact wire/countTokens/config digests.
 2. **Authority & Nonce Custody:** Verify `checkedOutHeadSha`, Ed25519 signature, TTL (`<= 30m`), covenant/seal, and claim local `wx` nonce before reading `GEMINI_API_KEY`.
-3. **Optional Metadata Preflight (`checkModelDiscovery`):** When explicitly enabled, `GET /v1beta/models/gemini-3.8-flash` must return `200` with both `generateContent` and `countTokens` in `supportedGenerationMethods`.
+3. **Mandatory Live-CLI Metadata Preflight:** The live CLI always enables model discovery before any :countTokens or generation, and, `GET /v1beta/models/gemini-3.8-flash` must return `200` with both `generateContent` and `countTokens` in `supportedGenerationMethods`.
 4. **Arm 1 (`R1_S01`):**
    - Run live `:countTokens`; abort before generation on error, invalid count, or `> 1000` tokens.
    - Run single-shot `POST .../models/gemini-3.8-flash:streamGenerateContent?alt=sse`.
-   - Capture raw unmodified SSE bytes first (`rawSseSha256`, `rawSseBytes`, `rawSseBase64`) before any parsing.
+   - Fsync every original SSE chunk into the slot's exclusive local .sse file BEFORE parsing and independently record the raw digest, byte length and Base64 in the returned packet. The journal is initialized before provider access; interrupted runs retain partial original bytes and dispatch intent.
    - Verify stream completeness, dual-parser agreement (`readGeminiSse` vs independent byte-level SSE parser), zero duplicate substantive SSE events / duplicate finish events, exact `modelVersion === "gemini-3.8-flash"` (single unique served value), zero policy terminations (`PROHIBITED_CONTENT`, `SAFETY`, `RECITATION`, `BLOCKLIST`, `SPII`, etc.), `finishReason === "STOP"`, and raw text SHA-256 integrity.
    - Any failure on `R1_S01` sets `terminalStopReason`, marks the run `HELD`, skips `R1_S02`, and **never** uses `R1_S02` as a retry.
    - **Critical R1 rule:** If `R1_S01` is transport-complete and model-valid (`STOP`, `gemini-3.8-flash`) with **zero vertical combining marks** (flat morphology), `R1_S01` does **not** halt early; `R1_S02` remains eligible and proceeds cleanly.
