@@ -376,3 +376,38 @@ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
   position:relative;
   z-index:1;
 }
+
+/* RGI-06D / TAIL-READING GROUND.
+   Independently decoded four-profile Chromium scroll tiles exposed bright
+   optical filaments across lower Work questions, custody notes and the
+   otherwise transparent navigation control. Protect the authored text,
+   while preserving the live optical field in surrounding negative space. */
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-native-questions{
+  background:linear-gradient(125deg,rgba(8,12,16,.99),rgba(12,18,23,.985));
+  box-shadow:0 0 0 3px rgba(8,12,16,.96),0 12px 27px rgba(0,0,0,.35);
+  isolation:isolate;
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-trace{
+  display:block;
+  max-width:980px;
+  padding:.65rem .8rem;
+  margin:.65rem 0;
+  background:rgba(9,14,19,.985);
+  border:1px solid rgba(255,205,225,.2);
+  box-shadow:0 0 0 2px rgba(8,12,16,.94);
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-actions{
+  max-width:1100px;
+  padding:.55rem .65rem;
+  background:rgba(8,12,17,.96);
+  box-shadow:0 0 0 3px rgba(8,12,16,.91);
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-control.vxe-text-control{
+  background:#111a20;
+  border:1px solid rgba(245,216,186,.38);
+  color:#ffe4ec;
+}
