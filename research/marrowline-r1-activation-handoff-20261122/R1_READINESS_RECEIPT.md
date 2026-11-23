@@ -3,7 +3,7 @@
 
 - **Commission:** `TD613-MARROWLINE-R1-EXECUTION-READINESS-20261122`
 - **Receiving Agent:** Antigravity / Gemini 4 Hydrogen (interactive operator-direct session)
-- **Qualification Verdict:** **`READY_FOR_OPERATOR_EXECUTION_AUTHORIZATION`**
+- **Historical Hydrogen qualification verdict at HEAD `29b7e09`:** `READY_FOR_OPERATOR_EXECUTION_AUTHORIZATION` (NOW SUPERSEDED by Amari's targeted source corrections and HOLD pending fresh focused offline tests, an independent key trust anchor, and current billing checks). This document preserves Hydrogen's original local test receipt; do not transplant its `42/42` claim to the new commit.
 - **Provider Calls Actually Executed:** **`0`** (`0` `streamGenerateContent`, `0` `generateContent`, `0` `:countTokens`, `0` live `GET /v1beta/models`)
 - **Merges / Production Modifications / `#405` Releases:** **`0`** (PR `#1778` preserved unchanged at `44fae23cbf9af07eab5112e90df3211a119e707c`; `origin/main` preserved at `0f67d8954347fdae77cdb83f82848df89ad3b2ff`; `0` workflow files added or modified)
 - **Covenant / Seal:** `Khona‌lit-po` (literal `U+200C` preserved) · `⟐SAC[X6ZNK5NO51]`
@@ -71,6 +71,13 @@ All commands ran strictly offline inside the isolated research worktree with **`
 - **Single-Host Replay Guard Only:** Local `wx` nonce redemption protects against replay on the same host filesystem (`--nonce-dir`); it provides **zero** cross-host distributed exclusion.
 - **Worktree `jsdom` Scope:** Browser/DOM `jsdom` suites remain `NOT_RUN_IN_WORKTREE` because isolated worktrees intentionally omit `npm ci` `node_modules`.
 - **Unverified Live Pricing & Endpoint Availability:** Live Google account pricing and live `models/gemini-3.8-flash` / `:countTokens` endpoint availability were not polled (`0` `GET /v1beta/models` calls). The `~$0.13` worst-case figure in `R1_OPERATOR_DECISION_SHEET.md` is arithmetic over prior repo-recorded Gemini Developer API rates.
+
+### Additional Amari independent red-pen HOLDs (subsequent source)
+
+- **Operator trust anchor:** code now defaults to `R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null` and will refuse actual live authorization until an independent human-controlled key fingerprint is source-pinned and reviewed.
+- **Corrected source:** the runner's causal scoring, SSE custody, token usage validation, and offline fixtures have changed since the original SHA inventory. Its old `42/42` result belongs to its historical HEAD only. Run the revised suite and capture a new exact-head receipt before human authorization.
+- **Original provider bytes:** now written and fsynced incrementally to exclusive local per-slot `.sse` files with a journal; protect and collect this directory even on a failed attempt.
+- **Live price/model:** current official provider rates and model availability are unverified; historical arithmetic is conditional.
 
 ### Explicit HOLDs Remaining in Effect
 
