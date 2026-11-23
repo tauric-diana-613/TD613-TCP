@@ -41,11 +41,11 @@ function jpegPixelDimensions(bytes){
  }
  throw Error('SCREENSHOT_JPEG_DIMENSIONS_MISSING');
 }
-async function capture(target,rel,details){
+async function capture(target,rel,details,screenshotOptions={}){
  const dest=path.join(root,rel);
  await mkdir(path.dirname(dest),{recursive:true});
  const started=Date.now();
- await target.screenshot({path:dest,type:'jpeg',quality:85,animations:'allow',timeout:30000});
+ await target.screenshot({path:dest,type:'jpeg',quality:85,animations:'allow',timeout:30000,...screenshotOptions});
  const bytes=await readFile(dest);
  const record={file:rel,captured_at:new Date().toISOString(),capture_elapsed_ms:Date.now()-started,sha256:createHash('sha256').update(bytes).digest('hex'),byte_length:bytes.length,pixel_dimensions:jpegPixelDimensions(bytes),...details};
  records.push(record);
@@ -108,7 +108,8 @@ async function scrollCapture(page,profile,surface){
   return [...scope.querySelectorAll('*')].filter(el=>{
    const st=getComputedStyle(el),r=el.getBoundingClientRect();
    return r.width>=125&&r.height>=130&&el.scrollHeight-el.clientHeight>=200&&
-    /auto|scroll/.test(st.overflowY)&&st.display!=='none';
+    /auto|scroll/.test(st.overflowY)&&st.display!=='none'&&
+    el.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
   }).map(el=>{
    if(!el.dataset.vixenWitnessPane)el.dataset.vixenWitnessPane='witness-'+Math.random().toString(16).slice(2,10);
    return {key:el.dataset.vixenWitnessPane,max:el.scrollHeight-el.clientHeight,height:el.clientHeight};
@@ -127,18 +128,23 @@ async function scrollCapture(page,profile,surface){
     node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
     node.scrollTop=y;
     const rect=node.getBoundingClientRect();
-    return {scrollTop:node.scrollTop,max:node.scrollHeight-node.clientHeight,
-      visible:rect.bottom>0&&rect.top<innerHeight&&rect.width>0};
+    // Actual visible pane pixels, bounded to the current viewport; avoids
+    // Playwright element-screenshot's hidden/offscreen auto-scroll loop.
+    const left=Math.max(0,Math.floor(rect.left)),top=Math.max(0,Math.floor(rect.top));
+    const right=Math.min(innerWidth,Math.ceil(rect.right)),bottom=Math.min(innerHeight,Math.ceil(rect.bottom));
+    const clip={x:left,y:top,width:Math.max(0,right-left),height:Math.max(0,bottom-top)};
+    return {scrollTop:node.scrollTop,max:node.scrollHeight-node.clientHeight,clip,
+      visible:clip.width>=100&&clip.height>=90&&node.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})};
    },{key:pane.key,y:target});
    if(!observed)throw Error('NESTED_PANE_DISAPPEARED '+pane.key);
    await page.waitForTimeout(50);
-   if(!observed.visible)throw Error('NESTED_PANE_UNOBSERVABLE '+surface+' '+pane.key);
-   const element=page.locator('[data-vixen-witness-pane="'+pane.key+'"]');
-   const frame=await capture(element,path.join(profile.name,slug(surface),'pane-'+pane.key+'-'+String(i).padStart(3,'0')+'.jpg'),{
+   if(!observed.visible)throw Error('NESTED_PANE_UNOBSERVABLE '+surface+' '+pane.key+' '+JSON.stringify(observed));
+   const frame=await capture(page,path.join(profile.name,slug(surface),'pane-'+pane.key+'-'+String(i).padStart(3,'0')+'.jpg'),{
     profile:profile.name,surface,kind:'nested_scroll_tile',pane_id:pane.key,tile:i,
     observed_scroll:observed.scrollTop,pane_max_scroll:observed.max,
-    capture_target:'nested_element',device_scale_factor:profile.deviceScaleFactor??1
-   });
+    capture_target:'nested_viewport_clip',clip_css_pixels:observed.clip,
+    device_scale_factor:profile.deviceScaleFactor??1
+   },{clip:observed.clip});
    if(priorHash===frame.sha256&&Math.abs(observed.scrollTop-priorScroll)>50){
     throw Error('NESTED_PANE_STALE_PIXELS '+surface+' '+pane.key+' '+observed.scrollTop);
    }
@@ -243,7 +249,7 @@ try{
    matrix.push({profile:profile.name,route:'search-negative-query',covered_bottom:true,tiles:1,modal:true});
    await page.locator('#globalSearchInput').fill('provenance');
    await page.waitForTimeout(180);
-   await page.locator('#vixenFusionConsole summary').click({force:true,timeout:5000});
+   await page.locator('#vixenFusionConsole > summary').click({force:true,timeout:5000});
    await page.waitForTimeout(120);
    await capture(page,path.join(profile.name,'search-dialog','fusion-laboratory.jpg'),{
     profile:profile.name,surface:'fusion-laboratory',kind:'fusion_laboratory',device_scale_factor:profile.deviceScaleFactor??1
@@ -259,9 +265,19 @@ try{
   // relationship between its reference records and Vixen's Works.
   try{
    await page.locator('#vixenRoomRail button[data-view="reference"]').click({force:true});
-   await page.waitForTimeout(100);
-   const entrance=page.locator('#vixenReferenceChamber').getByRole('button',{name:/Open independent reference reading room/i}).first();
-   await entrance.click({force:true,timeout:7000});
+   await page.waitForFunction(()=>document.body.dataset.view==='reference',null,{timeout:10000});
+   const invitation=page.locator('#vixenReferenceChamber button.vxe-text-control')
+    .filter({hasText:/Open independent reference reading room/i});
+   await invitation.first().waitFor({state:'attached',timeout:12000}).catch(async()=>{
+    const status=await page.evaluate(()=>({
+     route:document.body.dataset.view,stage:document.body.dataset.activeResearchStage||null,
+     chamberPresent:!!document.getElementById('vixenReferenceChamber'),
+     buttons:[...document.querySelectorAll('#vixenReferenceChamber button')].slice(-12)
+      .map(b=>({text:b.textContent,visible:b.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})}))
+    }));
+    throw Error('INDEPENDENT_READING_ROOM_INVITATION_NOT_MOUNTED '+JSON.stringify(status));
+   });
+   await invitation.first().click({force:true,timeout:7000});
    await page.waitForTimeout(250);
    const opened=await page.evaluate(()=>document.body.dataset.activeResearchStage==='OPERAHOUSE');
    if(!opened)throw Error('SEPARATE_READING_ROOM_NOT_OPEN');
