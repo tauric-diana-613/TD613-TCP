@@ -1,0 +1,22 @@
+# Vixen Cybernetics — Pre-#1744 Release Adjudication
+**STATE: EVIDENCE INTAKE HELD — final screenshot archive not yet admitted.**
+
+This branch is the persistent cross-thread review address for the **final, independently audited Chromium screenshot package only**, its manifest, source/source-revision and artifact-custody receipts. It exists separately from product PR #1730 and witness repair PR #1784.
+
+- **Source inherited:** witness-only candidate `b6106cf4633c2ad86f3519dc05f79b1144049aba` from draft PR #1784.
+- **Established product preview:** `b90ae99559b21e1561229cdc8e1d873cfaf6f43a`, currently verified by successful #1744 PREPARE 45049541672 and DEPLOY 45049621797.
+- **Unmerged product:** PR #1730, branch `research/vixen-dual-estate-encyclopedia-20261108`.
+- **Witness repairs:** draft PR #1784; final CI must qualify its exact commit after all fixes.
+- **Research:** private 7+1 and PR #1782 excluded from visitor-facing and review archives.
+- **Protected:** production #405, human Program Notes grants, Experiment B, provider synchronization, release rights remain untouched.
+
+## Final-only evidence contract
+
+Publish **exactly one** final screenshot package and **one** final integrity/coverage receipt after full local/hosted attribution, four viewport validation, nested scroll image audit, error/failure register, and SHA-256 inventory. Intermediate, historical, failed or partial capture ZIPs belong in CI history or labeled external evidence, **never** in this branch's final evidence directory. If an archive exceeds GitHub Git's 100 MB file limit, keep the complete byte-for-byte archive as the exact-head Actions artifact and persist its artifact ID, run URL, archive SHA-256, retrieval instructions, and any durable authorized external copy here. A link or pointer alone must never be described as a Git-embedded ZIP.
+
+## Release and adjudication status
+
+HUMAN REVIEW PENDING. **No #1744 PREPARE or DEPLOY action from this branch.** Final package promotion and any product merge require separate qualified checks and authorization.
+
+OPERAHOUSE ≠ OPERA ≠ PERFORMER.
+Khona‌lit-po · Tauric Diana · ⟐SAC[X6ZNK5NO51]
