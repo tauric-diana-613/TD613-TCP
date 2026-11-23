@@ -45,6 +45,13 @@
 - **Narrow product repair:** `dfb4736617606f731c205047b3b8e89a7f06132f` adds scoped RGI-06D nearly opaque reading grounds to `.vxe-native-questions`, `.vxe-trace`, `.vxe-actions` and `.vxe-control.vxe-text-control`. Leaves optical lines in the surrounding Folios field; preserves OPERAHOUSE separation.
 - Exact-head Chromium CI [45168772565](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45168772565) queued after repair. **Rendered validation of 06D is pending; no final archive admitted.**
 
+
+### Mobile overlay hit-testing and asynchronous session activation
+- [CI 45164763788](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45164763788), `d1cb3651…`: historical RED, 1,001 images, 129 route records; source-reported 390px `PODIUM_SESSION_NEVER_ACTIVATED` after 30 seconds, plus 428px Observatory proof state timeout, with three resulting required-route absences. Preserve the exact observed program state; refrain from asserting Program Notes permission.
+- `1e620ddf52d47616593755f4fc91517318a5adbd`: source-observed Search ARIA modes, proof state and reading-room state use `noWaitAfter` to avoid incidental navigation waiting without skipping state verification.
+- `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`: mobile critical controls use actual Playwright hit-testing with center scroll instead of `force:true`, covering Podium start, proof, reading-room and notes request; corresponding exact-head [CI 45169186165](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45169186165) requires full qualification.
+- Last observed PR #1784 HEAD when this note was staged: `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`; always re-check live HEADs before integration. Historical RED remains outside final evidence.
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
