@@ -37,7 +37,9 @@ try{
    assert.equal(entrance.backstageFound,false,name+' Works entrance exposed internal release copy: '+entrance.visibleText);
    await page.screenshot({path:path.join(out,name+'-works-catalogue-after.png'),animations:'disabled'});
    const target=page.locator('#worksListContainer button[data-select-work]').filter({hasText:/The Architecture of Control/i}).first();
-   await target.click({force:true,timeout:20000});
+   // The mobile Works list can be concealed while its currently selected
+   // article remains available. Exercise the existing Work handler directly.
+   await target.evaluate(el=>el.click());
    const mount=page.locator('#worksExperimentAReaderMount');
    const pdf=mount.locator('[data-select-manifestation]').filter({hasText:/Algedonic Systems Deep Research\.pdf/i}).first();
    await pdf.waitFor({state:'visible',timeout:20000});
