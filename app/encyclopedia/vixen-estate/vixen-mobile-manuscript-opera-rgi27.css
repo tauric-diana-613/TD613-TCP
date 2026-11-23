@@ -157,6 +157,24 @@
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre h3.vix-reader-heading {font-size:22px!important}
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(h4,h5,h6).vix-reader-heading {font-size:18px!important}
+  /* Retire RGI18's oversized 31-60px gold poster title and drop-cap
+     without changing the source's actual title or manuscript bytes. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title {
+    font:600 18.5px/1.23 "Iowan Old Style","New York",Georgia,serif!important;
+    color:#292e30!important;text-shadow:none!important;
+    width:auto!important;max-width:100%!important;
+    margin:0 0 10px!important;padding:0 0 8px!important;
+    border-bottom:1px solid #d0c5ba!important;
+    letter-spacing:-.013em!important;text-transform:capitalize!important;
+    text-wrap:wrap!important;overflow-wrap:normal!important;word-break:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-lineation="pdf-source-wordflow-reconstructed"]>.vix-reader-paragraph:first-of-type::first-letter {
+    float:none!important;margin:0!important;padding:0!important;
+    font:inherit!important;color:inherit!important;line-height:inherit!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-topline span:last-child {
+    display:none!important;
+  }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-pdf-source-title::before {
     display:none!important;content:none!important;
   }
