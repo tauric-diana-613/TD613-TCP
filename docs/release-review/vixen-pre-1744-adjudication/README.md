@@ -18,6 +18,7 @@ Publish **exactly one** final screenshot package and **one** final integrity/cov
 ## Reproducible validation tools — preparation, not accepted final evidence
 
 - [Post-deployment HTTPS witness protocol](POST_DEPLOYMENT_WITNESS_PROTOCOL.md): verifies actual served revision and records the owner-held #1744 release boundary.
+- [Independent scoped stack auditor](audit_scoped_stack.py): verify every scoped archive member against the internal SHA-256 manifest and the nested HTTP preview manifest, reject unsafe names, secret-bearing file types, and protected source directories; the prior product baseline b90ae995… passed 1,453 members and 1,302 HTTP entries. Re-run at the **new exact product HEAD** before final packaging.
 - [Independent screenshot archive auditor](audit_final_surface.py): run `python audit_final_surface.py Vixen_Chromium_Full_Surface_<SHA>.zip <SHA>` with Pillow installed; must pass separately from GitHub Actions.
 - [Exact-head archive staging script](stage_vixen_archives.py): run with `--repo <clean-product-checkout> --out <archive-directory>` to package the verified scoped stack and HTTP payload. **Only after independent HTTPS source verification**, add `--https-witness <full-surface-directory> --served-receipt <verified-source-receipt.json>` to stage one final screenshot ZIP. This script never deploys or promotes an archive by itself.
 - [Engineering qualification ledger](ENGINEERING_QUALIFICATION_RECEIPT.md): latest point-in-time SHA, historical RED run IDs, known defects and integration hold.
