@@ -41,8 +41,21 @@ try{
        try{
          const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
          if(response?.status()!==200)throw Error('HTTP_'+response?.status());
+         // The route rail mounts asynchronously. Clicking before stage boot
+         // silently leaves the Works index in a hidden view on every width.
+         await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:30000});
          await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true,timeout:20000});
-         await page.locator('#worksListContainer button[data-select-work]').first().click({force:true,timeout:20000});
+         await page.locator('#view-works').waitFor({state:'visible',timeout:20000});
+         const firstWork=page.locator('#worksListContainer button[data-select-work]').first();
+         if(await firstWork.isVisible())await firstWork.click({timeout:20000});
+         else {
+           const returnToIndex=page.locator('#closeMobileWorkBtn');
+           if(await returnToIndex.isVisible()){
+             await returnToIndex.click({timeout:15000});
+             await firstWork.waitFor({state:'visible',timeout:15000});
+             await firstWork.click({timeout:20000});
+           } // Otherwise, Works is already showing its initially selected Work.
+         }
          await page.waitForSelector('#expaCompanionBodyPre.vix-manuscript .vix-reader-paragraph',{timeout:45000});
          await page.waitForTimeout(250);
          const measurement=await page.evaluate(()=>{
