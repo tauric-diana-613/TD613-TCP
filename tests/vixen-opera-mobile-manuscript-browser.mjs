@@ -48,7 +48,7 @@ try{
          const measurement=await page.evaluate(()=>{
            const article=document.querySelector('#expaCompanionBodyPre');
            const paragraphs=[...article.querySelectorAll('.vix-reader-paragraph')];
-           const selected=paragraphs.find(p=>(p.textContent||'').trim().split(/\\s+/u).length>=25)||paragraphs[0];
+           const selected=paragraphs.find(p=>(p.textContent||'').trim().split(/\s+/u).length>=25)||paragraphs[0];
            const rect=article.getBoundingClientRect();
            const pRect=selected?.getBoundingClientRect();
            const rects=[];
@@ -56,7 +56,7 @@ try{
              const walker=document.createTreeWalker(selected,NodeFilter.SHOW_TEXT);
              let node;
              while((node=walker.nextNode())&&rects.length<160){
-               const rx=/\\S+/gu;let match;
+               const rx=/\S+/gu;let match;
                while((match=rx.exec(node.data))&&rects.length<160){
                  const range=document.createRange();range.setStart(node,match.index);
                  range.setEnd(node,match.index+match[0].length);
@@ -70,7 +70,7 @@ try{
            const ordered=[...counts.values()].sort((a,b)=>a-b);
            const median=ordered.length?ordered[Math.floor(ordered.length/2)]:0;
            const tokens=[...document.querySelectorAll('#view-works .view-heading, #worksReaderPanel .badge-row, #worksExperimentAReaderMount>div:first-child')].filter(e=>e.getClientRects().length).map(e=>e.innerText||'').join(' ');
-           const leaked=(tokens.match(/EXPERIMENT[_ -]?A(?:[_ -]?PREVIEW)?[_ -]?AUTHORIZED|EXPERIMENT-A COMPANION READER|VOLUNTEER\\s*\\/\\s*DEV AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|FULL COMPANION MANUSCRIPT AVAILABLE/gi)||[]);
+           const leaked=(tokens.match(/EXPERIMENT[_ -]?A(?:[_ -]?PREVIEW)?[_ -]?AUTHORIZED|EXPERIMENT-A COMPANION READER|VOLUNTEER\s*\/\s*DEV AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|FULL COMPANION MANUSCRIPT AVAILABLE/gi)||[]);
            const css=getComputedStyle(article);
            return {article_width_px:+rect.width.toFixed(2),paragraph_width_px:+(pRect?.width||0).toFixed(2),
              body_font_px:css.fontSize,body_font_family:css.fontFamily,body_line_height:css.lineHeight,
