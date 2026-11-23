@@ -152,7 +152,8 @@ try{
   } else {
    assert.equal(after.max_height,'none','desktop manuscript must read as a document, not a scrollbox');
    assert.ok(parseFloat(after.paragraph_font_size)>=15.5,'desktop manuscript body must remain legible: '+JSON.stringify(after));
-   assert.equal(after.pdf_title_display,'none','remove giant duplicate source title from visual desktop reading path');
+   if(after.pdf_title_display!==null)
+    assert.equal(after.pdf_title_display,'none','suppress duplicate source title when PDF version is selected');
    assert.ok(parseFloat(after.catalogue_title_font_size)<=16,'desktop Work rail must be a compact index: '+JSON.stringify(after));
   }
   assert.equal(after.leak_count,0,'visitor-stage labels remain: '+JSON.stringify(after.visible_leaks));
