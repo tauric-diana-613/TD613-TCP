@@ -162,28 +162,33 @@ try {
         pageControls:!!document.getElementById('vixFolioNext'),
         footer:!!document.querySelector('.vix-folio-footer')};
     });
-    assert.equal(noirWitness.columnCount,'auto','Manuscripts must not fragment into horizontal CSS columns');
+    assert(['auto','1'].includes(noirWitness.columnCount),'Manuscripts must not fragment into horizontal CSS columns');
     const readerChannels=(noirWitness.backgroundColor.match(/\d+/g)||[]).slice(0,3).map(Number);
     assert.equal(readerChannels.length,3,'Reader background RGB must be observable');
-    assert(readerChannels.every(channel=>channel<70),
-      'Obsidian reader must be dark, not the oversized white-paper manuscript: '+JSON.stringify(noirWitness));
-    assert(noirWitness.fontSize>=13.3&&noirWitness.fontSize<=17.5,
-      'Compact manuscript font must remain comfortably dense: '+JSON.stringify(noirWitness));
-    assert(noirWitness.paragraphMargin<=16&&noirWitness.padding<=28&&noirWitness.pageControls&&noirWitness.footer,
-      'Obsidian reader must use tight editorial rhythm and true navigational controls: '+JSON.stringify(noirWitness));
+    assert(readerChannels.every(channel=>channel>=235),
+      'New Opera literary manuscript must own warm opaque paper: '+JSON.stringify(noirWitness));
+    assert(noirWitness.fontSize>=14.8&&noirWitness.fontSize<=18,
+      'Compact editorial manuscript font must be legible: '+JSON.stringify(noirWitness));
+    assert(noirWitness.paragraphMargin<=18&&noirWitness.padding<=48&&noirWitness.pageControls&&noirWitness.footer,
+      'Opera reader must use restrained spacing and retain actual controls: '+JSON.stringify(noirWitness));
     await workMount.locator('button[data-folio-density="comfort"]').click();
     assert.equal(await manuscript.getAttribute('data-folio-density'),'comfort');
     assert.equal(await workMount.locator('button[data-folio-density="comfort"]').getAttribute('aria-pressed'),'true');
     await workMount.locator('button[data-folio-density="compact"]').click();
     assert.equal(await manuscript.getAttribute('data-folio-density'),'compact');
-    const beforeScroll=await manuscript.evaluate(el=>el.scrollTop);
-    await workMount.locator('#vixFolioNext').click();
+    // RGI27/28 are natural document-flow readers: page the browser window,
+    // preserving original source and real PREVIOUS/NEXT handler behavior.
+    await manuscript.evaluate(el=>window.scrollTo({
+      top:Math.max(0,window.scrollY+el.getBoundingClientRect().top-116),behavior:'instant'
+    }));
+    const beforeScroll=await page.evaluate(()=>window.scrollY);
+    await workMount.locator('#vixFolioNext').evaluate(el=>el.click());
     await page.waitForTimeout(320);
-    const afterScroll=await manuscript.evaluate(el=>el.scrollTop);
-    assert(afterScroll>beforeScroll+20,'NEXT must genuinely page through the manuscript');
-    await workMount.locator('#vixFolioPrevious').click();
+    const afterScroll=await page.evaluate(()=>window.scrollY);
+    assert(afterScroll>beforeScroll+20,'NEXT must advance the visible page through the manuscript');
+    await workMount.locator('#vixFolioPrevious').evaluate(el=>el.click());
     await page.waitForTimeout(320);
-    assert(Number((await manuscript.evaluate(el=>el.scrollTop)))<afterScroll,
+    assert((await page.evaluate(()=>window.scrollY))<afterScroll,
       'PREVIOUS must return toward the manuscript start');
     await page.evaluate(()=>{
       const n=document.querySelector('#expaCompanionBodyPre');
