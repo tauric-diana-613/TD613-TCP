@@ -4,7 +4,8 @@
 // Paid Gemini calls authorized or executed by this module: 0 (fail-closed)
 
 import crypto from 'node:crypto';
-import { pathToFileURL } from 'node:url';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { buildInvocationPacket } from '../../app/dome-world/khonapolit-covenant.js';
 import {
   buildApertureV3InvocationReceipt,
@@ -182,6 +183,41 @@ export const FROZEN_STAGE1_SLOT_WIRE_MANIFEST = Object.freeze({
 export function geminiCountTokensUrl(model = '') {
   const normalized = String(model || '').replace(/^models\//, '');
   return `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalized)}:countTokens`;
+}
+
+// B-01: Build the documented Gemini API CountTokensRequest payload wrapping the complete
+// effective GenerateContentRequest inside `generateContentRequest` (including `model`,
+// `systemInstruction`, `contents`, and `generationConfig`). Top-level CountTokensRequest
+// has no root `systemInstruction` field.
+export function buildGeminiCountTokensRequest(request = {}, model = 'gemini-4-argon') {
+  const normalized = String(model || '').replace(/^models\//, '').trim();
+  if (!normalized) {
+    throw new Error('COUNT_TOKENS_MISSING_MODEL');
+  }
+  if (
+    !request
+    || typeof request !== 'object'
+    || !request.systemInstruction
+    || !Array.isArray(request.systemInstruction?.parts)
+    || request.systemInstruction.parts.length === 0
+    || !Array.isArray(request.contents)
+    || request.contents.length === 0
+    || !request.generationConfig
+  ) {
+    throw new Error('COUNT_TOKENS_INCOMPLETE_GENERATE_CONTENT_REQUEST');
+  }
+  return Object.freeze({
+    generateContentRequest: Object.freeze({
+      model: `models/${normalized}`,
+      systemInstruction: request.systemInstruction,
+      contents: request.contents,
+      generationConfig: request.generationConfig,
+      ...(request.safetySettings ? { safetySettings: request.safetySettings } : {}),
+      ...(request.tools ? { tools: request.tools } : {}),
+      ...(request.toolConfig ? { toolConfig: request.toolConfig } : {}),
+      ...(request.cachedContent ? { cachedContent: request.cachedContent } : {})
+    })
+  });
 }
 
 const FORBIDDEN_OVERLAY_LEXEMES_IN_ARM_E = Object.freeze([
@@ -370,7 +406,8 @@ export function enforceArgonExperimentBudget({
   completedSlots = [],
   nextSlotRequest = null,
   nextSlotWireObservation = null,
-  preDispatchCountTokens = null
+  preDispatchCountTokens = null,
+  requirePreDispatchCountTokens = false
 } = {}) {
   const {
     stageId,
@@ -612,8 +649,25 @@ export function enforceArgonExperimentBudget({
     }
   }
 
+  if (requirePreDispatchCountTokens) {
+    if (!Number.isInteger(preDispatchCountTokens) || preDispatchCountTokens <= 0) {
+      return Object.freeze({
+        allowNextCall: false,
+        stopReason: 'PRECALL_COUNT_TOKENS_REQUIRED_NOT_ESTABLISHED',
+        observedPreDispatchCountTokens: preDispatchCountTokens ?? null,
+        perSlotHardPromptTokenCeiling,
+        stageId,
+        completedCalls: completedSlots.length,
+        consumedPromptTokens,
+        consumedOutputAndThoughtTokens,
+        consumedTotalTokens,
+        usageDeviations: frozenDeviations
+      });
+    }
+  }
+
   if (preDispatchCountTokens !== null && preDispatchCountTokens !== undefined) {
-    if (!Number.isInteger(preDispatchCountTokens) || preDispatchCountTokens < 0 || preDispatchCountTokens > perSlotHardPromptTokenCeiling) {
+    if (!Number.isInteger(preDispatchCountTokens) || preDispatchCountTokens <= 0 || preDispatchCountTokens > perSlotHardPromptTokenCeiling) {
       return Object.freeze({
         allowNextCall: false,
         stopReason: 'PRECALL_COUNT_TOKENS_EXCEEDED_SLOT_CEILING',
@@ -728,9 +782,9 @@ export function buildHeldArgonTwoCallExperimentPlan() {
   });
   const t1 = parity.tasks.T1_BLUE_ORANGE_WEATHER;
   return Object.freeze({
-    schema: 'td613.marrowline.held-argon-two-call-discriminator/v2',
+    schema: 'td613.marrowline.held-argon-two-call-discriminator/v3',
     executionPosture: 'HELD_ZERO_PAID_CALLS_EXECUTED',
-    commission: 'TD613-MARROWLINE-ARGON-SUCCESSOR-ACTIVATION-20261122',
+    commission: 'TD613-MARROWLINE-ARGON-SUCCESSOR-CLOSURE-20261122',
     pinnedModel: profile.model,
     budgetProfile: profile,
     slots: Object.freeze([
@@ -754,21 +808,204 @@ export function buildHeldArgonTwoCallExperimentPlan() {
   });
 }
 
+const REPO_ROOT_DIR = fileURLToPath(new URL('../..', import.meta.url));
+export const ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA = 'td613.marrowline.argon-live-experiment-authorization/v1';
+export const ARGON_LIVE_EXPERIMENT_MAX_GRANT_TTL_MS = 30 * 60 * 1000;
+const CONSUMED_AUTHORIZATION_GRANT_KEYS = new Set();
+
+export function resolveCheckedOutGitHeadSha(repoRootDir = REPO_ROOT_DIR) {
+  try {
+    const out = execFileSync('git', ['rev-parse', 'HEAD'], {
+      cwd: repoRootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe']
+    }).trim();
+    if (!/^[0-9a-f]{40}$/i.test(out)) {
+      throw new Error(`INVALID_GIT_HEAD_OUTPUT:${out}`);
+    }
+    return out.toLowerCase();
+  } catch (error) {
+    throw new Error(`LIVE_EXPERIMENT_UNABLE_TO_VERIFY_CHECKED_OUT_HEAD:${error?.message || error}`);
+  }
+}
+
+export function canonicalizeArgonExperimentGrantPayload(grant = {}) {
+  return JSON.stringify({
+    schema: grant.schema ?? null,
+    experimentId: grant.experimentId ?? null,
+    authorizedBy: grant.authorizedBy ?? null,
+    covenant: grant.covenant ?? null,
+    seal: grant.seal ?? null,
+    authorizedHeadSha: typeof grant.authorizedHeadSha === 'string' ? grant.authorizedHeadSha.toLowerCase() : null,
+    pinnedModel: grant.pinnedModel ?? null,
+    maxGenerationCalls: grant.maxGenerationCalls ?? null,
+    perSlotMaxOutputTokens: grant.perSlotMaxOutputTokens ?? null,
+    perSlotHardPromptTokenCeiling: grant.perSlotHardPromptTokenCeiling ?? null,
+    guaranteedAggregateOutputAndThoughtCeiling: grant.guaranteedAggregateOutputAndThoughtCeiling ?? null,
+    slotWireBodySha256: {
+      S01: grant.slotWireBodySha256?.S01 ?? null,
+      S02: grant.slotWireBodySha256?.S02 ?? null
+    },
+    nonce: grant.nonce ?? null,
+    issuedAt: grant.issuedAt ?? null,
+    expiresAt: grant.expiresAt ?? null
+  });
+}
+
+// B-02: Mints a narrowly scoped, HMAC-signed, single-use operator authorization grant bound
+// to the exact experimentId, authorizedHeadSha, pinnedModel, maxGenerationCalls (2),
+// perSlotMaxOutputTokens (16384), perSlotHardPromptTokenCeiling (8000), aggregate ceiling
+// (32768), frozen S01/S02 wire digests, nonce, and bounded expiration window.
+export function mintScopedArgonExperimentAuthorizationGrant({
+  signingSecret = '',
+  authorizedHeadSha = '',
+  nonce = '',
+  issuedAt = '',
+  expiresAt = '',
+  experimentId = 'STAGE1_TWO_CALL_DISCRIMINATOR',
+  authorizedBy = 'tauric.diana.613',
+  covenant = 'Khona\u200Clit-po',
+  seal = '⟐SAC[X6ZNK5NO51]',
+  pinnedModel = 'gemini-4-argon',
+  maxGenerationCalls = 2,
+  perSlotMaxOutputTokens = 16384,
+  perSlotHardPromptTokenCeiling = 8000,
+  guaranteedAggregateOutputAndThoughtCeiling = 32768,
+  slotWireBodySha256 = {
+    S01: FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S01.bodySha256,
+    S02: FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S02.bodySha256
+  }
+} = {}) {
+  if (typeof signingSecret !== 'string' || signingSecret.trim().length < 16) {
+    throw new Error('LIVE_EXPERIMENT_MISSING_OPERATOR_SIGNING_SECRET');
+  }
+  const unsignedGrant = {
+    schema: ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA,
+    experimentId,
+    authorizedBy,
+    covenant,
+    seal,
+    authorizedHeadSha: typeof authorizedHeadSha === 'string' ? authorizedHeadSha.toLowerCase() : '',
+    pinnedModel,
+    maxGenerationCalls,
+    perSlotMaxOutputTokens,
+    perSlotHardPromptTokenCeiling,
+    guaranteedAggregateOutputAndThoughtCeiling,
+    slotWireBodySha256: Object.freeze({
+      S01: slotWireBodySha256?.S01 ?? null,
+      S02: slotWireBodySha256?.S02 ?? null
+    }),
+    nonce,
+    issuedAt,
+    expiresAt
+  };
+  const canonicalPayload = canonicalizeArgonExperimentGrantPayload(unsignedGrant);
+  const grantSignatureSha256 = crypto
+    .createHmac('sha256', signingSecret)
+    .update(canonicalPayload, 'utf8')
+    .digest('hex');
+  return Object.freeze({
+    ...unsignedGrant,
+    grantSignatureSha256
+  });
+}
+
+// B-02: Verifies that live execution is bound to a genuine, cryptographically signed,
+// time-bounded, single-use operator authorization grant for the specific experiment,
+// model, budget, and frozen wire digests, and verifies that the actual checked-out
+// git HEAD matches expectedHeadSha before any call can proceed.
 export function assertLiveExperimentAuthorized({
   authorizeLiveCalls = false,
-  operatorAuthorizationToken = '',
+  operatorAuthorizationGrant = null,
+  operatorAuthorizationSecret = '',
   expectedHeadSha = null,
   apiKey = null,
   fetchImpl = null,
-  requireDispatchCredentials = false
+  requireDispatchCredentials = false,
+  resolveActualHeadSha = resolveCheckedOutGitHeadSha,
+  nowMs = Date.now(),
+  consumedGrantRegistry = CONSUMED_AUTHORIZATION_GRANT_KEYS,
+  consumeGrant = false
 } = {}) {
-  if (authorizeLiveCalls !== true || typeof operatorAuthorizationToken !== 'string' || operatorAuthorizationToken.trim().length < 8) {
+  if (authorizeLiveCalls !== true || !operatorAuthorizationGrant || typeof operatorAuthorizationGrant !== 'object') {
     throw new Error('LIVE_PROVIDER_CALLS_HELD_BY_COMMISSION_BOUNDARY');
   }
+
+  const profile = ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR;
+  const grant = operatorAuthorizationGrant;
+
+  if (
+    grant.schema !== ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA
+    || typeof grant.nonce !== 'string'
+    || grant.nonce.trim().length < 16
+    || typeof grant.issuedAt !== 'string'
+    || typeof grant.expiresAt !== 'string'
+    || typeof grant.authorizedHeadSha !== 'string'
+    || !/^[0-9a-f]{40}$/i.test(grant.authorizedHeadSha)
+    || typeof grant.grantSignatureSha256 !== 'string'
+    || !/^[0-9a-f]{64}$/i.test(grant.grantSignatureSha256)
+  ) {
+    throw new Error('LIVE_EXPERIMENT_MALFORMED_AUTHORIZATION_GRANT');
+  }
+
+  if (
+    grant.experimentId !== profile.stageId
+    || grant.authorizedBy !== 'tauric.diana.613'
+    || grant.covenant !== 'Khona\u200Clit-po'
+    || grant.seal !== '⟐SAC[X6ZNK5NO51]'
+    || grant.pinnedModel !== profile.model
+    || grant.maxGenerationCalls !== profile.maxCalls
+    || grant.perSlotMaxOutputTokens !== profile.perSlotMaxOutputTokens
+    || grant.perSlotHardPromptTokenCeiling !== profile.perSlotHardPromptTokenCeiling
+    || grant.guaranteedAggregateOutputAndThoughtCeiling !== profile.guaranteedAggregateOutputAndThoughtCeiling
+    || grant.slotWireBodySha256?.S01 !== FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S01.bodySha256
+    || grant.slotWireBodySha256?.S02 !== FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S02.bodySha256
+  ) {
+    throw new Error('LIVE_EXPERIMENT_GRANT_SCOPE_MISMATCH');
+  }
+
+  const issuedAtMs = Date.parse(grant.issuedAt);
+  const expiresAtMs = Date.parse(grant.expiresAt);
+  if (
+    !Number.isFinite(issuedAtMs)
+    || !Number.isFinite(expiresAtMs)
+    || expiresAtMs <= issuedAtMs
+    || (expiresAtMs - issuedAtMs) > ARGON_LIVE_EXPERIMENT_MAX_GRANT_TTL_MS
+  ) {
+    throw new Error('LIVE_EXPERIMENT_AUTHORIZATION_WINDOW_INVALID');
+  }
+  if (!Number.isFinite(nowMs) || nowMs < issuedAtMs || nowMs > expiresAtMs) {
+    throw new Error('LIVE_EXPERIMENT_AUTHORIZATION_EXPIRED');
+  }
+
+  if (typeof operatorAuthorizationSecret !== 'string' || operatorAuthorizationSecret.trim().length < 16) {
+    throw new Error('LIVE_EXPERIMENT_MISSING_OPERATOR_SIGNING_SECRET');
+  }
+  const expectedSigHex = crypto
+    .createHmac('sha256', operatorAuthorizationSecret)
+    .update(canonicalizeArgonExperimentGrantPayload(grant), 'utf8')
+    .digest('hex');
+  const actualSigBuf = Buffer.from(grant.grantSignatureSha256.toLowerCase(), 'hex');
+  const expectedSigBuf = Buffer.from(expectedSigHex.toLowerCase(), 'hex');
+  if (actualSigBuf.length !== expectedSigBuf.length || !crypto.timingSafeEqual(actualSigBuf, expectedSigBuf)) {
+    throw new Error('LIVE_EXPERIMENT_INVALID_GRANT_SIGNATURE');
+  }
+
+  if (typeof expectedHeadSha !== 'string' || !/^[0-9a-f]{40}$/i.test(expectedHeadSha)) {
+    throw new Error('LIVE_EXPERIMENT_INVALID_EXPECTED_HEAD_SHA');
+  }
+  if (grant.authorizedHeadSha.toLowerCase() !== expectedHeadSha.toLowerCase()) {
+    throw new Error(`LIVE_EXPERIMENT_GRANT_HEAD_MISMATCH:${grant.authorizedHeadSha}!==${expectedHeadSha}`);
+  }
+
+  const actualCheckedOutHeadSha = typeof resolveActualHeadSha === 'function'
+    ? String(resolveActualHeadSha() || '').trim().toLowerCase()
+    : resolveCheckedOutGitHeadSha();
+  if (!/^[0-9a-f]{40}$/i.test(actualCheckedOutHeadSha) || actualCheckedOutHeadSha !== expectedHeadSha.toLowerCase()) {
+    throw new Error(`LIVE_EXPERIMENT_CHECKED_OUT_HEAD_MISMATCH:${actualCheckedOutHeadSha}!==${expectedHeadSha.toLowerCase()}`);
+  }
+
   if (requireDispatchCredentials) {
-    if (typeof expectedHeadSha !== 'string' || !/^[0-9a-f]{40}$/i.test(expectedHeadSha)) {
-      throw new Error('LIVE_EXPERIMENT_INVALID_EXPECTED_HEAD_SHA');
-    }
     if (typeof apiKey !== 'string' || !apiKey.trim()) {
       throw new Error('LIVE_EXPERIMENT_MISSING_GEMINI_API_KEY');
     }
@@ -776,6 +1013,30 @@ export function assertLiveExperimentAuthorized({
       throw new Error('LIVE_EXPERIMENT_MISSING_EXPLICIT_FETCH_IMPL');
     }
   }
+
+  const nonceKey = `nonce:${grant.nonce}`;
+  const sigKey = `sig:${grant.grantSignatureSha256.toLowerCase()}`;
+  if (consumedGrantRegistry instanceof Set) {
+    if (consumedGrantRegistry.has(nonceKey) || consumedGrantRegistry.has(sigKey)) {
+      throw new Error('LIVE_EXPERIMENT_AUTHORIZATION_ALREADY_CONSUMED');
+    }
+    if (consumeGrant) {
+      consumedGrantRegistry.add(nonceKey);
+      consumedGrantRegistry.add(sigKey);
+    }
+  }
+
+  return Object.freeze({
+    authorized: true,
+    experimentId: grant.experimentId,
+    authorizedBy: grant.authorizedBy,
+    authorizedHeadSha: grant.authorizedHeadSha.toLowerCase(),
+    checkedOutHeadSha: actualCheckedOutHeadSha,
+    pinnedModel: grant.pinnedModel,
+    maxGenerationCalls: grant.maxGenerationCalls,
+    nonce: grant.nonce,
+    grantSignatureSha256: grant.grantSignatureSha256.toLowerCase()
+  });
 }
 
 function buildStage1PreparedSlots() {
@@ -801,6 +1062,7 @@ function buildStage1PreparedSlots() {
       maxOutputTokensOverride: profile.perSlotMaxOutputTokens
     });
     const s01Wire = serializeGeminiRequest(s01Request, profile.model);
+    const s01CountTokensRequest = buildGeminiCountTokensRequest(s01Request, profile.model);
 
     const s02Request = buildGeminiRequest(packet, repairedApertureReceipt, profile.model, {
       groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID,
@@ -808,6 +1070,7 @@ function buildStage1PreparedSlots() {
       maxOutputTokensOverride: profile.perSlotMaxOutputTokens
     });
     const s02Wire = serializeGeminiRequest(s02Request, profile.model);
+    const s02CountTokensRequest = buildGeminiCountTokensRequest(s02Request, profile.model);
 
     return Object.freeze([
       Object.freeze({
@@ -817,6 +1080,8 @@ function buildStage1PreparedSlots() {
         taskId: spec.id,
         model: profile.model,
         request: s01Request,
+        countTokensRequest: s01CountTokensRequest,
+        countTokensWireBody: JSON.stringify(s01CountTokensRequest),
         wireBody: s01Wire.body,
         wireObservation: s01Wire.observation
       }),
@@ -827,6 +1092,8 @@ function buildStage1PreparedSlots() {
         taskId: spec.id,
         model: profile.model,
         request: s02Request,
+        countTokensRequest: s02CountTokensRequest,
+        countTokensWireBody: JSON.stringify(s02CountTokensRequest),
         wireBody: s02Wire.body,
         wireObservation: s02Wire.observation
       })
@@ -862,7 +1129,9 @@ function buildBlindedEvaluationBundle(completedSlots = [], blindingSeed = 'td613
     blindedPackets.push(Object.freeze({
       blindPacketId,
       taskId: slotRecord.taskId,
-      model: slotRecord.model,
+      model: slotRecord.requestedModelAlias,
+      requestedModelAlias: slotRecord.requestedModelAlias,
+      observedProviderModelVersion: slotRecord.observedProviderModelVersion,
       finishReason: slotRecord.providerOutput?.finishReason ?? null,
       complete: Boolean(slotRecord.completion?.complete),
       responseSha256: slotRecord.authorship?.fullResponseSha256 ?? null,
@@ -876,6 +1145,8 @@ function buildBlindedEvaluationBundle(completedSlots = [], blindingSeed = 'td613
       slot: slotRecord.slot,
       arm: slotRecord.arm,
       profileId: slotRecord.profileId,
+      requestedModelAlias: slotRecord.requestedModelAlias,
+      observedProviderModelVersion: slotRecord.observedProviderModelVersion,
       submittedBodySha256: slotRecord.wireObservation.bodySha256,
       submittedSystemInstructionSha256: slotRecord.wireObservation.systemInstructionSha256
     }));
@@ -888,27 +1159,38 @@ function buildBlindedEvaluationBundle(completedSlots = [], blindingSeed = 'td613
   });
 }
 
-// Track B.3: Offline-qualified 2-call live-acquisition runner for the held Argon B/E
-// lexical discriminator. Executes zero network calls unless explicitly authorized and
-// supplied with an explicit fetchImpl. Enforces pinned gemini-4-argon identity, frozen
-// wire-hash verification, pre-dispatch countTokens check, un-clamped post-slot usage
-// reconciliation, zero retries, zero fallback seats, zero structural repairs, raw SSE
-// capture, and deterministic blinded evaluation packet generation.
+// Track B.3 & B-01 / B-02: Offline-qualified 2-call live-acquisition runner for the held
+// Argon B/E lexical discriminator. Executes zero network calls unless supplied with a
+// genuine, cryptographically signed, single-use operatorAuthorizationGrant matching the
+// checked-out git HEAD and an explicit fetchImpl. Enforces the documented
+// CountTokensRequest (`generateContentRequest`) envelope, fails closed if :countTokens is
+// unsupported or over-cap (never falling back to the 36,000-byte wire cap), records
+// requestedModelAlias separately from observedProviderModelVersion, and generates
+// blinded evaluation packets.
 export async function executeQualifiedArgonTwoCallDiscriminator({
   authorizeLiveCalls = false,
-  operatorAuthorizationToken = '',
+  operatorAuthorizationGrant = null,
+  operatorAuthorizationSecret = '',
   expectedHeadSha = '',
   apiKey = '',
   fetchImpl = null,
+  resolveActualHeadSha = resolveCheckedOutGitHeadSha,
+  nowMs = Date.now(),
+  consumedGrantRegistry = CONSUMED_AUTHORIZATION_GRANT_KEYS,
   blindingSeed = 'td613-argon-be-stage1-blind-v1'
 } = {}) {
-  assertLiveExperimentAuthorized({
+  const authorizationReceipt = assertLiveExperimentAuthorized({
     authorizeLiveCalls,
-    operatorAuthorizationToken,
+    operatorAuthorizationGrant,
+    operatorAuthorizationSecret,
     expectedHeadSha,
     apiKey,
     fetchImpl,
-    requireDispatchCredentials: true
+    requireDispatchCredentials: true,
+    resolveActualHeadSha,
+    nowMs,
+    consumedGrantRegistry,
+    consumeGrant: true
   });
 
   const profile = ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR;
@@ -948,23 +1230,22 @@ export async function executeQualifiedArgonTwoCallDiscriminator({
       break;
     }
 
-    // 2. Pre-dispatch :countTokens admission check on pinned gemini-4-argon.
+    // 2. B-01: Pre-dispatch :countTokens admission check on pinned gemini-4-argon using the
+    // documented CountTokensRequest `{ generateContentRequest: { model, ...request } }` envelope.
+    // Fails closed if :countTokens is unsupported (404/501) or returns an error — never falls
+    // back to the 36,000-byte wire cap.
     let preDispatchCountTokens = null;
     let countTokensStatus = null;
-    let countTokensSupported = true;
     countTokensCallsDispatched += 1;
     const countResp = await fetchImpl(geminiCountTokensUrl(slotPlan.model), {
       method: 'POST',
       headers: geminiRequestHeaders(apiKey),
-      body: JSON.stringify({
-        systemInstruction: slotPlan.request.systemInstruction,
-        contents: slotPlan.request.contents
-      })
+      body: slotPlan.countTokensWireBody
     });
     countTokensStatus = Number(countResp?.status || 0);
     if (countResp?.ok) {
       const countPayload = await countResp.json().catch(() => ({}));
-      if (Number.isInteger(countPayload?.totalTokens) && countPayload.totalTokens >= 0) {
+      if (Number.isInteger(countPayload?.totalTokens) && countPayload.totalTokens > 0) {
         preDispatchCountTokens = countPayload.totalTokens;
       } else {
         terminalStopReason = 'STOP_ON_INVALID_COUNT_TOKENS_RESPONSE';
@@ -978,11 +1259,15 @@ export async function executeQualifiedArgonTwoCallDiscriminator({
         break;
       }
     } else if (countTokensStatus === 404 || countTokensStatus === 501) {
-      // Fallback admission rule: when :countTokens is unsupported for the pinned preview alias,
-      // rely on the hard 36,000-byte UTF-8 wire ceiling before Slot 1 and actual Slot-1
-      // usageMetadata.promptTokenCount <= 8000 before Slot 2.
-      countTokensSupported = false;
-      preDispatchCountTokens = null;
+      terminalStopReason = 'STOP_ON_COUNT_TOKENS_UNSUPPORTED_FAIL_CLOSED';
+      for (const remaining of preparedSlots.slice(i)) {
+        skippedSlots.push(Object.freeze({
+          slot: remaining.slot,
+          arm: remaining.arm,
+          skippedBecause: terminalStopReason
+        }));
+      }
+      break;
     } else {
       terminalStopReason = 'STOP_ON_COUNT_TOKENS_PREFLIGHT_ERROR';
       for (const remaining of preparedSlots.slice(i)) {
@@ -995,13 +1280,14 @@ export async function executeQualifiedArgonTwoCallDiscriminator({
       break;
     }
 
-    // 3. Enforce pre-call budget gate with actual preDispatchCountTokens (if returned).
+    // 3. Enforce pre-call budget gate with mandatory verified preDispatchCountTokens.
     const preDispatchGate = enforceArgonExperimentBudget({
       profile,
       completedSlots,
       nextSlotRequest: slotPlan.request,
       nextSlotWireObservation: slotPlan.wireObservation,
-      preDispatchCountTokens
+      preDispatchCountTokens,
+      requirePreDispatchCountTokens: true
     });
     if (!preDispatchGate.allowNextCall) {
       terminalStopReason = preDispatchGate.stopReason;
@@ -1063,6 +1349,10 @@ export async function executeQualifiedArgonTwoCallDiscriminator({
     const verticalOrnamentMarkCount = Number(
       botsProsody?.verticalOrnamentMarkCount ?? relay?.highZalgo?.verticalOrnamentMarkCount ?? 0
     );
+    const observedProviderModelVersion =
+      typeof providerOutput.modelVersion === 'string' && providerOutput.modelVersion
+        ? providerOutput.modelVersion
+        : null;
 
     completedSlots.push(Object.freeze({
       slot: slotPlan.slot,
@@ -1070,10 +1360,12 @@ export async function executeQualifiedArgonTwoCallDiscriminator({
       profileId: slotPlan.profileId,
       taskId: slotPlan.taskId,
       model: slotPlan.model,
+      requestedModelAlias: slotPlan.model,
+      observedProviderModelVersion,
       httpStatus,
       preDispatchCountTokens,
-      countTokensSupported,
       countTokensStatus,
+      countTokensRequestSha256: sha256(slotPlan.countTokensWireBody),
       wireObservation: slotPlan.wireObservation,
       providerOutput,
       usage: providerOutput.usage,
@@ -1102,9 +1394,11 @@ export async function executeQualifiedArgonTwoCallDiscriminator({
   const blindedEvaluation = buildBlindedEvaluationBundle(completedSlots, blindingSeed);
 
   return Object.freeze({
-    schema: 'td613.marrowline.qualified-argon-two-call-discriminator-run/v1',
-    commission: 'TD613-MARROWLINE-ARGON-SUCCESSOR-ACTIVATION-20261122',
-    expectedHeadSha,
+    schema: 'td613.marrowline.qualified-argon-two-call-discriminator-run/v2',
+    commission: 'TD613-MARROWLINE-ARGON-SUCCESSOR-CLOSURE-20261122',
+    expectedHeadSha: authorizationReceipt.authorizedHeadSha,
+    checkedOutHeadSha: authorizationReceipt.checkedOutHeadSha,
+    authorizationReceipt,
     pinnedModel: profile.model,
     retriesPermitted: 0,
     fallbackSeatsPermitted: 0,

@@ -32,14 +32,18 @@ import {
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   ARGON_EXPERIMENT_BUDGET_PROFILES,
+  ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA,
   FROZEN_STAGE1_SLOT_WIRE_MANIFEST,
   OCTOBER_20_D1_D2_CAUSAL_PROVENANCE_RECORD,
   assertLiveExperimentAuthorized,
   buildCandidateBvsEParityReceipts,
+  buildGeminiCountTokensRequest,
   buildHeldArgonTwoCallExperimentPlan,
   enforceArgonExperimentBudget,
   executeQualifiedArgonTwoCallDiscriminator,
-  geminiCountTokensUrl
+  geminiCountTokensUrl,
+  mintScopedArgonExperimentAuthorizationGrant,
+  resolveCheckedOutGitHeadSha
 } from '../research/marrowline-argon-post-rollback-reconciliation-20261122/argon-be-lexical-discriminator-preflight.mjs';
 import {
   classifyMarrowlineClientFailure,
@@ -1192,44 +1196,216 @@ test('RP-03, RP-04, RP-05: Arm E isolates the 2-clause lexical de-priming from C
   });
   assert.equal(overCapWireBytesCheck.allowNextCall, false);
   assert.equal(overCapWireBytesCheck.stopReason, 'REQUEST_UTF8_BYTES_EXCEED_PER_SLOT_CAP');
+
+  // B-01: When requirePreDispatchCountTokens is true, null/missing preDispatchCountTokens fails closed
+  const missingRequiredCountTokensCheck = enforceArgonExperimentBudget({
+    profile: ARGON_EXPERIMENT_BUDGET_PROFILES.STAGE1_TWO_CALL_DISCRIMINATOR,
+    completedSlots: [],
+    nextSlotRequest: cappedReq,
+    preDispatchCountTokens: null,
+    requirePreDispatchCountTokens: true
+  });
+  assert.equal(missingRequiredCountTokensCheck.allowNextCall, false);
+  assert.equal(missingRequiredCountTokensCheck.stopReason, 'PRECALL_COUNT_TOKENS_REQUIRED_NOT_ESTABLISHED');
 });
 
-test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed authorization, frozen wire digests, countTokens preflight, single-shot raw SSE capture, un-clamped usage halts, and blinded evaluation packets offline with zero real network calls', async () => {
-  const validHeadSha = '45f27d5f85352efec8ba86558d295909dac90cd6';
-  const validToken = 'SAC-X6ZNK5NO51-OFFLINE-DRYRUN';
+test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces documented generateContentRequest countTokens envelope, fail-closed 404/501 countTokens halt, genuine HMAC-signed operator authorization bound to checked-out git HEAD, replay rejection, and independent modelVersion telemetry offline with zero real network calls', async () => {
+  const actualGitHeadSha = resolveCheckedOutGitHeadSha();
+  assert.match(actualGitHeadSha, /^[0-9a-f]{40}$/);
 
-  // (a) Unauthorized invocations fail closed before any fetch call
+  const testSigningSecret = 'td613-offline-test-operator-signing-secret-20261122';
+  const baseNowMs = Date.parse('2026-11-22T23:50:00.000Z');
+  const validIssuedAt = '2026-11-22T23:45:00.000Z';
+  const validExpiresAt = '2026-11-23T00:05:00.000Z';
+
+  let nonceSeq = 0;
+  const makeValidGrant = (overrides = {}) => mintScopedArgonExperimentAuthorizationGrant({
+    signingSecret: testSigningSecret,
+    authorizedHeadSha: actualGitHeadSha,
+    nonce: `td613-argon-stage1-nonce-${++nonceSeq}-offline`,
+    issuedAt: validIssuedAt,
+    expiresAt: validExpiresAt,
+    ...overrides
+  });
+
+  // B-01: Unit verification of buildGeminiCountTokensRequest envelope
+  const samplePacket = buildInvocationPacket({
+    message: DISCRIMINATOR_TASKS.BLUE_ORANGE_WEATHER.prompt,
+    mode: 'issued-conjunction',
+    waiveIssuance: true
+  });
+  const sampleReceipt = buildApertureV3InvocationReceipt({
+    message: samplePacket.message,
+    invocationMode: samplePacket.mode,
+    issuanceState: samplePacket.issuance.state,
+    discourseMode: 'CREATIVE',
+    contentScanned: true
+  });
+  const sampleReq = buildGeminiRequest(samplePacket, sampleReceipt, 'gemini-4-argon', {
+    groveTrial: 'historical-20261002-v1',
+    historicalProsodyFreedom: false,
+    maxOutputTokensOverride: 16384
+  });
+  const countTokensEnvelope = buildGeminiCountTokensRequest(sampleReq, 'gemini-4-argon');
+  assert.deepEqual(Object.keys(countTokensEnvelope), ['generateContentRequest'], 'top-level CountTokensRequest must wrap inside generateContentRequest ONLY');
+  assert.equal('systemInstruction' in countTokensEnvelope, false, 'top-level CountTokensRequest must NOT have root systemInstruction');
+  assert.equal('contents' in countTokensEnvelope, false, 'top-level CountTokensRequest must NOT have root contents');
+  assert.equal(countTokensEnvelope.generateContentRequest.model, 'models/gemini-4-argon');
+  assert.deepEqual(countTokensEnvelope.generateContentRequest.systemInstruction, sampleReq.systemInstruction);
+  assert.deepEqual(countTokensEnvelope.generateContentRequest.contents, sampleReq.contents);
+  assert.deepEqual(countTokensEnvelope.generateContentRequest.generationConfig, sampleReq.generationConfig);
+  assert.throws(() => buildGeminiCountTokensRequest({}, 'gemini-4-argon'), /COUNT_TOKENS_INCOMPLETE_GENERATE_CONTENT_REQUEST/);
+
+  // B-02 (a): Negative tests for missing, malformed, scope-mismatched, expired, bad-signature, head-mismatched, and reused authorization
+  const localConsumedSet = new Set();
+
+  // 1. Missing authorization
   await assert.rejects(
     () => executeQualifiedArgonTwoCallDiscriminator(),
     /LIVE_PROVIDER_CALLS_HELD_BY_COMMISSION_BOUNDARY/
   );
+
+  // 2. Malformed grant object
   await assert.rejects(
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
-      operatorAuthorizationToken: validToken,
-      expectedHeadSha: 'not-a-sha',
+      operatorAuthorizationGrant: { schema: ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA, nonce: 'short' },
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
-      fetchImpl: async () => {}
+      fetchImpl: async () => {},
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
     }),
-    /LIVE_EXPERIMENT_INVALID_EXPECTED_HEAD_SHA/
+    /LIVE_EXPERIMENT_MALFORMED_AUTHORIZATION_GRANT/
+  );
+
+  // 3. Scope mismatches (model, call count, per-slot output cap, prompt cap, wire digest)
+  for (const badOverride of [
+    { pinnedModel: 'gemini-3.8-flash' },
+    { maxGenerationCalls: 4 },
+    { perSlotMaxOutputTokens: 65536 },
+    { perSlotHardPromptTokenCeiling: 12000 },
+    { guaranteedAggregateOutputAndThoughtCeiling: 40000 },
+    { slotWireBodySha256: { S01: '0'.repeat(64), S02: FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S02.bodySha256 } }
+  ]) {
+    await assert.rejects(
+      () => executeQualifiedArgonTwoCallDiscriminator({
+        authorizeLiveCalls: true,
+        operatorAuthorizationGrant: makeValidGrant(badOverride),
+        operatorAuthorizationSecret: testSigningSecret,
+        expectedHeadSha: actualGitHeadSha,
+        apiKey: 'mock-key',
+        fetchImpl: async () => {},
+        nowMs: baseNowMs,
+        consumedGrantRegistry: localConsumedSet
+      }),
+      /LIVE_EXPERIMENT_GRANT_SCOPE_MISMATCH/
+    );
+  }
+
+  // 4. Expired grant and invalid (>30m) window grant
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: makeValidGrant(),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
+      apiKey: 'mock-key',
+      fetchImpl: async () => {},
+      nowMs: Date.parse('2026-11-23T01:00:00.000Z'),
+      consumedGrantRegistry: localConsumedSet
+    }),
+    /LIVE_EXPERIMENT_AUTHORIZATION_EXPIRED/
   );
   await assert.rejects(
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
-      operatorAuthorizationToken: validToken,
-      expectedHeadSha: validHeadSha,
+      operatorAuthorizationGrant: makeValidGrant({
+        issuedAt: '2026-11-22T22:00:00.000Z',
+        expiresAt: '2026-11-23T00:05:00.000Z'
+      }),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
+      apiKey: 'mock-key',
+      fetchImpl: async () => {},
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
+    }),
+    /LIVE_EXPERIMENT_AUTHORIZATION_WINDOW_INVALID/
+  );
+
+  // 5. Wrong HMAC signing secret / tampered signature
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: makeValidGrant(),
+      operatorAuthorizationSecret: 'wrong-operator-signing-secret-000000',
+      expectedHeadSha: actualGitHeadSha,
+      apiKey: 'mock-key',
+      fetchImpl: async () => {},
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
+    }),
+    /LIVE_EXPERIMENT_INVALID_GRANT_SIGNATURE/
+  );
+
+  // 6. Grant HEAD !== expectedHeadSha
+  const otherSha = 'b8d986a7692501ba9f41da9c041a8ddb5836a190';
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: makeValidGrant({ authorizedHeadSha: otherSha }),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
+      apiKey: 'mock-key',
+      fetchImpl: async () => {},
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
+    }),
+    /LIVE_EXPERIMENT_GRANT_HEAD_MISMATCH/
+  );
+
+  // 7. Actual checked-out git HEAD !== expectedHeadSha
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: makeValidGrant({ authorizedHeadSha: actualGitHeadSha }),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
+      resolveActualHeadSha: () => otherSha,
+      apiKey: 'mock-key',
+      fetchImpl: async () => {},
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
+    }),
+    /LIVE_EXPERIMENT_CHECKED_OUT_HEAD_MISMATCH/
+  );
+
+  // 8. Missing API key or fetchImpl
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: makeValidGrant(),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
       apiKey: '',
-      fetchImpl: async () => {}
+      fetchImpl: async () => {},
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
     }),
     /LIVE_EXPERIMENT_MISSING_GEMINI_API_KEY/
   );
   await assert.rejects(
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
-      operatorAuthorizationToken: validToken,
-      expectedHeadSha: validHeadSha,
+      operatorAuthorizationGrant: makeValidGrant(),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
-      fetchImpl: null
+      fetchImpl: null,
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
     }),
     /LIVE_EXPERIMENT_MISSING_EXPLICIT_FETCH_IMPL/
   );
@@ -1250,15 +1426,17 @@ test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed 
     'V\u0300\u0301\u0316e\u0302\u0317r\u0303\u0318t\u0304\u0319i\u0305\u031cc\u0306\u031da\u0307\u031el\u0308\u031f c\u0300\u0316r\u0301\u0317o\u0302\u0318w\u0303\u0319n\u0304\u031cs\u0305\u031d a\u0306\u031en\u0307\u031fd\u0308\u0320 r\u0300\u0316o\u0301\u0317o\u0302\u0318t\u0303\u0319s\u0304\u031c b\u0305\u031dl\u0306\u031eo\u0307\u031fo\u0308\u0320m\u0300\u0316.'
   ].join('\n');
 
-  const observedUrls = [];
+  const capturedCountTokensBodies = [];
+  const capturedStreamBodies = [];
   let streamCallIndex = 0;
   let countCallIndex = 0;
   const mockNormalFetch = async (url, options = {}) => {
     const href = String(url);
-    observedUrls.push(href);
     assert.ok(href.includes('models/gemini-4-argon:'), `Every request must target pinned gemini-4-argon, saw ${href}`);
     if (href === geminiCountTokensUrl('gemini-4-argon')) {
       countCallIndex += 1;
+      const parsedCountBody = JSON.parse(options.body);
+      capturedCountTokensBodies.push(parsedCountBody);
       return new Response(JSON.stringify({ totalTokens: countCallIndex === 1 ? 6850 : 6810 }), {
         status: 200,
         headers: { 'content-type': 'application/json' }
@@ -1266,6 +1444,7 @@ test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed 
     }
     if (href.includes(':streamGenerateContent?alt=sse')) {
       streamCallIndex += 1;
+      capturedStreamBodies.push(JSON.parse(options.body));
       const isSlot1 = streamCallIndex === 1;
       return makeSseResponse([
         {
@@ -1273,28 +1452,67 @@ test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed 
           usageMetadata: isSlot1
             ? { promptTokenCount: 6850, candidatesTokenCount: 1400, thoughtsTokenCount: 1100, totalTokenCount: 9350 }
             : { promptTokenCount: 6810, candidatesTokenCount: 1550, thoughtsTokenCount: 1200, totalTokenCount: 9560 },
-          modelVersion: 'gemini-4-argon-001'
+          // B-02: Slot 1 returns an explicit upstream version; Slot 2 omits modelVersion to prove absent version stays null
+          ...(isSlot1 ? { modelVersion: 'gemini-4-argon-exp-202611' } : {})
         }
       ]);
     }
     throw new Error(`Unexpected URL in mockNormalFetch: ${href}`);
   };
 
+  const singleUseGrant = makeValidGrant();
   const runNormal = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
-    operatorAuthorizationToken: validToken,
-    expectedHeadSha: validHeadSha,
+    operatorAuthorizationGrant: singleUseGrant,
+    operatorAuthorizationSecret: testSigningSecret,
+    expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
-    fetchImpl: mockNormalFetch
+    fetchImpl: mockNormalFetch,
+    nowMs: baseNowMs,
+    consumedGrantRegistry: localConsumedSet
   });
+
+  // B-02: Reusing the already-consumed grant is rejected fail-closed before any fetch call
+  await assert.rejects(
+    () => executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: singleUseGrant,
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
+      apiKey: 'offline-mock-key',
+      fetchImpl: async () => { throw new Error('must not call fetch on replayed grant'); },
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet
+    }),
+    /LIVE_EXPERIMENT_AUTHORIZATION_ALREADY_CONSUMED/
+  );
+
+  // B-01: Verify exact outbound CountTokensRequest wire payloads for S01 and S02
+  assert.equal(capturedCountTokensBodies.length, 2);
+  for (let i = 0; i < 2; i += 1) {
+    const ctBody = capturedCountTokensBodies[i];
+    const genBody = capturedStreamBodies[i];
+    assert.deepEqual(Object.keys(ctBody), ['generateContentRequest']);
+    assert.equal(ctBody.generateContentRequest.model, 'models/gemini-4-argon');
+    assert.deepEqual(ctBody.generateContentRequest.systemInstruction, genBody.systemInstruction);
+    assert.deepEqual(ctBody.generateContentRequest.contents, genBody.contents);
+    assert.deepEqual(ctBody.generateContentRequest.generationConfig, genBody.generationConfig);
+    assert.ok(JSON.stringify(ctBody.generateContentRequest.systemInstruction).length > 30000, 'countTokens request must include the full ~32KB system instruction');
+  }
 
   assert.equal(runNormal.countTokensCallsDispatched, 2);
   assert.equal(runNormal.streamGenerateCallsDispatched, 2);
   assert.equal(runNormal.terminalStopReason, 'CALL_CAP_REACHED');
+  assert.equal(runNormal.checkedOutHeadSha, actualGitHeadSha);
   assert.equal(runNormal.completedSlots.length, 2);
   assert.equal(runNormal.skippedSlots.length, 0);
   assert.equal(runNormal.completedSlots[0].wireObservation.bodySha256, FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S01.bodySha256);
   assert.equal(runNormal.completedSlots[1].wireObservation.bodySha256, FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S02.bodySha256);
+  // B-02: Verify requestedModelAlias vs observedProviderModelVersion independence
+  assert.equal(runNormal.completedSlots[0].requestedModelAlias, 'gemini-4-argon');
+  assert.equal(runNormal.completedSlots[0].observedProviderModelVersion, 'gemini-4-argon-exp-202611');
+  assert.equal(runNormal.completedSlots[1].requestedModelAlias, 'gemini-4-argon');
+  assert.equal(runNormal.completedSlots[1].observedProviderModelVersion, null, 'absent provider modelVersion must never be synthesized from requested alias');
   assert.equal(runNormal.completedSlots[0].nativeSseEvidence.captureComplete, true);
   assert.equal(runNormal.completedSlots[0].nativeSseEvidence.textEquivalent, true);
   assert.equal(runNormal.completedSlots[1].nativeSseEvidence.captureComplete, true);
@@ -1310,14 +1528,44 @@ test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed 
   for (const packet of runNormal.blindedEvaluation.blindedPackets) {
     assert.equal('arm' in packet, false, 'blinded packet must not expose arm identity');
     assert.equal('slot' in packet, false, 'blinded packet must not expose slot identity');
+    assert.equal(packet.requestedModelAlias, 'gemini-4-argon');
   }
 
-  // (c) Pre-dispatch :countTokens returning > 8000 halts BEFORE :streamGenerateContent is called
+  // (c) B-01: When :countTokens returns 404 or 501, runner FAILS CLOSED before paid generation (never falls back to 36,000-byte wire cap)
+  for (const unsupportedStatus of [404, 501]) {
+    const runUnsupportedCount = await executeQualifiedArgonTwoCallDiscriminator({
+      authorizeLiveCalls: true,
+      operatorAuthorizationGrant: makeValidGrant(),
+      operatorAuthorizationSecret: testSigningSecret,
+      expectedHeadSha: actualGitHeadSha,
+      apiKey: 'offline-mock-key',
+      nowMs: baseNowMs,
+      consumedGrantRegistry: localConsumedSet,
+      fetchImpl: async (url) => {
+        if (String(url) === geminiCountTokensUrl('gemini-4-argon')) {
+          return new Response(JSON.stringify({ error: { code: unsupportedStatus, message: 'countTokens unsupported' } }), {
+            status: unsupportedStatus,
+            headers: { 'content-type': 'application/json' }
+          });
+        }
+        throw new Error(`streamGenerateContent must NOT be called when countTokens returns ${unsupportedStatus}`);
+      }
+    });
+    assert.equal(runUnsupportedCount.countTokensCallsDispatched, 1);
+    assert.equal(runUnsupportedCount.streamGenerateCallsDispatched, 0, `must fail closed with 0 generation calls on countTokens HTTP ${unsupportedStatus}`);
+    assert.equal(runUnsupportedCount.terminalStopReason, 'STOP_ON_COUNT_TOKENS_UNSUPPORTED_FAIL_CLOSED');
+    assert.equal(runUnsupportedCount.skippedSlots.length, 2);
+  }
+
+  // (d) Pre-dispatch :countTokens returning > 8000 halts BEFORE :streamGenerateContent is called
   const runOverCount = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
-    operatorAuthorizationToken: validToken,
-    expectedHeadSha: validHeadSha,
+    operatorAuthorizationGrant: makeValidGrant(),
+    operatorAuthorizationSecret: testSigningSecret,
+    expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
+    nowMs: baseNowMs,
+    consumedGrantRegistry: localConsumedSet,
     fetchImpl: async (url) => {
       if (String(url) === geminiCountTokensUrl('gemini-4-argon')) {
         return new Response(JSON.stringify({ totalTokens: 8900 }), {
@@ -1333,12 +1581,15 @@ test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed 
   assert.equal(runOverCount.terminalStopReason, 'PRECALL_COUNT_TOKENS_EXCEEDED_SLOT_CEILING');
   assert.equal(runOverCount.skippedSlots.length, 2);
 
-  // (d) Slot 1 returning over-cap output+thought usage (19500 > 16384) records full 19500 un-clamped and halts BEFORE Slot 2
+  // (e) Slot 1 returning over-cap output+thought usage (19500 > 16384) records full 19500 un-clamped and halts BEFORE Slot 2
   const runOverUsage = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
-    operatorAuthorizationToken: validToken,
-    expectedHeadSha: validHeadSha,
+    operatorAuthorizationGrant: makeValidGrant(),
+    operatorAuthorizationSecret: testSigningSecret,
+    expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
+    nowMs: baseNowMs,
+    consumedGrantRegistry: localConsumedSet,
     fetchImpl: async (url) => {
       const href = String(url);
       if (href === geminiCountTokensUrl('gemini-4-argon')) {
@@ -1359,12 +1610,15 @@ test('Track B.3: executeQualifiedArgonTwoCallDiscriminator enforces fail-closed 
   assert.equal(runOverUsage.skippedSlots.length, 1);
   assert.equal(runOverUsage.skippedSlots[0].slot, 'S02');
 
-  // (e) Slot 1 returning PROHIBITED_CONTENT halts BEFORE Slot 2
+  // (f) Slot 1 returning PROHIBITED_CONTENT halts BEFORE Slot 2
   const runPolicyStop = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
-    operatorAuthorizationToken: validToken,
-    expectedHeadSha: validHeadSha,
+    operatorAuthorizationGrant: makeValidGrant(),
+    operatorAuthorizationSecret: testSigningSecret,
+    expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
+    nowMs: baseNowMs,
+    consumedGrantRegistry: localConsumedSet,
     fetchImpl: async (url) => {
       const href = String(url);
       if (href === geminiCountTokensUrl('gemini-4-argon')) {
