@@ -527,6 +527,38 @@ jobs:
               raise SystemExit('FAILED_TO_ACQUIRE_ANY_CHECK_LOGS')
           print('READ_ONLY_NO_DEPLOY_NO_ALIAS_CHANGE')
           PY
+      - name: Inspect failed Preview status using Vercel CLI's resolved deployment metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "${VERCEL_TOKEN:-}" ]] || { echo 'Diagnostic token unavailable'; exit 1; }
+          node --version
+          mkdir -p "$RUNNER_TEMP/vixen-cli-summary"
+          cd "$RUNNER_TEMP/vixen-cli-summary"
+          set +e
+          vercel inspect "https://td-613-ljq6ah9hb-tauric-diana-s-projects.vercel.app" --scope "$VERCEL_SCOPE" > status.txt 2>&1
+          STATUS_EXIT=$?
+          vercel inspect "$FAILED_DEPLOYMENT_ID" --scope "$VERCEL_SCOPE" > id-status.txt 2>&1
+          ID_EXIT=$?
+          vercel ls td-613-tcp --scope "$VERCEL_SCOPE" > deployments.txt 2>&1
+          LIST_EXIT=$?
+          set -e
+          STATUS_EXIT="$STATUS_EXIT" ID_EXIT="$ID_EXIT" LIST_EXIT="$LIST_EXIT" python - <<'PY'
+          import os, re
+          from pathlib import Path
+          token=os.environ.get('VERCEL_TOKEN','')
+          def safe(line):
+              if token: line=line.replace(token,'[REDACTED]')
+              line=re.sub(r'(?i)(token|secret|password|authorization)(\s*[:=]\s*)(\S+)',r'\1\2[REDACTED]',line)
+              return line[:500]
+          print('EXACT_FAILED_PREVIEW_READ_ONLY_STATUS')
+          for name,code in [('status.txt','STATUS_EXIT'),('id-status.txt','ID_EXIT'),('deployments.txt','LIST_EXIT')]:
+              print('CLI_SECTION',name,'exit',os.environ[code])
+              lines=Path(name).read_text(errors='replace').splitlines() if Path(name).exists() else []
+              print('CLI_LINES',len(lines))
+              for line in lines[-90:]: print('CLI',safe(line))
+          print('STATUS_INSPECTION_COMPLETE_NO_DEPLOY_NO_ALIAS_MUTATION')
+          PY
       - name: Read named failed-deployment checks through Vercel REST
         shell: bash
         run: |
