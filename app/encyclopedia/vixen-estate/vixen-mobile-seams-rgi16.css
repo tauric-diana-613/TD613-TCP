@@ -103,34 +103,6 @@
    padding-top:12px!important;
    font-size:8px!important;
  }
- /* Reader provenance is accessible via disclosure, rather than obstructing
-    the actual manuscript with two full SHA-256 strings. */
- #worksExperimentAReaderMount {
-   min-width:0!important;
-   max-width:100%!important;
-   padding:12px!important;
- }
- #worksExperimentAReaderMount .vix-couture-reader {
-   min-width:0!important;
-   max-width:100%!important;
-   max-height:none!important;
-   overflow-y:visible!important;
-   overflow-x:auto!important;
-   padding:21px 16px!important;
-   font-size:clamp(16px,4.2vw,19px)!important;
-   line-height:1.72!important;
-   overflow-wrap:break-word!important;
-   word-break:normal!important;
- }
- #worksExperimentAReaderMount .vix-reader-paragraph {
-   white-space:normal!important;
-   overflow-wrap:break-word!important;
-   word-break:normal!important;
- }
- #worksExperimentAReaderMount .vix-reader-heading {
-   overflow-wrap:break-word!important;
-   word-break:normal!important;
- }
 }
 .vixen-door-verb .vixen-door-mobile-arrow{display:none;width:19px;height:19px;color:inherit;stroke:currentColor;flex:none;transition:transform .2s cubic-bezier(.16,1,.3,1)}
 @media(max-width:680px){
