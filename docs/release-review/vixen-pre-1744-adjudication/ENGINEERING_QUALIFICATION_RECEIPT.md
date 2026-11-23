@@ -29,6 +29,15 @@
 - New exact-head CI: [45166406492](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45166406492), IN_PROGRESS at this receipt. **Full independent screenshot audit still required.**
 - The operator-authorized engineering branch may evolve: always re-read PR #1784 HEAD before any integration gesture.
 
+
+## Historic four-viewport Folios visual check — independent browser-image inspection
+- [CI 45164471157](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45164471157), source `da24f12f506604e0ea35dd7b6c73129622c3abad`, Actions visual artifact **14815890750**; historical RED, explicitly NOT the final screenshot package.
+- Independent ZIP audit: 1,001 manifest images, 129 route records, 4 profiles (1440×900, 1920×1080, 390×844, 428×926); all manifest-listed images/hash/length/dimensions checked; 0 near-duplicate nested-scroll warnings; 5 explicit failures counting required missing states.
+- Screenshots inspected at original source routes: `desktop-1440x900/reference/document-000-y0.jpg`, `desktop-1920x1080/reference/document-000-y0.jpg`, `iphone-390x844/reference/document-000-y0.jpg`, and `iphone-428x926/reference/document-000-y0.jpg`.
+- VISUAL RESULT (bounded): The earlier mesh/optical-line interference across Folios title, instruction, and historical-work picker is visibly improved: foreground text rests on dark opaque grounds; optical motion remains in adjacent negative space. Remaining small-screen typography and human artistic acceptance remain reserved.
+- Qualification result is **still RED**: source-observed 390px Program Notes OFF/PENDING state and 428px Observatory proof open are missing. Later `d1cb3651…` fixes require new exact-head CI and independent inspection.
+- Historical screenshot ZIP stays in Actions; no intermediate image package admitted to this branch.
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
