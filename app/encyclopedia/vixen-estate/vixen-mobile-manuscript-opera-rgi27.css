@@ -3,6 +3,12 @@
  * manuscript rules are retired. No source text or desktop CSS is changed.
  */
 @media screen and (max-width:680px) {
+  /* Opera reading: the fixed global animation was visibly painting *over*
+     verified manuscript letters on the 428px Chromium screenshot.
+     Restrict removal to Works; Salon and Observatory retain their visuals. */
+  body[data-view="works"] #vixenLivingMesh.vixen-living-mesh {
+    display:none!important;
+  }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works>.page-pad {
     box-sizing:border-box!important;width:100%!important;max-width:100%!important;
     padding-inline:12px!important;
