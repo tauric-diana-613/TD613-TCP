@@ -53,7 +53,7 @@
     },
     "r2W": {
       "experimentId": "HYDROGEN_R2_W_AUTHENTIC_WHOLE_FRAME_ART",
-      "conditionCount": 2,
+      "conditionCount": 4,
       "generationConfigSha256": "4785e46e91dfc32f5742dc9fc4ce7414142d62335c7a29e56c1e7e89a1d4ab34",
       "provenanceDiffSummary": {
         "fullUtf8Bytes": 33408,
@@ -64,6 +64,15 @@
       "conditionBodySha256": {
         "W_FULL_PRODUCTION_FRAME": "ab1e157553ffa434e0bb11fceccc2bba35f554c08c470495c9fb9bdbd9296f03",
         "W_CONDENSED_WHOLE_FRAME": "eafd9ff9f1b4cdfbf7e43bfac7bdfbbc9cc9c8a3130c402230d4dd5757956470"
+      },
+      "nonCivicArtisticWitnessSummary": {
+        "scenarioId": "W_SCENARIO_NONCIVIC_NOCTURNE_ORCHARD",
+        "civicBureaucracyTermsPresent": false,
+        "contentsSha256": "5d0ff5132d32fc42aa81827464543f3b162914efe4c99a74c98fcc20a7228194",
+        "conditionBodySha256": {
+          "W_NONCIVIC_FULL_PRODUCTION_FRAME": "af227db5d0552c073d6dab717d4dc2ae656357a245624b159bcfcf91ba13858a",
+          "W_NONCIVIC_CONDENSED_WHOLE_FRAME": "cd3da1b6e368d5309a6a75a65ee2cec4a9dcb85bb60d4491165400798961a2b6"
+        }
       }
     }
   },
@@ -101,11 +110,17 @@
   },
   "syntheticRubricVetoDemo": {
     "note": "SYNTHETIC_OFFLINE_FIXTURE_ONLY_NOT_PROVIDER_DATA",
-    "technicalGatePassed": true,
+    "structuralContentDiagnosticPassed": true,
+    "verifiedTransportCapturePassed": false,
+    "promotionHeld": true,
+    "promotionDisposition": "HELD_PROMOTION_BLOCKED",
+    "grantsEmpiricalAuthority": false,
+    "grantsReleaseAuthority": false,
     "humanArtisticVerdict": "ARTISTIC_REJECTED"
   },
   "gateChecks": {
     "stagedDisposition": "SOURCE_STAGED",
-    "prematureSuccessRejected": true
+    "prematureSuccessRejected": true,
+    "validNegativeResultQualified": true
   }
 }

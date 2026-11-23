@@ -29,6 +29,7 @@ import {
 import {
   R2_W_DRAMATIC_PROMPT,
   R2_W_EXPERIMENT_ID,
+  R2_W_NONCIVIC_LYRIC_PROMPT,
   buildR2WBlindPacket,
   buildR2WRequests,
   buildR2WWireManifest,
@@ -160,19 +161,31 @@ test('R2 Unicode Evaluator: distinguishes depth-1 stencil, near-uniform depth-3 
   assert.equal(secReport.coverageAllPassed, true);
 });
 
-test('Estate R2-W: uses production voice/covenant builder, rejects assay anti-persona rules, diffs whole-frame bytes, and enforces blind human veto', () => {
+test('Estate R2-W: uses production voice/covenant builder, includes noncivic witness, requires verified capture attestation, and enforces blind human veto', () => {
   const requests = buildR2WRequests();
   const manifest = buildR2WWireManifest();
 
   assert.equal(manifest.experimentId, R2_W_EXPERIMENT_ID);
   assert.equal(manifest.syntheticAssaySystemExcluded, true);
   assert.equal(manifest.paidProviderCallsExecuted, 0);
+  assert.deepEqual(Object.keys(requests), [
+    'W_FULL_PRODUCTION_FRAME',
+    'W_CONDENSED_WHOLE_FRAME',
+    'W_NONCIVIC_FULL_PRODUCTION_FRAME',
+    'W_NONCIVIC_CONDENSED_WHOLE_FRAME'
+  ]);
 
   const fullText = requests.W_FULL_PRODUCTION_FRAME.systemInstruction.parts[0].text;
   const condensedText = requests.W_CONDENSED_WHOLE_FRAME.systemInstruction.parts[0].text;
+  const nonCivicFullText = requests.W_NONCIVIC_FULL_PRODUCTION_FRAME.systemInstruction.parts[0].text;
   assert.equal(fullText.includes('No TD613 narrative'), false);
   assert.equal(condensedText.includes('No TD613 narrative'), false);
+  assert.equal(nonCivicFullText.includes('No TD613 narrative'), false);
   assert.equal(R2_W_DRAMATIC_PROMPT.includes('short'), false);
+  assert.equal(R2_W_NONCIVIC_LYRIC_PROMPT.includes('short'), false);
+  assert.equal(manifest.nonCivicArtisticWitness.scenarioId, 'W_SCENARIO_NONCIVIC_NOCTURNE_ORCHARD');
+  assert.equal(manifest.nonCivicArtisticWitness.civicBureaucracyTermsPresent, false);
+  assert.equal(manifest.nonCivicArtisticWitness.conditions.length, 2);
   assert.ok(fullText.includes('Khona\u200Clit-po'));
   assert.ok(condensedText.includes('Khona\u200Clit-po'));
   assert.ok(manifest.provenanceDiff.byteDelta < -20000);
@@ -194,10 +207,57 @@ test('Estate R2-W: uses production voice/covenant builder, rejects assay anti-pe
   assert.equal(blindJson.includes('W_CONDENSED_WHOLE_FRAME'), false);
   assert.equal(blind.sealedUnblindingMap.length, 2);
 
-  // Qualitative rubric: technical completion PASS + synthetic-stub rejection yields ARTISTIC_REJECTED
+  // Adversarial: perfectly formed synthetic text + fabricated caller STOP WITHOUT verifiedCaptureAttestation MUST hold promotion even if humanJudgment claims HUMAN_ARTISTIC_ACCEPTED
+  const fakeStopWithoutVerifiedCapture = evaluateR2WQualitativeRubric({
+    authoredText: workA,
+    outputMetadata: { finishReason: 'STOP', streamed: true, parseErrors: 0 },
+    verifiedCaptureAttestation: null,
+    humanJudgment: {
+      verdict: 'HUMAN_ARTISTIC_ACCEPTED',
+      criteria: {
+        expressiveSufficiency: true,
+        distinctVoicesAndAgency: true,
+        motifTransformation: true,
+        temporalAuthorityShift: true,
+        readableNonStencilMorphology: true,
+        artisticSurpriseAndClosure: true,
+        protectedAnchorsIntact: true
+      }
+    }
+  });
+  assert.equal(fakeStopWithoutVerifiedCapture.structuralContentDiagnosticPassed, true);
+  assert.equal(fakeStopWithoutVerifiedCapture.diagnosticAuthority, 'STRUCTURAL_CONTENT_DIAGNOSTIC_ONLY');
+  assert.equal(fakeStopWithoutVerifiedCapture.verifiedTransportCapturePassed, false);
+  assert.equal(fakeStopWithoutVerifiedCapture.promotionHeld, true);
+  assert.ok(fakeStopWithoutVerifiedCapture.promotionHoldReasons.includes('MISSING_VERIFIED_CAPTURE_ATTESTATION'));
+  assert.equal(fakeStopWithoutVerifiedCapture.grantsEmpiricalAuthority, false);
+  assert.equal(fakeStopWithoutVerifiedCapture.grantsReleaseAuthority, false);
+
+  // Valid verified capture attestation clears transport check, yet veto still holds and acceptance NEVER grants release/empirical authority
+  const validCapture = {
+    rawSseBytesVerified: true,
+    rawSseSha256: 'a'.repeat(64),
+    independentlyParsedEventsVerified: true,
+    dualParserAgreement: true,
+    requestBindingSha256: 'b'.repeat(64),
+    diskWritten: true,
+    diskCustodySha256: 'c'.repeat(64)
+  };
+  const verifiedArtAccepted = evaluateR2WQualitativeRubric({
+    authoredText: workA,
+    outputMetadata: { finishReason: 'STOP', streamed: true, parseErrors: 0 },
+    verifiedCaptureAttestation: validCapture,
+    humanJudgment: { verdict: 'HUMAN_ARTISTIC_ACCEPTED' }
+  });
+  assert.equal(verifiedArtAccepted.verifiedTransportCapturePassed, true);
+  assert.equal(verifiedArtAccepted.promotionHeld, false);
+  assert.equal(verifiedArtAccepted.grantsEmpiricalAuthority, false);
+  assert.equal(verifiedArtAccepted.grantsReleaseAuthority, false);
+
   const rejectedDespiteValidWire = evaluateR2WQualitativeRubric({
     authoredText: workA,
     outputMetadata: { finishReason: 'STOP', streamed: true, parseErrors: 0 },
+    verifiedCaptureAttestation: validCapture,
     declaredAsSyntheticHeadingStubOnly: true,
     humanJudgment: {
       verdict: 'ARTISTIC_REJECTED',
@@ -213,8 +273,10 @@ test('Estate R2-W: uses production voice/covenant builder, rejects assay anti-pe
       notes: 'Synthetic label headings without genuine dramatic voice transformation.'
     }
   });
-  assert.equal(rejectedDespiteValidWire.technicalGatePassed, true);
+  assert.equal(rejectedDespiteValidWire.structuralContentDiagnosticPassed, true);
+  assert.equal(rejectedDespiteValidWire.verifiedTransportCapturePassed, true);
   assert.equal(rejectedDespiteValidWire.structuralNonStubChecks.notDeclaredSyntheticStub, false);
+  assert.equal(rejectedDespiteValidWire.promotionHeld, true);
   assert.equal(rejectedDespiteValidWire.humanArtisticVerdict, 'ARTISTIC_REJECTED');
 
   const diskManifest = fs.readFileSync(path.join(R2_DIR, 'R2_W_WIRE_MANIFEST.json'));
@@ -320,7 +382,97 @@ test('R2 Dromological & Adversarial Gate: enforces NOTICE < ACT < WORLD_ANSWERS 
     assert.ok(adversarialWire.holdReasons.includes(reason), `missing hold reason ${reason}`);
   }
 
-  // 4. Clean synthetic progression up to EMPIRICALLY_QUALIFIED stops short of HUMAN_ACCEPTED & RELEASE_APPROVED without explicit human actions
+  // 4. Omitted NOTICE with ACT, response-before-ACT, fabricated/inverted chronology (preserving null clocks), & missing upstream witnesses -> MUST BE HELD
+  const omittedNoticeWithAct = evaluateR2DromologicalGate({
+    sourceStaged: true,
+    phases: { noticeAt: null, actAt: 20, worldAnswersAt: 30, nameAt: 40 },
+    clocks: { operatorClockMs: null, serviceClockMs: 500, providerReceiptClockMs: 400 }
+  });
+  assert.equal(omittedNoticeWithAct.held, true);
+  assert.ok(omittedNoticeWithAct.dromologicalOrder.violations.includes('ACT_WITHOUT_NOTICE'));
+  assert.ok(omittedNoticeWithAct.dromologicalOrder.violations.includes('FABRICATED_OR_INVERTED_CHRONOLOGY'));
+  assert.equal(omittedNoticeWithAct.clocks.operatorClockMs, null);
+  assert.equal(omittedNoticeWithAct.clocks.custodyClockMs, null);
+
+  const responseBeforeAct = evaluateR2DromologicalGate({
+    sourceStaged: true,
+    phases: { noticeAt: 10, actAt: 50, worldAnswersAt: 20, nameAt: 60 },
+    requestDispatched: true,
+    providerResponseObserved: true
+  });
+  assert.equal(responseBeforeAct.held, true);
+  assert.ok(responseBeforeAct.dromologicalOrder.violations.includes('WORLD_ANSWERS_BEFORE_ACT'));
+  assert.ok(responseBeforeAct.holdReasons.includes('MISSING_UPSTREAM_WITNESS_FOR_DISPATCH'));
+  assert.ok(responseBeforeAct.holdReasons.includes('MISSING_UPSTREAM_WITNESS_FOR_RESPONSE'));
+
+  // 5. Caller booleans labeled CALLER_REPORTED_ATTESTATION_ONLY (never externalAdmissionProved), rejected when external admission claimed without independent verification
+  const callerBooleansOnly = evaluateR2DromologicalGate({
+    sourceStaged: true,
+    authority: { signatureValid: true },
+    replayProtection: { nonceClaimed: true },
+    providerMetadata: { checked: true, ok: true, outputTokenLimit: 65536, expectedOutputTokenLimit: 65536 },
+    requestDispatched: true,
+    providerResponseObserved: true,
+    wireCapture: { rawCaptureVerified: true, parserAgreement: true },
+    claimsExternalAdmission: true
+  });
+  assert.equal(callerBooleansOnly.attestationProvenance.signature.status, 'CALLER_REPORTED_ATTESTATION_ONLY');
+  assert.equal(callerBooleansOnly.attestationProvenance.nonceClaim.status, 'CALLER_REPORTED_ATTESTATION_ONLY');
+  assert.equal(callerBooleansOnly.attestationProvenance.rawCapture.status, 'CALLER_REPORTED_ATTESTATION_ONLY');
+  assert.equal(callerBooleansOnly.attestationProvenance.selfReportedBooleansProveExternalAdmission, false);
+  assert.equal(callerBooleansOnly.securityAndSafeHarbor.externalAdmissionProved, false);
+  assert.equal(callerBooleansOnly.held, true);
+  assert.ok(callerBooleansOnly.holdReasons.includes('UNPROVED_EXTERNAL_ADMISSION_FROM_SELF_REPORTED_FLAGS'));
+
+  // 6. Complete valid NEGATIVE RESULT empirical fixture (hypothesis falsified / not supported) MUST still qualify EMPIRICALLY_QUALIFIED without HOLD,
+  //    and W artistic judgment remains orthogonal to U hypothesis outcome
+  const validNegativeResultIndep = evaluateR2DromologicalGate({
+    sourceStaged: true,
+    authority: {
+      signatureValid: true,
+      independentSignatureVerification: {
+        verified: true,
+        signatureSha256: '1'.repeat(64),
+        trustedPublicKeySha256: '2'.repeat(64),
+        verifiedHeadSha256: '3'.repeat(40)
+      }
+    },
+    replayProtection: {
+      nonceClaimed: true,
+      independentJournalVerification: {
+        verified: true,
+        nonceSha256: '4'.repeat(64),
+        journalEntryId: 'wx-entry-001'
+      }
+    },
+    providerMetadata: { checked: true, ok: true, outputTokenLimit: 65536, expectedOutputTokenLimit: 65536 },
+    requestDispatched: true,
+    providerResponseObserved: true,
+    wireCapture: {
+      rawCaptureVerified: true,
+      parserAgreement: true,
+      independentWireVerification: {
+        verified: true,
+        rawSseSha256: '5'.repeat(64),
+        requestBindingSha256: '6'.repeat(64),
+        dualParserAgreement: true
+      }
+    },
+    scientificHypothesisSupported: false,
+    humanReview: { verdict: 'HUMAN_ARTISTIC_ACCEPTED' },
+    phases: { noticeAt: 10, actAt: 20, worldAnswersAt: 30, nameAt: 40, restAvailable: true, exitAvailable: true },
+    clocks: { operatorClockMs: 1000, serviceClockMs: 1010, providerReceiptClockMs: 1020, custodyClockMs: 1050, classificationClockMs: 1060 },
+    timeBaseValidated: true
+  });
+  assert.equal(validNegativeResultIndep.held, false);
+  assert.equal(validNegativeResultIndep.lifecycleCapabilities.EMPIRICALLY_QUALIFIED, true);
+  assert.equal(validNegativeResultIndep.scientificHypothesisVerdict, 'OBSERVATION_VALID_HYPOTHESIS_NOT_SUPPORTED');
+  assert.equal(validNegativeResultIndep.lifecycleCapabilities.HUMAN_ACCEPTED, true);
+  assert.equal(validNegativeResultIndep.lifecycleCapabilities.RELEASE_APPROVED, false);
+  assert.equal(validNegativeResultIndep.securityAndSafeHarbor.externalAdmissionProved, true);
+  assert.equal(validNegativeResultIndep.attestationProvenance.allCoreWitnessesIndependentlyVerified, true);
+
+  // 7. Clean synthetic progression up to EMPIRICALLY_QUALIFIED stops short of HUMAN_ACCEPTED & RELEASE_APPROVED without explicit human actions
   const cleanEmpirical = evaluateR2DromologicalGate({
     sourceStaged: true,
     authority: { signatureValid: true },
@@ -336,6 +488,8 @@ test('R2 Dromological & Adversarial Gate: enforces NOTICE < ACT < WORLD_ANSWERS 
   });
   assert.equal(cleanEmpirical.held, false);
   assert.equal(cleanEmpirical.overallDisposition, 'EMPIRICALLY_QUALIFIED');
+  assert.equal(cleanEmpirical.scientificHypothesisVerdict, 'HYPOTHESIS_SUPPORTED');
+  assert.equal(cleanEmpirical.securityAndSafeHarbor.externalAdmissionProved, false);
   assert.equal(cleanEmpirical.clocks.preemptionGapMs, 50);
   assert.equal(cleanEmpirical.lifecycleCapabilities.HUMAN_ACCEPTED, false);
   assert.equal(cleanEmpirical.lifecycleCapabilities.RELEASE_APPROVED, false);

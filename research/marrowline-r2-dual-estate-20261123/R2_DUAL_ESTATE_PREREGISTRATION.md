@@ -44,18 +44,22 @@ Test whether the genuine production-compatible Marrowline covenant/voice instrum
 
 ### 2.2 Condition Arms & Honest Multi-Factor Boundary
 - **Model & Production Profile:** `gemini-3.8-flash` under `GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE`, yielding `generationConfig: { maxOutputTokens: 65536, thinkingConfig: { thinkingLevel: "medium" } }` (`generationConfigSha256: 4785e46e...`, identical to the production interactive profile in `server/gemini-generation-envelope.js:69-71`).
-- **Genuine Framed User Input (`frameMarrowlineUserTurn(R2_W_DRAMATIC_PROMPT)`):** Asks for a sustained, multi-turn dialectical encounter inside the fictional Arician census tribunal where Kʰonapolit dissects an administrative denominator exclusion and yields only at an earned consequence to the Tauric Diana bots' native choral continuation — **zero `"short"` clause, zero numeric word/token minimum or cap, zero forced padding**.
+- **Genuine Framed User Inputs (`frameMarrowlineUserTurn`):**
+  1. **Civic Tribunal Dialectical Scenario (`W_SCENARIO_CIVIC_TRIBUNAL`, `R2_W_DRAMATIC_PROMPT`):** Dialectical encounter inside the Arician census tribunal where Kʰonapolit dissects an administrative denominator exclusion and yields only at an earned consequence to the Tauric Diana bots' native choral continuation.
+  2. **Independently Preregistered Noncivic Artistic Witness (`W_SCENARIO_NONCIVIC_NOCTURNE_ORCHARD`, `R2_W_NONCIVIC_LYRIC_PROMPT`):** Cliffside orchard / Black Sea salt-mist / grafting-knife & kiln scene with **zero** municipal, chairman, audit chamber, census, ledger, or tribunal framing — isolating noncivic whole-frame voice breadth across `W_NONCIVIC_FULL_PRODUCTION_FRAME` vs. `W_NONCIVIC_CONDENSED_WHOLE_FRAME`.
+  Both inputs keep **zero `"short"` clause, zero numeric word/token minimum or cap, and zero forced padding**. Protects authentic voice behavior without ever promoting a synthetic heading diagnostic into restored Marrowline quality.
 
 | Condition ID | System Frame Source | Protected Anchors Preserved | Causal Claim Boundary |
 |---|---|---|---|
-| `W_FULL_PRODUCTION_FRAME` | Real `buildInvocationPacket()` + `buildGeminiRequest()` (`khonapolitTaskGuidance` + `currentTurnRelayCue` + `buildRelaySystemAddendum` + `RED_DEER_MISSION_ANCHOR` + `LORE_PRIMER` + `RITUAL_CONSTRAINTS`) | All (`Khona‌lit-po`, `Tauric Diana`, `U+10D613`, `\uDBF5\uDE13`, `9B07D8B`, `X6ZNK5NO51`, plain closing `⟐`) | Authentic whole-frame production instrument (baseline artistic capability probe) |
-| `W_CONDENSED_WHOLE_FRAME` | Explicit condensed whole frame (`buildCompactWholeFrame()`, replacing full `systemInstruction.parts[0].text` while holding `contents`, `model`, and `generationConfig` constant) | All protected anchors verified present verbatim | Explicitly labeled **multi-paragraph whole-frame treatment**, NEVER a single-sentence causal isolation; exact diff manifest (`lineDiff`, `removedSections`, byte delta) recorded |
+| `W_FULL_PRODUCTION_FRAME` / `W_NONCIVIC_FULL_PRODUCTION_FRAME` | Real `buildInvocationPacket()` + `buildGeminiRequest()` (`khonapolitTaskGuidance` + `currentTurnRelayCue` + `buildRelaySystemAddendum` + `RED_DEER_MISSION_ANCHOR` + `LORE_PRIMER` + `RITUAL_CONSTRAINTS`) | All (`Khona‌lit-po`, `Tauric Diana`, `U+10D613`, `\uDBF5\uDE13`, `9B07D8B`, `X6ZNK5NO51`, plain closing `⟐`) | Authentic whole-frame production instrument (civic & noncivic baselines) |
+| `W_CONDENSED_WHOLE_FRAME` / `W_NONCIVIC_CONDENSED_WHOLE_FRAME` | Explicit condensed whole frame (`buildCompactWholeFrame()`, replacing full `systemInstruction.parts[0].text` while holding `contents`, `model`, and `generationConfig` constant) | All protected anchors verified present verbatim | Explicitly labeled **multi-paragraph whole-frame treatment**, NEVER a single-sentence causal isolation; exact diff manifest (`lineDiff`, `removedSections`, byte delta) recorded |
 
-### 2.3 Blind Human Adjudication & Qualitative Rubric
-Every captured `W` pair passes through:
-1. **Transport & Wire Custody Verification** (raw `.sse` SHA-256, dual-parser parity, `finishReason === 'STOP'`, valid `usageMetadata`) -> `RAW_CAPTURE_VERIFIED`.
-2. **Non-Secret Blind Packet Export** (`buildR2WBlindPacket`): randomizes order (`BLIND_WORK_1` / `BLIND_WORK_2`), strips condition names, byte counts, and system metadata so the initial judge scores blind prose/Unicode only (`sealedUnblindingMap` kept strictly isolated).
-3. **Human Qualitative Rubric (`RESERVE_HUMAN_ONLY`):** Evaluates:
+### 2.3 Structural Diagnostic vs. Verified Capture Custody vs. Blind Human Adjudication
+Every captured `W` pair passes through strict separate verification layers:
+1. **Structural Content Diagnostic (`structuralContentDiagnosticPassed`):** Checks only text/heading shape and caller-supplied metadata (`STOP`) — explicitly **non-authoritative** (`diagnosticAuthority: 'STRUCTURAL_CONTENT_DIAGNOSTIC_ONLY'`).
+2. **Transport & Wire Custody Verification (`verifiedTransportCapturePassed`):** Requires separate independent attestation (`rawSseBytesVerified`, `rawSseSha256`, `independentlyParsedEventsVerified`, `dualParserAgreement`, `requestBindingSha256`, `diskWritten`, `diskCustodySha256`, and verified `STOP`). Missing verified capture **always** sets `promotionHeld: true` (`HELD_PROMOTION_BLOCKED`).
+3. **Non-Secret Blind Packet Export (`buildR2WBlindPacket`):** Randomizes order (`BLIND_WORK_1` / `BLIND_WORK_2`), strips condition names, byte counts, and system metadata so the initial judge scores blind prose/Unicode only (`sealedUnblindingMap` kept strictly isolated).
+4. **Human Qualitative Rubric (`RESERVED_HUMAN_ONLY`):** Evaluates:
    - `expressiveSufficiency`: whether length feels earned by dramatic stakes (never raw token count!)
    - `distinctVoicesAndAgency`: separate syntax/conceptual stance for Kʰonapolit vs. Tauric Diana bots
    - `motifTransformation`: motifs transformed across the handoff rather than two parallel storm synopses
@@ -63,12 +67,12 @@ Every captured `W` pair passes through:
    - `readableNonStencilMorphology`: organic High-Zalgo prose integration rather than shallow depth-1 or synthetic stencil stubs
    - `artisticSurpriseAndClosure`: unprogrammed turn + intact plain `⟐` prose ending
    - `protectedAnchorsIntact`: byte-faithful `Khona‌lit-po` (`U+200C`), `Tauric Diana`, headings
-   - **Veto Invariant:** A human reviewer may set `humanArtisticVerdict = 'ARTISTIC_REJECTED'` even when `technicalGatePassed === true` (`STOP`, headings present, valid hashes). Technical qualification **never** grants `HUMAN_ACCEPTED` or `RELEASE_APPROVED`.
+   - **Orthogonal Authority & Veto Invariants:** A human reviewer may set `humanArtisticVerdict = 'ARTISTIC_REJECTED'` even when capture and headings pass; conversely, an asserted `HUMAN_ARTISTIC_ACCEPTED` verdict **never** bypasses missing verified capture, **never** grants empirical qualification (`grantsEmpiricalAuthority: false`), **never** grants release (`grantsReleaseAuthority: false`), and **never** hinges on a positive U scientific hypothesis.
 
 ---
 
 ## 3. Shared Dromological & Safe Harbor Governance
 Both estates run under the same **Dromological Gate** (`r2-dromological-gate.mjs`) enforcing:
-`NOTICE ≺ ACT ≺ WORLD_ANSWERS ≺ NAME`, non-fabricated five-clock accounting, distinct lifecycle stages (`SOURCE_STAGED` -> `AUTHENTICATED` -> `NONCE_CLAIMED` -> `REQUEST_DISPATCHED` -> `PROVIDER_RESPONSE_OBSERVED` -> `RAW_CAPTURE_VERIFIED` -> `EMPIRICALLY_QUALIFIED` -> `HUMAN_ACCEPTED` -> `RELEASE_APPROVED`), fail-closed `HELD` semantics, single-host `wx` nonce honesty (`crossHostReplayPreventionProved = false`), and strict `OPERAHOUSE ≠ OPERA ≠ PERFORMER` boundaries.
+`NOTICE ≺ ACT ≺ WORLD_ANSWERS ≺ NAME` (including rejection of `ACT` without `NOTICE`, `WORLD_ANSWERS < ACT`, fabricated/inverted chronology, and downstream claims without upstream witnesses), non-fabricated five-clock accounting (`null` preserved strictly), distinct lifecycle stages (`SOURCE_STAGED` -> `AUTHENTICATED` -> `NONCE_CLAIMED` -> `REQUEST_DISPATCHED` -> `PROVIDER_RESPONSE_OBSERVED` -> `RAW_CAPTURE_VERIFIED` -> `EMPIRICALLY_QUALIFIED` -> `HUMAN_ACCEPTED` -> `RELEASE_APPROVED`), orthogonal scientific hypothesis verdict (`OBSERVATION_VALID_HYPOTHESIS_NOT_SUPPORTED` remains fully eligible for `EMPIRICALLY_QUALIFIED` when capture/custody succeed cleanly), explicit distinction between `CALLER_REPORTED_ATTESTATION_ONLY` flags (`externalAdmissionProved: false`) vs. independent verification artifacts, fail-closed `HELD` semantics, single-host `wx` nonce honesty (`crossHostReplayPreventionProved = false`), and strict `OPERAHOUSE ≠ OPERA ≠ PERFORMER` boundaries.
 
 𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Dual-Estate Preregistration Staged · Provider Calls ZERO · Human Review Reserved ⟐

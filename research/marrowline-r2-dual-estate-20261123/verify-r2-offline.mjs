@@ -106,19 +106,24 @@ export function buildR2OfflinePreviewPlan() {
   const rubricTemplatePreview = evaluateR2WQualitativeRubric({
     authoredText: syntheticPreviewWorks[0].authoredText,
     outputMetadata: { finishReason: 'STOP', streamed: true, parseErrors: 0 },
+    verifiedCaptureAttestation: null,
     humanJudgment: {
       verdict: 'ARTISTIC_REJECTED',
       criteria: {
         expressiveSufficiency: false,
         distinctVoicesAndAgency: false
       },
-      notes: 'Synthetic offline fixture rejection example proving technical pass does not force artistic acceptance.'
+      notes: 'Synthetic offline fixture rejection example proving shape pass + omitted verified capture stay promotionHeld and human veto works independently.'
     }
   });
-  assert.equal(rubricTemplatePreview.technicalGatePassed, true);
+  assert.equal(rubricTemplatePreview.structuralContentDiagnosticPassed, true);
+  assert.equal(rubricTemplatePreview.verifiedTransportCapturePassed, false);
+  assert.equal(rubricTemplatePreview.promotionHeld, true);
+  assert.equal(rubricTemplatePreview.grantsEmpiricalAuthority, false);
+  assert.equal(rubricTemplatePreview.grantsReleaseAuthority, false);
   assert.equal(rubricTemplatePreview.humanArtisticVerdict, 'ARTISTIC_REJECTED');
 
-  // Gate verification across staged offline state + R1-style stopped metadata failure fixture
+  // Gate verification across staged offline state + R1-style stopped metadata failure + valid negative-result empirical fixture
   const gateOfflineStage = evaluateR2DromologicalGate({
     sourceStaged: true,
     authority: { signatureValid: false },
@@ -132,10 +137,26 @@ export function buildR2OfflinePreviewPlan() {
     processExitedZero: true,
     claimedEmpiricalSuccessWithoutModelOutput: true
   });
+  const gateValidNegativeResult = evaluateR2DromologicalGate({
+    sourceStaged: true,
+    authority: { signatureValid: true },
+    replayProtection: { nonceClaimed: true },
+    providerMetadata: { checked: true, ok: true, outputTokenLimit: 65536, expectedOutputTokenLimit: 65536 },
+    requestDispatched: true,
+    providerResponseObserved: true,
+    wireCapture: { rawCaptureVerified: true, parserAgreement: true },
+    scientificHypothesisSupported: false,
+    phases: { noticeAt: 10, actAt: 20, worldAnswersAt: 30, nameAt: 40, restAvailable: true, exitAvailable: true },
+    clocks: { operatorClockMs: 1000, serviceClockMs: 1010, providerReceiptClockMs: 1020, custodyClockMs: 1050, classificationClockMs: 1060 },
+    timeBaseValidated: true
+  });
   assert.equal(gateOfflineStage.overallDisposition, 'SOURCE_STAGED');
   assert.equal(gatePrematureSuccessTest.held, true);
   assert.equal(gatePrematureSuccessTest.overallDisposition, 'HELD');
   assert.equal(gatePrematureSuccessTest.lifecycleCapabilities.EMPIRICALLY_QUALIFIED, false);
+  assert.equal(gateValidNegativeResult.held, false);
+  assert.equal(gateValidNegativeResult.overallDisposition, 'EMPIRICALLY_QUALIFIED');
+  assert.equal(gateValidNegativeResult.scientificHypothesisVerdict, 'OBSERVATION_VALID_HYPOTHESIS_NOT_SUPPORTED');
 
   return Object.freeze({
     schema: R2_OFFLINE_VERIFICATION_SCHEMA,
@@ -165,7 +186,15 @@ export function buildR2OfflinePreviewPlan() {
           byteDelta: wManifest.provenanceDiff.byteDelta,
           protectedAnchorsAllPreserved: wManifest.provenanceDiff.protectedAnchorPreservation.every((a) => a.inFull && a.inCondensed)
         }),
-        conditionBodySha256: Object.fromEntries(wManifest.conditions.map((c) => [c.conditionId, c.observation.bodySha256]))
+        conditionBodySha256: Object.fromEntries(wManifest.conditions.map((c) => [c.conditionId, c.observation.bodySha256])),
+        nonCivicArtisticWitnessSummary: Object.freeze({
+          scenarioId: wManifest.nonCivicArtisticWitness.scenarioId,
+          civicBureaucracyTermsPresent: wManifest.nonCivicArtisticWitness.civicBureaucracyTermsPresent,
+          contentsSha256: wManifest.nonCivicArtisticWitness.contentsSha256,
+          conditionBodySha256: Object.fromEntries(
+            wManifest.nonCivicArtisticWitness.conditions.map((c) => [c.conditionId, c.observation.bodySha256])
+          )
+        })
       })
     }),
     calibratedControlChecks: Object.freeze({
@@ -184,12 +213,20 @@ export function buildR2OfflinePreviewPlan() {
     syntheticBlindPreviewPacket: blindPreview.publicPacket,
     syntheticRubricVetoDemo: Object.freeze({
       note: 'SYNTHETIC_OFFLINE_FIXTURE_ONLY_NOT_PROVIDER_DATA',
-      technicalGatePassed: rubricTemplatePreview.technicalGatePassed,
+      structuralContentDiagnosticPassed: rubricTemplatePreview.structuralContentDiagnosticPassed,
+      verifiedTransportCapturePassed: rubricTemplatePreview.verifiedTransportCapturePassed,
+      promotionHeld: rubricTemplatePreview.promotionHeld,
+      promotionDisposition: rubricTemplatePreview.promotionDisposition,
+      grantsEmpiricalAuthority: rubricTemplatePreview.grantsEmpiricalAuthority,
+      grantsReleaseAuthority: rubricTemplatePreview.grantsReleaseAuthority,
       humanArtisticVerdict: rubricTemplatePreview.humanArtisticVerdict
     }),
     gateChecks: Object.freeze({
       stagedDisposition: gateOfflineStage.overallDisposition,
-      prematureSuccessRejected: gatePrematureSuccessTest.held && gatePrematureSuccessTest.overallDisposition === 'HELD'
+      prematureSuccessRejected: gatePrematureSuccessTest.held && gatePrematureSuccessTest.overallDisposition === 'HELD',
+      validNegativeResultQualified: !gateValidNegativeResult.held
+        && gateValidNegativeResult.overallDisposition === 'EMPIRICALLY_QUALIFIED'
+        && gateValidNegativeResult.scientificHypothesisVerdict === 'OBSERVATION_VALID_HYPOTHESIS_NOT_SUPPORTED'
     })
   });
 }
