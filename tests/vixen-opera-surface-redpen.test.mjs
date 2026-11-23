@@ -40,7 +40,11 @@ test('mobile full-width article replaces legacy reader and forced any-word break
  for(const token of ['display:flow-root!important','max-height:none!important',
    'overflow:visible!important','font:400 15.5px/1.53',
    'overflow-wrap:normal!important','.vix-reader-paragraph'])assert.ok(phone.includes(token),token);
- assert.ok(html.indexOf('vixen-mobile-manuscript-opera-rgi27.css')>html.indexOf('vixen-proscenium-seam.css'));
+ assert.ok(phone.includes('body[data-view="works"] #vixenLivingMesh.vixen-living-mesh'));
+ assert.ok(phone.includes('display:none!important;visibility:hidden!important'));
+ assert.ok(phone.includes('.vix-reader-heading.vix-pdf-source-title'));
+ assert.ok(phone.includes('font:500 18.5px/1.27'));
+  assert.ok(html.indexOf('vixen-mobile-manuscript-opera-rgi27.css')>html.indexOf('vixen-proscenium-seam.css'));
 });
 
 test('witness captures baseline and repaired source with geometry and screenshots',()=>{
