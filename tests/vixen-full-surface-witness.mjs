@@ -174,6 +174,33 @@ try{
   const response=await page.goto(origin,{waitUntil:'domcontentloaded',timeout:60000});
   if(response?.status()!==200)throw Error('SOURCE_HTTP_FAILED '+profile.name);
   await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:25000});
+  // A genuine loading veil is kept distinct from the decoded frontispiece.
+  const veil=page.locator('#vixEntryVeil');
+  if(await veil.count()){
+   await capture(page,path.join(profile.name,'arrival','loading-veil.jpg'),{
+    profile:profile.name,surface:'arrival-loading',kind:'arrival_loading_state',
+    veil_state:await veil.getAttribute('data-state'),is_final_frontispiece:false
+   });
+   matrix.push({profile:profile.name,route:'arrival-loading',covered_bottom:true,tiles:1});
+  }
+  await page.waitForFunction(()=>{
+   const img=document.querySelector('#view-overview #cover .hero-art img');
+   return document.body.dataset.vixenArrival==='ready'&&
+    !document.getElementById('vixEntryVeil')&&img?.complete&&img.naturalWidth>0;
+  },null,{timeout:15000});
+  const hero=await page.evaluate(()=>{
+   const img=document.querySelector('#view-overview #cover .hero-art img');
+   return {natural_width:img?.naturalWidth||0,natural_height:img?.naturalHeight||0,
+    current_src_path:img?new URL(img.currentSrc).pathname:null,
+    arrival_state:document.body.dataset.vixenArrival,
+    veil_present:!!document.getElementById('vixEntryVeil')};
+  });
+  if(hero.veil_present||hero.natural_width<=0)throw Error('FRONTISPIECE_NOT_DECODED '+JSON.stringify(hero));
+  await capture(page,path.join(profile.name,'arrival','decoded-frontispiece.jpg'),{
+   profile:profile.name,surface:'decoded-frontispiece',kind:'arrival_ready_frontispiece',
+   hero,device_scale_factor:profile.deviceScaleFactor??1
+  });
+  matrix.push({profile:profile.name,route:'decoded-frontispiece',covered_bottom:true,tiles:1});
   for(const route of primaryRoutes){
    try{
     await page.locator('#vixenRoomRail button[data-view="'+route+'"]').click({force:true,timeout:15000});
