@@ -541,10 +541,10 @@ jobs:
             ['DEPLOYMENT',`/v13/deployments/${id}?teamId=${encodeURIComponent(team)}`],
             ['CHECKS',`/v1/deployments/${id}/checks?teamId=${encodeURIComponent(team)}`],
             ['BUILD_EVENTS',`/v3/deployments/${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
-            ['DEPLOYMENT_CANONICAL',`/v13/deployments/dpl_${id}?teamId=${encodeURIComponent(team)}`],
+            ['DEPLOYMENT_CANONICAL',`/v13/deployments/dpl_${id}?teamId=${encodeURIComponent(team)}&withGitRepoInfo=true`],
             ['CHECKS_CANONICAL',`/v1/deployments/dpl_${id}/checks?teamId=${encodeURIComponent(team)}`],
             ['BUILD_EVENTS_CANONICAL',`/v3/deployments/dpl_${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
-            ['CONTROL_READY',`/v13/deployments/dpl_DeZXgMdYYPmT9GZHL66aQtixeL5m?teamId=${encodeURIComponent(team)}`],
+            ['CONTROL_READY',`/v13/deployments/dpl_DeZXgMdYYPmT9GZHL66aQtixeL5m?teamId=${encodeURIComponent(team)}&withGitRepoInfo=true`],
           ];
           console.log('READ_ONLY_FAILED_DEPLOYMENT_DIAGNOSTIC',id);
           for(const [label,path] of paths){
@@ -563,6 +563,16 @@ jobs:
                 const d=data?.deployment??data;
                 const fields=['id','url','state','readyState','errorCode','errorMessage','checksState','projectId','target','buildingAt','ready'];
                 console.log('DEPLOYMENT_STATE',JSON.stringify(Object.fromEntries(fields.filter(k=>k in d).map(k=>[k,clean(d[k])]))));
+                // Explain Neon's failed branch lookup without exposing environment variables.
+                for(const field of ['gitSource','source','gitBranch','gitRepository','gitRepo','gitRef'])if(field in d){
+                  const v=d[field];
+                  const allowed=['type','ref','sha','repoId','repo','repoName','org','repoOwner','repositoryId','gitUrl','branch','commitSha'];
+                  console.log('GIT_ATTRIBUTION',label,field,JSON.stringify(v&&typeof v==='object'?Object.fromEntries(allowed.filter(k=>k in v).map(k=>[k,clean(v[k])])):clean(v)));
+                }
+                const meta=d.meta??{};
+                const metaFields=['githubCommitRef','githubCommitSha','githubRepo','githubOrg','githubCommitOrg','githubDeployment','githubRepoId','githubCommitRepo','gitlabBranch','gitlabCommitSha','bitbucketBranch','gitCommitRef','gitCommitSha','branch','ref'];
+                console.log('GIT_METADATA_KEYS',label,Object.keys(meta).filter(k=>/git|commit|branch|ref|repo/i.test(k)).slice(0,60));
+                console.log('GIT_METADATA',label,JSON.stringify(Object.fromEntries(metaFields.filter(k=>k in meta).map(k=>[k,clean(meta[k])]))));
                 for(const field of ['checks','buildError','builds'])if(field in d){
                   const val=d[field];
                   const compact=Array.isArray(val)?val.slice(-8):val;
