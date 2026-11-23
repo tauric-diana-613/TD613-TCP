@@ -694,7 +694,22 @@ test('Gate D: halts cleanly as HELD on policy finish, wrong served model, partia
     assert.equal(alteredRes.terminalStopReason, 'STOP_ON_ALTERED_UNICODE_TEXT');
     assert.equal(alteredRes.outcome.classification, 'HELD');
 
-    // 8. Truncated SSE JSON parse error -> dual-parser disagreement HELD
+    // 8. A complete STOP with missing usageMetadata cannot be treated as zero spend.
+    const missingUsage = await runFresh(async (url) => {
+      if (url.endsWith(':countTokens')) return makeJsonResponse({ totalTokens: 215 });
+      return makeSseResponse([{
+        modelVersion: R1_PINNED_MODEL,
+        candidates: [{
+          content: { parts: [{ text: `Kʰonapolit\n${makeMultiStackSample()}\n\nTauric Diana bots\n${makeMultiStackSample()}` }] },
+          finishReason: 'STOP'
+        }]
+      }]);
+    });
+    assert.equal(missingUsage.terminalStopReason, 'STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE');
+    assert.equal(missingUsage.dispatchCounts.generationCalls, 1);
+    assert.ok(fs.existsSync(path.join(nonceDir, `r1-${missingUsage.authorization.nonce}-R1_S01.sse`)));
+
+    // 9. Truncated SSE JSON parse error -> dual-parser disagreement HELD
     const truncatedSseRes = await runFresh(async (url) => {
       if (url.endsWith(':countTokens')) return makeJsonResponse({ totalTokens: 215 });
       return new Response('data: {"modelVersion":"gemini-3.8-flash","candidates":[{"content":{"parts":[{"text":"Kʰonapolit', {
