@@ -43,20 +43,26 @@ try{
          if(response?.status()!==200)throw Error('HTTP_'+response?.status());
          // The route rail mounts asynchronously. Clicking before stage boot
          // silently leaves the Works index in a hidden view on every width.
-         await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:30000});
-         await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true,timeout:20000});
-         await page.locator('#view-works').waitFor({state:'visible',timeout:20000});
-         const firstWork=page.locator('#worksListContainer button[data-select-work]').first();
-         if(await firstWork.isVisible())await firstWork.click({timeout:20000});
-         else {
-           const returnToIndex=page.locator('#closeMobileWorkBtn');
-           if(await returnToIndex.isVisible()){
-             await returnToIndex.click({timeout:15000});
-             await firstWork.waitFor({state:'visible',timeout:15000});
-             await firstWork.click({timeout:20000});
-           } // Otherwise, Works is already showing its initially selected Work.
-         }
-         await page.waitForSelector('#expaCompanionBodyPre.vix-manuscript .vix-reader-paragraph',{timeout:45000});
+         // Wait for the *application* navigation listeners and typed read-only
+         // wayfinding API, not merely the image/curtain Fox House mount.
+         await page.waitForFunction(()=>Boolean(window.VIXEN_BOOT_HYDRATION && window.VixenReference?.openWork),null,{timeout:30000});
+         const original=page.locator('#worksListContainer button[data-select-work]').filter({hasText:/The Architecture of Control/i}).first();
+         await original.waitFor({state:'attached',timeout:25000});
+         const workId=await original.getAttribute('data-select-work');
+         const opened=await page.evaluate(id=>window.VixenReference.openWork(id),workId);
+         if(opened?.opened!==true)throw Error('ORIGINAL_WORK_OPEN_FAILED '+JSON.stringify(opened));
+         await page.locator('#view-works').waitFor({state:'visible',timeout:25000});
+         const pdf=page.locator('#worksExperimentAReaderMount [data-select-manifestation]').filter({hasText:/Algedonic Systems Deep Research\.pdf/i}).first();
+         await pdf.waitFor({state:'attached',timeout:25000});
+         // Tabs can be visually folded in the phone's focused reader. DOM click
+         // invokes the existing registered handler and earns no UI-click credit.
+         await pdf.evaluate(el=>el.click());
+         await page.waitForFunction(()=>{
+           const el=document.getElementById('expaCompanionBodyPre');
+           return el?.dataset.lineation==='pdf-source-wordflow-reconstructed' &&
+                  el.querySelectorAll('.vix-reader-paragraph').length>20 &&
+                  (el.querySelector('.vix-reader-raw pre')?.textContent.length||0)>35000;
+         },null,{timeout:45000,polling:250});
          await page.waitForTimeout(250);
          const measurement=await page.evaluate(()=>{
            const article=document.querySelector('#expaCompanionBodyPre');
