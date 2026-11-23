@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 // it does not turn a static source check into a claim of visual browser parity.
 const page = readFileSync(new URL('../app/encyclopedia/vix-cyb.html', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../app/encyclopedia/vixen-estate/vixen-mobile-reading-rgi17.css', import.meta.url), 'utf8');
+const newReader = readFileSync(new URL('../app/encyclopedia/vixen-estate/vixen-mobile-manuscript-opera-rgi27.css', import.meta.url), 'utf8');
+const oldDesktop = readFileSync(new URL('../app/encyclopedia/vixen-estate/vixen-obsidian-reading-rgi26.css', import.meta.url), 'utf8');
 test('RGI17 is a late-loaded, exclusively mobile sheet', () => {
   const earlier = page.indexOf('vixen-mobile-seams-rgi16.css');
   const later = page.indexOf('vixen-mobile-reading-rgi17.css');
@@ -21,9 +23,17 @@ test('phone typography and frontispiece stay scoped to presentation', () => {
   assert.match(css, /inset:80px 16px clamp\(190px,23svh,214px\)/);
   assert.match(css, /justify-content:space-between!important/);
   assert.doesNotMatch(css, /inset:clamp\(138px,18svh,178px\) 16px auto/);
-  assert.match(css, /#worksLexiconLayout\.has-mobile-reader #worksReaderPanel/);
-  assert.match(css, /#worksExperimentAReaderMount \.vix-couture-reader\.vix-manuscript/);
-  assert.match(css, /#worksExperimentAReaderMount \.vix-manuscript \.vix-reader-paragraph/);
+  assert.doesNotMatch(css, /#worksExperimentAReaderMount|#worksReaderPanel/);
+  assert.match(newReader, /#worksLexiconLayout\\.has-mobile-reader/);
+  assert.match(newReader, /#expaCompanionBodyPre\\.vix-couture-reader\\.vix-manuscript/);
+  assert.match(newReader, /#expaCompanionBodyPre \\.vix-reader-paragraph/);
+  assert.match(newReader, /display:flow-root!important/);
+  assert.match(newReader, /max-height:none!important/);
+  assert.match(newReader, /overflow-wrap:normal!important/);
+  assert.match(newReader, /font:400 15\\.5px\\/1\\.53/);
+  assert.match(newReader, /@media screen and \\(max-width:680px\\)/);
+  assert.ok(page.indexOf('vixen-mobile-manuscript-opera-rgi27.css')>page.indexOf('vixen-obsidian-reading-rgi26.css'));
+  assert.doesNotMatch(oldDesktop, /#expaCompanionBodyPre :is\\(\\*, \\*::before, \\*::after\\)/);
   assert.match(page, /aria-label="Complete companion manuscript"/);
   assert.match(page,/THE OBSIDIAN READING ROOM · EDITORIAL EDITION/);
   assert.match(page,/DOCUMENTARY SOURCE · MANUSCRIPT/);
