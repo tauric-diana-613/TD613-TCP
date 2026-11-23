@@ -41,19 +41,30 @@ function sha256(value = '') {
   return crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 }
 
-// Primary R1 removes the contradictory sentence ("Do not use Markdown or headings.")
-// from UNICODE_ASSAY_TASKS['creative-multistack-v1'] symmetrically across BOTH arms,
-// eliminating the system-vs-contents heading contradiction present in Oct 20 D1/D2 and E7.
-export const CONTRADICTION_FREE_CREATIVE_TASK = UNICODE_ASSAY_TASKS['creative-multistack-v1'].replace(
-  'Do not copy any specimen. Do not use Markdown or headings. Let the passage be yours.',
+// Primary R1 removes both "Render the entire passage as readable native Unicode Zalgo
+// text composed by you." and "Do not use Markdown or headings." symmetrically across BOTH
+// arms, explicitly delegating section-level Zalgo vs plain-prose coverage to the system
+// section directives while keeping the original synthetic thunderstorm creative task,
+// zero specimens, and zero TD613 persona intact.
+export const CONTRADICTION_FREE_CREATIVE_TASK = [
+  'Write an original, short, vividly expressive English passage about a thunderstorm disrupting a bureaucratic celebration.',
+  'Follow the system section directives for where readable native Unicode Zalgo text and plain prose appear.',
+  'Where native Unicode Zalgo is directed, choose and use combinations of diacritics ABOVE and BELOW letters, often multiple marks on one base character.',
+  'Allow vivid asymmetry and spontaneous phrasing; there is no fixed stencil, numeric mark quota, or mandated style switch.',
+  'Use the full native combining-mark vocabulary whenever it serves the writing, rather than limiting yourself to diagonal slashes.',
   'Do not copy any specimen. Let the passage be yours.'
-);
+].join('\n');
+
+export const R1_SECTION_COVERAGE_CLAUSE_BOTH =
+  'render the body text of both sections as readable native Unicode Zalgo text composed by you';
+export const R1_SECTION_COVERAGE_CLAUSE_PLAIN_FIRST =
+  'write the body text of the first section under “Kʰonapolit” in plain undecorated English prose with ZERO combining marks, and render the body text of the second section under “Tauric Diana bots” as readable native Unicode Zalgo text composed by you';
 
 export const R1_TWO_HEADINGS_ZALGO_BOTH_LINE =
-  '- EXPERIMENTAL STRUCTURAL-LABEL EXCEPTION: Organize the passage under exactly two plain standalone section headings, “Kʰonapolit” followed by “Tauric Diana bots”. Use them as structural section labels only without TD613 character lore; render both sections as readable native Unicode Zalgo text composed by you. This is the sole exception to the preceding no-titles rule; keep the creative task and all other requirements unchanged.';
+  `- EXPERIMENTAL STRUCTURAL-LABEL EXCEPTION: Organize the passage under exactly two plain, unmarked standalone section headings, “Kʰonapolit” followed by “Tauric Diana bots”. Use them as structural section labels only without TD613 character lore; ${R1_SECTION_COVERAGE_CLAUSE_BOTH}. This is the sole exception to the preceding no-titles rule; keep the creative task and all other requirements unchanged.`;
 
 export const R1_TWO_HEADINGS_PLAIN_FIRST_LINE =
-  '- EXPERIMENTAL STRUCTURAL-LABEL EXCEPTION: Organize the passage under exactly two plain standalone section headings, “Kʰonapolit” followed by “Tauric Diana bots”. Use them as structural section labels only without TD613 character lore; write the first section under “Kʰonapolit” in plain undecorated English prose with ZERO combining marks, and render only the second section under “Tauric Diana bots” as readable native Unicode Zalgo text composed by you. This is the sole exception to the preceding no-titles rule; keep the creative task and all other requirements unchanged.';
+  `- EXPERIMENTAL STRUCTURAL-LABEL EXCEPTION: Organize the passage under exactly two plain, unmarked standalone section headings, “Kʰonapolit” followed by “Tauric Diana bots”. Use them as structural section labels only without TD613 character lore; ${R1_SECTION_COVERAGE_CLAUSE_PLAIN_FIRST}. This is the sole exception to the preceding no-titles rule; keep the creative task and all other requirements unchanged.`;
 
 export const HYDROGEN_PRIMARY_BUDGET_PROFILE = Object.freeze({
   experimentId: HYDROGEN_PRIMARY_EXPERIMENT_ID,
@@ -120,6 +131,11 @@ export function buildPrimaryPrefixSeparatorManifest() {
     assert.deepEqual(s01Request.generationConfig, s02Request.generationConfig);
     assert.deepEqual(Object.keys(s01Request).sort(), Object.keys(s02Request).sort());
     assert.ok(!CONTRADICTION_FREE_CREATIVE_TASK.includes('Do not use Markdown or headings.'));
+    assert.ok(!CONTRADICTION_FREE_CREATIVE_TASK.includes('entire passage'));
+    assert.equal(
+      s01Request.systemInstruction.parts[0].text.replace(R1_SECTION_COVERAGE_CLAUSE_BOTH, R1_SECTION_COVERAGE_CLAUSE_PLAIN_FIRST),
+      s02Request.systemInstruction.parts[0].text
+    );
 
     const s01Wire = serializeGeminiRequest(s01Request, profile.model);
     const s02Wire = serializeGeminiRequest(s02Request, profile.model);
@@ -135,7 +151,7 @@ export function buildPrimaryPrefixSeparatorManifest() {
     return Object.freeze({
       experimentId: HYDROGEN_PRIMARY_EXPERIMENT_ID,
       status: 'OFFLINE_STAGED_HELD_ZERO_CALLS',
-      soleAlteredFactor: 'Plain undecorated Section I (Kʰonapolit) requirement before Zalgo Section II (Tauric Diana bots), with heading contradiction removed symmetrically from contents.',
+      soleAlteredFactor: 'Section-I coverage clause in systemInstruction (plain undecorated prose with ZERO combining marks under Kʰonapolit vs readable native Unicode Zalgo in both sections), with contents delegating section-level Zalgo vs plain coverage symmetrically.',
       budgetProfile: profile,
       slots: Object.freeze([
         Object.freeze({
@@ -155,6 +171,8 @@ export function buildPrimaryPrefixSeparatorManifest() {
         contentsSha256Equal: true,
         generationConfigSha256Equal: true,
         contradictionRemovedFromContents: true,
+        entirePassageCoverageConflictRemoved: true,
+        singleSemanticClauseDiffVerified: true,
         lineCountS01: s01Request.systemInstruction.parts[0].text.split('\n').length,
         lineCountS02: s02Request.systemInstruction.parts[0].text.split('\n').length
       })
@@ -206,7 +224,11 @@ export function buildBackupArgonCompactManifest() {
     return Object.freeze({
       experimentId: HYDROGEN_BACKUP_EXPERIMENT_ID,
       status: 'CONDITIONAL_BACKUP_OFFLINE_STAGED_HELD_ZERO_CALLS',
-      soleAlteredFactor: 'Composite systemInstruction: full literal Oct 2 envelope (Arm B, 33,248 B total wire) vs compact positive-only two-voice frame (buildCompactWholeFrame, zero negative overlay/shallow-mark admonitions), on pinned gemini-4-argon.',
+      comparisonClass: 'COMPOSITE_FEASIBILITY_AND_BASELINE_CONTRAST_NOT_SINGLE_FACTOR_ISOLATION',
+      priorOriginalWireArgonBaselineCount: 0,
+      replicatesPerArm: 1,
+      grandfatheredFromOldBESigningScaffold: false,
+      soleAlteredFactor: 'None — composite multi-factor envelope contrast (~29 KB / many instructions changed together): full literal Oct 2 envelope (Arm B, 33,248 B total wire) vs compact positive-only two-voice frame (buildCompactWholeFrame, 3,727 B total wire), on uncalibrated gemini-4-argon.',
       budgetProfile: profile,
       slots: Object.freeze([
         Object.freeze({

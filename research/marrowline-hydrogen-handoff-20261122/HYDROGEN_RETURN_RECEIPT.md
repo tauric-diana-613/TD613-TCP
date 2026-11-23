@@ -27,13 +27,13 @@
 | File Path (relative to repository root) | Status | SHA-256 |
 |---|---|---|
 | `research/marrowline-hydrogen-handoff-20261122/ACTIVATION.md` | Unmodified handoff input | `3b1a9fe66feeca456b143d9b492e916af78931e15b39516b43d6c2c50e82a312` |
-| `research/marrowline-hydrogen-handoff-20261122/hydrogen-next-experiment-preflight.mjs` | Added (offline manifest builder) | `a583453ec9f26226bbf6fdf923d76b2819ef9583827873b3a56826802ee110cd` |
-| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_NEXT_EXPERIMENT_PREFLIGHT.json` | Added (machine-readable offline wire manifest) | `50bfc67b857847ec233143f238b4a3fb7cec934839b5f1d9da5badcb7adf8219` |
-| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_FORENSIC_LEDGER.md` | Added (Deliverable 1) | `012e9d45c771c39506168c8b56708c4f8d167f6c538e588d32477b09e938e34d` |
-| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_CAUSAL_MATRIX.md` | Added (Deliverable 2) | `8165eb0fa809a971dc03b06b94befcc318ccff1f7a780faff892cf49434d9220` |
-| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_NEXT_EXPERIMENT.md` | Added (Deliverable 3) | `fd3eae06fdeb3df01f73b519950cdf8ad10665576c5632d9abeb053d537769bf` |
-| `tests/marrowline-hydrogen-forensic-preflight.test.mjs` | Added (offline unit test) | `4b1a7be97eab8f7c13d65d6d34a9ad36d0d29aaaff1469833fb21cbb7a165d8e` |
-| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_RETURN_RECEIPT.md` | Added (Deliverable 4 — this file) | *(self)* |
+| `research/marrowline-hydrogen-handoff-20261122/hydrogen-next-experiment-preflight.mjs` | Updated (`R1-01`, `R1-05` closed) | `b4642ed7937f02a979cb1996601fd237afa90def0f5030e091e713bfb57734cc` |
+| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_NEXT_EXPERIMENT_PREFLIGHT.json` | Updated (canonical UTF-8 no BOM, LF; `R1-03`) | `fd521e02f9a51727b3cb20ff5656cb791aafca5ab6c037f9a055f05e755500c3` |
+| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_FORENSIC_LEDGER.md` | Updated (`R1-04` run `#38809581563` / PR `#1522` fixed) | `74ea15bee305d2be987bd2ae2ad418fda6826c06df82c1dd4fdac9230b2b7d94` |
+| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_CAUSAL_MATRIX.md` | Updated (`R1-02`, `R1-04`, `R1-05` closed) | `cee835ed123d96417a9dd756ab0f115b54c44812ff1dbc258b9ce4b780d6eefe` |
+| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_NEXT_EXPERIMENT.md` | Updated (refreshed R1 digests, `R1-01`, `R1-02`, `R1-05`) | `48e3646397938c8aef96b354621b66dbfecf06345277017ade15f4dac585a18b` |
+| `tests/marrowline-hydrogen-forensic-preflight.test.mjs` | Updated (`R1-01`, `R1-03` byte-exact JSON + frozen digests) | `aa710b009d13ac35ec96adbaacad29eddf23d9d003ac1313a43e376e39daef0d` |
+| `research/marrowline-hydrogen-handoff-20261122/HYDROGEN_RETURN_RECEIPT.md` | Updated (Deliverable 4 — this file) | *(self)* |
 
 ---
 
@@ -46,7 +46,7 @@ All commands ran offline inside the clean research worktree (`0` network calls):
    - Outcome: **`PASS`** (`exit 0`, emitted `HYDROGEN_R1_CONTRADICTION_FREE_PREFIX_SEPARATOR` and `HYDROGEN_B1_ARGON_BASELINE_VS_COMPACT_POSITIVE` SHA-256 digests, `paidProviderCallsExecuted: 0`).
 2. **Focused offline Hydrogen & Marrowline regression suite (9 pure-Node test files):**
    - Command: `node --test tests\marrowline-hydrogen-forensic-preflight.test.mjs tests\marrowline-historical-grove-rest.test.mjs tests\marrowline-role-boundary-contrast.test.mjs tests\marrowline-d1-d2-boundary-factor-prereg.test.mjs tests\marrowline-d-ingress-factor-ladder.test.mjs tests\marrowline-whole-frame-contrast.test.mjs tests\marrowline-unicode-capability-assay.test.mjs tests\marrowline-original-sse-voice-onset-audit.test.mjs tests\khonapolit-relay.test.mjs`
-   - Outcome: **`PASS` (`34 / 34` tests passed, `0` failed)**. Note: `tests/marrowline-hydrogen-forensic-preflight.test.mjs` (`2 / 2` PASS) explicitly poisoned `globalThis.fetch` and verified `--execute`/`--paid`/`--deploy`/`--dispatch` fail closed.
+   - Outcome: **`PASS` (`35 / 35` tests passed, `0` failed)**. Note: `tests/marrowline-hydrogen-forensic-preflight.test.mjs` (`3 / 3` PASS) poisoned `globalThis.fetch`, verified zero `contents`-vs-`system` conflict, locked frozen `R1_S01`/`R1_S02` digests, verified canonical UTF-8 no-BOM LF JSON parity byte-for-byte, and rejected live CLI flags.
 3. **Pre-existing `tests/khonapolit-covenant.test.mjs` (tested earlier in full 10-file run):**
    - Outcome: **`FAIL` (`1 / 1` pre-existing drift on `main` `0f67d8954`)** — expects `/ADDRESS: Kʰonapolit/` in `khonapolit-covenant.js` output (`buildInvocationPacket`); unrelated to Hydrogen's staged files.
 4. **Worktree `jsdom`-dependent test files (`tests/marrowline-screaming-grove-restoration.test.mjs`, `tests/marrowline-historical-runtime.test.mjs`):**

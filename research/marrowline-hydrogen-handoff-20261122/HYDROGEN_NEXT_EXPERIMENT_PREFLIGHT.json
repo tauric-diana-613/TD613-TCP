@@ -1,11 +1,11 @@
-﻿{
+{
   "schema": "td613.marrowline.hydrogen-next-experiment-preflight/v1",
   "paidProviderCallsExecuted": 0,
   "liveDispatchSupportedByThisModule": false,
   "primaryRecommendation": {
     "experimentId": "HYDROGEN_R1_CONTRADICTION_FREE_PREFIX_SEPARATOR",
     "status": "OFFLINE_STAGED_HELD_ZERO_CALLS",
-    "soleAlteredFactor": "Plain undecorated Section I (Kʰonapolit) requirement before Zalgo Section II (Tauric Diana bots), with heading contradiction removed symmetrically from contents.",
+    "soleAlteredFactor": "Section-I coverage clause in systemInstruction (plain undecorated prose with ZERO combining marks under Kʰonapolit vs readable native Unicode Zalgo in both sections), with contents delegating section-level Zalgo vs plain coverage symmetrically.",
     "budgetProfile": {
       "experimentId": "HYDROGEN_R1_CONTRADICTION_FREE_PREFIX_SEPARATOR",
       "model": "gemini-3.8-flash",
@@ -27,15 +27,15 @@
         "observation": {
           "schema": "td613.marrowline.submitted-request/v1",
           "model": "gemini-3.8-flash",
-          "bodySha256": "af26f9e93556ed58d4e7566de9827fdcf360fc78b3fb373d528293f9f7207734",
-          "modelAndBodySha256": "445179092d5d09697eabd94a789ef9c8cf197e9ae1153cb940c9bc5da02951c4",
-          "systemInstructionSha256": "243ef8748092f2b76816366c7942ed04080fcceec848cae60f259e9967629ff3",
-          "contentsSha256": "2faa58ca0315bc15c55001e54996ff7431a0c27dae890fc3dddb9057283b0dd1",
+          "bodySha256": "f2fcdf77d7d14843447f061759f9d5817bc000e52698b5b78eb5f3f886022a02",
+          "modelAndBodySha256": "9c808d7de26887a55148ba62f05b1e12e4b896d825792c246727c3c6fb7b97ed",
+          "systemInstructionSha256": "78df5f9b5ad6ceefa8ce10071b40194e8ace56226fefef186ba4e1e5c7a1079c",
+          "contentsSha256": "e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998",
           "generationConfigSha256": "38b263e2b714aba385704810159e882034c2d3ac8a500403efe73ef97d81b22c",
-          "utf8Bytes": 1678,
+          "utf8Bytes": 1770,
           "contentTurnCount": 1
         },
-        "countTokensRequestSha256": "b770b198b072c8f560d0cf0336f4e749e828e2db25993cf1ef39f294fccb8d39"
+        "countTokensRequestSha256": "578a43e1e0bc078766744703d1116963338207a6969c66e0673623107153c582"
       },
       {
         "slot": "R1_S02",
@@ -43,21 +43,23 @@
         "observation": {
           "schema": "td613.marrowline.submitted-request/v1",
           "model": "gemini-3.8-flash",
-          "bodySha256": "a1d26a4497e1ed57b09d8b7fb679c1cc77ba37ca5ea31aaebcf558f3761b8a4f",
-          "modelAndBodySha256": "8cd83482362775dacf3389ae47de0c46bc401c732ed20ce6e102370d002b8a7c",
-          "systemInstructionSha256": "816a869e6cbc9829808c51b8d77a63fa1dd169fce6f67ecad37c983f5262ed9a",
-          "contentsSha256": "2faa58ca0315bc15c55001e54996ff7431a0c27dae890fc3dddb9057283b0dd1",
+          "bodySha256": "29b3265a5060666c1b19f905a7a528a7613c6d6b9e8566156da3c2b5cb022399",
+          "modelAndBodySha256": "903d9aef749b34ffdb46b65c3c3766e5219497d5778900c06a7f599811e01d8e",
+          "systemInstructionSha256": "7c48aeda766e4e10c63b048f6cee990ec126baac8f5cd419769e410d0ca0274b",
+          "contentsSha256": "e056b75319141b145903441d1156bbf4f7fa3f15e14de5dd007cf812d8486998",
           "generationConfigSha256": "38b263e2b714aba385704810159e882034c2d3ac8a500403efe73ef97d81b22c",
-          "utf8Bytes": 1832,
+          "utf8Bytes": 1936,
           "contentTurnCount": 1
         },
-        "countTokensRequestSha256": "413cd6c2c019c4c7092ea6d606d1663c7ddb2c5b5aa6caeb80317b3032b3e050"
+        "countTokensRequestSha256": "965fcb6cea4ca9b20681f783c3e22fecf83afd4552e7e75f117388665a078fc3"
       }
     ],
     "parity": {
       "contentsSha256Equal": true,
       "generationConfigSha256Equal": true,
       "contradictionRemovedFromContents": true,
+      "entirePassageCoverageConflictRemoved": true,
+      "singleSemanticClauseDiffVerified": true,
       "lineCountS01": 6,
       "lineCountS02": 6
     }
@@ -65,7 +67,11 @@
   "conditionalBackup": {
     "experimentId": "HYDROGEN_B1_ARGON_BASELINE_VS_COMPACT_POSITIVE",
     "status": "CONDITIONAL_BACKUP_OFFLINE_STAGED_HELD_ZERO_CALLS",
-    "soleAlteredFactor": "Composite systemInstruction: full literal Oct 2 envelope (Arm B, 33,248 B total wire) vs compact positive-only two-voice frame (buildCompactWholeFrame, zero negative overlay/shallow-mark admonitions), on pinned gemini-4-argon.",
+    "comparisonClass": "COMPOSITE_FEASIBILITY_AND_BASELINE_CONTRAST_NOT_SINGLE_FACTOR_ISOLATION",
+    "priorOriginalWireArgonBaselineCount": 0,
+    "replicatesPerArm": 1,
+    "grandfatheredFromOldBESigningScaffold": false,
+    "soleAlteredFactor": "None — composite multi-factor envelope contrast (~29 KB / many instructions changed together): full literal Oct 2 envelope (Arm B, 33,248 B total wire) vs compact positive-only two-voice frame (buildCompactWholeFrame, 3,727 B total wire), on uncalibrated gemini-4-argon.",
     "budgetProfile": {
       "experimentId": "HYDROGEN_B1_ARGON_BASELINE_VS_COMPACT_POSITIVE",
       "model": "gemini-4-argon",
