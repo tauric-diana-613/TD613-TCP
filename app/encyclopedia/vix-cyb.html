@@ -3451,16 +3451,37 @@ body[data-view="overview"] .reading-back{display:none}
     }
 
     // Reading tools affect only the presentation layer, never source custody.
+    // One window listener at a time. Mobile reading is document flow rather
+    // than a tiny nested scrollport, so Progress/Previous/Next follow the page.
+    window.__vixenFolioScrollCleanup?.();
+    window.__vixenFolioScrollCleanup=null;
     const folio=mountEl.querySelector('#expaCompanionBodyPre');
     if(folio){
       folio.dataset.folioDensity='compact';
       const progress=mountEl.querySelector('#vixFolioProgress');
+      const pageFlow=()=>matchMedia('(max-width:680px)').matches &&
+        getComputedStyle(folio).overflowY==='visible';
       const updateFolioPosition=()=>{
-        const maximum=Math.max(0,folio.scrollHeight-folio.clientHeight);
-        const percent=maximum?Math.round(folio.scrollTop/maximum*100):100;
+        if(!folio.isConnected)return;
+        let percent;
+        if(pageFlow()){
+          const rect=folio.getBoundingClientRect();
+          const traveled=Math.max(0,Math.min(rect.height,88-rect.top));
+          percent=rect.height?Math.round(100*traveled/rect.height):0;
+        } else {
+          const maximum=Math.max(0,folio.scrollHeight-folio.clientHeight);
+          percent=maximum?Math.round(folio.scrollTop/maximum*100):100;
+        }
         if(progress)progress.textContent='POSITION '+percent+'%';
       };
       folio.addEventListener('scroll',updateFolioPosition,{passive:true});
+      const onPageScroll=()=>updateFolioPosition();
+      window.addEventListener('scroll',onPageScroll,{passive:true});
+      window.addEventListener('resize',onPageScroll,{passive:true});
+      window.__vixenFolioScrollCleanup=()=>{
+        window.removeEventListener('scroll',onPageScroll);
+        window.removeEventListener('resize',onPageScroll);
+      };
       updateFolioPosition();
       for(const button of mountEl.querySelectorAll('[data-folio-density]')){
         button.addEventListener('click',()=>{
@@ -3472,8 +3493,16 @@ body[data-view="overview"] .reading-back{display:none}
       }
       for(const [selector,direction] of [['#vixFolioPrevious',-1],['#vixFolioNext',1]]){
         mountEl.querySelector(selector)?.addEventListener('click',()=>{
-          folio.scrollBy({top:direction*Math.max(160,folio.clientHeight*.82),
-            behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+          const behavior=matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth';
+          if(pageFlow()){
+            const rect=folio.getBoundingClientRect();
+            const first=window.scrollY+rect.top-88;
+            const last=Math.max(first,window.scrollY+rect.bottom-window.innerHeight+72);
+            const desired=window.scrollY+direction*Math.max(160,window.innerHeight*.76);
+            window.scrollTo({top:Math.max(first,Math.min(last,desired)),behavior});
+          } else {
+            folio.scrollBy({top:direction*Math.max(160,folio.clientHeight*.82),behavior});
+          }
           folio.focus({preventScroll:true});
         });
       }
