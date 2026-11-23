@@ -42,12 +42,19 @@ test('Maestro text sits above a gently visible field, not a flattened canvas',()
  assert.match(html,/id="vixenAiJourney"/);
  assert.doesNotMatch(rule,/display:\s*none|opacity:\s*0|filter:\s*blur/);
 });
-test('Obsidian PDF manuscript title beats old dark rule with flaxen gold',()=>{
+test('Desktop editorial folio supersedes obsolete poster-scale title without touching source',()=>{
  const sel='.vix-reader-heading.vix-pdf-source-title';
  assert.ok(earlier.includes(sel));
- const rule=lastRule(reading,sel);
- assert.match(rule,/color:\s*#efd18a\s*!important/);
- assert.ok(contrast('efd18a','101b1c')>9);
- assert.ok(html.indexOf('vixen-redpen-couture-rgi18.css')<html.indexOf('vixen-obsidian-reading-rgi26.css'));
+ assert.ok(reading.includes(sel),'Legacy dark stylesheet remains source-preserved');
+ const desktop=read('vixen-desktop-manuscript-opera-rgi28.css');
+ const rule=lastRule(desktop,sel);
+ assert.match(rule,/display:none!important/,'duplicate PDF title yields to the readable semantic Work heading');
+ const article=lastRule(desktop,'#expaCompanionBodyPre.vix-couture-reader.vix-manuscript');
+ assert.match(article,/font:400 16\\.5px\\/1\\.58/);
+ assert.match(article,/max-height:none!important/);
+ assert.match(article,/background:#fffaf6!important/);
+ assert.match(desktop,/\\.term-name/,'Catalogue rows use compact serif typography');
+ assert.ok(html.indexOf('vixen-desktop-manuscript-opera-rgi28.css') > html.indexOf('vixen-obsidian-reading-rgi26.css'),
+  'Desktop editorial CSS must load after its inherited theatrical rules');
  assert.match(reading,/vix-reader-paragraph/);
 });
