@@ -38,6 +38,13 @@
 - Qualification result is **still RED**: source-observed 390px Program Notes OFF/PENDING state and 428px Observatory proof open are missing. Later `d1cb3651…` fixes require new exact-head CI and independent inspection.
 - Historical screenshot ZIP stays in Actions; no intermediate image package admitted to this branch.
 
+
+### Deeper-scroll Folios legibility follow-up
+- Following initial four-profile top-frame clearance, independently inspected 12 actual Folios page-scroll frames (top/mid/bottom for all four viewports) in historical artifact 14815890750.
+- **Additional authentic defect:** bright optical carriers still crossed the nearly transparent lower historical-question and custody-note text, especially at mid/bottom scroll. A top-frame-only visual clearance does not qualify a full-scroll witness.
+- **Narrow product repair:** `dfb4736617606f731c205047b3b8e89a7f06132f` adds scoped RGI-06D nearly opaque reading grounds to `.vxe-native-questions`, `.vxe-trace`, `.vxe-actions` and `.vxe-control.vxe-text-control`. Leaves optical lines in the surrounding Folios field; preserves OPERAHOUSE separation.
+- Exact-head Chromium CI [45168772565](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45168772565) queued after repair. **Rendered validation of 06D is pending; no final archive admitted.**
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
