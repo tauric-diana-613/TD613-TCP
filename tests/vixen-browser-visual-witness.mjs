@@ -165,8 +165,17 @@ try {
     assert.equal(noirWitness.columnCount,'auto','Manuscripts must not fragment into horizontal CSS columns');
     const readerChannels=(noirWitness.backgroundColor.match(/\d+/g)||[]).slice(0,3).map(Number);
     assert.equal(readerChannels.length,3,'Reader background RGB must be observable');
-    assert(readerChannels.every(channel=>channel<70),
-      'Obsidian reader must be dark, not the oversized white-paper manuscript: '+JSON.stringify(noirWitness));
+    if(width<=680){
+      assert(readerChannels.every(channel=>channel>=240),
+        'New mobile manuscript must have an opaque warm paper background: '+JSON.stringify(noirWitness));
+      assert(noirWitness.width>=width*.68,
+        'Phone manuscript must have a readable full-page text measure: '+JSON.stringify(noirWitness));
+      assert(noirWitness.padding<=16,
+        'Mobile prose must not be boxed inside oversized margins: '+JSON.stringify(noirWitness));
+    }else{
+      assert(readerChannels.every(channel=>channel<70),
+        'Desktop folio remains the separately designed dark reading surface: '+JSON.stringify(noirWitness));
+    }
     assert(noirWitness.fontSize>=13.3&&noirWitness.fontSize<=17.5,
       'Compact manuscript font must remain comfortably dense: '+JSON.stringify(noirWitness));
     assert(noirWitness.paragraphMargin<=16&&noirWitness.padding<=28&&noirWitness.pageControls&&noirWitness.footer,
@@ -176,14 +185,15 @@ try {
     assert.equal(await workMount.locator('button[data-folio-density="comfort"]').getAttribute('aria-pressed'),'true');
     await workMount.locator('button[data-folio-density="compact"]').click();
     assert.equal(await manuscript.getAttribute('data-folio-density'),'compact');
-    const beforeScroll=await manuscript.evaluate(el=>el.scrollTop);
+    const readingPosition=()=>width<=680?page.evaluate(()=>window.scrollY):manuscript.evaluate(el=>el.scrollTop);
+    const beforeScroll=await readingPosition();
     await workMount.locator('#vixFolioNext').click();
-    await page.waitForTimeout(320);
-    const afterScroll=await manuscript.evaluate(el=>el.scrollTop);
-    assert(afterScroll>beforeScroll+20,'NEXT must genuinely page through the manuscript');
+    await page.waitForTimeout(440);
+    const afterScroll=await readingPosition();
+    assert(afterScroll>beforeScroll+20,'NEXT must genuinely advance the manuscript '+JSON.stringify({width,beforeScroll,afterScroll}));
     await workMount.locator('#vixFolioPrevious').click();
-    await page.waitForTimeout(320);
-    assert(Number((await manuscript.evaluate(el=>el.scrollTop)))<afterScroll,
+    await page.waitForTimeout(440);
+    assert(Number(await readingPosition())<afterScroll,
       'PREVIOUS must return toward the manuscript start');
     await page.evaluate(()=>{
       const n=document.querySelector('#expaCompanionBodyPre');
