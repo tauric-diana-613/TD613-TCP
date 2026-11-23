@@ -25,13 +25,24 @@ try{
    await page.waitForTimeout(110);
    const leakage=await page.evaluate(()=>{
     const banned=/\b(?:Wendbine|SignalRupture|EMSTD613|SRC|Atelier|FADT|TD613)\b/g; // Preserve the public constitutional role names.
-    const text=document.body.innerText;
-    const visibleText=[...text.matchAll(banned)].slice(0,18).map(m=>({
-      term:m[0],excerpt:text.slice(Math.max(0,m.index-50),m.index+70)
-    }));
+    const visibleText=[];
+    const sourceBoundary='script,style,template,noscript,[hidden],[data-vixen-machine-only],[data-machine-receipt],[data-vixen-source-provenance],.vs-work-title,.vxe-document,.vix-reader-raw,.vix-fusion-machine-preview,.vix-manuscript,.expa-body-pre,.vix-reader-code';
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    while(walker.nextNode() && visibleText.length<18){
+      const node=walker.currentNode,el=node.parentElement;
+      if(!el||el.closest(sourceBoundary)||!el.getClientRects().length)continue;
+      const css=getComputedStyle(el);
+      if(css.display==='none'||css.visibility==='hidden')continue;
+      const text=node.nodeValue||'';
+      banned.lastIndex=0;
+      for(const m of text.matchAll(banned)){
+        visibleText.push({term:m[0],excerpt:text.slice(Math.max(0,m.index-50),m.index+70)});
+        if(visibleText.length>=18)break;
+      }
+    }
     const attrs=[];
     for(const el of document.querySelectorAll('[aria-label],[aria-description],[title],[placeholder],[alt]')){
-      if(el.closest('[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview'))continue;
+      if(el.closest(sourceBoundary))continue;
       if(el.closest('[hidden]'))continue;
       if(!el.getClientRects().length)continue;
       for(const name of ['aria-label','aria-description','title','placeholder','alt']){
