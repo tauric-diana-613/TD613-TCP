@@ -271,10 +271,10 @@ try{
    // Establish a known closed baseline, then exercise both real transitions.
    const prior=await proof().getAttribute('aria-expanded');
    if(prior==='true'){
-    await proof().click({force:true,timeout:6000});
+    await proof().click({force:true,noWaitAfter:true,timeout:6000});
     await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='false',null,{timeout:8000});
    }
-   await proof().click({force:true,timeout:6000});
+   await proof().click({force:true,noWaitAfter:true,timeout:6000});
    await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='true',null,{timeout:8000});
    const expanded=await proof().getAttribute('aria-expanded');
    const proofVisible=await page.locator('#vixenElectricFoundry [data-inspector-open="true"]').count();
@@ -284,7 +284,7 @@ try{
     aria_expanded:expanded
    });
    matrix.push({profile:profile.name,route:'observatory-proof-open',covered_bottom:true,tiles:1});
-   await proof().click({force:true,timeout:6000});
+   await proof().click({force:true,noWaitAfter:true,timeout:6000});
    await page.waitForFunction(()=>document.querySelector('#vixenElectricFoundry .ef-inspector-switch')?.getAttribute('aria-expanded')==='false',null,{timeout:8000});
    if(await proof().getAttribute('aria-expanded')!=='false')
     throw Error('OBSERVATORY_PROOF_CLOSE_FAILED');
@@ -299,7 +299,8 @@ try{
    await page.locator('#globalSearchInput').fill('provenance');
    await page.waitForTimeout(350);
    for(const mode of ['hybrid','lexical','phrase','exact','src_projective']){
-    await page.locator('[data-search-mode="'+mode+'"]').click({force:true,timeout:6000});
+    await page.locator('[data-search-mode="'+mode+'"]').click({force:true,noWaitAfter:true,timeout:6000});
+    await page.waitForFunction(m=>document.querySelector('[data-search-mode="'+m+'"]')?.getAttribute('aria-checked')==='true',mode,{timeout:8000});
     await page.waitForTimeout(180);
     await capture(page,path.join(profile.name,'search-dialog',mode+'-results.jpg'),{
      profile:profile.name,surface:'search-'+mode,kind:'ranked_result_view',
@@ -320,7 +321,9 @@ try{
    matrix.push({profile:profile.name,route:'search-negative-query',covered_bottom:true,tiles:1,modal:true});
    await page.locator('#globalSearchInput').fill('provenance');
    await page.waitForTimeout(180);
-   await page.locator('#vixenFusionConsole > summary').click({force:true,timeout:5000});
+   if(!await page.locator('#vixenFusionConsole').evaluate(el=>el.open))
+    await page.locator('#vixenFusionConsole > summary').click({force:true,noWaitAfter:true,timeout:5000});
+   await page.waitForFunction(()=>document.getElementById('vixenFusionConsole')?.open===true,null,{timeout:8000});
    await page.waitForTimeout(120);
    await capture(page,path.join(profile.name,'search-dialog','fusion-laboratory.jpg'),{
     profile:profile.name,surface:'fusion-laboratory',kind:'fusion_laboratory',device_scale_factor:profile.deviceScaleFactor??1
@@ -348,8 +351,8 @@ try{
     }));
     throw Error('INDEPENDENT_READING_ROOM_INVITATION_NOT_MOUNTED '+JSON.stringify(status));
    });
-   await invitation.first().click({force:true,timeout:7000});
-   await page.waitForTimeout(250);
+   await invitation.first().click({force:true,noWaitAfter:true,timeout:7000});
+   await page.waitForFunction(()=>document.body.dataset.activeResearchStage==='OPERAHOUSE',null,{timeout:10000});
    const opened=await page.evaluate(()=>document.body.dataset.activeResearchStage==='OPERAHOUSE');
    if(!opened)throw Error('SEPARATE_READING_ROOM_NOT_OPEN');
    matrix.push({profile:profile.name,...await scrollCapture(page,profile,'independent-reading-room')});
@@ -382,7 +385,7 @@ try{
    // Role selection alone must never count as Program Notes consent.
    // Start a synthetic COMPOSER session and stop at AWAITING permission.
    await page.locator('#vmaGoal').fill('Compare original source routes without writing notes.');
-   await page.locator('#vmaStart').click({force:true,timeout:7000});
+   await page.locator('#vmaStart').click({force:true,noWaitAfter:true,timeout:7000});
    // Starting a source-backed Podium route can await read-only host calls.
    // A hidden notes control before session activation is neither a consent
    // failure nor grounds for inventing an active session. Await the real UI.
@@ -405,7 +408,7 @@ try{
     program_notes_permission:'NOT_REQUESTED',grant_performed:false
    });
    matrix.push({profile:profile.name,route:'program-notes-off',covered_bottom:true,tiles:1});
-   await page.locator('#vmaNotesRequest').click({force:true,timeout:6000});
+   await page.locator('#vmaNotesRequest').click({force:true,noWaitAfter:true,timeout:6000});
    await page.locator('#vmaNotesApprove').waitFor({state:'visible',timeout:8000});
    await capture(page,path.join(profile.name,'podium-roles','program-notes-awaiting-human.jpg'),{
     profile:profile.name,surface:'program-notes-pending',kind:'consent_pending',
