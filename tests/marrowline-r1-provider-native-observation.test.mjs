@@ -19,8 +19,10 @@ import {
 } from '../research/marrowline-r1-no-artificial-ceilings-20261122/r1-provider-native-preflight.mjs';
 import {
   FROZEN_PROVIDER_NATIVE_CONDITIONS,
+  R1_NATIVE_AUTH_DOMAIN_SEPARATOR,
   R1_NATIVE_GRANT_SCHEMA,
   buildProviderNativeConditionPlans,
+  canonicalJson,
   canonicalizeProviderNativeAuthorizationPayload,
   executeProviderNativeCore
 } from '../research/marrowline-r1-no-artificial-ceilings-20261122/r1-provider-native-core.mjs';
@@ -197,8 +199,11 @@ test('Architectural Security Proof: production executable has ZERO test trust ov
   try {
     // Default offline CLI runs with zero network or credentials and reports pinned trust anchor
     const offlineJson = JSON.parse(execFileSync(process.execPath, [EXECUTABLE_PATH], { encoding: 'utf8' }));
+    assert.equal(R1_NATIVE_AUTH_DOMAIN_SEPARATOR, 'TD613_R1_NATIVE_AUTH_V2');
+    assert.equal(canonicalizeProviderNativeAuthorizationPayload(grant.payload).startsWith('TD613_R1_NATIVE_AUTH_V2\n'), true);
     assert.equal(offlineJson.status, 'SOURCE_ONLY_QUALIFIED');
     assert.equal(offlineJson.grantSchema, R1_NATIVE_GRANT_SCHEMA);
+    assert.equal(offlineJson.signingDomainSeparator, 'TD613_R1_NATIVE_AUTH_V2');
     assert.equal(offlineJson.publishedOutputCapacityTokens, 65536);
     assert.equal(offlineJson.paidProviderCallsExecuted, 0);
     assert.equal(offlineJson.countTokensCallsExecuted, 0);
@@ -308,6 +313,20 @@ test('Authority Negative Controls: rejects old capped grants, forbidden cap fiel
         publicKeyPem: publicKey
       }),
       (e) => e.code === 'R1_AUTH_OMITTED_DEFAULT_GRANT_SUPERSEDED'
+    );
+    // Signing a valid v2 payload under the legacy V1 domain separator MUST fail signature verification
+    const v2PayloadWrongDomain = buildValidNativePayload();
+    const v1DomainSig = crypto.sign(
+      null,
+      Buffer.from(`TD613_R1_NATIVE_AUTH_V1\n${canonicalJson(v2PayloadWrongDomain)}`, 'utf8'),
+      privateKey
+    ).toString('base64');
+    await assert.rejects(
+      () => runCore({
+        grant: { algorithm: 'ed25519', payload: v2PayloadWrongDomain, signatureBase64: v1DomainSig },
+        publicKeyPem: publicKey
+      }),
+      (e) => e.code === 'R1_AUTH_INVALID_SIGNATURE'
     );
 
     // 2. Old Argon grant rejected
@@ -886,7 +905,7 @@ test('Red Pen #4 (HTTP Non-2XX Wire Custody): persists unmodified raw error byte
     assert.ok(journalText.includes('trace-503'));
     assert.ok(journalText.includes(errRun.attemptRecords[0].httpErrorCustody.rawErrorBodySha256));
 
-    // Also halt cleanly before any generation dispatch if live model metadata reports outputTokenLimit !== 65536
+    // Red Pen P1: halt fail-closed BEFORE any generation/countTokens call on mismatched OR absent/malformed outputTokenLimit
     const capMismatch = await executeProviderNativeCore({
       acknowledgeLiveExecution: true,
       grant: signGrant(buildValidNativePayload(), privateKey),
@@ -904,8 +923,38 @@ test('Red Pen #4 (HTTP Non-2XX Wire Custody): persists unmodified raw error byte
     });
     assert.equal(capMismatch.integritySessionHaltReason, 'STOP_ON_PROVIDER_CAPACITY_MISMATCH');
     assert.equal(capMismatch.dispatchCounts.generationCalls, 0);
+    assert.equal(capMismatch.dispatchCounts.countTokensCalls, 0);
     assert.equal(capMismatch.metadataDiscovery.outputTokenLimitReportedByProvider, 32768);
     assert.equal(capMismatch.metadataDiscovery.outputTokenLimitMatchesAmendedWire, false);
+    assert.ok(fs.readFileSync(capMismatch.evidenceJournalPath, 'utf8').includes('R1_NATIVE_PROVIDER_CAPACITY_MISMATCH'));
+
+    for (const invalidMeta of [
+      { name: `models/${R1_NATIVE_PINNED_MODEL}`, supportedGenerationMethods: ['generateContent', 'countTokens'] },
+      { name: `models/${R1_NATIVE_PINNED_MODEL}`, outputTokenLimit: null, supportedGenerationMethods: ['generateContent', 'countTokens'] },
+      { name: `models/${R1_NATIVE_PINNED_MODEL}`, outputTokenLimit: '65536', supportedGenerationMethods: ['generateContent', 'countTokens'] },
+      { name: `models/${R1_NATIVE_PINNED_MODEL}`, outputTokenLimit: 0, supportedGenerationMethods: ['generateContent', 'countTokens'] },
+      { name: `models/${R1_NATIVE_PINNED_MODEL}`, outputTokenLimit: -65536, supportedGenerationMethods: ['generateContent', 'countTokens'] },
+      { name: `models/${R1_NATIVE_PINNED_MODEL}`, outputTokenLimit: 65536.5, supportedGenerationMethods: ['generateContent', 'countTokens'] }
+    ]) {
+      const capUnverified = await executeProviderNativeCore({
+        acknowledgeLiveExecution: true,
+        grant: signGrant(buildValidNativePayload(), privateKey),
+        publicKeyPem: publicKey,
+        pinnedTrustFingerprintSha256: fp,
+        checkedOutHeadSha: TEST_HEAD_SHA,
+        evidenceDir,
+        apiKey: 'fake-key',
+        checkModelDiscovery: true,
+        transportFetch: async () => makeJsonResponse(invalidMeta)
+      });
+      assert.equal(capUnverified.integritySessionHaltReason, 'STOP_ON_PROVIDER_CAPACITY_UNVERIFIED');
+      assert.notEqual(capUnverified.integritySessionHaltReason, 'STOP_ON_PROVIDER_CAPACITY_MISMATCH');
+      assert.equal(capUnverified.dispatchCounts.generationCalls, 0);
+      assert.equal(capUnverified.dispatchCounts.countTokensCalls, 0);
+      assert.equal(capUnverified.metadataDiscovery.outputTokenLimitReportedByProvider, null);
+      assert.equal(capUnverified.metadataDiscovery.outputTokenLimitMatchesAmendedWire, false);
+      assert.ok(fs.readFileSync(capUnverified.evidenceJournalPath, 'utf8').includes('R1_NATIVE_PROVIDER_CAPACITY_UNVERIFIED'));
+    }
   } finally {
     fs.rmSync(evidenceDir, { recursive: true, force: true });
   }

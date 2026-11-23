@@ -12,6 +12,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
   R1ProviderNativeError,
+  R1_NATIVE_AUTH_DOMAIN_SEPARATOR,
   R1_NATIVE_GRANT_SCHEMA,
   R1_NATIVE_RUNNER_SCHEMA,
   buildProviderNativeConditionPlans,
@@ -213,6 +214,7 @@ async function runCli(argv = process.argv.slice(2)) {
   return Object.freeze({
     schema: R1_NATIVE_RUNNER_SCHEMA,
     grantSchema: R1_NATIVE_GRANT_SCHEMA,
+    signingDomainSeparator: R1_NATIVE_AUTH_DOMAIN_SEPARATOR,
     status: 'SOURCE_ONLY_QUALIFIED',
     trustAnchorProvisioned: R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 !== null,
     paidProviderCallsExecuted: 0,

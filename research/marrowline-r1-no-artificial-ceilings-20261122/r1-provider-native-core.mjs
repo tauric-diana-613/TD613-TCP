@@ -38,7 +38,7 @@ import {
 
 export const R1_NATIVE_RUNNER_SCHEMA = 'td613.marrowline.r1-provider-native-observation/v1';
 export const R1_NATIVE_GRANT_SCHEMA = 'td613.marrowline.r1-provider-native-authorization/v2-ed25519';
-export const R1_NATIVE_AUTH_DOMAIN_SEPARATOR = 'TD613_R1_NATIVE_AUTH_V1';
+export const R1_NATIVE_AUTH_DOMAIN_SEPARATOR = 'TD613_R1_NATIVE_AUTH_V2';
 export const R1_NATIVE_SECTION1_HEADING = 'Kʰonapolit';
 export const R1_NATIVE_SECTION2_HEADING = 'Tauric Diana bots';
 export const MAX_FUTURE_ISSUED_SKEW_MS = 60 * 1000;
@@ -2349,21 +2349,33 @@ async function captureHttpErrorCustodyToDisk({
           } else {
             const metaJson = await metaResp.json().catch(() => ({}));
             const methods = Array.isArray(metaJson?.supportedGenerationMethods) ? metaJson.supportedGenerationMethods : [];
-            const reportedOutLimit = Number.isInteger(metaJson?.outputTokenLimit) ? metaJson.outputTokenLimit : null;
+            const hasOutLimitField = Boolean(metaJson && typeof metaJson === 'object' && Object.hasOwn(metaJson, 'outputTokenLimit'));
+            const rawOutLimit = hasOutLimitField ? metaJson.outputTokenLimit : null;
+            const hasValidPositiveOutLimit = typeof rawOutLimit === 'number' && Number.isSafeInteger(rawOutLimit) && rawOutLimit > 0;
+            const reportedOutLimit = hasValidPositiveOutLimit ? rawOutLimit : null;
             if (!methods.includes('generateContent')) {
               integritySessionHaltReason = 'STOP_ON_MODEL_METHODS_MISSING';
             } else {
               metadataDiscovery = Object.freeze({
                 status: Number(metaResp.status),
                 name: metaJson.name || `models/${R1_NATIVE_PINNED_MODEL}`,
+                outputTokenLimitPresent: hasOutLimitField,
+                rawOutputTokenLimit: rawOutLimit === undefined ? null : rawOutLimit,
                 outputTokenLimitReportedByProvider: reportedOutLimit,
-                outputTokenLimitMatchesAmendedWire: reportedOutLimit === null ? null : reportedOutLimit === R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
+                outputTokenLimitMatchesAmendedWire: hasValidPositiveOutLimit && reportedOutLimit === R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
                 maxOutputTokensOnWire: R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
                 inputTokenLimitReportedByProvider: Number.isInteger(metaJson?.inputTokenLimit) ? metaJson.inputTokenLimit : null,
                 supportedGenerationMethods: Object.freeze([...methods])
               });
               appendJournal('R1_NATIVE_MODEL_METADATA_OBSERVED', metadataDiscovery);
-              if (reportedOutLimit !== null && reportedOutLimit !== R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS) {
+              if (!hasValidPositiveOutLimit) {
+                integritySessionHaltReason = 'STOP_ON_PROVIDER_CAPACITY_UNVERIFIED';
+                appendJournal('R1_NATIVE_PROVIDER_CAPACITY_UNVERIFIED', {
+                  expectedOutputTokenLimit: R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,
+                  outputTokenLimitPresent: hasOutLimitField,
+                  rawOutputTokenLimit: rawOutLimit === undefined ? null : rawOutLimit
+                });
+              } else if (reportedOutLimit !== R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS) {
                 integritySessionHaltReason = 'STOP_ON_PROVIDER_CAPACITY_MISMATCH';
                 appendJournal('R1_NATIVE_PROVIDER_CAPACITY_MISMATCH', {
                   expectedOutputTokenLimit: R1_NATIVE_PUBLISHED_OUTPUT_CAPACITY_TOKENS,

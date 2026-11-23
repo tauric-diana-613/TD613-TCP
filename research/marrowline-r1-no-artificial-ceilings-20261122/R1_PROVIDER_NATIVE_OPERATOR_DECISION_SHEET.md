@@ -8,7 +8,7 @@
 > Under **`AMEND_CONFIG`**, `generationConfig.maxOutputTokens` is explicitly set to the **official Gemini 3.8 Flash published output capacity (`65,536` tokens)** so Google's API cannot silently substitute a lower model-dependent omitted default. Live execution remains **HELD** until offline verification & exact-head CI pass and you approve this configuration and independently sign a `v2-ed25519` grant bound to that final `HEAD`.
 
 - **Commission:** `TD613-MARROWLINE-R1-NO-ARTIFICIAL-CEILINGS-20261122` (`AMEND_CONFIG`: official `65,536` provider output capacity)
-- **Experiment ID:** `HYDROGEN_R1_PROVIDER_NATIVE_UNCAPPED` (`td613.marrowline.r1-provider-native-authorization/v2-ed25519`)
+- **Experiment ID:** `HYDROGEN_R1_PROVIDER_NATIVE_UNCAPPED` (`td613.marrowline.r1-provider-native-authorization/v2-ed25519`, signing domain `TD613_R1_NATIVE_AUTH_V2`)
 - **Covenant / Seal:** `Khona‌lit-po` (literal `U+200C` preserved) · `⟐SAC[X6ZNK5NO51]`
 - **Historical Superseded Sources (Preserved Untouched):** Production `origin/main` (`0f67d8954347fdae77cdb83f82848df89ad3b2ff`), PR `#1778` (`44fae23cbf9af07eab5112e90df3211a119e707c`), PR `#1779` (`675d6d0388220f63162931003c998d0084d3e68e`), Prior PR `#1780` Omitted-Default Baseline (`56189bbf1d2d6f623d5d852447e580beee3cfa8a`)
 - **Successor Executable:** `research/marrowline-r1-no-artificial-ceilings-20261122/run-r1-provider-native-observation.mjs`
@@ -33,7 +33,7 @@
 
 - **TD613 Code Limits Imposed:** **None** (`0` artificial token budgets, `0` USD spend caps, `0` call/attempt quotas, `0` duration timeouts, `0` SSE capture byte ceilings). Setting `maxOutputTokens: 65536` matches Gemini 3.8 Flash's published `outputTokenLimit`, not an artificial research ceiling.
 - **External Provider Reality (Non-Zero Unqueried Externals):**
-  - During this offline commission (`0` `GET /v1beta/models` calls made), live availability of `models/gemini-3.8-flash`, live `outputTokenLimit` confirmation, live `:countTokens`, account tier rate limits (`RPM`/`TPM`/`RPD`), and current official Google billing prices were **not** polled. At live startup, compulsory `GET /v1beta/models/gemini-3.8-flash` verifies `outputTokenLimit` (`STOP_ON_PROVIDER_CAPACITY_MISMATCH` if live metadata deviates from `65,536`).
+  - During this offline commission (`0` `GET /v1beta/models` calls made), live availability of `models/gemini-3.8-flash`, live `outputTokenLimit` confirmation, live `:countTokens`, account tier rate limits (`RPM`/`TPM`/`RPD`), and current official Google billing prices were **not** polled. At live startup, compulsory `GET /v1beta/models/gemini-3.8-flash` verifies a positive integer `outputTokenLimit === 65536` fail-closed before any generation or `:countTokens` call (`STOP_ON_PROVIDER_CAPACITY_UNVERIFIED` if absent/null/non-positive-integer; `STOP_ON_PROVIDER_CAPACITY_MISMATCH` if positive integer `!== 65536`).
   - Prior repo-archived `AUTHORIZATION.json` (`2026-10-09`) recorded Gemini Developer API intro pricing for `gemini-3.8-flash` (`$0.75 / 1M` input, `$3.75 / 1M` output+thinking through `2026-12-31`), and `outputTokenLimit = 65,536` (`KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS`). Historical rates are context only and **never a TD613 spend limit**.
 - **Revocable Session Control & Non-2XX Custody:** Active runs continue until requested episodes finish, a wire/custody failure occurs, or you trigger manual STOP (`SIGINT`/`SIGTERM` or `AbortSignal`) or update `--revocation-file` (monitored live during open SSE streams to abort mid-flight and fsync partial `.sse` bytes under `STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED`). Any non-2xx HTTP response also preserves exact unmodified error bytes and headers on disk (`.http-error.body` + `.http-error.meta.json`).
 
@@ -43,7 +43,7 @@
 
 1. **Public Trust-Anchor Pin (`COMPLETED — OPERATOR-ATTESTED`):** `R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = '840a71625f4b9db224871bbb126b6debc3fefdc9179b5628bd9faf514f2c7701'` (operator-supplied non-secret SPKI DER SHA-256 fingerprint; private key and passphrase remain strictly under offline human custody outside code, GitHub, agents, CI, and chat).
 2. **Choose Pre-Execution Action:**
-   - **`[ ] APPROVE_AMEND_CONFIG_AND_SIGN_GRANT`** — Approve this `65,536` published-capacity wire configuration on final qualified `HEAD` and subsequently sign an active ceiling-free `td613.marrowline.r1-provider-native-authorization/v2-ed25519` grant bound to that exact `HEAD`.
+   - **`[ ] APPROVE_AMEND_CONFIG_AND_SIGN_GRANT`** — Approve this `65,536` published-capacity wire configuration on final qualified `HEAD` and subsequently sign an active ceiling-free `td613.marrowline.r1-provider-native-authorization/v2-ed25519` grant bound to that exact `HEAD` over domain message `TD613_R1_NATIVE_AUTH_V2\n<canonicalJson(payload)>`.
    - **`[ ] REVERT_TO_OMITTED_DEFAULT`** — Revert to omitting `maxOutputTokens` (`425eee50...` / `v1-ed25519`) before signing.
    - **`[x] HOLD (CURRENT)`** — Staged `AMEND_CONFIG` awaiting human approval on final `HEAD`; zero active grants signed, live generation at **`0`**, `:countTokens` at **`0`**, and `GET /v1beta/models` at **`0`**.
 
