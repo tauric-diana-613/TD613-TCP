@@ -122,7 +122,7 @@ test('thread titles identify the actual subject rather than copying an opening v
     'What Does This Photo Mean');
   const prompt = 'An anonymous archive receives two passages whose syntax and metaphors feel uncannily alike. The board declares authorship theft from resemblance alone. Design a cautious stylometric comparison with provenance, alternative explanations and limitations.';
   assert.equal(deriveMarrowlineConversationTitle(prompt), 'Stylometric Comparison with Provenance');
-  assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
+  assert.equal(deriveMarrowlineConversationTitle(''), 'The Screaming Grove');
   for (const title of [
     deriveMarrowlineConversationTitle('I underestimated the contribution was in how directly the research developed.'),
     deriveMarrowlineConversationTitle('Compare the funding, provenance, and accountability mechanisms for these three systems.'),
@@ -312,11 +312,11 @@ test('failed first turn persists an untitled provisional record rather than a sp
   const saved = await h.saved();
   assert.ok(saved?.id, 'failed sent work remains recoverable');
   assert.equal(saved.titleSource, 'pending-return');
-  assert.equal(saved.conversationTitle, '', 'The speaking grove is presentation-only and never durable');
+  assert.equal(saved.conversationTitle, '', 'The Screaming Grove is presentation-only and never durable');
 
   h.$('marrowlineThreadOpen').click();
   await flush();
-  assert.doesNotMatch(h.$('marrowlineThreadList').textContent, /The speaking grove/);
+  assert.doesNotMatch(h.$('marrowlineThreadList').textContent, /The Screaming Grove|The speaking grove/);
   assert.match(h.$('marrowlineThreadList').textContent, /Unfinished conversation/);
 });
 
@@ -393,7 +393,8 @@ test('one armed provider failure retains 503 without inventing a model reply', a
 test('ordinary work starts truly unissued while advanced custody can still hold an invocation', async t => {
   const h = harness(t);
   assert.ok(h.doc.querySelector('.grove-welcome'));
-  assert.equal(h.$('marrowlineConversationTitle').textContent, 'The speaking grove');
+  assert.equal(h.doc.title, 'Marrowline · The Screaming Grove');
+  assert.equal(h.$('marrowlineConversationTitle').textContent, 'The Screaming Grove');
   assert.equal(h.doc.querySelector('#speakingPanel .vessel-head [data-living-target="invocationPanel"]'),null,
     'redundant Keys & settings button is physically absent from conversation masthead');
   assert.equal(h.doc.querySelectorAll('#marrowlineThreadOpen, #marrowlineNewThread').length,2,
@@ -430,7 +431,7 @@ test('ordinary work starts truly unissued while advanced custody can still hold 
   assert.equal(h.calls[0].shi, '', 'unissued research mode does not silently transmit a stored valid SHI');
   const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
   assert.ok(stage, 'the integrated covenant transmission remains the directly visible answer');
-  assert.notEqual(h.$('marrowlineConversationTitle').textContent, 'The speaking grove', 'the first admitted Kʰonapolit return names the chamber');
+  assert.notEqual(h.$('marrowlineConversationTitle').textContent, 'The Screaming Grove', 'the first admitted Kʰonapolit return names the chamber');
   assert.equal(stage.textContent, integratedText, 'provider-native Unicode remains exact after decoration');
   assert.equal(h.doc.querySelectorAll('.relay-gemini[data-present=true]').length, 0, 'new relay does not expose a separate provider prose stage');
   assert.equal(h.doc.querySelectorAll('.relay-bots[data-present=true]').length, 0, 'new relay does not expose a locally ornamented bot stage');
@@ -440,7 +441,7 @@ test('ordinary work starts truly unissued while advanced custody can still hold 
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).seal.suppliedBy, 'operator');
   h.$('clearKhonapolitSession').click();
   assert.equal(h.win.sessionStorage.getItem(sessionKey), null);
-  assert.equal(h.$('marrowlineConversationTitle').textContent, 'The speaking grove', 'clearing the session restores the unnamed chamber');
+  assert.equal(h.$('marrowlineConversationTitle').textContent, 'The Screaming Grove', 'clearing the session restores the unnamed chamber');
 });
 
 test('provider failure preserves exactly one user task, restores the draft, and offers retry without a portability billboard', async t => {
@@ -704,19 +705,59 @@ test('actual submit distinguishes unreadable response bodies from connection fai
   assert.equal(h.$('khonapolitPrompt').value, 'Preserve this draft.');
 });
 
-test('backgrounded mobile request uses keepalive and resumes its preserved task exactly once', async t => {
+test('RP-06: backgrounded mobile request uses keepalive, suppresses automatic duplicate paid calls on disconnect, reports OUTCOME_UNKNOWN honestly, and allows explicit operator retry', async t => {
   const h = harness(t, { mobile: true, backgroundDisconnect: true });
-  h.send('Keep this one task alive while the app is backgrounded.');
-  await until(() => h.calls.length === 2
-    && !h.$('khonapolitSend').disabled
-    && h.doc.querySelectorAll('#khonapolitMessages article.relay-message').length === 1);
+  const task = 'Keep this one task preserved while the app is backgrounded.';
+  h.send(task);
+  await h.settled(); await flush();
   assert.equal(h.fetchOptions[0].keepalive, true, 'the original request opts into browser background delivery');
-  assert.equal(h.fetchOptions[1].keepalive, true, 'the single bounded resume keeps the same delivery contract');
-  assert.equal(h.calls.length, 2, 'one observed background disconnect grants exactly one automatic resume');
-  assert.equal(h.calls[0].message, h.calls[1].message, 'the preserved task is resumed byte-for-byte');
-  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role="user"]').length, 1, 'resume does not duplicate the human turn');
+  assert.equal(h.calls.length, 1, 'RP-06: background disconnect must NEVER trigger an automatic second paid provider call on page return');
+  const failure = h.win.__TD613_KHONAPOLIT_LAST_FAILURE__;
+  assert.ok(failure, 'background disconnect records an explicit client lifecycle observation');
+  assert.equal(failure.backgroundInterrupted, true);
+  assert.equal(failure.outcomeState, 'OUTCOME_UNKNOWN');
+  assert.equal(failure.serverExecutionState, 'REQUEST_MAY_STILL_BE_RUNNING');
+  assert.equal(failure.automaticRetrySuppressed, true);
+  assert.equal(h.$('khonapolitTerminalStatus').dataset.outcomeState, 'unknown');
+  assert.equal(h.$('khonapolitPrompt').value, task, 'preserved task is restored in the composer for explicit retry');
+  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role="user"]').length, 1);
+  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article.relay-message').length, 0);
+  const receipt = JSON.parse(h.$('khonapolitReceipt').textContent);
+  assert.equal(receipt.status, 'CURRENT_REQUEST_OUTCOME_UNKNOWN', 'receipt distinguishes unknown background outcome from confirmed provider failure');
+  assert.equal(
+    boundedFailureMessage(failure),
+    'The browser disconnected while in the background. Your message is saved, and no duplicate request was sent. Retry when you want to send a new request.'
+  );
+
+  // Explicit operator retry sends the second call and completes without duplicating the user turn
+  h.$('retryKhonapolitTask').click();
+  await h.settled(); await flush();
+  assert.equal(h.calls.length, 2, 'only an explicit operator Retry dispatches a second call');
+  assert.equal(h.calls[0].message, h.calls[1].message, 'the preserved task is retried byte-for-byte');
+  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role="user"]').length, 1, 'explicit retry does not duplicate the human turn');
+  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article.relay-message').length, 1);
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__, null);
   assert.equal(h.$('khonapolitPrompt').value, '');
+});
+
+test('RP-06: response arriving while page is hidden is preserved with exact provider Unicode and zero duplicate calls, and page reload while in-flight reports OUTCOME_UNKNOWN', async t => {
+  const h = harness(t, { mobile: true });
+  await h.ready();
+  Object.defineProperty(h.doc, 'visibilityState', { configurable: true, value: 'hidden' });
+  h.doc.dispatchEvent(new h.win.Event('visibilitychange'));
+  h.send('Complete this turn while the browser tab is hidden.');
+  await h.settled(); await flush();
+  Object.defineProperty(h.doc, 'visibilityState', { configurable: true, value: 'visible' });
+  h.doc.dispatchEvent(new h.win.Event('visibilitychange'));
+  await flush();
+  assert.equal(h.calls.length, 1, 'response arriving while hidden makes zero duplicate calls on return');
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__, null);
+  const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
+  assert.ok(stage);
+  assert.equal(stage.textContent, integratedText, 'exact provider-authored Unicode survives background completion');
+  const saved = await h.saved();
+  assert.equal(saved.pendingTask, '');
+  assert.equal(saved.messages.filter(m => m.role === 'model')[0].text, integratedText);
 });
 
 

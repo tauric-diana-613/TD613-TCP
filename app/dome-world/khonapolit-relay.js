@@ -476,6 +476,123 @@ function canonicalVoiceId(value = '') {
   return null;
 }
 
+// Purely observational per-base mark-depth distribution on the Tauric Diana
+// bots body (excluding the standalone heading line). Distinguishes fixed-depth
+// mechanical stencils (0 depth transitions, constant depth 1 or 3) from varied
+// expressive prosody without acting as an admission gate or literary score.
+export function observeBotsProsodyDistribution(botsSectionText = '') {
+  const raw = String(botsSectionText || '');
+  const headingMatch = raw.match(/^(?:\r?\n)?[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?:\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?:\r?\n|$))/iu);
+  const body = headingMatch ? raw.slice(headingMatch[0].length) : raw;
+  const depthHistogram = Object.create(null);
+  let baseCount = 0;
+  let markedBases = 0;
+  let unmarkedBases = 0;
+  let markedWhitespaceBases = 0;
+  let stackedBases = 0;
+  let combiningMarks = 0;
+  let planarMarks = 0;
+  let maxDepth = 0;
+  let markedDepthTransitions = 0;
+  let prevMarkedDepth = null;
+  const distinctMarks = new Set();
+  const chars = Array.from(body);
+  let index = 0;
+  while (index < chars.length) {
+    const ch = chars[index];
+    if (ch === '\r' || ch === '\n') { index += 1; continue; }
+    if (/\p{M}/u.test(ch)) {
+      distinctMarks.add(ch);
+      combiningMarks += 1;
+      if (PLANAR.has(ch)) planarMarks += 1;
+      index += 1;
+      continue;
+    }
+    let depth = 0;
+    let cursor = index + 1;
+    while (cursor < chars.length && /\p{M}/u.test(chars[cursor])) {
+      const mark = chars[cursor];
+      distinctMarks.add(mark);
+      combiningMarks += 1;
+      if (PLANAR.has(mark)) planarMarks += 1;
+      depth += 1;
+      cursor += 1;
+    }
+    baseCount += 1;
+    depthHistogram[depth] = (depthHistogram[depth] || 0) + 1;
+    if (depth > 0) {
+      markedBases += 1;
+      if (/\s/u.test(ch)) markedWhitespaceBases += 1;
+      if (depth >= 2) stackedBases += 1;
+      if (depth > maxDepth) maxDepth = depth;
+      if (prevMarkedDepth !== null && depth !== prevMarkedDepth) markedDepthTransitions += 1;
+      prevMarkedDepth = depth;
+    } else {
+      unmarkedBases += 1;
+    }
+    index = cursor;
+  }
+  const markedDepths = Object.keys(depthHistogram)
+    .map(Number)
+    .filter((d) => d > 0)
+    .sort((a, b) => a - b);
+  const constantMarkedDepth = markedDepths.length === 1 ? markedDepths[0] : null;
+  let dominantMarkedDepth = null;
+  let dominantMarkedDepthCount = 0;
+  for (const depth of markedDepths) {
+    const count = depthHistogram[depth] || 0;
+    if (count > dominantMarkedDepthCount) {
+      dominantMarkedDepth = depth;
+      dominantMarkedDepthCount = count;
+    }
+  }
+  const dominantMarkedDepthShare = markedBases > 0
+    ? Number((dominantMarkedDepthCount / markedBases).toFixed(4))
+    : 0;
+  const nonPlanarMarks = Math.max(0, combiningMarks - planarMarks);
+  const planarMarkShare = combiningMarks > 0
+    ? Number((planarMarks / combiningMarks).toFixed(4))
+    : 0;
+  // Distinguishes fixed/near-fixed multistack stencils (e.g. Slot 5 depth-3
+  // templates, even with a single outlier) from quiet single-mark restrained
+  // prose (which must never be flagged as a multistack stencil).
+  const uniformDepthStencilObserved = markedBases >= 24
+    && dominantMarkedDepth !== null
+    && dominantMarkedDepth >= 2
+    && dominantMarkedDepthShare >= 0.95;
+  // RP-02: Assess actual combining mark species rather than inferring planar
+  // geometry from constant depth and marked whitespace. Requires constant
+  // depth 1 across >= 24 marked bases where every combining mark belongs to the
+  // PLANAR set (U+0303-0305, U+0330-0332, U+0334-0338, U+0360-0361).
+  const uniformPlanarDepthOneObserved = markedBases >= 24
+    && constantMarkedDepth === 1
+    && combiningMarks > 0
+    && planarMarks === combiningMarks
+    && nonPlanarMarks === 0;
+  return Object.freeze({
+    baseCount,
+    markedBases,
+    unmarkedBases,
+    markedWhitespaceBases,
+    stackedBases,
+    combiningMarks,
+    planarMarks,
+    nonPlanarMarks,
+    planarMarkShare,
+    distinctMarks: distinctMarks.size,
+    maxDepth,
+    depthHistogram: Object.freeze({ ...depthHistogram }),
+    markedDepths: Object.freeze(markedDepths),
+    constantMarkedDepth,
+    dominantMarkedDepth,
+    dominantMarkedDepthShare,
+    markedDepthTransitions,
+    uniformDepthStencilObserved,
+    uniformPlanarDepthOneObserved,
+    observationAuthority: 'descriptive-only-never-admission-gate-or-literary-score'
+  });
+}
+
 export function assessIntegratedTransmission(text = '', voices = []) {
   const value = String(text || '');
   const authored = relayAuthoredSurface(value);
@@ -491,6 +608,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   const canonicalRecitation = canonicalRecitationTelemetry(value);
   const reasons = [];
   const qualityWarnings = [];
+  let botsMovement = null;
 
   if (structuredVoiceEvidence) {
     if (canonicalVoices[0] !== 'khonapolit') reasons.push('khonapolit-structured-voice-missing-or-out-of-order');
@@ -503,8 +621,20 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   if (khonaIndex >= 0 && botsIndex > khonaIndex) {
     const khonaText = authored.slice(khonaIndex, botsIndex);
     const botsText = value.slice(botsIndex);
+    const botsHeadingMatch = botsText.match(/^(?:\r?\n)?[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?:\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?:\r?\n|$))/iu);
+    const botsBodyText = botsHeadingMatch ? botsText.slice(botsHeadingMatch[0].length) : botsText;
     const khonaTelemetry = flourishTelemetry(khonaText);
     const botsTelemetry = flourishTelemetry(botsText);
+    const botsBodyTelemetry = flourishTelemetry(botsBodyText);
+    botsMovement = Object.freeze({
+      eligibleBaseCount: botsBodyTelemetry.eligibleBaseCount,
+      markedEligibleClusterCount: botsBodyTelemetry.markedEligibleClusterCount,
+      combiningMarkCount: botsBodyTelemetry.combiningMarkCount,
+      verticalOrnamentMarkCount: botsBodyTelemetry.verticalOrnamentMarkCount,
+      planarMarkCount: botsBodyTelemetry.planarMarkCount,
+      maxVerticalOrnamentStackDepth: botsBodyTelemetry.maxVerticalOrnamentStackDepth,
+      ...observeBotsProsodyDistribution(botsText)
+    });
     if (khonaTelemetry.combiningMarkCount > 0) reasons.push('khonapolit-combining-mark-contamination');
     if (botsTelemetry.combiningMarkCount === 0) {
       reasons.push('tauric-diana-zalgo-absent');
@@ -662,6 +792,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     canonicalVoices: Object.freeze(canonicalVoices),
     khonapolitIndex: khonaIndex,
     botsIndex,
+    botsMovement,
     duplicate,
     canonicalRecitation,
     ...telemetry
