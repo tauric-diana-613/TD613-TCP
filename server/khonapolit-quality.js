@@ -59,13 +59,17 @@ import {
   MARROWLINE_RESTORED_PROSODY_PROFILE,
   MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
   MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE,
   MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER,
   buildHistoricalGroveSystemInstruction,
   buildHistoricalGroveDramaturgyCandidate,
   buildHistoricalGroveVerticalUnprimedCandidate,
   buildHistoricalGroveLexicalDeprimedCandidate,
   buildArtisticRestorationSystemInstruction,
-  buildArtisticRestorationTurnRecencyCue
+  buildArtisticRestorationTurnRecencyCue,
+  buildArtisticRestorationV2SystemInstruction,
+  buildArtisticRestorationV2TurnRecencyCue
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   MARROWLINE_GROVE_TRIAL_ID,
@@ -548,7 +552,7 @@ function currentTurnRelayCue() {
   ].join('\n');
 }
 
-function geminiContents(packet = {}, { includeArtisticRecencyCue = false } = {}) {
+function geminiContents(packet = {}, { includeArtisticRecencyCue = false, artisticRecencyCue = null } = {}) {
   // Conversation history is evidence, not a local style-training surface.
   // Never rewrite a prior model turn before returning it to Gemini. In
   // particular, stripping combining marks from a weak Tauric Diana reply would
@@ -566,7 +570,7 @@ function geminiContents(packet = {}, { includeArtisticRecencyCue = false } = {})
   // without mutating the operator's visible text or history).
   const userParts = [{ text: frameMarrowlineUserTurn(packet.message) }];
   if (includeArtisticRecencyCue) {
-    userParts.push({ text: buildArtisticRestorationTurnRecencyCue() });
+    userParts.push({ text: artisticRecencyCue || buildArtisticRestorationTurnRecencyCue() });
   }
   return [...history, {
     role: 'user',
@@ -607,15 +611,19 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       nativeProsodyFreedom: historicalProsodyFreedom === true
     })
     : null;
-  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID;
-  const systemText = isArtisticRestoration
-    ? buildArtisticRestorationSystemInstruction({
-      packetSystemInstruction: packet.systemInstruction,
-      taskGuidance,
-      relayAddendum: buildRelaySystemAddendum(apertureReceipt),
-      relayCue: currentTurnRelayCue()
-    })
-    : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
+  const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
+  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
+  const artisticInput = {
+    packetSystemInstruction: packet.systemInstruction,
+    taskGuidance,
+    relayAddendum: buildRelaySystemAddendum(apertureReceipt),
+    relayCue: currentTurnRelayCue()
+  };
+  const systemText = isArtisticRestorationV2
+    ? buildArtisticRestorationV2SystemInstruction(artisticInput)
+    : isArtisticRestoration
+      ? buildArtisticRestorationSystemInstruction(artisticInput)
+      : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
       ? (historicalLexicalDeprimedCandidate === true
         ? buildHistoricalGroveLexicalDeprimedCandidate(historicalBase)
         : historicalVerticalUnprimedCandidate === true
@@ -635,7 +643,10 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
     systemInstruction: {
       parts: [{ text: systemText }]
     },
-    contents: geminiContents(packet, { includeArtisticRecencyCue: isArtisticRestoration }),
+    contents: geminiContents(packet, {
+      includeArtisticRecencyCue: isArtisticRestoration,
+      artisticRecencyCue: isArtisticRestorationV2 ? buildArtisticRestorationV2TurnRecencyCue() : null
+    }),
     generationConfig: buildGeminiGenerationConfig({
       model,
       maxOutputTokens: resolvedMaxOutputTokens,
@@ -1351,7 +1362,8 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
-  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID;
+  const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
+  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan, {
     restoredGrove: isHistoricalGrove,
     artisticRestoration: isArtisticRestoration
@@ -1389,14 +1401,15 @@ export default async function handler(req, res) {
     });
   } else if (isArtisticRestoration) {
     res.__td613GroveTrial = Object.freeze({
-      id: MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
-      source_commit: '0f67d8954347fdae77cdb83f82848df89ad3b2ff',
-      variant: MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+      id: groveTrial,
+      // v2 exact source SHA is provided by the release/build receipt, not fabricated here.
+      source_commit: isArtisticRestorationV2 ? null : '0f67d8954347fdae77cdb83f82848df89ad3b2ff',
+      variant: isArtisticRestorationV2 ? MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE : MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
       requested_model_order: [...MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
       typography_policy: 'provider-native-morphology-observation-only',
-      native_prosody_profile: MARROWLINE_ARTISTIC_RESTORATION_PROFILE
+      native_prosody_profile: isArtisticRestorationV2 ? MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE : MARROWLINE_ARTISTIC_RESTORATION_PROFILE
     });
   }
   const routeModelCount = Math.max(1, providerModels.length);

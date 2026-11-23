@@ -3,7 +3,8 @@
 // The ordinary Marrowline prompt, model order, budgets and history are untouched.
 import {
   MARROWLINE_HISTORICAL_TRIAL_ID,
-  MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID
+  MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID
 } from './marrowline-historical-grove.js';
 import { MARROWLINE_ROLE_IDS } from './marrowline-role-conditioning.js';
 export const MARROWLINE_GROVE_TRIAL_ID = 'native-voice-v1';
@@ -13,7 +14,7 @@ export function selectMarrowlineGroveTrial(body = {}, { releaseCanary = false } 
   // The attachment handler uses a different prompt path; do not mislabel it
   // as auditioned. An explicit empty attachment array is harmless.
   if (Array.isArray(body.attachments) && body.attachments.length > 0) return null;
-  return [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(body.groveTrial)
+  return [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(body.groveTrial)
     ? body.groveTrial : null;
 }
 
@@ -21,7 +22,7 @@ export function groveTrialFromLocation(location = {}) {
   try {
     const query = new URLSearchParams(String(location?.search || ''));
     const trial = query.get('groveTrial');
-    return [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
+    return [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
       ? trial : null;
   } catch {
     return null;
@@ -34,7 +35,7 @@ export function groveTrialFromLocation(location = {}) {
 // tab-specific explicit model experiments. Direct API / Loom remain distinct.
 export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v2';
 const GROVE_TAB_EXPLICIT_OFF = 'off';
-const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
+const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
   ? trial : null;
 
 export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
@@ -46,7 +47,7 @@ export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
     // Manual role A/B trials never write tab storage: clearing the URL restores
     // ordinary artistic-restoration voice rather than silently leaving a role
     // experiment installed across subsequent conversations.
-    if (MARROWLINE_ROLE_IDS.includes(id)) {
+    if (MARROWLINE_ROLE_IDS.includes(id) || id === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID) {
       return Object.freeze({ id, source: 'url-opt-in', persistence: 'url-only' });
     }
     let persistence = 'unavailable';

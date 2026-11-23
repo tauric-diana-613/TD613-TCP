@@ -177,6 +177,9 @@ export const MARROWLINE_LEXICAL_DEPRIMED_CANDIDATE_PROFILE = 'oct02-literal-lexi
 //    own visible message or history.
 export const MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID = 'artistic-restoration-20261123-v1';
 export const MARROWLINE_ARTISTIC_RESTORATION_PROFILE = 'marrowline-artistic-restoration-20261123-v1';
+// URL-only opt-in successor; v1 and historical comparator remain unchanged.
+export const MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID = 'artistic-restoration-20261123-v2';
+export const MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE = 'marrowline-artistic-restoration-20261123-v2-native-continuity';
 
 // Resilient Argon-first order for the restored production route:
 // gemini-4-argon runs first, with genuine modern 3.8-flash and 3.6-flash
@@ -315,4 +318,50 @@ export function buildArtisticRestorationSystemInstruction({
     restoreExact(relayCue, CUE_RESTORATIONS, 'CUE', ARTISTIC_RESTORATION_CUE_REPLACEMENTS)
   ].join('\n');
   return restoreExact(assembled, ARTISTIC_RESTORATION_CLEANUPS, 'ARTISTIC_RESTORATION_CLEANUPS');
+}
+
+
+// Surgical successor: v1 remains byte-identical in its assembled instructions.
+// Correct sparse word-highlighting priming, without a prescribed glyph quota,
+// local Unicode filter, new model seat, or post-processing of provider output.
+const ARTISTIC_RESTORATION_V2_CONTINUITY = Object.freeze([
+  {
+    present: 'Anchor their prose in readable English words while letting authentic vertical High Zalgo erupt where the drama, wit, or shock strikes:',
+    historical: 'Write their readable English sentences in ongoing native vertical High Zalgo: crowns and roots may carry continuously through connected clauses, successive sentences and whole passages as living handwriting rather than appearing on only a few highlighted words:'
+  },
+  {
+    present: 'breathing naturally between quiet unadorned phrases, light tremors, and sudden towering eruptions.',
+    historical: 'weaving through ordinary speech as well as fierce cries, with pauses and quieter phrases arising organically rather than automatically clearing each sentence.'
+  },
+  {
+    present: 'move organically between clean unadorned prose, delicate tremors, and towering asymmetric vertical spires that collide across lines.',
+    historical: 'improvise within sustained native marked speech—whispers, fine tremors, dense crowns and roots, and sudden towering spires that collide across lines—while choosing their own actual rests.'
+  },
+  {
+    present: 'compose tall, ragged crowns above and plunging roots below chosen words, letting clean prose and quiet beats give the eruptions dramatic contrast.',
+    historical: 'compose tall, ragged crowns above and plunging roots below the flowing words of consecutive sentences, retaining intelligible base letters and letting actual dramatic pauses provide contrast.'
+  }
+]);
+
+const ARTISTIC_RESTORATION_V2_RECENCY = Object.freeze([
+  {
+    present: 'clean resting prose and unstacked inter-word spaces/punctuation punctuated by tall, ragged, asymmetric vertical crowns above',
+    historical: 'ongoing, spontaneously varied vertical handwriting through connected phrases and paragraphs, with intelligible base letters, clean inter-word spaces/punctuation, and tall, ragged, asymmetric vertical crowns above'
+  }
+]);
+
+export function buildArtisticRestorationV2SystemInstruction(input = {}) {
+  return restoreExact(
+    buildArtisticRestorationSystemInstruction(input),
+    ARTISTIC_RESTORATION_V2_CONTINUITY,
+    'ARTISTIC_RESTORATION_V2_CONTINUITY'
+  );
+}
+
+export function buildArtisticRestorationV2TurnRecencyCue() {
+  return restoreExact(
+    buildArtisticRestorationTurnRecencyCue(),
+    ARTISTIC_RESTORATION_V2_RECENCY,
+    'ARTISTIC_RESTORATION_V2_RECENCY'
+  );
 }

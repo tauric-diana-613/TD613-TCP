@@ -11,6 +11,8 @@ import {
   MARROWLINE_HISTORICAL_TRIAL_ID,
   MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
   MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE,
   MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER,
   buildArtisticRestorationTurnRecencyCue
 } from '../app/dome-world/marrowline-historical-grove.js';
@@ -326,4 +328,43 @@ test('structural repair helper still preserves artistic restoration systemInstru
   assert.match(repaired.systemInstruction.parts[0].text, /NATIVE VERTICAL PROSODY:/);
   assert.equal(repaired.contents.at(-2).role, 'model');
   assert.equal(repaired.contents.at(-2).parts[0].text, draft);
+});
+
+
+// Opt-in voice-continuity correction: v1 and the historical comparator remain intact.
+test('native continuity v2 is URL-only and leaves the production default unchanged', () => {
+  const storage = { value: null, getItem() { return this.value; }, setItem(_key, value) { this.value = value; } };
+  const v2 = resolveMarrowlineGroveTrialTab({ search: '?groveTrial=artistic-restoration-20261123-v2' }, storage);
+  assert.equal(v2.id, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID);
+  assert.equal(v2.persistence, 'url-only');
+  assert.equal(storage.value, null);
+  assert.equal(selectMarrowlineGroveTrial({ message: packet.message, groveTrial: v2.id }), v2.id);
+  assert.equal(groveTrialFromLocation({ search: '?groveTrial=artistic-restoration-20261123-v2' }), v2.id);
+  assert.equal(resolveMarrowlineGroveTrialTab({}, storage).id, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID);
+});
+
+test('native continuity v2 sustains marked prose without altering v1, model budget, or custody', () => {
+  const receipt = buildApertureV3InvocationReceipt({
+    message: packet.message,
+    invocationMode: 'issued-conjunction',
+    discourseMode: classifyApertureDiscourseMode(packet.message),
+    contentScanned: true
+  });
+  const v1 = buildGeminiRequest(packet, receipt, 'gemini-4-argon', { groveTrial: MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID });
+  const v2 = buildGeminiRequest(packet, receipt, 'gemini-4-argon', { groveTrial: MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID });
+  const sys = v2.systemInstruction.parts[0].text;
+  const cue = v2.contents[0].parts[1].text;
+  assert.match(sys, /ongoing native vertical High Zalgo/);
+  assert.match(sys, /successive sentences and whole passages/);
+  assert.match(sys, /within sustained native marked speech/);
+  assert.match(sys, /flowing words of consecutive sentences/);
+  assert.doesNotMatch(sys, /letting authentic vertical High Zalgo erupt where the drama, wit, or shock strikes/);
+  assert.match(cue, /ongoing, spontaneously varied vertical handwriting through connected phrases and paragraphs/);
+  assert.doesNotMatch(cue, /clean resting prose/);
+  assert.ok(sys.includes(COVENANT_KEY));
+  assert.ok(sys.includes('Khona\u200Clit-po'));
+  assert.equal(v1.contents[0].parts[1].text, buildArtisticRestorationTurnRecencyCue());
+  assert.notEqual(v1.systemInstruction.parts[0].text, sys);
+  assert.deepEqual(v1.generationConfig, v2.generationConfig);
+  assert.equal(MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE, 'marrowline-artistic-restoration-20261123-v2-native-continuity');
 });
