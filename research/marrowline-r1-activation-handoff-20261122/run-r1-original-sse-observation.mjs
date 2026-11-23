@@ -50,6 +50,9 @@ import {
 export const R1_RUNNER_SCHEMA = 'td613.marrowline.r1-original-sse-observation/v1';
 export const R1_GRANT_SCHEMA = 'td613.marrowline.r1-live-observation-authorization/v1-ed25519';
 export const R1_AUTH_DOMAIN_SEPARATOR = 'TD613_R1_AUTH_V1';
+// FAIL-CLOSED TRUST ANCHOR: operator must install a reviewed Ed25519 SPKI DER SHA-256 pin.
+// A public key handed to the runner beside a signature cannot authenticate its owner.
+export const R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null;
 export const R1_EXPERIMENT_ID = HYDROGEN_PRIMARY_EXPERIMENT_ID;
 export const R1_PINNED_MODEL = 'gemini-3.8-flash';
 export const R1_THINKING_LEVEL = 'medium';
@@ -388,7 +391,8 @@ export function verifyR1OperatorAuthorization({
   publicKeyPem,
   checkedOutHeadSha,
   expectedPlan = null,
-  nowMs = Date.now()
+  nowMs = Date.now(),
+  trustedPublicKeySha256 = R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256
 } = {}) {
   if (!grant || typeof grant !== 'object' || Array.isArray(grant)) {
     throw new R1ObservationError('R1_AUTH_MISSING', 'Signed Ed25519 R1 operator authorization grant is required');
@@ -425,7 +429,17 @@ export function verifyR1OperatorAuthorization({
   if (publicKey.asymmetricKeyType !== 'ed25519') {
     throw new R1ObservationError('R1_AUTH_INVALID_PUBLIC_KEY_TYPE', `Expected ed25519 key; got ${publicKey.asymmetricKeyType}`);
   }
+  if (typeof trustedPublicKeySha256 !== 'string' || !/^[0-9a-f]{64}$/.test(trustedPublicKeySha256)) {
+    throw new R1ObservationError('R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED', 'No independently operator-pinned Ed25519 public-key fingerprint. Arbitrary caller-supplied keys cannot authorize live R1.');
+  }
+  const actualTrustFingerprint = sha256Hex(publicKey.export({ type: 'spki', format: 'der' }));
+  if (!crypto.timingSafeEqual(Buffer.from(actualTrustFingerprint, 'hex'), Buffer.from(trustedPublicKeySha256, 'hex'))) {
+    throw new R1ObservationError('R1_AUTH_UNTRUSTED_PUBLIC_KEY', 'Presented public key does not match the independently pinned operator trust anchor');
+  }
 
+  if (payload.executionMode !== 'LIVE_TWO_SLOT_SEQUENTIAL_S01_THEN_S02') {
+    throw new R1ObservationError('R1_AUTH_EXECUTION_MODE_MISMATCH', 'Grant execution mode must bind the exact two-slot sequential R1 plan');
+  }
   if (payload.experimentId !== R1_EXPERIMENT_ID) {
     throw new R1ObservationError('R1_AUTH_EXPERIMENT_MISMATCH', `Grant experimentId mismatch: ${payload.experimentId}`);
   }
@@ -846,9 +860,23 @@ export async function captureAndDualParseGeminiSse(
     creative: true
   });
 
-  const candidatePlusThoughtTokens =
-    Number(rawUsageMetadata.candidatesTokenCount || 0) + Number(rawUsageMetadata.thoughtsTokenCount || 0);
-  const withinPerSlotOutputCeiling = candidatePlusThoughtTokens <= R1_HARD_LIMITS.perSlotMaxOutputTokens;
+  const validUsageMetadata = [
+    rawUsageMetadata.promptTokenCount,
+    rawUsageMetadata.candidatesTokenCount,
+    rawUsageMetadata.thoughtsTokenCount,
+    rawUsageMetadata.totalTokenCount
+  ].every((count) => Number.isSafeInteger(count) && count >= 0)
+    && rawUsageMetadata.promptTokenCount > 0
+    && (rawUsageMetadata.cachedContentTokenCount === null || (
+      Number.isSafeInteger(rawUsageMetadata.cachedContentTokenCount)
+      && rawUsageMetadata.cachedContentTokenCount >= 0
+    ));
+  const candidatePlusThoughtTokens = validUsageMetadata
+    ? rawUsageMetadata.candidatesTokenCount + rawUsageMetadata.thoughtsTokenCount
+    : null;
+  const withinPerSlotOutputCeiling = validUsageMetadata
+    && candidatePlusThoughtTokens <= R1_HARD_LIMITS.perSlotMaxOutputTokens
+    && rawUsageMetadata.promptTokenCount <= R1_HARD_LIMITS.perSlotHardPromptTokenCeiling;
 
   return Object.freeze({
     schema: 'td613.marrowline.r1-sse-wire-capture/v1',
@@ -888,6 +916,8 @@ export async function captureAndDualParseGeminiSse(
     exactServedModelMatch,
     observedModelVersions,
     usageMetadata: rawUsageMetadata,
+    validUsageMetadata,
+    candidatePlusThoughtTokens,
     withinPerSlotOutputCeiling,
     completion
   });
@@ -1001,6 +1031,7 @@ export function measureUnicodeMorphology(rawText = '') {
   }
 
   const nonZeroUniqueDepths = new Set(decoratedDepths);
+  const stackedBaseShare = baseClusterCount > 0 ? Number((stackedBaseCount / baseClusterCount).toFixed(6)) : 0;
   const meanMarkDepth = baseClusterCount > 0 ? Number((totalCombiningMarks / baseClusterCount).toFixed(4)) : 0;
   const meanDecoratedDepth = decoratedDepths.length > 0
     ? decoratedDepths.reduce((acc, d) => acc + d, 0) / decoratedDepths.length
@@ -1016,6 +1047,7 @@ export function measureUnicodeMorphology(rawText = '') {
     baseClusterCount,
     decoratedBaseCount,
     stackedBaseCount,
+    stackedBaseShare,
     totalCombiningMarks,
     uniqueCombiningCodepoints: Object.freeze([...uniqueCodepoints].sort()),
     uniqueCombiningCodepointCount: uniqueCodepoints.size,
@@ -1107,6 +1139,10 @@ export function analyzeR1TwoSectionObservation(rawText = '', slotName = 'R1_S01'
   }
   if (nonEmptyPreamble) {
     causalComplianceHoldReasons.push('NON_EMPTY_PREAMBLE_BEFORE_SECTION_1');
+  }
+  if (slotName === 'R1_S01' && section1Stats.stackedBaseCount === 0) {
+    // Preserve S02 eligibility for observation, but block unsupported causal inference.
+    causalComplianceHoldReasons.push('S01_SECTION_1_FAILED_ZALGO_COVERAGE');
   }
   if (slotName === 'R1_S02' && section1Stats.totalCombiningMarks > 0) {
     causalComplianceHoldReasons.push('S02_SECTION_1_CONTAMINATED_WITH_COMBINING_MARKS');
@@ -1208,26 +1244,30 @@ export function classifyR1ObservationOutcome({ slotRecords = [], terminalStopRea
     (s1Sec2.stackedBaseCount > 0 && !s1Sec2.uniformConstantDepthStencilRisk)
     || (s2Sec2.stackedBaseCount > 0 && !s2Sec2.uniformConstantDepthStencilRisk);
 
-  const s02StrictlyOutperforms = (
-    !s2Sec2.uniformConstantDepthStencilRisk
-    && s2Sec2.uniqueNonZeroDepthCount >= 2
-    && s2Sec2.stackedBaseCount > s1Sec2.stackedBaseCount
-    && s2Sec2.maxMarkDepth >= s1Sec2.maxMarkDepth
-    && s2Sec2.bidirectionalClusterCount > 0
-    && s2Sec2.depthTransitionCount > 0
+  // PREDECLARED DIRECTION: plain Section I is hypothesized to SUPPRESS,
+  // not increase, second-section multistacking. Compare density rather than
+  // absolute counts so a longer text does not win just by being longer.
+  const s01StrictlyOutperforms = (
+    !s1Sec2.uniformConstantDepthStencilRisk
+    && s1Sec2.uniqueNonZeroDepthCount >= 2
+    && s1Sec2.stackedBaseCount > 0
+    && s1Sec2.stackedBaseShare > s2Sec2.stackedBaseShare
+    && s1Sec2.maxMarkDepth >= s2Sec2.maxMarkDepth
+    && s1Sec2.bidirectionalClusterCount > 0
+    && s1Sec2.depthTransitionCount > 0
   );
 
   return Object.freeze({
-    classification: s02StrictlyOutperforms
+    classification: s01StrictlyOutperforms
       ? 'FINITE_PREFIX_EFFECT_SUPPORT'
       : 'FINITE_PREFIX_EFFECT_NOT_ESTABLISHED',
     empiricalNativeMultistackObserved,
     humanArtisticAcceptance: 'RESERVED_HUMAN_ONLY',
     nPerArm: 1,
     reasons: Object.freeze([
-      s02StrictlyOutperforms
-        ? 'S02_SECTION_II_MULTISTACK_EXCEEDS_S01_UNDER_N1_BOUNDED_DRAW'
-        : 'NO_ESTABLISHED_POSITIVE_PREFIX_SEPARATION'
+      s01StrictlyOutperforms
+        ? 'S01_SECTION_II_MULTISTACK_SHARE_EXCEEDS_S02_UNDER_N1_BOUNDED_DRAW'
+        : 'NO_ESTABLISHED_PLAIN_FIRST_SUPPRESSION_UNDER_N1'
     ])
   });
 }
@@ -1245,6 +1285,8 @@ export async function executeR1OriginalSseObservation({
   nowMs = Date.now(),
   requestTimeoutMs = R1_HARD_LIMITS.defaultRequestTimeoutMs,
   checkModelDiscovery = false,
+  // Only for offline Node --test runs using an injected fake transport.
+  testOnlyTrustedPublicKeySha256 = null,
   slotRequestsOverride = null,
   experimentIdOverride = null,
   textIntegrityTransform = null,
@@ -1263,12 +1305,17 @@ export async function executeR1OriginalSseObservation({
   // 2. Verify active checked-out HEAD + independent Ed25519 human operator grant BEFORE reading API credentials
   const checkedOutHeadSha = checkedOutHeadShaOverride ?? resolveHeadShaImpl(repoRoot);
   const effectivePublicKeyPem = publicKeyPem ?? env?.TD613_R1_OPERATOR_AUTH_PUBLIC_KEY_PEM ?? null;
+  const offlineSyntheticTest = Boolean(process.env.NODE_TEST_CONTEXT && typeof fetchImpl === 'function' && checkedOutHeadShaOverride);
+  const verifiedTrustedPin = offlineSyntheticTest && testOnlyTrustedPublicKeySha256
+    ? testOnlyTrustedPublicKeySha256
+    : R1_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256;
   const authVerification = verifyR1OperatorAuthorization({
     grant,
     publicKeyPem: effectivePublicKeyPem,
     checkedOutHeadSha,
     expectedPlan: plan,
-    nowMs
+    nowMs,
+    trustedPublicKeySha256: verifiedTrustedPin
   });
 
   // 3. Atomically claim single-host wx nonce BEFORE reading GEMINI_API_KEY or executing network calls
@@ -1498,6 +1545,10 @@ export async function executeR1OriginalSseObservation({
       terminalStopReason = `STOP_ON_POLICY_TERMINATION_${wire.completion.promptBlockReason || wire.completion.finishReason || 'UNKNOWN'}`;
     } else if (!wire.completion.complete) {
       terminalStopReason = `STOP_ON_INCOMPLETE_COMPLETION_${wire.completion.reason}`;
+    } else if (!wire.validUsageMetadata) {
+      terminalStopReason = 'STOP_ON_MISSING_OR_INVALID_PROVIDER_USAGE';
+    } else if (wire.usageMetadata.promptTokenCount > R1_HARD_LIMITS.perSlotHardPromptTokenCeiling) {
+      terminalStopReason = 'STOP_ON_OBSERVED_PROMPT_TOKEN_CEILING_EXCEEDED';
     } else if (!wire.withinPerSlotOutputCeiling) {
       terminalStopReason = 'STOP_ON_PER_SLOT_OUTPUT_CEILING_EXCEEDED';
     }
