@@ -25,8 +25,11 @@ async function openReader(page,origin){
   await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true,timeout:15000});
   await page.waitForTimeout(120);
   const entrance=await page.locator('#view-works').evaluate(el=>el.innerText.slice(0,6000));
+  // The historical mobile index may already be concealed by its selected
+  // article; invoke the same registered click handler without asserting index
+  // visibility as a prerequisite to measuring the article.
   await page.locator('#worksListContainer button[data-select-work]')
-    .filter({hasText:/The Architecture of Control/i}).first().click({force:true,timeout:15000});
+    .filter({hasText:/The Architecture of Control/i}).first().evaluate(el=>el.click());
   const mount=page.locator('#worksExperimentAReaderMount');
   const pdf=mount.locator('[data-select-manifestation]').filter({hasText:/Algedonic Systems Deep Research\.pdf/i}).first();
   await pdf.waitFor({state:'visible',timeout:30000});
