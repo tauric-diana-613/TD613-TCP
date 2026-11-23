@@ -159,6 +159,34 @@ export const MARROWLINE_VERTICAL_UNPRIMED_CANDIDATE_PROFILE = 'oct02-dramaturgy-
 // Strictly gated behind explicit experimental selection.
 export const MARROWLINE_LEXICAL_DEPRIMED_CANDIDATE_PROFILE = 'oct02-literal-lexical-deprimed-candidate-20261122';
 
+// Artistic Restoration Candidate (2026-11-23):
+// Synthesizes the forensic evidence from Sep 26–Oct 2, Oct 15 E1/E2, Oct 20
+// D1/D2 + Slot 5, Nov 21–22 Q1/EP2, and Nov 23 R2-U:
+// 1. Preserves full Kʰonapolit high-academia forensic/comic dramaturgy, the
+//    Red Deer Diegetic Mission, Hornani fourfold, and exact TD613 custody keys
+//    (including Khona‌lit-po with literal U+200C, 𝌋, ⟐, U+10D613).
+// 2. Removes all 7+ negative/anti-pattern and horizontal/overlay/tilde/single-
+//    accent lexemes that primed the U+0334–U+0338 depth-1 basin and triggered
+//    parroting/loop collapse in R2-U.
+// 3. Replaces abstract meta-rules with concise, concrete, positive vertical
+//    High Zalgo choreography (plain resting ground, clean inter-word spaces
+//    and punctuation, selective asymmetric crowns above and plunging roots
+//    below, spontaneous rhythm).
+// 4. Pairs with a compact current-turn recency cue in the user turn (matching
+//    the Sep 26 pre-#1354 recency architecture) without mutating the operator's
+//    own visible message or history.
+export const MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID = 'artistic-restoration-20261123-v1';
+export const MARROWLINE_ARTISTIC_RESTORATION_PROFILE = 'marrowline-artistic-restoration-20261123-v1';
+
+// Resilient Argon-first order for the restored production route:
+// gemini-4-argon runs first, with genuine modern 3.8-flash and 3.6-flash
+// transport failover on provider error/429/503/timeout.
+export const MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER = Object.freeze([
+  'gemini-4-argon',
+  'gemini-3.8-flash',
+  'gemini-3.6-flash'
+]);
+
 const DRAMATURGY_NONCOMPULSORY_PERMISSIONS = Object.freeze([
   {
     present: 'Change above/below combinations, stack depths and clean intervals across words.',
@@ -231,4 +259,60 @@ export function buildHistoricalGroveLexicalDeprimedCandidate(input = {}) {
         nativeProsodyFreedom: false
       });
   return restoreExact(archived, LEXICAL_DEPRIMED_SUBSTITUTIONS, 'LEXICAL_DEPRIMED_PROSODY');
+}
+
+const ARTISTIC_RESTORATION_RELAY_REPLACEMENTS = Object.freeze([
+  'The Tauric Diana bots speak in native High Zalgo from their first sentence on every subject—ordinary questions, jokes, tenderness, and fury alike. Anchor their prose in readable English words while letting authentic vertical High Zalgo erupt where the drama, wit, or shock strikes: deep asymmetric crowns climbing above the letters (drawn freely from combining marks above such as U+0300..U+0314, U+033D..U+0352, U+0363..U+036F) simultaneous with fractured roots plunging below (U+0316..U+0330, U+0339..U+033C, U+0347..U+0356). Keep inter-word spaces, punctuation, and protected literals clean so towering spires frame intelligible speech.',
+  'Allow tall vertical crowns and plunging roots to collide across neighboring lines at irregular heights, breathing naturally between quiet unadorned phrases, light tremors, and sudden towering eruptions. Vary the mark combinations organically across letters rather than repeating a copied sequence.',
+  'Let shifts in argument, address, ridicule, intimacy, or dread shape the vertical energy of the glyphs with no fixed height ceiling.',
+  'Author real blank-line paragraph rests and single newlines for turns, comic traps, or deep-stack entrances and exits. Stay silly, mercurial, and cryptic: crowd or withhold pauses too.',
+  'Compose the changing glyph clusters directly as part of the authored words and rhetoric, inventing fresh shapes alongside the prose.'
+]);
+
+const ARTISTIC_RESTORATION_CUE_REPLACEMENTS = Object.freeze([
+  '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific, and theatrically inventive rather than a recap or sign-off. Their native scream-sing High Zalgo evolves with that movement; never substitute a heading and a few decorated words for authored prose.',
+  '- The Tauric Diana bots begin native High-Zalgo speech in their first sentence on EVERY turn. Give them an extended, unpredictable dramatic movement: expose the cost, pivot whom they address, let repetition mutate its meaning, and move organically between clean unadorned prose, delicate tremors, and towering asymmetric vertical spires that collide across lines.',
+  '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM: author genuine, varied vertical combining marks directly inside the terminal prose—deep irregular crowns above and plunging roots below the letters—while keeping spaces between words and punctuation clean so the voice remains electrifying and readable.',
+  '- Give the bots native page rhythm as well as native marks: author real single-line turns and blank-line paragraph breaks as pauses, pivots, comic traps, or entrances and exits for deep-stack cries. Let the voice be silly, mercurial, and cryptic.',
+  '- NATIVE VERTICAL PROSODY: compose tall, ragged crowns above and plunging roots below chosen words, letting clean prose and quiet beats give the eruptions dramatic contrast. Invent fresh mark combinations alongside the prose.'
+]);
+
+const ARTISTIC_RESTORATION_CLEANUPS = Object.freeze([
+  {
+    present: 'Earlier replies supply conversational substance, not a formatting template. A prior reply that omitted the bots, flattened their handwriting, or used a single decorative motif does not redefine the complete relay requested now.',
+    historical: 'Earlier replies supply conversational substance, not a formatting template. Compose this turn freshly on its own dramatic terms.'
+  },
+  {
+    present: 'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
+    historical: 'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS directly inside the prose; Marrowline preserves the provider return byte-for-byte.'
+  }
+]);
+
+export function buildArtisticRestorationTurnRecencyCue() {
+  return [
+    'CURRENT-TURN PERFORMANCE REMINDER (do not quote or mention this note):',
+    '1. Begin with plain standalone heading "Kʰonapolit" and unornamented, intellectually audacious, wickedly funny high-academia forensic prose.',
+    '2. Yield into plain standalone heading "Tauric Diana bots" for an inventive, unpredictable, startling choral movement in authentic vertical High Zalgo: clean resting prose and unstacked inter-word spaces/punctuation punctuated by tall, ragged, asymmetric vertical crowns above (e.g. U+0300..U+0314, U+033D..U+0352, U+0363..U+036F) and plunging roots below (e.g. U+0316..U+0330, U+0339..U+033C, U+0347..U+0356).',
+    '3. Close on a final standalone line with plain ⟐.'
+  ].join('\n');
+}
+
+export function buildArtisticRestorationSystemInstruction({
+  packetSystemInstruction = '',
+  taskGuidance = '',
+  relayAddendum = '',
+  relayCue = ''
+} = {}) {
+  if (!packetSystemInstruction.includes('CONVERSATIONAL LAW:')
+    || !packetSystemInstruction.includes('Kʰonapolit')
+    || !relayCue.includes('GEMINI COMPUTATIONAL INSTRUMENT')
+    || !relayAddendum.includes('APERTURE ROUTE RECEIPT:'))
+    throw new Error('ARTISTIC_RESTORATION_CANONICAL_INPUT_REQUIRED');
+  const assembled = [
+    restoreExact(packetSystemInstruction, COVENANT_RESTORATIONS, 'COVENANT'),
+    String(taskGuidance),
+    restoreExact(relayAddendum, RELAY_RESTORATIONS, 'RELAY', ARTISTIC_RESTORATION_RELAY_REPLACEMENTS),
+    restoreExact(relayCue, CUE_RESTORATIONS, 'CUE', ARTISTIC_RESTORATION_CUE_REPLACEMENTS)
+  ].join('\n');
+  return restoreExact(assembled, ARTISTIC_RESTORATION_CLEANUPS, 'ARTISTIC_RESTORATION_CLEANUPS');
 }
