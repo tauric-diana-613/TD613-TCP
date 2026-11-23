@@ -1751,9 +1751,13 @@ async function runCli(argv = process.argv.slice(2)) {
       throw new R1ObservationError('R1_EXPLICIT_DURABLE_EVIDENCE_PATHS_REQUIRED',
         'Live CLI requires explicit absolute --nonce-dir and --out, checked for durable custody before provider dispatch');
     }
-    // Reserve the final output exclusively BEFORE consuming grant/provider calls.
+    // Reserve both custody and blind-review outputs BEFORE consuming grant/provider calls.
+    // Custody result contains unblinding map; ONLY .blinded.json may go to a blind reader.
+    const blindedOutPath = `${outPath}.blinded.json`;
     const outputFd = fs.openSync(outPath, 'wx', 0o600);
     fs.closeSync(outputFd);
+    const blindFd = fs.openSync(blindedOutPath, 'wx', 0o600);
+    fs.closeSync(blindFd);
     const result = await executeR1OriginalSseObservation({
       acknowledgeLiveExecution: true,
       grant,
@@ -1764,6 +1768,13 @@ async function runCli(argv = process.argv.slice(2)) {
     const rendered = `${JSON.stringify(result, null, 2)}\n`;
     if (outPath) {
       fs.writeFileSync(outPath, rendered, { encoding: 'utf8', flag: 'w', mode: 0o600 });
+      const publicBlind = result.blindedPacket
+        ? { schema: result.blindedPacket.schema, blindedItems: result.blindedPacket.blindedItems,
+            sourceRole: 'BLIND_READERS_ONLY', humanArtisticAcceptance: 'RESERVED_HUMAN_ONLY' }
+        : { schema: 'td613.marrowline.r1-blind-witness-held/v1',
+            classification: 'HELD', blindedItems: [] };
+      fs.writeFileSync(blindedOutPath, `${JSON.stringify(publicBlind, null, 2)}\n`,
+        { encoding: 'utf8', flag: 'w', mode: 0o600 });
     }
     return result;
   }
