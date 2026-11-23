@@ -1,6 +1,19 @@
 # Vixen Cybernetics — Pre-#1744 Release Adjudication
 **STATE: EVIDENCE INTAKE HELD — final screenshot archive not yet admitted.**
 
+
+## Reconciled exact-head integration receipt — latest factual checkpoint
+
+- **Product PR #1730 HEAD:** `7500e294003e8a5effa52921c8d4b7eba673be9d`, still open and unmerged into `main`.
+- **Witness/repair PR #1784:** merged/closed by the concurrent engineering connector; exact qualified witness `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`, source CI [45169186165](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45169186165) **GREEN** (all required non-skipped jobs).
+- **Integration ancestry:** two-parent merge, original product `b90ae99559b21e1561229cdc8e1d873cfaf6f43a` + witness `db3fdddc…`; GitHub compare witness→integrated product reports **zero changed files**. Exact head is a new merge SHA even with identical source tree.
+- **Qualified local Chromium:** 1,005 images / 132 route states; four viewport profiles, 24 nested regions, 44 document scroll groups, zero reported or independently audited errors; original mobile Podium and Observatory states observed. Source artifact **14818197282**, 192,904,318 bytes, SHA-256 `92525fbfebea21d7d8c55c876b350a26cece5927c93cff5ae74e8d03d23b74d2`. This is **pre-release localhost** witness, not final HTTPS evidence.
+- **Qualified local scoped stack at witness SHA:** 1,453 ZIP members / 1,302 preview entries / 1,141 reference records; independent manifest audit PASS. The product merge SHA requires a new exact-head archive and independent audit.
+- **Fresh product CI:** [45173799140](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45173799140), triggered on product head; still qualifying at this checkpoint. Complete required jobs and independent package verification before release-ready disposition.
+- **Release boundary:** #1744 PREPARE and DEPLOY are reserved for Emergence HQ. Final-only evidence slot remains HELD; after authorized #1744 deployment, acquire and audit a separate source-attested HTTPS Chromium archive.
+
+**Historical context below retains original branch establishment and earlier source coordinates; superseded snapshots must never be mistaken for current branch HEAD.**
+
 This branch is the persistent cross-thread review address for the **final, independently audited Chromium screenshot package only**, its manifest, source/source-revision and artifact-custody receipts. It exists separately from product PR #1730 and witness repair PR #1784.
 
 - **Review branch ancestry:** initially sourced from witness-only candidate `b6106cf4633c2ad86f3519dc05f79b1144049aba` (draft PR #1784). **Moving repair candidate** at this ledger snapshot: `86664aecaa00951ffd085004c3db99ee256aa36b`; always recheck live #1784 HEAD.
