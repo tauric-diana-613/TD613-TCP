@@ -17,6 +17,8 @@
 6. Inspect **four original-size Folios screenshots** for foreground contrast and optical stacking. Computed CSS z-index alone is insufficient proof of legibility.
 7. Require `COVERAGE.complete === true`, `COVERAGE.errors.length === 0`, and independent audit completion. Preserve limitations on motion FPS, physical devices, scientific credit, and human aesthetics.
 8. Never promote partially captured/failed or historical artifacts as the final screenshot package. CI archive provenance is local Chromium HTTP, not deployed HTTPS.
+9. **Exhaustivity claim boundary:** the bounded witness explicitly declares that it does not screenshot every one of the 32 original Work/manuscript permutations. Its complete 8-room/full-scroll/route matrix is a *bounded* full-surface witness, not a census of every dynamic reader state. For the operator's requested `every inch` final archive, acquire and independently index an additional work-by-work selection/reader sweep (and any unique alternate inspector states), or mark the remaining unobserved permutations conspicuously in the final COVERAGE and receipt. Never silently upgrade bounded browser coverage into exhaustive visual coverage.
+
 
 ## Release boundary
 HOLD. No #1744 PREPARE/DEPLOY gesture in this engineering commission. Emergence HQ owns the approved release and subsequent artistic review; no #405 production or protected research import.
