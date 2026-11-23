@@ -3457,7 +3457,12 @@ body[data-view="overview"] .reading-back{display:none}
     if(folio){
       folio.dataset.folioDensity='compact';
       const progress=mountEl.querySelector('#vixFolioProgress');
+      const onMobileReadingPage=()=>window.matchMedia('(max-width: 680px)').matches;
+      // The mobile edition flows in the document. The desktop folio retains
+      // its independently scrollable editorial frame.
       const updateFolioPosition=()=>{
+        if(progress)progress.hidden=onMobileReadingPage();
+        if(onMobileReadingPage())return;
         const maximum=Math.max(0,folio.scrollHeight-folio.clientHeight);
         const percent=maximum?Math.round(folio.scrollTop/maximum*100):100;
         if(progress)progress.textContent='POSITION '+percent+'%';
@@ -3474,9 +3479,11 @@ body[data-view="overview"] .reading-back{display:none}
       }
       for(const [selector,direction] of [['#vixFolioPrevious',-1],['#vixFolioNext',1]]){
         mountEl.querySelector(selector)?.addEventListener('click',()=>{
-          folio.scrollBy({top:direction*Math.max(160,folio.clientHeight*.82),
+          const pageMode=onMobileReadingPage();
+          const root=pageMode?window:folio;
+          root.scrollBy({top:direction*Math.max(160,(pageMode?window.innerHeight:folio.clientHeight)*.82),
             behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
-          folio.focus({preventScroll:true});
+          if(!pageMode)folio.focus({preventScroll:true});
         });
       }
     }
