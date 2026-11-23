@@ -311,3 +311,103 @@
  #view-reference .vxe-vixen-pair .vxe-estate h2{font-size:1.8rem;margin:.1rem 0}
  #view-reference .vxe-vixen-pair .vxe-source-folio{padding:.8rem}
 }
+
+
+/* RGI-06 / MOBILE FOLIOS FIELD-SEPARATION.
+   Optical filaments remain visible around the authored source. Reading and
+   source-selection text receives an opaque black-chrome ground so the live
+   mesh cannot reduce contrast. Keep the original Work/folio controls and
+   OPERAHOUSE stage entirely untouched. */
+@media (max-width:780px) {
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-steps,
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-status {
+  background:rgba(8,12,16,.965);
+  box-shadow:0 8px 26px rgba(0,0,0,.42);
+ }
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-work-selector {
+  background:linear-gradient(145deg,rgba(17,24,29,.99),rgba(8,13,18,.99));
+  border-color:rgba(245,216,186,.42);
+  box-shadow:0 15px 36px rgba(0,0,0,.58);
+ }
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-work-identity {
+  color:#fff9fb;
+  text-shadow:0 2px 8px rgba(0,0,0,.82);
+ }
+ body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+ #view-reference .vxe-work-selector .vxe-source-note { color:#f3e5ec; }
+}
+
+
+/* RGI-06B / FOLIOS OPTICAL STACKING:
+   The fixed optical canvas is a later sibling at z-index:1. The preexisting
+   page-pad z-index:1 created a containing stacking context, so descendants'
+   local z-index:2 could never rise above the canvas. Place the entire Folios
+   reading surface at z-index:2 instead, across desktop and mobile. Keep the
+   ambient field behind the source without hiding its surrounding animation. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference>.page-pad{
+ position:relative;
+ z-index:2;
+ isolation:isolate;
+}
+
+
+/* RGI-06C / FOLIOS OPTICAL FOREGROUND CONTRAST.
+   Independent failed Chromium screenshots at 1440px showed the optical lines
+   crossing title, instruction, and Work selector despite correct z-index.
+   A stacking-order fix alone cannot make a transparent reading plane legible.
+   Give only authored reading/selection surfaces a nearly opaque black-chrome
+   ground; keep the animated filaments visible in surrounding negative space.
+   Separate OPERAHOUSE/OPERA/PERFORMER jurisdictions and original folios remain
+   completely untouched. */
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference :is(.vxe-heading,.vxe-steps,.vxe-status,.vxe-work-selector){
+  background:linear-gradient(115deg,rgba(8,12,16,.992),rgba(12,17,21,.986));
+  isolation:isolate;
+  box-shadow:0 0 0 4px rgba(8,12,16,.94),0 12px 22px rgba(0,0,0,.22);
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-heading :is(h1,.vxe-eyebrow,.vxe-lede),
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-work-selector :is(.vxe-work-identity,.vxe-source-note){
+  position:relative;
+  z-index:1;
+}
+
+/* RGI-06D / TAIL-READING GROUND.
+   Independently decoded four-profile Chromium scroll tiles exposed bright
+   optical filaments across lower Work questions, custody notes and the
+   otherwise transparent navigation control. Protect the authored text,
+   while preserving the live optical field in surrounding negative space. */
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-native-questions{
+  background:linear-gradient(125deg,rgba(8,12,16,.99),rgba(12,18,23,.985));
+  box-shadow:0 0 0 3px rgba(8,12,16,.96),0 12px 27px rgba(0,0,0,.35);
+  isolation:isolate;
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-trace{
+  display:block;
+  max-width:980px;
+  padding:.65rem .8rem;
+  margin:.65rem 0;
+  background:rgba(9,14,19,.985);
+  border:1px solid rgba(255,205,225,.2);
+  box-shadow:0 0 0 2px rgba(8,12,16,.94);
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-actions{
+  max-width:1100px;
+  padding:.55rem .65rem;
+  background:rgba(8,12,17,.96);
+  box-shadow:0 0 0 3px rgba(8,12,16,.91);
+}
+body[data-view="reference"]:not([data-active-research-stage="OPERAHOUSE"])
+#view-reference .vxe-control.vxe-text-control{
+  background:#111a20;
+  border:1px solid rgba(245,216,186,.38);
+  color:#ffe4ec;
+}
