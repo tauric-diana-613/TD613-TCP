@@ -3,9 +3,11 @@
 
 > [!IMPORTANT]
 > **DRAFT DECISION SHEET — ZERO AUTHORIZATION IMPLIED.**
+> **Amari re-review supersedes the earlier READY label: current action = HOLD pending verification of the corrected runner and independent operator-key trust pin.** The originally stated ~$0.13 ceiling uses historical repository rates rather than verified current account pricing.
 > Presenting this decision sheet grants **zero** live provider calls, **zero** `:countTokens` calls, **zero** `GET /v1beta/models` calls, **zero** PR merges, and **zero** `#405` / Vercel deployments. Execution requires a separate explicit human gesture and an offline-signed Ed25519 grant bound to the final pushed runner `HEAD`.
 
 - **Commission:** `TD613-MARROWLINE-R1-EXECUTION-READINESS-20261122`
+- **Corrected runner:** PR #1779 successor source commits after `29b7e09`; HEAD MUST be reverified after all changes, then all offline tests independently run. Live trust anchor currently `null` and deliberately fails closed.
 - **Experiment ID:** `HYDROGEN_R1_CONTRADICTION_FREE_PREFIX_SEPARATOR`
 - **Covenant / Seal:** `Khona‌lit-po` (literal `U+200C` preserved) · `⟐SAC[X6ZNK5NO51]`
 - **Exact Accepted Design Source HEAD (PR `#1778`):** `44fae23cbf9af07eab5112e90df3211a119e707c`
@@ -44,7 +46,7 @@ Shared wire invariants:
 | Combined output + thinking ceiling | **32,768** tokens | Hard maximum across both arms |
 | Grant lifetime (`expiresAt - issuedAt`) | **<= 30 minutes** | Single-host `wx` nonce claim; bound to checked-out runner `HEAD` |
 
-**Potential Dollar Ceiling (Descriptive Planning Reference Only):**
+**Potential Dollar Ceiling (HISTORICAL PLANNING REFERENCE, NOT VERIFIED CURRENT ACCOUNT PRICE):**
 - Under previously repo-verified Google Gemini Developer API rates for `gemini-3.8-flash` valid through `2026-12-31` (`research/portable-loom-assay-activation-20261009/AUTHORIZATION.json`: **`$0.75 / 1M` input tokens**, **`$3.75 / 1M` output+thinking tokens**):
   - Worst-case input cost (`2,000` tokens): `$0.00150`
   - Worst-case output+thinking cost (`32,768` tokens): `$0.12288`
@@ -55,10 +57,10 @@ Shared wire invariants:
 
 ## 3. Explicit Human Operator Decision (`AUTHORIZE` / `AMEND` / `HOLD`)
 
-Select exactly one course in a separate explicit operator instruction after reviewing the final pushed implementation `HEAD` SHA recorded in `R1_READINESS_RECEIPT.md` / return handoff:
+Select exactly one course in a separate explicit operator instruction **only after** an independently human-owned signing key is provisioned and its SPKI DER fingerprint pinned in reviewed source, the resulting runner HEAD has passed new focused offline tests, and current official account pricing/endpoint availability have been verified. The previous authorization template is INFORMATIONAL and not yet executable:
 
-- **`[ ] AUTHORIZE`** — Proceed with preparing/signing a `<= 30`-minute Ed25519 R1 authorization grant (`td613.marrowline.r1-live-observation-authorization/v1-ed25519`) bound to the final verified runner `HEAD` SHA, capped at `2` live `gemini-3.8-flash` generation calls and `32,768` combined output+thinking tokens under `$0.13` worst-case intro planning arithmetic (`0` retries, `0` repairs, `0` `#405` releases), and collect raw SSE evidence for blinded adjudication.
+- **`[ ] AUTHORIZE`** — Only after closing the presently outstanding operator key-pin, fresh runner tests and live pricing/model-availability gates, proceed with preparing/signing a `<= 30`-minute Ed25519 R1 authorization grant (`td613.marrowline.r1-live-observation-authorization/v1-ed25519`) bound to the final verified runner `HEAD` SHA, capped at `2` live `gemini-3.8-flash` generation calls and `32,768` combined output+thinking tokens under `$0.13` worst-case intro planning arithmetic (`0` retries, `0` repairs, `0` `#405` releases), and collect raw SSE evidence for blinded adjudication.
 - **`[ ] AMEND`** — Revise experiment parameters (e.g., smaller `maxOutputTokens` cap, metadata discovery check flag, or updated wording) -> triggers a **new** frozen preflight, renewed digests, and fresh qualification before execution.
-- **`[ ] HOLD`** — Keep all live provider generation, `:countTokens`, and model discovery calls at **`0`**; hold `R1` for further offline engineering, account pricing verification, or physical-device UI inspection first.
+- **`[x] HOLD (CURRENT)`** — Keep all live provider generation, `:countTokens`, and model discovery calls at **`0`**; hold `R1` for further offline engineering, account pricing verification, or physical-device UI inspection first.
 
 𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Draft Decision Sheet Only · Provider HELD · Artistic Acceptance RESERVED ⟐
