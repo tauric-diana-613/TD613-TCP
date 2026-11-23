@@ -5,10 +5,15 @@
  * search indices, task payloads, scientific scores, and authorship stay unchanged.
  * The internal names in THIS FILE are deliberately confined to machine code.
  */
+const GOVERNANCE_RIBBON=/\b(?:EXPERIMENT[_ -]?[ABC](?:[_ -]?(?:PREVIEW|AUTHORIZED))?|PREVIEW[_ -]?AUTHORIZED|FULL[_ -]?COMPANION[_ -]?MANUSCRIPT[_ -]?AVAILABLE|PRODUCTION[_ -]?REQUIRES[_ -]?OPERATOR[_ -]?SECRET|OPERATOR[_ -]?SECRET|OPERATOR[_ -]?ONLY|EMERGENCE\s+HQ|LAB[_ -]?NOTES?|DEBUG[_ -]?(?:STATE|MODE)|ADJUDICATION[_ -]?RIBBON)\b/i;
+const PRIVATE_BRANDING=/\b(?:ChatGPT|Gemini|Antigravity|Codex|Amari|Paul)\b/i;
+const REMOVABLE_PUBLIC_FURNITURE='.tag,.badge,.eyebrow,.expa-aperture-bar,.stage-watermark,[class*="watermark"],[class*="release-state"],[class*="lab-ribbon"]';
 const PUBLIC_TERMS=Object.freeze([
   // Public stage and screen-reader copy never expose internal experiment,
   // operator-host, or historical engineering aliases. Machine and original
   // manuscript bytes are protected below, including original citations.
+  [/\bEXPERIMENT_A_PREVIEW_AUTHORIZED\b/gi,''],
+  [/\bEXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD\b/gi,''],
   [/\bExperiment[- ]A\b/gi,'research preview'],
   [/\bExperiment[- ]B\b/gi,'prospective comparison'],
   [/\bExperiment[- ]C\b/gi,'future publication review'],
@@ -31,6 +36,7 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bAtelier\b/gi,'research workspace'],
   [/\bTD613-TCP\b/g,'the hosting archive'],
   [/\bTD613\b/g,'the research host'],
+  [/\b(?:ChatGPT|Gemini|Antigravity|Codex|Amari)\b/gi,''],
   // The constitutional roles are public terms of art. Never erase their identity.
 ]);
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);
@@ -47,7 +53,7 @@ function protectedSource(node){
   // Exact source, transfer and machine receipts continue to be retrievable
   // without rewriting provenance or falsifying the underlying source bytes.
   return Boolean(parent.closest(
-    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview'
+    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview, .vix-manuscript, .expa-body-pre, .vix-reader-code'
   ));
 }
 function rewriteNode(node){
@@ -61,6 +67,19 @@ function rewriteNode(node){
   if(node.nodeType!==1)return;
   const el=node;
   if(NONPRESENTATION.has(el.tagName))return;
+  // A release ribbon, watermark or control-plane badge has no legitimate
+  // visitor-facing editorial role. Remove the element, rather than relabel it.
+  if(el.matches(REMOVABLE_PUBLIC_FURNITURE) &&
+    (GOVERNANCE_RIBBON.test(el.textContent||'') || PRIVATE_BRANDING.test(el.textContent||''))) {
+    el.remove();
+    return;
+  }
+  // Metadata code tokens used as standalone screen furniture are likewise
+  // absent from the Opera; source manuscript and machine receipts are protected.
+  if(el.matches('code') && GOVERNANCE_RIBBON.test(el.textContent||'')) {
+    el.remove();
+    return;
+  }
   // Attributes used by screen readers and human hints count as public copy.
   for(const key of ['aria-label','aria-description','title','alt','placeholder']){
     if(!el.hasAttribute(key))continue;
@@ -68,7 +87,11 @@ function rewriteNode(node){
     const next=translatePublicCopy(prior);
     if(prior!==next)el.setAttribute(key,next);
   }
-  for(let child=el.firstChild;child;child=child.nextSibling)rewriteNode(child);
+  for(let child=el.firstChild;child;){
+    const next=child.nextSibling;
+    rewriteNode(child);
+    child=next;
+  }
 }
 export function installVixenPublicCopy(root=document.body){
   if(!root)throw Error('VIXEN_PUBLIC_COPY_ROOT_REQUIRED');
