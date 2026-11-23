@@ -1,0 +1,309 @@
+{
+  "schema": "td613.pefb.next-human-gates/v1",
+  "docket": "PEFB-NEXT-20261103-v1",
+  "state": "STAGED_NOT_AUTHORIZED",
+  "date": "2026-11-03",
+  "human_principal": "tauric.diana.613",
+  "operator_initials": "[INITIAL HERE]",
+  "computational_philology": {
+    "phrase": "[OPERATOR PHRASE HERE]",
+    "classification": "OPERATOR_TEXT_SUPPLIED_UNVERIFIED",
+    "cryptographic_identity_attestation": false,
+    "source_of_authority": "fresh human instruction with exact scope"
+  },
+  "predecessor": {
+    "staged_approval_pr": 1645,
+    "staged_head": "2bcee45292d1a107915c78b7c441bc8fde6ba6f2",
+    "pe09_review_pr": 1653,
+    "pe09_review_head": "3694a1d0f95ef107b616525e982ee194edcc7022",
+    "ci_run_id": 41743697656,
+    "ci_conclusion": "success",
+    "source_free_tests_executed": 33,
+    "source_free_tests_failed": 0,
+    "separate_pr_heads": {
+      "PE01": "d8f4d8482ce5bd347926e510f91af905e87913dc",
+      "PE02": "e329364696b19f3a68b2d5154df6d3137b821f20",
+      "PE03": "8ee7a87b6c4f24fa672e9883307da1ebac7f162a",
+      "PE04": "e2e123ecd537e99b571961d99080db5bfd9f1ff9",
+      "PE05": "188b8324480ef1aeb099760346166ee0ec71896a",
+      "PE06": "41a06334098ae278602b5e7e2797ccd81763bedd",
+      "PE07": "ddc9af078ee471d93f793a8fae78ac684b8c3bef",
+      "PE08": "df72e1b99112e78dea59680192508bc01714df84"
+    }
+  },
+  "authorized_now": [],
+  "safe_bundle_candidates": [
+    "GA01",
+    "GA02"
+  ],
+  "optional_separate_gestures": [
+    "GB01",
+    "GB02"
+  ],
+  "protected_research_state": "HELD",
+  "D01_D19_operator_decisions": "UNRESOLVED",
+  "D20_final_grant": "HELD",
+  "human_closure_required": true,
+  "gates": [
+    {
+      "id": "GA01",
+      "title": "Finite integrated fixture-only product/recipient bridge and independent hardening",
+      "tier": "A",
+      "classification": "engineering_new",
+      "initials": "[INITIAL HERE]",
+      "status": "READY_FOR_NEW_EXPLICIT_AUTHORIZATION",
+      "required": [
+        "current exact reviewed heads",
+        "bounded draft branch/file caps",
+        "independent source-free tests"
+      ],
+      "permitted": [
+        "two new integration draft PRs",
+        "invented fixtures",
+        "versioned code",
+        "CI",
+        "host-hardening design"
+      ],
+      "prohibited": [
+        "real source admission",
+        "external provider",
+        "paid inference",
+        "merge",
+        "deployment"
+      ]
+    },
+    {
+      "id": "GA02",
+      "title": "Read-only artifact/rights/local custody inventory",
+      "tier": "A",
+      "classification": "source_free_read_only",
+      "initials": "[INITIAL HERE]",
+      "status": "READY_FOR_NEW_EXPLICIT_AUTHORIZATION",
+      "required": [
+        "known Nov 2 sealed epoch",
+        "read-only source and custody records"
+      ],
+      "permitted": [
+        "read-only inspection",
+        "retention and rights inventory",
+        "local restoration specification"
+      ],
+      "prohibited": [
+        "real decryption",
+        "keys",
+        "raw private bodies",
+        "sync gesture",
+        "source admission"
+      ]
+    },
+    {
+      "id": "GB01",
+      "title": "One bounded Wendbine public source sync under issue #1308",
+      "tier": "B",
+      "classification": "separate_live_acquisition",
+      "initials": "[INITIAL HERE]",
+      "status": "OPTIONAL_SEPARATE_GESTURE",
+      "issue": 1308,
+      "command": "/wendbine-sync ATELIER",
+      "required": [
+        "exact current pipeline version",
+        "single run scope",
+        "retention and rights",
+        "no-backfill caveat"
+      ],
+      "permitted": [
+        "one controlled public pass after fresh approval"
+      ],
+      "prohibited": [
+        "automatic second run",
+        "private restore",
+        "pre-September full coverage claim"
+      ]
+    },
+    {
+      "id": "GB02",
+      "title": "One independent SRC public Zenodo delta under issue #758",
+      "tier": "B",
+      "classification": "separate_live_acquisition",
+      "initials": "[INITIAL HERE]",
+      "status": "OPTIONAL_SEPARATE_GESTURE",
+      "issue": 758,
+      "command": "/src-zenodo-sync ATELIER",
+      "required": [
+        "exact SRC target branch",
+        "one-run source scope",
+        "rights"
+      ],
+      "permitted": [
+        "one controlled public Zenodo delta after fresh approval"
+      ],
+      "prohibited": [
+        "sealed SRC mutation",
+        "Wendbine sync",
+        "private source",
+        "merge"
+      ]
+    },
+    {
+      "id": "GB03",
+      "title": "Historical pre-September Wendbine backfill including separately scoped comments/media",
+      "tier": "B",
+      "classification": "new_data_acquisition",
+      "initials": "[INITIAL HERE]",
+      "status": "DEPENDENT_HELD",
+      "required": [
+        "exact UTC interval",
+        "source types/accounts",
+        "rights",
+        "provider route",
+        "finite ceiling",
+        "pagination completeness",
+        "independent review"
+      ],
+      "permitted": [
+        "one separately approved bounded lawful acquisition after prerequisites"
+      ],
+      "prohibited": [
+        "silent default backfill",
+        "invented media transcript",
+        "private key transfer"
+      ]
+    },
+    {
+      "id": "GB04",
+      "title": "Operator-local authenticated full-text original restore",
+      "tier": "B",
+      "classification": "local_protected_data",
+      "initials": "[INITIAL HERE]",
+      "status": "DEPENDENT_HELD",
+      "required": [
+        "operator-held ciphertext and private key",
+        "lawful source rights",
+        "independent pinned seal",
+        "host-specific atomic/crash/ACL/reparse security",
+        "independent retained external anchor",
+        "actual verified restoration software"
+      ],
+      "permitted": [
+        "one local operator-run restore after separate grant"
+      ],
+      "prohibited": [
+        "key or plaintext in Work/GitHub/CI",
+        "remote protected corpus processing",
+        "real-source grant inference"
+      ]
+    },
+    {
+      "id": "GC01",
+      "title": "Real-source prospective reciprocal Atelier/Encyclopedia study",
+      "tier": "C",
+      "classification": "new_scientific_episode",
+      "initials": "[INITIAL HERE]",
+      "status": "DEPENDENT_HELD",
+      "required": [
+        "exact source/rights manifest",
+        "paired native/recipient/transport preregistration",
+        "independent receiver identities",
+        "withheld source-bound graders",
+        "privacy/retention/withdrawal plan"
+      ],
+      "permitted": [
+        "one separate authorized source-specific real study after evidence"
+      ],
+      "prohibited": [
+        "protected Em flight inference",
+        "false T4/T5 promotion"
+      ]
+    },
+    {
+      "id": "GC02",
+      "title": "D01–D19 scientific and resource decisions",
+      "tier": "C",
+      "classification": "scientific_operator_choices",
+      "initials": "[INITIAL HERE]",
+      "status": "19_UNRESOLVED",
+      "required": [
+        "nineteen explicit selections with evidence",
+        "finite signed budget",
+        "model/revision/effort",
+        "full arm/opportunity/preregistration"
+      ],
+      "permitted": [
+        "human decision record only if evidence exists"
+      ],
+      "prohibited": [
+        "auto-choice by model",
+        "unadopted 720k budget",
+        "D20 final grant"
+      ]
+    },
+    {
+      "id": "GC03",
+      "title": "Independent provider/account/evaluator/trust-root credentials and terms",
+      "tier": "C",
+      "classification": "external_witness_provisioning",
+      "initials": "[INITIAL HERE]",
+      "status": "DEPENDENT_HELD",
+      "required": [
+        "named external custodian",
+        "independent evaluator",
+        "actual provider terms and identities",
+        "externally controlled advancing root",
+        "bounded financial authority"
+      ],
+      "permitted": [
+        "later separately reviewed provisioning"
+      ],
+      "prohibited": [
+        "self-attestation by AI",
+        "key invention",
+        "real-source call by implicit permission"
+      ]
+    },
+    {
+      "id": "GD01",
+      "title": "Final D20 protected Flight",
+      "tier": "D",
+      "classification": "final_experiment_authority",
+      "initials": "[INITIAL HERE]",
+      "status": "HELD_FINAL_HUMAN_DECISION",
+      "required": [
+        "evidenced D01–D19",
+        "signed finite source-specific grant",
+        "exact reviewed runtime and provider",
+        "independent trust and evaluator"
+      ],
+      "permitted": [
+        "future distinct explicit D20 instruction"
+      ],
+      "prohibited": [
+        "pre-sign",
+        "automatic launch",
+        "conditional self-issuance"
+      ]
+    },
+    {
+      "id": "GD02",
+      "title": "Exact-head merge deployment publication and release",
+      "tier": "D",
+      "classification": "release_authority",
+      "initials": "[INITIAL HERE]",
+      "status": "HELD_FUTURE_RELEASE",
+      "required": [
+        "individual PR heads",
+        "CI/security",
+        "target branch",
+        "rights privacy release claims",
+        "rollback"
+      ],
+      "permitted": [
+        "separate future human-approved release"
+      ],
+      "prohibited": [
+        "unrequested merge",
+        "auto deployment",
+        "unsupported scientific promotion"
+      ]
+    }
+  ]
+}
