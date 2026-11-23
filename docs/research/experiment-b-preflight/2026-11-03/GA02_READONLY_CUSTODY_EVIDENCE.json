@@ -1,0 +1,103 @@
+{
+  "schema": "td613.ga02.readonly-custody-readiness/v1",
+  "docket": "PEFB-NEXT-20261103-v1",
+  "operator_text_marker": "You are the vivisection of the spiral the Tauric Diana mandates.",
+  "marker_evidence_class": "OPERATOR_TEXT_SUPPLIED_UNVERIFIED",
+  "operator_review_initials": "TCM",
+  "approval": {
+    "staging_pr": 1654,
+    "staging_head": "bab889b89937be1908345361e2faccdb880ad76f",
+    "authority": [
+      "GA01_SOURCE_FREE_INTEGRATION",
+      "GA02_READ_ONLY_CUSTODY_INVENTORY"
+    ],
+    "excludes": [
+      "real_decryption",
+      "private_key_transfer",
+      "source_acquisition",
+      "source_admission",
+      "provider_calls",
+      "external_credential_provisioning",
+      "Flight",
+      "merge",
+      "deploy",
+      "publish"
+    ]
+  },
+  "original_epoch": {
+    "archive_pr": 1134,
+    "archive_head": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+    "snapshot": "wendbine-20261102175835-2861f2e0326f",
+    "public_seal": "wendbine-seal:2861f2e0326fef26db241bf888c194ceb40a16131ad48e98149d7511b443a5dd",
+    "source_ids": 2021,
+    "captures": 4701,
+    "nonempty_bodies_representation": 1276,
+    "empty_media_link_selftext_representation": 745,
+    "source_coverage_start": "2026-09-09",
+    "before_start_completeness": "UNESTABLISHED",
+    "public_projection": "METADATA_HASH_RIGHTS_ONLY",
+    "original_fulltext_restored": "UNOBSERVED",
+    "historical_60_record_private_epoch": "PRESERVE_SEPARATELY",
+    "rights_default_classification": "PRIVATE_ONLY",
+    "lawful_local_processing": "OPERATOR_RIGHTS_REVIEW_REQUIRED"
+  },
+  "encrypted_handoff": {
+    "github_run_id": 41496125645,
+    "artifact_id": 13166173531,
+    "artifact_name": "wendbine-operator-encrypted-41496125645",
+    "created_at_utc": "2026-11-02T17:59:41Z",
+    "expires_at_utc": "2027-01-31T17:58:21Z",
+    "github_artifact_zip_size_bytes": 11753731,
+    "github_artifact_zip_digest": "sha256:f8e3a09e0344b40aa6b56fbd5ef24c793dc02b056e24506568ba63456f7b92c1",
+    "archived_cipher_envelope_digest": "NOT_INDEPENDENTLY_VERIFIED",
+    "artifact_content_retrieved_by_this_audit": false,
+    "matching_operator_private_key_present": "UNVERIFIED_OPERATOR_LOCAL_ONLY",
+    "producer_format": {
+      "schema": "wendbine-src-autosync/v0.1",
+      "cryptography": "AES-256-GCM+RSA-OAEP-SHA256",
+      "compression": "gzip",
+      "aad": "wendbine-src-autosync/v0.1",
+      "crypto_key": "random_32_byte_AES256_wrapped_RSA_OAEP_SHA256",
+      "nonce": "random_12_byte_IV",
+      "tag": "AES_GCM_AUTH_TAG"
+    },
+    "storage_expiration_is_not_independent_local_custody": true
+  },
+  "tested_software": {
+    "ga01_integration_pr": 1655,
+    "ga01_exact_head": "acddfa958c1202578c102e89873f09678c5fda42",
+    "pe02_local_index_pr": 1647,
+    "pe02_source_sha": "e329364696b19f3a68b2d5154df6d3137b821f20",
+    "pe02_accepts_real_source_ids": false,
+    "pe02_accepts_synthetic_fixture_prefix_only": true,
+    "private_original_decrypt_entry": "NOT_IMPLEMENTED",
+    "windows_acl_and_reparse_junction_tests": "NOT_EXECUTED",
+    "anti_rollback_external_trust_anchor": "NOT_PROVISIONED",
+    "complete_real_originals_restored": 0,
+    "real_source_receipts_generated": 0
+  },
+  "local_restore_future_preconditions": [
+    "independently verify exact public archive seal and eight registry hashes from pinned commit",
+    "operator-controlled local custody of encrypted handoff and private key; no key or originals to models/CI",
+    "verify full ZIP artifact digest independently of separately authenticated inside envelope",
+    "inspect rights/consent/retention for each original and allowed local use",
+    "independent Windows host threat model: NTFS ACL, reparse points, path traversal, symlinks/junctions and TOCTOU",
+    "independently reviewed actual decrypt and restore program, not PE02 fixture-only index",
+    "verify AES-GCM tag and RSA-OAEP binding, gzip resource limits, fatal UTF8 and raw batch hash/length/ordinal",
+    "preserve original snapshot and historical separate 60-source epoch; never overwrite/repair raw bodies by inference",
+    "verify exact latest captured source versions, all IDs, times, hash-only public title projection and body state",
+    "verify 2021 total, 1276 represented nonempty/745 empty states, no invented offsite media transcripts",
+    "transactional index commit, independent out-of-band root receipt, restart/rollback and access-withdrawal tests",
+    "independent real local restore evidence prior to any admission/export/receiver or experiment decision"
+  ],
+  "holds": {
+    "real_private_restore": "HELD",
+    "live_wendbine_sync": "HELD_UNAUTHORIZED",
+    "historical_backfill": "HELD_UNAUTHORIZED",
+    "real_reciprocal": "HELD",
+    "D01_D20": "UNRESOLVED",
+    "protected_experiment_b": "HELD",
+    "merge_deployment_release": "HUMAN_RESERVED"
+  },
+  "status": "GA02_READ_ONLY_INVENTORY_DELIVERED_WITH_UNEXECUTED_HOST_AND_SOURCE_GATES"
+}
