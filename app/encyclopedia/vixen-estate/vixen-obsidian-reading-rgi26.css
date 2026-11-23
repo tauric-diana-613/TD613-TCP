@@ -316,3 +316,45 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
  color:#efd18a!important;
  text-shadow:0 1px 12px rgba(239,209,138,.11)!important;
 }
+
+/* RGI27-D · Desktop manuscript print proportions.
+ * Desktop Chromium review exposed a 3.6vw/60px display-title inheritance
+ * beside 13.5px prose; both made the manuscript look like a title poster.
+ * Retain the dark reader and original manuscript text, but use a literary
+ * measure and readable article typography. Phone rules remain RGI27-owned. */
+@media screen and (min-width:681px) {
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript {
+   font:400 clamp(15.5px,1.13vw,17px)/1.61 "Iowan Old Style","Palatino Linotype",Georgia,serif!important;
+   letter-spacing:0!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph {
+   max-width:76ch!important;width:auto!important;
+   margin:0 auto .85em!important;padding:0!important;
+   font:inherit!important;line-height:1.61!important;
+   word-break:normal!important;overflow-wrap:normal!important;
+   text-wrap:pretty!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title {
+   box-sizing:border-box!important;
+   width:auto!important;max-width:76ch!important;
+   margin:0 auto 18px!important;padding:0 0 13px!important;
+   font:400 clamp(23px,2.05vw,30px)/1.20 "Iowan Old Style","New York",Georgia,serif!important;
+   letter-spacing:-.025em!important;text-align:left!important;
+   text-wrap:pretty!important;white-space:normal!important;
+   word-break:normal!important;overflow-wrap:normal!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading:not(.vix-pdf-source-title) {
+   max-width:76ch!important;width:auto!important;margin:1.25em auto .4em!important;
+   font:600 clamp(19px,1.6vw,24px)/1.23 "Iowan Old Style",Georgia,serif!important;
+   letter-spacing:-.016em!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ #worksExperimentAReaderMount #expaCompanionBodyPre :is(.vix-reader-list,.vix-reader-quote) {
+   box-sizing:border-box!important;max-width:76ch!important;
+   margin-inline:auto!important;line-height:1.58!important;
+ }
+}
