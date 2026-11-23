@@ -21,6 +21,7 @@ Publish **exactly one** final screenshot package and **one** final integrity/cov
 - [Independent screenshot archive auditor](audit_final_surface.py): run `python audit_final_surface.py Vixen_Chromium_Full_Surface_<SHA>.zip <SHA>` with Pillow installed; must pass separately from GitHub Actions.
 - [Exact-head archive staging script](stage_vixen_archives.py): run with `--repo <clean-product-checkout> --out <archive-directory>` to package the verified scoped stack and HTTP payload. **Only after independent HTTPS source verification**, add `--https-witness <full-surface-directory> --served-receipt <verified-source-receipt.json>` to stage one final screenshot ZIP. This script never deploys or promotes an archive by itself.
 - [Engineering qualification ledger](ENGINEERING_QUALIFICATION_RECEIPT.md): latest point-in-time SHA, historical RED run IDs, known defects and integration hold.
+- [Historical RED forensics registry](HISTORICAL_RED_REGISTER.md): independent ZIP SHA-256/size, source-bound image inventory, false-loading-frame finding, and four-profile Folios before/after observations; failed archives remain in CI.
 - [Unfilled final-only custody template](FINAL_EVIDENCE_RECEIPT_TEMPLATE.md): required exact served SHA, Actions artifact ID, archive hash, route coverage, retention and Folios pixel evidence. **Not a final admission.**
 - Historical RED archives and local HTTP sources are explicitly excluded from the accepted final screenshot archive. `retention-days: 30` applies to generated visual and full-stack CI artifacts.
 
