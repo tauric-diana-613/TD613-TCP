@@ -78,7 +78,8 @@ test('Vixen public markup imports boundary and rejects literal internal names in
  assert.doesNotMatch(html,/>SRC Projective<\/button>/);
  assert.doesNotMatch(html,/>FADT &amp; XOR SYNERGY</);
  assert.doesNotMatch(html,/>FADT Exact \[C3\]/);
- assert.match(html,/THE OBSIDIAN READING ROOM/);
+ assert.match(html,/THE MANUSCRIPT/);
+ assert.match(html,/vixen-manuscript-mobile-edition.css/);
 });
 
 test('Global search preserves title/filename only, not unrelated dynamic explanatory UI text',()=>{
