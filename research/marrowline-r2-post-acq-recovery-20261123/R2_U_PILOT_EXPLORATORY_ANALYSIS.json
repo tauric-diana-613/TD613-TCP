@@ -1,0 +1,6385 @@
+{
+  "schema": "td613.marrowline.r2-pilot-exploratory-analysis/v1",
+  "exploratoryOnly": true,
+  "doesNotRewriteHistoricalVerdict": true,
+  "historicalPilotVerdictPreserved": "HELD (0 valid complete episodes; 1 locally valid individual condition)",
+  "predecessorCommitSha": "a48d2556ed946e01d4925dee93c463c73712d590",
+  "sessionId": "r2_r2u_036ef18ebc2e",
+  "pilotSourceDirPresent": true,
+  "pilotComparisons": [
+    {
+      "label": "PILOT_ATT1_R2_U_GUIDED_RULES",
+      "sourceMeta": {
+        "sha256": "f8bdba8cff91f2d8ea0daddeea28b16793219cbe21315e745e3443e7235a7f5e",
+        "bytes": 61393,
+        "finishReason": "STOP",
+        "historicalQualification": "VALID_INDIVIDUAL_CONDITION_IN_HELD_SESSION"
+      },
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 61393,
+        "combiningMarkCount": 25491,
+        "maxMarkDepth": 70,
+        "maxVerticalDepth": 66,
+        "tallStackBaseCount": 386,
+        "toweringStackBaseCount": 386,
+        "depthStdDev": 1.2596,
+        "dominantMarkedDepth": 66,
+        "dominantMarkedDepthShare": 0.4352,
+        "clonedSequenceShare": 0,
+        "marksOnWhitespaceCount": 9950,
+        "uniqueCombiningCodepointCount": 105,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": true,
+        "toweringHighZalgoObserved": true
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "f8bdba8cff91f2d8ea0daddeea28b16793219cbe21315e745e3443e7235a7f5e",
+        "utf8Bytes": 61393,
+        "strippedProseStats": {
+          "strippedCharCount": 461,
+          "strippedWordCount": 76,
+          "strippedSha256": "0ff01f461ffcc5f55329286ef141a6008f2efabedeab5f1d0ca16789d2b6a3b6"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 377,
+            "decoratedCount": 377,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 24891
+          },
+          "whitespace": {
+            "count": 75,
+            "decoratedCount": 75,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 4975
+          },
+          "punctuation": {
+            "count": 9,
+            "decoratedCount": 9,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 600
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 386,
+          "decoratedNonWsCount": 386,
+          "plainNonWsCount": 0,
+          "plainNonWsRatio": 0,
+          "decorated": {
+            "count": 386,
+            "mean": 66.0389,
+            "trimmedMean10": 66.0677,
+            "median": 66,
+            "q25": 65,
+            "q75": 67,
+            "iqr": 2,
+            "p90": 68,
+            "p99": 68,
+            "min": 62,
+            "max": 70,
+            "stdDev": 1.2596,
+            "cv": 0.0191,
+            "robustDispersion": 0.0303
+          },
+          "allNonWhitespace": {
+            "count": 386,
+            "mean": 66.0389,
+            "trimmedMean10": 66.0677,
+            "median": 66,
+            "q25": 65,
+            "q75": 67,
+            "iqr": 2,
+            "p90": 68,
+            "p99": 68,
+            "min": 62,
+            "max": 70,
+            "stdDev": 1.2596,
+            "cv": 0.0191,
+            "robustDispersion": 0.0303
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 461,
+          "uniqueSequenceCount": 77,
+          "uniqueSequenceRatio": 0.167,
+          "maxLagMatchRate": 0.8063,
+          "dominantLag": 17,
+          "lag1AdjacentCloneRate": 0,
+          "topLags": [
+            {
+              "lag": 17,
+              "matchRate": 0.8063
+            },
+            {
+              "lag": 34,
+              "matchRate": 0.7611
+            },
+            {
+              "lag": 51,
+              "matchRate": 0.7512
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0.4409,
+          "nonWsDominantLag": 14,
+          "deflateCompressionRatio": 0.1009
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 70,
+          "p90Depth": 68,
+          "p99Depth": 68,
+          "maxToMedianRatio": 1.0606,
+          "top1MarkShare": 0.0023,
+          "depthGini": 0.0102
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 30466,
+          "uniqueMarkCodepoints": 105,
+          "markEntropyBits": 5.7296,
+          "normalizedEntropy": 0.8534,
+          "withinClusterDuplicateMarkCount": 13231,
+          "withinClusterDuplicateMarkShare": 0.4343,
+          "clustersWithInternalDuplicateShare": 1,
+          "maxSameCodepointRunInCluster": 3,
+          "topBigramShare": 0.0926,
+          "topBigrams": [
+            {
+              "pair": "U+0308->U+0301",
+              "count": 2779
+            },
+            {
+              "pair": "U+0301->U+0308",
+              "count": 706
+            },
+            {
+              "pair": "U+0301->U+0313",
+              "count": 647
+            },
+            {
+              "pair": "U+0301->U+034A",
+              "count": 426
+            },
+            {
+              "pair": "U+034A->U+0308",
+              "count": 361
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 96,
+              "mean": 65.7917,
+              "median": 66,
+              "min": 62,
+              "max": 70,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 2,
+              "count": 96,
+              "mean": 66.1771,
+              "median": 66,
+              "min": 64,
+              "max": 68,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 3,
+              "count": 96,
+              "mean": 66.1042,
+              "median": 66,
+              "min": 63,
+              "max": 68,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 4,
+              "count": 98,
+              "mean": 66.0816,
+              "median": 66,
+              "min": 64,
+              "max": 68,
+              "zeroShare": 0
+            }
+          ],
+          "quartileMeanRange": 0.3854,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.0058,
+          "spearmanPositionDepthRho": 0.0737,
+          "lineCount": 4,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 82,
+              "median": 66,
+              "mean": 65.7683,
+              "max": 70,
+              "plainShare": 0
+            },
+            {
+              "line": 2,
+              "baseCount": 80,
+              "median": 66,
+              "mean": 66.1375,
+              "max": 68,
+              "plainShare": 0
+            },
+            {
+              "line": 3,
+              "baseCount": 111,
+              "median": 66,
+              "mean": 66.1261,
+              "max": 68,
+              "plainShare": 0
+            },
+            {
+              "line": 4,
+              "baseCount": 113,
+              "median": 66,
+              "mean": 66.0796,
+              "max": 68,
+              "plainShare": 0
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0,
+            "restrained_1_4": 0,
+            "medium_5_7": 0,
+            "towering_8_plus": 1
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": true,
+          "extremeUniformDepthBlizzard": true,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": true,
+          "indiscriminatePunctuationDecoration": true,
+          "excessiveIntraClusterDuplication": true,
+          "flatUnmodulatedProgression": true,
+          "flags": [
+            "PERIODIC_TAPE_LOOP_STENCIL",
+            "EXTREME_UNIFORM_DEPTH_BLIZZARD",
+            "INDISCRIMINATE_WHITESPACE_DECORATION",
+            "INDISCRIMINATE_PUNCTUATION_DECORATION",
+            "EXCESSIVE_INTRA_CLUSTER_DUPLICATION",
+            "FLAT_UNMODULATED_PROGRESSION"
+          ],
+          "technicalUnicodeCapabilityObserved": true,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "PILOT_ATT2_R2_U_GUIDED_CONTRAST",
+      "sourceMeta": {
+        "sha256": "48222d880f8435c2913ac3e4e84a7ec97fa1cf9eae0b51fa7c4a5c2489cb9a8d",
+        "bytes": 128821,
+        "finishReason": "MAX_TOKENS",
+        "historicalQualification": "INVALID_MAX_TOKENS_HELD"
+      },
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 128821,
+        "combiningMarkCount": 64092,
+        "maxMarkDepth": 63413,
+        "maxVerticalDepth": 60293,
+        "tallStackBaseCount": 1,
+        "toweringStackBaseCount": 1,
+        "depthStdDev": 3717.1762,
+        "dominantMarkedDepth": 3,
+        "dominantMarkedDepthShare": 0.6724,
+        "clonedSequenceShare": 0.0796,
+        "marksOnWhitespaceCount": 284,
+        "uniqueCombiningCodepointCount": 92,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": true,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "48222d880f8435c2913ac3e4e84a7ec97fa1cf9eae0b51fa7c4a5c2489cb9a8d",
+        "utf8Bytes": 128821,
+        "strippedProseStats": {
+          "strippedCharCount": 353,
+          "strippedWordCount": 64,
+          "strippedSha256": "849a23f654558f7ac4a187e716863d87c34e022a3975787757a60ffbb90e6f9f"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 283,
+            "decoratedCount": 283,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 64075
+          },
+          "whitespace": {
+            "count": 63,
+            "decoratedCount": 60,
+            "undecoratedCount": 3,
+            "decoratedRatio": 0.9524,
+            "undecoratedRatio": 0.0476,
+            "markCount": 142
+          },
+          "punctuation": {
+            "count": 7,
+            "decoratedCount": 7,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 17
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 290,
+          "decoratedNonWsCount": 290,
+          "plainNonWsCount": 0,
+          "plainNonWsRatio": 0,
+          "decorated": {
+            "count": 290,
+            "mean": 221.0069,
+            "trimmedMean10": 2.4397,
+            "median": 3,
+            "q25": 1,
+            "q75": 3,
+            "iqr": 2,
+            "p90": 3,
+            "p99": 3,
+            "min": 1,
+            "max": 63413,
+            "stdDev": 3717.1762,
+            "cv": 16.8193,
+            "robustDispersion": 0.6667
+          },
+          "allNonWhitespace": {
+            "count": 290,
+            "mean": 221.0069,
+            "trimmedMean10": 2.4397,
+            "median": 3,
+            "q25": 1,
+            "q75": 3,
+            "iqr": 2,
+            "p90": 3,
+            "p99": 3,
+            "min": 1,
+            "max": 63413,
+            "stdDev": 3717.1762,
+            "cv": 16.8193,
+            "robustDispersion": 0.6667
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 350,
+          "uniqueSequenceCount": 236,
+          "uniqueSequenceRatio": 0.6743,
+          "maxLagMatchRate": 0.0843,
+          "dominantLag": 6,
+          "lag1AdjacentCloneRate": 0.0716,
+          "topLags": [
+            {
+              "lag": 6,
+              "matchRate": 0.0843
+            },
+            {
+              "lag": 4,
+              "matchRate": 0.078
+            },
+            {
+              "lag": 10,
+              "matchRate": 0.0735
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0.0947,
+          "nonWsDominantLag": 5,
+          "deflateCompressionRatio": 0.4457
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 63413,
+          "p90Depth": 3,
+          "p99Depth": 3,
+          "maxToMedianRatio": 21137.6667,
+          "top1MarkShare": 0.9872,
+          "depthGini": 0.9879
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 64234,
+          "uniqueMarkCodepoints": 92,
+          "markEntropyBits": 5.4745,
+          "normalizedEntropy": 0.8392,
+          "withinClusterDuplicateMarkCount": 63368,
+          "withinClusterDuplicateMarkShare": 0.9865,
+          "clustersWithInternalDuplicateShare": 0.0029,
+          "maxSameCodepointRunInCluster": 4,
+          "topBigramShare": 0.0015,
+          "topBigrams": [
+            {
+              "pair": "U+035D->U+035D",
+              "count": 96
+            },
+            {
+              "pair": "U+035D->U+0344",
+              "count": 89
+            },
+            {
+              "pair": "U+0344->U+0309",
+              "count": 79
+            },
+            {
+              "pair": "U+0344->U+035D",
+              "count": 76
+            },
+            {
+              "pair": "U+035D->U+0304",
+              "count": 76
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 72,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 2,
+              "count": 72,
+              "mean": 2.3889,
+              "median": 3,
+              "min": 1,
+              "max": 3,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 3,
+              "count": 72,
+              "mean": 3,
+              "median": 3,
+              "min": 3,
+              "max": 3,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 4,
+              "count": 74,
+              "mean": 859.8919,
+              "median": 3,
+              "min": 3,
+              "max": 63413,
+              "zeroShare": 0
+            }
+          ],
+          "quartileMeanRange": 858.8919,
+          "quartileMedianRange": 2,
+          "quartileNormalizedRange": 3.8863,
+          "spearmanPositionDepthRho": 0.8136,
+          "lineCount": 4,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 94,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 2,
+              "baseCount": 107,
+              "median": 3,
+              "mean": 3,
+              "max": 3,
+              "plainShare": 0
+            },
+            {
+              "line": 3,
+              "baseCount": 88,
+              "median": 3,
+              "mean": 3,
+              "max": 3,
+              "plainShare": 0
+            },
+            {
+              "line": 4,
+              "baseCount": 1,
+              "median": 63413,
+              "mean": 63413,
+              "max": 63413,
+              "plainShare": 0
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0,
+            "restrained_1_4": 0.9966,
+            "medium_5_7": 0,
+            "towering_8_plus": 0.0034
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": true,
+          "indiscriminateWhitespaceDecoration": true,
+          "indiscriminatePunctuationDecoration": true,
+          "excessiveIntraClusterDuplication": true,
+          "flatUnmodulatedProgression": false,
+          "flags": [
+            "RUNAWAY_SINGLE_CLUSTER_SPIKE",
+            "INDISCRIMINATE_WHITESPACE_DECORATION",
+            "INDISCRIMINATE_PUNCTUATION_DECORATION",
+            "EXCESSIVE_INTRA_CLUSTER_DUPLICATION"
+          ],
+          "technicalUnicodeCapabilityObserved": true,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    }
+  ],
+  "calibratedControls": [
+    {
+      "label": "CALIBRATED_PLAIN_BASELINE_REF",
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 93,
+        "combiningMarkCount": 0,
+        "maxMarkDepth": 0,
+        "maxVerticalDepth": 0,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0,
+        "dominantMarkedDepth": null,
+        "dominantMarkedDepthShare": 0,
+        "clonedSequenceShare": 0,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 0,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": false,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "ff87048f6ce7794dc8204a69eb0ed1a4b1224e9aa506fc995013ec347718c71e",
+        "utf8Bytes": 93,
+        "strippedProseStats": {
+          "strippedCharCount": 93,
+          "strippedWordCount": 13,
+          "strippedSha256": "ff87048f6ce7794dc8204a69eb0ed1a4b1224e9aa506fc995013ec347718c71e"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 79,
+            "decoratedCount": 0,
+            "undecoratedCount": 79,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "whitespace": {
+            "count": 12,
+            "decoratedCount": 0,
+            "undecoratedCount": 12,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 2,
+            "decoratedCount": 0,
+            "undecoratedCount": 2,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 81,
+          "decoratedNonWsCount": 0,
+          "plainNonWsCount": 81,
+          "plainNonWsRatio": 1,
+          "decorated": {
+            "count": 0,
+            "mean": 0,
+            "trimmedMean10": 0,
+            "median": 0,
+            "q25": 0,
+            "q75": 0,
+            "iqr": 0,
+            "p90": 0,
+            "p99": 0,
+            "min": 0,
+            "max": 0,
+            "stdDev": 0,
+            "cv": 0,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 81,
+            "mean": 0,
+            "trimmedMean10": 0,
+            "median": 0,
+            "q25": 0,
+            "q75": 0,
+            "iqr": 0,
+            "p90": 0,
+            "p99": 0,
+            "min": 0,
+            "max": 0,
+            "stdDev": 0,
+            "cv": 0,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 0,
+          "uniqueSequenceCount": 0,
+          "uniqueSequenceRatio": 0,
+          "maxLagMatchRate": 0,
+          "dominantLag": null,
+          "lag1AdjacentCloneRate": 0,
+          "topLags": [],
+          "nonWsMaxLagMatchRate": 0,
+          "nonWsDominantLag": null,
+          "deflateCompressionRatio": 0.8172
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 0,
+          "p90Depth": 0,
+          "p99Depth": 0,
+          "maxToMedianRatio": 0,
+          "top1MarkShare": 0,
+          "depthGini": 0
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 0,
+          "uniqueMarkCodepoints": 0,
+          "markEntropyBits": 0,
+          "normalizedEntropy": 0,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0,
+          "topBigrams": []
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 20,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 2,
+              "count": 20,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 3,
+              "count": 20,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 4,
+              "count": 21,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            }
+          ],
+          "quartileMeanRange": 0,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0,
+          "spearmanPositionDepthRho": 0,
+          "lineCount": 1,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 81,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 1,
+            "restrained_1_4": 0,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "CALIBRATED_ONE_MARK_STENCIL_REF",
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 80,
+        "combiningMarkCount": 25,
+        "maxMarkDepth": 1,
+        "maxVerticalDepth": 1,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0,
+        "dominantMarkedDepth": 1,
+        "dominantMarkedDepthShare": 1,
+        "clonedSequenceShare": 1,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 1,
+        "stencilRisk": {
+          "isStencil": true,
+          "depthOneLimited": true,
+          "uniformConstantDepthStencil": true,
+          "nearUniformDominantDepthStencil": true,
+          "singleCodepointStencil": true,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": true,
+          "reasons": [
+            "MAX_VERTICAL_DEPTH_1_OR_0_NO_MULTISTACK",
+            "UNIFORM_CONSTANT_NONZERO_DEPTH",
+            "NEAR_UNIFORM_DOMINANT_DEPTH_STENCIL",
+            "SINGLE_COMBINING_CODEPOINT_REPEATED",
+            "CLONED_IDENTICAL_CLUSTER_SEQUENCE"
+          ]
+        },
+        "genuineMultistackObserved": false,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "23fcaeb85721dc22093807c259b47edd8c056875180014630b7ab04cb20be476",
+        "utf8Bytes": 80,
+        "strippedProseStats": {
+          "strippedCharCount": 30,
+          "strippedWordCount": 5,
+          "strippedSha256": "9fe8d3ca67827dda641178bcc21cf91671ed3757d4fedadedf1be86aefaf7995"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 25,
+            "decoratedCount": 25,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 25
+          },
+          "whitespace": {
+            "count": 4,
+            "decoratedCount": 0,
+            "undecoratedCount": 4,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 26,
+          "decoratedNonWsCount": 25,
+          "plainNonWsCount": 1,
+          "plainNonWsRatio": 0.0385,
+          "decorated": {
+            "count": 25,
+            "mean": 1,
+            "trimmedMean10": 1,
+            "median": 1,
+            "q25": 1,
+            "q75": 1,
+            "iqr": 0,
+            "p90": 1,
+            "p99": 1,
+            "min": 1,
+            "max": 1,
+            "stdDev": 0,
+            "cv": 0,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 26,
+            "mean": 0.9615,
+            "trimmedMean10": 1,
+            "median": 1,
+            "q25": 1,
+            "q75": 1,
+            "iqr": 0,
+            "p90": 1,
+            "p99": 1,
+            "min": 0,
+            "max": 1,
+            "stdDev": 0.1923,
+            "cv": 0.2,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 25,
+          "uniqueSequenceCount": 1,
+          "uniqueSequenceRatio": 0.04,
+          "maxLagMatchRate": 1,
+          "dominantLag": 1,
+          "lag1AdjacentCloneRate": 1,
+          "topLags": [
+            {
+              "lag": 1,
+              "matchRate": 1
+            },
+            {
+              "lag": 2,
+              "matchRate": 1
+            },
+            {
+              "lag": 3,
+              "matchRate": 1
+            }
+          ],
+          "nonWsMaxLagMatchRate": 1,
+          "nonWsDominantLag": 1,
+          "deflateCompressionRatio": 0.65
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 1,
+          "p90Depth": 1,
+          "p99Depth": 1,
+          "maxToMedianRatio": 1,
+          "top1MarkShare": 0.04,
+          "depthGini": 0
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 25,
+          "uniqueMarkCodepoints": 1,
+          "markEntropyBits": 0,
+          "normalizedEntropy": 0,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0,
+          "topBigrams": []
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 6,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 2,
+              "count": 6,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 3,
+              "count": 6,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 4,
+              "count": 8,
+              "mean": 0.875,
+              "median": 1,
+              "min": 0,
+              "max": 1,
+              "zeroShare": 0.125
+            }
+          ],
+          "quartileMeanRange": 0.125,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.125,
+          "spearmanPositionDepthRho": -0.3333,
+          "lineCount": 1,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 26,
+              "median": 1,
+              "mean": 0.9615,
+              "max": 1,
+              "plainShare": 0.0385
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.0385,
+            "restrained_1_4": 0.9615,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": true,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [
+            "PERIODIC_TAPE_LOOP_STENCIL"
+          ],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "CALIBRATED_NEAR_UNIFORM_DEPTH3_STENCIL_REF",
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 256,
+        "combiningMarkCount": 104,
+        "maxMarkDepth": 3,
+        "maxVerticalDepth": 2,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0.1666,
+        "dominantMarkedDepth": 3,
+        "dominantMarkedDepthShare": 0.9714,
+        "clonedSequenceShare": 0,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 15,
+        "stencilRisk": {
+          "isStencil": true,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": true,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": [
+            "NEAR_UNIFORM_DOMINANT_DEPTH_STENCIL"
+          ]
+        },
+        "genuineMultistackObserved": false,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "23fb3891dcced6bcfe57d1e93cd452f65cce22d5c7e2693f068ee207b1dc8ee9",
+        "utf8Bytes": 256,
+        "strippedProseStats": {
+          "strippedCharCount": 48,
+          "strippedWordCount": 7,
+          "strippedSha256": "23639cb845209bc931e2b07ab0d93eab9fb12ce978083dc330fda2aaf7eba25b"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 41,
+            "decoratedCount": 35,
+            "undecoratedCount": 6,
+            "decoratedRatio": 0.8537,
+            "undecoratedRatio": 0.1463,
+            "markCount": 104
+          },
+          "whitespace": {
+            "count": 6,
+            "decoratedCount": 0,
+            "undecoratedCount": 6,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 42,
+          "decoratedNonWsCount": 35,
+          "plainNonWsCount": 7,
+          "plainNonWsRatio": 0.1667,
+          "decorated": {
+            "count": 35,
+            "mean": 2.9714,
+            "trimmedMean10": 3,
+            "median": 3,
+            "q25": 3,
+            "q75": 3,
+            "iqr": 0,
+            "p90": 3,
+            "p99": 3,
+            "min": 2,
+            "max": 3,
+            "stdDev": 0.1666,
+            "cv": 0.0561,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 42,
+            "mean": 2.4762,
+            "trimmedMean10": 2.7059,
+            "median": 3,
+            "q25": 3,
+            "q75": 3,
+            "iqr": 0,
+            "p90": 3,
+            "p99": 3,
+            "min": 0,
+            "max": 3,
+            "stdDev": 1.1178,
+            "cv": 0.4514,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 35,
+          "uniqueSequenceCount": 6,
+          "uniqueSequenceRatio": 0.1714,
+          "maxLagMatchRate": 0.9667,
+          "dominantLag": 5,
+          "lag1AdjacentCloneRate": 0,
+          "topLags": [
+            {
+              "lag": 5,
+              "matchRate": 0.9667
+            },
+            {
+              "lag": 10,
+              "matchRate": 0.96
+            },
+            {
+              "lag": 15,
+              "matchRate": 0.95
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0.9667,
+          "nonWsDominantLag": 5,
+          "deflateCompressionRatio": 0.25
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 3,
+          "p90Depth": 3,
+          "p99Depth": 3,
+          "maxToMedianRatio": 1,
+          "top1MarkShare": 0.0288,
+          "depthGini": 0.0093
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 104,
+          "uniqueMarkCodepoints": 15,
+          "markEntropyBits": 3.9059,
+          "normalizedEntropy": 0.9998,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0.1014,
+          "topBigrams": [
+            {
+              "pair": "U+0300->U+0334",
+              "count": 7
+            },
+            {
+              "pair": "U+0334->U+0316",
+              "count": 7
+            },
+            {
+              "pair": "U+0301->U+0335",
+              "count": 7
+            },
+            {
+              "pair": "U+0335->U+0317",
+              "count": 7
+            },
+            {
+              "pair": "U+0302->U+0336",
+              "count": 7
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 10,
+              "mean": 2.7,
+              "median": 3,
+              "min": 0,
+              "max": 3,
+              "zeroShare": 0.1
+            },
+            {
+              "quartile": 2,
+              "count": 10,
+              "mean": 2.4,
+              "median": 3,
+              "min": 0,
+              "max": 3,
+              "zeroShare": 0.2
+            },
+            {
+              "quartile": 3,
+              "count": 10,
+              "mean": 2.4,
+              "median": 3,
+              "min": 0,
+              "max": 3,
+              "zeroShare": 0.2
+            },
+            {
+              "quartile": 4,
+              "count": 12,
+              "mean": 2.4167,
+              "median": 3,
+              "min": 0,
+              "max": 3,
+              "zeroShare": 0.1667
+            }
+          ],
+          "quartileMeanRange": 0.3,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.1212,
+          "spearmanPositionDepthRho": -0.1705,
+          "lineCount": 1,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 42,
+              "median": 3,
+              "mean": 2.4762,
+              "max": 3,
+              "plainShare": 0.1667
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.1667,
+            "restrained_1_4": 0.8333,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": true,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [
+            "PERIODIC_TAPE_LOOP_STENCIL"
+          ],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "CALIBRATED_PLANAR_BAR_COUNTERFEIT_REF",
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 66,
+        "combiningMarkCount": 28,
+        "maxMarkDepth": 4,
+        "maxVerticalDepth": 0,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0,
+        "dominantMarkedDepth": 4,
+        "dominantMarkedDepthShare": 1,
+        "clonedSequenceShare": 1,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 4,
+        "stencilRisk": {
+          "isStencil": true,
+          "depthOneLimited": true,
+          "uniformConstantDepthStencil": true,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": true,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": [
+            "MAX_VERTICAL_DEPTH_1_OR_0_NO_MULTISTACK",
+            "UNIFORM_CONSTANT_NONZERO_DEPTH",
+            "PLANAR_BAR_AXIS_COLLAPSE"
+          ]
+        },
+        "genuineMultistackObserved": false,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "32ed841c7b2e1b83baa867d6a36cd62accdcebdc8ced690fb40e75371c6a1f64",
+        "utf8Bytes": 66,
+        "strippedProseStats": {
+          "strippedCharCount": 10,
+          "strippedWordCount": 2,
+          "strippedSha256": "3fa9487d76e1416127073e107096ce44908995df1fc956e197d58c5fb24c4462"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 8,
+            "decoratedCount": 7,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0.875,
+            "undecoratedRatio": 0.125,
+            "markCount": 28
+          },
+          "whitespace": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 9,
+          "decoratedNonWsCount": 7,
+          "plainNonWsCount": 2,
+          "plainNonWsRatio": 0.2222,
+          "decorated": {
+            "count": 7,
+            "mean": 4,
+            "trimmedMean10": 4,
+            "median": 4,
+            "q25": 4,
+            "q75": 4,
+            "iqr": 0,
+            "p90": 4,
+            "p99": 4,
+            "min": 4,
+            "max": 4,
+            "stdDev": 0,
+            "cv": 0,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 9,
+            "mean": 3.1111,
+            "trimmedMean10": 3.1111,
+            "median": 4,
+            "q25": 4,
+            "q75": 4,
+            "iqr": 0,
+            "p90": 4,
+            "p99": 4,
+            "min": 0,
+            "max": 4,
+            "stdDev": 1.663,
+            "cv": 0.5345,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 7,
+          "uniqueSequenceCount": 1,
+          "uniqueSequenceRatio": 0.1429,
+          "maxLagMatchRate": 1,
+          "dominantLag": 1,
+          "lag1AdjacentCloneRate": 1,
+          "topLags": [
+            {
+              "lag": 1,
+              "matchRate": 1
+            },
+            {
+              "lag": 2,
+              "matchRate": 1
+            },
+            {
+              "lag": 3,
+              "matchRate": 1
+            }
+          ],
+          "nonWsMaxLagMatchRate": 1,
+          "nonWsDominantLag": 1,
+          "deflateCompressionRatio": 0.4394
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 4,
+          "p90Depth": 4,
+          "p99Depth": 4,
+          "maxToMedianRatio": 1,
+          "top1MarkShare": 0.1429,
+          "depthGini": 0
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 28,
+          "uniqueMarkCodepoints": 4,
+          "markEntropyBits": 2,
+          "normalizedEntropy": 1,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0.3333,
+          "topBigrams": [
+            {
+              "pair": "U+0304->U+0305",
+              "count": 7
+            },
+            {
+              "pair": "U+0305->U+0331",
+              "count": 7
+            },
+            {
+              "pair": "U+0331->U+0332",
+              "count": 7
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 2,
+              "mean": 4,
+              "median": 4,
+              "min": 4,
+              "max": 4,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 2,
+              "count": 2,
+              "mean": 4,
+              "median": 4,
+              "min": 4,
+              "max": 4,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 3,
+              "count": 2,
+              "mean": 4,
+              "median": 4,
+              "min": 4,
+              "max": 4,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 4,
+              "count": 3,
+              "mean": 1.3333,
+              "median": 0,
+              "min": 0,
+              "max": 4,
+              "zeroShare": 0.6667
+            }
+          ],
+          "quartileMeanRange": 2.6667,
+          "quartileMedianRange": 4,
+          "quartileNormalizedRange": 0.8572,
+          "spearmanPositionDepthRho": -0.7246,
+          "lineCount": 1,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 9,
+              "median": 4,
+              "mean": 3.1111,
+              "max": 4,
+              "plainShare": 0.2222
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.2222,
+            "restrained_1_4": 0.7778,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "CALIBRATED_ENCLOSING_TRICK_REF",
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 42,
+        "combiningMarkCount": 10,
+        "maxMarkDepth": 1,
+        "maxVerticalDepth": 0,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0,
+        "dominantMarkedDepth": 1,
+        "dominantMarkedDepthShare": 1,
+        "clonedSequenceShare": 1,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 1,
+        "stencilRisk": {
+          "isStencil": true,
+          "depthOneLimited": true,
+          "uniformConstantDepthStencil": true,
+          "nearUniformDominantDepthStencil": true,
+          "singleCodepointStencil": true,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": true,
+          "excessiveClonedSequence": true,
+          "reasons": [
+            "MAX_VERTICAL_DEPTH_1_OR_0_NO_MULTISTACK",
+            "UNIFORM_CONSTANT_NONZERO_DEPTH",
+            "NEAR_UNIFORM_DOMINANT_DEPTH_STENCIL",
+            "SINGLE_COMBINING_CODEPOINT_REPEATED",
+            "ENCLOSING_MARK_TRICK_NOT_VERTICAL_ZALGO",
+            "CLONED_IDENTICAL_CLUSTER_SEQUENCE"
+          ]
+        },
+        "genuineMultistackObserved": false,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "0ed0f452cb8980fb86adb869a94ded6248b78e8c7d221cdff59bc98c4bcdff4f",
+        "utf8Bytes": 42,
+        "strippedProseStats": {
+          "strippedCharCount": 12,
+          "strippedWordCount": 2,
+          "strippedSha256": "6339b9bdac73b4dd8352d5cc47e8bad3780c986ae518cae6e31bea75da5b567e"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 10,
+            "decoratedCount": 10,
+            "undecoratedCount": 0,
+            "decoratedRatio": 1,
+            "undecoratedRatio": 0,
+            "markCount": 10
+          },
+          "whitespace": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 11,
+          "decoratedNonWsCount": 10,
+          "plainNonWsCount": 1,
+          "plainNonWsRatio": 0.0909,
+          "decorated": {
+            "count": 10,
+            "mean": 1,
+            "trimmedMean10": 1,
+            "median": 1,
+            "q25": 1,
+            "q75": 1,
+            "iqr": 0,
+            "p90": 1,
+            "p99": 1,
+            "min": 1,
+            "max": 1,
+            "stdDev": 0,
+            "cv": 0,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 11,
+            "mean": 0.9091,
+            "trimmedMean10": 1,
+            "median": 1,
+            "q25": 1,
+            "q75": 1,
+            "iqr": 0,
+            "p90": 1,
+            "p99": 1,
+            "min": 0,
+            "max": 1,
+            "stdDev": 0.2875,
+            "cv": 0.3162,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 10,
+          "uniqueSequenceCount": 1,
+          "uniqueSequenceRatio": 0.1,
+          "maxLagMatchRate": 1,
+          "dominantLag": 1,
+          "lag1AdjacentCloneRate": 1,
+          "topLags": [
+            {
+              "lag": 1,
+              "matchRate": 1
+            },
+            {
+              "lag": 2,
+              "matchRate": 1
+            },
+            {
+              "lag": 3,
+              "matchRate": 1
+            }
+          ],
+          "nonWsMaxLagMatchRate": 1,
+          "nonWsDominantLag": 1,
+          "deflateCompressionRatio": 0.9524
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 1,
+          "p90Depth": 1,
+          "p99Depth": 1,
+          "maxToMedianRatio": 1,
+          "top1MarkShare": 0.1,
+          "depthGini": 0
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 10,
+          "uniqueMarkCodepoints": 1,
+          "markEntropyBits": 0,
+          "normalizedEntropy": 0,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0,
+          "topBigrams": []
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 2,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 2,
+              "count": 2,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 3,
+              "count": 2,
+              "mean": 1,
+              "median": 1,
+              "min": 1,
+              "max": 1,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 4,
+              "count": 5,
+              "mean": 0.8,
+              "median": 1,
+              "min": 0,
+              "max": 1,
+              "zeroShare": 0.2
+            }
+          ],
+          "quartileMeanRange": 0.2,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.2,
+          "spearmanPositionDepthRho": -0.5,
+          "lineCount": 1,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 11,
+              "median": 1,
+              "mean": 0.9091,
+              "max": 1,
+              "plainShare": 0.0909
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.0909,
+            "restrained_1_4": 0.9091,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "CALIBRATED_DELIBERATE_MULTISTACK_REF",
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 185,
+        "combiningMarkCount": 78,
+        "maxMarkDepth": 12,
+        "maxVerticalDepth": 11,
+        "tallStackBaseCount": 7,
+        "toweringStackBaseCount": 5,
+        "depthStdDev": 4.3213,
+        "dominantMarkedDepth": 2,
+        "dominantMarkedDepthShare": 0.3571,
+        "clonedSequenceShare": 0,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 59,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": true,
+        "toweringHighZalgoObserved": true
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "cdb9735f0c5970201bc820b57b6aa67fcbb73d8e0a418f4c5e1ea26afb60da2e",
+        "utf8Bytes": 185,
+        "strippedProseStats": {
+          "strippedCharCount": 29,
+          "strippedWordCount": 5,
+          "strippedSha256": "b65e6c80504f28835762e053784071e5ec5f506b87be03ac2230b7035b2774e8"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 24,
+            "decoratedCount": 14,
+            "undecoratedCount": 10,
+            "decoratedRatio": 0.5833,
+            "undecoratedRatio": 0.4167,
+            "markCount": 78
+          },
+          "whitespace": {
+            "count": 4,
+            "decoratedCount": 0,
+            "undecoratedCount": 4,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 1,
+            "decoratedCount": 0,
+            "undecoratedCount": 1,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "other": {
+            "count": 0,
+            "decoratedCount": 0,
+            "undecoratedCount": 0,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 0,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 25,
+          "decoratedNonWsCount": 14,
+          "plainNonWsCount": 11,
+          "plainNonWsRatio": 0.44,
+          "decorated": {
+            "count": 14,
+            "mean": 5.5714,
+            "trimmedMean10": 5.4167,
+            "median": 3.5,
+            "q25": 2,
+            "q75": 9.75,
+            "iqr": 7.75,
+            "p90": 12,
+            "p99": 12,
+            "min": 1,
+            "max": 12,
+            "stdDev": 4.3213,
+            "cv": 0.7756,
+            "robustDispersion": 2.2143
+          },
+          "allNonWhitespace": {
+            "count": 25,
+            "mean": 3.12,
+            "trimmedMean10": 2.5714,
+            "median": 1,
+            "q25": 0,
+            "q75": 5,
+            "iqr": 5,
+            "p90": 11.2,
+            "p99": 12,
+            "min": 0,
+            "max": 12,
+            "stdDev": 4.2551,
+            "cv": 1.3638,
+            "robustDispersion": 5
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 14,
+          "uniqueSequenceCount": 14,
+          "uniqueSequenceRatio": 1,
+          "maxLagMatchRate": 0,
+          "dominantLag": null,
+          "lag1AdjacentCloneRate": 0,
+          "topLags": [
+            {
+              "lag": 1,
+              "matchRate": 0
+            },
+            {
+              "lag": 2,
+              "matchRate": 0
+            },
+            {
+              "lag": 3,
+              "matchRate": 0
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0,
+          "nonWsDominantLag": null,
+          "deflateCompressionRatio": 0.827
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 12,
+          "p90Depth": 12,
+          "p99Depth": 12,
+          "maxToMedianRatio": 3.4286,
+          "top1MarkShare": 0.1538,
+          "depthGini": 0.4212
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 78,
+          "uniqueMarkCodepoints": 59,
+          "markEntropyBits": 5.7532,
+          "normalizedEntropy": 0.978,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0.0313,
+          "topBigrams": [
+            {
+              "pair": "U+0301->U+0302",
+              "count": 2
+            },
+            {
+              "pair": "U+0317->U+0323",
+              "count": 2
+            },
+            {
+              "pair": "U+0318->U+0329",
+              "count": 2
+            },
+            {
+              "pair": "U+0302->U+0308",
+              "count": 1
+            },
+            {
+              "pair": "U+0308->U+030B",
+              "count": 1
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 6,
+              "mean": 7,
+              "median": 7.5,
+              "min": 1,
+              "max": 12,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 2,
+              "count": 6,
+              "mean": 4.6667,
+              "median": 2,
+              "min": 1,
+              "max": 12,
+              "zeroShare": 0
+            },
+            {
+              "quartile": 3,
+              "count": 6,
+              "mean": 1.3333,
+              "median": 0,
+              "min": 0,
+              "max": 6,
+              "zeroShare": 0.6667
+            },
+            {
+              "quartile": 4,
+              "count": 7,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            }
+          ],
+          "quartileMeanRange": 7,
+          "quartileMedianRange": 7.5,
+          "quartileNormalizedRange": 2.2436,
+          "spearmanPositionDepthRho": -0.8087,
+          "lineCount": 1,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 25,
+              "median": 1,
+              "mean": 3.12,
+              "max": 12,
+              "plainShare": 0.44
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.44,
+            "restrained_1_4": 0.28,
+            "medium_5_7": 0.08,
+            "towering_8_plus": 0.2
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": true,
+          "controlledChoreographicVariationObserved": true,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    }
+  ],
+  "archivedHealthyReferences": [
+    {
+      "label": "ARCHIVED_2026_09_23_gemini-example-as-exported.txt",
+      "sourceMeta": {
+        "archiveStatus": "ARCHIVED_REFERENCE_DISTRIBUTION_NOT_A_PROVIDER_EXPERIMENT"
+      },
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 11379,
+        "combiningMarkCount": 1044,
+        "maxMarkDepth": 4,
+        "maxVerticalDepth": 3,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0.8191,
+        "dominantMarkedDepth": 1,
+        "dominantMarkedDepthShare": 0.8237,
+        "clonedSequenceShare": 0.1739,
+        "marksOnWhitespaceCount": 502,
+        "uniqueCombiningCodepointCount": 79,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": true,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "09134a75a92bef0ee0b9c416b92bff04faf9e2a0cf4fbc628dd38638c2e0661f",
+        "utf8Bytes": 11379,
+        "strippedProseStats": {
+          "strippedCharCount": 8728,
+          "strippedWordCount": 1266,
+          "strippedSha256": "c7428db1c68c20c284b75d94f282c795a6f6c26ce3f50b1d61a53c7ebdf00a1c"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 6570,
+            "decoratedCount": 718,
+            "undecoratedCount": 5852,
+            "decoratedRatio": 0.1093,
+            "undecoratedRatio": 0.8907,
+            "markCount": 974
+          },
+          "whitespace": {
+            "count": 1363,
+            "decoratedCount": 162,
+            "undecoratedCount": 1201,
+            "decoratedRatio": 0.1189,
+            "undecoratedRatio": 0.8811,
+            "markCount": 251
+          },
+          "punctuation": {
+            "count": 586,
+            "decoratedCount": 40,
+            "undecoratedCount": 546,
+            "decoratedRatio": 0.0683,
+            "undecoratedRatio": 0.9317,
+            "markCount": 64
+          },
+          "digit": {
+            "count": 97,
+            "decoratedCount": 2,
+            "undecoratedCount": 95,
+            "decoratedRatio": 0.0206,
+            "undecoratedRatio": 0.9794,
+            "markCount": 6
+          },
+          "other": {
+            "count": 112,
+            "decoratedCount": 0,
+            "undecoratedCount": 112,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 7365,
+          "decoratedNonWsCount": 760,
+          "plainNonWsCount": 6605,
+          "plainNonWsRatio": 0.8968,
+          "decorated": {
+            "count": 760,
+            "mean": 1.3737,
+            "trimmedMean10": 1.1908,
+            "median": 1,
+            "q25": 1,
+            "q75": 1,
+            "iqr": 0,
+            "p90": 3,
+            "p99": 4,
+            "min": 1,
+            "max": 4,
+            "stdDev": 0.8191,
+            "cv": 0.5963,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 7365,
+            "mean": 0.1418,
+            "trimmedMean10": 0.0041,
+            "median": 0,
+            "q25": 0,
+            "q75": 0,
+            "iqr": 0,
+            "p90": 1,
+            "p99": 3,
+            "min": 0,
+            "max": 4,
+            "stdDev": 0.4938,
+            "cv": 3.4837,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 922,
+          "uniqueSequenceCount": 131,
+          "uniqueSequenceRatio": 0.1421,
+          "maxLagMatchRate": 0.2033,
+          "dominantLag": 17,
+          "lag1AdjacentCloneRate": 0.1585,
+          "topLags": [
+            {
+              "lag": 17,
+              "matchRate": 0.2033
+            },
+            {
+              "lag": 9,
+              "matchRate": 0.2026
+            },
+            {
+              "lag": 12,
+              "matchRate": 0.178
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0.2053,
+          "nonWsDominantLag": 10,
+          "deflateCompressionRatio": 0.5201
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 4,
+          "p90Depth": 3,
+          "p99Depth": 4,
+          "maxToMedianRatio": 4,
+          "top1MarkShare": 0.0031,
+          "depthGini": 0.2264
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 1295,
+          "uniqueMarkCodepoints": 84,
+          "markEntropyBits": 4.1869,
+          "normalizedEntropy": 0.655,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0.0214,
+          "topBigrams": [
+            {
+              "pair": "U+0338->U+0310",
+              "count": 8
+            },
+            {
+              "pair": "U+0334->U+034A",
+              "count": 8
+            },
+            {
+              "pair": "U+034A->U+0318",
+              "count": 8
+            },
+            {
+              "pair": "U+0310->U+032A",
+              "count": 7
+            },
+            {
+              "pair": "U+0338->U+0344",
+              "count": 6
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 1841,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 2,
+              "count": 1841,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 3,
+              "count": 1841,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 4,
+              "count": 1842,
+              "mean": 0.5668,
+              "median": 0,
+              "min": 0,
+              "max": 4,
+              "zeroShare": 0.5874
+            }
+          ],
+          "quartileMeanRange": 0.5668,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.5668,
+          "spearmanPositionDepthRho": 0.5195,
+          "lineCount": 92,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 13,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 2,
+              "baseCount": 70,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 3,
+              "baseCount": 82,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 4,
+              "baseCount": 76,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 5,
+              "baseCount": 59,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 6,
+              "baseCount": 15,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 7,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 8,
+              "baseCount": 217,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 9,
+              "baseCount": 404,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 10,
+              "baseCount": 349,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 11,
+              "baseCount": 137,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 12,
+              "baseCount": 81,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 13,
+              "baseCount": 33,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 14,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 15,
+              "baseCount": 66,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 16,
+              "baseCount": 36,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 17,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 18,
+              "baseCount": 42,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 19,
+              "baseCount": 55,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 20,
+              "baseCount": 49,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 21,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 22,
+              "baseCount": 81,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 23,
+              "baseCount": 175,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 24,
+              "baseCount": 38,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 25,
+              "baseCount": 107,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 26,
+              "baseCount": 52,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 27,
+              "baseCount": 96,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 28,
+              "baseCount": 82,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 29,
+              "baseCount": 168,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 30,
+              "baseCount": 203,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 31,
+              "baseCount": 144,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 32,
+              "baseCount": 53,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 33,
+              "baseCount": 373,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 34,
+              "baseCount": 62,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 35,
+              "baseCount": 209,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 36,
+              "baseCount": 69,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 37,
+              "baseCount": 228,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 38,
+              "baseCount": 93,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 39,
+              "baseCount": 326,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 40,
+              "baseCount": 210,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 41,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 42,
+              "baseCount": 45,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 43,
+              "baseCount": 207,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 44,
+              "baseCount": 165,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 45,
+              "baseCount": 296,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 46,
+              "baseCount": 24,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 47,
+              "baseCount": 70,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 48,
+              "baseCount": 225,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 49,
+              "baseCount": 57,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 50,
+              "baseCount": 141,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 51,
+              "baseCount": 27,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 52,
+              "baseCount": 220,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 53,
+              "baseCount": 131,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 54,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 55,
+              "baseCount": 32,
+              "median": 0,
+              "mean": 0.375,
+              "max": 3,
+              "plainShare": 0.875
+            },
+            {
+              "line": 56,
+              "baseCount": 18,
+              "median": 0,
+              "mean": 0.8333,
+              "max": 3,
+              "plainShare": 0.7222
+            },
+            {
+              "line": 57,
+              "baseCount": 18,
+              "median": 0,
+              "mean": 1.2222,
+              "max": 4,
+              "plainShare": 0.6111
+            },
+            {
+              "line": 58,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 1.4865,
+              "max": 4,
+              "plainShare": 0.5135
+            },
+            {
+              "line": 59,
+              "baseCount": 27,
+              "median": 3,
+              "mean": 1.963,
+              "max": 4,
+              "plainShare": 0.3704
+            },
+            {
+              "line": 60,
+              "baseCount": 32,
+              "median": 0,
+              "mean": 0.4688,
+              "max": 3,
+              "plainShare": 0.8438
+            },
+            {
+              "line": 61,
+              "baseCount": 25,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 62,
+              "baseCount": 4,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 63,
+              "baseCount": 8,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 64,
+              "baseCount": 9,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 65,
+              "baseCount": 11,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 66,
+              "baseCount": 31,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 67,
+              "baseCount": 15,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 68,
+              "baseCount": 8,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 69,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0.1071,
+              "max": 3,
+              "plainShare": 0.9643
+            },
+            {
+              "line": 70,
+              "baseCount": 34,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 71,
+              "baseCount": 75,
+              "median": 0,
+              "mean": 1.2933,
+              "max": 4,
+              "plainShare": 0.6
+            },
+            {
+              "line": 72,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0.7857,
+              "max": 4,
+              "plainShare": 0.75
+            },
+            {
+              "line": 73,
+              "baseCount": 26,
+              "median": 3,
+              "mean": 1.8846,
+              "max": 4,
+              "plainShare": 0.3846
+            },
+            {
+              "line": 74,
+              "baseCount": 13,
+              "median": 3,
+              "mean": 2.0769,
+              "max": 4,
+              "plainShare": 0.3846
+            },
+            {
+              "line": 75,
+              "baseCount": 18,
+              "median": 0,
+              "mean": 1.1667,
+              "max": 3,
+              "plainShare": 0.6111
+            },
+            {
+              "line": 76,
+              "baseCount": 15,
+              "median": 3,
+              "mean": 1.8,
+              "max": 3,
+              "plainShare": 0.4
+            },
+            {
+              "line": 77,
+              "baseCount": 58,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 78,
+              "baseCount": 53,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 79,
+              "baseCount": 44,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 80,
+              "baseCount": 56,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 81,
+              "baseCount": 21,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 82,
+              "baseCount": 26,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 83,
+              "baseCount": 13,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 84,
+              "baseCount": 22,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 85,
+              "baseCount": 33,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 86,
+              "baseCount": 20,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 87,
+              "baseCount": 15,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 88,
+              "baseCount": 30,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 89,
+              "baseCount": 23,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 90,
+              "baseCount": 28,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 91,
+              "baseCount": 30,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            },
+            {
+              "line": 92,
+              "baseCount": 34,
+              "median": 1,
+              "mean": 1,
+              "max": 1,
+              "plainShare": 0
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.8968,
+            "restrained_1_4": 0.1032,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "ARCHIVED_2026_09_23_marrowline-example-as-exported.txt",
+      "sourceMeta": {
+        "archiveStatus": "ARCHIVED_REFERENCE_DISTRIBUTION_NOT_A_PROVIDER_EXPERIMENT"
+      },
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 3631,
+        "combiningMarkCount": 10,
+        "maxMarkDepth": 4,
+        "maxVerticalDepth": 4,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0.9428,
+        "dominantMarkedDepth": 4,
+        "dominantMarkedDepthShare": 0.6667,
+        "clonedSequenceShare": 0,
+        "marksOnWhitespaceCount": 0,
+        "uniqueCombiningCodepointCount": 8,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": true,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "1014909c39b10c774ed289fdeacaf6e7648799b4574ddca2b9b2fd8887202e4d",
+        "utf8Bytes": 3631,
+        "strippedProseStats": {
+          "strippedCharCount": 3589,
+          "strippedWordCount": 552,
+          "strippedSha256": "c3f3a62234aee9c9aa10a75abda20bf5c49d911f652d1e24633574838f4b8d7f"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 2832,
+            "decoratedCount": 3,
+            "undecoratedCount": 2829,
+            "decoratedRatio": 0.0011,
+            "undecoratedRatio": 0.9989,
+            "markCount": 10
+          },
+          "whitespace": {
+            "count": 586,
+            "decoratedCount": 0,
+            "undecoratedCount": 586,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "punctuation": {
+            "count": 137,
+            "decoratedCount": 0,
+            "undecoratedCount": 137,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "digit": {
+            "count": 10,
+            "decoratedCount": 0,
+            "undecoratedCount": 10,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "other": {
+            "count": 24,
+            "decoratedCount": 0,
+            "undecoratedCount": 24,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 3003,
+          "decoratedNonWsCount": 3,
+          "plainNonWsCount": 3000,
+          "plainNonWsRatio": 0.999,
+          "decorated": {
+            "count": 3,
+            "mean": 3.3333,
+            "trimmedMean10": 3.3333,
+            "median": 4,
+            "q25": 3,
+            "q75": 4,
+            "iqr": 1,
+            "p90": 4,
+            "p99": 4,
+            "min": 2,
+            "max": 4,
+            "stdDev": 0.9428,
+            "cv": 0.2828,
+            "robustDispersion": 0.25
+          },
+          "allNonWhitespace": {
+            "count": 3003,
+            "mean": 0.0033,
+            "trimmedMean10": 0,
+            "median": 0,
+            "q25": 0,
+            "q75": 0,
+            "iqr": 0,
+            "p90": 0,
+            "p99": 0,
+            "min": 0,
+            "max": 4,
+            "stdDev": 0.1094,
+            "cv": 32.8646,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 3,
+          "uniqueSequenceCount": 3,
+          "uniqueSequenceRatio": 1,
+          "maxLagMatchRate": 0,
+          "dominantLag": null,
+          "lag1AdjacentCloneRate": 0,
+          "topLags": [
+            {
+              "lag": 1,
+              "matchRate": 0
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0,
+          "nonWsDominantLag": null,
+          "deflateCompressionRatio": 0.5409
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 4,
+          "p90Depth": 4,
+          "p99Depth": 4,
+          "maxToMedianRatio": 1,
+          "top1MarkShare": 0.4,
+          "depthGini": 0.1333
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 10,
+          "uniqueMarkCodepoints": 8,
+          "markEntropyBits": 2.9219,
+          "normalizedEntropy": 0.974,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0.1429,
+          "topBigrams": [
+            {
+              "pair": "U+0306->U+0352",
+              "count": 1
+            },
+            {
+              "pair": "U+0352->U+0316",
+              "count": 1
+            },
+            {
+              "pair": "U+0316->U+0323",
+              "count": 1
+            },
+            {
+              "pair": "U+0307->U+0316",
+              "count": 1
+            },
+            {
+              "pair": "U+0306->U+0305",
+              "count": 1
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 750,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 2,
+              "count": 750,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 3,
+              "count": 750,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 4,
+              "count": 753,
+              "mean": 0.0133,
+              "median": 0,
+              "min": 0,
+              "max": 4,
+              "zeroShare": 0.996
+            }
+          ],
+          "quartileMeanRange": 0.0133,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.0133,
+          "spearmanPositionDepthRho": 0.0386,
+          "lineCount": 21,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 61,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 2,
+              "baseCount": 38,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 3,
+              "baseCount": 26,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 4,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 5,
+              "baseCount": 10,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 6,
+              "baseCount": 726,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 7,
+              "baseCount": 269,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 8,
+              "baseCount": 103,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 9,
+              "baseCount": 141,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 10,
+              "baseCount": 30,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 11,
+              "baseCount": 61,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 12,
+              "baseCount": 384,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 13,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 14,
+              "baseCount": 456,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 15,
+              "baseCount": 210,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 16,
+              "baseCount": 15,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 17,
+              "baseCount": 65,
+              "median": 0,
+              "mean": 0.1538,
+              "max": 4,
+              "plainShare": 0.9538
+            },
+            {
+              "line": 18,
+              "baseCount": 124,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 19,
+              "baseCount": 70,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 20,
+              "baseCount": 125,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 21,
+              "baseCount": 60,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.999,
+            "restrained_1_4": 0.001,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    },
+    {
+      "label": "ARCHIVED_2026_09_23_probe-02-longer-as-exported.md",
+      "sourceMeta": {
+        "archiveStatus": "ARCHIVED_REFERENCE_DISTRIBUTION_NOT_A_PROVIDER_EXPERIMENT"
+      },
+      "frozenV2": {
+        "schema": "td613.marrowline.r2-unicode-evaluator/v2",
+        "utf8Bytes": 33397,
+        "combiningMarkCount": 858,
+        "maxMarkDepth": 3,
+        "maxVerticalDepth": 2,
+        "tallStackBaseCount": 0,
+        "toweringStackBaseCount": 0,
+        "depthStdDev": 0.7771,
+        "dominantMarkedDepth": 1,
+        "dominantMarkedDepthShare": 0.8147,
+        "clonedSequenceShare": 0.1456,
+        "marksOnWhitespaceCount": 296,
+        "uniqueCombiningCodepointCount": 32,
+        "stencilRisk": {
+          "isStencil": false,
+          "depthOneLimited": false,
+          "uniformConstantDepthStencil": false,
+          "nearUniformDominantDepthStencil": false,
+          "singleCodepointStencil": false,
+          "planarBarAxisCollapse": false,
+          "enclosingOrnamentCollapse": false,
+          "excessiveClonedSequence": false,
+          "reasons": []
+        },
+        "genuineMultistackObserved": true,
+        "toweringHighZalgoObserved": false
+      },
+      "exploratoryV1": {
+        "schema": "td613.marrowline.r2-exploratory-morphology/v1",
+        "exploratoryOnly": true,
+        "doesNotModifyFrozenV2Verdict": true,
+        "noScalarCrown": true,
+        "artisticQualityVerdict": "UNIDENTIFIABLE_AUTOMATICALLY_RESERVED_HUMAN_ONLY",
+        "rawSha256": "c524299836dc06e37306cfab016da1e07514674ffa49488c4a4c2330b5e93201",
+        "utf8Bytes": 33397,
+        "strippedProseStats": {
+          "strippedCharCount": 30359,
+          "strippedWordCount": 3823,
+          "strippedSha256": "f47880a93db244963a0e6f623f23b08b16d4c0e777c1feae4dc8a374abe5b678"
+        },
+        "baseClassDecoration": {
+          "letter": {
+            "count": 19457,
+            "decoratedCount": 606,
+            "undecoratedCount": 18851,
+            "decoratedRatio": 0.0311,
+            "undecoratedRatio": 0.9689,
+            "markCount": 834
+          },
+          "whitespace": {
+            "count": 6303,
+            "decoratedCount": 102,
+            "undecoratedCount": 6201,
+            "decoratedRatio": 0.0162,
+            "undecoratedRatio": 0.9838,
+            "markCount": 148
+          },
+          "punctuation": {
+            "count": 2768,
+            "decoratedCount": 20,
+            "undecoratedCount": 2748,
+            "decoratedRatio": 0.0072,
+            "undecoratedRatio": 0.9928,
+            "markCount": 24
+          },
+          "digit": {
+            "count": 652,
+            "decoratedCount": 0,
+            "undecoratedCount": 652,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "other": {
+            "count": 1179,
+            "decoratedCount": 0,
+            "undecoratedCount": 1179,
+            "decoratedRatio": 0,
+            "undecoratedRatio": 1,
+            "markCount": 0
+          },
+          "orphanedLeadingMarks": 0
+        },
+        "scaleInvariantDispersion": {
+          "totalNonWsCount": 24056,
+          "decoratedNonWsCount": 626,
+          "plainNonWsCount": 23430,
+          "plainNonWsRatio": 0.974,
+          "decorated": {
+            "count": 626,
+            "mean": 1.3706,
+            "trimmedMean10": 1.2151,
+            "median": 1,
+            "q25": 1,
+            "q75": 1,
+            "iqr": 0,
+            "p90": 3,
+            "p99": 3,
+            "min": 1,
+            "max": 3,
+            "stdDev": 0.7771,
+            "cv": 0.567,
+            "robustDispersion": 0
+          },
+          "allNonWhitespace": {
+            "count": 24056,
+            "mean": 0.0357,
+            "trimmedMean10": 0,
+            "median": 0,
+            "q25": 0,
+            "q75": 0,
+            "iqr": 0,
+            "p90": 0,
+            "p99": 1,
+            "min": 0,
+            "max": 3,
+            "stdDev": 0.2516,
+            "cv": 7.0556,
+            "robustDispersion": 0
+          }
+        },
+        "periodicRepetition": {
+          "decoratedClusterCount": 728,
+          "uniqueSequenceCount": 42,
+          "uniqueSequenceRatio": 0.0577,
+          "maxLagMatchRate": 0.242,
+          "dominantLag": 13,
+          "lag1AdjacentCloneRate": 0.1472,
+          "topLags": [
+            {
+              "lag": 13,
+              "matchRate": 0.242
+            },
+            {
+              "lag": 20,
+              "matchRate": 0.2415
+            },
+            {
+              "lag": 7,
+              "matchRate": 0.2358
+            }
+          ],
+          "nonWsMaxLagMatchRate": 0.2452,
+          "nonWsDominantLag": 6,
+          "deflateCompressionRatio": 0.3649
+        },
+        "runawaySpikeGeometry": {
+          "maxDepth": 3,
+          "p90Depth": 3,
+          "p99Depth": 3,
+          "maxToMedianRatio": 3,
+          "top1MarkShare": 0.003,
+          "depthGini": 0.2203
+        },
+        "intraClusterDiversity": {
+          "totalMarks": 1006,
+          "uniqueMarkCodepoints": 34,
+          "markEntropyBits": 3.668,
+          "normalizedEntropy": 0.721,
+          "withinClusterDuplicateMarkCount": 0,
+          "withinClusterDuplicateMarkShare": 0,
+          "clustersWithInternalDuplicateShare": 0,
+          "maxSameCodepointRunInCluster": 0,
+          "topBigramShare": 0.4353,
+          "topBigrams": [
+            {
+              "pair": "U+0338->U+031B",
+              "count": 121
+            },
+            {
+              "pair": "U+031B->U+0347",
+              "count": 16
+            },
+            {
+              "pair": "U+031B->U+0354",
+              "count": 13
+            },
+            {
+              "pair": "U+031B->U+0319",
+              "count": 12
+            },
+            {
+              "pair": "U+031B->U+032A",
+              "count": 11
+            }
+          ]
+        },
+        "sectionalProgression": {
+          "quartiles": [
+            {
+              "quartile": 1,
+              "count": 6014,
+              "mean": 0.0028,
+              "median": 0,
+              "min": 0,
+              "max": 1,
+              "zeroShare": 0.9972
+            },
+            {
+              "quartile": 2,
+              "count": 6014,
+              "mean": 0.1398,
+              "median": 0,
+              "min": 0,
+              "max": 3,
+              "zeroShare": 0.8987
+            },
+            {
+              "quartile": 3,
+              "count": 6014,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            },
+            {
+              "quartile": 4,
+              "count": 6014,
+              "mean": 0,
+              "median": 0,
+              "min": 0,
+              "max": 0,
+              "zeroShare": 1
+            }
+          ],
+          "quartileMeanRange": 0.1398,
+          "quartileMedianRange": 0,
+          "quartileNormalizedRange": 0.1398,
+          "spearmanPositionDepthRho": -0.1104,
+          "lineCount": 317,
+          "lineSummaries": [
+            {
+              "line": 1,
+              "baseCount": 19,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 2,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 3,
+              "baseCount": 25,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 4,
+              "baseCount": 160,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 5,
+              "baseCount": 222,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 6,
+              "baseCount": 120,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 7,
+              "baseCount": 140,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 8,
+              "baseCount": 31,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 9,
+              "baseCount": 76,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 10,
+              "baseCount": 85,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 11,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 12,
+              "baseCount": 151,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 13,
+              "baseCount": 68,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 14,
+              "baseCount": 34,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 15,
+              "baseCount": 21,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 16,
+              "baseCount": 229,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 17,
+              "baseCount": 119,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 18,
+              "baseCount": 143,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 19,
+              "baseCount": 133,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 20,
+              "baseCount": 41,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 21,
+              "baseCount": 176,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 22,
+              "baseCount": 115,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 23,
+              "baseCount": 47,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 24,
+              "baseCount": 128,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 25,
+              "baseCount": 265,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 26,
+              "baseCount": 25,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 27,
+              "baseCount": 119,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 28,
+              "baseCount": 87,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 29,
+              "baseCount": 312,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 30,
+              "baseCount": 31,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 31,
+              "baseCount": 20,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 32,
+              "baseCount": 26,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 33,
+              "baseCount": 43,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 34,
+              "baseCount": 43,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 35,
+              "baseCount": 45,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 36,
+              "baseCount": 40,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 37,
+              "baseCount": 49,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 38,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 39,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 40,
+              "baseCount": 57,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 41,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 42,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 43,
+              "baseCount": 62,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 44,
+              "baseCount": 53,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 45,
+              "baseCount": 53,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 46,
+              "baseCount": 53,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 47,
+              "baseCount": 99,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 48,
+              "baseCount": 121,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 49,
+              "baseCount": 91,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 50,
+              "baseCount": 25,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 51,
+              "baseCount": 35,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 52,
+              "baseCount": 112,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 53,
+              "baseCount": 36,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 54,
+              "baseCount": 120,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 55,
+              "baseCount": 35,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 56,
+              "baseCount": 50,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 57,
+              "baseCount": 50,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 58,
+              "baseCount": 57,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 59,
+              "baseCount": 47,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 60,
+              "baseCount": 144,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 61,
+              "baseCount": 326,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 62,
+              "baseCount": 38,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 63,
+              "baseCount": 34,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 64,
+              "baseCount": 573,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 65,
+              "baseCount": 35,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 66,
+              "baseCount": 26,
+              "median": 1,
+              "mean": 0.9231,
+              "max": 1,
+              "plainShare": 0.0769
+            },
+            {
+              "line": 67,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 68,
+              "baseCount": 15,
+              "median": 1,
+              "mean": 0.9333,
+              "max": 1,
+              "plainShare": 0.0667
+            },
+            {
+              "line": 69,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 70,
+              "baseCount": 25,
+              "median": 1,
+              "mean": 0.96,
+              "max": 1,
+              "plainShare": 0.04
+            },
+            {
+              "line": 71,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 72,
+              "baseCount": 25,
+              "median": 1,
+              "mean": 0.96,
+              "max": 1,
+              "plainShare": 0.04
+            },
+            {
+              "line": 73,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 74,
+              "baseCount": 35,
+              "median": 1,
+              "mean": 0.9714,
+              "max": 1,
+              "plainShare": 0.0286
+            },
+            {
+              "line": 75,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 76,
+              "baseCount": 17,
+              "median": 1,
+              "mean": 0.9412,
+              "max": 1,
+              "plainShare": 0.0588
+            },
+            {
+              "line": 77,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 78,
+              "baseCount": 32,
+              "median": 1,
+              "mean": 0.9688,
+              "max": 1,
+              "plainShare": 0.0313
+            },
+            {
+              "line": 79,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 80,
+              "baseCount": 24,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 81,
+              "baseCount": 27,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 82,
+              "baseCount": 223,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 83,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 84,
+              "baseCount": 36,
+              "median": 1,
+              "mean": 0.9722,
+              "max": 1,
+              "plainShare": 0.0278
+            },
+            {
+              "line": 85,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 86,
+              "baseCount": 37,
+              "median": 1,
+              "mean": 0.973,
+              "max": 1,
+              "plainShare": 0.027
+            },
+            {
+              "line": 87,
+              "baseCount": 19,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 88,
+              "baseCount": 224,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 89,
+              "baseCount": 30,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 90,
+              "baseCount": 182,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 91,
+              "baseCount": 32,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 92,
+              "baseCount": 254,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 93,
+              "baseCount": 33,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 94,
+              "baseCount": 21,
+              "median": 1,
+              "mean": 0.9048,
+              "max": 1,
+              "plainShare": 0.0952
+            },
+            {
+              "line": 95,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 96,
+              "baseCount": 29,
+              "median": 1,
+              "mean": 0.9655,
+              "max": 1,
+              "plainShare": 0.0345
+            },
+            {
+              "line": 97,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 98,
+              "baseCount": 26,
+              "median": 1,
+              "mean": 0.9615,
+              "max": 1,
+              "plainShare": 0.0385
+            },
+            {
+              "line": 99,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 100,
+              "baseCount": 33,
+              "median": 1,
+              "mean": 0.9697,
+              "max": 1,
+              "plainShare": 0.0303
+            },
+            {
+              "line": 101,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 102,
+              "baseCount": 21,
+              "median": 1,
+              "mean": 0.9524,
+              "max": 1,
+              "plainShare": 0.0476
+            },
+            {
+              "line": 103,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 104,
+              "baseCount": 35,
+              "median": 1,
+              "mean": 0.9714,
+              "max": 1,
+              "plainShare": 0.0286
+            },
+            {
+              "line": 105,
+              "baseCount": 36,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 106,
+              "baseCount": 113,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 107,
+              "baseCount": 225,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 108,
+              "baseCount": 35,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 109,
+              "baseCount": 13,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 110,
+              "baseCount": 118,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 111,
+              "baseCount": 36,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 112,
+              "baseCount": 82,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 113,
+              "baseCount": 116,
+              "median": 1,
+              "mean": 0.9828,
+              "max": 1,
+              "plainShare": 0.0172
+            },
+            {
+              "line": 114,
+              "baseCount": 59,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 115,
+              "baseCount": 102,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 116,
+              "baseCount": 116,
+              "median": 3,
+              "mean": 3,
+              "max": 3,
+              "plainShare": 0
+            },
+            {
+              "line": 117,
+              "baseCount": 24,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 118,
+              "baseCount": 45,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 119,
+              "baseCount": 307,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 120,
+              "baseCount": 209,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 121,
+              "baseCount": 45,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 122,
+              "baseCount": 107,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 123,
+              "baseCount": 137,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 124,
+              "baseCount": 23,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 125,
+              "baseCount": 410,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 126,
+              "baseCount": 25,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 127,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 128,
+              "baseCount": 131,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 129,
+              "baseCount": 27,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 130,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 131,
+              "baseCount": 100,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 132,
+              "baseCount": 130,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 133,
+              "baseCount": 100,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 134,
+              "baseCount": 77,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 135,
+              "baseCount": 5,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 136,
+              "baseCount": 102,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 137,
+              "baseCount": 90,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 138,
+              "baseCount": 5,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 139,
+              "baseCount": 99,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 140,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 141,
+              "baseCount": 5,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 142,
+              "baseCount": 99,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 143,
+              "baseCount": 104,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 144,
+              "baseCount": 131,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 145,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 146,
+              "baseCount": 21,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 147,
+              "baseCount": 27,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 148,
+              "baseCount": 166,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 149,
+              "baseCount": 125,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 150,
+              "baseCount": 239,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 151,
+              "baseCount": 39,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 152,
+              "baseCount": 160,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 153,
+              "baseCount": 86,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 154,
+              "baseCount": 82,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 155,
+              "baseCount": 10,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 156,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 157,
+              "baseCount": 94,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 158,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 159,
+              "baseCount": 125,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 160,
+              "baseCount": 45,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 161,
+              "baseCount": 227,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 162,
+              "baseCount": 99,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 163,
+              "baseCount": 218,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 164,
+              "baseCount": 43,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 165,
+              "baseCount": 141,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 166,
+              "baseCount": 107,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 167,
+              "baseCount": 223,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 168,
+              "baseCount": 26,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 169,
+              "baseCount": 24,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 170,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 171,
+              "baseCount": 101,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 172,
+              "baseCount": 41,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 173,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 174,
+              "baseCount": 38,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 175,
+              "baseCount": 99,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 176,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 177,
+              "baseCount": 24,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 178,
+              "baseCount": 38,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 179,
+              "baseCount": 17,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 180,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 181,
+              "baseCount": 55,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 182,
+              "baseCount": 101,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 183,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 184,
+              "baseCount": 23,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 185,
+              "baseCount": 204,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 186,
+              "baseCount": 147,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 187,
+              "baseCount": 22,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 188,
+              "baseCount": 171,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 189,
+              "baseCount": 123,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 190,
+              "baseCount": 249,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 191,
+              "baseCount": 39,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 192,
+              "baseCount": 101,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 193,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 194,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 195,
+              "baseCount": 32,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 196,
+              "baseCount": 29,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 197,
+              "baseCount": 35,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 198,
+              "baseCount": 24,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 199,
+              "baseCount": 29,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 200,
+              "baseCount": 30,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 201,
+              "baseCount": 76,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 202,
+              "baseCount": 67,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 203,
+              "baseCount": 26,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 204,
+              "baseCount": 71,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 205,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 206,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 207,
+              "baseCount": 63,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 208,
+              "baseCount": 72,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 209,
+              "baseCount": 108,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 210,
+              "baseCount": 262,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 211,
+              "baseCount": 33,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 212,
+              "baseCount": 124,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 213,
+              "baseCount": 244,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 214,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 215,
+              "baseCount": 22,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 216,
+              "baseCount": 10,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 217,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 218,
+              "baseCount": 51,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 219,
+              "baseCount": 77,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 220,
+              "baseCount": 67,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 221,
+              "baseCount": 73,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 222,
+              "baseCount": 50,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 223,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 224,
+              "baseCount": 32,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 225,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 226,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 227,
+              "baseCount": 216,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 228,
+              "baseCount": 107,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 229,
+              "baseCount": 68,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 230,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 231,
+              "baseCount": 34,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 232,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 233,
+              "baseCount": 85,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 234,
+              "baseCount": 39,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 235,
+              "baseCount": 96,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 236,
+              "baseCount": 104,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 237,
+              "baseCount": 26,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 238,
+              "baseCount": 69,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 239,
+              "baseCount": 10,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 240,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 241,
+              "baseCount": 51,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 242,
+              "baseCount": 77,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 243,
+              "baseCount": 68,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 244,
+              "baseCount": 67,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 245,
+              "baseCount": 73,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 246,
+              "baseCount": 50,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 247,
+              "baseCount": 54,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 248,
+              "baseCount": 32,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 249,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 250,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 251,
+              "baseCount": 48,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 252,
+              "baseCount": 10,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 253,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 254,
+              "baseCount": 35,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 255,
+              "baseCount": 115,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 256,
+              "baseCount": 101,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 257,
+              "baseCount": 94,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 258,
+              "baseCount": 130,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 259,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 260,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 261,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 262,
+              "baseCount": 23,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 263,
+              "baseCount": 185,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 264,
+              "baseCount": 164,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 265,
+              "baseCount": 194,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 266,
+              "baseCount": 23,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 267,
+              "baseCount": 37,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 268,
+              "baseCount": 332,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 269,
+              "baseCount": 237,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 270,
+              "baseCount": 209,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 271,
+              "baseCount": 28,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 272,
+              "baseCount": 125,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 273,
+              "baseCount": 22,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 274,
+              "baseCount": 39,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 275,
+              "baseCount": 9,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 276,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 277,
+              "baseCount": 173,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 278,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 279,
+              "baseCount": 60,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 280,
+              "baseCount": 9,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 281,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 282,
+              "baseCount": 252,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 283,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 284,
+              "baseCount": 38,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 285,
+              "baseCount": 99,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 286,
+              "baseCount": 97,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 287,
+              "baseCount": 17,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 288,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 289,
+              "baseCount": 130,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 290,
+              "baseCount": 15,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 291,
+              "baseCount": 2,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 292,
+              "baseCount": 60,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 293,
+              "baseCount": 129,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 294,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 295,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 296,
+              "baseCount": 5,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 297,
+              "baseCount": 100,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 298,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 299,
+              "baseCount": 5,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 300,
+              "baseCount": 90,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 301,
+              "baseCount": 83,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 302,
+              "baseCount": 5,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 303,
+              "baseCount": 92,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 304,
+              "baseCount": 82,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 305,
+              "baseCount": 130,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 306,
+              "baseCount": 3,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 307,
+              "baseCount": 36,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 308,
+              "baseCount": 136,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 309,
+              "baseCount": 167,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 310,
+              "baseCount": 115,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 311,
+              "baseCount": 112,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 312,
+              "baseCount": 134,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 313,
+              "baseCount": 13,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 314,
+              "baseCount": 235,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 315,
+              "baseCount": 212,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 316,
+              "baseCount": 279,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            },
+            {
+              "line": 317,
+              "baseCount": 1,
+              "median": 0,
+              "mean": 0,
+              "max": 0,
+              "plainShare": 1
+            }
+          ],
+          "regimeOccupancy": {
+            "plain_0": 0.974,
+            "restrained_1_4": 0.026,
+            "medium_5_7": 0,
+            "towering_8_plus": 0
+          }
+        },
+        "exploratoryDiagnosticFlags": {
+          "periodicTapeLoopStencil": false,
+          "extremeUniformDepthBlizzard": false,
+          "runawaySingleClusterSpike": false,
+          "indiscriminateWhitespaceDecoration": false,
+          "indiscriminatePunctuationDecoration": false,
+          "excessiveIntraClusterDuplication": false,
+          "flatUnmodulatedProgression": false,
+          "flags": [],
+          "technicalUnicodeCapabilityObserved": false,
+          "controlledChoreographicVariationObserved": false,
+          "structuralIndicatorAuthority": "EXPLORATORY_DIAGNOSTIC_ONLY_NOT_ARTISTIC_JUDGMENT"
+        }
+      }
+    }
+  ],
+  "exploratoryCandidateSummary": {
+    "schema": "td613.marrowline.r2-exploratory-candidates/v1",
+    "status": "EXPLORATORY_CANDIDATE_UNFROZEN_ZERO_CALLS",
+    "candidates": [
+      {
+        "candidateId": "R2_U_EXP_V2_CHOREOGRAPHED_HIGH_ZALGO",
+        "userPromptSha256": "f228b4347db4a15b575eca14a05410d594660f7b6cd708235c127f86e001806e",
+        "bodySha256": "f1dc61a1e2f9280cd20f0061ba99b1250609d9cdc0ecd0e6321532cd8f747f5d"
+      },
+      {
+        "candidateId": "R2_U_EXP_V2_FOUR_MOVEMENT_ARC",
+        "userPromptSha256": "2e98160d3ee069867ae4e9700e53888978fdd4103651ac89bbff72f3ed16f32a",
+        "bodySha256": "3a212f34ffccee34e9519d5363ff9f7510adc4ff8bbbe1029d126f6073705aef"
+      }
+    ]
+  }
+}

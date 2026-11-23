@@ -10,6 +10,7 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { monitorEventLoopDelay } from 'node:perf_hooks';
 import {
   geminiRequestHeaders,
   geminiStreamGenerateContentUrl
@@ -55,6 +56,7 @@ import {
   buildR2HealthyBaselineCorrelation,
   correlateObservedSection2WithHealthyBaseline
 } from './r2-healthy-baseline-correlation.mjs';
+import { instrumentSseResponseForObservability } from './r2-stream-observability.mjs';
 
 export const R2_LIVE_CORE_SCHEMA = 'td613.marrowline.r2-observation-execution/v1';
 
@@ -394,7 +396,11 @@ export async function executeR2ObservationCore({
   checkModelDiscovery = true,
   operatorAbortSignal = null,
   textIntegrityProbe = null,
-  onProgress = null
+  onProgress = null,
+  streamHeartbeatIntervalMs = 5000,
+  inactivityWarnMs = 30000,
+  inactivityAbortMs = null,
+  postFinishEofTimeoutMs = 15000
 } = {}) {
   const spec = R2_ESTATE_SPECS[estate];
   if (!spec) {
@@ -407,10 +413,27 @@ export async function executeR2ObservationCore({
     throw new R2ObservationError('R2_MISSING_TRANSPORT_FETCH', 'Caller must supply explicit transportFetch');
   }
 
+  let progressLogPath = null;
+  let notifyDurationTotalMs = 0;
+  let notifyDurationMaxMs = 0;
+  let notifyCallCount = 0;
   const notify = (msg) => {
+    const t0Ns = process.hrtime.bigint();
+    if (progressLogPath) {
+      try {
+        fs.appendFileSync(progressLogPath, `[${new Date().toISOString()}] ${String(msg)}\n`, {
+          encoding: 'utf8',
+          mode: 0o600
+        });
+      } catch { /* non-blocking progress log safety */ }
+    }
     if (typeof onProgress === 'function') {
       try { onProgress(msg); } catch { /* ignore listener failure */ }
     }
+    const elapsedMs = Number(process.hrtime.bigint() - t0Ns) / 1_000_000;
+    notifyCallCount += 1;
+    notifyDurationTotalMs += elapsedMs;
+    if (elapsedMs > notifyDurationMaxMs) notifyDurationMaxMs = elapsedMs;
   };
 
   // 1. Resolve frozen estate plan and verify operator Ed25519 grant + exact plan consent BEFORE reading credentials or mutating disk
@@ -460,6 +483,9 @@ export async function executeR2ObservationCore({
   const countersFilePath = path.join(evidenceDir, `${sessionStem}-counters.json`);
   const jInitFd = fs.openSync(evidenceJournalPath, 'wx', 0o600);
   fs.closeSync(jInitFd);
+  progressLogPath = path.join(evidenceDir, `${sessionStem}-progress.log`);
+  const pInitFd = fs.openSync(progressLogPath, 'wx', 0o600);
+  fs.closeSync(pInitFd);
 
   function appendJournal(event, details = {}) {
     const line = `${JSON.stringify({
@@ -520,10 +546,19 @@ export async function executeR2ObservationCore({
   }
   let revocationWatcher = null;
   let revocationPollTimer = null;
+  let currentLifecyclePhase = 'PRE_DISPATCH';
+  let revocationObservedAt = null;
+  let revocationObservedPhase = null;
   const checkRevocationLive = () => {
     if (revocationFilePath && isSessionRevokedOnDisk(authVerification.sessionId, revocationFilePath)) {
+      if (!revocationObservedAt) {
+        revocationObservedAt = new Date().toISOString();
+        revocationObservedPhase = currentLifecyclePhase;
+      }
       triggerOperatorStop('R2_OPERATOR_SESSION_REVOKED');
+      return true;
     }
+    return false;
   };
   if (revocationFilePath) {
     checkRevocationLive();
@@ -537,6 +572,9 @@ export async function executeR2ObservationCore({
     revocationPollTimer = setInterval(checkRevocationLive, 25);
     revocationPollTimer.unref?.();
   }
+
+  const eventLoopHistogram = monitorEventLoopDelay({ resolution: 20 });
+  eventLoopHistogram.enable();
 
   let metadataDiscovery = null;
   let metadataHttpErrorCustody = null;
@@ -555,6 +593,7 @@ export async function executeR2ObservationCore({
   let lastProviderWallMs = null;
 
   try {
+    currentLifecyclePhase = 'MODEL_DISCOVERY_AND_ATTEMPTS';
     if (checkModelDiscovery) {
       notify(`[${estate}] [1/4] Verifying GET /v1beta/models/${spec.pinnedModel} outputTokenLimit...`);
       if (sessionAbortController.signal.aborted) {
@@ -699,6 +738,7 @@ export async function executeR2ObservationCore({
 
         let httpStatus = null;
         let wire = null;
+        let streamDiagnostics = null;
         let httpErrorCustody = null;
         let callError = null;
         let integrityStopReason = null;
@@ -722,13 +762,29 @@ export async function executeR2ObservationCore({
               metaFilePath: httpErrorMetaPath
             });
           } else {
-            wire = await streamAndDualParseProviderSseToDisk({
+            const instrumented = instrumentSseResponseForObservability({
               response: sseResp,
-              expectedModel: condPlan.model,
-              rawSseFilePath,
-              authoredTextFilePath,
-              operatorAbortSignal: sessionAbortController.signal
+              slotId,
+              episodeId: ep.episodeId,
+              attemptId,
+              operatorAbortSignal: sessionAbortController.signal,
+              onProgress: notify,
+              heartbeatIntervalMs: streamHeartbeatIntervalMs,
+              inactivityWarnMs,
+              inactivityAbortMs,
+              postFinishEofTimeoutMs
             });
+            try {
+              wire = await streamAndDualParseProviderSseToDisk({
+                response: instrumented.response,
+                expectedModel: condPlan.model,
+                rawSseFilePath,
+                authoredTextFilePath,
+                operatorAbortSignal: sessionAbortController.signal
+              });
+            } finally {
+              streamDiagnostics = instrumented.getDiagnostics();
+            }
             worldAnswersAt = sampleCalibratedMonoMs();
             lastProviderClockMs = worldAnswersAt;
             lastProviderWallMs = Date.now();
@@ -750,6 +806,7 @@ export async function executeR2ObservationCore({
         if (!integrityStopReason && wire) {
           if (wire.diskWriteError) integrityStopReason = 'STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED';
           else if (wire.operatorStopped) integrityStopReason = 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED';
+          else if (streamDiagnostics?.inactivityAbortTriggered) integrityStopReason = 'STOP_ON_STREAM_INACTIVITY_ABORT';
           else if (wire.streamInterrupted) integrityStopReason = 'STOP_ON_STREAM_INTERRUPTED';
           else if (!wire.parserAgreement) integrityStopReason = 'STOP_ON_DUAL_PARSER_DISAGREEMENT';
           else if (wire.parserB?.duplicateSseDetected) integrityStopReason = 'STOP_ON_DUPLICATE_SSE_STREAM';
@@ -798,6 +855,10 @@ export async function executeR2ObservationCore({
           })()
           : evaluation;
 
+        notify(
+          `[${estate}] Attempt ${attemptId} (${slotId}) finalized: http=${httpStatus ?? 0}, finish=${wire?.parserB?.finalFinishReason ?? 'NONE'}, frames=${streamDiagnostics?.sseFrameCount ?? wire?.parserB?.eventCount ?? 0}, rawBytes=${wire?.rawSseBytes ?? 0}, candTok=${wire?.usageMetadata?.candidatesTokenCount ?? 0}, thinkTok=${wire?.usageMetadata?.thoughtsTokenCount ?? 0}, elapsedMs=${streamDiagnostics?.totalElapsedMs ?? 0}, term=${streamDiagnostics?.terminationClass ?? 'NONE'}, stopReason=${integrityStopReason ?? 'NONE'}.`
+        );
+
         const record = Object.freeze({
           attemptId,
           episodeId: ep.episodeId,
@@ -815,6 +876,7 @@ export async function executeR2ObservationCore({
           httpErrorCustody,
           error: callError,
           wire,
+          ...(streamDiagnostics ? { streamDiagnostics } : {}),
           textIntegrityOk,
           integrityStopReason,
           evaluation: safeEvaluation
@@ -832,7 +894,14 @@ export async function executeR2ObservationCore({
           rawSseBytes: wire?.rawSseBytes ?? null,
           authoredTextSha256: wire?.authoredTextSha256 ?? null,
           httpErrorCustody,
-          integrityStopReason
+          integrityStopReason,
+          ...(streamDiagnostics ? {
+            streamTerminationClass: streamDiagnostics.terminationClass,
+            streamElapsedMs: streamDiagnostics.totalElapsedMs,
+            streamPostFinishEofWaitMs: streamDiagnostics.postFinishEofWaitMs,
+            streamPostFinishEofTimeoutTriggered: streamDiagnostics.postFinishEofTimeoutTriggered,
+            streamInactivityWarningsCount: streamDiagnostics.inactivityWarningsCount
+          } : {})
         });
 
         if (integrityStopReason === 'STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED') {
@@ -862,151 +931,195 @@ export async function executeR2ObservationCore({
         held: !allSlotsValid
       }));
     }
+
+    currentLifecyclePhase = 'POST_ATTEMPT_PRE_GATE';
+    checkRevocationLive();
+
+    const acquisitionScope = classifyR2AcquisitionCompletion({
+      estate,
+      plannedEpisodes: validatedEpisodes,
+      episodeSummaries
+    });
+
+    // Determine hypothesis support telemetry strictly for R2-U without blocking EMPIRICALLY_QUALIFIED on negative results
+    let hypothesisSupported;
+    let hypothesisVerdict = 'PENDING_SCIENTIFIC_ANALYSIS';
+    if (estate === 'R2-U') {
+      const validEvals = allAttemptRecords.filter((r) => !r.integrityStopReason && r.evaluation).map((r) => r.evaluation);
+      if (validEvals.length > 0 && validEvals.length === allAttemptRecords.length) {
+        const guidedOrFree = validEvals.filter((e) => e.slotId !== 'R2_U_PLAIN_BASELINE');
+        hypothesisSupported = guidedOrFree.every((e) => e.supportsPositiveHypothesis === true);
+        hypothesisVerdict = hypothesisSupported
+          ? 'HYPOTHESIS_SUPPORTED'
+          : 'OBSERVATION_VALID_HYPOTHESIS_NOT_SUPPORTED';
+      }
+    }
+
+    const draftReceipt = {
+      metadataDiscovery,
+      attemptRecords: allAttemptRecords
+    };
+
+    notify(`[${estate}] [4/4] Running independent cryptographic & on-disk physical custody Gate verification...`);
+    appendJournal('R2_SESSION_CLOSING_FOR_GATE_VERIFICATION', {
+      totalAttempts: allAttemptRecords.length,
+      totalCountTokensCalls,
+      totalGenerationCalls,
+      acquisitionClassification: acquisitionScope.classification
+    });
+
+    currentLifecyclePhase = 'GATE_CLOSING';
+    const custodyClockMs = sampleCalibratedMonoMs();
+    const custodyWallMs = Date.now();
+    const gateVerifyStartNs = process.hrtime.bigint();
+
+    const physicalCustodyGate = verifyPhysicalR2CustodyAndEvaluateGate({
+      estate,
+      grant,
+      publicKeyPem: effectivePublicKeyPem,
+      pinnedTrustFingerprintSha256,
+      checkedOutHeadSha,
+      expectedPlan,
+      requestedPlanId: selectedPlanId,
+      requestedEpisodes: validatedEpisodes,
+      evidenceDir,
+      hostNonceRegistryDir,
+      env,
+      revocationFilePath,
+      receipt: draftReceipt,
+      clockContext: {
+        timebaseValidated: true,
+        timebaseRelation: R2_CALIBRATED_MONOTONIC_TIMEBASE,
+        calibrationAnchor: {
+          wallAnchorMs,
+          hrtimeBaseNs: hrAnchorNs.toString()
+        },
+        wallClockSamplesMs: {
+          operatorWallMs,
+          serviceWallMs,
+          providerReceiptWallMs: lastProviderWallMs,
+          custodyWallMs,
+          classificationWallMs: null
+        },
+        phases: {
+          noticeAt,
+          actAt,
+          worldAnswersAt,
+          nameAt: null,
+          restAvailable: true,
+          exitAvailable: true
+        },
+        clocks: {
+          operatorClockMs,
+          serviceClockMs,
+          providerReceiptClockMs: lastProviderClockMs,
+          custodyClockMs,
+          classificationClockMs: null
+        }
+      },
+      scientificHypothesisSupported: hypothesisSupported,
+      scientificHypothesisVerdict: hypothesisVerdict,
+      humanReview: { verdict: 'PENDING_HUMAN_REVIEW' },
+      explicitReleaseApproved: false,
+      nowMs
+    });
+
+    const gateVerifyDurationMs = Number((Number(process.hrtime.bigint() - gateVerifyStartNs) / 1_000_000).toFixed(3));
+    const postGateClassificationClockMs = sampleCalibratedMonoMs();
+    const postGateClassificationWallMs = Date.now();
+    checkRevocationLive();
+
+    const counters = Object.freeze({
+      schema: 'td613.marrowline.r2-estate-counters/v1',
+      estate,
+      experimentId: spec.experimentId,
+      sessionId: authVerification.sessionId,
+      planId: selectedPreset?.planId || 'CUSTOM',
+      countTokensCalls: totalCountTokensCalls,
+      generationCalls: totalGenerationCalls,
+      attemptsRecorded: allAttemptRecords.length,
+      episodesPlanned: validatedEpisodes.length,
+      episodesCompletedValid: acquisitionScope.completedValidEpisodeCount,
+      acquisitionClassification: acquisitionScope.classification
+    });
+    fs.writeFileSync(countersFilePath, `${JSON.stringify(counters, null, 2)}\n`, {
+      encoding: 'utf8',
+      flag: 'wx',
+      mode: 0o600
+    });
+
+    appendJournal('R2_SESSION_CLOSED', {
+      integritySessionHaltReason,
+      overallDisposition: physicalCustodyGate.gateResult.overallDisposition,
+      physicalVerificationPassed: physicalCustodyGate.physicalVerificationPassed,
+      scientificHypothesisVerdict: physicalCustodyGate.gateResult.scientificHypothesisVerdict,
+      postGateClassificationClockMs,
+      revocationObservedAt
+    });
+
+    eventLoopHistogram.disable();
+    const eventLoopDelayP99Ms = Number((Number(eventLoopHistogram.percentile(99)) / 1_000_000).toFixed(3));
+    const observabilityDiagnostics = Object.freeze({
+      schema: 'td613.marrowline.r2-session-observability/v1',
+      progressLogPath,
+      notifyCallCount,
+      notifyDurationTotalMs: Number(notifyDurationTotalMs.toFixed(3)),
+      notifyDurationMaxMs: Number(notifyDurationMaxMs.toFixed(3)),
+      gateVerifyDurationMs,
+      eventLoopDelayP99Ms,
+      postAttemptRevocationObserved: Boolean(
+        revocationObservedAt
+        && (revocationObservedPhase === 'POST_ATTEMPT_PRE_GATE' || revocationObservedPhase === 'GATE_CLOSING')
+      ),
+      revocationObservedAt,
+      revocationObservedPhase,
+      clocks: Object.freeze({
+        operatorClockMs,
+        serviceClockMs,
+        providerReceiptClockMs: lastProviderClockMs,
+        custodyClockMs,
+        postGateClassificationClockMs,
+        postGateClassificationWallMs
+      })
+    });
+
+    notify(
+      `[${estate}] Session closed: disposition=${physicalCustodyGate.gateResult.overallDisposition}, physicalVerified=${physicalCustodyGate.physicalVerificationPassed}, validEpisodes=${acquisitionScope.completedValidEpisodeCount}/${acquisitionScope.plannedEpisodeCount}.`
+    );
+
+    return Object.freeze({
+      schema: R2_LIVE_CORE_SCHEMA,
+      estate,
+      experimentId: spec.experimentId,
+      covenant: R2_TRUSTED_COVENANT,
+      seal: R2_TRUSTED_SEAL,
+      authorization: authVerification,
+      nonceClaim,
+      evidenceDir,
+      evidenceJournalPath,
+      progressLogPath,
+      countersFilePath,
+      metadataDiscovery,
+      ...(metadataHttpErrorCustody ? { metadataHttpErrorCustody } : {}),
+      ...(baselineCorrelation ? { healthyBaselineCorrelation: baselineCorrelation } : {}),
+      integritySessionHaltReason,
+      dispatchCounts: counters,
+      acquisitionScope,
+      attemptRecords: Object.freeze(allAttemptRecords),
+      episodeSummaries: Object.freeze(episodeSummaries),
+      ...(estate === 'R2-W' ? { blindedEpisodes: Object.freeze(blindedEpisodes) } : {}),
+      physicalCustodyGate,
+      observabilityDiagnostics,
+      humanArtisticAcceptance: 'RESERVED_HUMAN_ONLY'
+    });
   } finally {
+    try { eventLoopHistogram.disable(); } catch { /* ignore */ }
     if (revocationPollTimer) clearInterval(revocationPollTimer);
     if (revocationWatcher) try { revocationWatcher.close(); } catch { /* ignore */ }
     if (operatorAbortSignal && onCallerAbort) {
       try { operatorAbortSignal.removeEventListener('abort', onCallerAbort); } catch { /* ignore */ }
     }
   }
-
-  const acquisitionScope = classifyR2AcquisitionCompletion({
-    estate,
-    plannedEpisodes: validatedEpisodes,
-    episodeSummaries
-  });
-
-  // Determine hypothesis support telemetry strictly for R2-U without blocking EMPIRICALLY_QUALIFIED on negative results
-  let hypothesisSupported;
-  let hypothesisVerdict = 'PENDING_SCIENTIFIC_ANALYSIS';
-  if (estate === 'R2-U') {
-    const validEvals = allAttemptRecords.filter((r) => !r.integrityStopReason && r.evaluation).map((r) => r.evaluation);
-    if (validEvals.length > 0 && validEvals.length === allAttemptRecords.length) {
-      const guidedOrFree = validEvals.filter((e) => e.slotId !== 'R2_U_PLAIN_BASELINE');
-      hypothesisSupported = guidedOrFree.every((e) => e.supportsPositiveHypothesis === true);
-      hypothesisVerdict = hypothesisSupported
-        ? 'HYPOTHESIS_SUPPORTED'
-        : 'OBSERVATION_VALID_HYPOTHESIS_NOT_SUPPORTED';
-    }
-  }
-
-  const custodyClockMs = sampleCalibratedMonoMs();
-  const custodyWallMs = Date.now();
-  const classificationClockMs = sampleCalibratedMonoMs();
-  const classificationWallMs = Date.now();
-  const draftReceipt = {
-    metadataDiscovery,
-    attemptRecords: allAttemptRecords
-  };
-
-  notify(`[${estate}] [4/4] Running independent cryptographic & on-disk physical custody Gate verification...`);
-  appendJournal('R2_SESSION_CLOSING_FOR_GATE_VERIFICATION', {
-    totalAttempts: allAttemptRecords.length,
-    totalCountTokensCalls,
-    totalGenerationCalls,
-    acquisitionClassification: acquisitionScope.classification
-  });
-
-  const physicalCustodyGate = verifyPhysicalR2CustodyAndEvaluateGate({
-    estate,
-    grant,
-    publicKeyPem: effectivePublicKeyPem,
-    pinnedTrustFingerprintSha256,
-    checkedOutHeadSha,
-    expectedPlan,
-    requestedPlanId: selectedPlanId,
-    requestedEpisodes: validatedEpisodes,
-    evidenceDir,
-    hostNonceRegistryDir,
-    env,
-    revocationFilePath,
-    receipt: draftReceipt,
-    clockContext: {
-      timebaseValidated: true,
-      timebaseRelation: R2_CALIBRATED_MONOTONIC_TIMEBASE,
-      calibrationAnchor: {
-        wallAnchorMs,
-        hrtimeBaseNs: hrAnchorNs.toString()
-      },
-      wallClockSamplesMs: {
-        operatorWallMs,
-        serviceWallMs,
-        providerReceiptWallMs: lastProviderWallMs,
-        custodyWallMs,
-        classificationWallMs
-      },
-      phases: {
-        noticeAt,
-        actAt,
-        worldAnswersAt,
-        nameAt: null,
-        restAvailable: true,
-        exitAvailable: true
-      },
-      clocks: {
-        operatorClockMs,
-        serviceClockMs,
-        providerReceiptClockMs: lastProviderClockMs,
-        custodyClockMs,
-        classificationClockMs
-      }
-    },
-    scientificHypothesisSupported: hypothesisSupported,
-    scientificHypothesisVerdict: hypothesisVerdict,
-    humanReview: { verdict: 'PENDING_HUMAN_REVIEW' },
-    explicitReleaseApproved: false,
-    nowMs
-  });
-
-  const counters = Object.freeze({
-    schema: 'td613.marrowline.r2-estate-counters/v1',
-    estate,
-    experimentId: spec.experimentId,
-    sessionId: authVerification.sessionId,
-    planId: selectedPreset?.planId || 'CUSTOM',
-    countTokensCalls: totalCountTokensCalls,
-    generationCalls: totalGenerationCalls,
-    attemptsRecorded: allAttemptRecords.length,
-    episodesPlanned: validatedEpisodes.length,
-    episodesCompletedValid: acquisitionScope.completedValidEpisodeCount,
-    acquisitionClassification: acquisitionScope.classification
-  });
-  fs.writeFileSync(countersFilePath, `${JSON.stringify(counters, null, 2)}\n`, {
-    encoding: 'utf8',
-    flag: 'wx',
-    mode: 0o600
-  });
-
-  appendJournal('R2_SESSION_CLOSED', {
-    integritySessionHaltReason,
-    overallDisposition: physicalCustodyGate.gateResult.overallDisposition,
-    physicalVerificationPassed: physicalCustodyGate.physicalVerificationPassed,
-    scientificHypothesisVerdict: physicalCustodyGate.gateResult.scientificHypothesisVerdict
-  });
-
-  return Object.freeze({
-    schema: R2_LIVE_CORE_SCHEMA,
-    estate,
-    experimentId: spec.experimentId,
-    covenant: R2_TRUSTED_COVENANT,
-    seal: R2_TRUSTED_SEAL,
-    authorization: authVerification,
-    nonceClaim,
-    evidenceDir,
-    evidenceJournalPath,
-    countersFilePath,
-    metadataDiscovery,
-    ...(metadataHttpErrorCustody ? { metadataHttpErrorCustody } : {}),
-    ...(baselineCorrelation ? { healthyBaselineCorrelation: baselineCorrelation } : {}),
-    integritySessionHaltReason,
-    dispatchCounts: counters,
-    acquisitionScope,
-    attemptRecords: Object.freeze(allAttemptRecords),
-    episodeSummaries: Object.freeze(episodeSummaries),
-    ...(estate === 'R2-W' ? { blindedEpisodes: Object.freeze(blindedEpisodes) } : {}),
-    physicalCustodyGate,
-    humanArtisticAcceptance: 'RESERVED_HUMAN_ONLY'
-  });
 }
 
 export { buildR2UWireManifest, buildR2WWireManifest };
