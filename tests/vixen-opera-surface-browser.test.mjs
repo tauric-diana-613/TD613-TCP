@@ -96,6 +96,8 @@ async function visit(profile,phase){
     article.querySelector('.vix-reader-paragraph');
   const ar=article.getBoundingClientRect(),pr=paragraph.getBoundingClientRect();
   const style=getComputedStyle(article),ps=getComputedStyle(paragraph);
+  const pdfTitle=article.querySelector('.vix-reader-heading.vix-pdf-source-title');
+  const indexName=document.querySelector('#worksListContainer .term-name');
   const words=(paragraph.textContent||'').trim().split(/\s+/).length;
   const lineHeight=parseFloat(ps.lineHeight);
   const lines=Math.max(1,Math.round(pr.height/(lineHeight||24)));
@@ -121,6 +123,8 @@ async function visit(profile,phase){
    paragraph_words:words,approx_paragraph_lines:lines,words_per_line:Number((words/lines).toFixed(2)),
    body_horizontal_overflow:document.documentElement.scrollWidth>innerWidth+3,
    mounted_paragraphs:article.querySelectorAll('.vix-reader-paragraph').length,
+   pdf_title_display:pdfTitle?getComputedStyle(pdfTitle).display:null,
+   catalogue_title_font_size:indexName?getComputedStyle(indexName).fontSize:null,
    leak_count:leaks.length,visible_leaks:leaks
   };
  });
@@ -145,6 +149,11 @@ try{
    assert.equal(after.word_break,'normal','prose word breaking');
    assert.equal(after.paragraph_overflow_wrap,'normal','no break-anywhere prose');
    assert.equal(after.max_height,'none','no fixed-height reader strip');
+  } else {
+   assert.equal(after.max_height,'none','desktop manuscript must read as a document, not a scrollbox');
+   assert.ok(parseFloat(after.paragraph_font_size)>=15.5,'desktop manuscript body must remain legible: '+JSON.stringify(after));
+   assert.equal(after.pdf_title_display,'none','remove giant duplicate source title from visual desktop reading path');
+   assert.ok(parseFloat(after.catalogue_title_font_size)<=16,'desktop Work rail must be a compact index: '+JSON.stringify(after));
   }
   assert.equal(after.leak_count,0,'visitor-stage labels remain: '+JSON.stringify(after.visible_leaks));
   assert.ok(after.mounted_paragraphs>0,'manuscript text disappeared');
