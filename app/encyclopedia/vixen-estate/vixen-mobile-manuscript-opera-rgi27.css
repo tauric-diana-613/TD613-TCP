@@ -121,7 +121,7 @@
     background:transparent!important;
   }
   /* Only unbroken code and TeX may scroll horizontally; never prose. */
-  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(pre,code,.vix-reader-code,.vix-math-display,.vix-reader-raw pre) {
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(pre,.vix-reader-code,.vix-math-display,.vix-reader-raw pre) {
     display:block;box-sizing:border-box!important;max-width:100%!important;
     overflow-x:auto!important;overflow-y:visible!important;overflow-wrap:anywhere!important;
     white-space:pre-wrap!important;
