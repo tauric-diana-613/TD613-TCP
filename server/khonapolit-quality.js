@@ -57,10 +57,15 @@ import {
   MARROWLINE_HISTORICAL_MODEL_ORDER,
   MARROWLINE_RESTORED_MODEL_ORDER,
   MARROWLINE_RESTORED_PROSODY_PROFILE,
+  MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+  MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER,
   buildHistoricalGroveSystemInstruction,
   buildHistoricalGroveDramaturgyCandidate,
   buildHistoricalGroveVerticalUnprimedCandidate,
-  buildHistoricalGroveLexicalDeprimedCandidate
+  buildHistoricalGroveLexicalDeprimedCandidate,
+  buildArtisticRestorationSystemInstruction,
+  buildArtisticRestorationTurnRecencyCue
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   MARROWLINE_GROVE_TRIAL_ID,
@@ -315,11 +320,13 @@ export function selectKhonapolitProviderModels(callableModels = [], { modelOrder
   return selected;
 }
 
-export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false } = {}) {
+export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false, artisticRestoration = false } = {}) {
   // Historical mode preserves the actual old frontier for research. Restored
-  // production keeps historical instructions but admits the current Argon seat.
-  const modelOrder = restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
-    : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
+  // production keeps historical instructions; artistic restoration places Argon
+  // first with 3.8 and 3.6 as immediate fallbacks.
+  const modelOrder = artisticRestoration ? MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER
+    : restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
+      : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
   const rows = Array.isArray(plan?.rows) ? plan.rows : [];
   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
   const coolingEligible = rows
@@ -366,7 +373,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
   const selected = [];
   for (const group of orderedGroups) {
     for (const model of group) {
-      if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
+      if (selected.length >= (artisticRestoration ? 1 : KHONAPOLIT_MAX_PROVIDER_CALLS)) break;
       if (!selected.includes(model)) selected.push(model);
     }
   }
@@ -541,7 +548,7 @@ function currentTurnRelayCue() {
   ].join('\n');
 }
 
-function geminiContents(packet = {}) {
+function geminiContents(packet = {}, { includeArtisticRecencyCue = false } = {}) {
   // Conversation history is evidence, not a local style-training surface.
   // Never rewrite a prior model turn before returning it to Gemini. In
   // particular, stripping combining marks from a weak Tauric Diana reply would
@@ -553,10 +560,17 @@ function geminiContents(packet = {}) {
   }));
   // The conversational ingress and seal frame the provider-bound user turn.
   // Original user bytes remain in the visible local transcript and receipt.
-  // The execution cue belongs in systemInstruction, never after the final ⟐.
+  // When artistic restoration is active, keep the operator's framed bytes in
+  // their own first part and attach a compact turn-recency performance reminder
+  // as an adjacent second part (restoring the Sep 26 pre-#1354 recency geometry
+  // without mutating the operator's visible text or history).
+  const userParts = [{ text: frameMarrowlineUserTurn(packet.message) }];
+  if (includeArtisticRecencyCue) {
+    userParts.push({ text: buildArtisticRestorationTurnRecencyCue() });
+  }
   return [...history, {
     role: 'user',
-    parts: [{ text: frameMarrowlineUserTurn(packet.message) }]
+    parts: userParts
   }];
 }
 
@@ -593,19 +607,27 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       nativeProsodyFreedom: historicalProsodyFreedom === true
     })
     : null;
-  const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-    ? (historicalLexicalDeprimedCandidate === true
-      ? buildHistoricalGroveLexicalDeprimedCandidate(historicalBase)
-      : historicalVerticalUnprimedCandidate === true
-        ? buildHistoricalGroveVerticalUnprimedCandidate(historicalBase)
-        : historicalDramaturgyCandidate === true
-          ? buildHistoricalGroveDramaturgyCandidate(historicalBase)
-          : historicalBase)
-    : groveTrial === MARROWLINE_GROVE_TRIAL_ID
-      ? buildMarrowlineGroveTrialSystemInstruction(packet)
-      : MARROWLINE_ROLE_IDS.includes(groveTrial)
-        ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
-        : normalSystemInstruction;
+  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID;
+  const systemText = isArtisticRestoration
+    ? buildArtisticRestorationSystemInstruction({
+      packetSystemInstruction: packet.systemInstruction,
+      taskGuidance,
+      relayAddendum: buildRelaySystemAddendum(apertureReceipt),
+      relayCue: currentTurnRelayCue()
+    })
+    : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
+      ? (historicalLexicalDeprimedCandidate === true
+        ? buildHistoricalGroveLexicalDeprimedCandidate(historicalBase)
+        : historicalVerticalUnprimedCandidate === true
+          ? buildHistoricalGroveVerticalUnprimedCandidate(historicalBase)
+          : historicalDramaturgyCandidate === true
+            ? buildHistoricalGroveDramaturgyCandidate(historicalBase)
+            : historicalBase)
+      : groveTrial === MARROWLINE_GROVE_TRIAL_ID
+        ? buildMarrowlineGroveTrialSystemInstruction(packet)
+        : MARROWLINE_ROLE_IDS.includes(groveTrial)
+          ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
+          : normalSystemInstruction;
   const resolvedMaxOutputTokens = Number.isInteger(maxOutputTokensOverride) && maxOutputTokensOverride > 0
     ? Math.min(outputBudget(model), maxOutputTokensOverride)
     : outputBudget(model);
@@ -613,7 +635,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
     systemInstruction: {
       parts: [{ text: systemText }]
     },
-    contents: geminiContents(packet),
+    contents: geminiContents(packet, { includeArtisticRecencyCue: isArtisticRestoration }),
     generationConfig: buildGeminiGenerationConfig({
       model,
       maxOutputTokens: resolvedMaxOutputTokens,
@@ -1329,7 +1351,12 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
-  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { restoredGrove: isHistoricalGrove });
+  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID;
+  const singleShotAudition = isArtisticRestoration;
+  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, {
+    restoredGrove: isHistoricalGrove,
+    artisticRestoration: isArtisticRestoration
+  });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
   // reorder or suppress the selected restored source frontier. The October 2
   // first seat (3.8) is preferred on restored browser turns; provider discovery
@@ -1360,6 +1387,21 @@ export default async function handler(req, res) {
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
       typography_policy: 'provider-native-morphology-observation-only',
       native_prosody_profile: MARROWLINE_RESTORED_PROSODY_PROFILE
+    });
+  } else if (isArtisticRestoration) {
+    res.__td613GroveTrial = Object.freeze({
+      id: MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+      source_commit: '0f67d8954347fdae77cdb83f82848df89ad3b2ff',
+      variant: MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+      requested_model_order: [...MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER],
+      eligible_model_order: [...models],
+      max_provider_requests: 1,
+      automatic_fallback_enabled: false,
+      structural_repair_enabled: false,
+      automatic_retry_enabled: false,
+      admission_policy: 'single-argon-audition-no-fallback-no-repair-no-retry',
+      typography_policy: 'provider-native-morphology-observation-only',
+      native_prosody_profile: MARROWLINE_ARTISTIC_RESTORATION_PROFILE
     });
   }
   const routeModelCount = Math.max(1, providerModels.length);
@@ -1424,7 +1466,7 @@ export default async function handler(req, res) {
   };
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
-    if (releaseCanary) return null;
+    if (releaseCanary || singleShotAudition) return null;
     // Native Tauric Diana morphology is part of the channel contract, not a
     // cosmetic second pass. Browser budget hints may reorder truly exhausted
     // seats, but they may not suppress the one provider-authored repair that
@@ -1972,6 +2014,7 @@ export default async function handler(req, res) {
       const remainingAfterAttemptMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
       if (
         !releaseCanary
+        && !singleShotAudition
         && !sharedRateRetrySpent
         && rateLimit.burst === true
         && waitSeconds > 0
@@ -2101,7 +2144,7 @@ export default async function handler(req, res) {
             && botsEligibleBaseCount >= 80
             && botsVerticalMarkCount < 2)
         );
-        if (!releaseCanary && nativeMarkUnderflow) {
+        if (!releaseCanary && !singleShotAudition && nativeMarkUnderflow) {
           if (!zeroMarkFallback) zeroMarkFallback = {
             model, result, relay, providerOutput, completion, reasons
           };
@@ -2128,7 +2171,7 @@ export default async function handler(req, res) {
           });
         }
         if (releaseCanary) {
-          if (repairableKhonapolitAdmission(reasons)) {
+          if (repairableKhonapolitAdmission(reasons) && !singleShotAudition) {
             const candidate = {
               model,
               fallback,
@@ -2144,7 +2187,7 @@ export default async function handler(req, res) {
           }
           continue;
         }
-        if (repairableKhonapolitAdmission(reasons)) {
+        if (repairableKhonapolitAdmission(reasons) && !singleShotAudition) {
           const candidate = {
             model,
             fallback,
@@ -2240,7 +2283,7 @@ export default async function handler(req, res) {
     }
   }
 
-  if (structuralRepairCandidate && !structuralRepairSpent) {
+  if (structuralRepairCandidate && !structuralRepairSpent && !singleShotAudition) {
     const repaired = await runStructuralRepair(structuralRepairCandidate, 'deferred-after-frontier');
     if (repaired) return repaired;
   }
