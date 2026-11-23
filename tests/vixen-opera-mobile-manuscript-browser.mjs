@@ -91,7 +91,14 @@ try{
            const tokens=[...document.querySelectorAll('#view-works .view-heading, #worksReaderPanel .badge-row, #worksExperimentAReaderMount>div:first-child')].filter(e=>e.getClientRects().length).map(e=>e.innerText||'').join(' ');
            const leaked=(tokens.match(/EXPERIMENT[_ -]?A(?:[_ -]?PREVIEW)?[_ -]?AUTHORIZED|EXPERIMENT-A COMPANION READER|VOLUNTEER\s*\/\s*DEV AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|FULL COMPANION MANUSCRIPT AVAILABLE/gi)||[]);
            const css=getComputedStyle(article);
-           return {article_width_px:+rect.width.toFixed(2),paragraph_width_px:+(pRect?.width||0).toFixed(2),
+           const mesh=document.getElementById('vixenLivingMesh');
+           const pdfTitle=article.querySelector('.vix-pdf-source-title');
+           const titleStyle=pdfTitle?getComputedStyle(pdfTitle):null;
+           return {mesh_display:mesh?getComputedStyle(mesh).display:'absent',
+             pdf_title_font_px:titleStyle?parseFloat(titleStyle.fontSize):null,
+             pdf_title_color:titleStyle?.color||null,
+             document_scroll_width:document.documentElement.scrollWidth,
+             article_width_px:+rect.width.toFixed(2),paragraph_width_px:+(pRect?.width||0).toFixed(2),
              body_font_px:css.fontSize,body_font_family:css.fontFamily,body_line_height:css.lineHeight,
              max_height:css.maxHeight,columns:css.columnCount,overflow_x:css.overflowX,overflow_y:css.overflowY,
              paragraph_count:paragraphs.length,word_samples:rects.length,measured_lines:ordered.length,
@@ -112,6 +119,12 @@ try{
              failures.push({profile:profile.name,problem:'ONE_WORD_PER_LINE_OR_UNREADABLE_FLOW',median:measurement.median_words_per_line,words:measurement.word_samples});
            if(profile.width<500&&measurement.max_height!=='none')
              failures.push({profile:profile.name,problem:'FIXED_HEIGHT_MOBILE_MANUSCRIPT',value:measurement.max_height});
+           if(profile.width<500&&measurement.mesh_display!=='none')
+             failures.push({profile:profile.name,problem:'LIVING_MESH_OVERLAY_OVER_READING',value:measurement.mesh_display});
+           if(profile.width<500&&measurement.pdf_title_font_px>21)
+             failures.push({profile:profile.name,problem:'OVERSIZED_PDF_POSTER_TITLE',value:measurement.pdf_title_font_px});
+           if(measurement.document_scroll_width>profile.width+3)
+             failures.push({profile:profile.name,problem:'DOCUMENT_HORIZONTAL_OVERFLOW',value:measurement.document_scroll_width});
          }
        }catch(e){failures.push({profile:profile.name,version,error:String(e)});}
        finally{await context.close();}
