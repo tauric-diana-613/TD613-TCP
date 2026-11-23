@@ -25,7 +25,7 @@ collection-scrolling-motion decoded-frontispiece independent-reading-room
 works-original-reader""".split())
 
 def audit(archive, expected_sha):
-    issues=[]; suspicious=[]; pane=collections.defaultdict(list)
+    issues=[]; suspicious=[]; pane=collections.defaultdict(list); document_scroll=collections.defaultdict(list)
     with zipfile.ZipFile(archive) as z:
         members=set(z.namelist())
         receipt=json.loads(z.read("COVERAGE.json"))
@@ -59,6 +59,8 @@ def audit(archive, expected_sha):
                 if clip and dimensions!=(round(clip["width"]*dpr),round(clip["height"]*dpr)):
                     issues.append("CLIP_DIMS:"+f)
                 pane[(profile,r.get("surface"),r.get("pane_id"))].append(r)
+            if kind=="document_scroll_tile":
+                document_scroll[(profile,r.get("surface"))].append(r)
         for f in members:
             if f.lower().endswith((".jpg",".jpeg")) and f not in byfile:
                 issues.append("UNINDEXED_JPEG:"+f)
@@ -79,9 +81,32 @@ def audit(archive, expected_sha):
                 picB=Image.open(BytesIO(z.read(b["file"]))).convert("L").resize((88,64))
                 mad=ImageStat.Stat(ImageChops.difference(picA,picB)).mean[0]
                 if mad<1.0:suspicious.append({"pane":str(key),"first":a["file"],"second":b["file"],"mean_pixel_change":round(mad,3)})
+        for key, group in document_scroll.items():
+            group.sort(key=lambda x:x.get("tile",-1))
+            last_y=-1
+            for r in group:
+                y=r.get("observed_y",-1)
+                if y<last_y:issues.append("DOCUMENT_SCROLL_REGRESSION:"+str(key))
+                last_y=y
+            if group:
+                last=group[-1]
+                bottom=max(0,last.get("document_height",0)-last.get("viewport_height",0))
+                if bottom-last.get("observed_y",0)>2:
+                    issues.append("DOCUMENT_BOTTOM_UNOBSERVED:"+str(key))
+            for a,b in zip(group,group[1:]):
+                if b.get("observed_y",0)-a.get("observed_y",0)<40:continue
+                if a["sha256"]==b["sha256"]:
+                    issues.append("STALE_DOCUMENT_SHA:"+str(key))
+                if a["file"] not in members or b["file"] not in members:continue
+                picA=Image.open(BytesIO(z.read(a["file"]))).convert("L").resize((88,64))
+                picB=Image.open(BytesIO(z.read(b["file"]))).convert("L").resize((88,64))
+                mad=ImageStat.Stat(ImageChops.difference(picA,picB)).mean[0]
+                if mad<1.0:
+                    suspicious.append({"document_scroll":str(key),"first":a["file"],
+                      "second":b["file"],"mean_pixel_change":round(mad,3)})
     with open(archive,"rb") as inp: zipsha=hashlib.file_digest(inp,"sha256").hexdigest()
     result={"source_sha":expected_sha,"zip_sha256":zipsha,"zip_size_bytes":Path(archive).stat().st_size,
-      "images":len(records),"pane_groups":len(pane),"profiles":{p:{"images":sum(r.get("profile")==p for r in records),
+      "images":len(records),"pane_groups":len(pane),"document_scroll_groups":len(document_scroll),"profiles":{p:{"images":sum(r.get("profile")==p for r in records),
       "route_count":len(routes[p])} for p in PROFILES},
       "source_error_count":len(receipt.get("errors",[])),"issues":issues,"static_panes":suspicious,
       "independent_pass":not issues and not suspicious}
