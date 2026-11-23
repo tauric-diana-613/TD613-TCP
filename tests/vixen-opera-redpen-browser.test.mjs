@@ -98,11 +98,13 @@ try{
    const screenshot=path.join(out,name+'-verified-pdf-manuscript-after.png');
    await page.screenshot({path:screenshot,animations:'disabled',fullPage:false});
    if(isMobile){
-     const before=await page.evaluate(()=>window.scrollY);
-     await mount.locator('#vixFolioNext').click({force:true});
-     await page.waitForTimeout(440);
-     const after=await page.evaluate(()=>window.scrollY);
-     assert(after>before+15,'Natural mobile reading pagination must scroll the page: '+JSON.stringify({before,after,name}));
+     const continuity=await page.evaluate(()=>({
+       footerVisible:getComputedStyle(document.querySelector('.vix-folio-footer')).display!=='none',
+       scrollHeight:document.documentElement.scrollHeight,
+       scrollTop:window.scrollY
+     }));
+     assert(!continuity.footerVisible,'Mobile article must not show inner pagination controls');
+     assert(continuity.scrollHeight>height*3,'Complete manuscript must extend in normal document flow');
    }
    assert.equal(errors.length,0,'Browser JavaScript exceptions: '+JSON.stringify(errors));
    samples.push({name,head,metrics:metric,entrance,errors,screenshot:path.basename(screenshot)});
