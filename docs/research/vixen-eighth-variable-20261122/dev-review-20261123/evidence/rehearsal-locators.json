@@ -1,0 +1,80 @@
+{
+  "classification": "POST_RETRIEVAL_EXPLORATORY_PASSAGE_CHECK_NOT_BLINDED_GOLD",
+  "verified": 8,
+  "sources": 7,
+  "anchors": [
+    {
+      "source_id": "emb_20260911_7c568aaf6e78",
+      "page": 2,
+      "page_sha256": "d0c0e4a23fb07cb23d00b5f82ddd727ca9917a385d883b79d8d97fe0aaa64169",
+      "start_unicode": 1465,
+      "end_unicode": 1524,
+      "start_utf16": 1465,
+      "end_utf16": 1524
+    },
+    {
+      "source_id": "emb_20260911_811766eb1387",
+      "page": 3,
+      "page_sha256": "033593d36d3c8ed4e8c774739571f7b70835db8f0aede338a53f30e5bfc5ee0e",
+      "start_unicode": 2966,
+      "end_unicode": 3011,
+      "start_utf16": 2966,
+      "end_utf16": 3011
+    },
+    {
+      "source_id": "emb_20260911_fe1c355b4e7a",
+      "page": 4,
+      "page_sha256": "c728b6074d1bee9edfce18a111927d2b133e88388707738993d91aa66922eb84",
+      "start_unicode": 0,
+      "end_unicode": 42,
+      "start_utf16": 0,
+      "end_utf16": 42
+    },
+    {
+      "source_id": "emb_20260911_fe1c355b4e7a",
+      "page": 5,
+      "page_sha256": "83e01717c4e80b9e8f94d8806361a99d86188586d3c2bfa1d451660cce4d131a",
+      "start_unicode": 2568,
+      "end_unicode": 2581,
+      "start_utf16": 2568,
+      "end_utf16": 2581
+    },
+    {
+      "source_id": "emb_20260911_87ee5e995742",
+      "page": 6,
+      "page_sha256": "bb1ff38302c82b8059df71aecc95941286961519ebed0e2a68b43ac72273ada2",
+      "start_unicode": 850,
+      "end_unicode": 890,
+      "start_utf16": 850,
+      "end_utf16": 890
+    },
+    {
+      "source_id": "emb_20260911_6c888365fa73",
+      "page": 7,
+      "page_sha256": "999a456c4ca4b6161529c6986f76af2f07595948905d67c660de727ea8a76207",
+      "start_unicode": 599,
+      "end_unicode": 620,
+      "start_utf16": 599,
+      "end_utf16": 620
+    },
+    {
+      "source_id": "emb_20260911_c90233bf09f6",
+      "page": 4,
+      "page_sha256": "1f89063c7de24c5af2a0c353f67bee0d77348a0e2820af296eeca7a7c9434ccb",
+      "start_unicode": 2609,
+      "end_unicode": 2669,
+      "start_utf16": 2609,
+      "end_utf16": 2669
+    },
+    {
+      "source_id": "emb_20260911_c56744fae0f7",
+      "page": 2,
+      "page_sha256": "bd40ee990b62b7c4180138b9c4f42d628f81bc081f84dc69f34dc93b4f511108",
+      "start_unicode": 1856,
+      "end_unicode": 1906,
+      "start_utf16": 1856,
+      "end_utf16": 1906
+    }
+  ],
+  "quotes_retained_in_private_packet": true
+}

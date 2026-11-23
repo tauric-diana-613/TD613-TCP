@@ -1,0 +1,8 @@
+file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/aix-retrieval.mjs:45
+assert.equal(receipts.negative.result.search.hits.length,0);
+                                             ^
+
+TypeError: Cannot read properties of undefined (reading 'hits')
+    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/aix-retrieval.mjs:45:46
+
+Node.js v24.22.3

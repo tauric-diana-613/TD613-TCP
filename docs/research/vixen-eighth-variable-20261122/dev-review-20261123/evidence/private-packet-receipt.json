@@ -1,0 +1,13 @@
+{
+  "archive": "TD613_Vixen_Seven_Source_Development_2026-11-23.zip",
+  "bytes": 5130349,
+  "sha256": "48fdd45a8cc8a22807641eef821d2351bf6a2cb38a0610603e72e301d0f72ba0",
+  "payload_hashes_verified": 94,
+  "crc": "PASS",
+  "independent_replay": "PASS",
+  "overlay_smoke_tests": 19,
+  "scientific_v1_outcome": "HELD_MISSING_WITNESS",
+  "primary_answer_model_trials": 0,
+  "report_sha256": "7f6bda7554bbb1f67b21cc39632df132de0b3f59e8cc144c5d3c6e333a31000b",
+  "post_replay_search_test_runtime_code_unchanged": true
+}

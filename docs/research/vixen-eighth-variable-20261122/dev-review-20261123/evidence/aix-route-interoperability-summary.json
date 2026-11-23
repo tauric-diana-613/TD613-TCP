@@ -1,0 +1,226 @@
+{
+  "classification": "LOCAL_DEVELOPER_PODIUM_ROUTE_INTEROPERABILITY_NOT_LIVE_CONNECTED_MODEL",
+  "connection": "createVixenPodium({corpus:unchangedA0,semanticSearch:overlay})",
+  "exercised": [
+    "vixen.fusion.capabilities",
+    "vixen.fusion.search",
+    "vixen.fusion.compare",
+    "vixen.fusion.explain",
+    "aix.conductor.search",
+    "SRC_ONLY/src_projective",
+    "semantic\u2013semiotic paired channels"
+  ],
+  "existing_label_defect": {
+    "outer_estate": "EMSTD613",
+    "actual_scope": "seven prospective Vixen development sources, not the original EM estate",
+    "smallest_repair": "derive conductor result source scope from attached engine metadata; preserve each hit identity"
+  },
+  "original_src_engine_execution": false,
+  "wendbine_private_corpus_accessed": false,
+  "new_models_connected": false,
+  "human_role_choice_simulated": false,
+  "compose_authorization_claimed": false,
+  "canonical_work_mutations": 0,
+  "primary_answer_model_trials": 0,
+  "receipt_summary": {
+    "capabilities": {
+      "intent": "vixen.fusion.capabilities",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "schema",
+        "engine",
+        "connected",
+        "channels",
+        "profiles",
+        "supported_modes",
+        "weight_policies",
+        "bounds",
+        "source_evidence",
+        "all_semiotic_rungs",
+        "fallback_status",
+        "output_receipts",
+        "native_invocation_required",
+        "independent_empirical_witness_observed",
+        "release_authority"
+      ]
+    },
+    "search": {
+      "intent": "vixen.fusion.search",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "query",
+        "mode",
+        "profile",
+        "engine",
+        "fusion_controls",
+        "search",
+        "claim_ceiling"
+      ]
+    },
+    "compare": {
+      "intent": "vixen.fusion.compare",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "schema",
+        "query",
+        "mode",
+        "weight_policy",
+        "comparisons",
+        "anchor_deltas",
+        "engine",
+        "qualification",
+        "source_revision",
+        "empirical_replication_credit"
+      ]
+    },
+    "explain": {
+      "intent": "vixen.fusion.explain",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "query",
+        "profile",
+        "mode",
+        "hit_id",
+        "source_file_id",
+        "source_sha256",
+        "chunk_sha256",
+        "citation",
+        "scoring",
+        "claim_ceiling"
+      ]
+    },
+    "src": {
+      "intent": "vixen.fusion.search",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "query",
+        "mode",
+        "profile",
+        "engine",
+        "fusion_controls",
+        "search",
+        "claim_ceiling"
+      ]
+    },
+    "conductor": {
+      "intent": "aix.conductor.search",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "query",
+        "mode",
+        "estate",
+        "cross_opera_merged",
+        "via",
+        "vixen_search",
+        "claim_ceiling"
+      ]
+    },
+    "semantic_semiotic": {
+      "intent": "vixen.fusion.search",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "query",
+        "mode",
+        "profile",
+        "engine",
+        "fusion_controls",
+        "search",
+        "claim_ceiling"
+      ]
+    },
+    "negative": {
+      "intent": "vixen.fusion.search",
+      "status": "SUPPORTED",
+      "authority": {
+        "operator_closure": "RESERVED",
+        "merge": false,
+        "release": false,
+        "deployment": false,
+        "experiment_b_flight": "HELD",
+        "identity_adjudication": false,
+        "automatic_cross_opera_mapping": false,
+        "empirical_replication_credit": 0
+      },
+      "result_keys": [
+        "query",
+        "mode",
+        "profile",
+        "engine",
+        "fusion_controls",
+        "search",
+        "claim_ceiling"
+      ]
+    }
+  },
+  "full_source_bearing_receipts_in_private_packet": true
+}

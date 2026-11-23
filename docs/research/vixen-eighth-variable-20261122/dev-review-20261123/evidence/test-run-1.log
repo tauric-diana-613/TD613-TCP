@@ -1,0 +1,15 @@
+node:internal/fs/promises:1345
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: ENOENT: no such file or directory, open '/workspace/scratch/9d3687a6141a/derived/emb_20260911_6c888365fa73/pages.json'
+    at async open (node:internal/fs/promises:1345:25)
+    at async Object.readFile (node:internal/fs/promises:2003:14)
+    at async file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:18:36 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/workspace/scratch/9d3687a6141a/derived/emb_20260911_6c888365fa73/pages.json'
+}
+
+Node.js v24.22.3

@@ -1,0 +1,90 @@
+{
+  "schema": "td613.vixen.dev-overlay-smoke/v1",
+  "source": "exploratory developer harness",
+  "node": "v24.22.3",
+  "primary_answer_model_trials": 0,
+  "tests": [
+    {
+      "name": "source coverage topology",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage audio",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage quantum-framework",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage algedonic",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage swarm",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage cognitive-time",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage semantic-control",
+      "status": "PASS"
+    },
+    {
+      "name": "cross-source retrieval",
+      "status": "PASS"
+    },
+    {
+      "name": "native channel LEXICAL_ONLY",
+      "status": "PASS"
+    },
+    {
+      "name": "native channel SEMANTIC_ONLY",
+      "status": "PASS"
+    },
+    {
+      "name": "native channel SEMIOTIC_ONLY",
+      "status": "PASS"
+    },
+    {
+      "name": "out-of-vocabulary unsupported query",
+      "status": "PASS"
+    },
+    {
+      "name": "combined semantic–semiotic channels without lexical or contextual contribution",
+      "status": "PASS"
+    },
+    {
+      "name": "known words but absent exact claim",
+      "status": "PASS"
+    },
+    {
+      "name": "page coordinates and noncanonical identities",
+      "status": "PASS"
+    },
+    {
+      "name": "reference text retained with explicit section filter",
+      "status": "PASS"
+    },
+    {
+      "name": "A0 admission guard still rejects prospective injection",
+      "status": "PASS"
+    },
+    {
+      "name": "tampered supplemental body refused",
+      "status": "PASS"
+    },
+    {
+      "name": "temporary supplement withdrawal preserves A0",
+      "status": "PASS"
+    }
+  ],
+  "passed": 19,
+  "failed": 0,
+  "source_count": 7,
+  "pages": 82,
+  "chunks": 160,
+  "methods": "native BM25F + centered hashed 256→48 Jacobi-SVD + native rule-based semiotic affinity; contextual SRC-conditioned signals when selected"
+}

@@ -1,0 +1,2976 @@
+{
+  "topology": {
+    "status": "SEARCH_OK",
+    "query": "informational density Fisher Wasserstein",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 5,
+    "hits": [
+      {
+        "id": "emb_20260911_c56744fae0f7:p3:c0",
+        "prospective_source_id": "emb_20260911_c56744fae0f7",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "page_number": 3,
+        "page_span": [
+          3,
+          3
+        ],
+        "score_total": 0.5,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "7eaf2a853d856acc411a535f0944197680da3a2d0202a7152a51b3e7e17c5c07",
+        "text_locator": {
+          "page_number": 3,
+          "page_sha256": "a52a7f626a36d0ce26ebee8c5cbf00be96175fa51da1b6020459415ae8aeb366",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 6304,
+          "raw_chunk_sha256": "7eaf2a853d856acc411a535f0944197680da3a2d0202a7152a51b3e7e17c5c07"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p5:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 5,
+        "page_span": [
+          5,
+          5
+        ],
+        "score_total": 0.3338,
+        "s_lex": 0.6676,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.333814,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "ff9d825fca0aa77c044806f7743f0a17507f9cb3ed7852a1d534191258e3b716",
+        "text_locator": {
+          "page_number": 5,
+          "page_sha256": "5015316e30de7cd3a794145bba84e24421b30d3a323d979cbc69d79f23621049",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1278,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1278,
+          "source_offset_utf16": 15686,
+          "raw_chunk_sha256": "ff9d825fca0aa77c044806f7743f0a17507f9cb3ed7852a1d534191258e3b716"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_6c888365fa73:p1:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.2184,
+        "s_lex": 0.181,
+        "s_sem": 0.4264,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.090482,
+          "semantic": 0.12792,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "ab8ee4dc9e9764ca64a3b5ec8608d6e0797355588db337b94cd7c8f563dd91eb",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "453025cc3daf2add800b0fe1aa6eb7305256a4ed7e5a916aeb4d715c7fc79932",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 796,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 796,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "ab8ee4dc9e9764ca64a3b5ec8608d6e0797355588db337b94cd7c8f563dd91eb"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1488,
+        "s_lex": 0,
+        "s_sem": 0.4959,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.14877,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p1:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1347,
+        "s_lex": 0,
+        "s_sem": 0.449,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.1347,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "366ce9a79c09afcd74539476b96d530d237c4822d6828392371f066a0b15f6a0",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "119e890e62b7e9ef5336284e1ad0eec5ffa292b6b5d55177dcace182704a879a",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 578,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 578,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "366ce9a79c09afcd74539476b96d530d237c4822d6828392371f066a0b15f6a0"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "audio": {
+    "status": "SEARCH_OK",
+    "query": "phase vocoder formant",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 5,
+    "hits": [
+      {
+        "id": "emb_20260911_7c568aaf6e78:p1:c1",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.5981,
+        "s_lex": 0.7985,
+        "s_sem": 0.6628,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.399267,
+          "semantic": 0.19884,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "f64f32fbe764a875848f8f7cfe1db70021915d9919bbec6a717aa71adc193109",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "583fc8d2632392bd3ade50c19f9f4561978b91c8a17e427cf3dcdb5d6f9b69c3",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 630,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 630,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "f64f32fbe764a875848f8f7cfe1db70021915d9919bbec6a717aa71adc193109"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p1:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1627,
+        "s_lex": 0,
+        "s_sem": 0.5422,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.16266,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "5e615ee5e57b3f4815cc52a7842acc0926cdcea2aaf00c06170c293b30633bb4",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "c0637b734e85ba32af595a48388acd3d1a7c1bf028f0cdc26a6792b45c6bf913",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 477,
+          "page_offset_unicode": 2397,
+          "page_length_unicode": 477,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "5e615ee5e57b3f4815cc52a7842acc0926cdcea2aaf00c06170c293b30633bb4"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c56744fae0f7:p5:c1",
+        "prospective_source_id": "emb_20260911_c56744fae0f7",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "page_number": 5,
+        "page_span": [
+          5,
+          5
+        ],
+        "score_total": 0.149,
+        "s_lex": 0.2981,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.149027,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "e56c873c737c10336e47e982c3d4a4f0cf6a7fcbe6dbfda51c0f15efeea63bd0",
+        "text_locator": {
+          "page_number": 5,
+          "page_sha256": "92712c56e148feb8d6dda405992ced1c88ed62ab52d2ba02d4153a5092f5854d",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1285,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1285,
+          "source_offset_utf16": 15952,
+          "raw_chunk_sha256": "e56c873c737c10336e47e982c3d4a4f0cf6a7fcbe6dbfda51c0f15efeea63bd0"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p3:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 3,
+        "page_span": [
+          3,
+          3
+        ],
+        "score_total": 0.1404,
+        "s_lex": 0,
+        "s_sem": 0.4679,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.14037,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "8ee8a0cdf56a09ac095ba42b8874ffa10ac251563ef65be50a25949a6f265e9c",
+        "text_locator": {
+          "page_number": 3,
+          "page_sha256": "02ca6da522393baa23e801083d371f07344ce6f07955e341ae2593559a3f79c6",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1153,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1153,
+          "source_offset_utf16": 8966,
+          "raw_chunk_sha256": "8ee8a0cdf56a09ac095ba42b8874ffa10ac251563ef65be50a25949a6f265e9c"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_6c888365fa73:p5:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 5,
+        "page_span": [
+          5,
+          5
+        ],
+        "score_total": 0.0971,
+        "s_lex": 0.1942,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.097123,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "f9e4f91aa60cef318899abc50ff10709cdfa08b2ae034d04e8b4c0bcc0272549",
+        "text_locator": {
+          "page_number": 5,
+          "page_sha256": "5bcf7987938c1cbc271b2f7721875cf6cfb764d8a9c56045931a6d727d5a058c",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1106,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1106,
+          "source_offset_utf16": 17172,
+          "raw_chunk_sha256": "f9e4f91aa60cef318899abc50ff10709cdfa08b2ae034d04e8b4c0bcc0272549"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "quantum-framework": {
+    "status": "SEARCH_OK",
+    "query": "density matrix Hamiltonian hysteresis",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 7,
+    "hits": [
+      {
+        "id": "emb_20260911_6c888365fa73:p3:c0",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 3,
+        "page_span": [
+          3,
+          3
+        ],
+        "score_total": 0.5,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "f9e73fa6f7730ca832e3811f5216aa8cf632f3a55bcd4de6a3ce8f0aa0ffb631",
+        "text_locator": {
+          "page_number": 3,
+          "page_sha256": "a4c9a8c97353343b6f6fba20ef185d8d38f9eca046eb27cbd86ba78c235b57df",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 7203,
+          "raw_chunk_sha256": "f9e73fa6f7730ca832e3811f5216aa8cf632f3a55bcd4de6a3ce8f0aa0ffb631"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p6:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 6,
+        "page_span": [
+          6,
+          6
+        ],
+        "score_total": 0.3149,
+        "s_lex": 0.2705,
+        "s_sem": 0.5988,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.135256,
+          "semantic": 0.17964,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "566d5415700bde620468a72f31663364845fe4f62158b10ec310bc804cd3a9af",
+        "text_locator": {
+          "page_number": 6,
+          "page_sha256": "bb1ff38302c82b8059df71aecc95941286961519ebed0e2a68b43ac72273ada2",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1140,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1140,
+          "source_offset_utf16": 19154,
+          "raw_chunk_sha256": "566d5415700bde620468a72f31663364845fe4f62158b10ec310bc804cd3a9af"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p7:c0",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 7,
+        "page_span": [
+          7,
+          7
+        ],
+        "score_total": 0.2905,
+        "s_lex": 0.581,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.290482,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "5a98b7586c1c3dee2fc846c107be98597b0c0c62bbebd117a60459aa82abcd68",
+        "text_locator": {
+          "page_number": 7,
+          "page_sha256": "c5132fbc54017b2eed26215bf8327dad38a1e65313ff0d044941c49c2bdede87",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 20654,
+          "raw_chunk_sha256": "5a98b7586c1c3dee2fc846c107be98597b0c0c62bbebd117a60459aa82abcd68"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c56744fae0f7:p1:c1",
+        "prospective_source_id": "emb_20260911_c56744fae0f7",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.2741,
+        "s_lex": 0.1868,
+        "s_sem": 0.6023,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.093409,
+          "semantic": 0.18069,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "bf5d9ef68c1ccf835c515192458350bef44959a6ca285a90d72ce9590ffb5fdc",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "102fb1c20a788c7ee369c1617f52d521c6903435da1435949d976c688e5bc583",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 510,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 510,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "bf5d9ef68c1ccf835c515192458350bef44959a6ca285a90d72ce9590ffb5fdc"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p4:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.2305,
+        "s_lex": 0.1314,
+        "s_sem": 0.5492,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.065703,
+          "semantic": 0.16476,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "1f89063c7de24c5af2a0c353f67bee0d77348a0e2820af296eeca7a7c9434ccb",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1185,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1185,
+          "source_offset_utf16": 12100,
+          "raw_chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p1:c1",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1438,
+        "s_lex": 0,
+        "s_sem": 0.4795,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.14385,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "d9204f4c2fa01c6d4818450cfbea389336df400a0b09e3e26bf44795523ee6b3",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "f6e41e77d8cd3247e985c3e3b22ffdc75c4660b1ad9a8a3ff48c50990a9bfcde",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 765,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 765,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "d9204f4c2fa01c6d4818450cfbea389336df400a0b09e3e26bf44795523ee6b3"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p8:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 8,
+        "page_span": [
+          8,
+          8
+        ],
+        "score_total": 0.1101,
+        "s_lex": 0.2202,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.110107,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "30fb029175cdf5a8a00f53d1798e1d1076c4a3cf4c4b20079e4fe9ac28533396",
+        "text_locator": {
+          "page_number": 8,
+          "page_sha256": "9cd92ffb5eb3e784e0451c31f231a6a1ae64b36c8502069bbcbf1dfef8dc7cfe",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 25531,
+          "raw_chunk_sha256": "30fb029175cdf5a8a00f53d1798e1d1076c4a3cf4c4b20079e4fe9ac28533396"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "algedonic": {
+    "status": "SEARCH_OK",
+    "query": "algedonic escalation System 5",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 7,
+    "hits": [
+      {
+        "id": "emb_20260911_87ee5e995742:p4:c0",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.55,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0.25,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0.05,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "701b3a4016582179ac0633e081ff5eae00ec68a795c2f543f49ee627cba1fde8",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "78fca41786ab89d97af8af2fbe4d1178d6772345210914dab1771fbff6bc2e62",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 10120,
+          "raw_chunk_sha256": "701b3a4016582179ac0633e081ff5eae00ec68a795c2f543f49ee627cba1fde8"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p10:c0",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.55,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0.25,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0.05,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "e9f0560518021e93f4e6cd6520df897136ec33aaef9d02b054299c3471dd62d3",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "28722a921bba11d48f0375943a6a49076940f693c3c9c9006cba26254463bf64",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 32897,
+          "raw_chunk_sha256": "e9f0560518021e93f4e6cd6520df897136ec33aaef9d02b054299c3471dd62d3"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_6c888365fa73:p8:c0",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 8,
+        "page_span": [
+          8,
+          8
+        ],
+        "score_total": 0.2802,
+        "s_lex": 0.4605,
+        "s_sem": 0,
+        "s_semi": 0.25,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.230229,
+          "semantic": 0,
+          "semiotic": 0.05,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "14d6441be4621f6d089c79aeb5610b5581b2ed374a765c882271e6c0df1a9525",
+        "text_locator": {
+          "page_number": 8,
+          "page_sha256": "6b63cee33f13a21adfc2b9a1168e6d5dc951f4d55e3ce4fb88e879628409deae",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 763,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 763,
+          "source_offset_utf16": 25955,
+          "raw_chunk_sha256": "14d6441be4621f6d089c79aeb5610b5581b2ed374a765c882271e6c0df1a9525"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.253,
+        "s_lex": 0.1439,
+        "s_sem": 0.6035,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.07195,
+          "semantic": 0.18105,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p1:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1887,
+        "s_lex": 0,
+        "s_sem": 0.629,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.1887,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "5e615ee5e57b3f4815cc52a7842acc0926cdcea2aaf00c06170c293b30633bb4",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "c0637b734e85ba32af595a48388acd3d1a7c1bf028f0cdc26a6792b45c6bf913",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 477,
+          "page_offset_unicode": 2397,
+          "page_length_unicode": 477,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "5e615ee5e57b3f4815cc52a7842acc0926cdcea2aaf00c06170c293b30633bb4"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c56744fae0f7:p1:c1",
+        "prospective_source_id": "emb_20260911_c56744fae0f7",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1434,
+        "s_lex": 0,
+        "s_sem": 0.4781,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.14343,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "bf5d9ef68c1ccf835c515192458350bef44959a6ca285a90d72ce9590ffb5fdc",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "102fb1c20a788c7ee369c1617f52d521c6903435da1435949d976c688e5bc583",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 510,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 510,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "bf5d9ef68c1ccf835c515192458350bef44959a6ca285a90d72ce9590ffb5fdc"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p4:c1",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.0953,
+        "s_lex": 0.1906,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.095303,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "f64daef9a5360558a04d7f171dd54f50bc0337e0147495f4c11d4e86e5cd3fd7",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "44ecc0f0fed23e183f5fc976eaa4e20b79b9e9f1e89639796994e09ace41aa07",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1192,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1192,
+          "source_offset_utf16": 13380,
+          "raw_chunk_sha256": "f64daef9a5360558a04d7f171dd54f50bc0337e0147495f4c11d4e86e5cd3fd7"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "swarm": {
+    "status": "SEARCH_OK",
+    "query": "Hermes structured inference Mahalanobis",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 5,
+    "hits": [
+      {
+        "id": "emb_20260911_87ee5e995742:p9:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 9,
+        "page_span": [
+          9,
+          9
+        ],
+        "score_total": 0.5313,
+        "s_lex": 0.7185,
+        "s_sem": 0.5734,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.359252,
+          "semantic": 0.17202,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "8e5f7ed3417c5e1902f562407239716071eb61ce1df1ce2f762fc503f383a3bc",
+        "text_locator": {
+          "page_number": 9,
+          "page_sha256": "4ec9ab42209b9e6f7be717b80bc9ac4e36cc3c757d86b17b82096a707b597193",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 888,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 888,
+          "source_offset_utf16": 29325,
+          "raw_chunk_sha256": "8e5f7ed3417c5e1902f562407239716071eb61ce1df1ce2f762fc503f383a3bc"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p8:c1",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 8,
+        "page_span": [
+          8,
+          8
+        ],
+        "score_total": 0.2314,
+        "s_lex": 0.4627,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.231361,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "2d3c00e48d11dde75afb9c142774cb21acf4b372449328f1a8fa73ddaadc49eb",
+        "text_locator": {
+          "page_number": 8,
+          "page_sha256": "9cd92ffb5eb3e784e0451c31f231a6a1ae64b36c8502069bbcbf1dfef8dc7cfe",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1555,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1555,
+          "source_offset_utf16": 27931,
+          "raw_chunk_sha256": "2d3c00e48d11dde75afb9c142774cb21acf4b372449328f1a8fa73ddaadc49eb"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_6c888365fa73:p1:c0",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.2253,
+        "s_lex": 0.4507,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.225329,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "46b803ada60f4c7c6a4c774e0db2e2bd15cca235ff8bf73a635573098da2f20b",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "453025cc3daf2add800b0fe1aa6eb7305256a4ed7e5a916aeb4d715c7fc79932",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 0,
+          "raw_chunk_sha256": "46b803ada60f4c7c6a4c774e0db2e2bd15cca235ff8bf73a635573098da2f20b"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p9:c0",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 9,
+        "page_span": [
+          9,
+          9
+        ],
+        "score_total": 0.2222,
+        "s_lex": 0.4445,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.222246,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "ec86d56bc32ab602f67faad597a075f0430c71e13443b9a7a7036423cef8e30d",
+        "text_locator": {
+          "page_number": 9,
+          "page_sha256": "7572c0f3e8272c4c2c69743dd565a22b829c833e7fce971ada6de9816ddcd533",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 27239,
+          "raw_chunk_sha256": "ec86d56bc32ab602f67faad597a075f0430c71e13443b9a7a7036423cef8e30d"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p7:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 7,
+        "page_span": [
+          7,
+          7
+        ],
+        "score_total": 0.2044,
+        "s_lex": 0.4088,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.204408,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "5117393181c3401b30998385d713bf520e7751d91a259cd0464b5059911d1b26",
+        "text_locator": {
+          "page_number": 7,
+          "page_sha256": "94c11d98764821298a8a3450f4138fbd5e5aff614d00a09eed2a3a0490d36106",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1123,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1123,
+          "source_offset_utf16": 22644,
+          "raw_chunk_sha256": "5117393181c3401b30998385d713bf520e7751d91a259cd0464b5059911d1b26"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "cognitive-time": {
+    "status": "SEARCH_OK",
+    "query": "fold bifurcations observer averaging",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 5,
+    "hits": [
+      {
+        "id": "emb_20260911_c90233bf09f6:p1:c0",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.5,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "7017000edc6ccf0dce87b28fc0ff1bac418c35bb9dec27b14185b200396b43b1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "c0637b734e85ba32af595a48388acd3d1a7c1bf028f0cdc26a6792b45c6bf913",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2597,
+          "source_offset_utf16": 0,
+          "raw_chunk_sha256": "7017000edc6ccf0dce87b28fc0ff1bac418c35bb9dec27b14185b200396b43b1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1732,
+        "s_lex": 0,
+        "s_sem": 0.5772,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.17316,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c56744fae0f7:p1:c1",
+        "prospective_source_id": "emb_20260911_c56744fae0f7",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.1687,
+        "s_lex": 0,
+        "s_sem": 0.5623,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.16869,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "bf5d9ef68c1ccf835c515192458350bef44959a6ca285a90d72ce9590ffb5fdc",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "102fb1c20a788c7ee369c1617f52d521c6903435da1435949d976c688e5bc583",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 510,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 510,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "bf5d9ef68c1ccf835c515192458350bef44959a6ca285a90d72ce9590ffb5fdc"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p6:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 6,
+        "page_span": [
+          6,
+          6
+        ],
+        "score_total": 0.154,
+        "s_lex": 0,
+        "s_sem": 0.5133,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.15399,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "566d5415700bde620468a72f31663364845fe4f62158b10ec310bc804cd3a9af",
+        "text_locator": {
+          "page_number": 6,
+          "page_sha256": "bb1ff38302c82b8059df71aecc95941286961519ebed0e2a68b43ac72273ada2",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1140,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1140,
+          "source_offset_utf16": 19154,
+          "raw_chunk_sha256": "566d5415700bde620468a72f31663364845fe4f62158b10ec310bc804cd3a9af"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p7:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 7,
+        "page_span": [
+          7,
+          7
+        ],
+        "score_total": 0.0932,
+        "s_lex": 0.1864,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.093223,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "75fc657dbefd00269608a7249061952aa5d9ac46a37e8d017b69c540f078f1ba",
+        "text_locator": {
+          "page_number": 7,
+          "page_sha256": "f036c1c6ccb9c7acadf7eac6ee0a1a374ec55a1a2fe0569781e1a58a71a257bc",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 21899,
+          "raw_chunk_sha256": "75fc657dbefd00269608a7249061952aa5d9ac46a37e8d017b69c540f078f1ba"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "semantic-control": {
+    "status": "SEARCH_OK",
+    "query": "semantic error derivative PID",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 6,
+    "hits": [
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.7681,
+        "s_lex": 0.9902,
+        "s_sem": 0.6766,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.495082,
+          "semantic": 0.20298,
+          "semiotic": 0.07,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_6c888365fa73:p2:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 2,
+        "page_span": [
+          2,
+          2
+        ],
+        "score_total": 0.3447,
+        "s_lex": 0.5904,
+        "s_sem": 0,
+        "s_semi": 0.2475,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.295187,
+          "semantic": 0,
+          "semiotic": 0.049497,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "c621ed7afcee364ea432cbdf7e3a9b935f3807d2786c6f9386d4e86baf33e870",
+        "text_locator": {
+          "page_number": 2,
+          "page_sha256": "e2f2f128bec50c16c359bcef526177107bc66bf54c827586fe7f819e1347fd05",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1605,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1605,
+          "source_offset_utf16": 5597,
+          "raw_chunk_sha256": "c621ed7afcee364ea432cbdf7e3a9b935f3807d2786c6f9386d4e86baf33e870"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p6:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 6,
+        "page_span": [
+          6,
+          6
+        ],
+        "score_total": 0.2578,
+        "s_lex": 0.1645,
+        "s_sem": 0.5853,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.082254,
+          "semantic": 0.17559,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "566d5415700bde620468a72f31663364845fe4f62158b10ec310bc804cd3a9af",
+        "text_locator": {
+          "page_number": 6,
+          "page_sha256": "bb1ff38302c82b8059df71aecc95941286961519ebed0e2a68b43ac72273ada2",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1140,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1140,
+          "source_offset_utf16": 19154,
+          "raw_chunk_sha256": "566d5415700bde620468a72f31663364845fe4f62158b10ec310bc804cd3a9af"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p5:c1",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 5,
+        "page_span": [
+          5,
+          5
+        ],
+        "score_total": 0.1525,
+        "s_lex": 0.1649,
+        "s_sem": 0,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.08247,
+          "semantic": 0,
+          "semiotic": 0.07,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "a96c17c8e4517855eabbec3d6f8681205e842d96465e48010ffa35c7a0d67669",
+        "text_locator": {
+          "page_number": 5,
+          "page_sha256": "83e01717c4e80b9e8f94d8806361a99d86188586d3c2bfa1d451660cce4d131a",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1770,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1770,
+          "source_offset_utf16": 16586,
+          "raw_chunk_sha256": "a96c17c8e4517855eabbec3d6f8681205e842d96465e48010ffa35c7a0d67669"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p4:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.1398,
+        "s_lex": 0,
+        "s_sem": 0.466,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.1398,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "1f89063c7de24c5af2a0c353f67bee0d77348a0e2820af296eeca7a7c9434ccb",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1185,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1185,
+          "source_offset_utf16": 12100,
+          "raw_chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p9:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 9,
+        "page_span": [
+          9,
+          9
+        ],
+        "score_total": 0.1144,
+        "s_lex": 0.0887,
+        "s_sem": 0,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.044374,
+          "semantic": 0,
+          "semiotic": 0.07,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "6cdecba53ef656412355cffd5c1f5977af7b0823a292e1fe8852ff66be976c7c",
+        "text_locator": {
+          "page_number": 9,
+          "page_sha256": "d534c8bcf1f3acf374920bf83d69c955dd1b63b123a441bfab4928b4b4b3e9c7",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 29487,
+          "raw_chunk_sha256": "6cdecba53ef656412355cffd5c1f5977af7b0823a292e1fe8852ff66be976c7c"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "cross_source": {
+    "status": "SEARCH_OK",
+    "query": "algedonic feedback semantic drift",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 6,
+    "hits": [
+      {
+        "id": "emb_20260911_6c888365fa73:p2:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 2,
+        "page_span": [
+          2,
+          2
+        ],
+        "score_total": 0.5995,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0.4975,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0.099497,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "c621ed7afcee364ea432cbdf7e3a9b935f3807d2786c6f9386d4e86baf33e870",
+        "text_locator": {
+          "page_number": 2,
+          "page_sha256": "e2f2f128bec50c16c359bcef526177107bc66bf54c827586fe7f819e1347fd05",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1605,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1605,
+          "source_offset_utf16": 5597,
+          "raw_chunk_sha256": "c621ed7afcee364ea432cbdf7e3a9b935f3807d2786c6f9386d4e86baf33e870"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.5722,
+        "s_lex": 0.7456,
+        "s_sem": 0.4313,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.372801,
+          "semantic": 0.12939,
+          "semiotic": 0.07,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p3:c0",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 3,
+        "page_span": [
+          3,
+          3
+        ],
+        "score_total": 0.4235,
+        "s_lex": 0.6481,
+        "s_sem": 0,
+        "s_semi": 0.4975,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.324037,
+          "semantic": 0,
+          "semiotic": 0.099497,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "1b2ea47e41ee98f970ec6d3093181b44c07992a4d5da2b016137213af4dd2c16",
+        "text_locator": {
+          "page_number": 3,
+          "page_sha256": "ce78a5a1b7df400b1262d1b6b6d5f076f838c091e8128a4ef6811b51d4407780",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 6517,
+          "raw_chunk_sha256": "1b2ea47e41ee98f970ec6d3093181b44c07992a4d5da2b016137213af4dd2c16"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p4:c0",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.409,
+        "s_lex": 0.718,
+        "s_sem": 0,
+        "s_semi": 0.25,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.359017,
+          "semantic": 0,
+          "semiotic": 0.05,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "701b3a4016582179ac0633e081ff5eae00ec68a795c2f543f49ee627cba1fde8",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "78fca41786ab89d97af8af2fbe4d1178d6772345210914dab1771fbff6bc2e62",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 10120,
+          "raw_chunk_sha256": "701b3a4016582179ac0633e081ff5eae00ec68a795c2f543f49ee627cba1fde8"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p4:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.1518,
+        "s_lex": 0,
+        "s_sem": 0.5061,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.15183,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "1f89063c7de24c5af2a0c353f67bee0d77348a0e2820af296eeca7a7c9434ccb",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1185,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1185,
+          "source_offset_utf16": 12100,
+          "raw_chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p9:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 9,
+        "page_span": [
+          9,
+          9
+        ],
+        "score_total": 0.1305,
+        "s_lex": 0.1211,
+        "s_sem": 0,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.06053,
+          "semantic": 0,
+          "semiotic": 0.07,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "6cdecba53ef656412355cffd5c1f5977af7b0823a292e1fe8852ff66be976c7c",
+        "text_locator": {
+          "page_number": 9,
+          "page_sha256": "d534c8bcf1f3acf374920bf83d69c955dd1b63b123a441bfab4928b4b4b3e9c7",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 29487,
+          "raw_chunk_sha256": "6cdecba53ef656412355cffd5c1f5977af7b0823a292e1fe8852ff66be976c7c"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "LEXICAL_ONLY": {
+    "status": "SEARCH_OK",
+    "query": "algedonic feedback semantic drift",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "LEXICAL_ONLY",
+      "channels": {
+        "lexical": true,
+        "semantic": false,
+        "semiotic": false,
+        "src": false
+      },
+      "weight_policy": "RENORMALIZE_ACTIVE"
+    },
+    "returned_hits": 6,
+    "hits": [
+      {
+        "id": "emb_20260911_6c888365fa73:p2:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 2,
+        "page_span": [
+          2,
+          2
+        ],
+        "score_total": 1,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 1,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "c621ed7afcee364ea432cbdf7e3a9b935f3807d2786c6f9386d4e86baf33e870",
+        "text_locator": {
+          "page_number": 2,
+          "page_sha256": "e2f2f128bec50c16c359bcef526177107bc66bf54c827586fe7f819e1347fd05",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1605,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1605,
+          "source_offset_utf16": 5597,
+          "raw_chunk_sha256": "c621ed7afcee364ea432cbdf7e3a9b935f3807d2786c6f9386d4e86baf33e870"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c0",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.8205,
+        "s_lex": 0.8205,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.820462,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "54d31d4e0f7b73ddaf16db661403ef6e25616e1b5717ca8c8697e0f3e7148863",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 0,
+          "raw_chunk_sha256": "54d31d4e0f7b73ddaf16db661403ef6e25616e1b5717ca8c8697e0f3e7148863"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p4:c0",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.718,
+        "s_lex": 0.718,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.718034,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "701b3a4016582179ac0633e081ff5eae00ec68a795c2f543f49ee627cba1fde8",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "78fca41786ab89d97af8af2fbe4d1178d6772345210914dab1771fbff6bc2e62",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 10120,
+          "raw_chunk_sha256": "701b3a4016582179ac0633e081ff5eae00ec68a795c2f543f49ee627cba1fde8"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p3:c0",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 3,
+        "page_span": [
+          3,
+          3
+        ],
+        "score_total": 0.6481,
+        "s_lex": 0.6481,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.648075,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "1b2ea47e41ee98f970ec6d3093181b44c07992a4d5da2b016137213af4dd2c16",
+        "text_locator": {
+          "page_number": 3,
+          "page_sha256": "ce78a5a1b7df400b1262d1b6b6d5f076f838c091e8128a4ef6811b51d4407780",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 6517,
+          "raw_chunk_sha256": "1b2ea47e41ee98f970ec6d3093181b44c07992a4d5da2b016137213af4dd2c16"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p10:c0",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.2272,
+        "s_lex": 0.2272,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.22723,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "6f490f0b9e216e1f3581ca64a6d1eb00d8238c258581345e0632468772af1607",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "18b218842284ca221ab11e66169a58643f37140bb2bd60e36240eee447cfe172",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2473,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2473,
+          "source_offset_utf16": 30741,
+          "raw_chunk_sha256": "6f490f0b9e216e1f3581ca64a6d1eb00d8238c258581345e0632468772af1607"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p9:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 9,
+        "page_span": [
+          9,
+          9
+        ],
+        "score_total": 0.1211,
+        "s_lex": 0.1211,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.12106,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "6cdecba53ef656412355cffd5c1f5977af7b0823a292e1fe8852ff66be976c7c",
+        "text_locator": {
+          "page_number": 9,
+          "page_sha256": "d534c8bcf1f3acf374920bf83d69c955dd1b63b123a441bfab4928b4b4b3e9c7",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 29487,
+          "raw_chunk_sha256": "6cdecba53ef656412355cffd5c1f5977af7b0823a292e1fe8852ff66be976c7c"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "SEMANTIC_ONLY": {
+    "status": "SEARCH_OK",
+    "query": "algedonic feedback semantic drift",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "SEMANTIC_ONLY",
+      "channels": {
+        "lexical": false,
+        "semantic": true,
+        "semiotic": false,
+        "src": false
+      },
+      "weight_policy": "RENORMALIZE_ACTIVE"
+    },
+    "returned_hits": 4,
+    "hits": [
+      {
+        "id": "emb_20260911_c90233bf09f6:p4:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.5061,
+        "s_lex": 0,
+        "s_sem": 0.5061,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.5061,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "1f89063c7de24c5af2a0c353f67bee0d77348a0e2820af296eeca7a7c9434ccb",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1185,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1185,
+          "source_offset_utf16": 12100,
+          "raw_chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_6c888365fa73:p1:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.4473,
+        "s_lex": 0.1864,
+        "s_sem": 0.4473,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.4473,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "ab8ee4dc9e9764ca64a3b5ec8608d6e0797355588db337b94cd7c8f563dd91eb",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "453025cc3daf2add800b0fe1aa6eb7305256a4ed7e5a916aeb4d715c7fc79932",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 796,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 796,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "ab8ee4dc9e9764ca64a3b5ec8608d6e0797355588db337b94cd7c8f563dd91eb"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.4313,
+        "s_lex": 0.7456,
+        "s_sem": 0.4313,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.4313,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p1:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.4276,
+        "s_lex": 0.367,
+        "s_sem": 0.4276,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.4276,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "366ce9a79c09afcd74539476b96d530d237c4822d6828392371f066a0b15f6a0",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "119e890e62b7e9ef5336284e1ad0eec5ffa292b6b5d55177dcace182704a879a",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 578,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 578,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "366ce9a79c09afcd74539476b96d530d237c4822d6828392371f066a0b15f6a0"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "SEMIOTIC_ONLY": {
+    "status": "SEARCH_OK",
+    "query": "algedonic feedback semantic drift",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "SEMIOTIC_ONLY",
+      "channels": {
+        "lexical": false,
+        "semantic": false,
+        "semiotic": true,
+        "src": false
+      },
+      "weight_policy": "RENORMALIZE_ACTIVE"
+    },
+    "returned_hits": 5,
+    "hits": [
+      {
+        "id": "emb_20260911_6c888365fa73:p6:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 6,
+        "page_span": [
+          6,
+          6
+        ],
+        "score_total": 0.55,
+        "s_lex": 0.8265,
+        "s_sem": 0,
+        "s_semi": 0.55,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.55,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "b707bbde2647cc6c4f41e19a17995ba79b8199dc7c6feebb0d1497e02bb4fd79",
+        "text_locator": {
+          "page_number": 6,
+          "page_sha256": "e6466b0744349cc62d6fea2ce3dd8d34023d2949f6661888aacb4019c6bcc2fa",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1314,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1314,
+          "source_offset_utf16": 20679,
+          "raw_chunk_sha256": "b707bbde2647cc6c4f41e19a17995ba79b8199dc7c6feebb0d1497e02bb4fd79"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p10:c0",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.55,
+        "s_lex": 0.4645,
+        "s_sem": 0,
+        "s_semi": 0.55,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.55,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "0945794436787c919c1747a110ddeab07cf179cc050f8bfaf8c4577954a45dca",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "63d02080120009d933c88fb345590a0d38dd5cbc5bb4faab6367e4ccf3d8ff26",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 30214,
+          "raw_chunk_sha256": "0945794436787c919c1747a110ddeab07cf179cc050f8bfaf8c4577954a45dca"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p10:c0",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.55,
+        "s_lex": 0.3193,
+        "s_sem": 0,
+        "s_semi": 0.55,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.55,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "e9f0560518021e93f4e6cd6520df897136ec33aaef9d02b054299c3471dd62d3",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "28722a921bba11d48f0375943a6a49076940f693c3c9c9006cba26254463bf64",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 32897,
+          "raw_chunk_sha256": "e9f0560518021e93f4e6cd6520df897136ec33aaef9d02b054299c3471dd62d3"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p7:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 7,
+        "page_span": [
+          7,
+          7
+        ],
+        "score_total": 0.35,
+        "s_lex": 0,
+        "s_sem": 0,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.35,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "75fc657dbefd00269608a7249061952aa5d9ac46a37e8d017b69c540f078f1ba",
+        "text_locator": {
+          "page_number": 7,
+          "page_sha256": "f036c1c6ccb9c7acadf7eac6ee0a1a374ec55a1a2fe0569781e1a58a71a257bc",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 21899,
+          "raw_chunk_sha256": "75fc657dbefd00269608a7249061952aa5d9ac46a37e8d017b69c540f078f1ba"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c0",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.35,
+        "s_lex": 0.8205,
+        "s_sem": 0,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.35,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "54d31d4e0f7b73ddaf16db661403ef6e25616e1b5717ca8c8697e0f3e7148863",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 0,
+          "raw_chunk_sha256": "54d31d4e0f7b73ddaf16db661403ef6e25616e1b5717ca8c8697e0f3e7148863"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "negative_oov": {
+    "status": "OOV_ALPHABETIC_CANARY_ABSTENTION",
+    "query": "qxzvblorpf quazznorpz",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": null,
+    "returned_hits": 0,
+    "hits": []
+  },
+  "SEMANTIC_SEMIOTIC": {
+    "status": "SEARCH_OK",
+    "query": "algedonic feedback semantic drift",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": false,
+        "semantic": true,
+        "semiotic": true,
+        "src": false
+      },
+      "weight_policy": "RENORMALIZE_ACTIVE"
+    },
+    "returned_hits": 6,
+    "hits": [
+      {
+        "id": "emb_20260911_6c888365fa73:p1:c1",
+        "prospective_source_id": "emb_20260911_6c888365fa73",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.4084,
+        "s_lex": 0.1864,
+        "s_sem": 0.4473,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.26838,
+          "semiotic": 0.14,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "ab8ee4dc9e9764ca64a3b5ec8608d6e0797355588db337b94cd7c8f563dd91eb",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "453025cc3daf2add800b0fe1aa6eb7305256a4ed7e5a916aeb4d715c7fc79932",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 796,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 796,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "ab8ee4dc9e9764ca64a3b5ec8608d6e0797355588db337b94cd7c8f563dd91eb"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_811766eb1387:p1:c1",
+        "prospective_source_id": "emb_20260911_811766eb1387",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.3988,
+        "s_lex": 0.7456,
+        "s_sem": 0.4313,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.25878,
+          "semiotic": 0.14,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "1cd93b81f618f945c3f417ab0a64b40f5b8040ba4ab396bc21b8a328cc270a90",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 465,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 465,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "83c77a58fb358eaa115aaf104a1371bf064ff9e297f3c25a74dc3bb5e43b99d1"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p4:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 4,
+        "page_span": [
+          4,
+          4
+        ],
+        "score_total": 0.3037,
+        "s_lex": 0,
+        "s_sem": 0.5061,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.30366,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747",
+        "text_locator": {
+          "page_number": 4,
+          "page_sha256": "1f89063c7de24c5af2a0c353f67bee0d77348a0e2820af296eeca7a7c9434ccb",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 1185,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 1185,
+          "source_offset_utf16": 12100,
+          "raw_chunk_sha256": "759f0a40c214e489bea09fdb10380dcb027c2d95ed7033f5c46768ec6a102747"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p1:c1",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 1,
+        "page_span": [
+          1,
+          1
+        ],
+        "score_total": 0.2566,
+        "s_lex": 0.367,
+        "s_sem": 0.4276,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.25656,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "366ce9a79c09afcd74539476b96d530d237c4822d6828392371f066a0b15f6a0",
+        "text_locator": {
+          "page_number": 1,
+          "page_sha256": "119e890e62b7e9ef5336284e1ad0eec5ffa292b6b5d55177dcace182704a879a",
+          "section": "prose",
+          "page_offset_utf16": 2400,
+          "page_length_utf16": 578,
+          "page_offset_unicode": 2400,
+          "page_length_unicode": 578,
+          "source_offset_utf16": 2400,
+          "raw_chunk_sha256": "366ce9a79c09afcd74539476b96d530d237c4822d6828392371f066a0b15f6a0"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p10:c0",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.22,
+        "s_lex": 0.3193,
+        "s_sem": 0,
+        "s_semi": 0.55,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.22,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "e9f0560518021e93f4e6cd6520df897136ec33aaef9d02b054299c3471dd62d3",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "28722a921bba11d48f0375943a6a49076940f693c3c9c9006cba26254463bf64",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 32897,
+          "raw_chunk_sha256": "e9f0560518021e93f4e6cd6520df897136ec33aaef9d02b054299c3471dd62d3"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_7c568aaf6e78:p7:c0",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 7,
+        "page_span": [
+          7,
+          7
+        ],
+        "score_total": 0.14,
+        "s_lex": 0,
+        "s_sem": 0,
+        "s_semi": 0.35,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0,
+          "semiotic": 0.14,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "75fc657dbefd00269608a7249061952aa5d9ac46a37e8d017b69c540f078f1ba",
+        "text_locator": {
+          "page_number": 7,
+          "page_sha256": "f036c1c6ccb9c7acadf7eac6ee0a1a374ec55a1a2fe0569781e1a58a71a257bc",
+          "section": "prose",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 2600,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 2600,
+          "source_offset_utf16": 21899,
+          "raw_chunk_sha256": "75fc657dbefd00269608a7249061952aa5d9ac46a37e8d017b69c540f078f1ba"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "negative_phrase": {
+    "status": "NO_MATCHING_WITNESSES",
+    "query": "\"semantic wombat teleports Hamiltonian\"",
+    "scope": "supplement",
+    "section": "prose",
+    "mode": "phrase",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 0,
+    "hits": []
+  },
+  "references": {
+    "status": "SEARCH_OK",
+    "query": "phase vocoder",
+    "scope": "supplement",
+    "section": "references",
+    "mode": "hybrid",
+    "profile": {
+      "schema": "td613.vixen.fusion-controls/v1",
+      "profile": "FULL_FUSION",
+      "channels": {
+        "lexical": true,
+        "semantic": true,
+        "semiotic": true,
+        "src": true
+      },
+      "weight_policy": "PRESERVE_BASELINE"
+    },
+    "returned_hits": 5,
+    "hits": [
+      {
+        "id": "emb_20260911_7c568aaf6e78:p10:c1",
+        "prospective_source_id": "emb_20260911_7c568aaf6e78",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.5,
+        "s_lex": 1,
+        "s_sem": 0,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0.5,
+          "semantic": 0,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "d6b04fbdc682fcb7de62fb36a86037d26976e3bcbbb8080295ee92c250f23da0",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "906aff6e2b5f6bde1e462e2aca355157cb0a7baf1c63c46e54b369f51a7fef92",
+          "section": "references",
+          "page_offset_utf16": 2009,
+          "page_length_utf16": 1518,
+          "page_offset_unicode": 2009,
+          "page_length_unicode": 1518,
+          "source_offset_utf16": 35147,
+          "raw_chunk_sha256": "d6b04fbdc682fcb7de62fb36a86037d26976e3bcbbb8080295ee92c250f23da0"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_fe1c355b4e7a:p12:c0",
+        "prospective_source_id": "emb_20260911_fe1c355b4e7a",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "page_number": 12,
+        "page_span": [
+          12,
+          12
+        ],
+        "score_total": 0.2555,
+        "s_lex": 0,
+        "s_sem": 0.8516,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.25548,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "6ca39e915d033510dac342d49fe4ab85fbc1942e93042467f58652000f99faee",
+        "text_locator": {
+          "page_number": 12,
+          "page_sha256": "6ca39e915d033510dac342d49fe4ab85fbc1942e93042467f58652000f99faee",
+          "section": "references",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 59,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 59,
+          "source_offset_utf16": 40350,
+          "raw_chunk_sha256": "6ca39e915d033510dac342d49fe4ab85fbc1942e93042467f58652000f99faee"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c56744fae0f7:p10:c2",
+        "prospective_source_id": "emb_20260911_c56744fae0f7",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.2125,
+        "s_lex": 0,
+        "s_sem": 0.7082,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.21246,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "9939fc90c87fa5025cca0b166167c0876b572c0684e1867960a48a16a3ff41f0",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "d77bd6f920a5c1be9712d21ee1f8a94c5590a38c5f890918f0d9e08d4a0a5154",
+          "section": "references",
+          "page_offset_utf16": 3410,
+          "page_length_utf16": 84,
+          "page_offset_unicode": 3410,
+          "page_length_unicode": 84,
+          "source_offset_utf16": 34659,
+          "raw_chunk_sha256": "9939fc90c87fa5025cca0b166167c0876b572c0684e1867960a48a16a3ff41f0"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_87ee5e995742:p13:c0",
+        "prospective_source_id": "emb_20260911_87ee5e995742",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "page_number": 13,
+        "page_span": [
+          13,
+          13
+        ],
+        "score_total": 0.1899,
+        "s_lex": 0,
+        "s_sem": 0.633,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.1899,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "f663c1891347ef3eb6a0342e1b2a5a5bc05446ca84f9d815c6708fd04ac8be43",
+        "text_locator": {
+          "page_number": 13,
+          "page_sha256": "f663c1891347ef3eb6a0342e1b2a5a5bc05446ca84f9d815c6708fd04ac8be43",
+          "section": "references",
+          "page_offset_utf16": 0,
+          "page_length_utf16": 268,
+          "page_offset_unicode": 0,
+          "page_length_unicode": 268,
+          "source_offset_utf16": 40404,
+          "raw_chunk_sha256": "f663c1891347ef3eb6a0342e1b2a5a5bc05446ca84f9d815c6708fd04ac8be43"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      },
+      {
+        "id": "emb_20260911_c90233bf09f6:p10:c1",
+        "prospective_source_id": "emb_20260911_c90233bf09f6",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "page_number": 10,
+        "page_span": [
+          10,
+          10
+        ],
+        "score_total": 0.1648,
+        "s_lex": 0,
+        "s_sem": 0.5495,
+        "s_semi": 0,
+        "s_src": 0,
+        "fusion_contributions": {
+          "lexical": 0,
+          "semantic": 0.16485,
+          "semiotic": 0,
+          "src_proj": 0,
+          "src_sig": 0
+        },
+        "chunk_sha256": "9429e8c9685bbbdeaecb8eb7efbab36db93b402b098703e44018386e7febe855",
+        "text_locator": {
+          "page_number": 10,
+          "page_sha256": "18b218842284ca221ab11e66169a58643f37140bb2bd60e36240eee447cfe172",
+          "section": "references",
+          "page_offset_utf16": 2473,
+          "page_length_utf16": 896,
+          "page_offset_unicode": 2473,
+          "page_length_unicode": 896,
+          "source_offset_utf16": 33214,
+          "raw_chunk_sha256": "9429e8c9685bbbdeaecb8eb7efbab36db93b402b098703e44018386e7febe855"
+        },
+        "work_id": null,
+        "canonical_work": false,
+        "relationship_status": "UNRATIFIED"
+      }
+    ]
+  },
+  "withdrawal": {
+    "status": "PASS",
+    "overlay_unavailable": true,
+    "overlay_attached_text_cache_size": 0,
+    "canonical_result_identical": true,
+    "canonical_index_sha256": "d4659bbc6aa0517d41317ccbc8ea751245943f5bbea001c8b7c1ecaf4989cc05"
+  }
+}

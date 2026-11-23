@@ -1,0 +1,11 @@
+import pathlib,sys,json,hashlib,datetime
+sys.path.insert(0,str(pathlib.Path(__file__).parent));from sandbox import sandbox,ROOT
+r,rec=sandbox(['/runtime/node','--jitless','--max-old-space-size=128','/runner/c0-native-retrieval.mjs'],app=True,output=ROOT/'evidence/EXPLORATORY-C0-withdrawal-replay.json');assert r.returncode==0
+first=json.loads((ROOT/'evidence/EXPLORATORY-C0-native-retrieval.json').read_text());last=json.loads(r.stdout)
+def signature(x):return [{'task_id':v['task_id'],'prompt_sha256':v['prompt_sha256'],'retrieval':v['retrieval'],'error':v['error']} for v in x['results']]
+a=signature(first);b=signature(last);assert a==b
+r,rec=sandbox(['/usr/bin/python3','-c','import pathlib,json; print(json.dumps({"input_mount_present":pathlib.Path("/input.pdf").exists(),"host_workspace_visible":pathlib.Path("/workspace").exists(),"quarantine_visible":pathlib.Path("/quarantine").exists()}))'],app=True,output=ROOT/'evidence/revoked-mount-visibility.json');assert r.returncode==0 and not any(json.loads(r.stdout).values())
+protected=json.loads((ROOT/'evidence/baseline-byte-inventory.json').read_text());changed=[e['path'] for e in protected if hashlib.sha256((ROOT/'baseline'/e['path']).read_bytes()).hexdigest()!=e['sha256']];assert not changed
+states={arm:{kind:len(list((ROOT/'arms'/arm/kind).iterdir())) for kind in ['indexes','cache','sessions','exports']} for arm in ['C0','C7','C1','C71']};assert all(n==0 for row in states.values() for n in row.values())
+result={'recorded_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'classification':'EXPLORATORY_BASELINE_REPLAY_AND_NO_ADMISSION_CLEANUP_WITNESS','all_24_native_retrieval_results_identical':True,'protected_files_checked':len(protected),'protected_files_changed':changed,'arm_local_counts':states,'seven_source_input_mount_revoked':True,'seven_source_indexes_ever_admitted':False,'full_seven_source_hydration_reversal_demonstrated':False,'eighth_input_received':False,'eighth_actual_revocation':'NOT_EVALUATED_UNRECEIVED','evidence_copies_retained_outside_trial_environments':True,'primary_rollback_qualification':'HELD_NO_ADMITTED_PRIMARY_INTERVENTIONS'}
+(ROOT/'evidence/rollback-witness.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))

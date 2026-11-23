@@ -1,0 +1,11 @@
+{
+  "attached_zip_sha256": "edba93aca651b656d438122a6642df387b43a975b933ddb5c789ec1a6cae34f4",
+  "payloads_verified": 106,
+  "existing_local_payloads_match": true,
+  "extraction_repeated": false,
+  "keyword_check": {
+    "query": "feedback",
+    "pages": 17,
+    "sources": 5
+  }
+}

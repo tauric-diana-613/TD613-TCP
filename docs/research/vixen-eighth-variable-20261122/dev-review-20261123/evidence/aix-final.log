@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "routes": [
+    "vixen.fusion.capabilities",
+    "vixen.fusion.search",
+    "vixen.fusion.compare",
+    "vixen.fusion.explain",
+    "aix.conductor.search",
+    "SRC_ONLY/src_projective",
+    "semantic–semiotic paired channels"
+  ],
+  "search_hits": 6,
+  "src_hits": 3,
+  "label_defect": {
+    "outer_estate": "EMSTD613",
+    "actual_scope": "seven prospective Vixen development sources, not the original EM estate",
+    "smallest_repair": "derive conductor result source scope from attached engine metadata; preserve each hit identity"
+  }
+}
