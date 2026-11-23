@@ -324,6 +324,25 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
  * measure and readable article typography. Phone rules remain RGI27-owned. */
 @media screen and (min-width:681px) {
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ .lexicon-index .lexicon-item>button {
+   min-height:58px!important;padding:10px 11px!important;gap:9px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ .lexicon-index .term-name {
+   font:400 15px/1.30 "Iowan Old Style","New York",Georgia,serif!important;
+   letter-spacing:-.01em!important;overflow-wrap:normal!important;word-break:normal!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ .lexicon-index .term-sub {
+   font:500 10px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+   margin-top:5px!important;letter-spacing:0!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+ .lexicon-index .record-num {
+   font:600 9px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+   min-width:19px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
  #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript {
    font:400 clamp(15.5px,1.13vw,17px)/1.61 "Iowan Old Style","Palatino Linotype",Georgia,serif!important;
    letter-spacing:0!important;
