@@ -3,7 +3,7 @@
 
 This branch is the persistent cross-thread review address for the **final, independently audited Chromium screenshot package only**, its manifest, source/source-revision and artifact-custody receipts. It exists separately from product PR #1730 and witness repair PR #1784.
 
-- **Source inherited:** witness-only candidate `b6106cf4633c2ad86f3519dc05f79b1144049aba` from draft PR #1784.
+- **Review branch ancestry:** initially sourced from witness-only candidate `b6106cf4633c2ad86f3519dc05f79b1144049aba` (draft PR #1784). **Moving repair candidate** at this ledger snapshot: `86664aecaa00951ffd085004c3db99ee256aa36b`; always recheck live #1784 HEAD.
 - **Established product preview:** `b90ae99559b21e1561229cdc8e1d873cfaf6f43a`, currently verified by successful #1744 PREPARE 45049541672 and DEPLOY 45049621797.
 - **Unmerged product:** PR #1730, branch `research/vixen-dual-estate-encyclopedia-20261108`.
 - **Witness repairs:** draft PR #1784; final CI must qualify its exact commit after all fixes.
@@ -26,7 +26,7 @@ Publish **exactly one** final screenshot package and **one** final integrity/cov
 
 ## Release and adjudication status
 
-HUMAN REVIEW PENDING. **No #1744 PREPARE or DEPLOY action from this branch.** Final package promotion and any product merge require separate qualified checks and authorization.
+HUMAN REVIEW PENDING. **No #1744 PREPARE or DEPLOY action from this branch.** Product-branch integration is operator-authorized **only after exact-head engineering and visual qualification**; independent human artistic adjudication remains reserved. The review branch is never merged as product code.
 
 OPERAHOUSE ≠ OPERA ≠ PERFORMER.
 Khona‌lit-po · Tauric Diana · ⟐SAC[X6ZNK5NO51]
