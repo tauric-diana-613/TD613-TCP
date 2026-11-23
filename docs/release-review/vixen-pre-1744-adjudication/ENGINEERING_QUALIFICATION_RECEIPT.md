@@ -59,6 +59,18 @@
 - Actual rendered arrival frames independently inspected across 1440×900, 1920×1080, 390×844 and 428×926. The 1440px runner observed a stable genuine `arriving` veil; the other three observed the arrival-to-`revealed` transition. Each profile independently captured a distinct `arrival_ready_frontispiece` with decoded original fox artwork and veil absent. No transition was promoted as an actual loading state.
 - This confirms bounded screenshot-phase fidelity of the historical source. Exact-head combined GREEN and final HTTPS served-revision attestation remain HELD.
 
+
+## Qualified local Chromium evidence — exact #1784 candidate db3fdddc
+
+- Exact witness/repair HEAD `db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`, stacked directly on product `b90ae99559b21e1561229cdc8e1d873cfaf6f43a`, with two changed files (source-only Folios CSS plus browser witness). Product #1730 unmodified at time of this receipt.
+- Consolidated [CI #45169186165](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45169186165): ALL FIVE non-skipped jobs **SUCCESS** (Vixen source-bound engineering, static constitutional/release contracts, offline Marrowline regression, Neon ZIP startup and scope classification). No workflow added.
+- Exact-head Actions screenshot artifact **14818197282**, name `vixen-full-surface-db3fdddc2a3f151b4a1158d3ffe5e732d5528bd0`, byte length **192904318**, temporary Actions retention **30 days**, GitHub retrieval https://github.com/tauric-diana-613/TD613-TCP/actions/runs/45169186165/artifacts/14818197282.
+- Downloaded full ZIP locally, independently checked SHA-256 **92525fbfebea21d7d8c55c876b350a26cece5927c93cff5ae74e8d03d23b74d2**.
+- Independent JPEG/manifest audit: **1005** decoded JPEGs; **132** observed route states (**33** per profile); profiles 1440×900 DPR1, 1920×1080 DPR1, 390×844 DPR3, 428×926 DPR3; **24** nested scroll regions and **44** document scroll surfaces; **0** missing/mismatched files, digests, byte lengths or dimensions, **0** stale/near-duplicate pane pixels, **0** browser/route/HTTP/console exceptions and **0** missing required route states. `COVERAGE.complete=true`. Independent auditor PASS.
+- Independently visually inspected actual representative images of each of four profiles for bottom Folios text/opaque grounds, Observatory open proof controls, Program Notes awaiting a **human** grant (never approved), and source Search/Fusion Laboratory. Folios optical filaments stay in negative space, authorial text on dark foreground. Human artistic acceptance reserved.
+- **Correct classification:** real Chromium **LOCAL HTTP** engineering qualification. This is not the final #1744 HTTPS screenshot package. Do **not** promote these bytes into the final screenshot registry. The subsequent exact product HEAD requires its own qualification after integration.
+
+
 ## Adjudication and integration conditions
 1. Re-read both PR heads, compare source ancestry, inspect non-skipped required Vixen jobs, and obtain exact-head GREEN.
 2. Fetch newest exact-head `vixen-full-surface-<SHA>` Actions artifact. Run [independent ZIP auditor](audit_final_surface.py), inspect representative screenshots at all four profiles and full-resolution corrected Folios text. Require missing routes / console / HTTP / page errors to be zero.
