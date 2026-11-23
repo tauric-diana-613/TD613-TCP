@@ -182,14 +182,36 @@ try{
   const response=await page.goto(origin,{waitUntil:'domcontentloaded',timeout:60000});
   if(response?.status()!==200)throw Error('SOURCE_HTTP_FAILED '+profile.name);
   await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:25000});
-  // A genuine loading veil is kept distinct from the decoded frontispiece.
-  const veil=page.locator('#vixEntryVeil');
-  if(await veil.count()){
-   await capture(page,path.join(profile.name,'arrival','loading-veil.jpg'),{
+  // A DOM node marked REVEALED cannot provide a genuine loading witness.
+  // Observations may also race the transition. Such frames are classified
+  // as transitions rather than relabeling a decoded frontispiece as a veil.
+  const veilSnapshot=()=>page.evaluate(()=>{
+   const el=document.getElementById('vixEntryVeil');
+   if(!el)return {present:false,state:null,visible:false};
+   const css=getComputedStyle(el),rect=el.getBoundingClientRect();
+   return {present:true,state:el.getAttribute('data-state'),
+    visible:!el.hidden&&css.display!=='none'&&css.visibility!=='hidden'&&
+     Number(css.opacity)>.01&&rect.width>0&&rect.height>0};
+  });
+  const veilStart=await veilSnapshot();
+  let arrivingFrame=null;
+  if(veilStart.present&&veilStart.visible&&veilStart.state==='arriving'){
+   arrivingFrame=await capture(page,path.join(profile.name,'arrival','veil-phase-observed.jpg'),{
     profile:profile.name,surface:'arrival-loading',kind:'arrival_loading_state',
-    veil_state:await veil.getAttribute('data-state'),is_final_frontispiece:false
+    veil_state_start:veilStart.state,is_final_frontispiece:false
    });
-   matrix.push({profile:profile.name,route:'arrival-loading',covered_bottom:true,tiles:1});
+   const veilEnd=await veilSnapshot();
+   const stableArrival=veilEnd.present&&veilEnd.visible&&veilEnd.state==='arriving';
+   arrivingFrame.veil_state_end=veilEnd.state;
+   if(!stableArrival){
+    arrivingFrame.surface='arrival-transition';
+    arrivingFrame.kind='arrival_transition_state';
+   }
+   matrix.push({profile:profile.name,route:stableArrival?'arrival-loading':'arrival-transition-observed',
+    observed_before:veilStart,observed_after:veilEnd,covered_bottom:true,tiles:1});
+  }else{
+   matrix.push({profile:profile.name,route:'arrival-loading-unobserved',
+    reason:'NO_VISIBLE_ARRIVING_VEIL',observed:veilStart,covered_bottom:false,tiles:0});
   }
   await page.waitForFunction(()=>{
    const img=document.querySelector('#view-overview #cover .hero-art img');
@@ -204,10 +226,13 @@ try{
     veil_present:!!document.getElementById('vixEntryVeil')};
   });
   if(hero.veil_present||hero.natural_width<=0)throw Error('FRONTISPIECE_NOT_DECODED '+JSON.stringify(hero));
-  await capture(page,path.join(profile.name,'arrival','decoded-frontispiece.jpg'),{
+  const decoded=await capture(page,path.join(profile.name,'arrival','decoded-frontispiece.jpg'),{
    profile:profile.name,surface:'decoded-frontispiece',kind:'arrival_ready_frontispiece',
    hero,device_scale_factor:profile.deviceScaleFactor??1
   });
+  if(arrivingFrame?.sha256===decoded.sha256)
+   failure.push({profile:profile.name,route:'arrival',
+    error:'LOADING_PHASE_PIXELS_IDENTICAL_TO_DECODED_FRONTSPIECE'});
   matrix.push({profile:profile.name,route:'decoded-frontispiece',covered_bottom:true,tiles:1});
   for(const route of primaryRoutes){
    try{
