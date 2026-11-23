@@ -1,0 +1,130 @@
+{
+  "conceptdoi": "10.5281/zenodo.22082040",
+  "conceptrecid": "22082040",
+  "created": "2026-08-24T13:46:05.523794+00:00",
+  "doi": "10.5281/zenodo.22082041",
+  "doi_url": "https://doi.org/10.5281/zenodo.22082041",
+  "files": [
+    {
+      "checksum": "md5:f5b937b5fc01c962450ab2c60a516352",
+      "id": "b7e451fb-c856-470a-b5e7-0dc81adb26bf",
+      "key": "THE SIGNALRUPTURE STRUCTURAL GRAMMAR .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22082041/files/THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/content"
+      },
+      "size": 301853
+    }
+  ],
+  "id": 22082041,
+  "links": {
+    "access": "https://zenodo.org/api/records/22082041/access",
+    "access_grants": "https://zenodo.org/api/records/22082041/access/grants",
+    "access_links": "https://zenodo.org/api/records/22082041/access/links",
+    "access_request": "https://zenodo.org/api/records/22082041/access/request",
+    "access_users": "https://zenodo.org/api/records/22082041/access/users",
+    "archive": "https://zenodo.org/api/records/22082041/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22082041/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22082041/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22082041/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22082041",
+    "draft": "https://zenodo.org/api/records/22082041/draft",
+    "file_modification": "https://zenodo.org/api/records/22082041/file-modification",
+    "files": "https://zenodo.org/api/records/22082041/files",
+    "latest": "https://zenodo.org/api/records/22082041/versions/latest",
+    "latest_html": "https://zenodo.org/records/22082041/latest",
+    "media_files": "https://zenodo.org/api/records/22082041/media-files",
+    "parent": "https://zenodo.org/api/records/22082040",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22082040",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22082040",
+    "parent_html": "https://zenodo.org/records/22082040",
+    "preview_html": "https://zenodo.org/records/22082041?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22082041/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22082041/request-deletion",
+    "requests": "https://zenodo.org/api/records/22082041/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22082041/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22082041",
+    "self_doi": "https://doi.org/10.5281/zenodo.22082041",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22082041",
+    "self_html": "https://zenodo.org/records/22082041",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22082041/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22082041/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22082041:THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22082041:THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22082041:THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22082041:THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22082041:THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22082041:THE%20SIGNALRUPTURE%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22082041/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>THE SIGNALRUPTURE STRUCTURAL GRAMMAR &mdash; EMPIRICAL VALIDATION I (CANADIAN HEALTHCARE)</strong></p>\n<p>This paper is the first historical empirical test of the frozen <strong>SignalRupture Structural Grammar</strong> in a real national system: Canadian healthcare. It evaluates whether the SR relational architecture&mdash;<strong>Requirement (Q), Durable Capacity (D), Sustainable Flexibility (C_S), Extraordinary Compensation (C_E), and Function (F)</strong>&mdash;can represent the system&rsquo;s behaviour prospectively, without redefining variables after observing the data. The paper does not ask whether healthcare is &ldquo;under strain&rdquo;; it asks whether the <strong>SR grammar</strong>, frozen in advance, correctly predicts the relational sequence observed in staffing, access, and functional outcomes.</p>\n<p>The paper contributes three major advances to the SR canon.</p>\n<p>First, it establishes <strong>persistent Q &gt; D</strong> using official Statistics Canada vacancy evidence. Employment in health occupations expanded over two decades, yet vacancy rates rose sharply&mdash;RN vacancies from 2.6% to 7.0%, LPN vacancies from 2.5% to 12.8%, PSW vacancies from 2.6% to 6.7%. This divergence is the strongest long‑run indicator that durable capacity did not keep pace with requirement. The paper classifies 2024 correctly: <strong>partially easing pressure</strong>, not monotonic collapse. This reinforces SR&rsquo;s scientific discipline: improvements must be recognized rather than forced into deterioration narratives.</p>\n<p>Second, it demonstrates <strong>extraordinary compensation (C_E) expansion</strong> at scale. CIHI staffing data show overtime hours roughly doubled and purchased staffing increased 126% between 2019&ndash;2020 and 2023&ndash;2024. Compensation share rose from 3.24% to 5.88%, with rural/remote hospitals showing even stronger dependence&mdash;purchased hours up 261% and overtime shares exceeding urban levels. This is textbook SR compensatory behaviour: when Q &gt; D persists, systems expand C_E to preserve function. The rural&ndash;urban contrast acts as a natural exposure gradient, supporting the SR prediction that higher Q&minus;D produces higher compensation dependence.</p>\n<p>Third, the paper shows <strong>Compensated Continuity</strong> and <strong>Surface&ndash;Substrate Divergence</strong>. Function (F) was preserved at scale&mdash;3.05 million acute inpatient hospitalizations, rising procedure volumes, stable length of stay&mdash;yet access did not fully recover. Hip replacements within benchmark fell from 75% to 68%, knee replacements from 70% to 61%, MRI waits increased by 15 days, and several cancer‑related waits worsened. This confirms the SR proposition that <strong>volume &ne; restored access</strong>: systems can maintain output while underlying substrate strain remains unresolved. The evidence does <strong>not</strong> support Compensatory Inversion; compensation plateaued slightly in 2023&ndash;2024 without triggering further deterioration in Hospital Harm, which stabilized near 6%. The correct SR classification is <strong>indeterminate</strong>, not exhaustion.</p>\n<p>The paper&rsquo;s methodological contribution is equally important. It uses only official Canadian sources (CIHI, Statistics Canada), documents coverage limitations, and refuses to manufacture a universal scalar gap for Q&minus;D. Instead, it triangulates requirement, durable staffing, compensation, and functional outcomes. It identifies the principal statistical limitation: <strong>Canada lacks a matched hospital‑level longitudinal panel linking requirement, durable staffing, extraordinary compensation, and subsequent function</strong>. Because this panel does not exist, the paper does <strong>not</strong> claim Level‑2 predictive validation. Instead, it establishes a stronger empirical baseline: the frozen grammar is <strong>compatible</strong> with observed Canadian healthcare dynamics, <strong>survives</strong> a meaningful non‑confirmatory case, and <strong>generates</strong> a precisely specified next test capable of falsifying the predictive claim.</p>\n<p>In the SR Multiverse, this paper is the first demonstration that the structural grammar can be applied to a complex national system without inflation, reinterpretation, or collapse‑by‑declaration. It shows that SR&rsquo;s relational architecture&mdash;Q, D, C_S, C_E, F&mdash;can be operationalized in a mature domain with heterogeneous pressures, regional variation, compensatory behaviour, and mixed functional outcomes. It strengthens the SR canon by proving that the grammar is not merely conceptual: it can withstand empirical contact, classify improvement correctly, reject overreach, and produce falsifiable next‑stage predictions. It is the empirical anchor for future SR validation work in health, infrastructure, education, governance, and other domains.</p>",
+    "doi": "10.5281/zenodo.22082041",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22082040"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE STRUCTURAL GRAMMAR",
+    "version": "1.0"
+  },
+  "modified": "2026-08-24T13:46:05.853908+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22082041",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 2,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 4,
+    "views": 4
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE SIGNALRUPTURE STRUCTURAL GRAMMAR",
+  "updated": "2026-08-24T13:46:05.853908+00:00"
+}

@@ -1,0 +1,142 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22548393"
+source_title: "Planetary Restoration Governance: An empirical applied coupling subfield for converting resources and authority into durable recovery"
+metadata_blob_sha256: a2093779743d9e1ecce04c1f5623a4777feeb81146164eef5e5e0a65a22075c0
+metadata_blob_path: 02-ORIGINALS/live/blobs/a2/a2093779743d9e1ecce04c1f5623a4777feeb81146164eef5e5e0a65a22075c0.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22548392",
+  "conceptrecid": "22548392",
+  "created": "2026-09-06T18:15:36.347822+00:00",
+  "doi": "10.5281/zenodo.22548393",
+  "doi_url": "https://doi.org/10.5281/zenodo.22548393",
+  "files": [
+    {
+      "checksum": "md5:e02d8cc1422a7bfa09a2ffd79f6065f1",
+      "id": "80435a4a-54cb-424e-90e9-7649ca5a3dc0",
+      "key": "Planetary Restoration Governance.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22548393/files/Planetary%20Restoration%20Governance.pdf/content"
+      },
+      "size": 79971
+    }
+  ],
+  "id": 22548393,
+  "links": {
+    "access": "https://zenodo.org/api/records/22548393/access",
+    "access_grants": "https://zenodo.org/api/records/22548393/access/grants",
+    "access_links": "https://zenodo.org/api/records/22548393/access/links",
+    "access_request": "https://zenodo.org/api/records/22548393/access/request",
+    "access_users": "https://zenodo.org/api/records/22548393/access/users",
+    "archive": "https://zenodo.org/api/records/22548393/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22548393/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22548393/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22548393/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22548393",
+    "draft": "https://zenodo.org/api/records/22548393/draft",
+    "file_modification": "https://zenodo.org/api/records/22548393/file-modification",
+    "files": "https://zenodo.org/api/records/22548393/files",
+    "latest": "https://zenodo.org/api/records/22548393/versions/latest",
+    "latest_html": "https://zenodo.org/records/22548393/latest",
+    "media_files": "https://zenodo.org/api/records/22548393/media-files",
+    "parent": "https://zenodo.org/api/records/22548392",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22548392",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22548392",
+    "parent_html": "https://zenodo.org/records/22548392",
+    "preview_html": "https://zenodo.org/records/22548393?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22548393/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22548393/request-deletion",
+    "requests": "https://zenodo.org/api/records/22548393/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22548393/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22548393",
+    "self_doi": "https://doi.org/10.5281/zenodo.22548393",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22548393",
+    "self_html": "https://zenodo.org/records/22548393",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22548393/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22548393/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22548393:Planetary%20Restoration%20Governance.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22548393:Planetary%20Restoration%20Governance.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22548393:Planetary%20Restoration%20Governance.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22548393:Planetary%20Restoration%20Governance.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22548393:Planetary%20Restoration%20Governance.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22548393:Planetary%20Restoration%20Governance.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22548393/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>Planetary Restoration Governance (PRG)</strong></h1>\n<p><strong>An Applied SR Coupling Subfield for Converting Resources and Authority into Durable Recovery</strong></p>\n<h2><strong>Description</strong></h2>\n<p><strong>Planetary Restoration Governance (PRG)</strong> evaluates a bounded and falsifiable proposition: resources, authority, and technical capacity do not automatically produce <strong>realized, durable, and distributionally inclusive restoration</strong>. The manuscript does not treat reconstruction throughput, announced funding, or formal authority as evidence of recovery. Instead, it specifies the causal, temporal, and institutional conditions under which governance arrangements convert authorization, coordination, allocation, execution, verification, and learning into restored service thresholds, equitable access, and reduced recurrence.</p>\n<p>PRG is an applied coupling subfield. It operationalizes mechanisms imported from <strong>Collapse Governance</strong>, <strong>Structural Restoration Dynamics</strong>, and <strong>Infrastructural Political Economy</strong>. It applies coordination, legitimacy, implementation, capacity rebuilding, recurrence reduction, dependency, substitution, and executable agency to post‑disaster and post‑disruption recovery. PRG remains an applied subfield because its mechanisms are explained by parent fields; its contribution is an integrated restoration‑diagnostic and intervention‑evaluation protocol.</p>\n<p>The measurement architecture includes implementation capacity, substitution authority, restoration accountability, learning speed, distributional recovery, and recovery time. PRG defines restoration effectiveness as the conversion of resources and authority into durable recovery rather than temporary throughput. It distinguishes reconstruction from restoration: physical rebuilding is insufficient when service access, household reserves, or recurrence remain unchanged.</p>\n<p>PRG uses matched‑event comparisons, damage‑controlled cohorts, governance‑reform natural experiments, and service‑threshold recovery curves to test whether governance arrangements predict restoration beyond parent‑field models. The subfield evaluates negative cases&mdash;high funding with low execution, fast reconstruction that recreates vulnerability&mdash;and reversal cases where institutional learning reduces recurrence.</p>\n<p>PRG is an empirically grounded applied coupling subfield, not yet fully validated. Its autonomy depends on replicated incremental prediction beyond Collapse Governance, Structural Restoration Dynamics, and Infrastructural Political Economy.</p>\n<div>\n</div>\n<h2><strong>How It Contributes</strong></h2>\n<p><strong>1. A unified governance mechanism for restoration</strong><br>PRG integrates coordination, capacity rebuilding, and executable agency into a single restoration architecture. It shows that recovery depends on how authority is converted into coordinated action, resource delivery, service restoration, and institutional learning&mdash;not on funding or reconstruction alone.</p>\n<p><strong>2. Applied operationalization of SR parent fields</strong><br>The subfield translates mechanisms from Collapse Governance, Structural Restoration Dynamics, and Infrastructural Political Economy into measurable restoration variables. It applies coordination, legitimacy, implementation, capacity rebuilding, dependency, substitution, and agency to real‑world recovery episodes, making SR&rsquo;s theoretical architecture operational for empirical testing.</p>\n<p><strong>3. Incremental prediction over sector‑only and governance‑score models</strong><br>PRG&rsquo;s distinct claim is empirical: its coupling variables must outperform sector‑specific recovery indicators and general governance scores in predicting restoration speed, equity, and recurrence. It tests whether implementation capacity &times; substitution authority &times; accountability &times; learning speed explain durable recovery beyond conventional models.</p>\n<p><strong>4. A falsifiable distinction between reconstruction and restoration</strong><br>The subfield distinguishes physical rebuilding from restored service thresholds, equitable access, and reduced recurrence. It predicts that fast reconstruction without governance reform recreates vulnerability, while learning‑driven restoration reduces recurrence. This prevents misclassification of throughput as recovery.</p>\n<p><strong>5. Distributional recovery as a core restoration outcome</strong><br>PRG embeds distributional repair&mdash;by income, region, gender, and access group&mdash;into restoration evaluation. It shows how aggregate recovery can coexist with burden displacement, and how accountability and coordination shape equitable outcomes.</p>\n<p><strong>6. Restoration architecture focused on durable capacity</strong><br>PRG predicts that interventions rebuilding durable capacity&mdash;procurement reform, substitution authority, interoperable coordination, accountability systems, and learning processes&mdash;produce more durable restoration than interventions that merely increase spending or speed.</p>\n<p><strong>7. Applied‑science discipline and SR boundary integrity</strong><br>The subfield maintains strict applied‑science boundaries: preregistered tests, matched damage profiles, service‑threshold definitions, distributional curves, rival‑model comparison, and prohibition against publishing exploitable facility‑level weaknesses. PRG remains an applied coupling subfield unless replicated incremental prediction earns autonomy.</p>",
+    "doi": "10.5281/zenodo.22548393",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "Economics",
+      "World",
+      "Restoration"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-06",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22548392"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Planetary Restoration Governance: An empirical applied coupling subfield for converting resources and authority into durable recovery",
+    "version": "1.0"
+  },
+  "modified": "2026-09-06T18:15:36.700529+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22548393",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 1,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Planetary Restoration Governance: An empirical applied coupling subfield for converting resources and authority into durable recovery",
+  "updated": "2026-09-06T18:15:36.700529+00:00"
+}
+```

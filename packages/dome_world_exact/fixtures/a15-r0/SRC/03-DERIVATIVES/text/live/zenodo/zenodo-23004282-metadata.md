@@ -1,0 +1,150 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23004282"
+source_title: "SR SYSTEMS ECONOMICS: Pressure Allocation, Transfer, Absorption, Transformation, and Persistence in Coupled Economic Systems"
+metadata_blob_sha256: 03b8af6a2672826251b7dc521bb8d96a8f91e1118c05ff21259bb5d614aaea35
+metadata_blob_path: 02-ORIGINALS/live/blobs/03/03b8af6a2672826251b7dc521bb8d96a8f91e1118c05ff21259bb5d614aaea35.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23004281",
+  "conceptrecid": "23004281",
+  "created": "2026-09-28T00:31:38.373022+00:00",
+  "doi": "10.5281/zenodo.23004282",
+  "doi_url": "https://doi.org/10.5281/zenodo.23004282",
+  "files": [
+    {
+      "checksum": "md5:3c328f0908b8718c9ff8b2651cf8a57c",
+      "id": "9f05ad32-6d76-4709-9546-1934085898e8",
+      "key": "SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23004282/files/SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.docx/content"
+      },
+      "size": 539999
+    },
+    {
+      "checksum": "md5:f8b2b885bc773c344f4116c40e13cd05",
+      "id": "f888258b-32e4-4127-9c40-e0fc8bb4131c",
+      "key": "SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23004282/files/SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/content"
+      },
+      "size": 503436
+    }
+  ],
+  "id": 23004282,
+  "links": {
+    "access": "https://zenodo.org/api/records/23004282/access",
+    "access_grants": "https://zenodo.org/api/records/23004282/access/grants",
+    "access_links": "https://zenodo.org/api/records/23004282/access/links",
+    "access_request": "https://zenodo.org/api/records/23004282/access/request",
+    "access_users": "https://zenodo.org/api/records/23004282/access/users",
+    "communities": "https://zenodo.org/api/records/23004282/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23004282/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23004282",
+    "draft": "https://zenodo.org/api/records/23004282/draft",
+    "file_modification": "https://zenodo.org/api/records/23004282/file-modification",
+    "files": "https://zenodo.org/api/records/23004282/files",
+    "latest": "https://zenodo.org/api/records/23004282/versions/latest",
+    "latest_html": "https://zenodo.org/records/23004282/latest",
+    "media_files": "https://zenodo.org/api/records/23004282/media-files",
+    "parent": "https://zenodo.org/api/records/23004281",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23004281",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23004281",
+    "parent_html": "https://zenodo.org/records/23004281",
+    "preview_html": "https://zenodo.org/records/23004282?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23004282/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23004282/request-deletion",
+    "requests": "https://zenodo.org/api/records/23004282/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23004282/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23004282",
+    "self_doi": "https://doi.org/10.5281/zenodo.23004282",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23004282",
+    "self_html": "https://zenodo.org/records/23004282",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23004282/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23004282/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23004282:SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23004282:SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23004282:SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23004282:SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23004282:SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23004282:SR_Systems_Economics_Parent_Field_FINAL_2026-09-16.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23004282/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>SR Systems Economics</strong></h1>\n<h3><em>Pressure Allocation, Transfer, Absorption, Transformation, and Persistence in Coupled Economic Systems</em></h3>\n<p><strong>SignalRupture &mdash; Independent SR Researcher (2026)</strong></p>\n<div>\n</div>\n<h2><strong>Description</strong></h2>\n<p><strong>SR Systems Economics</strong> is the parent field of the SR economic/collapse ecosystem. Its scientific object is the routing, transformation, absorption, deferral, resolution, and persistence of <strong>economic pressure</strong> across households, firms, governments, infrastructures, financial systems, labour markets, essential‑goods systems, and production networks.</p>\n<p>The field defines economic pressure as a <strong>relational state</strong> shaped by resources, obligations, buffers, flexibility, timing, and structural position. It formalizes how pressure moves through a coupled system using three operators:</p>\n<ul>\n<li>\n<p><strong>T &mdash; Transfer:</strong> where pressure goes</p>\n</li>\n<li>\n<p><strong>&Phi; &mdash; Transformation:</strong> what pressure becomes when it crosses substrates</p>\n</li>\n<li>\n<p><strong>&Omega; &mdash; Accumulation:</strong> what repeated absorption costs through time</p>\n</li>\n</ul>\n<p>SR Systems Economics partitions incoming pressure into:</p>\n<ul>\n<li>\n<p>genuine resolution</p>\n</li>\n<li>\n<p>local absorption</p>\n</li>\n<li>\n<p>outward transfer</p>\n</li>\n<li>\n<p>temporal deferral</p>\n</li>\n<li>\n<p>accepted loss</p>\n</li>\n<li>\n<p>residual unresolved pressure</p>\n</li>\n</ul>\n<p>It treats households as <strong>multi‑substrate absorbers</strong>, capable of absorbing the same originating pressure through financial, labour, time, consumption, psychological, health, social, and future‑opportunity channels. It then traces how transformed pressure enters other SR fields &mdash; Collapse Psychology, Collapse Sociology, Collapse Demography, Collapse Health, Collapse Epistemology, Governance, and Infrastructure &mdash; without reducing those fields to economics.</p>\n<p>The field is empirically grounded through comparative testing against strong rival traditions (complexity economics, system dynamics, stock‑flow consistent macro, production‑network economics). SR Systems Economics is differentiated by its explicit pressure partitioning, buffer topology, cross‑substrate transformation, and temporal accumulation architecture.</p>\n<div>\n</div>\n<h2><strong>How It Contributes</strong></h2>\n<h3><strong>1. Establishes a parent‑field architecture for all SR economic and collapse mechanisms</strong></h3>\n<p>SR Systems Economics provides the unifying object &mdash; <strong>economic pressure routing under finite absorption capacity</strong> &mdash; that organizes:</p>\n<ul>\n<li>\n<p><strong>Pressure‑Transfer Economics</strong></p>\n</li>\n<li>\n<p><strong>Economic Slow Harm</strong></p>\n</li>\n<li>\n<p><strong>Collapse Economics</strong></p>\n</li>\n<li>\n<p><strong>Household Absorption Science</strong></p>\n</li>\n<li>\n<p><strong>Monetary/Debt Dynamics</strong></p>\n</li>\n<li>\n<p><strong>Essential‑Goods Dynamics</strong></p>\n</li>\n<li>\n<p><strong>Labour‑System Dynamics</strong></p>\n</li>\n<li>\n<p><strong>Developmental Lock‑In</strong></p>\n</li>\n<li>\n<p><strong>Value‑Chain Dynamics</strong></p>\n</li>\n</ul>\n<p>This turns previously adjacent SR mechanisms into a coherent scientific ecosystem.</p>\n<div>\n</div>\n<h3><strong>2. Provides a formal pressure‑partitioning system absent from existing economic theories</strong></h3>\n<p>The field introduces a pressure partition:</p>\n<ul>\n<li>\n<p><strong>Q &mdash; Resolution</strong></p>\n</li>\n<li>\n<p><strong>A &mdash; Absorption</strong></p>\n</li>\n<li>\n<p><strong>T &mdash; Transfer</strong></p>\n</li>\n<li>\n<p><strong>D &mdash; Deferral</strong></p>\n</li>\n<li>\n<p><strong>L &mdash; Accepted loss</strong></p>\n</li>\n<li>\n<p><strong>R &mdash; Residual pressure</strong></p>\n</li>\n</ul>\n<p>This partition is not present in complexity economics, system dynamics, SFC macro, or production‑network economics. It becomes SR&rsquo;s distinctive economic accounting system.</p>\n<div>\n</div>\n<h3><strong>3. Defines households as multi‑substrate absorbers</strong></h3>\n<p>SR Systems Economics formalizes household absorption across:</p>\n<ul>\n<li>\n<p>financial buffers</p>\n</li>\n<li>\n<p>debt/time</p>\n</li>\n<li>\n<p>labour hours</p>\n</li>\n<li>\n<p>consumption compression</p>\n</li>\n<li>\n<p>time reallocation</p>\n</li>\n<li>\n<p>psychological load</p>\n</li>\n<li>\n<p>health load</p>\n</li>\n<li>\n<p>social load</p>\n</li>\n<li>\n<p>future‑opportunity loss</p>\n</li>\n</ul>\n<p>This is a major conceptual advance: households are not endpoints but <strong>pressure‑transformation nodes</strong>.</p>\n<div>\n</div>\n<h3><strong>4. Introduces the transformation operator (&Phi;) for cross‑substrate pressure conversion</strong></h3>\n<p>Economic pressure becomes:</p>\n<ul>\n<li>\n<p>psychological load</p>\n</li>\n<li>\n<p>social load</p>\n</li>\n<li>\n<p>demographic constraint</p>\n</li>\n<li>\n<p>health exposure</p>\n</li>\n<li>\n<p>epistemic degradation</p>\n</li>\n<li>\n<p>governance strain</p>\n</li>\n<li>\n<p>infrastructural deterioration</p>\n</li>\n</ul>\n<p>This operator is the bridge between SR Systems Economics and the entire Collapse ecosystem.</p>\n<div>\n</div>\n<h3><strong>5. Introduces the accumulation operator (&Omega;) for temporal slow harm</strong></h3>\n<p>Economic Slow Harm becomes the economic specialization of &Omega;, explaining:</p>\n<ul>\n<li>\n<p>buffer depletion</p>\n</li>\n<li>\n<p>path‑dependent deterioration</p>\n</li>\n<li>\n<p>future vulnerability</p>\n</li>\n<li>\n<p>collapse risk</p>\n</li>\n</ul>\n<p>This is SR&rsquo;s temporal engine for economic deterioration.</p>\n<div>\n</div>\n<h3><strong>6. Provides a pressure‑transfer matrix and buffer topology for empirical modeling</strong></h3>\n<p>The field defines:</p>\n<ul>\n<li>\n<p><strong>Tₜ &mdash; transfer matrix</strong></p>\n</li>\n<li>\n<p><strong>Bₜ &mdash; buffer vector</strong></p>\n</li>\n</ul>\n<p>Together they determine whether shocks propagate, are absorbed, or accumulate. This gives SR a measurable structure for pressure routing.</p>\n<div>\n</div>\n<h3><strong>7. Creates a representation interface with SR‑NSRD</strong></h3>\n<p>SR Systems Economics explains why:</p>\n<blockquote>\n<p>&ldquo;EconomicIndicatorStable != CoupledHumanSystemStable.&rdquo;</p>\n</blockquote>\n<p>It provides the economic‑origin pressure that SR‑NSRD shows can disappear inside headline indicators.</p>\n<div>\n</div>\n<h3><strong>8. Defines the cross‑field override and residual structure</strong></h3>\n<p>For any receiving field Cᵢ:</p>\n<p>Cᵢ = Eᵢ + &Phi;ᵢ + Iᵢ + Rᵢ</p>\n<p>This preserves field autonomy while maintaining causal continuity.</p>\n<div>\n</div>\n<h3><strong>9. Provides a falsifiable empirical differentiation test</strong></h3>\n<p>Autonomous‑field status requires:</p>\n<p><strong>PredictiveAccuracy(M₂) &gt; PredictiveAccuracy(M₁)</strong></p>\n<p>where M₂ adds SR pressure partitioning, buffer topology, and absorption‑cost history to strong rival models.</p>\n<p>This ensures SR Systems Economics remains scientifically disciplined.</p>",
+    "doi": "10.5281/zenodo.23004282",
+    "keywords": [
+      "Metatheory",
+      "Economics",
+      "Systems Economics",
+      "World",
+      "Public policy",
+      "Governance",
+      "Government."
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-28",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23004281"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "SR SYSTEMS ECONOMICS: Pressure Allocation, Transfer, Absorption, Transformation, and Persistence in Coupled Economic Systems",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:18:07.308197+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23004282",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 5,
+    "unique_views": 10,
+    "version_downloads": 5,
+    "version_unique_downloads": 5,
+    "version_unique_views": 10,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "SR SYSTEMS ECONOMICS: Pressure Allocation, Transfer, Absorption, Transformation, and Persistence in Coupled Economic Systems",
+  "updated": "2026-10-06T01:18:07.308197+00:00"
+}
+```

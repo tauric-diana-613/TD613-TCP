@@ -1,0 +1,135 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23175302"
+source_title: "The Genealogy of Neoliberalism and the Rise of Nonprofit Crisis Governance"
+metadata_blob_sha256: 539fef428d7adb21a9ecfed22df86b37851b4f9506fbbcc9994bcb16cfb76dbc
+metadata_blob_path: 02-ORIGINALS/live/blobs/53/539fef428d7adb21a9ecfed22df86b37851b4f9506fbbcc9994bcb16cfb76dbc.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23175301",
+  "conceptrecid": "23175301",
+  "created": "2026-10-06T00:59:17.823937+00:00",
+  "doi": "10.5281/zenodo.23175302",
+  "doi_url": "https://doi.org/10.5281/zenodo.23175302",
+  "files": [
+    {
+      "checksum": "md5:3b9031f82eb79011e73b8e414b187e6f",
+      "id": "737e9709-5878-4428-a361-9c4dbe4ece7e",
+      "key": "Neoliberalism_and_Crisis_Management.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23175302/files/Neoliberalism_and_Crisis_Management.pdf/content"
+      },
+      "size": 203077
+    }
+  ],
+  "id": 23175302,
+  "links": {
+    "access": "https://zenodo.org/api/records/23175302/access",
+    "access_grants": "https://zenodo.org/api/records/23175302/access/grants",
+    "access_links": "https://zenodo.org/api/records/23175302/access/links",
+    "access_request": "https://zenodo.org/api/records/23175302/access/request",
+    "access_users": "https://zenodo.org/api/records/23175302/access/users",
+    "communities": "https://zenodo.org/api/records/23175302/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23175302/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23175302",
+    "draft": "https://zenodo.org/api/records/23175302/draft",
+    "file_modification": "https://zenodo.org/api/records/23175302/file-modification",
+    "files": "https://zenodo.org/api/records/23175302/files",
+    "latest": "https://zenodo.org/api/records/23175302/versions/latest",
+    "latest_html": "https://zenodo.org/records/23175302/latest",
+    "media_files": "https://zenodo.org/api/records/23175302/media-files",
+    "parent": "https://zenodo.org/api/records/23175301",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23175301",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23175301",
+    "parent_html": "https://zenodo.org/records/23175301",
+    "preview_html": "https://zenodo.org/records/23175302?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23175302/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23175302/request-deletion",
+    "requests": "https://zenodo.org/api/records/23175302/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23175302/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23175302",
+    "self_doi": "https://doi.org/10.5281/zenodo.23175302",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23175302",
+    "self_html": "https://zenodo.org/records/23175302",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23175302/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23175302/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23175302:Neoliberalism_and_Crisis_Management.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23175302:Neoliberalism_and_Crisis_Management.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23175302:Neoliberalism_and_Crisis_Management.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23175302:Neoliberalism_and_Crisis_Management.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23175302:Neoliberalism_and_Crisis_Management.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23175302:Neoliberalism_and_Crisis_Management.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23175302/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": "Independent Systems Researcher",
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>Neoliberalism has influenced not only economic policy but also the institutional organization of social provision. This paper examines how market-oriented reform, public-service contracting, and managerial accountability can position nonprofit organizations as enduring infrastructure for crisis management. It develops a historical and institutional synthesis anchored in published Canadian shelter statistics, an emergency-shelter audit, operator funding requirements, household food-insecurity estimates, and research on income protection. The central argument is conditional: where service providers receive responsibility for immediate need without authority over its recurring causes, successful relief can coexist with persistent crisis production. Competitive procurement, restricted mandates, fragmented accountability, and unstable funding can reinforce this separation. The paper distinguishes a crisis ecosystem from a merely extensive service network, burden transfer from legitimate delegation, and policy drift from explicit institutional redesign. It also recognizes nonprofit advocacy, prevention, and housing provision as important limits to any claim of inherent sectoral incapacity. Its contribution is a framework connecting the production of need, the allocation of corrective authority, and the measurement of service success. The evidence documents service pressure and gaps in continuity of support, while income-policy research demonstrates that preventable need can be reduced. These findings support a conditional account of crisis governance, not a causal estimate of neoliberalism&rsquo;s overall effects. The paper develops falsifiable propositions and an SR-informed mixed-economy proposal connecting prevention to dependable services, funded workforce transition, and staged implementation. Its effectiveness remains subject to evaluation.</p>",
+    "doi": "10.5281/zenodo.23175302",
+    "keywords": [
+      "neoliberalism",
+      "crisis management",
+      "nonprofit governance",
+      "burden transfer",
+      "institutional drift",
+      "SignalRupture"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23175301"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "The Genealogy of Neoliberalism and the Rise of Nonprofit Crisis Governance",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T00:59:18.115584+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23175302",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 4,
+    "unique_views": 9,
+    "version_downloads": 5,
+    "version_unique_downloads": 4,
+    "version_unique_views": 9,
+    "version_views": 10,
+    "views": 10
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "The Genealogy of Neoliberalism and the Rise of Nonprofit Crisis Governance",
+  "updated": "2026-10-06T00:59:18.115584+00:00"
+}
+```

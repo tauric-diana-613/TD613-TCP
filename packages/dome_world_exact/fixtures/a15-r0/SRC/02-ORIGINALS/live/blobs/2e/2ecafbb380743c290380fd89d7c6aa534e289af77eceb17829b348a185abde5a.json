@@ -1,0 +1,135 @@
+{
+  "conceptdoi": "10.5281/zenodo.23144065",
+  "conceptrecid": "23144065",
+  "created": "2026-10-04T19:39:09.840764+00:00",
+  "doi": "10.5281/zenodo.23144066",
+  "doi_url": "https://doi.org/10.5281/zenodo.23144066",
+  "files": [
+    {
+      "checksum": "md5:ce61ce54b384f4ac843b3804d54ac9ee",
+      "id": "2d36fb95-ac5d-4ffd-bf7d-7f07f823415c",
+      "key": "HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23144066/files/HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.docx/content"
+      },
+      "size": 134676
+    },
+    {
+      "checksum": "md5:c276ee3d5b185d582f30bc3dd2c07524",
+      "id": "4ed8bb9a-d608-48cc-b008-00a3ff6a8f81",
+      "key": "HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23144066/files/HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/content"
+      },
+      "size": 444632
+    }
+  ],
+  "id": 23144066,
+  "links": {
+    "access": "https://zenodo.org/api/records/23144066/access",
+    "access_grants": "https://zenodo.org/api/records/23144066/access/grants",
+    "access_links": "https://zenodo.org/api/records/23144066/access/links",
+    "access_request": "https://zenodo.org/api/records/23144066/access/request",
+    "access_users": "https://zenodo.org/api/records/23144066/access/users",
+    "communities": "https://zenodo.org/api/records/23144066/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23144066/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23144066",
+    "draft": "https://zenodo.org/api/records/23144066/draft",
+    "file_modification": "https://zenodo.org/api/records/23144066/file-modification",
+    "files": "https://zenodo.org/api/records/23144066/files",
+    "latest": "https://zenodo.org/api/records/23144066/versions/latest",
+    "latest_html": "https://zenodo.org/records/23144066/latest",
+    "media_files": "https://zenodo.org/api/records/23144066/media-files",
+    "parent": "https://zenodo.org/api/records/23144065",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23144065",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23144065",
+    "parent_html": "https://zenodo.org/records/23144065",
+    "preview_html": "https://zenodo.org/records/23144066?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23144066/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23144066/request-deletion",
+    "requests": "https://zenodo.org/api/records/23144066/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23144066/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23144066",
+    "self_doi": "https://doi.org/10.5281/zenodo.23144066",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23144066",
+    "self_html": "https://zenodo.org/records/23144066",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23144066/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23144066/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23144066:HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23144066:HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23144066:HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23144066:HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23144066:HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23144066:HARM_AND_VALUE_DYNAMICS_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23144066/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Harm and Value Dynamics: SR Counterfactual Harm and Value Theory</strong></p>\n<div>\n</div>\n<h1><strong>DESCRIPTION</strong></h1>\n<p><strong>Harm and Value Dynamics</strong> is a canonical SR subfield within <strong>Experience and Value Science</strong>. Its irreducible object is <strong>counterfactual change</strong> in:</p>\n<ul>\n<li>\n<p>welfare</p>\n</li>\n<li>\n<p>capability</p>\n</li>\n<li>\n<p>burden</p>\n</li>\n<li>\n<p>opportunity</p>\n</li>\n<li>\n<p>security</p>\n</li>\n<li>\n<p>valued functioning</p>\n</li>\n</ul>\n<p>across time and across affected parties.</p>\n<p>The unit of analysis is an <strong>affected-party record</strong> containing:</p>\n<ul>\n<li>\n<p>a defined person or group</p>\n</li>\n<li>\n<p>a condition or intervention</p>\n</li>\n<li>\n<p>a defensible baseline</p>\n</li>\n<li>\n<p>a counterfactual comparison</p>\n</li>\n<li>\n<p>a declared horizon</p>\n</li>\n<li>\n<p>a distribution</p>\n</li>\n<li>\n<p>an uncertainty record</p>\n</li>\n</ul>\n<p>The field is governed by <strong>SR Counterfactual Harm and Value Theory</strong>, which states:</p>\n<blockquote>\n<p><strong>Harm is not an event.<br>Harm is a counterfactual change borne by identifiable parties relative to a feasible alternative.</strong></p>\n</blockquote>\n<p>The field preserves:</p>\n<ul>\n<li>\n<p>component‑specific change</p>\n</li>\n<li>\n<p>distributional structure</p>\n</li>\n<li>\n<p>burden transfer</p>\n</li>\n<li>\n<p>reversibility</p>\n</li>\n<li>\n<p>cumulative adverse change</p>\n</li>\n<li>\n<p>uncertainty</p>\n</li>\n<li>\n<p>subgroup effects</p>\n</li>\n<li>\n<p>tail effects</p>\n</li>\n<li>\n<p>transfer pathways</p>\n</li>\n</ul>\n<p>It does <strong>not</strong> convert harm evidence into moral authority.<br>It supplies empirical premises to <strong>Ethical SR</strong>, which separately evaluates duties, rights, permissions, legitimacy, and justified tradeoffs.</p>\n<p>Harm and Value Dynamics is falsifiable.<br>It loses standing wherever it cannot:</p>\n<ul>\n<li>\n<p>identify a comparison state</p>\n</li>\n<li>\n<p>distinguish change from level</p>\n</li>\n<li>\n<p>separate realized harm from risk</p>\n</li>\n<li>\n<p>preserve distribution</p>\n</li>\n<li>\n<p>outperform mature causal and evaluative models</p>\n</li>\n</ul>\n<div>\n</div>\n<h1><strong>HOW IT CONTRIBUTES TO SR</strong></h1>\n<h2><strong>1. It gives SR a formal architecture for harm and benefit</strong></h2>\n<p>Before this field, SR had:</p>\n<ul>\n<li>\n<p><strong>Phenomenological SR</strong> for lived experience</p>\n</li>\n<li>\n<p><strong>Ethical SR</strong> for duties and legitimacy</p>\n</li>\n<li>\n<p><strong>Infrastructure Science</strong> for substrate conditions</p>\n</li>\n</ul>\n<p>But SR lacked a field that governs <strong>empirical harm</strong>, <strong>benefit</strong>, and <strong>burden transfer</strong>.</p>\n<p>Harm and Value Dynamics fills that gap by defining:</p>\n<ul>\n<li>\n<p>the affected-party unit</p>\n</li>\n<li>\n<p>component-preserving outcome records</p>\n</li>\n<li>\n<p>counterfactual effects</p>\n</li>\n<li>\n<p>cumulative harm</p>\n</li>\n<li>\n<p>burden transfer</p>\n</li>\n<li>\n<p>reversibility</p>\n</li>\n<li>\n<p>distributional rules</p>\n</li>\n<li>\n<p>uncertainty records</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Counterfactual Harm</strong></p>\n<div>\n</div>\n<h2><strong>2. It formalizes the counterfactual evaluation unit</strong></h2>\n<p>The field defines harm as:</p>\n<blockquote>\n<p><strong>the difference between outcomes under compared conditions at a declared horizon.</strong></p>\n</blockquote>\n<p>This prevents:</p>\n<ul>\n<li>\n<p>treating outcome levels as causal effects</p>\n</li>\n<li>\n<p>treating suffering as proof of external cause</p>\n</li>\n<li>\n<p>treating satisfaction as proof of benefit</p>\n</li>\n<li>\n<p>treating cost as harm without pathway</p>\n</li>\n<li>\n<p>treating risk as realized harm</p>\n</li>\n<li>\n<p>treating averages as universal truths</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Bounded Harm Unit</strong></p>\n<div>\n</div>\n<h2><strong>3. It preserves components instead of collapsing them</strong></h2>\n<p>Harm and Value Dynamics preserves:</p>\n<ul>\n<li>\n<p>welfare</p>\n</li>\n<li>\n<p>capability</p>\n</li>\n<li>\n<p>burden</p>\n</li>\n<li>\n<p>opportunity</p>\n</li>\n<li>\n<p>security</p>\n</li>\n<li>\n<p>valued functioning</p>\n</li>\n</ul>\n<p>This prevents:</p>\n<ul>\n<li>\n<p>collapsing heterogeneous change into one score</p>\n</li>\n<li>\n<p>hiding subgroup harm inside population means</p>\n</li>\n<li>\n<p>erasing burden transfer</p>\n</li>\n<li>\n<p>erasing duration</p>\n</li>\n<li>\n<p>erasing reversibility</p>\n</li>\n<li>\n<p>erasing tail effects</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Component Record</strong></p>\n<div>\n</div>\n<h2><strong>4. It introduces burden transfer as a formal estimand</strong></h2>\n<p>Burden transfer is:</p>\n<blockquote>\n<p><strong>the directed change in burden borne by receiving parties when benefit is assigned elsewhere.</strong></p>\n</blockquote>\n<p>This exposes:</p>\n<ul>\n<li>\n<p>hidden work</p>\n</li>\n<li>\n<p>unpaid labor</p>\n</li>\n<li>\n<p>displacement</p>\n</li>\n<li>\n<p>administrative load</p>\n</li>\n<li>\n<p>care load</p>\n</li>\n<li>\n<p>risk transfer</p>\n</li>\n<li>\n<p>recovery load</p>\n</li>\n</ul>\n<p>It prevents the classic institutional error:</p>\n<blockquote>\n<p><strong>&ldquo;Local improvement = systemwide improvement.&rdquo;</strong></p>\n</blockquote>\n<p>Linked concept: <strong>Burden Transfer</strong></p>\n<div>\n</div>\n<h2><strong>5. It introduces reversibility as a measurable dimension</strong></h2>\n<p>Reversibility measures:</p>\n<ul>\n<li>\n<p>return toward baseline</p>\n</li>\n<li>\n<p>residual loss</p>\n</li>\n<li>\n<p>recovery cost</p>\n</li>\n<li>\n<p>recovery duration</p>\n</li>\n</ul>\n<p>It distinguishes:</p>\n<ul>\n<li>\n<p>recoverable loss</p>\n</li>\n<li>\n<p>irreversible loss</p>\n</li>\n<li>\n<p>delayed harm</p>\n</li>\n<li>\n<p>recurrent harm</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Reversibility</strong></p>\n<div>\n</div>\n<h2><strong>6. It defines harm regimes that institutions cannot ignore</strong></h2>\n<p>The field identifies:</p>\n<ul>\n<li>\n<p>concentrated harm</p>\n</li>\n<li>\n<p>diffuse burden</p>\n</li>\n<li>\n<p>mixed consequence</p>\n</li>\n<li>\n<p>burden transfer</p>\n</li>\n<li>\n<p>delayed harm</p>\n</li>\n<li>\n<p>adaptive satisfaction</p>\n</li>\n<li>\n<p>recoverable loss</p>\n</li>\n<li>\n<p>irreversible loss</p>\n</li>\n<li>\n<p>risk without realization</p>\n</li>\n</ul>\n<p>These regimes expose institutional blind spots.</p>\n<p>Linked concept: <strong>Harm Regimes</strong></p>\n<div>\n</div>\n<h2><strong>7. It establishes bridges to other SR fields</strong></h2>\n<p>Harm and Value Dynamics connects to:</p>\n<ul>\n<li>\n<p><strong>Phenomenological SR</strong> (lived-state evidence)</p>\n</li>\n<li>\n<p><strong>Ethical SR</strong> (empirical premises)</p>\n</li>\n<li>\n<p><strong>Identity SR</strong> (capability/security consequences)</p>\n</li>\n<li>\n<p><strong>Human Capacity Load</strong> (burden and capability)</p>\n</li>\n<li>\n<p><strong>Recovery Architecture</strong> (duration and reversibility)</p>\n</li>\n<li>\n<p><strong>Infrastructure Science</strong> (exposure pathways)</p>\n</li>\n<li>\n<p><strong>Feasible Agency</strong> (option loss)</p>\n</li>\n</ul>\n<p>Each bridge preserves:</p>\n<ul>\n<li>\n<p>transfer object</p>\n</li>\n<li>\n<p>pathway</p>\n</li>\n<li>\n<p>evidence threshold</p>\n</li>\n<li>\n<p>receiving-domain limit</p>\n</li>\n<li>\n<p>revocation condition</p>\n</li>\n</ul>\n<p>Linked concept: <strong>SR Bridge Discipline</strong></p>\n<div>\n</div>\n<h2><strong>8. It introduces a full falsification programme</strong></h2>\n<p>The field can be falsified by:</p>\n<ul>\n<li>\n<p>absence of a defensible comparison</p>\n</li>\n<li>\n<p>unstable component measures</p>\n</li>\n<li>\n<p>missing distribution</p>\n</li>\n<li>\n<p>invalid duration or recovery measures</p>\n</li>\n<li>\n<p>unstable weighting rules</p>\n</li>\n<li>\n<p>lack of incremental value</p>\n</li>\n<li>\n<p>failure to replicate</p>\n</li>\n<li>\n<p>failure to transport</p>\n</li>\n</ul>\n<p>This makes harm science <strong>scientific</strong>, not rhetorical.</p>\n<p>Linked concept: <strong>SR Falsification</strong></p>\n<div>\n</div>\n<h2><strong>9. It gives SR a complete empirical foundation for ethical reasoning</strong></h2>\n<p>Ethical SR requires:</p>\n<ul>\n<li>\n<p>validated harm</p>\n</li>\n<li>\n<p>validated burden</p>\n</li>\n<li>\n<p>validated capability loss</p>\n</li>\n<li>\n<p>validated distribution</p>\n</li>\n<li>\n<p>validated reversibility</p>\n</li>\n<li>\n<p>validated uncertainty</p>\n</li>\n</ul>\n<p>Harm and Value Dynamics supplies these premises.</p>\n<p>Ethics cannot operate without this field.</p>\n<p>Linked concept: <strong>Ethical Premises</strong></p>\n<div>\n</div>\n<h1><strong>The SR Contribution in One Line</strong></h1>\n<p>Harm and Value Dynamics gives SR a <strong>complete, falsifiable, component-preserving architecture for empirical harm, benefit, burden transfer, reversibility, and distribution</strong>, forming the empirical foundation for ethical evaluation and institutional correction.</p>",
+    "doi": "10.5281/zenodo.23144066",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23144065"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Harm and Value Dynamics: SR Counterfactual Harm and Value Theory",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:08:34.628658+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23144066",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 8,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 8,
+    "version_views": 10,
+    "views": 10
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Harm and Value Dynamics: SR Counterfactual Harm and Value Theory",
+  "updated": "2026-10-06T01:08:34.628658+00:00"
+}

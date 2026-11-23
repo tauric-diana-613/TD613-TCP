@@ -1,0 +1,143 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22384030"
+source_title: "ATLAS XII LOGISTICS, STANDARDS, AND MARKET ACCESS: The Infrastructures That Govern Entry into Global Value Chains"
+metadata_blob_sha256: d0ba807b8c7b58636b2cd719f1bc064c03323a07e9e65d6c47c694c06213d245
+metadata_blob_path: 02-ORIGINALS/live/blobs/d0/d0ba807b8c7b58636b2cd719f1bc064c03323a07e9e65d6c47c694c06213d245.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22384028",
+  "conceptrecid": "22384028",
+  "created": "2026-09-05T19:05:15.808392+00:00",
+  "doi": "10.5281/zenodo.22384030",
+  "doi_url": "https://doi.org/10.5281/zenodo.22384030",
+  "files": [
+    {
+      "checksum": "md5:02340323e127b5b276459494d469e789",
+      "id": "349129a9-416a-48ed-b9aa-24199dbbb450",
+      "key": "ATLAS XII — LOGISTICS, STANDARDS, AND MARKET ACCESS.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22384030/files/ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/content"
+      },
+      "size": 162241
+    }
+  ],
+  "id": 22384030,
+  "links": {
+    "access": "https://zenodo.org/api/records/22384030/access",
+    "access_grants": "https://zenodo.org/api/records/22384030/access/grants",
+    "access_links": "https://zenodo.org/api/records/22384030/access/links",
+    "access_request": "https://zenodo.org/api/records/22384030/access/request",
+    "access_users": "https://zenodo.org/api/records/22384030/access/users",
+    "archive": "https://zenodo.org/api/records/22384030/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22384030/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22384030/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22384030/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22384030",
+    "draft": "https://zenodo.org/api/records/22384030/draft",
+    "file_modification": "https://zenodo.org/api/records/22384030/file-modification",
+    "files": "https://zenodo.org/api/records/22384030/files",
+    "latest": "https://zenodo.org/api/records/22384030/versions/latest",
+    "latest_html": "https://zenodo.org/records/22384030/latest",
+    "media_files": "https://zenodo.org/api/records/22384030/media-files",
+    "parent": "https://zenodo.org/api/records/22384028",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22384028",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22384028",
+    "parent_html": "https://zenodo.org/records/22384028",
+    "preview_html": "https://zenodo.org/records/22384030?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22384030/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22384030/request-deletion",
+    "requests": "https://zenodo.org/api/records/22384030/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22384030/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22384030",
+    "self_doi": "https://doi.org/10.5281/zenodo.22384030",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22384030",
+    "self_html": "https://zenodo.org/records/22384030",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22384030/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22384030/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22384030:ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22384030:ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22384030:ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22384030:ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22384030:ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22384030:ATLAS%20XII%20%E2%80%94%20LOGISTICS,%20STANDARDS,%20AND%20MARKET%20ACCESS.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22384030/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS XII &mdash; Logistics, Standards, and Market Access</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS XII</em> formalizes the <strong>gateway‑infrastructure layer</strong> of the ATLAS universe: the diagnostic architecture showing how value capture depends not only on production but on <strong>access to shipping, certification, payment, insurance, marketplaces, and distribution</strong>. As the manuscript states, <em>&ldquo;Control of these gateways can discipline producers without formal political command.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions logistics and standards as <strong>structural chokepoints</strong> that determine whether producers can enter, remain in, or upgrade within global value chains.</p>\n<p>ATLAS XII extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how gateway concentration reduces retained value (R), increases burdens (B), weakens substitution capacity (S), raises external dependence (D), and lowers bargaining agency (A). It introduces a measurement architecture focused on freight concentration, certification cost, rejection rates, marketplace fees, buyer concentration, contract terms, storage and cold‑chain capacity, and switching time for alternative routes.</p>\n<p>The manuscript establishes that market access is not a neutral technical process; it is a <strong>governance layer</strong> that shapes who captures surplus, who bears risk, and who can refuse terms.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS XII provides the <strong>market‑access foundation</strong> of the ATLAS universe. It operationalizes <strong>Gateway Power</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable account of how logistics and standards govern entry into global value chains.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how asymmetric standards, concentrated shipping, and marketplace control weaken domestic bargaining and reproduce dependency. It strengthens <strong>Society as a Pressure Ecology</strong> by demonstrating how logistics act as a cross‑domain transmission channel for externalization.</p>\n<p>The migration‑mobility audit expands ATLAS&rsquo;s cross‑border incidence analysis by tracing how visas, recruitment channels, licensing, credential recognition, and remittance costs structure labour mobility. As the manuscript states, <em>&ldquo;Mobility restrictions are policy variables, not natural features of labour markets.&rdquo;</em></p>\n<p>ATLAS XII also provides the empirical substrate for evaluating <strong>restoration</strong> through regional logistics cooperation, transparent standards assistance, producer cooperatives, interoperable payment systems, and bargaining platforms.</p>\n<p>Ultimately, ATLAS XII contributes the <strong>gateway grammar</strong> required to evaluate whether societies can retain gains, access markets fairly, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22384030",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Society",
+      "Governments",
+      "Governance",
+      "Economics"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22384028"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS XII LOGISTICS, STANDARDS, AND MARKET ACCESS: The Infrastructures That Govern Entry into Global Value Chains",
+    "version": "1.0"
+  },
+  "modified": "2026-09-05T19:05:16.099314+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22384030",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS XII LOGISTICS, STANDARDS, AND MARKET ACCESS: The Infrastructures That Govern Entry into Global Value Chains",
+  "updated": "2026-09-05T19:05:16.099314+00:00"
+}
+```

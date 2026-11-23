@@ -1,0 +1,142 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22102004"
+source_title: "THE MULTI-AGENT COGNITIVE SUBSTRATE THEOREM (MACS): A Structural Law of Network-Distributed Epistemic Behaviour, Visibility Divergence, and Cross-Agent Stability"
+metadata_blob_sha256: d28156e2f84198e4018399afe1c853580580044bd72add0a5f996a57f7502eee
+metadata_blob_path: 02-ORIGINALS/live/blobs/d2/d28156e2f84198e4018399afe1c853580580044bd72add0a5f996a57f7502eee.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22102003",
+  "conceptrecid": "22102003",
+  "created": "2026-08-25T20:27:01.291062+00:00",
+  "doi": "10.5281/zenodo.22102004",
+  "doi_url": "https://doi.org/10.5281/zenodo.22102004",
+  "files": [
+    {
+      "checksum": "md5:34687260aa82d9d801754d72e3ce6ae7",
+      "id": "73f26597-88c8-4de8-aa3f-924b333c6e3a",
+      "key": "THE MULTI-AGENT COGNITIVE SUBSTRATE THEOREM (MACS).pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22102004/files/THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/content"
+      },
+      "size": 219336
+    }
+  ],
+  "id": 22102004,
+  "links": {
+    "access": "https://zenodo.org/api/records/22102004/access",
+    "access_grants": "https://zenodo.org/api/records/22102004/access/grants",
+    "access_links": "https://zenodo.org/api/records/22102004/access/links",
+    "access_request": "https://zenodo.org/api/records/22102004/access/request",
+    "access_users": "https://zenodo.org/api/records/22102004/access/users",
+    "archive": "https://zenodo.org/api/records/22102004/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22102004/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22102004/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22102004/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22102004",
+    "draft": "https://zenodo.org/api/records/22102004/draft",
+    "file_modification": "https://zenodo.org/api/records/22102004/file-modification",
+    "files": "https://zenodo.org/api/records/22102004/files",
+    "latest": "https://zenodo.org/api/records/22102004/versions/latest",
+    "latest_html": "https://zenodo.org/records/22102004/latest",
+    "media_files": "https://zenodo.org/api/records/22102004/media-files",
+    "parent": "https://zenodo.org/api/records/22102003",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22102003",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22102003",
+    "parent_html": "https://zenodo.org/records/22102003",
+    "preview_html": "https://zenodo.org/records/22102004?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22102004/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22102004/request-deletion",
+    "requests": "https://zenodo.org/api/records/22102004/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22102004/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22102004",
+    "self_doi": "https://doi.org/10.5281/zenodo.22102004",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22102004",
+    "self_html": "https://zenodo.org/records/22102004",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22102004/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22102004/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22102004:THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22102004:THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22102004:THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22102004:THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22102004:THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22102004:THE%20MULTI-AGENT%20COGNITIVE%20SUBSTRATE%20THEOREM%20(MACS).pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22102004/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>THE MULTI‑AGENT COGNITIVE SUBSTRATE THEOREM (MACS)</strong></h1>\n<p>The <em>Multi‑Agent Cognitive Substrate Theorem (MACS)</em> establishes the third substrate in the <strong>SR Substrate Trilogy</strong>, completing the progression from <strong>CRI &mdash; Persistent Observation</strong> to <strong>AIS &mdash; Delegated Institutional Judgment</strong> and finally to <strong>MACS &mdash; Network‑Dependent Cognition</strong>. MACS formalizes the structural condition under which epistemic and decision behavior can no longer be understood through isolated agents&mdash;human, institutional, or computational&mdash;but must instead be analyzed as the emergent product of <strong>recurrently coupled participants</strong> operating within shared decision environments.</p>\n<p>The manuscript contributes by defining <strong>cognitive participation</strong> functionally rather than biologically. A participant qualifies when its outputs materially alter what another participant observes, classifies, prioritizes, decides, or learns. This definition allows MACS to integrate humans, institutions, models, platforms, and autonomous agents into a single analytic grammar without assuming artificial consciousness or collective minds. MACS therefore reframes cognition as a <strong>network property</strong>, not an agent‑local attribute.</p>\n<p>The manuscript contributes by introducing a formal distinction between <strong>local drift</strong> and <strong>network drift</strong>. Local drift represents deviation within a single participant; network drift represents deviation amplified or transmitted through cross‑participant interactions. MACS formalizes directional drift transfer &phi;_i&rarr;j and defines a <strong>Network‑Dominance Ratio (&Phi;_N)</strong> that allows empirical testing of whether interactional instability exceeds local instability in a given domain. This replaces earlier universal claims with a falsifiable diagnostic quantity, strengthening MACS&rsquo;s scientific posture.</p>\n<p>The manuscript contributes by formalizing <strong>visibility divergence</strong>, &Omega;_V, which captures representational differences across humans, institutions, models, and autonomous agents. MACS demonstrates that epistemic instability can arise not from error in any single participant but from <strong>misalignment between layers of visibility</strong>, especially when grounding, interpretability, and reconciliation are weak. This extends SR&rsquo;s <strong>Visibility Lag</strong> and <strong>Ground‑Truth Discrepancy</strong> operators into a multi‑agent environment.</p>\n<p>The manuscript contributes by elevating <strong>network synchronization</strong>&mdash;grounding coherence, interpretability, temporal alignment, and corrective capacity&mdash;as a central stability variable. MACS shows that heterogeneous update speeds (&Omega;_T) can create epistemic mismatch when fast participants repeatedly modify the environment before slower participants can audit or correct it. This provides a structural foundation for SR&rsquo;s analysis of sociotechnical timing, platform dynamics, and institutional oversight.</p>\n<p>The manuscript contributes by introducing a tractable <strong>network propagation model</strong>, demonstrating how drift, error, or correction can spread through a weighted interaction topology. This model does not claim linearity in real systems; instead, it provides a measurable starting point for stress testing multi‑agent networks. MACS thereby extends SR&rsquo;s <strong>Systems Propagation Science</strong> into epistemic and decision‑layer propagation.</p>\n<p>The manuscript contributes by defining <strong>stable</strong> and <strong>unstable MACS regimes</strong>. Stability emerges when representations remain reconcilable, grounding checks exist outside the recursive network, temporal mismatches are bounded, and correction can propagate backward as well as forward. Instability emerges when cross‑agent dependence rises, visibility diverges, timing mismatches widen, and recursive feedback produces epistemic closure. This distinction provides a structural diagnostic framework for SR&rsquo;s institutional, platform, and AI‑mediated environments.</p>\n<p>The manuscript contributes by integrating precursor literatures&mdash;distributed cognition, hybrid intelligence, human‑AI teaming, machine behavior, multi‑agent systems&mdash;into a unified SR substrate model. MACS does not claim priority over these literatures; its distinct contribution is to combine them with SR variables of drift, visibility, grounding discrepancy, propagation, and harm into a single <strong>network‑dependent epistemic architecture</strong>.</p>\n<p>Finally, MACS contributes by transforming SR&rsquo;s diagnostic unit. Under MACS conditions, the relevant analytic object is not the person, the institution, or the model, but the <strong>coupled network</strong> connecting them. This shift enables SR to evaluate epistemic stability, coordination risk, and propagation behavior in environments where institutions retain formal authority but no longer possess epistemic centrality. MACS therefore becomes a foundational component of <strong>SR Galaxy</strong>, planetary diagnostics, and future SR work on sociotechnical governance.</p>",
+    "doi": "10.5281/zenodo.22102004",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22102003"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "THE MULTI-AGENT COGNITIVE SUBSTRATE THEOREM (MACS): A Structural Law of Network-Distributed Epistemic Behaviour, Visibility Divergence, and Cross-Agent Stability",
+    "version": "1.0"
+  },
+  "modified": "2026-08-26T17:18:48.851656+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22102004",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 9,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 9,
+    "version_views": 10,
+    "views": 10
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE MULTI-AGENT COGNITIVE SUBSTRATE THEOREM (MACS): A Structural Law of Network-Distributed Epistemic Behaviour, Visibility Divergence, and Cross-Agent Stability",
+  "updated": "2026-08-26T17:18:48.851656+00:00"
+}
+```

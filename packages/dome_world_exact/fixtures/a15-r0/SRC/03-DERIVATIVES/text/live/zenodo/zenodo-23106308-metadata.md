@@ -1,0 +1,148 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23106308"
+source_title: "INSTITUTIONAL COLLAPSE PSYCHOLOGY (SR‑ICP): A Structural Theory of How Institutions Lose and Attempt to Restore Effective Control Under Drift, Saturation, and Representational Displacement"
+metadata_blob_sha256: 11c70b5dfe8957bc2793e6753ce01d77ddb927cc0ed60e7ff2d586adeccb1aab
+metadata_blob_path: 02-ORIGINALS/live/blobs/11/11c70b5dfe8957bc2793e6753ce01d77ddb927cc0ed60e7ff2d586adeccb1aab.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23106307",
+  "conceptrecid": "23106307",
+  "created": "2026-10-02T16:06:49.326429+00:00",
+  "doi": "10.5281/zenodo.23106308",
+  "doi_url": "https://doi.org/10.5281/zenodo.23106308",
+  "files": [
+    {
+      "checksum": "md5:4530138eb06f8aa1973c88b7a8c27db9",
+      "id": "2a1fa236-1689-4a7d-9970-4397454a070a",
+      "key": "INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23106308/files/INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.docx/content"
+      },
+      "size": 1345231
+    },
+    {
+      "checksum": "md5:7f42c859a6f9307302fd03a63e192152",
+      "id": "808294ea-23a8-40cd-81cf-5c3ea2abe52d",
+      "key": "INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23106308/files/INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/content"
+      },
+      "size": 280391
+    }
+  ],
+  "id": 23106308,
+  "links": {
+    "access": "https://zenodo.org/api/records/23106308/access",
+    "access_grants": "https://zenodo.org/api/records/23106308/access/grants",
+    "access_links": "https://zenodo.org/api/records/23106308/access/links",
+    "access_request": "https://zenodo.org/api/records/23106308/access/request",
+    "access_users": "https://zenodo.org/api/records/23106308/access/users",
+    "communities": "https://zenodo.org/api/records/23106308/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23106308/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23106308",
+    "draft": "https://zenodo.org/api/records/23106308/draft",
+    "file_modification": "https://zenodo.org/api/records/23106308/file-modification",
+    "files": "https://zenodo.org/api/records/23106308/files",
+    "latest": "https://zenodo.org/api/records/23106308/versions/latest",
+    "latest_html": "https://zenodo.org/records/23106308/latest",
+    "media_files": "https://zenodo.org/api/records/23106308/media-files",
+    "parent": "https://zenodo.org/api/records/23106307",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23106307",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23106307",
+    "parent_html": "https://zenodo.org/records/23106307",
+    "preview_html": "https://zenodo.org/records/23106308?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23106308/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23106308/request-deletion",
+    "requests": "https://zenodo.org/api/records/23106308/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23106308/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23106308",
+    "self_doi": "https://doi.org/10.5281/zenodo.23106308",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23106308",
+    "self_html": "https://zenodo.org/records/23106308",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23106308/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23106308/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23106308:INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23106308:INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23106308:INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23106308:INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23106308:INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23106308:INSTITUTIONAL_COLLAPSE_PSYCHOLOGY_SR_ICP_2026-10-01.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23106308/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>INSTITUTIONAL COLLAPSE PSYCHOLOGY (SR‑ICP): A Structural Theory of How Institutions Lose and Attempt to Restore Effective Control Under Drift, Saturation, and Representational Displacement</strong></p>\n<div>\n</div>\n<h2><strong>DESCRIPTION</strong></h2>\n<p><strong>Institutional Collapse Psychology (SR‑ICP)</strong> is a specialized subfield of the <strong>SR Institutional Governance Field (SR‑IGF)</strong> that explains how institutions can remain formally intact while losing <strong>effective control</strong> over the environments they are mandated to govern. ICP defines collapse as a <strong>persistent divergence between formal authority and effective control</strong>, expressed through the Unicode equation:</p>\n<p><strong>FECG(d,t) = F(d,t) &minus; E(d,t)</strong></p>\n<p>where <strong>F</strong> is formal authority and <strong>E</strong> is effective control over the same domain.</p>\n<p>The paper introduces a full SR collapse architecture, including:</p>\n<ul>\n<li>\n<p><strong>Authority&ndash;Control Divergence</strong></p>\n</li>\n<li>\n<p><strong>Institutional Drift</strong></p>\n</li>\n<li>\n<p><strong>Buffer Saturation</strong></p>\n</li>\n<li>\n<p><strong>Representational Displacement</strong></p>\n</li>\n<li>\n<p><strong>Correction Failure</strong></p>\n</li>\n<li>\n<p><strong>Agency Migration</strong></p>\n</li>\n<li>\n<p><strong>Visibility Lag</strong></p>\n</li>\n<li>\n<p><strong>Collapse Boundary Tests</strong></p>\n</li>\n<li>\n<p><strong>Institutional Collapse Ledger</strong></p>\n</li>\n</ul>\n<p>ICP shows how institutions can preserve visible continuity&mdash;budgets, buildings, reports, procedures&mdash;while losing the ability to <strong>perceive, interpret, correct, or influence</strong> the conditions central to their mandate. Collapse becomes measurable when correction cycles repeatedly fail, representation mismatches grow, and effective control migrates outward faster than the institution can reconstruct or override.</p>\n<p>The architecture is <strong>falsifiable</strong>, <strong>preregisterable</strong>, and fully integrated into SR&rsquo;s governance science.</p>\n<div>\n</div>\n<h2><strong>HOW IT CONTRIBUTES TO SR</strong></h2>\n<h3><strong>1. ICP formalizes collapse as a measurable SR object</strong></h3>\n<p>ICP introduces the Unicode construct:</p>\n<p><strong>FECG = F &minus; E</strong></p>\n<p>giving SR a quantitative way to detect when institutions retain authority but lose control.<br>Linked concept: <strong>Authority&ndash;Control Divergence</strong></p>\n<div>\n</div>\n<h3><strong>2. ICP provides the institutional mechanism behind Drift Collapse</strong></h3>\n<p>ICP explains how institutions behave when structural pressure outruns capacity:</p>\n<ul>\n<li>\n<p>narrowing interpretation</p>\n</li>\n<li>\n<p>intensifying routine</p>\n</li>\n<li>\n<p>transferring pressure</p>\n</li>\n<li>\n<p>outsourcing cognition</p>\n</li>\n<li>\n<p>compressing representation</p>\n</li>\n<li>\n<p>normalizing crisis</p>\n</li>\n<li>\n<p>losing override capacity</p>\n</li>\n</ul>\n<p>Unicode drift specification:</p>\n<p><strong>D(t+1) = D(t) + &alpha;M(t) + &beta;VL(t) + &gamma;Sᵢ(t) &minus; &delta;CCI(t) + &epsilon;(t)</strong></p>\n<p>Linked concept: <strong>Institutional Drift</strong></p>\n<div>\n</div>\n<h3><strong>3. ICP defines Representational Displacement as a cross‑metatheory failure</strong></h3>\n<p>Institutions govern through representations. ICP shows how representation migrates outward while reconstruction capacity falls.</p>\n<p>Unicode displacement index:</p>\n<p><strong>RDIₜ = &Sigma;(wₛ&middot;eₛₜ&middot;(1&minus;rₛₜ)) &divide; &Sigma;(wₛ)</strong></p>\n<p>Linked concept: <strong>Representational Displacement</strong></p>\n<div>\n</div>\n<h3><strong>4. ICP explains institutional behaviour under saturation</strong></h3>\n<p>Unicode saturation equation:</p>\n<p><strong>Sᵢ = Lᵢ &divide; Cᵢᵉᶠᶠ</strong></p>\n<p>with:</p>\n<p><strong>Cᵢᵉᶠᶠ = Cᵇᵃˢᵉ + B &minus; F</strong></p>\n<p>This is the institutional counterpart to <strong>SR‑HAT&rsquo;s</strong> human saturation mechanism.<br>Linked concept: <strong>Institutional Saturation</strong></p>\n<div>\n</div>\n<h3><strong>5. ICP connects institutional collapse to Human Agency Transfer</strong></h3>\n<p>Unicode institutional control share:</p>\n<p><strong>ICSₜ = &Sigma;(wₛ&middot;cᵢₛₜ) &divide; &Sigma;(wₛ)</strong></p>\n<p>ICP shows how institutions lose control over:</p>\n<ul>\n<li>\n<p>evidence selection</p>\n</li>\n<li>\n<p>representation</p>\n</li>\n<li>\n<p>prioritization</p>\n</li>\n<li>\n<p>evaluation</p>\n</li>\n<li>\n<p>execution</p>\n</li>\n</ul>\n<p>while retaining accountability.<br>Linked concept: <strong>Agency Migration</strong></p>\n<div>\n</div>\n<h3><strong>6. ICP provides the governance‑side mechanism for Ultiverse behavioural discontinuity</strong></h3>\n<p>The Ultiverse predicts:</p>\n<blockquote>\n<p>behavioural discontinuity before institutional discontinuity.</p>\n</blockquote>\n<p>ICP explains <strong>why</strong> institutions misclassify, respond slowly, govern outdated categories, and lose override capacity.<br>Linked concept: <strong>Behavioural Discontinuity</strong></p>\n<div>\n</div>\n<h3><strong>7. ICP introduces the Institutional Collapse Ledger</strong></h3>\n<p>This is SR&rsquo;s first <strong>case‑level measurement architecture</strong> for collapse regimes. It records:</p>\n<ul>\n<li>\n<p>mandate</p>\n</li>\n<li>\n<p>authority</p>\n</li>\n<li>\n<p>effective control</p>\n</li>\n<li>\n<p>representation</p>\n</li>\n<li>\n<p>override capacity</p>\n</li>\n<li>\n<p>correction chain</p>\n</li>\n<li>\n<p>saturation</p>\n</li>\n<li>\n<p>drift velocity</p>\n</li>\n<li>\n<p>migration</p>\n</li>\n<li>\n<p>restoration capacity</p>\n</li>\n</ul>\n<p><strong>CCI = pᴰ &times; pᴬ &times; pˣ &times; pⱽ</strong></p>\n<p>Linked concept: <strong>Collapse Ledger</strong></p>",
+    "doi": "10.5281/zenodo.23106308",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Social Issues",
+      "Infrastructure",
+      "Psychology"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-02",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23106307"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "INSTITUTIONAL COLLAPSE PSYCHOLOGY (SR‑ICP): A Structural Theory of How Institutions Lose and Attempt to Restore Effective Control Under Drift, Saturation, and Representational Displacement",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:13:22.720789+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23106308",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 9,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 9,
+    "version_views": 11,
+    "views": 11
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "INSTITUTIONAL COLLAPSE PSYCHOLOGY (SR‑ICP): A Structural Theory of How Institutions Lose and Attempt to Restore Effective Control Under Drift, Saturation, and Representational Displacement",
+  "updated": "2026-10-06T01:13:22.720789+00:00"
+}
+```

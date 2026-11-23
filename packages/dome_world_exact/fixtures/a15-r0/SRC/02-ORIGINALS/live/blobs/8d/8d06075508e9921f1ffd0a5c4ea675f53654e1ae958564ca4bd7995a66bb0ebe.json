@@ -1,0 +1,127 @@
+{
+  "conceptdoi": "10.5281/zenodo.23130311",
+  "conceptrecid": "23130311",
+  "created": "2026-10-04T02:26:46.374007+00:00",
+  "doi": "10.5281/zenodo.23130312",
+  "doi_url": "https://doi.org/10.5281/zenodo.23130312",
+  "files": [
+    {
+      "checksum": "md5:9441e8ea3d88cbbff6bbeb60e852c647",
+      "id": "ad3ce0d4-89d6-41bc-8c28-0b27be4598bf",
+      "key": "Representational Falsification — General Scientific Framework (2026).pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23130312/files/Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/content"
+      },
+      "size": 353855
+    }
+  ],
+  "id": 23130312,
+  "links": {
+    "access": "https://zenodo.org/api/records/23130312/access",
+    "access_grants": "https://zenodo.org/api/records/23130312/access/grants",
+    "access_links": "https://zenodo.org/api/records/23130312/access/links",
+    "access_request": "https://zenodo.org/api/records/23130312/access/request",
+    "access_users": "https://zenodo.org/api/records/23130312/access/users",
+    "communities": "https://zenodo.org/api/records/23130312/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23130312/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23130312",
+    "draft": "https://zenodo.org/api/records/23130312/draft",
+    "file_modification": "https://zenodo.org/api/records/23130312/file-modification",
+    "files": "https://zenodo.org/api/records/23130312/files",
+    "latest": "https://zenodo.org/api/records/23130312/versions/latest",
+    "latest_html": "https://zenodo.org/records/23130312/latest",
+    "media_files": "https://zenodo.org/api/records/23130312/media-files",
+    "parent": "https://zenodo.org/api/records/23130311",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23130311",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23130311",
+    "parent_html": "https://zenodo.org/records/23130311",
+    "preview_html": "https://zenodo.org/records/23130312?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23130312/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23130312/request-deletion",
+    "requests": "https://zenodo.org/api/records/23130312/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23130312/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23130312",
+    "self_doi": "https://doi.org/10.5281/zenodo.23130312",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23130312",
+    "self_html": "https://zenodo.org/records/23130312",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23130312/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23130312/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23130312:Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23130312:Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23130312:Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23130312:Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23130312:Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23130312:Representational%20Falsification%20%E2%80%94%20General%20Scientific%20Framework%20(2026).pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23130312/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Representational Falsification: A General Scientific Framework for Testing, Correcting, and Retiring Proxy‑Based Decision Systems</strong></p>\n<div>\n</div>\n<h1><strong>DESCRIPTION</strong></h1>\n<p><strong>Representational Falsification</strong> is an SR scientific‑governance mechanism that defines how institutions should test, challenge, correct, narrow, subordinate, suspend, or retire representations&mdash;scores, categories, dashboards, models, files, and algorithmic outputs&mdash;when adverse evidence shows that their authority no longer matches the governed condition.</p>\n<p>The field introduces:</p>\n<ul>\n<li>\n<p>the <strong>representation‑use pair</strong> as the unit of adjudication</p>\n</li>\n<li>\n<p><strong>independent reconstruction</strong> of the represented object</p>\n</li>\n<li>\n<p><strong>severe testing</strong> designed to defeat the representation&rsquo;s claim</p>\n</li>\n<li>\n<p><strong>rival representations</strong> and negative cases</p>\n</li>\n<li>\n<p><strong>transport tests</strong> across populations, horizons, and environments</p>\n</li>\n<li>\n<p><strong>authority consequences</strong> tied to failure</p>\n</li>\n<li>\n<p><strong>verification</strong> against independent outcomes</p>\n</li>\n<li>\n<p>a <strong>graded verdict ladder</strong> (retain &rarr; monitor &rarr; recalibrate &rarr; narrow &rarr; subordinate &rarr; suspend &rarr; retire)</p>\n</li>\n</ul>\n<p>Representational Falsification distinguishes:</p>\n<ul>\n<li>\n<p><strong>limit disclosure</strong> (scientific caveats)</p>\n</li>\n<li>\n<p><strong>limit preservation</strong> (self‑sealing disclaimers that protect authority without correction)</p>\n</li>\n</ul>\n<p>It provides a nine‑stage protocol, twelve hypotheses, comparative designs, and rejection conditions for the framework itself.<br>It is linked to <strong>Representational Displacement</strong>, <strong>Ground Truth Discrepancy</strong>, and <strong>Infrastructural Epistemic Lock‑In</strong>.</p>\n<div>\n</div>\n<h1><strong>HOW IT CONTRIBUTES TO SR</strong></h1>\n<h2><strong>1. It gives SR a formal mechanism for defeating proxy authority</strong></h2>\n<p>Representational Falsification is the first SR field that defines <strong>how</strong> a representation loses authority when evidence contradicts it.</p>\n<p>It operationalizes:</p>\n<ul>\n<li>\n<p>independent reconstruction</p>\n</li>\n<li>\n<p>severe testing</p>\n</li>\n<li>\n<p>rival comparison</p>\n</li>\n<li>\n<p>transport conditions</p>\n</li>\n<li>\n<p>authority consequences</p>\n</li>\n<li>\n<p>post‑change verification</p>\n</li>\n</ul>\n<p>This is SR&rsquo;s <strong>representational correction engine</strong>.</p>\n<p>Linked concept: <strong>Scientific Demotion</strong></p>\n<div>\n</div>\n<h2><strong>2. It solves the institutional paradox: authority without corrigibility</strong></h2>\n<p>Institutions often retain representations even after:</p>\n<ul>\n<li>\n<p>drift</p>\n</li>\n<li>\n<p>misclassification</p>\n</li>\n<li>\n<p>outdated assumptions</p>\n</li>\n<li>\n<p>proxy substitution</p>\n</li>\n<li>\n<p>verification closure</p>\n</li>\n</ul>\n<p>Representational Falsification explains <strong>why</strong> this happens and <strong>how</strong> to reverse it.</p>\n<p>Linked concept: <strong>Verification Closure</strong></p>\n<div>\n</div>\n<h2><strong>3. It defines the representation‑use pair as the scientific unit</strong></h2>\n<p>A representation is not valid &ldquo;in general.&rdquo;<br>It is valid <strong>for a specific use</strong>, population, horizon, and consequence.</p>\n<p>This prevents:</p>\n<ul>\n<li>\n<p>global validity claims</p>\n</li>\n<li>\n<p>universal authority</p>\n</li>\n<li>\n<p>misuse across contexts</p>\n</li>\n<li>\n<p>silent overextension</p>\n</li>\n</ul>\n<p>It is SR&rsquo;s most important representational boundary rule.</p>\n<p>Linked concept: <strong>Representation Use Claim</strong></p>\n<div>\n</div>\n<h2><strong>4. It introduces destructive testing as an epistemic discipline</strong></h2>\n<p>Destructive testing is not sabotage.<br>It is a scientific procedure designed to <strong>defeat</strong> a representation&rsquo;s claim under conditions where failure is informative.</p>\n<p>This is SR&rsquo;s severe‑testing architecture.</p>\n<p>Linked concept: <strong>Severe Testing</strong></p>\n<div>\n</div>\n<h2><strong>5. It provides the authority‑consequence ladder</strong></h2>\n<p>Representational Falsification defines the only SR ladder that connects evidence to authority:</p>\n<ul>\n<li>\n<p>retain</p>\n</li>\n<li>\n<p>retain with monitoring</p>\n</li>\n<li>\n<p>recalibrate</p>\n</li>\n<li>\n<p>narrow</p>\n</li>\n<li>\n<p>subordinate</p>\n</li>\n<li>\n<p>suspend</p>\n</li>\n<li>\n<p>retire</p>\n</li>\n</ul>\n<p>This ladder prevents symbolic audits and self‑sealing disclaimers.</p>\n<p>Linked concept: <strong>Authority Consequence</strong></p>\n<div>\n</div>\n<h2><strong>6. It separates displacement from falsification</strong></h2>\n<p><strong>Representational Displacement</strong> diagnoses persistent proxy substitution.<br><strong>Representational Falsification</strong> is the intervention discipline designed to defeat it.</p>\n<p>This separation prevents SR from collapsing into a single mega‑construct.</p>\n<p>Linked concept: <strong>Representational Displacement</strong></p>\n<div>\n</div>\n<h2><strong>7. It defines the representational chain and failure locations</strong></h2>\n<p>The field maps the full chain:</p>\n<p>world &rarr; observation &rarr; encoding &rarr; classification &rarr; aggregation/model &rarr; authorization &rarr; intervention &rarr; verification &rarr; revision</p>\n<p>This allows SR to localize:</p>\n<ul>\n<li>\n<p>observation failure</p>\n</li>\n<li>\n<p>encoding failure</p>\n</li>\n<li>\n<p>classification failure</p>\n</li>\n<li>\n<p>aggregation failure</p>\n</li>\n<li>\n<p>model failure</p>\n</li>\n<li>\n<p>authorization failure</p>\n</li>\n<li>\n<p>intervention failure</p>\n</li>\n<li>\n<p>verification failure</p>\n</li>\n<li>\n<p>revision failure</p>\n</li>\n</ul>\n<p>It is SR&rsquo;s most complete representational anatomy.</p>\n<p>Linked concept: <strong>Representational Chain</strong></p>\n<div>\n</div>\n<h2><strong>8. It provides SR&rsquo;s correction‑side falsification engine</strong></h2>\n<p>Representational Falsification is the only SR field that:</p>\n<ul>\n<li>\n<p>defines correction latency</p>\n</li>\n<li>\n<p>defines override executability</p>\n</li>\n<li>\n<p>defines challenger influence</p>\n</li>\n<li>\n<p>defines outcome improvement</p>\n</li>\n<li>\n<p>defines revision history</p>\n</li>\n</ul>\n<p>It is the backbone of SR&rsquo;s correction architecture.</p>\n<p>Linked concept: <strong>Corrective Closure</strong></p>\n<div>\n</div>\n<h2><strong>9. It integrates with Institutional Coherence and Drift Dynamics</strong></h2>\n<p>Representational Falsification explains <strong>how representations fail</strong>.<br>Institutional Coherence explains <strong>how execution fails</strong>.<br>Drift Dynamics explains <strong>how the substrate changes</strong>.</p>\n<p>Together they form SR&rsquo;s representational‑execution triad.</p>\n<p>Linked concept: <strong>Institutional Coherence</strong></p>\n<div>\n</div>\n<h2><strong>10. It provides a general scientific governance mechanism</strong></h2>\n<p>Representational Falsification is SR&rsquo;s answer to:</p>\n<ul>\n<li>\n<p>model risk</p>\n</li>\n<li>\n<p>indicator corruption</p>\n</li>\n<li>\n<p>proxy dominance</p>\n</li>\n<li>\n<p>self‑sealing disclaimers</p>\n</li>\n<li>\n<p>representational drift</p>\n</li>\n<li>\n<p>institutional opacity</p>\n</li>\n</ul>\n<p>It is the first cross‑domain mechanism that links <strong>evidence &rarr; authority &rarr; correction &rarr; verification</strong>.</p>\n<p>Linked concept: <strong>Proxy Governance</strong></p>",
+    "doi": "10.5281/zenodo.23130312",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23130311"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Representational Falsification: A General Scientific Framework for Testing, Correcting, and Retiring Proxy‑Based Decision Systems",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:10:07.457093+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23130312",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 3,
+    "unique_views": 4,
+    "version_downloads": 3,
+    "version_unique_downloads": 3,
+    "version_unique_views": 4,
+    "version_views": 5,
+    "views": 5
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Representational Falsification: A General Scientific Framework for Testing, Correcting, and Retiring Proxy‑Based Decision Systems",
+  "updated": "2026-10-06T01:10:07.457093+00:00"
+}

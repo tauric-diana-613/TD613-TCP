@@ -1,0 +1,132 @@
+{
+  "conceptdoi": "10.5281/zenodo.22113229",
+  "conceptrecid": "22113229",
+  "created": "2026-08-26T14:09:25.423116+00:00",
+  "doi": "10.5281/zenodo.22113230",
+  "doi_url": "https://doi.org/10.5281/zenodo.22113230",
+  "files": [
+    {
+      "checksum": "md5:0bd9aa8ad8133db98f32b98745a2d3e5",
+      "id": "a34a392f-6f59-4579-b02a-487c6cf75b13",
+      "key": "PLANETARY SR III — MEXICO.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22113230/files/PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/content"
+      },
+      "size": 522070
+    }
+  ],
+  "id": 22113230,
+  "links": {
+    "access": "https://zenodo.org/api/records/22113230/access",
+    "access_grants": "https://zenodo.org/api/records/22113230/access/grants",
+    "access_links": "https://zenodo.org/api/records/22113230/access/links",
+    "access_request": "https://zenodo.org/api/records/22113230/access/request",
+    "access_users": "https://zenodo.org/api/records/22113230/access/users",
+    "archive": "https://zenodo.org/api/records/22113230/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22113230/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22113230/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22113230/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22113230",
+    "draft": "https://zenodo.org/api/records/22113230/draft",
+    "file_modification": "https://zenodo.org/api/records/22113230/file-modification",
+    "files": "https://zenodo.org/api/records/22113230/files",
+    "latest": "https://zenodo.org/api/records/22113230/versions/latest",
+    "latest_html": "https://zenodo.org/records/22113230/latest",
+    "media_files": "https://zenodo.org/api/records/22113230/media-files",
+    "parent": "https://zenodo.org/api/records/22113229",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22113229",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22113229",
+    "parent_html": "https://zenodo.org/records/22113229",
+    "preview_html": "https://zenodo.org/records/22113230?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22113230/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22113230/request-deletion",
+    "requests": "https://zenodo.org/api/records/22113230/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22113230/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22113230",
+    "self_doi": "https://doi.org/10.5281/zenodo.22113230",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22113230",
+    "self_html": "https://zenodo.org/records/22113230",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22113230/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22113230/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22113230:PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22113230:PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22113230:PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22113230:PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22113230:PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22113230:PLANETARY%20SR%20III%20%E2%80%94%20MEXICO.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22113230/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR III &mdash; MEXICO</strong></h1>\n<p>Planetary SR III &mdash; <em>Mexico</em> demonstrates how the SR architecture operates inside a dual‑system national configuration characterized by <strong>formal capacity + informal, household, community, and transnational continuity</strong>. The paper contributes by showing that Mexico&rsquo;s stability is not the absence of function, but the <strong>interaction of formal institutions with informal markets, unpaid care, community governance, migration, and remittances</strong>.</p>\n<p>The manuscript contributes by applying the SR grammar to a system where <strong>formal and informal provision are mutually constitutive</strong>. Mexico demonstrates SR&rsquo;s ability to diagnose systems where households, communities, and transnational circuits supply essential function alongside formal institutions. This dual‑system continuity is a major contribution to SR&rsquo;s planetary architecture.</p>\n<p>The paper contributes by demonstrating <strong>territorial inequality</strong> and <strong>effective‑access divergence</strong>: national restoration in multidimensional poverty, health‑access improvement, and digital expansion coexist with water insecurity, violence exposure, informal labour, remittance dependence, and uneven municipal capacity. These divergences are not collapse; they are structural heterogeneity.</p>\n<p>The manuscript contributes by identifying <strong>human‑buffer precedence</strong>: unpaid care, informal work, remittances, migration, household construction, and community coordination absorb pressure before visible institutional failure. This is a distinct SR mechanism not present in Canada or the United States.</p>\n<p>The paper contributes by demonstrating <strong>cross‑domain propagation</strong>: informality into social protection and health; migration into consumption and local continuity; water stress into health and schooling; violence into mobility, business, journalism, and governance; climate exposure into household burden and municipal finance. These pathways follow SR‑CFIF&rsquo;s mechanism, lag, and falsifier requirements.</p>\n<p>The manuscript contributes by showing how <strong>CRI &rarr; AIS &rarr; MACS</strong> transitions appear in a system with uneven records, informal populations, territorial gaps, mediated access, and community governance. Automation is treated as conditional reorganization, not deterioration by assumption.</p>\n<p>Finally, the paper contributes by demonstrating SR&rsquo;s reproducibility across a third, radically different national architecture. Mexico confirms that SR&rsquo;s grammar, operators, and evidence rules remain invariant even when continuity is supplied through informal, relational, and transnational systems.</p>",
+    "doi": "10.5281/zenodo.22113230",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Mexico",
+      "Society"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-26",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22113229"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR III — MEXICO: Formal Capacity, Informal Continuity, Territorial Inequality, and the Human Buffer",
+    "version": "1.0"
+  },
+  "modified": "2026-08-26T17:13:59.620108+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22113230",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 0,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 0,
+    "version_views": 0,
+    "views": 0
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR III — MEXICO: Formal Capacity, Informal Continuity, Territorial Inequality, and the Human Buffer",
+  "updated": "2026-08-26T17:13:59.620108+00:00"
+}

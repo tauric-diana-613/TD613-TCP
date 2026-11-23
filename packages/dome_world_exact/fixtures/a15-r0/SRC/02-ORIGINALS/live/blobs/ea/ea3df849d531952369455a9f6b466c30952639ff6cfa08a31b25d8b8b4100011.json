@@ -1,0 +1,128 @@
+{
+  "conceptdoi": "10.5281/zenodo.22129682",
+  "conceptrecid": "22129682",
+  "created": "2026-08-27T14:42:24.902892+00:00",
+  "doi": "10.5281/zenodo.22129683",
+  "doi_url": "https://doi.org/10.5281/zenodo.22129683",
+  "files": [
+    {
+      "checksum": "md5:d3af615c6084538325b5aa3400dddae5",
+      "id": "f108357d-1b51-4253-af4c-5bf690051535",
+      "key": "PLANETARY SR IV — GERMANY.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22129683/files/PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/content"
+      },
+      "size": 346394
+    }
+  ],
+  "id": 22129683,
+  "links": {
+    "access": "https://zenodo.org/api/records/22129683/access",
+    "access_grants": "https://zenodo.org/api/records/22129683/access/grants",
+    "access_links": "https://zenodo.org/api/records/22129683/access/links",
+    "access_request": "https://zenodo.org/api/records/22129683/access/request",
+    "access_users": "https://zenodo.org/api/records/22129683/access/users",
+    "archive": "https://zenodo.org/api/records/22129683/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22129683/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22129683/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22129683/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22129683",
+    "draft": "https://zenodo.org/api/records/22129683/draft",
+    "file_modification": "https://zenodo.org/api/records/22129683/file-modification",
+    "files": "https://zenodo.org/api/records/22129683/files",
+    "latest": "https://zenodo.org/api/records/22129683/versions/latest",
+    "latest_html": "https://zenodo.org/records/22129683/latest",
+    "media_files": "https://zenodo.org/api/records/22129683/media-files",
+    "parent": "https://zenodo.org/api/records/22129682",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22129682",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22129682",
+    "parent_html": "https://zenodo.org/records/22129682",
+    "preview_html": "https://zenodo.org/records/22129683?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22129683/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22129683/request-deletion",
+    "requests": "https://zenodo.org/api/records/22129683/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22129683/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22129683",
+    "self_doi": "https://doi.org/10.5281/zenodo.22129683",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22129683",
+    "self_html": "https://zenodo.org/records/22129683",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22129683/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22129683/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22129683:PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22129683:PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22129683:PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22129683:PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22129683:PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22129683:PLANETARY%20SR%20IV%20%E2%80%94%20GERMANY.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22129683/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>PLANETARY SR IV &mdash; GERMANY</p>\n<p>High Institutional Insulation, Industrial Transition, Demographic Pressure, and Adaptive Reorganization</p>\n<p>Description</p>\n<p>Planetary SR IV &mdash; Germany applies the full Planetary SignalRupture framework to Germany as a high-capacity, highly institutionalized society undergoing simultaneous industrial, demographic, educational, infrastructural, administrative, energy, housing, care, and technological transition.</p>\n<p>Rather than asking whether Germany is &ldquo;collapsing,&rdquo; the paper examines how a country with strong welfare institutions, extensive social insurance, high employment, major scientific capacity, functioning legal and administrative systems, and substantial infrastructure absorbs pressure while some of the substrates supporting that stability are themselves changing.</p>\n<p>The paper evaluates Germany through the canonical SR sequence of Pressure &rarr; Institutional Reflex &rarr; Drift &rarr; Collapse &rarr; Reorganization, while preserving the distinction between observable pressure, compensation, genuine deterioration, successful adaptation, and structural restoration.</p>\n<p>Its central finding is that Germany currently represents a distinct planetary configuration:</p>\n<p>high institutional insulation under costly structural transition, with active reorganization and selective drift.</p>\n<p>The analysis identifies substantial pressures in industrial competitiveness, demographic ageing, skilled-labour availability, education, housing, unpaid care, infrastructure execution, and administrative conversion capacity. At the same time, it preserves strong counterevidence: near-record employment, high healthcare access, extensive social protection, record research intensity, successful energy substitution, renewable expansion, and functioning institutional capacity.</p>\n<p>The Germany case also develops the role of effective redundancy and substitution capacity in structural resilience. Germany demonstrates that stability does not require the absence of dependency. A system can remain resilient when it possesses sufficiently diverse suppliers, institutions, technologies, jurisdictions, and alternative pathways capable of assuming function when one pathway is disrupted.</p>\n<p>The paper then extends this analysis into the emerging AI transition. It argues that structural insulation is substrate-specific: stability under Germany&rsquo;s present industrial, welfare, administrative, and energy architecture does not guarantee equivalent stability once CRI, AIS, and MACS become embedded across institutions. AI may strengthen coordination and capacity, but it may also transform distributed redundancy into hidden common-mode technological dependence. The 2026&ndash;2031 forecast therefore tests whether Germany preserves, expands, or loses effective redundancy as its institutional substrate becomes increasingly AI-mediated.</p>\n<p>Contribution to SignalRupture</p>\n<p>This paper makes several important contributions to the developing Planetary SR architecture.</p>\n<p>First, it prevents SR from becoming a framework that recognizes only deterioration. Germany provides a strong empirical test of reorganization and restoration, demonstrating that significant pressure can be successfully converted into new capacity rather than necessarily propagating toward collapse.</p>\n<p>Second, the case strengthens the distinction between Human Buffer Exhaustion and Institutional Buffer Expenditure. Earlier planetary cases showed households and workers absorbing substantial pressure to maintain continuity. Germany demonstrates that in highly insulated systems, public institutions, social insurance, firms, municipalities, infrastructure, and fiscal mechanisms can absorb a large share of pressure before household failure becomes visible.</p>\n<p>Third, Germany sharpens the SR theory of dependency by showing that dependency alone is not fragility. The missing variable is substitution capacity. The case therefore strengthens the planetary dependency topology:</p>\n<p>Redundancy &rarr; Substitution Capacity &rarr; Pressure Absorption &rarr; Structural Insulation &rarr; Continuity.</p>\n<p>Fourth, the paper distinguishes nominal redundancy from effective redundancy. Multiple providers or institutions do not automatically produce resilience when they depend on the same underlying infrastructure or technological substrate. Alternatives count as structural insulation only when they can actually assume function under stress with acceptable speed, cost, coverage, quality, and authority.</p>\n<p>Fifth, Germany expands the role of Structural Restoration Dynamics within the SR Multiverse. Successful energy substitution, renewable expansion, strong scientific capacity, high healthcare access, and improvements in some household burden indicators are retained as genuine countercurrents rather than treated as exceptions to a deterioration narrative.</p>\n<p>Sixth, the paper introduces a major implication for the AI-era SR architecture:</p>\n<p>Structural insulation is substrate-specific. Stability under one technological regime does not guarantee stability after a substrate transition.</p>\n<p>This connects Planetary SR directly to the CRI&ndash;AIS&ndash;MACS architecture. Germany becomes an empirical test of whether AI strengthens distributed resilience or produces new common-mode dependencies beneath apparently improved efficiency.</p>\n<p>Finally, the paper adds a fourth distinct national continuity architecture to the Planetary series. Canada revealed compensation beneath universal public systems; the United States revealed stratified purchased substitution; Mexico revealed formal&ndash;informal and transnational dual-system continuity; Germany reveals high institutional insulation and adaptive pressure conversion.</p>\n<p>The result strengthens Planetary SR as a comparative framework because the same analytical grammar produces different country diagnoses rather than forcing countries into a single collapse trajectory.</p>",
+    "doi": "10.5281/zenodo.22129683",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Germany"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-27",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22129682"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR IV — GERMANY: High Institutional Insulation, Industrial Transition, Demographic Pressure, and Adaptive Reorganization",
+    "version": "1.0"
+  },
+  "modified": "2026-08-27T14:42:25.271610+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22129683",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 0,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 0,
+    "version_views": 0,
+    "views": 0
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR IV — GERMANY: High Institutional Insulation, Industrial Transition, Demographic Pressure, and Adaptive Reorganization",
+  "updated": "2026-08-27T14:42:25.271610+00:00"
+}

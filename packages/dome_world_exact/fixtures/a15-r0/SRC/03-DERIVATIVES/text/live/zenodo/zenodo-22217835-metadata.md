@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22217835"
+source_title: "PLANETARY SR XXVIII — SAUDI ARABIA: Hydrocarbon Fiscal Buffering, State-Led Diversification, Migrant-Labour Dependence, and Logistics Reorganization"
+metadata_blob_sha256: 5916c5ac6a91b930946d3c1793c92f2bad999606004ee053ac1971a61fce55d5
+metadata_blob_path: 02-ORIGINALS/live/blobs/59/5916c5ac6a91b930946d3c1793c92f2bad999606004ee053ac1971a61fce55d5.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22217834",
+  "conceptrecid": "22217834",
+  "created": "2026-09-01T01:26:29.963823+00:00",
+  "doi": "10.5281/zenodo.22217835",
+  "doi_url": "https://doi.org/10.5281/zenodo.22217835",
+  "files": [
+    {
+      "checksum": "md5:900d693d885d1e865fc817723d607ec9",
+      "id": "28cce733-7a28-48e2-8707-2fd87c9b1c42",
+      "key": "PLANETARY SR XXVIII — SAUDI ARABIA.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22217835/files/PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/content"
+      },
+      "size": 406121
+    }
+  ],
+  "id": 22217835,
+  "links": {
+    "access": "https://zenodo.org/api/records/22217835/access",
+    "access_grants": "https://zenodo.org/api/records/22217835/access/grants",
+    "access_links": "https://zenodo.org/api/records/22217835/access/links",
+    "access_request": "https://zenodo.org/api/records/22217835/access/request",
+    "access_users": "https://zenodo.org/api/records/22217835/access/users",
+    "archive": "https://zenodo.org/api/records/22217835/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22217835/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22217835/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22217835/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22217835",
+    "draft": "https://zenodo.org/api/records/22217835/draft",
+    "file_modification": "https://zenodo.org/api/records/22217835/file-modification",
+    "files": "https://zenodo.org/api/records/22217835/files",
+    "latest": "https://zenodo.org/api/records/22217835/versions/latest",
+    "latest_html": "https://zenodo.org/records/22217835/latest",
+    "media_files": "https://zenodo.org/api/records/22217835/media-files",
+    "parent": "https://zenodo.org/api/records/22217834",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22217834",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217834",
+    "parent_html": "https://zenodo.org/records/22217834",
+    "preview_html": "https://zenodo.org/records/22217835?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22217835/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22217835/request-deletion",
+    "requests": "https://zenodo.org/api/records/22217835/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22217835/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22217835",
+    "self_doi": "https://doi.org/10.5281/zenodo.22217835",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217835",
+    "self_html": "https://zenodo.org/records/22217835",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22217835/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22217835/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22217835:PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22217835:PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22217835:PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22217835:PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22217835:PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22217835:PLANETARY%20SR%20XXVIII%20%E2%80%94%20SAUDI%20ARABIA.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22217835/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "available"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XXVIII &mdash; SAUDI ARABIA</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XXVIII &mdash; Saudi Arabia</em> analyzes Saudi Arabia as a coupled institutional&ndash;population system defined by <strong>hydrocarbon fiscal buffering, state‑led diversification, migrant‑labour dependence, and logistics reorganization</strong>. The study documents a continuity architecture built on large hydrocarbon revenue, sovereign assets, extensive subsidies, and rapidly expanding non‑oil infrastructure. IMF&rsquo;s 2026 consultation reported <em>&ldquo;GDP growth of 4.6% in 2025, non‑oil growth of 4.2%, inflation of 2.0%, public debt of 31.8%, overall unemployment of 3.2% and Saudi‑national unemployment of 7.0%,&rdquo;</em> highlighting substantial external and financial buffers. Effective access diverges from formal provision across 13 administrative regions, where citizen and non‑citizen institutional pathways differ sharply in wages, housing, insurance, and social protection. Migrant labour supplies a large share of private‑sector and construction capacity, making population composition a structural variable rather than a marginal one. Oil remains the fiscal backbone while gas, solar, logistics, and mega‑project investment expand non‑oil capacity. Extreme heat, water scarcity, cooling demand, and desalination form persistent structural requirements that tightly couple energy and basic services. The central SR question is whether large fiscal buffers and project‑intensive diversification can produce durable domestic value retention rather than contingent hydrocarbon‑linked continuity.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>distinct continuity topology</strong> to the Planetary SR comparative series by demonstrating how a centralized monarchy maintains continuity through <strong>hydrocarbon‑funded state buffering and rapid non‑oil diversification</strong>, while unresolved pressure propagates into <strong>migrant‑labour dependence, regional access gaps, energy‑water coupling, and project‑pipeline fiscal exposure</strong>. Saudi Arabia strengthens SR fields such as <strong>Systems Propagation Science</strong>, <strong>Infrastructural Political Economy</strong>, <strong>Institutional Cognition</strong>, and <strong>Drift Collapse Field</strong> by showing how oil revenue &rarr; fiscal/project/social capacity, migrant labour &rarr; construction/services and remittances, mega‑project pipeline &rarr; fiscal/implementation capacity, and diversification &rarr; private productivity/value retention operate as named propagation bridges. The paper expands the ATLAS architecture by illustrating how very large fiscal buffers can sustain continuity while still leaving conversion gaps, providing a decisive test of <strong>surface&ndash;substrate divergence</strong> and <strong>unequal insulation</strong>. Saudi Arabia&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;hydrocarbon‑funded state buffering with large fiscal/external assets, rapid non‑oil diversification, migrant‑labour dependence and project‑intensive reorganization,&rdquo;</em> adding a new structural configuration to the planetary series and supplying a critical case for <strong>reorganization vs restoration</strong> and <strong>agency‑conditioned response</strong>.</p>",
+    "doi": "10.5281/zenodo.22217835",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Saudi Arabia",
+      "Society",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22217834"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XXVIII — SAUDI ARABIA: Hydrocarbon Fiscal Buffering, State-Led Diversification, Migrant-Labour Dependence, and Logistics Reorganization",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T01:26:30.242930+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22217835",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XXVIII — SAUDI ARABIA: Hydrocarbon Fiscal Buffering, State-Led Diversification, Migrant-Labour Dependence, and Logistics Reorganization",
+  "updated": "2026-09-01T01:26:30.242930+00:00"
+}
+```

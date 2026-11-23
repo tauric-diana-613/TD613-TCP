@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22183127"
+source_title: "PLANETARY SR XII — POLAND: Catch-Up Growth, EU-Embedded Capa city, Coal-to-Electric Transition, and Demographic Contraction"
+metadata_blob_sha256: 5337bb295754acd04b47610501a7956e03f6812901b6a9b3158df47934b1f725
+metadata_blob_path: 02-ORIGINALS/live/blobs/53/5337bb295754acd04b47610501a7956e03f6812901b6a9b3158df47934b1f725.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22183126",
+  "conceptrecid": "22183126",
+  "created": "2026-08-31T01:53:37.439148+00:00",
+  "doi": "10.5281/zenodo.22183127",
+  "doi_url": "https://doi.org/10.5281/zenodo.22183127",
+  "files": [
+    {
+      "checksum": "md5:dbcaed293c296e4ad117f2eae43bd984",
+      "id": "2cb302d3-9734-45fd-a144-37c572964655",
+      "key": "PLANETARY SR XII — POLAND.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22183127/files/PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/content"
+      },
+      "size": 410135
+    }
+  ],
+  "id": 22183127,
+  "links": {
+    "access": "https://zenodo.org/api/records/22183127/access",
+    "access_grants": "https://zenodo.org/api/records/22183127/access/grants",
+    "access_links": "https://zenodo.org/api/records/22183127/access/links",
+    "access_request": "https://zenodo.org/api/records/22183127/access/request",
+    "access_users": "https://zenodo.org/api/records/22183127/access/users",
+    "archive": "https://zenodo.org/api/records/22183127/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22183127/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22183127/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22183127/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22183127",
+    "draft": "https://zenodo.org/api/records/22183127/draft",
+    "file_modification": "https://zenodo.org/api/records/22183127/file-modification",
+    "files": "https://zenodo.org/api/records/22183127/files",
+    "latest": "https://zenodo.org/api/records/22183127/versions/latest",
+    "latest_html": "https://zenodo.org/records/22183127/latest",
+    "media_files": "https://zenodo.org/api/records/22183127/media-files",
+    "parent": "https://zenodo.org/api/records/22183126",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22183126",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22183126",
+    "parent_html": "https://zenodo.org/records/22183126",
+    "preview_html": "https://zenodo.org/records/22183127?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22183127/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22183127/request-deletion",
+    "requests": "https://zenodo.org/api/records/22183127/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22183127/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22183127",
+    "self_doi": "https://doi.org/10.5281/zenodo.22183127",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22183127",
+    "self_html": "https://zenodo.org/records/22183127",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22183127/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22183127/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22183127:PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22183127:PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22183127:PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22183127:PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22183127:PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22183127:PLANETARY%20SR%20XII%20%E2%80%94%20POLAND.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22183127/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XII &mdash; POLAND</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XII &mdash; Poland</em> provides a structural diagnostic of Poland as a coupled institutional&ndash;population system, using evidence from 2000&ndash;2025 with 2026 verification. The paper identifies Poland&rsquo;s continuity architecture as <strong>rapid catch‑up growth, EU‑embedded investment capacity, coal‑to‑electric transition, and demographic contraction</strong>. Poland&rsquo;s long‑run convergence baseline&mdash;<em>&ldquo;GDP per capita doubled between 2005 and 2024&rdquo;</em>&mdash;coexists with structural pressures including <em>&ldquo;a population near 37.35 million in 2025 with continuing negative natural increase&rdquo;</em> and a carbon‑intensive energy legacy undergoing costly transition. The study distinguishes formal coverage from effective access, showing how low unemployment, regional wage gaps, housing quality, health‑workforce constraints, and demographic decline shape continuity beneath strong macroeconomic expansion. Poland&rsquo;s coal‑heavy energy system and emerging renewable/nuclear plans form a central conversion test, while EU cohesion funds and national transfers buffer households and local governments during transition.</p>\n<h2><strong>Contribution</strong></h2>\n<p>This paper expands the Planetary SR comparative series by introducing a <strong>new continuity topology</strong> distinct from Canada, the United States, Mexico, Germany, France, the United Kingdom, Italy, Spain, Sweden, and Norway. Poland&rsquo;s configuration strengthens SR fields such as <strong>Planetary Pressure Ecology</strong>, <strong>Institutional Reflex Science</strong>, <strong>Planetary Drift Mechanics</strong>, and <strong>Systems Propagation Science</strong> by demonstrating how catch‑up growth, demographic contraction, EU‑embedded investment, and coal‑to‑electric transition interact across 16 voivodeships and diverse local service systems. The document provides high‑resolution evidence for SR&rsquo;s frozen hypotheses, including compensated continuity, unequal insulation, surface&ndash;substrate divergence, and reorganization. It also contributes to the ATLAS architecture by showing how rapid economic convergence can coexist with long‑run demographic decline, uneven regional capacity, and energy‑transition constraints. As the paper states, Poland&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;EU‑embedded catch‑up growth with strong employment and industrial integration, facing demographic contraction, coal‑intensive energy transition and uneven regional service capacity,&rdquo;</em> thereby adding a new structural configuration to the planetary series.</p>",
+    "doi": "10.5281/zenodo.22183127",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Poland",
+      "Society",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22183126"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XII — POLAND: Catch-Up Growth, EU-Embedded Capa city, Coal-to-Electric Transition, and Demographic Contraction",
+    "version": "1.0"
+  },
+  "modified": "2026-08-31T01:53:37.777454+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22183127",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XII — POLAND: Catch-Up Growth, EU-Embedded Capa city, Coal-to-Electric Transition, and Demographic Contraction",
+  "updated": "2026-08-31T01:53:37.777454+00:00"
+}
+```

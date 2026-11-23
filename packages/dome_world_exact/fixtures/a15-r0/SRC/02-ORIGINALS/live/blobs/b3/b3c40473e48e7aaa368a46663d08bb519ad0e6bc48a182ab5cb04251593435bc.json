@@ -1,0 +1,128 @@
+{
+  "conceptdoi": "10.5281/zenodo.22235852",
+  "conceptrecid": "22235852",
+  "created": "2026-09-01T17:35:34.170024+00:00",
+  "doi": "10.5281/zenodo.22235853",
+  "doi_url": "https://doi.org/10.5281/zenodo.22235853",
+  "files": [
+    {
+      "checksum": "md5:30a292c2494f55991cb98209bfebef5e",
+      "id": "660efc0d-971a-4d72-9a56-c997d1e634eb",
+      "key": "PLANETARY SR XXXII — THE INFRASTRUCTURAL DEPENDENCY AND BUFFER TRANSFER MAP.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22235853/files/PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/content"
+      },
+      "size": 250850
+    }
+  ],
+  "id": 22235853,
+  "links": {
+    "access": "https://zenodo.org/api/records/22235853/access",
+    "access_grants": "https://zenodo.org/api/records/22235853/access/grants",
+    "access_links": "https://zenodo.org/api/records/22235853/access/links",
+    "access_request": "https://zenodo.org/api/records/22235853/access/request",
+    "access_users": "https://zenodo.org/api/records/22235853/access/users",
+    "archive": "https://zenodo.org/api/records/22235853/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22235853/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22235853/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22235853/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22235853",
+    "draft": "https://zenodo.org/api/records/22235853/draft",
+    "file_modification": "https://zenodo.org/api/records/22235853/file-modification",
+    "files": "https://zenodo.org/api/records/22235853/files",
+    "latest": "https://zenodo.org/api/records/22235853/versions/latest",
+    "latest_html": "https://zenodo.org/records/22235853/latest",
+    "media_files": "https://zenodo.org/api/records/22235853/media-files",
+    "parent": "https://zenodo.org/api/records/22235852",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22235852",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22235852",
+    "parent_html": "https://zenodo.org/records/22235852",
+    "preview_html": "https://zenodo.org/records/22235853?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22235853/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22235853/request-deletion",
+    "requests": "https://zenodo.org/api/records/22235853/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22235853/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22235853",
+    "self_doi": "https://doi.org/10.5281/zenodo.22235853",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22235853",
+    "self_html": "https://zenodo.org/records/22235853",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22235853/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22235853/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22235853:PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22235853:PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22235853:PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22235853:PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22235853:PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22235853:PLANETARY%20SR%20XXXII%20%E2%80%94%20THE%20INFRASTRUCTURAL%20DEPENDENCY%20AND%20BUFFER%20TRANSFER%20MAP.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22235853/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XXXII &mdash; The Infrastructural Dependency &amp; Buffer Transfer Map</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>PLANETARY SR XXXII</em> maps how essential‑infrastructure ownership, substitution capacity, labour institutions, and regulatory topology determine <strong>where adjustment costs land</strong> when systems face pressure. The paper shows that dependency is not about ideology or ownership alone; it is about the structural relation between essentiality, concentration, substitution speed, public operating capacity, and bargaining leverage. As the document states, <em>&ldquo;the mechanism is not that private provision is inherently harmful&hellip; it is that an essential provider gains structural leverage when its function is critical, substitutes are weak, exit is slow, concentration is high, and the state lacks direct operating capacity.&rdquo;</em> This map identifies how wages, prices, staffing, investment, contracting, and service conditions transmit pressure into households, workers, firms, municipalities, or fiscal systems. It distinguishes countries with strong public substitution capacity (France, Norway, China, Singapore, Gulf systems) from those with concentrated private dependence (Canada, United States), mixed/informal architectures (Mexico, India, Indonesia, Brazil, Colombia, Nigeria), and restoration cases (South Africa). The paper formalizes infrastructural dependency as a <strong>conditional mechanism</strong> that shapes inequality, recovery slack, and effective access across thirty national architectures.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study adds a <strong>post‑lock structural layer</strong> to the Planetary SR universe by explaining <em>why</em> the already‑registered national pathways persist, diverge, or fail. It operationalizes SR&rsquo;s <strong>Infrastructural Political Economy</strong> and <strong>Household Absorption Science</strong> by showing how essential‑system dependency becomes a mechanism of <strong>buffer transfer</strong>, especially when price transmission and labour transmission combine. It strengthens SR&rsquo;s comparative architecture by revealing distinct dependency topologies: private‑dominant continuity with household compensation (Canada, US), institutional‑buffer‑first systems (Germany, Nordics), state‑dominant strategic capacity (France, China, Singapore, Gulf systems), mixed/informal substitution architectures (Mexico, India, Indonesia, Brazil, Colombia, Nigeria), and restoration‑dependent systems (South Africa). The paper also deepens SR&rsquo;s <strong>Structural Leverage</strong> concept by distinguishing ordinary market power from essential‑function leverage. It provides the mechanism bridge needed for the <strong>Time‑to‑Convergence Registry</strong> and clarifies how infrastructural dependency interacts with wage‑price transmission, inequality, territorial divergence, and institutional reflex. By mapping where substitution is credible, slow, informal, or sovereign‑backed, the study becomes a foundational diagnostic layer for adjudicating the 2031 pathways and for understanding how drift, continuity, and restoration propagate through essential systems.</p>",
+    "doi": "10.5281/zenodo.22235853",
+    "keywords": [
+      "Metatheory",
+      "Institution",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22235852"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XXXII — THE INFRASTRUCTURAL DEPENDENCY AND BUFFER TRANSFER MAP",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T17:35:34.479307+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22235853",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XXXII — THE INFRASTRUCTURAL DEPENDENCY AND BUFFER TRANSFER MAP",
+  "updated": "2026-09-01T17:35:34.479307+00:00"
+}

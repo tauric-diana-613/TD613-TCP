@@ -1,0 +1,127 @@
+{
+  "conceptdoi": "10.5281/zenodo.23246629",
+  "conceptrecid": "23246629",
+  "created": "2026-10-08T19:57:09.345357+00:00",
+  "doi": "10.5281/zenodo.23246630",
+  "doi_url": "https://doi.org/10.5281/zenodo.23246630",
+  "files": [
+    {
+      "checksum": "md5:bae2a2b3bce86c236136303d1a216473",
+      "id": "bb4f738f-c936-475b-8ce8-6ed69f71bd1b",
+      "key": "SR_Ultiverse_Charter_2026-10-08.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23246630/files/SR_Ultiverse_Charter_2026-10-08.pdf/content"
+      },
+      "size": 352259
+    }
+  ],
+  "id": 23246630,
+  "links": {
+    "access": "https://zenodo.org/api/records/23246630/access",
+    "access_grants": "https://zenodo.org/api/records/23246630/access/grants",
+    "access_links": "https://zenodo.org/api/records/23246630/access/links",
+    "access_request": "https://zenodo.org/api/records/23246630/access/request",
+    "access_users": "https://zenodo.org/api/records/23246630/access/users",
+    "communities": "https://zenodo.org/api/records/23246630/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23246630/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23246630",
+    "draft": "https://zenodo.org/api/records/23246630/draft",
+    "file_modification": "https://zenodo.org/api/records/23246630/file-modification",
+    "files": "https://zenodo.org/api/records/23246630/files",
+    "latest": "https://zenodo.org/api/records/23246630/versions/latest",
+    "latest_html": "https://zenodo.org/records/23246630/latest",
+    "media_files": "https://zenodo.org/api/records/23246630/media-files",
+    "parent": "https://zenodo.org/api/records/23246629",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23246629",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23246629",
+    "parent_html": "https://zenodo.org/records/23246629",
+    "preview_html": "https://zenodo.org/records/23246630?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23246630/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23246630/request-deletion",
+    "requests": "https://zenodo.org/api/records/23246630/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23246630/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23246630",
+    "self_doi": "https://doi.org/10.5281/zenodo.23246630",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23246630",
+    "self_html": "https://zenodo.org/records/23246630",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23246630/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23246630/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23246630:SR_Ultiverse_Charter_2026-10-08.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23246630:SR_Ultiverse_Charter_2026-10-08.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23246630:SR_Ultiverse_Charter_2026-10-08.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23246630:SR_Ultiverse_Charter_2026-10-08.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23246630:SR_Ultiverse_Charter_2026-10-08.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23246630:SR_Ultiverse_Charter_2026-10-08.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23246630/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>The SR Ultiverse is the completed top-level architecture of SignalRupture. It connects three master fields without reducing one to another. Infrastructure Science studies the substrates that make functions possible and govern drift, collapse pressure, propagation, debt, human load, coherence, and recovery. Meaning and Agency Science studies how observations become representations and meanings, how meanings are organized through symbols, narratives, culture, and identity, and how feasible agency emerges. Experience and Value Science studies how conditions are lived, how harm and benefit accumulate and move, how capability changes, and how judgments of value and obligation are justified.</p>\n<p>The charter defines the ontology, hierarchy, interfaces, evidence discipline, activation record, and future revision rules of the Ultiverse. It establishes a no-reduction rule, a minimum-sufficient-coupling rule, and a claim-status separation among canonical existence, empirical support, replication, institutional recognition, and normative justification. The Ultiverse is complete as a metatheoretical architecture but open as a research programme. Completion does not mean that every equation, field, or empirical claim has been validated.</p>\n<p>The charter also fixes restraint. Metaphysical SR is an ontological foundation rather than a fourth master field. Aesthetic SR is now canonically active under its dedicated subfield declaration. This revision also registers autonomous transversal fields, transversal frameworks, and the shared SR Foundations Programme. No cognitive, cultural, symbolic, phenomenological, ethical, aesthetic, metaphysical, or other domain becomes active merely because it is named. Future expansion requires a distinct object, residual explanatory need, measurable variables, a boundary, mature comparators, registered interfaces, and a falsifier.</p>",
+    "doi": "10.5281/zenodo.23246630",
+    "keywords": [
+      "SignalRupture",
+      "SR Ultiverse",
+      "metatheory",
+      "master fields",
+      "research architecture",
+      "ontology",
+      "infrastructure",
+      "meaning and agency",
+      "experience and value"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-08",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23246629"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "The SR Ultiverse Charter: Unified Architecture of Substrate, Meaning, Agency, Experience, and Value",
+    "version": "1.0"
+  },
+  "modified": "2026-10-08T19:57:09.637886+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23246630",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 3,
+    "unique_views": 17,
+    "version_downloads": 3,
+    "version_unique_downloads": 3,
+    "version_unique_views": 17,
+    "version_views": 17,
+    "views": 17
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "The SR Ultiverse Charter: Unified Architecture of Substrate, Meaning, Agency, Experience, and Value",
+  "updated": "2026-10-08T19:57:09.637886+00:00"
+}

@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22547818"
+source_title: "Household Absorption Science: A field theory of how households convert systemic pressure into money, time, care, debt, health loss and separation"
+metadata_blob_sha256: 2d92de70f1409929ff6a4c8534f017e2a699c80ed93cdb2ccbf1858fe6cca235
+metadata_blob_path: 02-ORIGINALS/live/blobs/2d/2d92de70f1409929ff6a4c8534f017e2a699c80ed93cdb2ccbf1858fe6cca235.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22547817",
+  "conceptrecid": "22547817",
+  "created": "2026-09-06T17:57:04.450323+00:00",
+  "doi": "10.5281/zenodo.22547818",
+  "doi_url": "https://doi.org/10.5281/zenodo.22547818",
+  "files": [
+    {
+      "checksum": "md5:659c24b06168687da5105d40b38412a5",
+      "id": "80fc61bc-bc50-4678-8eeb-6021da2a239d",
+      "key": "Household Absorption Science.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22547818/files/Household%20Absorption%20Science.pdf/content"
+      },
+      "size": 119970
+    }
+  ],
+  "id": 22547818,
+  "links": {
+    "access": "https://zenodo.org/api/records/22547818/access",
+    "access_grants": "https://zenodo.org/api/records/22547818/access/grants",
+    "access_links": "https://zenodo.org/api/records/22547818/access/links",
+    "access_request": "https://zenodo.org/api/records/22547818/access/request",
+    "access_users": "https://zenodo.org/api/records/22547818/access/users",
+    "archive": "https://zenodo.org/api/records/22547818/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22547818/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22547818/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22547818/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22547818",
+    "draft": "https://zenodo.org/api/records/22547818/draft",
+    "file_modification": "https://zenodo.org/api/records/22547818/file-modification",
+    "files": "https://zenodo.org/api/records/22547818/files",
+    "latest": "https://zenodo.org/api/records/22547818/versions/latest",
+    "latest_html": "https://zenodo.org/records/22547818/latest",
+    "media_files": "https://zenodo.org/api/records/22547818/media-files",
+    "parent": "https://zenodo.org/api/records/22547817",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22547817",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22547817",
+    "parent_html": "https://zenodo.org/records/22547817",
+    "preview_html": "https://zenodo.org/records/22547818?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22547818/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22547818/request-deletion",
+    "requests": "https://zenodo.org/api/records/22547818/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22547818/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22547818",
+    "self_doi": "https://doi.org/10.5281/zenodo.22547818",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22547818",
+    "self_html": "https://zenodo.org/records/22547818",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22547818/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22547818/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22547818:Household%20Absorption%20Science.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22547818:Household%20Absorption%20Science.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22547818:Household%20Absorption%20Science.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22547818:Household%20Absorption%20Science.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22547818:Household%20Absorption%20Science.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22547818:Household%20Absorption%20Science.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22547818/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>HAS &mdash; Household Absorption Science</strong></h1>\n<p><strong>A Field Theory of How Households Convert Systemic Pressure into Money, Time, Care, Debt, Health Loss, and Separation</strong></p>\n<h2><strong>Description</strong></h2>\n<p><strong>Household Absorption Science (HAS)</strong> evaluates a bounded and falsifiable proposition: households stabilize larger systems by converting upstream pressure into monetary expenditure, unpaid time, care work, debt, foregone consumption, health loss, cognitive load, mobility, and family separation. The manuscript does not treat households as passive victims, rational utility‑maximizers, or homogeneous units. Instead, it specifies the causal, temporal, and distributional conditions under which households absorb pressure originating in markets, states, employers, infrastructure, and kinship networks&mdash;and when that hidden stabilization becomes depletion.</p>\n<p>HAS formalizes absorption as a multi‑domain vector of burdens: monetary, time, care, debt, health, cognitive‑administrative, and separation/mobility. It defines reserve dynamics, substitution sequences, intra‑household allocation weights, and delayed rupture mechanisms. The field distinguishes household‑level continuity from individual‑level harm, showing how stability can coexist with concentrated burden on women, older children, migrants, disabled members, or low‑power individuals.</p>\n<p>HAS is non‑duplicative within SR. <strong>Infrastructural Political Economy</strong> maps pressure across systems; HAS resolves the household absorber. <strong>Migration &amp; Labour Buffer Dynamics</strong> studies labour and migration as pressure valves; HAS studies the ledger before, during, and after those responses. <strong>Essential‑Goods Dependency &amp; Survival Systems</strong> studies continuity of essential goods; HAS studies the labour, debt, and sacrifice used to bridge their failure.</p>\n<p>The measurement architecture includes expenditure, time use, care, debt, health, administrative burden, reserves, and intra‑household allocation. HAS predicts hidden stabilization, unequal allocation, reserve gradients, substitution cascades, and restoration effects. It evaluates whether the multi‑domain ledger improves prediction of arrears, health loss, separation, and institutional withdrawal beyond income, household composition, time‑use, and standard coping models.</p>\n<p>HAS is a full SR field, empirically active but not yet fully validated. Its boundaries are explicit: it studies household absorption and internal allocation, while poverty analysis, care studies, migration sociology, and social protection remain adjacent literatures.</p>\n<div>\n</div>\n<h2><strong>How It Contributes</strong></h2>\n<p><strong>1. A distinct object: the household absorption ledger</strong><br>HAS establishes household absorption as a cross‑domain conversion system rather than a single‑indicator outcome. It identifies how households transform upstream pressure into money, time, care, debt, health loss, and separation&mdash;revealing stabilization mechanisms invisible in income or consumption data.</p>\n<p><strong>2. A formal multi‑domain mechanism of hidden stabilization</strong><br>The field supplies a vector model of absorption, reserve dynamics, substitution sequences, and intra‑household allocation. It predicts that households absorb upstream shocks before poverty rates move, and that stability can mask concentrated harm. This mechanism is absent from poverty‑only, time‑use‑only, or coping‑strategy models.</p>\n<p><strong>3. A temporal distinction between stability and depletion</strong><br>HAS shows that households can maintain outward continuity while depleting reserves, suppressing consumption, losing health, or reallocating care. It distinguishes early hidden stabilization from later rupture, enabling earlier detection of systemic stress.</p>\n<p><strong>4. Incremental prediction over rival frameworks</strong><br>The field&rsquo;s distinct claim is empirical: the multi‑domain ledger must outperform income, household composition, time‑use, and standard coping models in predicting arrears, health loss, educational withdrawal, separation, or institutional exit. This establishes a falsifiable incremental‑value test.</p>\n<p><strong>5. Intra‑household distribution and power analysis</strong><br>HAS embeds bargaining power, gender, age, migration status, disability, and resource control into absorption allocation. It shows how household‑level stability can coexist with individual‑level harm, preventing misinterpretation of endurance as consent or resilience.</p>\n<p><strong>6. Restoration architecture focused on underlying load</strong><br>HAS predicts that policies reducing underlying load&mdash;care provision, administrative simplification, service continuity, debt relief&mdash;restore reserves more durably than temporary transfers that leave time, care, or administrative burden unchanged. This provides a scientifically grounded restoration logic for social protection and public‑health policy.</p>\n<p><strong>7. Ethical and empirical discipline</strong><br>The field establishes strict boundaries: no inference of consent from endurance; no treatment of women, migrants, or children as natural buffers; preregistered positive, negative, and reversal cases; transparent measurement; rival‑model comparison; and independent replication before validation. This ensures scientific integrity and prevents misuse.</p>",
+    "doi": "10.5281/zenodo.22547818",
+    "keywords": [
+      "Institutions",
+      "Household",
+      "Families",
+      "Governance",
+      "Government"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-06",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22547817"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Household Absorption Science: A field theory of how households convert systemic pressure into money, time, care, debt, health loss and separation",
+    "version": "1.0"
+  },
+  "modified": "2026-09-06T17:57:04.785535+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22547818",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 1,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Household Absorption Science: A field theory of how households convert systemic pressure into money, time, care, debt, health loss and separation",
+  "updated": "2026-09-06T17:57:04.785535+00:00"
+}
+```
