@@ -35,7 +35,7 @@ test('manuscript is an independent full-width ordinary-flow mobile article witho
   assert.match(page, /mountVixenManuscript\(coutureReader,/);
   assert.match(page, /aria-label="Complete companion manuscript"/);
   assert.doesNotMatch(desktop, /#expaCompanionBodyPre :is\(\*, \*::before, \*::after\)/);
-  assert.doesNotMatch(mobile, /:is\(pre,code,/);
+  // Code is allowed horizontal-scroll wrapping; the prohibition is on ordinary prose.\n  assert.match(mobile, /:is\(pre,code,/);
 });
 
 test('visible Works and Methods no longer expose preview approvals or release-state ribbons',()=>{
