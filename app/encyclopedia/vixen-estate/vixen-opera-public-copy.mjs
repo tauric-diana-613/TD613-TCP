@@ -33,6 +33,12 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bTD613\b/g,'the research host'],
   // The constitutional roles are public terms of art. Never erase their identity.
 ]);
+// A missing source-level copy fix must fail closed on the public stage.
+// Remove the offending ribbon/label rather than disguising a release or lab
+// status as decorative reader prose. Original manuscript and machine records
+// remain immutable and are explicitly excluded from this presentation guard.
+const BACKSTAGE_CHROME = /(?:\\bExperiment[\\s_-]*[ABC]\\b|EXPERIMENT[_-]A_PREVIEW_AUTHORIZED|PREVIEW[_ -]AUTHORIZED|PRODUCTION\\s+REQUIRES|OPERATOR[_ -]ONLY|OPERATOR\\s+SECRET|Emergence\\s+HQ|\\bAtelier\\b|\\bEMSTD613\\b|\\bSignalRupture\\b|\\bWendbine\\b|\\bSRC\\b|\\bAmari\\b|\\bPaul\\b|\\bChatGPT\\b|\\bGemini\\b|\\bAntigravity\\b|\\bCodex\\b|\\bOpenAI\\b|debug\\s+prose|release[_ -]state|adjudication\\s+ribbon)/i;
+const PUBLIC_CHROME_SELECTORS='.tag,.badge,.eyebrow,.ci-kicker,.vix-reading-atelier-eyebrow,.vix-folio-topline,.vixen-manuscript-kicker,.expa-aperture-bar,.status-ribbon,.release-ribbon,.vix-operator-dek';
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);
 export const PUBLIC_COPY_VERSION='vixen-public-copy/v1';
 export function translatePublicCopy(value){
@@ -47,7 +53,7 @@ function protectedSource(node){
   // Exact source, transfer and machine receipts continue to be retrievable
   // without rewriting provenance or falsifying the underlying source bytes.
   return Boolean(parent.closest(
-    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview'
+    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], [data-membrane="RESEARCH_OBJECT"], #expaCompanionBodyPre, .vix-reader-paragraph, .vix-reader-heading, .term-name, .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview'
   ));
 }
 function rewriteNode(node){
@@ -61,6 +67,10 @@ function rewriteNode(node){
   if(node.nodeType!==1)return;
   const el=node;
   if(NONPRESENTATION.has(el.tagName))return;
+  if(!protectedSource(el) && el.matches(PUBLIC_CHROME_SELECTORS) && BACKSTAGE_CHROME.test(el.textContent||'')){
+    el.remove();
+    return;
+  }
   // Attributes used by screen readers and human hints count as public copy.
   for(const key of ['aria-label','aria-description','title','alt','placeholder']){
     if(!el.hasAttribute(key))continue;
@@ -68,7 +78,7 @@ function rewriteNode(node){
     const next=translatePublicCopy(prior);
     if(prior!==next)el.setAttribute(key,next);
   }
-  for(let child=el.firstChild;child;child=child.nextSibling)rewriteNode(child);
+  for(let child=el.firstChild;child;){const next=child.nextSibling;rewriteNode(child);child=next;}
 }
 export function installVixenPublicCopy(root=document.body){
   if(!root)throw Error('VIXEN_PUBLIC_COPY_ROOT_REQUIRED');
