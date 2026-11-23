@@ -160,7 +160,11 @@ test('Architectural Security Proof: production executable has ZERO test trust ov
   const rawCoreSource = fs.readFileSync(CORE_PATH, 'utf8');
   const coreCodeNoComments = rawCoreSource.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
 
-  assert.equal(R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256, null);
+  assert.equal(
+    R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256,
+    '840a71625f4b9db224871bbb126b6debc3fefdc9179b5628bd9faf514f2c7701'
+  );
+  assert.match(R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256, /^[0-9a-f]{64}$/);
   assert.equal(execCodeNoComments.includes('NODE_TEST_CONTEXT'), false);
   assert.equal(execCodeNoComments.includes('testOnly'), false);
   assert.equal(execCodeNoComments.includes('checkedOutHeadShaOverride'), false);
@@ -169,24 +173,29 @@ test('Architectural Security Proof: production executable has ZERO test trust ov
   assert.equal(coreCodeNoComments.includes('child_process'), false);
 
   const { publicKey, privateKey } = createEphemeralTestSigner();
+  assert.notEqual(spkiFingerprint(publicKey), R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256);
   const realHead = resolveCheckedOutGitHeadSha(process.cwd());
   const grant = signGrant(buildValidNativePayload({ checkedOutHeadSha: realHead }), privateKey);
   const evidenceDir = makeTempEvidenceDir();
   const tmpDir = makeTempEvidenceDir();
   const grantFile = path.join(tmpDir, 'grant.json');
   const pubFile = path.join(tmpDir, 'pub.pem');
+  const unsignedGrantFile = path.join(tmpDir, 'unsigned-grant.json');
   const outFile = path.join(tmpDir, 'out.json');
   fs.writeFileSync(grantFile, `${JSON.stringify(grant, null, 2)}\n`, 'utf8');
   fs.writeFileSync(pubFile, publicKey, 'utf8');
+  fs.writeFileSync(unsignedGrantFile, `${JSON.stringify({ algorithm: 'ed25519', payload: grant.payload }, null, 2)}\n`, 'utf8');
 
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async () => { throw new Error('NETWORK_FORBIDDEN_IN_TEST'); };
   try {
-    // Default offline CLI runs with zero network or credentials
+    // Default offline CLI runs with zero network or credentials and reports pinned trust anchor
     const offlineJson = JSON.parse(execFileSync(process.execPath, [EXECUTABLE_PATH], { encoding: 'utf8' }));
     assert.equal(offlineJson.status, 'SOURCE_ONLY_QUALIFIED');
     assert.equal(offlineJson.paidProviderCallsExecuted, 0);
-    assert.equal(offlineJson.trustAnchorProvisioned, false);
+    assert.equal(offlineJson.countTokensCallsExecuted, 0);
+    assert.equal(offlineJson.modelDiscoveryCallsExecuted, 0);
+    assert.equal(offlineJson.trustAnchorProvisioned, true);
     assert.equal(offlineJson.resourceCeilingsImposedByTD613, 'NONE');
 
     // Programmatic attempt to pass test overrides to executable entrypoint fails closed immediately
@@ -209,7 +218,7 @@ test('Architectural Security Proof: production executable has ZERO test trust ov
       );
     }
 
-    // Even valid un-overridden call to executable fails closed on unprovisioned trust anchor
+    // Ephemeral non-operator key signed on real HEAD fails closed against pinned operator fingerprint
     await assert.rejects(
       () => executeProviderNativeR1Observation({
         acknowledgeLiveExecution: true,
@@ -217,35 +226,41 @@ test('Architectural Security Proof: production executable has ZERO test trust ov
         publicKeyPem: publicKey,
         evidenceDir
       }),
-      (e) => e.code === 'R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED'
+      (e) => e.code === 'R1_AUTH_UNTRUSTED_PUBLIC_KEY'
     );
 
-    // Live CLI inside NODE_TEST_CONTEXT still fails closed on unprovisioned trust anchor and leaves zero 0-byte orphan files
-    let stderr = '';
-    let exit = 0;
-    try {
-      execFileSync(process.execPath, [
-        EXECUTABLE_PATH,
-        '--execute',
-        '--ack-live-r1-observation',
-        '--grant-file', grantFile,
-        '--public-key-file', pubFile,
-        '--evidence-dir', evidenceDir,
-        '--out', outFile
-      ], {
-        encoding: 'utf8',
-        env: { ...process.env, GEMINI_API_KEY: 'must-never-be-read' },
-        stdio: ['ignore', 'pipe', 'pipe']
-      });
-    } catch (err) {
-      exit = err.status;
-      stderr = String(err.stderr || '');
+    // Live CLI --execute with untrusted key (and unsigned grant) fails closed BEFORE credential access or network
+    // and leaves zero 0-byte orphan output files or nonce artifacts in evidenceDir
+    for (const [candidateGrantFile, expectedPattern] of [
+      [grantFile, /R1_AUTH_UNTRUSTED_PUBLIC_KEY/],
+      [unsignedGrantFile, /R1_AUTH_MISSING_SIGNATURE/]
+    ]) {
+      let stderr = '';
+      let exit = 0;
+      try {
+        execFileSync(process.execPath, [
+          EXECUTABLE_PATH,
+          '--execute',
+          '--ack-live-r1-observation',
+          '--grant-file', candidateGrantFile,
+          '--public-key-file', pubFile,
+          '--evidence-dir', evidenceDir,
+          '--out', outFile
+        ], {
+          encoding: 'utf8',
+          env: { ...process.env, GEMINI_API_KEY: 'must-never-be-read' },
+          stdio: ['ignore', 'pipe', 'pipe']
+        });
+      } catch (err) {
+        exit = err.status;
+        stderr = String(err.stderr || '');
+      }
+      assert.equal(exit, 1);
+      assert.match(stderr, expectedPattern);
+      assert.equal(fs.existsSync(outFile), false);
+      assert.equal(fs.existsSync(`${outFile}.blinded.json`), false);
+      assert.deepEqual(fs.readdirSync(evidenceDir), []);
     }
-    assert.equal(exit, 1);
-    assert.match(stderr, /R1_AUTH_TRUST_ANCHOR_NOT_PROVISIONED/);
-    assert.equal(fs.existsSync(outFile), false);
-    assert.equal(fs.existsSync(`${outFile}.blinded.json`), false);
-    assert.deepEqual(fs.readdirSync(evidenceDir), []);
   } finally {
     globalThis.fetch = originalFetch;
     fs.rmSync(evidenceDir, { recursive: true, force: true });

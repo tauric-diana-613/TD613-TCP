@@ -16,7 +16,7 @@
 The executable boundary separates network/HEAD privilege from offline testing structurally:
 
 - **Production Executable (`run-r1-provider-native-observation.mjs`):**
-  - Pins `export const R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null;`
+  - Pins `export const R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = '840a71625f4b9db224871bbb126b6debc3fefdc9179b5628bd9faf514f2c7701';` *(operator-attested non-secret SPKI DER SHA-256 public-key fingerprint; private key & passphrase strictly offline under human custody)*.
   - Contains **zero** `NODE_TEST_CONTEXT` conditional branches, **zero** `testOnly*` options, **zero** `fetchImpl` injection, and **zero** `checkedOutHeadShaOverride` parameters.
   - Strict allowlist (`ALLOWED_EXECUTABLE_OPTIONS`) rejects any unrecognized or test-override option with `R1_UNBOUNDED_FORBIDDEN_EXECUTABLE_OVERRIDE` before credential access.
   - Hard-binds `pinnedTrustFingerprintSha256 = R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256`, `checkedOutHeadSha = resolveCheckedOutGitHeadSha(process.cwd())`, and `transportFetch = globalThis.fetch`.
@@ -29,7 +29,7 @@ The executable boundary separates network/HEAD privilege from offline testing st
   ```bash
   node research/marrowline-r1-no-artificial-ceilings-20261122/run-r1-provider-native-observation.mjs
   ```
-- **Future Separately Authorized Live Session (Currently HELD — Trust Anchor Unprovisioned):**
+- **Future Separately Authorized Live Session (Currently HELD — Public Trust Anchor Pinned; No Active Grant Signed):**
   ```bash
   node research/marrowline-r1-no-artificial-ceilings-20261122/run-r1-provider-native-observation.mjs \
     --execute \
@@ -93,4 +93,4 @@ Old PR `#1778` / `#1779` digests (`f2fcdf77...`, `29b3265a...`) and old capped g
 - Manual operator STOP / session revocation (`STOP_ON_OPERATOR_SESSION_REVOKED_OR_STOPPED`).
 - Unavailable pinned model metadata, non-200 HTTP, network/stream interruption, disk IO failure (`STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED` — retaining all already-fsynced chunks on disk), missing SSE frame delimiter / trailing fragment, duplicate substantive SSE, dual-parser mismatch, wrong `modelVersion`, policy termination (`PROHIBITED_CONTENT`, `SAFETY`, etc.), non-`STOP` finish, missing provider `usageMetadata`, or post-capture Unicode alteration (`STOP_ON_ALTERED_UNICODE_TEXT`).
 
-𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Unbounded Contract STAGED · Trust Anchor Unprovisioned · Provider HELD ⟐
+𝄐 `Khona‌lit-po` · `⟐SAC[X6ZNK5NO51]` · Unbounded Contract STAGED · Public Trust Anchor Pinned (`840a7162...`) · No Grant Signed · Provider HELD ⟐

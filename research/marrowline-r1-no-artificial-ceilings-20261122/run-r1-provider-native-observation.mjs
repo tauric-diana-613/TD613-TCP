@@ -17,9 +17,9 @@ import {
   executeProviderNativeCore
 } from './r1-provider-native-core.mjs';
 
-// Independently operator-pinned Ed25519 SPKI DER SHA-256 fingerprint.
-// Intentionally null until the human operator provisions an offline key and approves a reviewed pin commit.
-export const R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = null;
+// Operator-attested Ed25519 SPKI DER SHA-256 public-key fingerprint (non-secret trust anchor).
+// Private key and passphrase remain strictly under offline human operator custody.
+export const R1_NATIVE_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 = '840a71625f4b9db224871bbb126b6debc3fefdc9179b5628bd9faf514f2c7701';
 
 const ALLOWED_EXECUTABLE_OPTIONS = new Set([
   'acknowledgeLiveExecution',
