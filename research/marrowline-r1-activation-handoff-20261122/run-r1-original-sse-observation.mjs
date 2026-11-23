@@ -1268,6 +1268,7 @@ export function classifyR1ObservationOutcome({ slotRecords = [], terminalStopRea
   // absolute counts so a longer text does not win just by being longer.
   const s01StrictlyOutperforms = (
     !s1Sec2.uniformConstantDepthStencilRisk
+    && !s2Sec2.uniformConstantDepthStencilRisk
     && s1Sec2.uniqueNonZeroDepthCount >= 2
     && s1Sec2.stackedBaseCount > 0
     && s1Sec2.stackedBaseShare > s2Sec2.stackedBaseShare
