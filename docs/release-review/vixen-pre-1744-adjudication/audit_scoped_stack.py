@@ -4,6 +4,16 @@ Usage: python audit_scoped_stack.py Full_Stack.zip EXPECTED_SHA40
 """
 import sys,zipfile,json,hashlib,re,posixpath
 from pathlib import Path
+# Positive signature matches demand review; absence cannot prove that arbitrary
+# credential formats are impossible. Do not print matched secret bytes.
+CREDENTIAL_SIGNATURES=[
+ re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'),
+ re.compile(rb'gh[pousr]_[A-Za-z0-9_]{34,}'),
+ re.compile(rb'github_pat_[A-Za-z0-9_]{25,}'),
+ re.compile(rb'AKIA[0-9A-Z]{16}'),
+ re.compile(rb'sk-(?:proj-)?[A-Za-z0-9_-]{32,}'),
+ re.compile(rb'eyJ[A-Za-z0-9_-]{40,}\.eyJ[A-Za-z0-9_-]{40,}'),
+]
 p=Path(sys.argv[1]); expected=sys.argv[2]
 fail=[];info={}
 if not re.fullmatch('[0-9a-f]{40}',expected):raise SystemExit('EXPECTED_SHA40_REQUIRED')
@@ -22,6 +32,8 @@ with zipfile.ZipFile(p) as z:
         b=z.read(f)
         if len(b)!=entry['byte_length']:fail.append('LENGTH:'+f)
         if hashlib.sha256(b).hexdigest()!=entry['sha256']:fail.append('DIGEST:'+f)
+        if any(pat.search(b) for pat in CREDENTIAL_SIGNATURES):
+            fail.append('POTENTIAL_EMBEDDED_CREDENTIAL:'+f)
         if f.lower().endswith(('.pdf','.p12','.pfx','.pem','.key','.env','.sqlite','.db','.sse','.mp4','.mov','.jpg','.jpeg')):
             fail.append('UNAUTHORIZED_SOURCE_TYPE:'+f)
         if re.search(r'/(?:private|credentials|secrets|protected|browser-sessions|experiment-b-sources|hydration-sources)/',f,re.I):
