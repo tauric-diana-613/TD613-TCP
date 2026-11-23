@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import os from 'node:os';
+import path from 'node:path';
 
 import {
   classifyApertureDiscourseMode,
@@ -1209,18 +1212,24 @@ test('RP-03, RP-04, RP-05: Arm E isolates the 2-clause lexical de-priming from C
   assert.equal(missingRequiredCountTokensCheck.stopReason, 'PRECALL_COUNT_TOKENS_REQUIRED_NOT_ESTABLISHED');
 });
 
-test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces documented generateContentRequest countTokens envelope, fail-closed 404/501 countTokens halt, genuine HMAC-signed operator authorization bound to checked-out git HEAD, replay rejection, and independent modelVersion telemetry offline with zero real network calls', async () => {
+test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces documented generateContentRequest countTokens envelope, fail-closed 404/501 countTokens halt, owner-held Ed25519-signed operator authorization bound to checked-out git HEAD, replay rejection, and independent modelVersion telemetry offline with zero real network calls', async () => {
   const actualGitHeadSha = resolveCheckedOutGitHeadSha();
   assert.match(actualGitHeadSha, /^[0-9a-f]{40}$/);
 
-  const testSigningSecret = 'td613-offline-test-operator-signing-secret-20261122';
+  // Only generated ephemeral test keys are used. No operator private key is
+  // embedded in the repository or passed into live experiment execution.
+  const testOperatorKeyPair = crypto.generateKeyPairSync('ed25519');
+  const testPrivateKeyPem = testOperatorKeyPair.privateKey.export({ type: 'pkcs8', format: 'pem' });
+  const testPublicKeyPem = testOperatorKeyPair.publicKey.export({ type: 'spki', format: 'pem' });
+  const wrongPublicKeyPem = crypto.generateKeyPairSync('ed25519').publicKey.export({ type: 'spki', format: 'pem' });
+  const testRedemptionDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-argon-redemption-test-'));
   const baseNowMs = Date.parse('2026-11-22T23:50:00.000Z');
   const validIssuedAt = '2026-11-22T23:45:00.000Z';
   const validExpiresAt = '2026-11-23T00:05:00.000Z';
 
   let nonceSeq = 0;
   const makeValidGrant = (overrides = {}) => mintScopedArgonExperimentAuthorizationGrant({
-    signingSecret: testSigningSecret,
+    operatorPrivateKeyPem: testPrivateKeyPem,
     authorizedHeadSha: actualGitHeadSha,
     nonce: `td613-argon-stage1-nonce-${++nonceSeq}-offline`,
     issuedAt: validIssuedAt,
@@ -1257,7 +1266,8 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
   assert.throws(() => buildGeminiCountTokensRequest({}, 'gemini-4-argon'), /COUNT_TOKENS_INCOMPLETE_GENERATE_CONTENT_REQUEST/);
 
   // B-02 (a): Negative tests for missing, malformed, scope-mismatched, expired, bad-signature, head-mismatched, and reused authorization
-  const localConsumedSet = new Set();
+  // The real redemption uses atomic wx files; no process-local Set can mask a replay.
+  assert.equal(fs.readdirSync(testRedemptionDirectory).length, 0);
 
   // 1. Missing authorization
   await assert.rejects(
@@ -1270,12 +1280,12 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: { schema: ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA, nonce: 'short' },
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
       fetchImpl: async () => {},
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_MALFORMED_AUTHORIZATION_GRANT/
   );
@@ -1293,12 +1303,12 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
       () => executeQualifiedArgonTwoCallDiscriminator({
         authorizeLiveCalls: true,
         operatorAuthorizationGrant: makeValidGrant(badOverride),
-        operatorAuthorizationSecret: testSigningSecret,
+        operatorPublicKeyPem: testPublicKeyPem,
         expectedHeadSha: actualGitHeadSha,
         apiKey: 'mock-key',
         fetchImpl: async () => {},
         nowMs: baseNowMs,
-        consumedGrantRegistry: localConsumedSet
+        redemptionDirectory: testRedemptionDirectory
       }),
       /LIVE_EXPERIMENT_GRANT_SCOPE_MISMATCH/
     );
@@ -1309,12 +1319,12 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant(),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
       fetchImpl: async () => {},
       nowMs: Date.parse('2026-11-23T01:00:00.000Z'),
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_AUTHORIZATION_EXPIRED/
   );
@@ -1325,27 +1335,27 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
         issuedAt: '2026-11-22T22:00:00.000Z',
         expiresAt: '2026-11-23T00:05:00.000Z'
       }),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
       fetchImpl: async () => {},
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_AUTHORIZATION_WINDOW_INVALID/
   );
 
-  // 5. Wrong HMAC signing secret / tampered signature
+  // 5. Wrong independent operator PUBLIC verification key / tampered signature
   await assert.rejects(
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant(),
-      operatorAuthorizationSecret: 'wrong-operator-signing-secret-000000',
+      operatorPublicKeyPem: wrongPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
       fetchImpl: async () => {},
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_INVALID_GRANT_SIGNATURE/
   );
@@ -1356,12 +1366,12 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant({ authorizedHeadSha: otherSha }),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
       fetchImpl: async () => {},
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_GRANT_HEAD_MISMATCH/
   );
@@ -1371,13 +1381,13 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant({ authorizedHeadSha: actualGitHeadSha }),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       resolveActualHeadSha: () => otherSha,
       apiKey: 'mock-key',
       fetchImpl: async () => {},
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_CHECKED_OUT_HEAD_MISMATCH/
   );
@@ -1387,12 +1397,12 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant(),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: '',
       fetchImpl: async () => {},
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_MISSING_GEMINI_API_KEY/
   );
@@ -1400,12 +1410,12 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant(),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'mock-key',
       fetchImpl: null,
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_MISSING_EXPLICIT_FETCH_IMPL/
   );
@@ -1464,25 +1474,28 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
   const runNormal = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
     operatorAuthorizationGrant: singleUseGrant,
-    operatorAuthorizationSecret: testSigningSecret,
+    operatorPublicKeyPem: testPublicKeyPem,
     expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
     fetchImpl: mockNormalFetch,
     nowMs: baseNowMs,
-    consumedGrantRegistry: localConsumedSet
+    redemptionDirectory: testRedemptionDirectory
   });
 
+  // B-02: Redemption creates one atomic on-disk record that survives process
+  // restart (a second call does not depend on the original process-local Set).
+  assert.ok(fs.readdirSync(testRedemptionDirectory).length >= 1);
   // B-02: Reusing the already-consumed grant is rejected fail-closed before any fetch call
   await assert.rejects(
     () => executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: singleUseGrant,
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'offline-mock-key',
       fetchImpl: async () => { throw new Error('must not call fetch on replayed grant'); },
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet
+      redemptionDirectory: testRedemptionDirectory
     }),
     /LIVE_EXPERIMENT_AUTHORIZATION_ALREADY_CONSUMED/
   );
@@ -1536,11 +1549,11 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
     const runUnsupportedCount = await executeQualifiedArgonTwoCallDiscriminator({
       authorizeLiveCalls: true,
       operatorAuthorizationGrant: makeValidGrant(),
-      operatorAuthorizationSecret: testSigningSecret,
+      operatorPublicKeyPem: testPublicKeyPem,
       expectedHeadSha: actualGitHeadSha,
       apiKey: 'offline-mock-key',
       nowMs: baseNowMs,
-      consumedGrantRegistry: localConsumedSet,
+      redemptionDirectory: testRedemptionDirectory,
       fetchImpl: async (url) => {
         if (String(url) === geminiCountTokensUrl('gemini-4-argon')) {
           return new Response(JSON.stringify({ error: { code: unsupportedStatus, message: 'countTokens unsupported' } }), {
@@ -1561,11 +1574,11 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
   const runOverCount = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
     operatorAuthorizationGrant: makeValidGrant(),
-    operatorAuthorizationSecret: testSigningSecret,
+    operatorPublicKeyPem: testPublicKeyPem,
     expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
     nowMs: baseNowMs,
-    consumedGrantRegistry: localConsumedSet,
+    redemptionDirectory: testRedemptionDirectory,
     fetchImpl: async (url) => {
       if (String(url) === geminiCountTokensUrl('gemini-4-argon')) {
         return new Response(JSON.stringify({ totalTokens: 8900 }), {
@@ -1585,11 +1598,11 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
   const runOverUsage = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
     operatorAuthorizationGrant: makeValidGrant(),
-    operatorAuthorizationSecret: testSigningSecret,
+    operatorPublicKeyPem: testPublicKeyPem,
     expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
     nowMs: baseNowMs,
-    consumedGrantRegistry: localConsumedSet,
+    redemptionDirectory: testRedemptionDirectory,
     fetchImpl: async (url) => {
       const href = String(url);
       if (href === geminiCountTokensUrl('gemini-4-argon')) {
@@ -1614,11 +1627,11 @@ test('Track B.3, B-01 & B-02: executeQualifiedArgonTwoCallDiscriminator enforces
   const runPolicyStop = await executeQualifiedArgonTwoCallDiscriminator({
     authorizeLiveCalls: true,
     operatorAuthorizationGrant: makeValidGrant(),
-    operatorAuthorizationSecret: testSigningSecret,
+    operatorPublicKeyPem: testPublicKeyPem,
     expectedHeadSha: actualGitHeadSha,
     apiKey: 'offline-mock-key',
     nowMs: baseNowMs,
-    consumedGrantRegistry: localConsumedSet,
+    redemptionDirectory: testRedemptionDirectory,
     fetchImpl: async (url) => {
       const href = String(url);
       if (href === geminiCountTokensUrl('gemini-4-argon')) {
