@@ -256,6 +256,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install source-bound Chromium witness engine
         run: |
+          node --check tests/vixen-opera-mobile-manuscript-browser.mjs
           npm ci
           npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
           npx playwright install --with-deps chromium
