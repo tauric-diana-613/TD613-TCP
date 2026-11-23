@@ -53,7 +53,7 @@ function protectedSource(node){
   // Exact source, transfer and machine receipts continue to be retrievable
   // without rewriting provenance or falsifying the underlying source bytes.
   return Boolean(parent.closest(
-    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview, .vix-manuscript, .expa-body-pre, .vix-reader-code'
+    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview, .vix-manuscript, .vix-reader-code'
   ));
 }
 function rewriteNode(node){
