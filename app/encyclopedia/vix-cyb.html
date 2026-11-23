@@ -4302,11 +4302,11 @@ body[data-view="overview"] .reading-back{display:none}
     }
 
     if (_lastGlobalSearchHits.length === 0) {
-      let msg = '0 matching records across semantic-semiotic corpus (Negative-canary zero verified).';
+      let msg = 'No matching documents. Try another search.';
       if (result.status === 'CROSS_OPERA_QUARANTINED') {
-        msg = '0 matching records · Cross-Opera identifier quarantined (CROSS_OPERA_QUARANTINED).';
+        msg = 'No matching documents for that query.';
       } else if (result.status === 'CURSOR_MISMATCH') {
-        msg = 'Pagination cursor invalidated by query or filter change; reset to page 1.';
+        msg = 'The results changed. Return to the first page.';
       }
       resEl.innerHTML = '<div style="padding:28px;text-align:center;color:#cfd3d6;font:500 11px var(--font-mono)">' + esc(msg) + '</div>';
       return;
