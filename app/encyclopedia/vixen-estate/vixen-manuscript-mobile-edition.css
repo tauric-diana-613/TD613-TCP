@@ -192,6 +192,7 @@
     border: 0 !important;
     box-shadow: none !important;
   }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #vixFolioProgress[hidden] { display: none !important; }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-topline,.vix-folio-footer) {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -240,7 +241,7 @@
     overflow-wrap: normal !important;
     hyphens: manual !important;
     columns: auto !important;
-    column-count: 1 !important;
+    column-count: auto !important;
     column-width: auto !important;
     writing-mode: horizontal-tb !important;
     overflow: visible !important;
@@ -268,7 +269,7 @@
     hyphens: manual !important;
     text-wrap: wrap !important;
     columns: auto !important;
-    column-count: 1 !important;
+    column-count: auto !important;
     writing-mode: horizontal-tb !important;
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph {
