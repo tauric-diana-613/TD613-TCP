@@ -82,7 +82,7 @@ async function visit(profile,phase){
  await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:25000,polling:250});
  await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:25000,polling:250});
  await page.locator('#vixenRoomRail button[data-view="works"]').waitFor({state:'attached',timeout:25000});
- await page.locator('#vixenRoomRail button[data-view="works"]').click({force:true});
+ await page.locator('#vixenRoomRail button[data-view="works"]').click({timeout:15000});
  try {await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:15000});}
  catch(error){
   const diag=await page.evaluate(()=>({
@@ -103,11 +103,11 @@ async function visit(profile,phase){
   // Phone/desktop split-index CSS can hide the catalogue while the reader is
   // active. DOM click is a *setup gesture* only, never counted as UI usability.
   const select=workButtons.nth(i);
-  if(await select.isVisible())await select.click({force:true,timeout:20000});
+  if(await select.isVisible())await select.click({timeout:20000});
   else {await select.evaluate(node=>node.click());hiddenSetupGestures++;}
   const phaseButton=page.locator('[data-reader-phase="WORLD_ANSWERS"]').first();
   if(await phaseButton.count()){
-   if(await phaseButton.isVisible())await phaseButton.click({force:true,timeout:10000});
+   if(await phaseButton.isVisible())await phaseButton.click({timeout:10000});
    else {await phaseButton.evaluate(node=>node.click());hiddenSetupGestures++;}
   }
   try {
