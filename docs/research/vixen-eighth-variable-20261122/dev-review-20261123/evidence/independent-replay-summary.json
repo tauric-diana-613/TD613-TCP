@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "independent_extraction": true,
+  "rebuild_exact_object_equal": true,
+  "executions": [
+    {
+      "command": [
+        "node",
+        "vixen-seven-source-dev/overlay.test.mjs"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "c0e785dd48a7e0c0096929e750ffda96229274e299ec009653229ed6f6d1aabb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "node",
+        "vixen-seven-source-dev/aix-retrieval.mjs"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "26bd7ae5031f548756e1effc34e79c90e45a375ff0fd0059c697a665a81e74f9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "vixen-seven-source-dev/constructed-counterexamples.py"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "aadc09e48cf7206e758217cc01e668022eb6b20d6e00bcf1ae1a700cfef6f6ad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "node",
+        "seven-source-overlay.mjs",
+        "build",
+        "rebuilt-index.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "dd085a917240b19a9d39cec0f3a999c51522f2fa9fc653f621a5e4f735c3e00c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "full_stdout_in_private_packet": true
+}

@@ -1,0 +1,20 @@
+{
+  "status": "BUILT",
+  "sources": 7,
+  "pages": 82,
+  "chunks": 160,
+  "bytes": 683955,
+  "context": {
+    "source_sha": "b90ae99559b21e1561229cdc8e1d873cfaf6f43a",
+    "source_count": 7,
+    "scope": "PRIVATE_DEVELOPMENT_SUPPLEMENT_ONLY",
+    "unit_kind": "development_supplement_page",
+    "canonical_work_count": 0,
+    "methods": "native BM25F + centered hashed 256→48 Jacobi-SVD + native rule-based semiotic affinity; contextual SRC-conditioned signals when selected",
+    "empirical_replication_credit": 0,
+    "primary_answer_model_trials": 0,
+    "builder_sha256": "4f11ce673ada34281cc849a1e970a07d977a87e4336c940e2b4140decbaacb3e",
+    "ranking_sha256": "85f46ebed4b36577dfa0189815cbf1c8c8f67e6ddd9e067ec2a3259de7d4b58c",
+    "binding": "594f55559f7dd6d281e5e74fcfd3d09e271c39a823cc2a9fdbebdb4c7eaf1766"
+  }
+}

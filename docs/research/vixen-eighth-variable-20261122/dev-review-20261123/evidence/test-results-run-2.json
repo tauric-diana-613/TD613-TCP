@@ -1,0 +1,94 @@
+{
+  "schema": "td613.vixen.dev-overlay-smoke/v1",
+  "source": "exploratory developer harness",
+  "node": "v24.22.3",
+  "primary_answer_model_trials": 0,
+  "tests": [
+    {
+      "name": "source coverage topology",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage audio",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage quantum-framework",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage algedonic",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected top source",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected top source\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:35:9\n    at test (file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:29:40)\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:30:46"
+    },
+    {
+      "name": "source coverage swarm",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage cognitive-time",
+      "status": "PASS"
+    },
+    {
+      "name": "source coverage semantic-control",
+      "status": "PASS"
+    },
+    {
+      "name": "cross-source retrieval",
+      "status": "PASS"
+    },
+    {
+      "name": "native channel LEXICAL_ONLY",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.099497 !== 0\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.099497 !== 0\n\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:47:99\n    at test (file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:29:40)\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:41:77"
+    },
+    {
+      "name": "native channel SEMANTIC_ONLY",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.5 !== 0\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.5 !== 0\n\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:47:99\n    at test (file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:29:40)\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:41:77"
+    },
+    {
+      "name": "native channel SEMIOTIC_ONLY",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.5 !== 0\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.5 !== 0\n\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:47:99\n    at test (file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:29:40)\n    at file:///workspace/scratch/9d3687a6141a/vixen-seven-source-dev/overlay.test.mjs:41:77"
+    },
+    {
+      "name": "out-of-vocabulary unsupported query",
+      "status": "PASS"
+    },
+    {
+      "name": "known words but absent exact claim",
+      "status": "PASS"
+    },
+    {
+      "name": "page coordinates and noncanonical identities",
+      "status": "PASS"
+    },
+    {
+      "name": "reference text retained with explicit section filter",
+      "status": "PASS"
+    },
+    {
+      "name": "A0 admission guard still rejects prospective injection",
+      "status": "PASS"
+    },
+    {
+      "name": "tampered supplemental body refused",
+      "status": "PASS"
+    },
+    {
+      "name": "temporary supplement withdrawal preserves A0",
+      "status": "PASS"
+    }
+  ],
+  "passed": 14,
+  "failed": 4,
+  "source_count": 7,
+  "pages": 82,
+  "chunks": 160,
+  "methods": "native BM25F + centered hashed 256→48 Jacobi-SVD + native rule-based semiotic affinity"
+}

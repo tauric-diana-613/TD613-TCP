@@ -1,0 +1,41 @@
+{
+  "classification": "CONSTRUCTED_MATHEMATICAL_COUNTEREXAMPLES_ONLY",
+  "external_empirical_credit": 0,
+  "measured_answer_model_trials": 0,
+  "proportional_control": {
+    "gain": 2.0,
+    "target": 1,
+    "static_plant": "y=u",
+    "static_plant_error": 0.3333333333333333,
+    "integrator_plant": "dy/dt=u",
+    "integrator_error_after_euler_10_seconds": 1.682967432081739e-09,
+    "analytic_integrator_error": "exp(-K*t)",
+    "limit": "Not an LLM plant identification or control-performance result"
+  },
+  "coherence_and_error": {
+    "known_toy_target": 0,
+    "correct": {
+      "answers": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "phase_order_parameter": 1.0,
+      "answer_entropy_bits": -0.0,
+      "error_fraction": 0.0
+    },
+    "incorrect": {
+      "answers": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "phase_order_parameter": 1.0,
+      "answer_entropy_bits": -0.0,
+      "error_fraction": 1.0
+    },
+    "limit": "Categorical Shannon entropy, not measured density-matrix von Neumann entropy; constructed oscillator phases, not human temporal observations"
+  }
+}

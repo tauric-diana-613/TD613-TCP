@@ -1,0 +1,17 @@
+{
+  "baseline_sha": "b90ae99559b21e1561229cdc8e1d873cfaf6f43a",
+  "baseline_worktree_status": "",
+  "original_checkpoint_sha256": "edba93aca651b656d438122a6642df387b43a975b933ddb5c789ec1a6cae34f4",
+  "github_writes": 0,
+  "merges": 0,
+  "deployments": 0,
+  "canonical_source_admissions": 0,
+  "primary_model_trials": 0,
+  "eighth_received": false,
+  "post_replay_changes": [
+    "CONTINUATION.md",
+    "SEARCH_INTERFACES_NEXT.md",
+    "assemble_checkpoint.py"
+  ],
+  "post_replay_search_test_runtime_code_unchanged": true
+}

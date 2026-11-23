@@ -1,0 +1,22 @@
+✔ OBS-A: 12x48 diagnostic distinguishes algebraic rank, nullity, nonzero kappa and fractional effective rank (119.317733ms)
+✔ SEARCH-A: original missing-body false-looking phrase witnesses never receive body-verified boost (45.397248ms)
+✔ SEARCH-B: real ordered phrase in attached source body is attributable and retains BM25F (462.50282ms)
+✔ SEARCH-C: inline fallback has no original body and must not claim phrase success (6.418469ms)
+✔ SEARCH-D: asynchronous loadShards=false maintains explicit missing-body refusal (9.533717ms)
+✔ G6-FADT02 duplicate supplementary labels cannot inflate canonical 32 Works (69.812956ms)
+✔ G6-B witnessed canonical candidate data remain untouched, duplicate leads normalize only inside research scope (17.6315ms)
+✔ G6-C separate research candidate cart deduplicates source coordinates, not canonical Works (1.338593ms)
+✔ G6-D provider rights matrix holds unknown providers, private content and unsupported bodies (1.026276ms)
+✔ G6-E bounded source-typed native return exposes only IDs, never original text or private paths (1.729273ms)
+✔ G6-F host permission, epoch changes and caller-injected actions are refused without result (0.568836ms)
+✔ G6-G fake original authority, wrong estate and rights promotions fail closed (0.28877ms)
+✔ G6-H Podium CLI refuses unverified host lane rather than trusting an in-band native request (140.01825ms)
+✔ G6-I genuine historical EM route returns a body-free host receipt at its pinned source checkout (1773.921774ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2217.883831
