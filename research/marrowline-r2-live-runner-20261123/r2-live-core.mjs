@@ -39,12 +39,14 @@ import {
   validateAcquisitionEpisodesForEstate
 } from './r2-acquisition-plans.mjs';
 import {
+  R2_CALIBRATED_MONOTONIC_TIMEBASE,
   R2_ESTATE_SPECS,
   R2_TRUSTED_COVENANT,
   R2_TRUSTED_SEAL,
   R2ObservationError,
   buildExpectedEstatePlan,
   hashFileChunkedSync,
+  resolveFixedHostNonceRegistryDir,
   sha256HexBuffer,
   verifyPhysicalR2CustodyAndEvaluateGate,
   verifyR2OperatorAuthorization
@@ -96,8 +98,11 @@ export function claimR2SingleHostNonceAtomically({
   estate,
   nonce,
   evidenceDir,
+  hostNonceRegistryDir = null,
+  env = process.env,
   checkedOutHeadSha,
   grantSha256,
+  planDigestSha256,
   sessionId,
   issuedAt,
   claimedAt = new Date().toISOString()
@@ -107,38 +112,69 @@ export function claimR2SingleHostNonceAtomically({
     throw new R2ObservationError('R2_UNKNOWN_ESTATE', `Unknown estate ${estate}`);
   }
   assertIsolatedEvidenceDir(evidenceDir, estate);
-  const nonceFilePath = path.join(evidenceDir, `${spec.filePrefix}-nonce-${nonce}.json`);
+  const resolvedEvidenceDir = path.resolve(evidenceDir);
+  const registryDir = path.resolve(hostNonceRegistryDir ?? resolveFixedHostNonceRegistryDir(estate, env));
+  fs.mkdirSync(registryDir, { recursive: true, mode: 0o700 });
+
+  const hostNonceRegistryPath = path.join(registryDir, `${spec.filePrefix}-nonce-${nonce}.json`);
   const record = {
     schema: 'td613.marrowline.r2-single-host-nonce-claim/v1',
-    scopeGuarantee: 'SINGLE_HOST_FILESYSTEM_ATOMIC_WX_ONLY_NOT_CROSS_HOST',
+    scopeGuarantee: 'SINGLE_HOST_SHARED_ESTATE_REGISTRY_WX_ONLY_NOT_CROSS_HOST',
     estate,
     experimentId: spec.experimentId,
     nonce,
     sessionId,
+    evidenceDir: resolvedEvidenceDir,
     checkedOutHeadSha,
     grantSha256,
+    planDigestSha256,
     issuedAt,
     claimedAt
   };
+  const recordJson = `${JSON.stringify(record, null, 2)}\n`;
   try {
-    fs.writeFileSync(nonceFilePath, `${JSON.stringify(record, null, 2)}\n`, {
+    fs.writeFileSync(hostNonceRegistryPath, recordJson, {
       encoding: 'utf8',
       flag: 'wx',
       mode: 0o600
     });
   } catch (error) {
     if (error?.code === 'EEXIST') {
-      throw new R2ObservationError('R2_AUTH_NONCE_REPLAYED', `Nonce ${nonce} already redeemed on this host (${nonceFilePath})`);
+      throw new R2ObservationError(
+        'R2_AUTH_NONCE_REPLAYED',
+        `Nonce ${nonce} already redeemed in shared host registry (${hostNonceRegistryPath})`
+      );
     }
-    throw new R2ObservationError('R2_NONCE_CLAIM_IO_ERROR', `Failed to claim nonce: ${error?.message || error}`);
+    throw new R2ObservationError('R2_NONCE_CLAIM_IO_ERROR', `Failed to claim nonce in host registry: ${error?.message || error}`);
   }
+
+  const registryRecordSha256 = sha256HexBuffer(Buffer.from(recordJson, 'utf8'));
+  const sessionNonceRefPath = path.join(resolvedEvidenceDir, `${spec.filePrefix}-nonce-ref-${nonce}.json`);
+  const refRecord = {
+    schema: 'td613.marrowline.r2-session-nonce-pointer/v1',
+    estate,
+    nonce,
+    sessionId,
+    hostNonceRegistryPath,
+    registryRecordSha256,
+    claimedAt
+  };
+  fs.writeFileSync(sessionNonceRefPath, `${JSON.stringify(refRecord, null, 2)}\n`, {
+    encoding: 'utf8',
+    flag: 'wx',
+    mode: 0o600
+  });
+
   return Object.freeze({
     claimed: true,
     estate,
     nonce,
-    nonceFilePath,
+    nonceFilePath: hostNonceRegistryPath,
+    hostNonceRegistryPath,
+    sessionNonceRefPath,
+    registryRecordSha256,
     claimedAt,
-    scopeGuarantee: 'SINGLE_HOST_FILESYSTEM_ATOMIC_WX_ONLY_NOT_CROSS_HOST'
+    scopeGuarantee: 'SINGLE_HOST_SHARED_ESTATE_REGISTRY_WX_ONLY_NOT_CROSS_HOST'
   });
 }
 
@@ -346,6 +382,7 @@ export async function executeR2ObservationCore({
   pinnedTrustFingerprintSha256 = null,
   checkedOutHeadSha = null,
   evidenceDir = null,
+  hostNonceRegistryDir = null,
   revocationFilePath = null,
   transportFetch = null,
   env = process.env,
@@ -376,9 +413,10 @@ export async function executeR2ObservationCore({
     }
   };
 
-  // 1. Resolve frozen estate plan and verify operator Ed25519 grant BEFORE reading credentials or mutating disk
+  // 1. Resolve frozen estate plan and verify operator Ed25519 grant + exact plan consent BEFORE reading credentials or mutating disk
   const expectedPlan = buildExpectedEstatePlan(estate);
   const selectedPreset = episodes ? null : getR2PlanPreset(estate, planId);
+  const selectedPlanId = episodes ? 'CUSTOM' : selectedPreset.planId;
   const validatedEpisodes = validateAcquisitionEpisodesForEstate(estate, episodes ?? selectedPreset.episodes);
 
   const effectivePublicKeyPem = publicKeyPem ?? env?.TD613_R2_OPERATOR_AUTH_PUBLIC_KEY_PEM ?? null;
@@ -390,20 +428,32 @@ export async function executeR2ObservationCore({
     expectedPlan,
     pinnedTrustFingerprintSha256,
     revocationFilePath,
+    requestedPlanId: selectedPlanId,
+    requestedEpisodes: validatedEpisodes,
     nowMs
   });
 
-  // 2. Claim single-host wx nonce in isolated estate directory and initialize journal + counters
-  const operatorClockMs = Date.now();
+  // Calibrated single-process monotonic hrtime anchor alongside distinct wall-clock samples
+  const wallAnchorMs = Date.now();
+  const hrAnchorNs = process.hrtime.bigint();
+  const sampleCalibratedMonoMs = () => wallAnchorMs + Number((process.hrtime.bigint() - hrAnchorNs) / 1_000_000n);
+
+  // 2. Claim single-host wx nonce in shared estate host registry (independent of evidenceDir) + initialize journal
+  const operatorClockMs = sampleCalibratedMonoMs();
+  const operatorWallMs = Date.now();
   const nonceClaim = claimR2SingleHostNonceAtomically({
     estate,
     nonce: authVerification.nonce,
     evidenceDir,
+    hostNonceRegistryDir,
+    env,
     checkedOutHeadSha,
     grantSha256: authVerification.grantSha256,
+    planDigestSha256: authVerification.planDigestSha256,
     sessionId: authVerification.sessionId,
     issuedAt: authVerification.issuedAt
   });
+  const noticeAt = sampleCalibratedMonoMs();
 
   const sessionStem = `${spec.filePrefix}-${authVerification.sessionId}-${authVerification.nonce}`;
   const evidenceJournalPath = path.join(evidenceDir, `${sessionStem}-journal.jsonl`);
@@ -434,8 +484,10 @@ export async function executeR2ObservationCore({
 
   appendJournal('R2_AUTHORITY_REDEEMED', {
     model: spec.pinnedModel,
-    planId: selectedPreset?.planId || 'CUSTOM',
-    plannedEpisodes: validatedEpisodes.length
+    planId: selectedPlanId,
+    planDigestSha256: authVerification.planDigestSha256,
+    plannedEpisodes: validatedEpisodes.length,
+    hostNonceRegistryPath: nonceClaim.hostNonceRegistryPath
   });
 
   // 3. Resolve GEMINI_API_KEY strictly AFTER Ed25519 grant + isolated nonce + journal succeed
@@ -495,8 +547,12 @@ export async function executeR2ObservationCore({
   let attemptCounter = 0;
   let totalCountTokensCalls = 0;
   let totalGenerationCalls = 0;
-  let serviceClockMs = Date.now();
+  const serviceClockMs = sampleCalibratedMonoMs();
+  const serviceWallMs = Date.now();
+  let actAt = null;
+  let worldAnswersAt = null;
   let lastProviderClockMs = null;
+  let lastProviderWallMs = null;
 
   try {
     if (checkModelDiscovery) {
@@ -630,6 +686,7 @@ export async function executeR2ObservationCore({
         const genUrl = geminiStreamGenerateContentUrl(condPlan.model);
         assertUrlMatchesPinnedModel(genUrl);
         totalGenerationCalls += 1;
+        if (actAt === null) actAt = sampleCalibratedMonoMs();
         notify(`[${estate}] [3/4] Episode ${ep.episodeId} (${slotId}): streaming native SSE to disk...`);
         const startedAt = new Date().toISOString();
         appendJournal('R2_GENERATION_ATTEMPT_PREPARED', {
@@ -672,6 +729,9 @@ export async function executeR2ObservationCore({
               authoredTextFilePath,
               operatorAbortSignal: sessionAbortController.signal
             });
+            worldAnswersAt = sampleCalibratedMonoMs();
+            lastProviderClockMs = worldAnswersAt;
+            lastProviderWallMs = Date.now();
           }
         } catch (error) {
           if (error instanceof R2ObservationError && error.code.startsWith('R2_FORBIDDEN_')) throw error;
@@ -686,7 +746,6 @@ export async function executeR2ObservationCore({
         }
 
         const finishedAt = new Date().toISOString();
-        lastProviderClockMs = Math.max(serviceClockMs, Date.now());
 
         if (!integrityStopReason && wire) {
           if (wire.diskWriteError) integrityStopReason = 'STOP_ON_DURABLE_RAW_SSE_WRITE_FAILED';
@@ -831,7 +890,10 @@ export async function executeR2ObservationCore({
     }
   }
 
-  const custodyClockMs = Math.max(lastProviderClockMs ?? serviceClockMs, Date.now());
+  const custodyClockMs = sampleCalibratedMonoMs();
+  const custodyWallMs = Date.now();
+  const classificationClockMs = sampleCalibratedMonoMs();
+  const classificationWallMs = Date.now();
   const draftReceipt = {
     metadataDiscovery,
     attemptRecords: allAttemptRecords
@@ -852,16 +914,31 @@ export async function executeR2ObservationCore({
     pinnedTrustFingerprintSha256,
     checkedOutHeadSha,
     expectedPlan,
+    requestedPlanId: selectedPlanId,
+    requestedEpisodes: validatedEpisodes,
     evidenceDir,
+    hostNonceRegistryDir,
+    env,
     revocationFilePath,
     receipt: draftReceipt,
     clockContext: {
       timebaseValidated: true,
-      timebaseRelation: 'SINGLE_HOST_MONOTONIC_EPOCH_MS',
+      timebaseRelation: R2_CALIBRATED_MONOTONIC_TIMEBASE,
+      calibrationAnchor: {
+        wallAnchorMs,
+        hrtimeBaseNs: hrAnchorNs.toString()
+      },
+      wallClockSamplesMs: {
+        operatorWallMs,
+        serviceWallMs,
+        providerReceiptWallMs: lastProviderWallMs,
+        custodyWallMs,
+        classificationWallMs
+      },
       phases: {
-        noticeAt: 1,
-        actAt: 2,
-        worldAnswersAt: allAttemptRecords.some((a) => Boolean(a.rawSseFilePath)) ? 3 : null,
+        noticeAt,
+        actAt,
+        worldAnswersAt,
         nameAt: null,
         restAvailable: true,
         exitAvailable: true
@@ -871,7 +948,7 @@ export async function executeR2ObservationCore({
         serviceClockMs,
         providerReceiptClockMs: lastProviderClockMs,
         custodyClockMs,
-        classificationClockMs: Math.max(custodyClockMs, Date.now())
+        classificationClockMs
       }
     },
     scientificHypothesisSupported: hypothesisSupported,

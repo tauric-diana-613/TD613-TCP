@@ -13,7 +13,8 @@ import {
   R2_TRUSTED_SEAL,
   R2ObservationError,
   buildExpectedEstatePlan,
-  canonicalizeR2AuthorizationPayload
+  canonicalizeR2AuthorizationPayload,
+  computeR2PlanConsentScope
 } from './r2-custody-gate-verifier.mjs';
 import {
   R2_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256,
@@ -25,6 +26,8 @@ export function buildUnsignedR2GrantPayload({
   checkedOutHeadSha = resolveCheckedOutGitHeadSha(process.cwd()),
   authorizedBy = 'Tauric Diana',
   permittedPurpose = null,
+  planId = 'INITIAL_PILOT',
+  episodes = null,
   sessionId = null,
   nonce = null,
   issuedAt = new Date().toISOString(),
@@ -39,6 +42,11 @@ export function buildUnsignedR2GrantPayload({
   }
 
   const plan = buildExpectedEstatePlan(estate);
+  const planScope = computeR2PlanConsentScope({
+    estate,
+    planId: episodes && !planId ? 'CUSTOM' : (planId || 'INITIAL_PILOT'),
+    episodes
+  });
   const conditions = {};
   for (const [slotId, slot] of Object.entries(plan.conditions)) {
     conditions[slotId] = {
@@ -52,8 +60,8 @@ export function buildUnsignedR2GrantPayload({
   const resolvedNonce = nonce || `wx_${crypto.randomBytes(12).toString('hex')}`;
   const resolvedPurpose = permittedPurpose || (
     estate === 'R2-U'
-      ? 'Authorized single-session R2-U native Unicode capability observation'
-      : 'Authorized single-session R2-W authentic whole-frame artistic observation'
+      ? `Authorized single-session R2-U observation (${planScope.planId}, ${planScope.episodeCount} episode(s))`
+      : `Authorized single-session R2-W whole-frame observation (${planScope.planId}, ${planScope.episodeCount} episode(s))`
   );
 
   const payload = {
@@ -66,6 +74,10 @@ export function buildUnsignedR2GrantPayload({
     permittedPurpose: resolvedPurpose,
     sessionId: resolvedSessionId,
     checkedOutHeadSha,
+    planId: planScope.planId,
+    episodeCount: planScope.episodeCount,
+    episodes: planScope.episodes,
+    planDigestSha256: planScope.planDigestSha256,
     generationConfigSha256: plan.generationConfigSha256,
     generationConfig: plan.generationConfig,
     conditions,
@@ -120,12 +132,17 @@ async function runCli(argv = process.argv.slice(2)) {
   const authorizedBy = getFlag(argv, '--authorized-by') || 'Tauric Diana';
   const purpose = getFlag(argv, '--purpose');
   const notAfter = getFlag(argv, '--not-after');
+  const episodesJsonPath = getFlag(argv, '--episodes-json');
+  const customEpisodes = episodesJsonPath ? JSON.parse(fs.readFileSync(episodesJsonPath, 'utf8')) : null;
+  const planId = getFlag(argv, '--plan') || (customEpisodes ? 'CUSTOM' : 'INITIAL_PILOT');
 
   const unsigned = buildUnsignedR2GrantPayload({
     estate,
     sessionId,
     authorizedBy,
     permittedPurpose: purpose,
+    planId,
+    episodes: customEpisodes,
     notAfter
   });
 
@@ -173,6 +190,9 @@ async function runCli(argv = process.argv.slice(2)) {
       schema: 'td613.marrowline.r2-grant-signed-summary/v1',
       estate,
       sessionId: unsigned.payload.sessionId,
+      planId: unsigned.payload.planId,
+      episodeCount: unsigned.payload.episodeCount,
+      planDigestSha256: unsigned.payload.planDigestSha256,
       nonce: unsigned.payload.nonce,
       checkedOutHeadSha: unsigned.payload.checkedOutHeadSha,
       publicKeySha256: fp,

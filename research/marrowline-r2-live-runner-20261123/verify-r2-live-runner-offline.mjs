@@ -36,6 +36,7 @@ export async function runVerifyR2LiveRunnerOfflineCli(argv = []) {
   const baselineCorrelation = buildR2HealthyBaselineCorrelation();
   const unsignedU = buildUnsignedR2GrantPayload({
     estate: 'R2-U',
+    planId: 'INITIAL_PILOT',
     checkedOutHeadSha: uPreflight.checkedOutHeadSha,
     issuedAt: '2026-11-23T09:00:00.000Z',
     sessionId: 'r2u_offline_preview',
@@ -43,11 +44,16 @@ export async function runVerifyR2LiveRunnerOfflineCli(argv = []) {
   });
   const unsignedW = buildUnsignedR2GrantPayload({
     estate: 'R2-W',
+    planId: 'INITIAL_PILOT',
     checkedOutHeadSha: wPreflight.checkedOutHeadSha,
     issuedAt: '2026-11-23T09:00:00.000Z',
     sessionId: 'r2w_offline_preview',
     nonce: 'wx_offline_preview_r2w_0001'
   });
+  assert.equal(unsignedU.payload.planId, 'INITIAL_PILOT');
+  assert.equal(unsignedU.payload.planDigestSha256, uPreflight.selectedPlan.planDigestSha256);
+  assert.equal(unsignedW.payload.planId, 'INITIAL_PILOT');
+  assert.equal(unsignedW.payload.planDigestSha256, wPreflight.selectedPlan.planDigestSha256);
 
   // Verify scope guard refuses classifying single-slot pilot as complete multi-episode comparison
   const limitedScope = classifyR2AcquisitionCompletion({
@@ -80,6 +86,7 @@ export async function runVerifyR2LiveRunnerOfflineCli(argv = []) {
       domainSeparator: R2_ESTATE_SPECS['R2-U'].domainSeparator,
       armCount: Object.keys(buildExpectedEstatePlan('R2-U').conditions).length,
       plans: Object.keys(R2_U_ACQUISITION_PLANS),
+      initialPilotPlanDigestSha256: unsignedU.payload.planDigestSha256,
       unsignedGrantDomainPrefixOk: unsignedU.signingMessageUtf8.startsWith('TD613_R2_U_AUTH_V1\n')
     }),
     r2W: Object.freeze({
@@ -87,6 +94,7 @@ export async function runVerifyR2LiveRunnerOfflineCli(argv = []) {
       domainSeparator: R2_ESTATE_SPECS['R2-W'].domainSeparator,
       conditionCount: Object.keys(buildExpectedEstatePlan('R2-W').conditions).length,
       plans: Object.keys(R2_W_ACQUISITION_PLANS),
+      initialPilotPlanDigestSha256: unsignedW.payload.planDigestSha256,
       unsignedGrantDomainPrefixOk: unsignedW.signingMessageUtf8.startsWith('TD613_R2_W_AUTH_V1\n')
     }),
     healthyBaselineCorrelationSummary: Object.freeze({

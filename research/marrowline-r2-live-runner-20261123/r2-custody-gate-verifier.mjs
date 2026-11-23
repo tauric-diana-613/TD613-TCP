@@ -7,6 +7,7 @@
 
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import {
   FORBIDDEN_CEILING_GRANT_FIELDS,
@@ -32,10 +33,15 @@ import {
   buildR2WWireManifest
 } from '../marrowline-r2-dual-estate-20261123/r2-w-preflight.mjs';
 import { serializeGeminiRequest } from '../../server/khonapolit-quality.js';
+import {
+  getR2PlanPreset,
+  validateAcquisitionEpisodesForEstate
+} from './r2-acquisition-plans.mjs';
 
 export const R2_CUSTODY_VERIFIER_SCHEMA = 'td613.marrowline.r2-physical-custody-gate/v1';
 export const R2_TRUSTED_COVENANT = 'Khona\u200Clit-po';
 export const R2_TRUSTED_SEAL = '⟐SAC[X6ZNK5NO51]';
+export const R2_CALIBRATED_MONOTONIC_TIMEBASE = 'SINGLE_PROCESS_HRTIME_MONOTONIC_CALIBRATED_MS';
 
 export const R2_ESTATE_SPECS = Object.freeze({
   'R2-U': Object.freeze({
@@ -61,6 +67,57 @@ export const R2_ESTATE_SPECS = Object.freeze({
     publishedOutputCapacity: R2_U_PUBLISHED_OUTPUT_CAPACITY
   })
 });
+
+export function resolveFixedHostNonceRegistryDir(estate, env = process.env) {
+  const spec = R2_ESTATE_SPECS[estate];
+  if (!spec) {
+    throw new R2ObservationError('R2_UNKNOWN_ESTATE', `Unknown estate ${estate}`);
+  }
+  const home = typeof os.homedir === 'function' ? os.homedir() : '';
+  const winBase = env?.LOCALAPPDATA
+    || (env?.USERPROFILE ? path.join(env.USERPROFILE, 'AppData', 'Local') : (home ? path.join(home, 'AppData', 'Local') : ''));
+  const posixBase = env?.XDG_STATE_HOME || (env?.HOME ? path.join(env.HOME, '.local', 'state') : (home ? path.join(home, '.local', 'state') : ''));
+  const base = process.platform === 'win32' ? winBase : posixBase;
+  if (!base || !path.isAbsolute(base)) {
+    throw new R2ObservationError('R2_HOST_NONCE_REGISTRY_UNRESOLVABLE', `Cannot resolve absolute non-relocatable host nonce registry path for ${estate}`);
+  }
+  return process.platform === 'win32'
+    ? path.join(base, 'TD613', 'marrowline-r2', 'host-nonce-registry', spec.filePrefix)
+    : path.join(base, 'td613', 'marrowline-r2', 'host-nonce-registry', spec.filePrefix);
+}
+
+/**
+ * Canonicalizes the human operator's authorized execution plan & episode order.
+ * Episode scope here defines human consent boundary, NOT an artificial output-token/byte/retry ceiling.
+ */
+export function computeR2PlanConsentScope({ estate, planId = 'INITIAL_PILOT', episodes = null } = {}) {
+  const spec = R2_ESTATE_SPECS[estate];
+  if (!spec) {
+    throw new R2ObservationError('R2_UNKNOWN_ESTATE', `Unknown R2 estate: ${estate}`);
+  }
+  const resolvedPlanId = String(planId || '').trim() || 'INITIAL_PILOT';
+  const rawEpisodes = episodes ?? getR2PlanPreset(estate, resolvedPlanId).episodes;
+  const validated = validateAcquisitionEpisodesForEstate(estate, rawEpisodes);
+  const normalizedEpisodes = validated.map((ep) => Object.freeze({
+    episodeId: ep.episodeId,
+    ...(ep.contrastId ? { contrastId: ep.contrastId } : {}),
+    ...(ep.scenarioId ? { scenarioId: ep.scenarioId } : {}),
+    order: ep.order,
+    sequence: Object.freeze([...ep.sequence])
+  }));
+  const canonicalScopeObj = {
+    estate,
+    planId: resolvedPlanId,
+    episodeCount: normalizedEpisodes.length,
+    episodes: normalizedEpisodes
+  };
+  const planDigestSha256 = sha256HexBuffer(Buffer.from(canonicalJson(canonicalScopeObj), 'utf8'));
+  return Object.freeze({
+    ...canonicalScopeObj,
+    episodes: Object.freeze(normalizedEpisodes),
+    planDigestSha256
+  });
+}
 
 export class R2ObservationError extends Error {
   constructor(code, message, details = null) {
@@ -196,6 +253,8 @@ export function verifyR2OperatorAuthorization({
   expectedPlan = null,
   pinnedTrustFingerprintSha256 = null,
   revocationFilePath = null,
+  requestedPlanId = null,
+  requestedEpisodes = null,
   nowMs = Date.now()
 } = {}) {
   const spec = R2_ESTATE_SPECS[estate];
@@ -338,6 +397,67 @@ export function verifyR2OperatorAuthorization({
       `Grant generationConfig must match published capacity config (maxOutputTokens: ${spec.publishedOutputCapacity})`
     );
   }
+
+  // Bind signed human consent to exact planId, episodeCount, ordered episodes, and planDigestSha256
+  if (
+    typeof payload.planId !== 'string'
+    || !payload.planId.trim()
+    || !Number.isSafeInteger(payload.episodeCount)
+    || payload.episodeCount < 1
+    || !Array.isArray(payload.episodes)
+    || typeof payload.planDigestSha256 !== 'string'
+    || !/^[0-9a-f]{64}$/.test(payload.planDigestSha256)
+  ) {
+    throw new R2ObservationError(
+      'R2_AUTH_MISSING_PLAN_SCOPE',
+      `Grant must explicitly sign planId, episodeCount, ordered episodes, and planDigestSha256`
+    );
+  }
+  let grantPlanScope;
+  try {
+    grantPlanScope = computeR2PlanConsentScope({
+      estate,
+      planId: payload.planId,
+      episodes: payload.episodes
+    });
+  } catch (error) {
+    throw new R2ObservationError(
+      'R2_AUTH_PLAN_SCOPE_MISMATCH',
+      `Grant signed episodes invalid for ${estate}: ${error?.message || error}`
+    );
+  }
+  if (
+    payload.episodeCount !== grantPlanScope.episodeCount
+    || payload.planDigestSha256 !== grantPlanScope.planDigestSha256
+    || canonicalJson(payload.episodes) !== canonicalJson(grantPlanScope.episodes)
+  ) {
+    throw new R2ObservationError(
+      'R2_AUTH_PLAN_DIGEST_MISMATCH',
+      `Grant planDigestSha256 or episode count mismatch for ${payload.planId}`
+    );
+  }
+  if (requestedPlanId !== null || requestedEpisodes !== null) {
+    let runtimeRequestedScope;
+    try {
+      runtimeRequestedScope = computeR2PlanConsentScope({
+        estate,
+        planId: requestedPlanId ?? (requestedEpisodes ? 'CUSTOM' : payload.planId),
+        episodes: requestedEpisodes
+      });
+    } catch (error) {
+      throw new R2ObservationError(
+        'R2_AUTH_PLAN_SCOPE_MISMATCH',
+        `Requested runtime execution plan invalid for ${estate}: ${error?.message || error}`
+      );
+    }
+    if (runtimeRequestedScope.planDigestSha256 !== grantPlanScope.planDigestSha256) {
+      throw new R2ObservationError(
+        'R2_AUTH_PLAN_SCOPE_MISMATCH',
+        `Requested runtime plan (${runtimeRequestedScope.planId}, digest ${runtimeRequestedScope.planDigestSha256}) does not match signed human grant (${grantPlanScope.planId}, digest ${grantPlanScope.planDigestSha256})`
+      );
+    }
+  }
+
   if (typeof payload.nonce !== 'string' || !/^[A-Za-z0-9_-]{16,128}$/.test(payload.nonce)) {
     throw new R2ObservationError('R2_AUTH_INVALID_NONCE', 'Grant nonce must match /^[A-Za-z0-9_-]{16,128}$/');
   }
@@ -381,6 +501,9 @@ export function verifyR2OperatorAuthorization({
     permittedPurpose: payload.permittedPurpose,
     checkedOutHeadSha: payload.checkedOutHeadSha,
     authorizedBy: payload.authorizedBy,
+    planId: grantPlanScope.planId,
+    episodeCount: grantPlanScope.episodeCount,
+    planDigestSha256: grantPlanScope.planDigestSha256,
     nonce: payload.nonce,
     issuedAt: payload.issuedAt,
     notAfter: payload.notAfter ?? null,
@@ -566,7 +689,11 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
   pinnedTrustFingerprintSha256,
   checkedOutHeadSha,
   expectedPlan = null,
+  requestedPlanId = null,
+  requestedEpisodes = null,
   evidenceDir,
+  hostNonceRegistryDir = null,
+  env = process.env,
   revocationFilePath = null,
   receipt = {},
   clockContext = null,
@@ -584,7 +711,7 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
   const plan = expectedPlan ?? buildExpectedEstatePlan(estate);
   const physicalFailures = [];
 
-  // 1. Cryptographic signature verification (zero trust in reported booleans)
+  // 1. Cryptographic signature verification + plan consent verification (zero trust in reported booleans)
   let authVerified = null;
   try {
     authVerified = verifyR2OperatorAuthorization({
@@ -595,25 +722,36 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
       expectedPlan: plan,
       pinnedTrustFingerprintSha256,
       revocationFilePath,
+      requestedPlanId,
+      requestedEpisodes,
       nowMs
     });
   } catch (error) {
     physicalFailures.push(`AUTH_VERIFICATION_FAILED:${error?.code || error?.message || error}`);
   }
 
-  // 2. Physical single-host wx nonce file verification
+  // 2. Physical shared host-wide wx nonce registry + session evidence pointer + journal verification
   let nonceJournalValid = false;
   let nonceSha256 = null;
   let journalSha256 = null;
-  if (authVerified && evidenceDir && path.isAbsolute(evidenceDir)) {
-    const noncePath = path.join(evidenceDir, `${spec.filePrefix}-nonce-${authVerified.nonce}.json`);
-    const journalPath = path.join(evidenceDir, `${spec.filePrefix}-${authVerified.sessionId}-${authVerified.nonce}-journal.jsonl`);
+  let resolvedRegistryDir = null;
+  try {
+    resolvedRegistryDir = hostNonceRegistryDir ?? resolveFixedHostNonceRegistryDir(estate, env);
+  } catch (error) {
+    physicalFailures.push(`HOST_NONCE_REGISTRY_ERROR:${error?.code || error?.message || error}`);
+  }
 
-    if (!fs.existsSync(noncePath)) {
-      physicalFailures.push('MISSING_PHYSICAL_NONCE_CLAIM_FILE');
+  if (authVerified && evidenceDir && path.isAbsolute(evidenceDir) && resolvedRegistryDir) {
+    const resolvedEvidenceDir = path.resolve(evidenceDir);
+    const registryNoncePath = path.join(resolvedRegistryDir, `${spec.filePrefix}-nonce-${authVerified.nonce}.json`);
+    const sessionRefPath = path.join(resolvedEvidenceDir, `${spec.filePrefix}-nonce-ref-${authVerified.nonce}.json`);
+    const journalPath = path.join(resolvedEvidenceDir, `${spec.filePrefix}-${authVerified.sessionId}-${authVerified.nonce}-journal.jsonl`);
+
+    if (!fs.existsSync(registryNoncePath)) {
+      physicalFailures.push('MISSING_HOST_REGISTRY_NONCE_CLAIM_FILE');
     } else {
       try {
-        const nonceRaw = fs.readFileSync(noncePath, 'utf8');
+        const nonceRaw = fs.readFileSync(registryNoncePath, 'utf8');
         nonceSha256 = sha256HexBuffer(Buffer.from(nonceRaw, 'utf8'));
         const nonceObj = JSON.parse(nonceRaw);
         if (
@@ -622,11 +760,30 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
           || nonceObj.estate !== estate
           || nonceObj.checkedOutHeadSha !== checkedOutHeadSha
           || nonceObj.grantSha256 !== authVerified.grantSha256
+          || nonceObj.planDigestSha256 !== authVerified.planDigestSha256
+          || path.resolve(String(nonceObj.evidenceDir || '')) !== resolvedEvidenceDir
         ) {
           physicalFailures.push('PHYSICAL_NONCE_CLAIM_BINDING_MISMATCH');
         }
       } catch {
         physicalFailures.push('CORRUPT_PHYSICAL_NONCE_CLAIM_FILE');
+      }
+    }
+
+    if (!fs.existsSync(sessionRefPath)) {
+      physicalFailures.push('MISSING_SESSION_NONCE_POINTER_FILE');
+    } else {
+      try {
+        const refObj = JSON.parse(fs.readFileSync(sessionRefPath, 'utf8'));
+        if (
+          refObj.nonce !== authVerified.nonce
+          || refObj.registryRecordSha256 !== nonceSha256
+          || path.resolve(String(refObj.hostNonceRegistryPath || '')) !== path.resolve(registryNoncePath)
+        ) {
+          physicalFailures.push('SESSION_NONCE_POINTER_MISMATCH');
+        }
+      } catch {
+        physicalFailures.push('CORRUPT_SESSION_NONCE_POINTER_FILE');
       }
     }
 
@@ -700,14 +857,34 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
     physicalFailures.push('UNVERIFIED_OR_MISSING_PROVIDER_CAPACITY_DISCOVERY');
   }
 
+  const rawTimebaseRelation = typeof clockContext?.timebaseRelation === 'string'
+    ? clockContext.timebaseRelation.trim()
+    : null;
+  // Raw Date.now() wall-clock intervals cannot falsely claim monotonic hardware proof
+  const isCalibratedMonotonicRelation = rawTimebaseRelation === R2_CALIBRATED_MONOTONIC_TIMEBASE
+    && Number.isSafeInteger(clockContext?.calibrationAnchor?.wallAnchorMs)
+    && typeof clockContext?.calibrationAnchor?.hrtimeBaseNs === 'string';
+  if (clockContext?.timebaseValidated === true && rawTimebaseRelation === 'SINGLE_HOST_MONOTONIC_EPOCH_MS') {
+    physicalFailures.push('MISLEADING_MONOTONIC_WALL_CLOCK_CLAIM');
+  }
   const timebaseDocumented = Boolean(
     clockContext
     && clockContext.timebaseValidated === true
-    && typeof clockContext.timebaseRelation === 'string'
-    && clockContext.timebaseRelation.trim().length > 0
+    && isCalibratedMonotonicRelation
   );
+  const resolvedPhases = clockContext?.phases ?? {
+    noticeAt: null,
+    actAt: null,
+    worldAnswersAt: null,
+    nameAt: null,
+    restAvailable: true,
+    exitAvailable: true
+  };
+  if (lastValidWire && (resolvedPhases.noticeAt === null || resolvedPhases.actAt === null || resolvedPhases.worldAnswersAt === null)) {
+    physicalFailures.push('MISSING_MEASURED_PHASE_TIMESTAMPS_FOR_COMPLETED_CAPTURE');
+  }
 
-  // 5. Invoke Dromological Gate ONLY with physically derived proofs (never caller booleans!)
+  // 5. Invoke Dromological Gate ONLY with physically derived proofs and actual measured timestamps (never caller booleans or 1/2/3 placeholders!)
   const gateResult = evaluateR2DromologicalGate({
     sourceStaged: true,
     authority: authVerified
@@ -739,7 +916,7 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
     },
     requestDispatched: Boolean(authVerified && nonceJournalValid && metaValid && attempts.length > 0),
     providerResponseObserved: Boolean(authVerified && nonceJournalValid && metaValid && attempts.some((a) => Boolean(a?.rawSseFilePath))),
-    wireCapture: (wireAllValid && lastValidWire)
+    wireCapture: (wireAllValid && lastValidWire && physicalFailures.length === 0)
       ? {
         rawCaptureVerified: true,
         parserAgreement: true,
@@ -755,14 +932,7 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
     scientificHypothesisVerdict,
     humanReview: humanReview ?? { verdict: 'PENDING_HUMAN_REVIEW' },
     explicitReleaseApproved,
-    phases: clockContext?.phases ?? {
-      noticeAt: 1,
-      actAt: 2,
-      worldAnswersAt: lastValidWire ? 3 : null,
-      nameAt: null,
-      restAvailable: true,
-      exitAvailable: true
-    },
+    phases: resolvedPhases,
     clocks: clockContext?.clocks ?? {
       operatorClockMs: null,
       serviceClockMs: null,
@@ -779,12 +949,15 @@ export function verifyPhysicalR2CustodyAndEvaluateGate({
     estate,
     physicalVerificationPassed,
     physicalFailures: Object.freeze([...new Set(physicalFailures)]),
-    timebaseRelation: timebaseDocumented ? clockContext.timebaseRelation : null,
+    timebaseValidated: timebaseDocumented,
+    timebaseRelation: rawTimebaseRelation,
+    wallClockSamplesMs: clockContext?.wallClockSamplesMs ?? null,
     reportedVsVerified: Object.freeze({
       callerSuppliedClaimsIgnoredForProof: true,
       reportedClaims: reportedClaims ?? null,
       independentlyVerifiedPhysicalEvidence: Object.freeze({
         cryptographicEd25519Verified: Boolean(authVerified),
+        hostNonceRegistryDir: resolvedRegistryDir,
         nonceFileSha256: nonceSha256,
         journalFileSha256: journalSha256,
         verifiedAttemptCount: attemptVerifications.filter((a) => a.valid).length,

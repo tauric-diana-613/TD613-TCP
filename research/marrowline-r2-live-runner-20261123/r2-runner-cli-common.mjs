@@ -17,7 +17,9 @@ import {
 import {
   R2_ESTATE_SPECS,
   R2ObservationError,
-  buildExpectedEstatePlan
+  buildExpectedEstatePlan,
+  computeR2PlanConsentScope,
+  resolveFixedHostNonceRegistryDir
 } from './r2-custody-gate-verifier.mjs';
 import { executeR2ObservationCore } from './r2-live-core.mjs';
 
@@ -152,6 +154,14 @@ export async function runEstateRunnerCli(estate, argv = process.argv.slice(2)) {
       `Unauthorized --live/--count-tokens flags rejected for ${estate}; signed Ed25519 grant and ${expectedAck} required.`
     );
   }
+  for (const rawArg of argv) {
+    if (rawArg === '--host-nonce-registry-dir' || rawArg.startsWith('--host-nonce-registry')) {
+      throw new R2ObservationError(
+        'R2_UNBOUNDED_FORBIDDEN_REGISTRY_RELOCATION',
+        'Shared single-host nonce registry directory cannot be relocated via CLI arguments'
+      );
+    }
+  }
 
   if (args.has('--execute')) {
     if (!args.has(expectedAck)) {
@@ -263,9 +273,16 @@ export async function runEstateRunnerCli(estate, argv = process.argv.slice(2)) {
   // Default fail-closed offline preflight
   const expectedPlan = buildExpectedEstatePlan(estate);
   const checkedOutHeadSha = resolveCheckedOutGitHeadSha(process.cwd());
-  const planId = getCliFlagValue(argv, '--plan') || 'INITIAL_PILOT';
-  const selectedPlan = getR2PlanPreset(estate, planId);
+  const rawPlanId = getCliFlagValue(argv, '--plan') || 'INITIAL_PILOT';
+  const episodesJsonFile = getCliFlagValue(argv, '--episodes-json');
+  const customEpisodes = episodesJsonFile ? JSON.parse(fs.readFileSync(episodesJsonFile, 'utf8')) : null;
+  const planScope = computeR2PlanConsentScope({
+    estate,
+    planId: customEpisodes ? (getCliFlagValue(argv, '--plan') || 'CUSTOM') : rawPlanId,
+    episodes: customEpisodes
+  });
   const availablePlans = Object.keys(estate === 'R2-U' ? R2_U_ACQUISITION_PLANS : R2_W_ACQUISITION_PLANS);
+  const hostNonceRegistryDir = resolveFixedHostNonceRegistryDir(estate, process.env);
 
   return Object.freeze({
     schema: 'td613.marrowline.r2-runner-preflight/v1',
@@ -276,6 +293,7 @@ export async function runEstateRunnerCli(estate, argv = process.argv.slice(2)) {
     status: 'SOURCE_ONLY_QUALIFIED',
     trustAnchorProvisioned: R2_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256 !== null,
     trustedPublicKeyFingerprintSha256: R2_TRUSTED_OPERATOR_PUBLIC_KEY_SHA256,
+    hostNonceRegistryDir,
     paidProviderCallsExecuted: 0,
     countTokensCallsExecuted: 0,
     modelDiscoveryCallsExecuted: 0,
@@ -287,10 +305,11 @@ export async function runEstateRunnerCli(estate, argv = process.argv.slice(2)) {
     generationConfigSha256: expectedPlan.generationConfigSha256,
     availablePlans,
     selectedPlan: Object.freeze({
-      planId: selectedPlan.planId,
-      intendedScope: selectedPlan.intendedScope,
-      episodeCount: selectedPlan.episodes.length,
-      episodes: selectedPlan.episodes
+      planId: planScope.planId,
+      intendedScope: customEpisodes ? 'CUSTOM_EPISODE_SCOPE' : getR2PlanPreset(estate, rawPlanId).intendedScope,
+      episodeCount: planScope.episodeCount,
+      planDigestSha256: planScope.planDigestSha256,
+      episodes: planScope.episodes
     }),
     conditions: Object.keys(expectedPlan.conditions).map((key) => {
       const slot = expectedPlan.conditions[key];

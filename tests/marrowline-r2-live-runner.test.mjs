@@ -48,10 +48,21 @@ function makeEphemeralTestKeyPair() {
   return { publicKeyPem, privateKey, fingerprintSha256 };
 }
 
-function signGrantForTest({ estate, privateKey, checkedOutHeadSha = TEST_HEAD_SHA, mutatePayload = null, nonce = null, sessionId = null }) {
+function signGrantForTest({
+  estate,
+  privateKey,
+  checkedOutHeadSha = TEST_HEAD_SHA,
+  planId = 'INITIAL_PILOT',
+  episodes = null,
+  mutatePayload = null,
+  nonce = null,
+  sessionId = null
+}) {
   const unsigned = buildUnsignedR2GrantPayload({
     estate,
     checkedOutHeadSha,
+    planId,
+    episodes,
     issuedAt: new Date().toISOString(),
     sessionId: sessionId || `test_${estate.toLowerCase().replace(/[^a-z0-9]/g, '')}_01`,
     nonce: nonce || `test_nonce_${crypto.randomBytes(10).toString('hex')}`
@@ -150,11 +161,19 @@ test('Architectural Security Proof: production executables hold pinned trust anc
     { code: 'R2_UNBOUNDED_FORBIDDEN_EXECUTABLE_OVERRIDE' }
   );
   await assert.rejects(
+    () => executeR2UObservation({ acknowledgeLiveExecution: true, hostNonceRegistryDir: os.tmpdir() }),
+    { code: 'R2_UNBOUNDED_FORBIDDEN_EXECUTABLE_OVERRIDE' }
+  );
+  await assert.rejects(
     () => executeR2WObservation({ acknowledgeLiveExecution: true, checkedOutHeadShaOverride: TEST_HEAD_SHA }),
     { code: 'R2_UNBOUNDED_FORBIDDEN_EXECUTABLE_OVERRIDE' }
   );
   await assert.rejects(() => runEstateRunnerCli('R2-U', ['--live']), { code: 'R2_CLI_LIVE_DISPATCH_HELD' });
   await assert.rejects(() => runEstateRunnerCli('R2-W', ['--count-tokens']), { code: 'R2_CLI_LIVE_DISPATCH_HELD' });
+  await assert.rejects(
+    () => runEstateRunnerCli('R2-U', ['--host-nonce-registry-dir', os.tmpdir()]),
+    { code: 'R2_UNBOUNDED_FORBIDDEN_REGISTRY_RELOCATION' }
+  );
   await assert.rejects(
     () => runEstateRunnerCli('R2-U', ['--execute', '--ack-live-r2-w-observation']),
     { code: 'R2_AUTH_CROSS_ESTATE_ACK_FORBIDDEN' }
@@ -263,23 +282,74 @@ test('Estate Scope & Authority Separation: rejects cross-estate grants/slots/dir
     /R2_CROSS_ESTATE_CONDITION_FORBIDDEN/
   );
 
+  // Fix 2: Signed human grant MUST bind chosen planId/episodes/digest before nonce claim or API-key read
+  const pilotOnlyGrant = signGrantForTest({
+    estate: 'R2-U',
+    privateKey: kp.privateKey,
+    planId: 'INITIAL_PILOT'
+  });
+  assert.throws(
+    () => verifyR2OperatorAuthorization({
+      estate: 'R2-U',
+      grant: pilotOnlyGrant,
+      publicKeyPem: kp.publicKeyPem,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      pinnedTrustFingerprintSha256: kp.fingerprintSha256,
+      requestedPlanId: 'FULL_PREREGISTERED_U'
+    }),
+    { code: 'R2_AUTH_PLAN_SCOPE_MISMATCH' }
+  );
+  assert.throws(
+    () => verifyR2OperatorAuthorization({
+      estate: 'R2-U',
+      grant: pilotOnlyGrant,
+      publicKeyPem: kp.publicKeyPem,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      pinnedTrustFingerprintSha256: kp.fingerprintSha256,
+      requestedPlanId: 'CUSTOM',
+      requestedEpisodes: [{ episodeId: 1, sequence: ['R2_U_FREE_SYNTHESIS'] }]
+    }),
+    { code: 'R2_AUTH_PLAN_SCOPE_MISMATCH' }
+  );
+  const noPlanGrant = signGrantForTest({
+    estate: 'R2-U',
+    privateKey: kp.privateKey,
+    mutatePayload: (p) => {
+      delete p.planId;
+      delete p.planDigestSha256;
+      return p;
+    }
+  });
+  assert.throws(
+    () => verifyR2OperatorAuthorization({
+      estate: 'R2-U',
+      grant: noPlanGrant,
+      publicKeyPem: kp.publicKeyPem,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      pinnedTrustFingerprintSha256: kp.fingerprintSha256
+    }),
+    { code: 'R2_AUTH_MISSING_PLAN_SCOPE' }
+  );
+
   // Separate evidence directory blocks foreign estate/R1 contamination
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-r2-iso-'));
+  const hostRegDir = path.join(tmpRoot, 'shared-host-nonce-reg');
   const dirtyDir = path.join(tmpRoot, 'shared');
   fs.mkdirSync(dirtyDir, { recursive: true });
   fs.writeFileSync(path.join(dirtyDir, 'r2-u-nonce-fake.json'), '{}', 'utf8');
-  const { transportFetch } = makeMockTransport({
+  const { transportFetch, calls: isoCalls } = makeMockTransport({
     slotTextResolver: () => ({ text: 'Kʰonapolit\nx\n\nTauric Diana bots\ny\n\n⟐' })
   });
   await assert.rejects(
     () => executeR2ObservationCore({
       estate: 'R2-W',
       acknowledgeLiveExecution: true,
-      grant: wGrant,
+      grant: signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey, planId: 'SINGLE_CIVIC_PAIR' }),
       publicKeyPem: kp.publicKeyPem,
       pinnedTrustFingerprintSha256: kp.fingerprintSha256,
       checkedOutHeadSha: TEST_HEAD_SHA,
       evidenceDir: dirtyDir,
+      hostNonceRegistryDir: path.join(tmpRoot, 'shared-host-nonce-reg-w'),
       transportFetch,
       apiKey: 'mock-key-never-called',
       planId: 'SINGLE_CIVIC_PAIR'
@@ -287,48 +357,75 @@ test('Estate Scope & Authority Separation: rejects cross-estate grants/slots/dir
     { code: 'R2_CROSS_ESTATE_EVIDENCE_DIR_CONTAMINATION' }
   );
 
-  // Single-host nonce replay blocks second launch with same signed grant BEFORE fetch
-  const cleanDir = path.join(tmpRoot, 'u-clean');
+  // Pilot grant substituted with FULL_PREREGISTERED_U MUST fail BEFORE nonce claim, metadata discovery, or fetch
+  const scopeMismatchDir = path.join(tmpRoot, 'u-scope-mismatch');
+  await assert.rejects(
+    () => executeR2ObservationCore({
+      estate: 'R2-U',
+      acknowledgeLiveExecution: true,
+      grant: pilotOnlyGrant,
+      publicKeyPem: kp.publicKeyPem,
+      pinnedTrustFingerprintSha256: kp.fingerprintSha256,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir: scopeMismatchDir,
+      hostNonceRegistryDir: hostRegDir,
+      transportFetch,
+      apiKey: 'mock-key',
+      planId: 'FULL_PREREGISTERED_U'
+    }),
+    { code: 'R2_AUTH_PLAN_SCOPE_MISMATCH' }
+  );
+  assert.equal(isoCalls.length, 0);
+
+  // Fix 1: Identical valid signed grant replayed across a BRAND-NEW session directory MUST fail BEFORE metadata/fetch!
+  const cleanDir1 = path.join(tmpRoot, 'u-clean-session-1');
+  const cleanDir2 = path.join(tmpRoot, 'u-clean-session-2-fresh-folder');
+  const singleSlotGrant = signGrantForTest({ estate: 'R2-U', privateKey: kp.privateKey, planId: 'INITIAL_SINGLE_ARM_LITERAL_CHECK' });
   const uMock = makeMockTransport({
     slotTextResolver: () => ({ text: R2_U_CALIBRATED_CONTROLS.DELIBERATE_MULTISTACK_REF.sample })
   });
   await executeR2ObservationCore({
     estate: 'R2-U',
     acknowledgeLiveExecution: true,
-    grant: uGrant,
+    grant: singleSlotGrant,
     publicKeyPem: kp.publicKeyPem,
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
-    evidenceDir: cleanDir,
+    evidenceDir: cleanDir1,
+    hostNonceRegistryDir: hostRegDir,
     transportFetch: uMock.transportFetch,
     apiKey: 'mock-key',
     planId: 'INITIAL_SINGLE_ARM_LITERAL_CHECK'
   });
+  const callsAfterFirstRun = uMock.calls.length;
   await assert.rejects(
     () => executeR2ObservationCore({
       estate: 'R2-U',
       acknowledgeLiveExecution: true,
-      grant: uGrant,
+      grant: singleSlotGrant,
       publicKeyPem: kp.publicKeyPem,
       pinnedTrustFingerprintSha256: kp.fingerprintSha256,
       checkedOutHeadSha: TEST_HEAD_SHA,
-      evidenceDir: cleanDir,
+      evidenceDir: cleanDir2,
+      hostNonceRegistryDir: hostRegDir,
       transportFetch: uMock.transportFetch,
       apiKey: 'mock-key',
       planId: 'INITIAL_SINGLE_ARM_LITERAL_CHECK'
     }),
     { code: 'R2_AUTH_NONCE_REPLAYED' }
   );
+  assert.equal(uMock.calls.length, callsAfterFirstRun, 'Replayed grant across fresh dir MUST NOT reach metadata/fetch');
   fs.rmSync(tmpRoot, { recursive: true, force: true });
 });
 
 test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualification & Adversarial Physical Gate Closure', async () => {
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-r2-u-'));
+  const hostRegDir = path.join(tmpRoot, 'host-reg-u');
   const kp = makeEphemeralTestKeyPair();
 
   // 1. Limited initial pilot (1 forward U_C1 episode returning uniform depth-1 stencil -> NEGATIVE RESULT)
   const dirNeg = path.join(tmpRoot, 'u-neg');
-  const grantNeg = signGrantForTest({ estate: 'R2-U', privateKey: kp.privateKey });
+  const grantNeg = signGrantForTest({ estate: 'R2-U', privateKey: kp.privateKey, planId: 'INITIAL_PILOT' });
   const mockNeg = makeMockTransport({
     slotTextResolver: () => ({ text: R2_U_CALIBRATED_CONTROLS.ONE_MARK_STENCIL_REF.sample })
   });
@@ -340,11 +437,16 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirNeg,
+    hostNonceRegistryDir: hostRegDir,
     transportFetch: mockNeg.transportFetch,
     apiKey: 'mock-key',
     planId: 'INITIAL_PILOT'
   });
   assert.equal(negRes.physicalCustodyGate.physicalVerificationPassed, true);
+  assert.equal(negRes.physicalCustodyGate.timebaseRelation, 'SINGLE_PROCESS_HRTIME_MONOTONIC_CALIBRATED_MS');
+  assert.equal(negRes.physicalCustodyGate.timebaseValidated, true);
+  assert.ok(negRes.physicalCustodyGate.wallClockSamplesMs.operatorWallMs > 1_700_000_000_000);
+  assert.ok(negRes.physicalCustodyGate.gateResult.clocks.operatorClockMs > 1_700_000_000_000);
   assert.equal(negRes.physicalCustodyGate.gateResult.held, false);
   assert.equal(negRes.physicalCustodyGate.gateResult.lifecycleCapabilities.EMPIRICALLY_QUALIFIED, true);
   assert.equal(negRes.physicalCustodyGate.gateResult.securityAndSafeHarbor.externalAdmissionProved, true);
@@ -352,7 +454,32 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
   assert.equal(negRes.acquisitionScope.classification, 'SINGLE_COUNTERBALANCED_PAIR_ONLY');
   assert.equal(negRes.acquisitionScope.multiEpisodeComparisonCompleted, false);
 
-  // 2. Adversarial Gate integration closure: mutate authored file on disk to NFC/corrupted text while keeping caller metadata claims intact -> MUST HOLD!
+  // 2. Fix 3 adversarial checks: misleading monotonic wall-clock claim, missing/inverted phases, & null preemptionGapMs when unvalidated
+  const misleadingClockGate = verifyPhysicalR2CustodyAndEvaluateGate({
+    estate: 'R2-U',
+    grant: grantNeg,
+    publicKeyPem: kp.publicKeyPem,
+    pinnedTrustFingerprintSha256: kp.fingerprintSha256,
+    checkedOutHeadSha: TEST_HEAD_SHA,
+    evidenceDir: dirNeg,
+    hostNonceRegistryDir: hostRegDir,
+    receipt: negRes,
+    clockContext: {
+      timebaseValidated: true,
+      timebaseRelation: 'SINGLE_HOST_MONOTONIC_EPOCH_MS',
+      phases: { noticeAt: null, actAt: 2000, worldAnswersAt: 1500, nameAt: null },
+      clocks: { operatorClockMs: 1000, serviceClockMs: 1010, custodyClockMs: 1050 }
+    }
+  });
+  assert.equal(misleadingClockGate.physicalVerificationPassed, false);
+  assert.equal(misleadingClockGate.gateResult.held, true);
+  assert.equal(misleadingClockGate.timebaseValidated, false);
+  assert.equal(misleadingClockGate.gateResult.clocks.preemptionGapMs, null);
+  assert.ok(misleadingClockGate.physicalFailures.includes('MISLEADING_MONOTONIC_WALL_CLOCK_CLAIM'));
+  assert.ok(misleadingClockGate.gateResult.dromologicalOrder.violations.includes('ACT_WITHOUT_NOTICE'));
+  assert.ok(misleadingClockGate.gateResult.dromologicalOrder.violations.includes('WORLD_ANSWERS_BEFORE_ACT'));
+
+  // 3. Adversarial Gate integration closure: mutate authored file on disk to NFC/corrupted text while keeping caller metadata claims intact -> MUST HOLD!
   const firstAuthored = negRes.attemptRecords[0].authoredTextFilePath;
   fs.appendFileSync(firstAuthored, ' TAMPERED', 'utf8');
   const tamperedGate = verifyPhysicalR2CustodyAndEvaluateGate({
@@ -362,6 +489,7 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirNeg,
+    hostNonceRegistryDir: hostRegDir,
     receipt: negRes,
     reportedClaims: { signatureValid: true, nonceClaimed: true, rawCaptureVerified: true },
     clockContext: { timebaseValidated: false }
@@ -373,7 +501,7 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
   assert.equal(tamperedGate.gateResult.clocks.preemptionGapMs, null);
   assert.ok(tamperedGate.physicalFailures.some((f) => f.includes('AUTHORED_TEXT_DISK_VS_SSE_MISMATCH')));
 
-  // 3. Adversarial naked-claims check: invalid signature + fabricated hashes MUST fail closed even with caller claims
+  // 4. Adversarial naked-claims check: invalid signature + fabricated hashes MUST fail closed even with caller claims
   const forgedGrant = { ...grantNeg, signatureBase64: Buffer.alloc(64, 7).toString('base64') };
   const forgedGate = verifyPhysicalR2CustodyAndEvaluateGate({
     estate: 'R2-U',
@@ -382,6 +510,7 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirNeg,
+    hostNonceRegistryDir: hostRegDir,
     receipt: negRes,
     reportedClaims: { signatureValid: true, nonceClaimed: true, rawCaptureVerified: true }
   });
@@ -390,9 +519,9 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
   assert.equal(forgedGate.gateResult.securityAndSafeHarbor.externalAdmissionProved, false);
   assert.ok(forgedGate.physicalFailures.some((f) => f.includes('AUTH_VERIFICATION_FAILED')));
 
-  // 4. Full balanced COUNTERBALANCED_C1_PAIR with authentic towering High Zalgo -> MULTI_EPISODE_COUNTERBALANCED_COMPLETE + HYPOTHESIS_SUPPORTED
+  // 5. Full balanced COUNTERBALANCED_C1_PAIR with authentic towering High Zalgo -> MULTI_EPISODE_COUNTERBALANCED_COMPLETE + HYPOTHESIS_SUPPORTED
   const dirPos = path.join(tmpRoot, 'u-pos');
-  const grantPos = signGrantForTest({ estate: 'R2-U', privateKey: kp.privateKey });
+  const grantPos = signGrantForTest({ estate: 'R2-U', privateKey: kp.privateKey, planId: 'COUNTERBALANCED_C1_PAIR' });
   const mockPos = makeMockTransport({
     slotTextResolver: (userText) => ({
       text: userText.includes(R2_U_PINNED_COPY_SPECIMEN)
@@ -408,6 +537,7 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirPos,
+    hostNonceRegistryDir: hostRegDir,
     transportFetch: mockPos.transportFetch,
     apiKey: 'mock-key',
     planId: 'COUNTERBALANCED_C1_PAIR'
@@ -432,11 +562,12 @@ test('R2-U Live Runner, Limited vs Multi-Episode Scope, Negative-Result Qualific
 
 test('R2-W Whole-Frame Civic + Noncivic Runner, Blinded Packet, Oct-2 Baseline Correlation & Abort/503 Custody', async () => {
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'td613-r2-w-'));
+  const hostRegDirW = path.join(tmpRoot, 'host-reg-w');
   const kp = makeEphemeralTestKeyPair();
 
   // 1. Complete INITIAL_PILOT (1 civic tribunal pair + 1 noncivic Black Sea orchard pair)
   const dirW = path.join(tmpRoot, 'w-pilot');
-  const grantW = signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey });
+  const grantW = signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey, planId: 'INITIAL_PILOT' });
   const wMock = makeMockTransport({
     slotTextResolver: (userText) => {
       const isNonCivic = userText.includes('Black Sea salt mist');
@@ -455,6 +586,7 @@ test('R2-W Whole-Frame Civic + Noncivic Runner, Blinded Packet, Oct-2 Baseline C
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirW,
+    hostNonceRegistryDir: hostRegDirW,
     transportFetch: wMock.transportFetch,
     apiKey: 'mock-key',
     planId: 'INITIAL_PILOT'
@@ -474,9 +606,27 @@ test('R2-W Whole-Frame Civic + Noncivic Runner, Blinded Packet, Oct-2 Baseline C
   assert.equal(wRes.attemptRecords.every((r) => r.evaluation.baselineComparison.humanArtisticAuthority === 'RESERVED_HUMAN_ONLY'), true);
   assert.equal(wRes.healthyBaselineCorrelation.healthySourceBasis.oct02SourceCommit, 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a');
 
+  // Plan substitution against W grant fails closed before nonce claim
+  await assert.rejects(
+    () => executeR2ObservationCore({
+      estate: 'R2-W',
+      acknowledgeLiveExecution: true,
+      grant: signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey, planId: 'SINGLE_CIVIC_PAIR' }),
+      publicKeyPem: kp.publicKeyPem,
+      pinnedTrustFingerprintSha256: kp.fingerprintSha256,
+      checkedOutHeadSha: TEST_HEAD_SHA,
+      evidenceDir: path.join(tmpRoot, 'w-mismatch'),
+      hostNonceRegistryDir: hostRegDirW,
+      transportFetch: wMock.transportFetch,
+      apiKey: 'mock-key',
+      planId: 'FULL_PREREGISTERED_W'
+    }),
+    { code: 'R2_AUTH_PLAN_SCOPE_MISMATCH' }
+  );
+
   // 2. Non-200 HTTP 503 error custody persists exact raw error bytes on disk and holds Gate
   const dirErr = path.join(tmpRoot, 'w-503');
-  const grantErr = signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey });
+  const grantErr = signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey, planId: 'SINGLE_NONCIVIC_PAIR' });
   const mock503 = makeMockTransport({
     slotTextResolver: () => ({ httpError: { status: 503, body: '{"error":{"code":503,"message":"Overloaded"}}' } })
   });
@@ -488,12 +638,14 @@ test('R2-W Whole-Frame Civic + Noncivic Runner, Blinded Packet, Oct-2 Baseline C
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirErr,
+    hostNonceRegistryDir: hostRegDirW,
     transportFetch: mock503.transportFetch,
     apiKey: 'mock-key',
     planId: 'SINGLE_NONCIVIC_PAIR'
   });
   assert.equal(res503.physicalCustodyGate.gateResult.held, true);
   assert.equal(res503.physicalCustodyGate.gateResult.lifecycleCapabilities.EMPIRICALLY_QUALIFIED, false);
+  assert.equal(res503.physicalCustodyGate.gateResult.clocks.providerReceiptClockMs, null);
   assert.equal(res503.attemptRecords[0].httpErrorCustody.httpStatus, 503);
   assert.equal(
     fs.readFileSync(res503.attemptRecords[0].httpErrorCustody.rawErrorBodyPath, 'utf8'),
@@ -502,7 +654,7 @@ test('R2-W Whole-Frame Civic + Noncivic Runner, Blinded Packet, Oct-2 Baseline C
 
   // 3. In-flight operator revocation aborts stream mid-flight and preserves partial .sse bytes cleanly
   const dirRev = path.join(tmpRoot, 'w-rev');
-  const grantRev = signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey, sessionId: 'revoked_midstream_01' });
+  const grantRev = signGrantForTest({ estate: 'R2-W', privateKey: kp.privateKey, sessionId: 'revoked_midstream_01', planId: 'SINGLE_CIVIC_PAIR' });
   const revFile = path.join(tmpRoot, 'revocations.json');
   const abortableMock = makeMockTransport({
     onSseAbortable: () => {
@@ -524,6 +676,7 @@ test('R2-W Whole-Frame Civic + Noncivic Runner, Blinded Packet, Oct-2 Baseline C
     pinnedTrustFingerprintSha256: kp.fingerprintSha256,
     checkedOutHeadSha: TEST_HEAD_SHA,
     evidenceDir: dirRev,
+    hostNonceRegistryDir: hostRegDirW,
     revocationFilePath: revFile,
     transportFetch: abortableMock.transportFetch,
     apiKey: 'mock-key',

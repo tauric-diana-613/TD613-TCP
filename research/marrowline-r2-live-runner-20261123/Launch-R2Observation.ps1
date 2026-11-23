@@ -74,9 +74,14 @@ function Clear-SensitiveEnvAndVars {
 
 # Step 1: Always run offline preflight first (0 network, 0 credentials)
 Write-Host "=== TD613 MARROWLINE $Estate PREFLIGHT ($Plan) ===" -ForegroundColor Cyan
+$preflightArgs = @($RunnerScript, '--plan', $Plan)
+$EpisodesFull = if ($EpisodesJsonPath) { [System.IO.Path]::GetFullPath($EpisodesJsonPath) } else { '' }
+if ($EpisodesFull) {
+  $preflightArgs += @('--episodes-json', $EpisodesFull)
+}
 Push-Location $RepoRoot
 try {
-  $preflightRaw = & node $RunnerScript --plan $Plan
+  $preflightRaw = & node @preflightArgs
   $preflightExit = $LASTEXITCODE
 } finally {
   Pop-Location
@@ -89,7 +94,9 @@ Write-Host "Experiment     : $($preflight.experimentId)"
 Write-Host "Pinned Model   : $($preflight.pinnedModel) (thinkingLevel=$($preflight.thinkingLevel), maxOutputTokens=$($preflight.publishedOutputCapacityTokens))"
 Write-Host "Checked-Out SHA: $($preflight.checkedOutHeadSha)"
 Write-Host "Trust Anchor   : $($preflight.trustedPublicKeyFingerprintSha256)"
+Write-Host "Host Nonce Reg : $($preflight.hostNonceRegistryDir) (fixed non-relocatable host ledger)"
 Write-Host "Planned Scope  : $($preflight.selectedPlan.planId) -> $($preflight.selectedPlan.intendedScope) ($($preflight.selectedPlan.episodeCount) episode(s))"
+Write-Host "Plan Digest    : $($preflight.selectedPlan.planDigestSha256)"
 Write-Host "Artificial Caps: $($preflight.resourceCeilingsImposedByTD613)"
 
 if (-not $ExecuteLive) {
@@ -133,13 +140,26 @@ if ($SignInteractively) {
   try {
     $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secPass)
     $plainPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
-    $signedOut = $plainPass | & node $SignerScript `
-      --sign-interactively `
-      --estate $Estate `
-      --private-key-file $PrivateKeyFile `
-      --out-grant-file $GrantFile `
-      --out-public-key-file $PublicKeyFile
-    if ($LASTEXITCODE -ne 0) {
+    $signArgs = @(
+      $SignerScript,
+      '--sign-interactively',
+      '--estate', $Estate,
+      '--plan', $Plan,
+      '--private-key-file', $PrivateKeyFile,
+      '--out-grant-file', $GrantFile,
+      '--out-public-key-file', $PublicKeyFile
+    )
+    if ($EpisodesFull) {
+      $signArgs += @('--episodes-json', $EpisodesFull)
+    }
+    Push-Location $RepoRoot
+    try {
+      $signedOut = $plainPass | & node @signArgs
+      $signExit = $LASTEXITCODE
+    } finally {
+      Pop-Location
+    }
+    if ($signExit -ne 0) {
       throw 'Interactive Ed25519 grant signing failed.'
     }
   } finally {
@@ -150,7 +170,7 @@ if ($SignInteractively) {
     $plainPass = $null
     [System.GC]::Collect()
   }
-  Write-Host "Single-use $Estate Ed25519 grant signed at HEAD $($preflight.checkedOutHeadSha)." -ForegroundColor Yellow
+  Write-Host "Single-use $Estate Ed25519 grant signed for plan $($preflight.selectedPlan.planId) ($($preflight.selectedPlan.planDigestSha256)) at HEAD $($preflight.checkedOutHeadSha)." -ForegroundColor Yellow
 }
 
 if (-not $GrantFile -or -not $PublicKeyFile) {
