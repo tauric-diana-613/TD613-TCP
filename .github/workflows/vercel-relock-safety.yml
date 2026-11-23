@@ -527,6 +527,69 @@ jobs:
               raise SystemExit('FAILED_TO_ACQUIRE_ANY_CHECK_LOGS')
           print('READ_ONLY_NO_DEPLOY_NO_ALIAS_CHANGE')
           PY
+      - name: Read named failed-deployment checks through Vercel REST
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const id=process.env.FAILED_DEPLOYMENT_ID;
+          const team=process.env.VERCEL_ORG_ID;
+          const token=process.env.VERCEL_TOKEN;
+          if(!token||!/^DYr8M6wJMiwyxQUUmaHizRkxH874$/.test(id)||team!=='team_pX5L7AFivMzMU1lH28Y6RIhX')throw Error('Fixed diagnostic scope failed');
+          const clean=v=>String(typeof v==='string'?v:JSON.stringify(v??'')).replaceAll(token,'[REDACTED]').slice(0,420);
+          const paths=[
+            ['DEPLOYMENT',`/v13/deployments/${id}?teamId=${encodeURIComponent(team)}`],
+            ['CHECKS',`/v1/deployments/${id}/checks?teamId=${encodeURIComponent(team)}`],
+            ['BUILD_EVENTS',`/v3/deployments/${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
+          ];
+          console.log('READ_ONLY_FAILED_DEPLOYMENT_DIAGNOSTIC',id);
+          for(const [label,path] of paths){
+            try{
+              const response=await fetch(`https://api.vercel.com${path}`,{
+                method:'GET',redirect:'error',headers:{Authorization:`Bearer ${token}`,Accept:'application/json'}
+              });
+              console.log('VERCEL_REST_RESULT',label,'HTTP',response.status);
+              const data=await response.json().catch(()=>({unparsed:true}));
+              if(!response.ok){
+                const er=data?.error??data;
+                console.log('VERCEL_REST_ERROR',label,clean(er?.code??''),clean(er?.message??''));
+                continue;
+              }
+              if(label==='DEPLOYMENT'){
+                const d=data?.deployment??data;
+                const fields=['id','url','state','readyState','errorCode','errorMessage','checksState','projectId','target','buildingAt','ready'];
+                console.log('DEPLOYMENT_STATE',JSON.stringify(Object.fromEntries(fields.filter(k=>k in d).map(k=>[k,clean(d[k])]))));
+                for(const field of ['checks','buildError','builds'])if(field in d){
+                  const val=d[field];
+                  const compact=Array.isArray(val)?val.slice(-8):val;
+                  console.log('DEPLOYMENT_DIAGNOSTIC_FIELD',field,clean(compact));
+                }
+              }else if(label==='CHECKS'){
+                let c=Array.isArray(data)?data:data?.checks??data?.data??data?.results??[];
+                if(!Array.isArray(c)&&Array.isArray(c?.checks))c=c.checks;
+                if(!Array.isArray(c)){console.log('CHECKS_SHAPE',Object.keys(data??{}));continue;}
+                console.log('NAMED_CHECK_COUNT',c.length);
+                for(const item of c.slice(0,75)){
+                  if(!item||typeof item!=='object')continue;
+                  const fields=['id','name','status','state','conclusion','blocking','rerequestable','detailsUrl','errorCode','errorMessage','output'];
+                  console.log('NAMED_CHECK',JSON.stringify(Object.fromEntries(fields.filter(k=>k in item).map(k=>[k,clean(item[k])]))));
+                }
+              }else{
+                let ev=Array.isArray(data)?data:data?.events??data?.data??data?.results??[];
+                if(!Array.isArray(ev)&&Array.isArray(ev?.events))ev=ev.events;
+                if(!Array.isArray(ev)){console.log('EVENTS_SHAPE',Object.keys(data??{}));continue;}
+                console.log('EVENT_COUNT',ev.length);
+                for(const event of ev.slice(-160)){
+                  const content=[event?.type,event?.level,event?.text,event?.message,event?.payload?.text].filter(Boolean).join(' ');
+                  if(/error|fail|check|build|quota|limit|memory|size|invalid|python|bundle|install|artifact/i.test(content)){
+                    console.log('BUILD_EVENT',clean(content));
+                  }
+                }
+              }
+            }catch(err){console.log('VERCEL_REST_UNAVAILABLE',label,clean(err?.message??err));}
+          }
+          console.log('DIAGNOSTIC_COMPLETE_NO_DEPLOY_NO_ALIAS_NO_MUTATION');
+          NODE
   # PR #1730 source-only preflight: no Vercel credentials, no deployment.
 
   vixen-preview-prepare:
