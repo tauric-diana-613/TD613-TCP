@@ -4,6 +4,9 @@
 // Paid Gemini calls authorized or executed by this module: 0 (fail-closed)
 
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { buildInvocationPacket } from '../../app/dome-world/khonapolit-covenant.js';
@@ -809,9 +812,38 @@ export function buildHeldArgonTwoCallExperimentPlan() {
 }
 
 const REPO_ROOT_DIR = fileURLToPath(new URL('../..', import.meta.url));
-export const ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA = 'td613.marrowline.argon-live-experiment-authorization/v1';
+export const ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA = 'td613.marrowline.argon-live-experiment-authorization/v2-ed25519';
 export const ARGON_LIVE_EXPERIMENT_MAX_GRANT_TTL_MS = 30 * 60 * 1000;
-const CONSUMED_AUTHORIZATION_GRANT_KEYS = new Set();
+// The principal signs outside the runner with an Ed25519 private key. The runner
+// receives only the *independently provisioned* trusted public key. Persisted
+// atomic redemption uses a local user-private directory so process restarts and
+// concurrent executions on the SAME filesystem cannot spend a grant again.
+// This is not distributed cross-host redemption or a substitute for protected
+// operator key custody. Provider execution remains HELD until separately approved.
+const DEFAULT_GRANT_REDEMPTION_DIR = path.join(os.homedir(), '.td613', 'marrowline-argon-redeemed-grants');
+
+export function redeemArgonExperimentGrantLocally(grant, redemptionDirectory = DEFAULT_GRANT_REDEMPTION_DIR) {
+  if (typeof redemptionDirectory !== 'string' || !path.isAbsolute(redemptionDirectory)) {
+    throw new Error('LIVE_EXPERIMENT_INVALID_REDEMPTION_DIRECTORY');
+  }
+  const nonceHash = crypto.createHash('sha256').update('td613.marrowline.argon.grant.nonce:' + grant.nonce).digest('hex');
+  const recordPath = path.join(redemptionDirectory, nonceHash + '.json');
+  try {
+    fs.mkdirSync(redemptionDirectory, { recursive: true, mode: 0o700 });
+    // O_EXCL / wx creates exactly one file across concurrent processes using
+    // a common local filesystem. Never remove an uncertain redemption record.
+    fs.writeFileSync(recordPath, JSON.stringify({
+      schema: 'td613.marrowline.argon.local-grant-redemption/v1',
+      nonceSha256: nonceHash,
+      authorizedHeadSha: grant.authorizedHeadSha,
+      redeemedAt: new Date().toISOString()
+    }), { flag: 'wx', mode: 0o600 });
+  } catch (error) {
+    if (error?.code === 'EEXIST') throw new Error('LIVE_EXPERIMENT_AUTHORIZATION_ALREADY_CONSUMED');
+    throw new Error('LIVE_EXPERIMENT_REDEMPTION_STORAGE_UNAVAILABLE');
+  }
+  return Object.freeze({ method: 'atomic-local-filesystem-wx', nonceSha256: nonceHash, scope: 'same-persistent-filesystem-only' });
+}
 
 export function resolveCheckedOutGitHeadSha(repoRootDir = REPO_ROOT_DIR) {
   try {
@@ -852,12 +884,12 @@ export function canonicalizeArgonExperimentGrantPayload(grant = {}) {
   });
 }
 
-// B-02: Mints a narrowly scoped, HMAC-signed, single-use operator authorization grant bound
+// B-02: Mints a narrowly scoped, independently Ed25519-signed operator authorization grant bound
 // to the exact experimentId, authorizedHeadSha, pinnedModel, maxGenerationCalls (2),
 // perSlotMaxOutputTokens (16384), perSlotHardPromptTokenCeiling (8000), aggregate ceiling
 // (32768), frozen S01/S02 wire digests, nonce, and bounded expiration window.
 export function mintScopedArgonExperimentAuthorizationGrant({
-  signingSecret = '',
+  operatorPrivateKeyPem = '',
   authorizedHeadSha = '',
   nonce = '',
   issuedAt = '',
@@ -876,8 +908,12 @@ export function mintScopedArgonExperimentAuthorizationGrant({
     S02: FROZEN_STAGE1_SLOT_WIRE_MANIFEST.S02.bodySha256
   }
 } = {}) {
-  if (typeof signingSecret !== 'string' || signingSecret.trim().length < 16) {
-    throw new Error('LIVE_EXPERIMENT_MISSING_OPERATOR_SIGNING_SECRET');
+  let operatorPrivateKey;
+  try {
+    operatorPrivateKey = crypto.createPrivateKey(operatorPrivateKeyPem);
+    if (operatorPrivateKey.asymmetricKeyType !== 'ed25519') throw new Error('expected-ed25519');
+  } catch {
+    throw new Error('LIVE_EXPERIMENT_INVALID_OPERATOR_PRIVATE_SIGNING_KEY');
   }
   const unsignedGrant = {
     schema: ARGON_LIVE_EXPERIMENT_AUTH_SCHEMA,
@@ -900,13 +936,12 @@ export function mintScopedArgonExperimentAuthorizationGrant({
     expiresAt
   };
   const canonicalPayload = canonicalizeArgonExperimentGrantPayload(unsignedGrant);
-  const grantSignatureSha256 = crypto
-    .createHmac('sha256', signingSecret)
-    .update(canonicalPayload, 'utf8')
-    .digest('hex');
+  const grantSignatureEd25519 = crypto
+    .sign(null, Buffer.from(canonicalPayload, 'utf8'), operatorPrivateKey)
+    .toString('base64url');
   return Object.freeze({
     ...unsignedGrant,
-    grantSignatureSha256
+    grantSignatureEd25519
   });
 }
 
@@ -917,14 +952,14 @@ export function mintScopedArgonExperimentAuthorizationGrant({
 export function assertLiveExperimentAuthorized({
   authorizeLiveCalls = false,
   operatorAuthorizationGrant = null,
-  operatorAuthorizationSecret = '',
+  operatorPublicKeyPem = '',
   expectedHeadSha = null,
   apiKey = null,
   fetchImpl = null,
   requireDispatchCredentials = false,
   resolveActualHeadSha = resolveCheckedOutGitHeadSha,
   nowMs = Date.now(),
-  consumedGrantRegistry = CONSUMED_AUTHORIZATION_GRANT_KEYS,
+  redemptionDirectory = DEFAULT_GRANT_REDEMPTION_DIR,
   consumeGrant = false
 } = {}) {
   if (authorizeLiveCalls !== true || !operatorAuthorizationGrant || typeof operatorAuthorizationGrant !== 'object') {
@@ -942,8 +977,8 @@ export function assertLiveExperimentAuthorized({
     || typeof grant.expiresAt !== 'string'
     || typeof grant.authorizedHeadSha !== 'string'
     || !/^[0-9a-f]{40}$/i.test(grant.authorizedHeadSha)
-    || typeof grant.grantSignatureSha256 !== 'string'
-    || !/^[0-9a-f]{64}$/i.test(grant.grantSignatureSha256)
+    || typeof grant.grantSignatureEd25519 !== 'string'
+    || !/^[A-Za-z0-9_-]{80,100}$/.test(grant.grantSignatureEd25519)
   ) {
     throw new Error('LIVE_EXPERIMENT_MALFORMED_AUTHORIZATION_GRANT');
   }
@@ -978,18 +1013,24 @@ export function assertLiveExperimentAuthorized({
     throw new Error('LIVE_EXPERIMENT_AUTHORIZATION_EXPIRED');
   }
 
-  if (typeof operatorAuthorizationSecret !== 'string' || operatorAuthorizationSecret.trim().length < 16) {
-    throw new Error('LIVE_EXPERIMENT_MISSING_OPERATOR_SIGNING_SECRET');
+  // Verifier receives PUBLIC key only. The human-held Ed25519 PRIVATE key is
+  // never passed into live execution; install the trusted public key through
+  // the operator-controlled environment, not from the untrusted grant itself.
+  let signatureValid = false;
+  try {
+    const trustedPublicKey = crypto.createPublicKey(operatorPublicKeyPem);
+    if (trustedPublicKey.asymmetricKeyType === 'ed25519') {
+      signatureValid = crypto.verify(
+        null,
+        Buffer.from(canonicalizeArgonExperimentGrantPayload(grant), 'utf8'),
+        trustedPublicKey,
+        Buffer.from(grant.grantSignatureEd25519, 'base64url')
+      );
+    }
+  } catch {
+    signatureValid = false;
   }
-  const expectedSigHex = crypto
-    .createHmac('sha256', operatorAuthorizationSecret)
-    .update(canonicalizeArgonExperimentGrantPayload(grant), 'utf8')
-    .digest('hex');
-  const actualSigBuf = Buffer.from(grant.grantSignatureSha256.toLowerCase(), 'hex');
-  const expectedSigBuf = Buffer.from(expectedSigHex.toLowerCase(), 'hex');
-  if (actualSigBuf.length !== expectedSigBuf.length || !crypto.timingSafeEqual(actualSigBuf, expectedSigBuf)) {
-    throw new Error('LIVE_EXPERIMENT_INVALID_GRANT_SIGNATURE');
-  }
+  if (!signatureValid) throw new Error('LIVE_EXPERIMENT_INVALID_GRANT_SIGNATURE');
 
   if (typeof expectedHeadSha !== 'string' || !/^[0-9a-f]{40}$/i.test(expectedHeadSha)) {
     throw new Error('LIVE_EXPERIMENT_INVALID_EXPECTED_HEAD_SHA');
@@ -1014,17 +1055,12 @@ export function assertLiveExperimentAuthorized({
     }
   }
 
-  const nonceKey = `nonce:${grant.nonce}`;
-  const sigKey = `sig:${grant.grantSignatureSha256.toLowerCase()}`;
-  if (consumedGrantRegistry instanceof Set) {
-    if (consumedGrantRegistry.has(nonceKey) || consumedGrantRegistry.has(sigKey)) {
-      throw new Error('LIVE_EXPERIMENT_AUTHORIZATION_ALREADY_CONSUMED');
-    }
-    if (consumeGrant) {
-      consumedGrantRegistry.add(nonceKey);
-      consumedGrantRegistry.add(sigKey);
-    }
-  }
+  // This redemption occurs atomically BEFORE any provider call. A local crash
+  // after redemption intentionally burns the grant rather than risking a second
+  // charge. Remote hosts require independent durable coordination/approval.
+  const redemption = consumeGrant
+    ? redeemArgonExperimentGrantLocally(grant, redemptionDirectory)
+    : null;
 
   return Object.freeze({
     authorized: true,
@@ -1035,7 +1071,8 @@ export function assertLiveExperimentAuthorized({
     pinnedModel: grant.pinnedModel,
     maxGenerationCalls: grant.maxGenerationCalls,
     nonce: grant.nonce,
-    grantSignatureSha256: grant.grantSignatureSha256.toLowerCase()
+    grantSignatureEd25519: grant.grantSignatureEd25519,
+    redemption
   });
 }
 
@@ -1170,26 +1207,26 @@ function buildBlindedEvaluationBundle(completedSlots = [], blindingSeed = 'td613
 export async function executeQualifiedArgonTwoCallDiscriminator({
   authorizeLiveCalls = false,
   operatorAuthorizationGrant = null,
-  operatorAuthorizationSecret = '',
+  operatorPublicKeyPem = '',
   expectedHeadSha = '',
   apiKey = '',
   fetchImpl = null,
   resolveActualHeadSha = resolveCheckedOutGitHeadSha,
   nowMs = Date.now(),
-  consumedGrantRegistry = CONSUMED_AUTHORIZATION_GRANT_KEYS,
+  redemptionDirectory = DEFAULT_GRANT_REDEMPTION_DIR,
   blindingSeed = 'td613-argon-be-stage1-blind-v1'
 } = {}) {
   const authorizationReceipt = assertLiveExperimentAuthorized({
     authorizeLiveCalls,
     operatorAuthorizationGrant,
-    operatorAuthorizationSecret,
+    operatorPublicKeyPem,
     expectedHeadSha,
     apiKey,
     fetchImpl,
     requireDispatchCredentials: true,
     resolveActualHeadSha,
     nowMs,
-    consumedGrantRegistry,
+    redemptionDirectory,
     consumeGrant: true
   });
 
