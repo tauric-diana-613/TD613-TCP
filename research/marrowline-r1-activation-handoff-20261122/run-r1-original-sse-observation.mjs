@@ -847,17 +847,21 @@ export async function captureAndDualParseGeminiSse(
     && !parsedB.invalidUtf8Detected
     && progressA.parseErrors === 0
     && parsedB.parseErrors === 0
+    && parsedB.endsWithEventDelimiter
+    && !parsedB.hasTrailingFragment
     && textA === parsedB.authoredText
     && (outputA.finishReason ?? null) === parsedB.finalFinishReason
     && (outputA.promptBlockReason ?? null) === parsedB.promptBlockReason
   );
 
+  // Raw provider usage only. Never substitute synthesized parser defaults or zero
+  // for missing upstream usage: an absent field means cost cannot be evidenced.
   const rawUsageMetadata = Object.freeze({
-    promptTokenCount: parsedB.usageMetadata?.promptTokenCount ?? outputA.usage?.promptTokenCount ?? null,
-    candidatesTokenCount: parsedB.usageMetadata?.candidatesTokenCount ?? outputA.usage?.candidatesTokenCount ?? null,
-    thoughtsTokenCount: parsedB.usageMetadata?.thoughtsTokenCount ?? outputA.usage?.thoughtsTokenCount ?? null,
-    cachedContentTokenCount: parsedB.usageMetadata?.cachedContentTokenCount ?? outputA.usage?.cachedContentTokenCount ?? null,
-    totalTokenCount: parsedB.usageMetadata?.totalTokenCount ?? outputA.usage?.totalTokenCount ?? null
+    promptTokenCount: parsedB.usageMetadata?.promptTokenCount ?? null,
+    candidatesTokenCount: parsedB.usageMetadata?.candidatesTokenCount ?? null,
+    thoughtsTokenCount: parsedB.usageMetadata?.thoughtsTokenCount ?? null,
+    cachedContentTokenCount: parsedB.usageMetadata?.cachedContentTokenCount ?? null,
+    totalTokenCount: parsedB.usageMetadata?.totalTokenCount ?? null
   });
 
   const observedModelVersions = parsedB.modelVersions;
