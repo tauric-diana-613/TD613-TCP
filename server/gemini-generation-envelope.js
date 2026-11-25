@@ -6,7 +6,17 @@ export const GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE = 'khonapolit-inte
 // Match the Marrowline route's declared ceiling instead of silently quartering it.
 export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 65536;
 
-const THINKING_LEVELS = new Set(['minimal', 'low', 'medium', 'high']);
+const THINKING_LEVELS = new Set(['minimal', 'low', 'medium', 'high', 'xhigh']);
+const GEMINI_4_TEXT_MODELS = new Set([
+  'gemini-4-carbon',
+  'gemini-4-neon',
+  'gemini-4-argon',
+  'gemini-4-hydrogen'
+]);
+const GEMINI_4_XHIGH_MODELS = new Set([
+  'gemini-4-neon',
+  'gemini-4-hydrogen'
+]);
 const GENERATION_PROFILE_STORAGE = new AsyncLocalStorage();
 
 export function normalizeGeminiModel(model = '') {
@@ -16,7 +26,7 @@ export function normalizeGeminiModel(model = '') {
 export function geminiGeneration(model = '') {
   const normalized = normalizeGeminiModel(model);
   if (/^gemini-3(?:[.-]|$)/.test(normalized)) return '3';
-  if (normalized === 'gemini-4-argon') return '4';
+  if (GEMINI_4_TEXT_MODELS.has(normalized)) return '4';
   return 'unknown';
 }
 
@@ -57,7 +67,9 @@ export function geminiThinkingConfig(model = '', {
   if (!enabled) return null;
   const generation = geminiGeneration(model);
   if (generation === '3' || generation === '4') {
+    const id = normalizeGeminiModel(model);
     let requestedLevel = THINKING_LEVELS.has(level) ? level : 'high';
+    if (requestedLevel === 'xhigh' && !GEMINI_4_XHIGH_MODELS.has(id)) requestedLevel = 'high';
     // Marrowline is an interactive route with its own bounded wall-clock budget.
     // Keep 3.8 deliberate. The empirically designated continuity/fallback lanes
     // trade thinking latency for a chance to return inside the same human request;
@@ -65,9 +77,8 @@ export function geminiThinkingConfig(model = '', {
     // 3.5 and Preview on the same LOW tier so model-conditioned orthographic behavior is
     // not confounded by a MINIMAL-vs-LOW reasoning split.
     if (generation === '4' && requestedLevel === 'minimal') requestedLevel = 'low';
-    if (khonapolitInteractiveProfile() && generation === '4' && requestedLevel === 'high') requestedLevel = 'medium';
+    if (khonapolitInteractiveProfile() && generation === '4' && (requestedLevel === 'high' || requestedLevel === 'xhigh')) requestedLevel = 'medium';
     if (khonapolitInteractiveProfile() && generation === '3' && requestedLevel === 'high') {
-      const id = normalizeGeminiModel(model);
       if (id === 'gemini-3.8-flash') requestedLevel = 'medium';
       else if (['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'].includes(id)) requestedLevel = 'low';
       else requestedLevel = 'medium';

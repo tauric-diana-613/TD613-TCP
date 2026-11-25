@@ -3,6 +3,14 @@
 // Restore exact legacy system-instruction paragraphs and their original order,
 // without adding any local Unicode encoder, provider invocation or renderer.
 export const MARROWLINE_HISTORICAL_TRIAL_ID = 'historical-20261002-v1';
+export {
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+  MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER,
+  GEMINI_4_FRONTIER_MODEL_IDS,
+  isGemini4FrontierModel,
+  buildCarbonReconstructionSystemInstruction
+} from './marrowline-carbon-reconstruction.js';
 export const MARROWLINE_HISTORICAL_MODEL = 'gemini-3.8-flash';
 // Exact Oct 2 ordered frontier; Argon was not in the Oct 2 architecture.
 export const MARROWLINE_HISTORICAL_MODEL_ORDER = Object.freeze([

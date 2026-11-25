@@ -27,9 +27,16 @@ import {
   serializeGeminiRequest,
   selectKhonapolitProviderModelsFromPlan,
   terminalContinuationEligible,
-  assembleProviderTerminalContinuation
+  assembleProviderTerminalContinuation,
+  selectCarbonAuditionModels
 } from './khonapolit-quality.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
+import {
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+  MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER
+} from '../app/dome-world/marrowline-historical-grove.js';
+import { selectMarrowlineGroveTrial } from '../app/dome-world/marrowline-grove-trial.js';
 
 export const MARROWLINE_ATTACHMENT_API_VERSION = 'td613.marrowline-attachment-ingress/v0.2-frontier-custody';
 export const MARROWLINE_ATTACHMENT_SCHEMA = 'td613.marrowline.attachment/v0.1';
@@ -165,15 +172,15 @@ function addAttachmentContext(request, packet, attachments) {
   return request;
 }
 
-export function buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback = false } = {}) {
-  return addAttachmentContext(buildGeminiRequest(packet, apertureReceipt, model, { fallback }), packet, attachments);
+export function buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback = false, groveTrial = null } = {}) {
+  return addAttachmentContext(buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial }), packet, attachments);
 }
 
-export function buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, heldText, reasons, { fallback = false } = {}) {
+export function buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, heldText, reasons, { fallback = false, groveTrial = null } = {}) {
   // Reuse the text route's same-provider, terminal-only directive rather than
   // adding a competing composition prompt or losing the attachment context.
   return addAttachmentContext(
-    buildGeminiStructuralRepairRequest(packet, apertureReceipt, model, heldText, reasons, { fallback }),
+    buildGeminiStructuralRepairRequest(packet, apertureReceipt, model, heldText, reasons, { fallback, groveTrial }),
     packet,
     attachments
   );
@@ -189,7 +196,7 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 
-async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false, structuralRepair = null } = {}) {
+async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false, structuralRepair = null, groveTrial = null } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   // Preserve the exact submitted provider envelope as receipt provenance.
@@ -199,8 +206,8 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
   let submittedRequestObservation = null;
   try {
     const request = structuralRepair
-      ? buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, structuralRepair.heldText, structuralRepair.reasons, { fallback })
-      : buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback });
+      ? buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, structuralRepair.heldText, structuralRepair.reasons, { fallback, groveTrial })
+      : buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback, groveTrial });
     submittedGenerationConfig = request.generationConfig;
     const wire = serializeGeminiRequest(request, model);
     submittedRequestObservation = wire.observation;
@@ -258,8 +265,12 @@ export default async function marrowlineAttachmentHandler(req, res) {
   // Match text ingress: the local bucket records burst pressure but never blocks
   // an explicit human retry before Gemini has a chance to answer.
   const startedAt = Date.now();
+  const releaseCanary = headerValue(req.headers, 'x-td613-release-canary') === '1';
+  const candidateTrial = selectMarrowlineGroveTrial(body, { releaseCanary, allowAttachments: true });
+  const groveTrial = candidateTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID ? candidateTrial : null;
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
-  const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: isCarbonReconstruction ? 10 : 8, carbonReconstruction: isCarbonReconstruction });
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
@@ -270,7 +281,8 @@ export default async function marrowlineAttachmentHandler(req, res) {
     discourseMode,
     contentScanned: true
   });
-  const models = selectKhonapolitProviderModelsFromPlan(plan);
+  const models = isCarbonReconstruction ? selectCarbonAuditionModels(plan) : selectKhonapolitProviderModelsFromPlan(plan);
+  if (groveTrial) res.setHeader('X-TD613-Grove-Trial', groveTrial);
   const attempts = [];
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
@@ -311,13 +323,14 @@ export default async function marrowlineAttachmentHandler(req, res) {
   };
 
   for (let index = 0; index < models.length; index += 1) {
+    if (isCarbonReconstruction && attempts.length >= 1) break;
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true, model });
     const attemptStartedAt = Date.now();
-    const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback });
+    const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback, groveTrial });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
@@ -399,6 +412,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     // It is never a quality grade, morphology repaint, or a reason to discard a
     // human-visible first return when the second provider call cannot complete.
     if (headerValue(req.headers, 'x-td613-release-canary') !== '1'
+      && !isCarbonReconstruction
       && !providerOutput.outputTokenLimitReached
       && terminalContinuationEligible(result.text, structuralReasons)) {
       const repairBudget = Math.min(
@@ -411,6 +425,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
         const repairStartedAt = Date.now();
         const repairResult = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, repairBudget, {
           fallback,
+          groveTrial,
           structuralRepair: { heldText: result.text, reasons: structuralReasons }
         });
         const repairOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
@@ -521,6 +536,17 @@ export default async function marrowlineAttachmentHandler(req, res) {
         }) } : {})
       }),
       modelPolicy: plan,
+      ...(isCarbonReconstruction ? {
+        grove_trial: Object.freeze({
+          id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+          variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+          audition: Object.freeze({ max_provider_requests: 1, max_output_tokens: 65536, fallback: false, retry: false, structural_repair: false }),
+          requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
+          eligible_model_order: [...models],
+          attempt_models: attempts.map((attempt) => attempt.model),
+          native_prosody_profile: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE
+        })
+      } : {}),
       elapsedMs: Date.now() - startedAt,
       claimCeiling: `${packet.claimCeiling}; attachment-receipt-proves-admitted-request-bytes-not-human-interpretation-or-semantic-correctness`
     });

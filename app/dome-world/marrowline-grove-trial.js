@@ -4,17 +4,26 @@
 import {
   MARROWLINE_HISTORICAL_TRIAL_ID,
   MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
-  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID
+  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
 } from './marrowline-historical-grove.js';
 import { MARROWLINE_ROLE_IDS } from './marrowline-role-conditioning.js';
 export const MARROWLINE_GROVE_TRIAL_ID = 'native-voice-v1';
+export const MARROWLINE_PROMOTED_DEFAULT_TRIAL_ID = MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID;
 
-export function selectMarrowlineGroveTrial(body = {}, { releaseCanary = false } = {}) {
+export function selectMarrowlineGroveTrial(body = {}, { releaseCanary = false, allowAttachments = false } = {}) {
   if (releaseCanary || !body || typeof body !== 'object') return null;
-  // The attachment handler uses a different prompt path; do not mislabel it
-  // as auditioned. An explicit empty attachment array is harmless.
-  if (Array.isArray(body.attachments) && body.attachments.length > 0) return null;
-  return [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(body.groveTrial)
+  // Legacy candidates keep the attachment handler isolated; Carbon's reconstruction
+  // explicitly supports multimodal attachment turns when allowAttachments is enabled.
+  if (!allowAttachments && Array.isArray(body.attachments) && body.attachments.length > 0) return null;
+  return [
+    MARROWLINE_GROVE_TRIAL_ID,
+    MARROWLINE_HISTORICAL_TRIAL_ID,
+    MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+    MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+    MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+    ...MARROWLINE_ROLE_IDS
+  ].includes(body.groveTrial)
     ? body.groveTrial : null;
 }
 
@@ -22,7 +31,14 @@ export function groveTrialFromLocation(location = {}) {
   try {
     const query = new URLSearchParams(String(location?.search || ''));
     const trial = query.get('groveTrial');
-    return [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
+    return [
+      MARROWLINE_GROVE_TRIAL_ID,
+      MARROWLINE_HISTORICAL_TRIAL_ID,
+      MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+      MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+      MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+      ...MARROWLINE_ROLE_IDS
+    ].includes(trial)
       ? trial : null;
   } catch {
     return null;
@@ -35,7 +51,14 @@ export function groveTrialFromLocation(location = {}) {
 // tab-specific explicit model experiments. Direct API / Loom remain distinct.
 export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v2';
 const GROVE_TAB_EXPLICIT_OFF = 'off';
-const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID, MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID, ...MARROWLINE_ROLE_IDS].includes(trial)
+const recognizedGroveTrial = trial => [
+  MARROWLINE_GROVE_TRIAL_ID,
+  MARROWLINE_HISTORICAL_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  ...MARROWLINE_ROLE_IDS
+].includes(trial)
   ? trial : null;
 
 export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
