@@ -465,7 +465,7 @@ test('Carbon reconstruction executes offline end-to-end: preserves native return
     }
   }, res2);
 
-  assert.equal(res2.statusCode, 503);
+  assert.equal(res2.statusCode, 502); // Existing route maps upstream 503 exhaustion to HELD/502.
   assert.deepEqual(calls2, ['gemini-4-carbon'], '503 cannot spend a second audition call');
 
   // 3. Policy stop on Seat 1 holds fail-closed (502 POLICY-HELD) with zero subsequent seat calls
