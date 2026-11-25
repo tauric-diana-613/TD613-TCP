@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+import fs from 'node:fs';
 import {
   BINDING_SHA256,
   CLAIMED_PUA,
@@ -50,9 +51,14 @@ import {
   resolveGeminiModelPlan
 } from '../server/gemini-model-policy.js';
 import khonapolitHandler, {
+  GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS,
+  GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS,
+  GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
   allocateKhonapolitAttemptTimeout,
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
+  marrowlineAuthoredStreamDeadlineMs,
+  readGeminiSse,
   selectKhonapolitProviderModelsFromPlan,
   selectCarbonAuditionModels
 } from '../server/khonapolit-quality.js';
@@ -643,4 +649,583 @@ test('Carbon reconstruction executes offline end-to-end: preserves native return
     groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
   });
   assert.match(attachReq.systemInstruction.parts[0].text, /THE SCREAMING GROVE — TWO LIVING VOICES/);
+});
+
+test('Single-seat Gemini 4 completion runway restores 165s + 40s streamed and 205s unary windows inside actual infrastructure deadlines', () => {
+  const vercelConfig = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+  const terminalSource = fs.readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
+  const vercelMaxDurationMs = Number(vercelConfig.functions?.['api/khonapolit.js']?.maxDuration || 0) * 1000;
+  const clientTimeoutMs = Number(terminalSource.match(/KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS\s*=\s*(\d+)/)?.[1] || 0);
+
+  // Infrastructure hierarchy: Vercel (300s) > Browser client (225s) > Server wall (210s) > Provider ceiling (205s)
+  assert.equal(vercelMaxDurationMs, 300000);
+  assert.equal(clientTimeoutMs, 225000);
+  assert.equal(GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS, 165000);
+  assert.equal(GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS, 40000);
+  assert.equal(GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS, 205000);
+  assert.equal(GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS + GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS, 205000);
+  assert.ok(GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS + 5000 <= 210000, '5s response reserve inside 210s server wall');
+  assert.ok(210000 < clientTimeoutMs && clientTimeoutMs < vercelMaxDurationMs);
+
+  const oldMultiSeatCeilings = {
+    'gemini-4-carbon': 85000,
+    'gemini-4-argon': 75000,
+    'gemini-4-neon': 65000,
+    'gemini-4-hydrogen': 55000
+  };
+  for (const [model, oldCap] of Object.entries(oldMultiSeatCeilings)) {
+    const streamedInitial = allocateKhonapolitAttemptTimeout({
+      remainingMs: 205000,
+      index: 0,
+      modelCount: 1,
+      fairShare: true,
+      model,
+      singleSeatAudition: true,
+      streamed: true
+    });
+    const unaryFull = allocateKhonapolitAttemptTimeout({
+      remainingMs: 205000,
+      index: 0,
+      modelCount: 1,
+      fairShare: true,
+      model,
+      singleSeatAudition: true,
+      streamed: false
+    });
+    assert.equal(streamedInitial, 165000, `${model} single-seat streamed initial timeout exceeds old ${oldCap}ms cap`);
+    assert.ok(streamedInitial > oldCap * 1.9);
+    assert.equal(unaryFull, 205000, `${model} single-seat unary attachment timeout uses full 205s server runway`);
+
+    // Infrastructure wall clamping remains exact when preflight consumed time
+    assert.equal(
+      allocateKhonapolitAttemptTimeout({
+        remainingMs: 142300,
+        index: 0,
+        modelCount: 1,
+        fairShare: true,
+        model,
+        singleSeatAudition: true,
+        streamed: true
+      }),
+      142300
+    );
+    assert.equal(
+      allocateKhonapolitAttemptTimeout({
+        remainingMs: 199750,
+        index: 0,
+        modelCount: 1,
+        fairShare: true,
+        model,
+        singleSeatAudition: true,
+        streamed: false
+      }),
+      199750
+    );
+
+    // Authored-stream grace extends up to 205s wall but never beyond remaining wall budget
+    assert.equal(
+      marrowlineAuthoredStreamDeadlineMs({
+        initialTimeoutMs: streamedInitial,
+        elapsedMs: 32000,
+        wallRemainingMs: 205000 - 32000,
+        graceMs: GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS
+      }),
+      205000
+    );
+    assert.equal(
+      marrowlineAuthoredStreamDeadlineMs({
+        initialTimeoutMs: streamedInitial,
+        elapsedMs: 32000,
+        wallRemainingMs: 204600 - 32000,
+        graceMs: GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS
+      }),
+      204600,
+      'authored-stream grace never exceeds providerWallDeadlineAt'
+    );
+  }
+});
+
+test('Offline deterministic completion witnesses: continuation past 85s/165s, STOP recognition, interrupted/MAX_TOKENS accuracy, attachment parity, single-call custody, and exact Unicode bytes', async (t) => {
+  const priorFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  const realDateNow = Date.now;
+  const realSetTimeout = globalThis.setTimeout;
+  const realClearTimeout = globalThis.clearTimeout;
+
+  t.after(() => {
+    globalThis.fetch = priorFetch;
+    Date.now = realDateNow;
+    globalThis.setTimeout = realSetTimeout;
+    globalThis.clearTimeout = realClearTimeout;
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+    clearGeminiModelState();
+  });
+
+  // Intercept long (>=1000ms) AbortController deadlines against a deterministic virtual clock
+  // so 184s and 205s streaming timelines execute in milliseconds with zero real sleeps.
+  function withVirtualClock(startEpochMs = 1_764_000_000_000) {
+    let nowMs = startEpochMs;
+    let nextTimerId = 900_000;
+    const longTimers = new Map();
+    Date.now = () => nowMs;
+    globalThis.setTimeout = (fn, delayMs, ...args) => {
+      const numericDelay = Number(delayMs) || 0;
+      if (numericDelay >= 1000) {
+        const id = ++nextTimerId;
+        longTimers.set(id, {
+          id,
+          fn,
+          args,
+          delayMs: numericDelay,
+          scheduledAt: nowMs,
+          fireAt: nowMs + numericDelay,
+          cleared: false,
+          fired: false
+        });
+        return id;
+      }
+      return realSetTimeout(fn, delayMs, ...args);
+    };
+    globalThis.clearTimeout = (id) => {
+      if (longTimers.has(id)) {
+        longTimers.get(id).cleared = true;
+        return;
+      }
+      realClearTimeout(id);
+    };
+    return {
+      now: () => nowMs,
+      advanceTo(targetMs) {
+        if (targetMs > nowMs) nowMs = targetMs;
+        for (const entry of [...longTimers.values()]) {
+          if (!entry.cleared && !entry.fired && nowMs >= entry.fireAt) {
+            entry.fired = true;
+            entry.fn(...entry.args);
+          }
+        }
+      },
+      activeLongTimers() {
+        return [...longTimers.values()].filter((entry) => !entry.cleared && !entry.fired);
+      },
+      allLongTimers() {
+        return [...longTimers.values()];
+      },
+      restore() {
+        Date.now = realDateNow;
+        globalThis.setTimeout = realSetTimeout;
+        globalThis.clearTimeout = realClearTimeout;
+      }
+    };
+  }
+
+  const encoder = new TextEncoder();
+  const sseChunk = (payload) => encoder.encode(`data: ${JSON.stringify(payload)}\n\n`);
+  const exactHeaderSigil = `${INGRESS_SIGIL}\u200C${SEAL_GLYPH}`;
+  const khonapolitChunk1 = [
+    'Kʰonapolit',
+    `Let f map an unreturned grievance to satisfied consent under ${COVENANT_KEY} (${CLAIMED_PUA_SCALAR} / ${exactHeaderSigil}).`
+  ].join('\n');
+  const khonapolitChunk2 = '\nBecause f erases non-response into agreement, the Chairman has mistaken a locked auditorium for unanimity.\n\n';
+  const botsChunk1 = [
+    'Tauric Diana bots',
+    'H\u0300\u0301\u030D\u0365\u0316\u0323\u034EE\u0302\u030B\u033E\u031D\u032C\u0353 L\u0304\u030A\u0351\u031E\u0325\u032DO\u0308\u030F\u0352\u0319\u0329\u0330C\u0303\u0306\u0360\u0317\u0324K\u0301\u0307\u0364\u031C\u0326E\u0300\u030B\u033D\u0318\u032FD\u0305\u030C\u0357\u031F\u033A THE DOORS AND CALLED THE ECHO A STANDING OVATION!'
+  ].join('\n');
+  const botsChunk2 = [
+    '',
+    'S\u0300\u030B\u0363\u0316\u0323i\u0302\u031Dt\u0308\u032C d\u0301\u0325o\u0304\u031Ew\u0307\u032Fn\u030A\u0319, Red Deer—nobody owes his spreadsheet a clap.',
+    `Khona\u200Clit-po keeps ${CLAIMED_PUA_SCALAR} and ${exactHeaderSigil} byte-exact.`,
+    '⟐'
+  ].join('\n');
+  const fullExpectedText = khonapolitChunk1 + khonapolitChunk2 + botsChunk1 + botsChunk2;
+  const fullExpectedSha256 = crypto.createHash('sha256').update(fullExpectedText, 'utf8').digest('hex');
+
+  // 1 & 2 & 6. Healthy Carbon SSE stream continues past old 85s cap AND past 165s initial window
+  // via +40s authored-stream grace, finishing cleanly at t=184s with STOP, 1 provider call, and exact bytes.
+  {
+    clearGeminiModelState();
+    process.env.GEMINI_API_KEY = 'offline-runway-witness-key';
+    const baseEpoch = 1_764_000_000_000;
+    const clock = withVirtualClock(baseEpoch);
+    const generationCalls = [];
+    let observedInitialTimer = null;
+    let observedExtendedTimer = null;
+
+    try {
+      globalThis.fetch = async (url, options = {}) => {
+        const link = String(url);
+        if (link.includes('/models?')) {
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              models: ['gemini-4-carbon', 'gemini-4-neon', 'gemini-4-argon', 'gemini-4-hydrogen', 'gemini-3.8-flash'].map((id) => ({
+                name: `models/${id}`,
+                supportedGenerationMethods: ['generateContent']
+              }))
+            })
+          };
+        }
+        const model = link.match(/models\/([^:]+):streamGenerateContent/)?.[1];
+        generationCalls.push(model);
+        observedInitialTimer = clock.activeLongTimers().at(-1) || null;
+
+        let step = 0;
+        const stream = new ReadableStream({
+          pull(controller) {
+            if (options.signal?.aborted) {
+              controller.error(Object.assign(new Error('The operation was aborted.'), { name: 'AbortError' }));
+              return;
+            }
+            step += 1;
+            if (step === 1) {
+              // Thought tokens at t=28s must NOT spend authored-stream grace prematurely
+              clock.advanceTo(baseEpoch + 28_000);
+              controller.enqueue(sseChunk({
+                modelVersion: 'gemini-4-carbon',
+                candidates: [{ content: { parts: [{ text: 'Internal dramatic planning.', thought: true }] } }]
+              }));
+              assert.equal(clock.activeLongTimers().length, 1);
+              assert.equal(clock.activeLongTimers()[0].delayMs, 165000);
+              return;
+            }
+            if (step === 2) {
+              // First authored text at t=32s triggers +40s grace -> deadline becomes t=205s
+              clock.advanceTo(baseEpoch + 32_000);
+              controller.enqueue(sseChunk({
+                modelVersion: 'gemini-4-carbon',
+                candidates: [{ content: { parts: [{ text: khonapolitChunk1 }] } }]
+              }));
+              return;
+            }
+            if (step === 3) {
+              observedExtendedTimer = clock.activeLongTimers().at(-1) || null;
+              // Crosses old 85s Carbon ceiling at t=95s without aborting!
+              clock.advanceTo(baseEpoch + 95_000);
+              assert.equal(options.signal.aborted, false, 'stream must not abort at old 85s Carbon ceiling');
+              controller.enqueue(sseChunk({
+                candidates: [{ content: { parts: [{ text: khonapolitChunk2 + botsChunk1 }] } }]
+              }));
+              return;
+            }
+            if (step === 4) {
+              // Crosses 165s initial ceiling at t=178s using authored-stream grace!
+              clock.advanceTo(baseEpoch + 178_000);
+              assert.equal(options.signal.aborted, false, 'authored stream continues into 165s..205s grace window');
+              controller.enqueue(sseChunk({
+                candidates: [{ content: { parts: [{ text: botsChunk2 }] } }]
+              }));
+              return;
+            }
+            // Separate terminal metadata-only STOP chunk at t=184s (< 205s wall)
+            clock.advanceTo(baseEpoch + 184_000);
+            assert.equal(options.signal.aborted, false);
+            controller.enqueue(sseChunk({
+              candidates: [{ finishReason: 'STOP', content: { parts: [] } }],
+              usageMetadata: { promptTokenCount: 1920, thoughtsTokenCount: 1450, candidatesTokenCount: 3820, totalTokenCount: 7190 }
+            }));
+            controller.close();
+          }
+        }, { highWaterMark: 0 });
+        return new Response(stream, { status: 200, headers: { 'content-type': 'text/event-stream' } });
+      };
+
+      const res = makeResponse();
+      await withGeminiGenerationProfile(GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, () => khonapolitHandler({
+        method: 'POST',
+        headers: { 'x-forwarded-for': '203.0.113.230' },
+        body: {
+          message: 'Stage the locked-auditorium unanimity hearing.',
+          history: [],
+          mode: 'issued-conjunction',
+          waiveIssuance: true,
+          groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
+        }
+      }, res));
+
+      assert.equal(res.statusCode, 200);
+      assert.deepEqual(generationCalls, ['gemini-4-carbon']);
+      assert.equal(res.payload.gemini_consumption.call_count, 1);
+      assert.ok(observedInitialTimer);
+      assert.equal(observedInitialTimer.delayMs, 165000);
+      assert.ok(observedExtendedTimer);
+      assert.equal(observedExtendedTimer.fireAt, baseEpoch + 205000);
+      assert.equal(res.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
+      assert.equal(res.payload.receipt.provider.completion.complete, true);
+      assert.equal(res.payload.receipt.provider.completion.reason, 'provider-stop-observed');
+      assert.equal(res.payload.receipt.provider.attempts.length, 1);
+      assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 165000);
+      assert.equal(res.payload.receipt.provider.attempts[0].providerStream.streamGraceMs, 40000);
+      assert.equal(res.payload.receipt.provider.attempts[0].elapsedMs, 184000);
+      assert.equal(res.payload.text, fullExpectedText);
+      assert.equal(res.payload.receipt.invocation.responseSha256, fullExpectedSha256);
+      assert.equal(res.payload.grove_trial.audition.initial_timeout_ms, 165000);
+      assert.equal(res.payload.grove_trial.audition.stream_grace_ms, 40000);
+      assert.equal(res.payload.grove_trial.audition.max_provider_runway_ms, 205000);
+    } finally {
+      clock.restore();
+    }
+  }
+
+  // 2b. Trailing multi-event SSE EOF buffer without final \n\n still recognizes STOP with 0 parse errors
+  {
+    const rawTwoEventsNoTrailingBlank = [
+      `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: 'Kʰonapolit\nClean.\n\nTauric Diana bots\nA\u0300\u030B\u0316\u0323!' }] } }] })}`,
+      '',
+      `data: ${JSON.stringify({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: '\n⟐' }] } }] })}`
+    ].join('\n');
+    const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode(rawTwoEventsNoTrailingBlank));
+        controller.close();
+      }
+    });
+    const merged = await readGeminiSse(new Response(stream), progress);
+    assert.equal(progress.parseErrors, 0);
+    assert.equal(progress.chunkCount, 2);
+    assert.equal(merged.candidates[0].finishReason, 'STOP');
+    assert.ok(merged.candidates[0].content.parts[0].text.endsWith('\n⟐'));
+  }
+
+  // 3a & 4 & 5. Stream stalling past the 205s provider wall aborts at 205s (before 210s server / 225s client),
+  // preserves exact partial bytes, classifies as INCOMPLETE (provider-stream-finish-unwitnessed),
+  // appends NO synthetic seal or STOP, and spends ZERO extra provider requests.
+  {
+    clearGeminiModelState();
+    process.env.GEMINI_API_KEY = 'offline-wall-abort-key';
+    const baseEpoch = 1_764_001_000_000;
+    const clock = withVirtualClock(baseEpoch);
+    let providerCalls = 0;
+    const partialFragment = `${khonapolitChunk1}${khonapolitChunk2}Tauric Diana bots\nH\u0300\u0301\u0316\u0323A\u0302\u030B\u031D\u032CL\u0304\u030A\u031E\u0325F-SPOKEN LINE CUT MID-FLIGHT`;
+
+    try {
+      globalThis.fetch = async (url, options = {}) => {
+        const link = String(url);
+        if (link.includes('/models?')) {
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              models: ['gemini-4-carbon', 'gemini-4-neon'].map((id) => ({
+                name: `models/${id}`,
+                supportedGenerationMethods: ['generateContent']
+              }))
+            })
+          };
+        }
+        providerCalls += 1;
+        let emitted = false;
+        const stream = new ReadableStream({
+          pull(controller) {
+            if (!emitted) {
+              emitted = true;
+              clock.advanceTo(baseEpoch + 25_000);
+              controller.enqueue(sseChunk({
+                modelVersion: 'gemini-4-carbon',
+                candidates: [{ content: { parts: [{ text: partialFragment }] } }]
+              }));
+              return;
+            }
+            // Still alive at 190s via +40s stream grace, then aborts cleanly at the 205s server provider wall!
+            clock.advanceTo(baseEpoch + 190_000);
+            assert.equal(options.signal.aborted, false, 'active stream remains alive at 190s inside 205s wall');
+            clock.advanceTo(baseEpoch + 205_001);
+            assert.equal(options.signal.aborted, true, 'active stream honors hard 205s server provider deadline');
+            if (options.signal?.aborted) {
+              controller.error(Object.assign(new Error('The operation was aborted.'), { name: 'AbortError' }));
+            }
+          }
+        }, { highWaterMark: 0 });
+        return new Response(stream, { status: 200, headers: { 'content-type': 'text/event-stream' } });
+      };
+
+      const res = makeResponse();
+      await khonapolitHandler({
+        method: 'POST',
+        headers: { 'x-forwarded-for': '203.0.113.231' },
+        body: {
+          message: 'Test honest classification on 205s wall abort.',
+          history: [],
+          mode: 'issued-conjunction',
+          waiveIssuance: true,
+          groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
+        }
+      }, res);
+
+      assert.equal(providerCalls, 1, 'no retry, fallback, or continuation request consumed');
+      assert.equal(res.statusCode, 200);
+      assert.equal(res.headers['X-TD613-Completion-State'], 'INCOMPLETE');
+      assert.equal(res.payload.receipt.status, 'MODEL_RESPONSE_INCOMPLETE');
+      assert.equal(res.payload.receipt.provider.completion.complete, false);
+      assert.equal(res.payload.receipt.provider.completion.reason, 'provider-stream-finish-unwitnessed');
+      assert.ok(res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
+      assert.equal(res.payload.text, partialFragment, 'fragment preserved byte-for-byte with zero synthetic seal');
+      assert.equal(res.payload.text.endsWith('⟐'), false);
+      assert.equal(res.payload.receipt.provider.attempts.length, 1);
+      assert.equal(res.payload.receipt.provider.attempts[0].timedOut, true);
+      assert.equal(res.payload.receipt.provider.attempts[0].providerStream.interrupted, true);
+      assert.equal(res.payload.gemini_consumption.call_count, 1);
+    } finally {
+      clock.restore();
+    }
+  }
+
+  // 3b. Silent/hung connection with zero authored chunks aborts at 165s initial ceiling without earning grace
+  {
+    clearGeminiModelState();
+    process.env.GEMINI_API_KEY = 'offline-silent-abort-key';
+    const baseEpoch = 1_764_002_000_000;
+    const clock = withVirtualClock(baseEpoch);
+    let providerCalls = 0;
+
+    try {
+      globalThis.fetch = async (url, options = {}) => {
+        if (String(url).includes('/models?')) {
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              models: [{ name: 'models/gemini-4-carbon', supportedGenerationMethods: ['generateContent'] }]
+            })
+          };
+        }
+        providerCalls += 1;
+        clock.advanceTo(baseEpoch + 165_001);
+        assert.equal(options.signal.aborted, true, 'silent stream aborts at 165s initial ceiling without borrowing 40s grace');
+        throw Object.assign(new Error('The operation was aborted.'), { name: 'AbortError' });
+      };
+
+      const res = makeResponse();
+      await khonapolitHandler({
+        method: 'POST',
+        headers: { 'x-forwarded-for': '203.0.113.232' },
+        body: {
+          message: 'Test silent dead-socket abort.',
+          history: [],
+          mode: 'issued-conjunction',
+          waiveIssuance: true,
+          groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
+        }
+      }, res);
+
+      assert.equal(providerCalls, 1);
+      assert.equal(res.statusCode, 502);
+      assert.equal(res.payload.error, 'gemini-provider-unavailable');
+      assert.equal(res.payload.attempts.length, 1);
+      assert.equal(res.payload.attempts[0].timedOut, true);
+      assert.equal(res.payload.attempts[0].timeoutMs, 165000);
+      assert.equal(res.payload.attempts[0].providerStream.streamGraceMs, 0);
+    } finally {
+      clock.restore();
+    }
+  }
+
+  // 3c & 4 & 5. Attachment ingress parity: 205s single-seat runway, MAX_TOKENS classified INCOMPLETE,
+  // missing-second-voice STOP classified STRUCTURE-INCOMPLETE, and healthy STOP classified COMPLETE-STRUCTURAL — each in 1 call.
+  {
+    const noteBytes = Buffer.from('Attachment completion parity witness.', 'utf8');
+    const attachment = {
+      schema: MARROWLINE_ATTACHMENT_SCHEMA,
+      id: 'att_runway_parity',
+      name: 'parity.txt',
+      kind: 'file',
+      mime_type: 'text/plain',
+      size_bytes: noteBytes.length,
+      data_base64: noteBytes.toString('base64')
+    };
+
+    for (const scenario of [
+      {
+        name: 'healthy-190s-stop',
+        elapsedSimMs: 190_000,
+        finishReason: 'STOP',
+        text: fullExpectedText,
+        expectedHeader: 'COMPLETE-STRUCTURAL',
+        expectedComplete: true,
+        expectedReason: 'provider-stop-observed'
+      },
+      {
+        name: 'max-tokens-truncated',
+        elapsedSimMs: 140_000,
+        finishReason: 'MAX_TOKENS',
+        text: `${khonapolitChunk1}\n\nTauric Diana bots\nT\u0300\u030B\u0316\u0323RUNCATED`,
+        expectedHeader: 'INCOMPLETE',
+        expectedComplete: false,
+        expectedReason: 'provider-output-token-limit'
+      },
+      {
+        name: 'single-voice-stop',
+        elapsedSimMs: 95_000,
+        finishReason: 'STOP',
+        text: 'Kʰonapolit\nOnly the analytic movement arrived before STOP.',
+        expectedHeader: 'STRUCTURE-INCOMPLETE',
+        expectedComplete: false,
+        expectedReason: 'required-voice-structure-incomplete'
+      }
+    ]) {
+      clearGeminiModelState();
+      process.env.GEMINI_API_KEY = `offline-attach-${scenario.name}`;
+      const baseEpoch = 1_764_003_000_000;
+      const clock = withVirtualClock(baseEpoch);
+      let calls = 0;
+
+      try {
+        globalThis.fetch = async (url, options = {}) => {
+          if (String(url).includes('/models?')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => ({
+                models: ['gemini-4-hydrogen', 'gemini-3.8-flash'].map((id) => ({
+                  name: `models/${id}`,
+                  supportedGenerationMethods: ['generateContent']
+                }))
+              })
+            };
+          }
+          calls += 1;
+          // Even Hydrogen (old 55s cap) stays un-aborted at 95s / 140s / 190s on single-seat attachment audition!
+          clock.advanceTo(baseEpoch + scenario.elapsedSimMs);
+          assert.equal(options.signal.aborted, false, `${scenario.name}: unary attachment request must not abort at ${scenario.elapsedSimMs}ms`);
+          return {
+            ok: true,
+            status: 200,
+            headers: { get: () => null },
+            json: async () => ({
+              modelVersion: 'gemini-4-hydrogen',
+              candidates: [{ finishReason: scenario.finishReason, content: { parts: [{ text: scenario.text }] } }],
+              usageMetadata: { promptTokenCount: 1600, thoughtsTokenCount: 900, candidatesTokenCount: 2100, totalTokenCount: 4600 }
+            })
+          };
+        };
+
+        const res = makeResponse();
+        await marrowlineAttachmentHandler({
+          method: 'POST',
+          headers: { 'x-forwarded-for': '203.0.113.233' },
+          body: {
+            message: `Audit attachment scenario ${scenario.name}.`,
+            history: [],
+            mode: 'issued-conjunction',
+            waiveIssuance: true,
+            groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+            attachments: [attachment]
+          }
+        }, res);
+
+        assert.equal(calls, 1, `${scenario.name}: exactly 1 provider call`);
+        assert.equal(res.statusCode, 200);
+        assert.equal(res.headers['X-TD613-Gemini-Model'], 'gemini-4-hydrogen');
+        assert.equal(res.headers['X-TD613-Completion-State'], scenario.expectedHeader);
+        assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 205000);
+        assert.equal(res.payload.receipt.provider.completion.complete, scenario.expectedComplete);
+        assert.equal(res.payload.receipt.provider.completion.reason, scenario.expectedReason);
+        assert.equal(res.payload.text, scenario.text);
+        assert.equal(res.payload.gemini_consumption.call_count, 1);
+      } finally {
+        clock.restore();
+      }
+    }
+  }
 });
