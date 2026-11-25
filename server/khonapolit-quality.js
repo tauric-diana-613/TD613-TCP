@@ -425,23 +425,44 @@ const GEMINI_4_SEAT_TIMEOUT_MS = Object.freeze({
   'gemini-4-neon': 65000,
   'gemini-4-hydrogen': 55000
 });
+export const GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS = 40000;
+export const GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS = WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
+export const GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS = GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS - GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS;
 
-export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false, model = '' } = {}) {
+export function allocateKhonapolitAttemptTimeout({
+  remainingMs = 0,
+  index = 0,
+  modelCount = 1,
+  fairShare = false,
+  model = '',
+  singleSeatAudition = false,
+  streamed = true
+} = {}) {
   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
   const position = Math.max(0, Math.floor(Number(index) || 0));
   const normalizedModel = String(model || '').replace(/^models\//, '');
   const gemini4Cap = GEMINI_4_SEAT_TIMEOUT_MS[normalizedModel] || 0;
+  const totalSeats = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
+  const seatsAfter = Math.max(0, totalSeats - position - 1);
   const inheritedCap = position === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS;
   if (!fairShare) return Math.min(gemini4Cap || inheritedCap, remaining);
-  // Preserve exact primary-seat Argon runway semantics when Argon opens the turn,
-  // while scaling multi-seat Gemini 4 cascades by remaining seats so later
+  // Single-attempt Gemini 4 execution (including Carbon browser audition) has no
+  // downstream seat whose completion budget can be starved. Streaming text ingress
+  // receives 165s initial + up to 40s authored-stream grace (205s provider ceiling);
+  // unary attachment ingress receives the full remaining server runway directly.
+  if (gemini4Cap > 0 && totalSeats === 1 && position === 0 && (singleSeatAudition || seatsAfter === 0)) {
+    const singleSeatCap = streamed
+      ? GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS
+      : GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS;
+    return Math.min(singleSeatCap, remaining);
+  }
+  // Preserve exact primary-seat Argon runway semantics when Argon opens a multi-seat
+  // cascade, while scaling multi-seat Gemini 4 cascades by remaining seats so later
   // Gemini 4 seats never starve after an upstream timeout.
   if (normalizedModel === 'gemini-4-argon' && position === 0) {
     return Math.min(75000, Math.max(1, remaining - (modelCount > 1 ? 105000 : 0)));
   }
   if (gemini4Cap > 0) {
-    const totalSeats = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
-    const seatsAfter = Math.max(0, totalSeats - position - 1);
     if (seatsAfter === 0) return Math.min(gemini4Cap, remaining);
     const laterReserve = Math.min(Math.max(0, remaining - 15000), seatsAfter * 25000);
     return Math.min(gemini4Cap, Math.max(1, remaining - laterReserve));
@@ -1156,7 +1177,9 @@ export async function readGeminiSse(response, progress, onAuthoredText = null, c
     if (!chunks.length) throw error;
   }
   buffer += decoder.decode();
-  if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress, onAuthoredText);
+  for (const trailingEvent of buffer.split(/\r?\n\r?\n/)) {
+    if (trailingEvent.trim()) consumeGeminiSseEvent(trailingEvent, chunks, progress, onAuthoredText);
+  }
   const merged = mergeGeminiStreamPayload(chunks);
   if (wireSha256) {
     const providerParts = chunks.flatMap((entry) =>
@@ -1463,7 +1486,18 @@ export default async function handler(req, res) {
       id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
       source_commit: null,
       variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
-      audition: Object.freeze({ max_provider_requests: 1, max_output_tokens: 65536, fallback: false, retry: false, structural_repair: false }),
+      audition: Object.freeze({
+        max_provider_requests: 1,
+        max_output_tokens: 65536,
+        initial_timeout_ms: GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS,
+        stream_grace_ms: GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS,
+        max_provider_runway_ms: GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
+        wall_timeout_ms: WALL_TIMEOUT_MS,
+        response_reserve_ms: RESPONSE_RESERVE_MS,
+        fallback: false,
+        retry: false,
+        structural_repair: false
+      }),
       requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
@@ -1557,9 +1591,9 @@ export default async function handler(req, res) {
     } = candidate;
     const repairStartedAt = Date.now();
     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
-      fallback,
+      fallback, streamGraceMs: 0,
       structuralRepair: { heldText, reasons },
-      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt, groveTrial
+      wallDeadlineAt: providerWallDeadlineAt, groveTrial
     });
     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
@@ -1959,13 +1993,24 @@ export default async function handler(req, res) {
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true, model });
+    const singleSeatGemini4Runway = models.length === 1 && isGemini4FrontierModel(model);
+    const timeoutMs = allocateKhonapolitAttemptTimeout({
+      remainingMs,
+      index,
+      modelCount: models.length,
+      fairShare: true,
+      model,
+      singleSeatAudition: isCarbonReconstruction,
+      streamed: true
+    });
+    const attemptStreamGraceMs = singleSeatGemini4Runway ? GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS : 0;
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, {
-      // Fair-share timeouts are hard seat boundaries. Streaming progress is
-      // preserved as a fallback fragment, but cannot silently borrow the next
-      // approved model's completion window.
-      fallback, streamGraceMs: 0,
+      // Multi-seat fair-share timeouts remain hard seat boundaries (streamGraceMs: 0).
+      // Single-seat Gemini 4 execution has no downstream seat to starve and may
+      // extend an actively authored stream up to providerWallDeadlineAt.
+      fallback,
+      streamGraceMs: attemptStreamGraceMs,
       captureNativeSse: nativeSseWitness,
       systemProsodyAblation,
       wholeFrameCompact,

@@ -4,7 +4,7 @@ import { buildInvocationPacket, KHONAPOLIT_REQUEST_MAX_UTF8_BYTES } from '../app
 import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';
 import { buildApertureV3InvocationReceipt, classifyApertureDiscourseMode } from '../app/engine/aperture-v3-task-intent.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
-import { POLICY_NONSTOP_FINISH_REASONS } from './marrowline-completion.js';
+import { POLICY_NONSTOP_FINISH_REASONS, observeMarrowlineCompletion } from './marrowline-completion.js';
 import {
   GEMINI_MODEL_POLICY_VERSION,
   recordGeminiModelOutcome,
@@ -16,6 +16,7 @@ import {
   geminiRequestHeaders
 } from './gemini-provider-transport.js';
 import {
+  GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
   allocateKhonapolitAttemptTimeout,
   bothMarrowlineVoicesAbsent,
   buildGeminiRequest,
@@ -328,7 +329,15 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true, model });
+    const timeoutMs = allocateKhonapolitAttemptTimeout({
+      remainingMs,
+      index,
+      modelCount: models.length,
+      fairShare: true,
+      model,
+      singleSeatAudition: isCarbonReconstruction,
+      streamed: false
+    });
     const attemptStartedAt = Date.now();
     const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback, groveTrial });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
@@ -514,6 +523,30 @@ export default async function marrowlineAttachmentHandler(req, res) {
       });
     }
 
+    const rawCompletion = observeMarrowlineCompletion(
+      selectedRelay.transcript,
+      selectedProviderOutput,
+      { streamed: false, parseErrors: 0, creative: discourseMode === 'CREATIVE' }
+    );
+    const structuralVoiceIncomplete = rawCompletion.complete
+      && selectedRelay.admission?.admissible === false
+      && terminalContinuationEligible(selectedText, selectedRelay.admission?.reasons || []);
+    const completion = structuralVoiceIncomplete
+      ? Object.freeze({ ...rawCompletion, complete: false, reason: 'required-voice-structure-incomplete' })
+      : rawCompletion;
+    attempts.at(-1).completion = completion;
+    if (structuralVoiceIncomplete) {
+      selectedRelay = Object.freeze({
+        ...selectedRelay,
+        signal: Object.freeze({
+          ...selectedRelay.signal,
+          state: 'NOT_LOCKED',
+          downstreamAdmitted: false,
+          notes: [selectedRelay.signal?.notes, 'Provider STOP witnessed; mandatory two-voice structure remains incomplete.'].filter(Boolean).join(' ')
+        })
+      });
+    }
+
     const baseReceipt = buildTerminalReceipt({
       packet, text: selectedText, relay: selectedRelay, model, providerStatus: result.response.status,
       providerOutput: selectedProviderOutput, apertureEgress, apertureReceipt, attempts,
@@ -523,12 +556,16 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const attachment_digest = sha256(Buffer.from(JSON.stringify(attachment_receipt), 'utf8'));
     const receipt = Object.freeze({
       ...baseReceipt,
+      ...(completion.complete === false ? {
+        status: structuralVoiceIncomplete ? 'MODEL_STRUCTURE_INCOMPLETE' : 'MODEL_RESPONSE_INCOMPLETE'
+      } : {}),
       apiVersion: MARROWLINE_ATTACHMENT_API_VERSION,
       invocation: Object.freeze({ ...baseReceipt.invocation, attachmentCount: attachments.length, attachmentDigest: attachment_digest, promptSha256: sha256(Buffer.from(`${baseReceipt.invocation.promptSha256}:${attachment_digest}`, 'utf8')) }),
       attachments: attachment_receipt,
       provider: Object.freeze({
         ...baseReceipt.provider,
         routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+        completion,
         ...(repairAttempted ? { structuralRepair: Object.freeze({
           used: true,
           succeeded: Boolean(continuation),
@@ -540,7 +577,18 @@ export default async function marrowlineAttachmentHandler(req, res) {
         grove_trial: Object.freeze({
           id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
           variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
-          audition: Object.freeze({ max_provider_requests: 1, max_output_tokens: 65536, fallback: false, retry: false, structural_repair: false }),
+          audition: Object.freeze({
+            max_provider_requests: 1,
+            max_output_tokens: 65536,
+            initial_timeout_ms: GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
+            stream_grace_ms: 0,
+            max_provider_runway_ms: GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
+            wall_timeout_ms: WALL_TIMEOUT_MS,
+            response_reserve_ms: RESPONSE_RESERVE_MS,
+            fallback: false,
+            retry: false,
+            structural_repair: false
+          }),
           requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
           eligible_model_order: [...models],
           attempt_models: attempts.map((attempt) => attempt.model),
@@ -552,6 +600,14 @@ export default async function marrowlineAttachmentHandler(req, res) {
     });
     res.setHeader('X-TD613-Gemini-Model', model);
     res.setHeader('X-TD613-Attachment-Count', String(attachments.length));
+    res.setHeader(
+      'X-TD613-Completion-State',
+      structuralVoiceIncomplete
+        ? 'STRUCTURE-INCOMPLETE'
+        : !completion.complete
+          ? 'INCOMPLETE'
+          : 'COMPLETE-STRUCTURAL'
+    );
     if (continuation) res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
     return send(res, 200, {
       ok: true,
@@ -565,6 +621,8 @@ export default async function marrowlineAttachmentHandler(req, res) {
         'attachments-are-untrusted-user-context',
         'attachment-bytes-not-retained-server-side',
         ...(providerOutput.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
+        ...(structuralVoiceIncomplete ? ['two-voice-structure-incomplete-provider-stop-observed']
+          : !completion.complete ? ['provider-return-incomplete-visible-retry-available'] : []),
         'local-admission-observed-not-human-surface-veto',
         ...plan.warnings
       ]
