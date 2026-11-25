@@ -23,7 +23,9 @@ test('immutable October 15 source blobs anchor D assay content and thinking-prof
   // This protects historical source integrity, not today's actual Google wire output.
   assert.equal(gitBlobSha1('../server/marrowline-unicode-capability-assay.js'),
     'f88ea0c84b5f2e425ef9e9088dd488805854390a');
-  assert.equal(gitBlobSha1('../server/gemini-generation-envelope.js'),
+  // Carbon extends the live envelope for new model IDs. Preserve the exact
+  // original Git blob as evidence; subsequent tests still exercise live D parity.
+  assert.equal(gitBlobSha1('../research/marrowline-d-thinking-isolation-20261019/frozen-source/gemini-generation-envelope.js'),
     '8029e3c80feb6d5dd71a5b5be8bb23057aadcaec');
 });
 

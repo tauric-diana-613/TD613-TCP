@@ -36,3 +36,8 @@ Existing independent [Oct 17 role-boundary comparator](../marrowline-role-bounda
 ## Restored next scientific control (2026-10-19)
 
 The **real route comparison is MEDIUM vs MEDIUM**. Treat HIGH as a user-preferred creative capability demonstrated in the Gemini app, but without a matched same-request original-SSE episode. Do **not** spend money retrying the invalid premise that ordinary Marrowline 3.8 uses HIGH. Next: original-D ingress/headings/persona ladder in #1551 or its reconciled main-based successor. Its source-level equality is not equivalent to a live artistic validation. Maintain the distinction between requested HIGH inside `khonapolitReasoning()` and provider-submitted MEDIUM after `withGeminiGenerationProfile()`.
+
+
+### Frozen generation-envelope source custody — 2026-11-25
+
+The October 15 acquisition head `844ad2b295a5df7c42f1455ff2107793ff3ed4da` and pre-Carbon main both contain the exact blob `8029e3c80feb6d5dd71a5b5be8bb23057aadcaec`. That unchanged blob is retained at `frozen-source/gemini-generation-envelope.js` as archival data, not imported as production code. The immutable-source contract checks the original blob hash at that path without changing the expected hash. Separate D thinking contrast tests continue exercising the live generation envelope for historical Gemini 3.8 behavior and exact wire parity. New Gemini 4 capability declarations therefore do not rewrite the historical acquisition evidence.
