@@ -45,7 +45,10 @@ import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
 import {
   resolveMarrowlineGroveTrialTab
 } from './marrowline-grove-trial.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID } from './marrowline-historical-grove.js';
+import {
+  MARROWLINE_HISTORICAL_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
+} from './marrowline-historical-grove.js';
 import {
   currentGeminiDailyBudgetHints,
   ingestGeminiConsumption,
@@ -1381,6 +1384,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
       if (groveTrial && !loomTransport && attachments.length === 0) requestBody.groveTrial = groveTrial;
+      if (groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID && !loomTransport && attachments.length > 0) requestBody.groveTrial = groveTrial;
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       // Browser history remains visible in the local ledger but no longer carries
       // retry permission into the server. Explicit retries always reach live Gemini.

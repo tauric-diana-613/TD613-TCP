@@ -62,6 +62,10 @@ import {
   MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
   MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE,
   MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER,
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+  MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER,
+  isGemini4FrontierModel,
   buildHistoricalGroveSystemInstruction,
   buildHistoricalGroveDramaturgyCandidate,
   buildHistoricalGroveVerticalUnprimedCandidate,
@@ -69,7 +73,8 @@ import {
   buildArtisticRestorationSystemInstruction,
   buildArtisticRestorationTurnRecencyCue,
   buildArtisticRestorationV2SystemInstruction,
-  buildArtisticRestorationV2TurnRecencyCue
+  buildArtisticRestorationV2TurnRecencyCue,
+  buildCarbonReconstructionSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   MARROWLINE_GROVE_TRIAL_ID,
@@ -108,6 +113,9 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // to erase nonempty provider text from an explicit human turn.
 const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
   'gemini-4-argon',
+  'gemini-4-carbon',
+  'gemini-4-neon',
+  'gemini-4-hydrogen',
   'gemini-3.8-flash',
   'gemini-3.5-flash',
   'gemini-3.6-flash',
@@ -116,7 +124,10 @@ const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
 ]);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
+  'gemini-4-carbon',
+  'gemini-4-neon',
   'gemini-4-argon',
+  'gemini-4-hydrogen',
   'gemini-3.8-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
@@ -324,13 +335,16 @@ export function selectKhonapolitProviderModels(callableModels = [], { modelOrder
   return selected;
 }
 
-export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false, artisticRestoration = false } = {}) {
+export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false, artisticRestoration = false, carbonReconstruction = false } = {}) {
   // Historical mode preserves the actual old frontier for research. Restored
   // production keeps historical instructions; artistic restoration places Argon
-  // first with 3.8 and 3.6 as immediate fallbacks.
-  const modelOrder = artisticRestoration ? MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER
-    : restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
-      : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
+  // first with 3.8 and 3.6 as immediate fallbacks; Carbon reconstruction walks
+  // the credential-verified Gemini 4 frontier (Carbon -> Neon -> Argon -> Hydrogen)
+  // before falling back to 3.8 / 3.6.
+  const modelOrder = carbonReconstruction ? MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER
+    : artisticRestoration ? MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER
+      : restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
+        : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
   const rows = Array.isArray(plan?.rows) ? plan.rows : [];
   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
   const coolingEligible = rows
@@ -340,7 +354,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
     .filter((row) => {
       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
       return row?.metadata?.lifecycle === 'current'
-        && row?.model !== 'gemini-4-argon'
+        && !isGemini4FrontierModel(row?.model)
         && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
         && reasons.length === 1
         && reasons[0] === 'provider-absent';
@@ -355,7 +369,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
     .filter((row) => {
       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
       return row?.metadata?.lifecycle === 'current'
-        && row?.model !== 'gemini-4-argon'
+        && !isGemini4FrontierModel(row?.model)
         && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
         && reasons.length === 1
         && reasons[0] === 'fresh-complete-provider-observation-required';
@@ -397,14 +411,33 @@ export function preferMarrowlineIncompleteReturn(current = null, candidate = nul
   return observedBaseLength(candidate) > observedBaseLength(current) ? candidate : current;
 }
 
+const GEMINI_4_SEAT_TIMEOUT_MS = Object.freeze({
+  'gemini-4-carbon': 85000,
+  'gemini-4-argon': 75000,
+  'gemini-4-neon': 65000,
+  'gemini-4-hydrogen': 55000
+});
+
 export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false, model = '' } = {}) {
   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
   const position = Math.max(0, Math.floor(Number(index) || 0));
+  const normalizedModel = String(model || '').replace(/^models\//, '');
+  const gemini4Cap = GEMINI_4_SEAT_TIMEOUT_MS[normalizedModel] || 0;
   const inheritedCap = position === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS;
-  if (!fairShare) return Math.min(model === 'gemini-4-argon' ? 75000 : inheritedCap, remaining);
-  // One bounded Argon stream; no implicit long-decode retries or changed spend ceiling.
-  // Reserve the existing Gemini 3 fallback runway inside this interactive wall.
-  if (model === 'gemini-4-argon') return Math.min(75000, Math.max(1, remaining - (modelCount > 1 ? 105000 : 0)));
+  if (!fairShare) return Math.min(gemini4Cap || inheritedCap, remaining);
+  // Preserve exact primary-seat Argon runway semantics when Argon opens the turn,
+  // while scaling multi-seat Gemini 4 cascades by remaining seats so later
+  // Gemini 4 seats never starve after an upstream timeout.
+  if (normalizedModel === 'gemini-4-argon' && position === 0) {
+    return Math.min(75000, Math.max(1, remaining - (modelCount > 1 ? 105000 : 0)));
+  }
+  if (gemini4Cap > 0) {
+    const totalSeats = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
+    const seatsAfter = Math.max(0, totalSeats - position - 1);
+    if (seatsAfter === 0) return Math.min(gemini4Cap, remaining);
+    const laterReserve = Math.min(Math.max(0, remaining - 15000), seatsAfter * 25000);
+    return Math.min(gemini4Cap, Math.max(1, remaining - laterReserve));
+  }
 
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
@@ -580,7 +613,7 @@ function geminiContents(packet = {}, { includeArtisticRecencyCue = false, artist
 
 function khonapolitReasoning(model = '', { fallback = false } = {}) {
   if (!qualityEnvelope(model)) return null;
-  if (model === 'gemini-4-argon') return { level: 'medium' };
+  if (isGemini4FrontierModel(model)) return { level: 'medium' };
   return {
     // Fallback means transport position, not permission to lower the requested reasoning level.
     level: 'high'
@@ -611,6 +644,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       nativeProsodyFreedom: historicalProsodyFreedom === true
     })
     : null;
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
   const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
   const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
   const artisticInput = {
@@ -619,11 +653,13 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
     relayAddendum: buildRelaySystemAddendum(apertureReceipt),
     relayCue: currentTurnRelayCue()
   };
-  const systemText = isArtisticRestorationV2
-    ? buildArtisticRestorationV2SystemInstruction(artisticInput)
-    : isArtisticRestoration
-      ? buildArtisticRestorationSystemInstruction(artisticInput)
-      : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
+  const systemText = isCarbonReconstruction
+    ? buildCarbonReconstructionSystemInstruction({ packet, apertureReceipt })
+    : isArtisticRestorationV2
+      ? buildArtisticRestorationV2SystemInstruction(artisticInput)
+      : isArtisticRestoration
+        ? buildArtisticRestorationSystemInstruction(artisticInput)
+        : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
       ? (historicalLexicalDeprimedCandidate === true
         ? buildHistoricalGroveLexicalDeprimedCandidate(historicalBase)
         : historicalVerticalUnprimedCandidate === true
@@ -1257,7 +1293,7 @@ export function bothMarrowlineVoicesAbsent(relay = {}) {
 
 export default async function handler(req, res) {
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
-  let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 10 });
   setBaseHeaders(res, apertureEgress);
 
   if (req.method === 'OPTIONS') {
@@ -1319,7 +1355,7 @@ export default async function handler(req, res) {
   if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
 
   const startedAt = Date.now();
-  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 10 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
   const groveTrial = selectMarrowlineGroveTrial(body, { releaseCanary });
   res.__td613GroveTrial = Object.freeze({
@@ -1362,11 +1398,13 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
   const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
   const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan, {
     restoredGrove: isHistoricalGrove,
-    artisticRestoration: isArtisticRestoration
+    artisticRestoration: isArtisticRestoration,
+    carbonReconstruction: isCarbonReconstruction
   });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
   // reorder or suppress the selected restored source frontier. The October 2
@@ -1410,6 +1448,17 @@ export default async function handler(req, res) {
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
       typography_policy: 'provider-native-morphology-observation-only',
       native_prosody_profile: isArtisticRestorationV2 ? MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE : MARROWLINE_ARTISTIC_RESTORATION_PROFILE
+    });
+  } else if (isCarbonReconstruction) {
+    res.__td613GroveTrial = Object.freeze({
+      id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+      source_commit: null,
+      variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+      requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
+      eligible_model_order: [...models],
+      admission_policy: 'both-voices-absent-held-after-bounded-recovery',
+      typography_policy: 'provider-native-morphology-observation-only',
+      native_prosody_profile: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE
     });
   }
   const routeModelCount = Math.max(1, providerModels.length);

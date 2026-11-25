@@ -6,7 +6,10 @@ export const GEMINI_LIFECYCLE_SOURCES = Object.freeze([
   'https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash',
   'https://ai.google.dev/gemini-api/docs/generate-content/thinking',
   'https://ai.google.dev/gemini-api/docs/generate-content/latest-model',
-  'https://ai.google.dev/gemini-api/docs/models/gemini-4-argon'
+  'https://ai.google.dev/gemini-api/docs/models/gemini-4-argon',
+  'https://aistudio.google.com/docs/whats-new-gemini-4-carbon.md',
+  'https://aistudio.google.com/docs/whats-new-gemini-4-neon.md',
+  'https://aistudio.google.com/docs/whats-new-gemini-4-hydrogen.md'
 ]);
 const LEGACY_CATALOG = Object.freeze({
   'gemini-3.5-flash': Object.freeze({ tier: 'frontier', stability: 'stable', quality: 100, role: 'fourth-quality' }),
@@ -19,7 +22,10 @@ const rows = Object.fromEntries(Object.entries(LEGACY_CATALOG).map(([id, row]) =
   ...row, lifecycle: 'current', capability: 'text', qualityEvidence: 'legacy-policy-prior-not-benchmark-proof'
 }]));
 Object.assign(rows, {
+  'gemini-4-carbon': { tier: 'frontier-pro', stability: 'stable', quality: 150, role: 'listed-frontier-flagship', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-gemini-4-carbon-frontier-reasoning-not-route-benchmark' },
+  'gemini-4-neon': { tier: 'frontier-pro', stability: 'stable', quality: 145, role: 'listed-frontier-fast-completion', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-gemini-4-neon-frontier-intelligence-not-route-benchmark' },
   'gemini-4-argon': { tier: 'frontier-pro', stability: 'stable', quality: 140, role: 'listed-frontier-primary', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-2026-10-13-argon-release-not-route-benchmark' },
+  'gemini-4-hydrogen': { tier: 'frontier', stability: 'stable', quality: 135, role: 'listed-frontier-fast-multimodal', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-gemini-4-hydrogen-fast-multimodal-not-route-benchmark' },
   'gemini-3.8-flash': { tier: 'frontier', stability: 'stable', quality: 130, role: 'primary-quality', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-most-intelligent-flash-long-horizon-complex-workflows-2026-09-02' },
   'gemini-3.7-flash': { tier: 'frontier', stability: 'stable', quality: 120, role: 'secondary-quality', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-current-stable-flash-2026-09' },
   'gemini-3.6-flash': { tier: 'frontier', stability: 'stable', quality: 110, role: 'tertiary-quality', lifecycle: 'current', capability: 'text', qualityEvidence: 'official-current-stable-flash-2026-09' },
@@ -34,10 +40,16 @@ for (const id of ['gemini-flash-latest', 'gemini-flash-lite-latest', 'gemini-pro
   rows[id] = { stability: 'moving-alias', lifecycle: 'unknown_operator_supplied', capability: 'text', role: 'explicit-opt-in-only' };
 }
 // Exact known specialized IDs. Unknown names never acquire capability by a regex guess.
-for (const id of ['gemini-3-pro-image-preview', 'gemini-3-pro-image', 'nano-banana-pro-preview', 'gemini-3.1-flash-image-preview', 'gemini-3.1-flash-image', 'gemini-3.1-flash-lite-image', 'gemini-omni-flash-preview', 'gemini-omni-1.1-flash', 'gemini-3.5-transcribe', 'lyria-3-clip-preview', 'lyria-3-pro-preview', 'lyria-3.5', 'gemini-3.1-flash-tts-preview', 'gemini-robotics-er-2-preview', 'antigravity-preview-05-2026', 'deep-research-max-preview-04-2026', 'deep-research-preview-04-2026', 'deep-research-pro-preview-12-2025']) {
+for (const id of ['genie-4', 'gemini-nano-banana-2.1', 'gemini-3-pro-image-preview', 'gemini-3-pro-image', 'nano-banana-pro-preview', 'gemini-3.1-flash-image-preview', 'gemini-3.1-flash-image', 'gemini-3.1-flash-lite-image', 'gemini-omni-flash-preview', 'gemini-omni-1.1-flash', 'gemini-omni-1.2-flash', 'gemini-3.5-transcribe', 'lyria-3-clip-preview', 'lyria-3-pro-preview', 'lyria-3.5', 'gemini-3.1-flash-tts-preview', 'gemini-robotics-er-2-preview', 'antigravity-preview-05-2026', 'deep-research-max-preview-04-2026', 'deep-research-preview-04-2026', 'deep-research-pro-preview-12-2025']) {
   rows[id] = { stability: 'task-specific', lifecycle: 'specialized', capability: 'specialized', role: 'separate-route-required' };
 }
-export const MODEL_CATALOG = Object.freeze(Object.fromEntries(Object.entries(rows).map(([id, row]) => [id, Object.freeze({ ...row, lifecycleEvidenceDate: id === 'gemini-4-argon' ? '2026-10-13' : '2026-09-10' })])));
+const GEMINI_4_EVIDENCE_DATES = Object.freeze({
+  'gemini-4-argon': '2026-10-13',
+  'gemini-4-carbon': '2026-11-24',
+  'gemini-4-neon': '2026-11-24',
+  'gemini-4-hydrogen': '2026-11-24'
+});
+export const MODEL_CATALOG = Object.freeze(Object.fromEntries(Object.entries(rows).map(([id, row]) => [id, Object.freeze({ ...row, lifecycleEvidenceDate: GEMINI_4_EVIDENCE_DATES[id] || '2026-09-10' })])));
 
 export function assessGeminiEligibility(model, { explicit = false, listing, at = Date.now() } = {}) {
   const metadata = MODEL_CATALOG[model];

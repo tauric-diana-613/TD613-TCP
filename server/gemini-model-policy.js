@@ -15,8 +15,18 @@ const QUALITY_ORDER = Object.freeze([
   'gemini-3-flash-preview'
 ]);
 
+const KHONAPOLIT_GEMINI_4_MODELS = new Set([
+  'gemini-4-argon',
+  'gemini-4-carbon',
+  'gemini-4-neon',
+  'gemini-4-hydrogen'
+]);
+
 const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
   'gemini-4-argon',
+  'gemini-4-carbon',
+  'gemini-4-neon',
+  'gemini-4-hydrogen',
   'gemini-3.8-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
@@ -180,7 +190,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
   if (preThreeConfigured.length) warnings.push('pre-gemini-3-config-ignored');
-  if (floorRejected.length) warnings.push('khonapolit-frontier-only-rejected-unapproved-or-lite-models');
+  if (floorRejected.length) warnings.push('khonapolit-frontier-only-rejected-non-3x-or-lite-models');
   return Object.freeze({
     version: GEMINI_MODEL_POLICY_VERSION,
     task,
@@ -230,7 +240,7 @@ export async function resolveGeminiProviderPlan(options = {}) {
   let plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: listing });
   const khonapolitFrontierPartiallyObserved = task === 'khonapolit-dialogue'
     && plan.rows.some((row) => (
-      row.model !== 'gemini-4-argon'
+      !KHONAPOLIT_GEMINI_4_MODELS.has(row.model)
       && KHONAPOLIT_QUALITY_ORDER.includes(row.model)
       && row?.metadata?.lifecycle === 'current'
       && Array.isArray(row?.eligibility?.reasons)
@@ -240,13 +250,13 @@ export async function resolveGeminiProviderPlan(options = {}) {
   // listing even while every older Flash seat is visible. Reobserve only when
   // that snapshot is at least five minutes old; the new snapshot's timestamp
   // restarts the interval. An actual fresh credential listing still governs
-  // eligibility. Never fabricate Argon presence or issue a paid generation
+  // eligibility. Never fabricate Gemini 4 presence or issue a paid generation
   // call on the strength of published availability alone.
   const argonMissingInAgedCache = task === 'khonapolit-dialogue'
     && listing?.ok === true && listing?.complete === true
     && listing?.cached === true && Number.isFinite(listing?.observedAt)
     && Date.now() - listing.observedAt >= 5 * 60 * 1000
-    && plan.rows.some((row) => row.model === 'gemini-4-argon'
+    && plan.rows.some((row) => KHONAPOLIT_GEMINI_4_MODELS.has(row.model)
       && row.eligibility?.reasons?.includes('provider-absent'));
   if (plan.callableModels.length && !khonapolitFrontierPartiallyObserved
       && !argonMissingInAgedCache) return withDiscovery(plan, listing);
