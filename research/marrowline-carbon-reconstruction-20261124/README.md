@@ -75,3 +75,12 @@ Kenough correctly moved `gemini-4-argon` ahead of `3.8-flash`, but introduced fo
 ---
 
 `Khona‌lit-po` · `𝌋‌⟐`
+
+
+## Emergence HQ qualification addendum — 2026-11-25
+
+Carbon's source reconstruction is retained; Amari owns the bounded engineering repair, including the previously authored #1796 v2. The original dossier above remains historical evidence, not a claim of final causal proof. R4's retained assessor records 3,803 combining marks = 3,020 vertical ornament + 644 planar + 139 unclassified (94 distinct codepoints). The earlier 3,462/341 split remains unreconciled without its measurement implementation.
+
+The original eight-model default is preserved for non-Carbon requests. Expanded Gemini 4 discovery is explicitly scoped to the Carbon trial; its browser audition selects a single callable, fresh credential-listed Gemini 4 model. No legacy fallback, automatic retry or structural repair on either text or attachment ingress. The broader frontier-order helper remains available for offline evaluation, not additional audition spend. The default browser trial is unchanged. The negative five/six-word example is removed from Carbon's literary constitution; all other artistic directions are retained.
+
+Runtime credential entitlement remains unobserved by Emergence HQ. A browser turn discovers entitlement before generation and holds if no eligible Gemini 4 seat is available. One submitted turn permits at most one generation request, configured for 65,536 output tokens including provider-billed thinking per applicable pricing. This is a call/token limit, not an absolute currency cap: input/history/attachment tokens vary. Standard API prices per million input/output tokens on 2026-11-25: Carbon/Argon $2/$10 until November 30, then $4/$20; Neon $3/$15. See https://ai.google.dev/gemini-api/docs/pricing. No paid generation authorized by this qualification. Human artistic acceptance and merge/release authority remain HELD.

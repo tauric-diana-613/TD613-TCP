@@ -27,7 +27,8 @@ import {
   serializeGeminiRequest,
   selectKhonapolitProviderModelsFromPlan,
   terminalContinuationEligible,
-  assembleProviderTerminalContinuation
+  assembleProviderTerminalContinuation,
+  selectCarbonAuditionModels
 } from './khonapolit-quality.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 import {
@@ -269,7 +270,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
   const groveTrial = candidateTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID ? candidateTrial : null;
   const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
-  const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 10 });
+  const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: isCarbonReconstruction ? 10 : 8, carbonReconstruction: isCarbonReconstruction });
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
@@ -280,7 +281,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     discourseMode,
     contentScanned: true
   });
-  const models = selectKhonapolitProviderModelsFromPlan(plan, { carbonReconstruction: isCarbonReconstruction });
+  const models = isCarbonReconstruction ? selectCarbonAuditionModels(plan) : selectKhonapolitProviderModelsFromPlan(plan);
   if (groveTrial) res.setHeader('X-TD613-Grove-Trial', groveTrial);
   const attempts = [];
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
@@ -322,6 +323,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
   };
 
   for (let index = 0; index < models.length; index += 1) {
+    if (isCarbonReconstruction && attempts.length >= 1) break;
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
@@ -410,6 +412,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     // It is never a quality grade, morphology repaint, or a reason to discard a
     // human-visible first return when the second provider call cannot complete.
     if (headerValue(req.headers, 'x-td613-release-canary') !== '1'
+      && !isCarbonReconstruction
       && !providerOutput.outputTokenLimitReached
       && terminalContinuationEligible(result.text, structuralReasons)) {
       const repairBudget = Math.min(
@@ -537,6 +540,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
         grove_trial: Object.freeze({
           id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
           variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+          audition: Object.freeze({ max_provider_requests: 1, max_output_tokens: 65536, fallback: false, retry: false, structural_repair: false }),
           requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
           eligible_model_order: [...models],
           attempt_models: attempts.map((attempt) => attempt.model),

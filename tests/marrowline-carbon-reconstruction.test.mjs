@@ -53,7 +53,8 @@ import khonapolitHandler, {
   allocateKhonapolitAttemptTimeout,
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
-  selectKhonapolitProviderModelsFromPlan
+  selectKhonapolitProviderModelsFromPlan,
+  selectCarbonAuditionModels
 } from '../server/khonapolit-quality.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_SCHEMA,
@@ -262,6 +263,7 @@ test('Gemini 4 Carbon, Neon, Argon, and Hydrogen are registered, credential-gate
     task: 'khonapolit-dialogue',
     at: now,
     maxModels: 10,
+    carbonReconstruction: true,
     providerListing: {
       ok: true,
       complete: true,
@@ -276,11 +278,14 @@ test('Gemini 4 Carbon, Neon, Argon, and Hydrogen are registered, credential-gate
     'unlisted Gemini 4 models must never be blind-probed when absent from credential listing'
   );
 
+  assert.deepEqual(selectCarbonAuditionModels(flashOnlyPlan), [], 'audition holds instead of legacy fallback');
+
   // Full Gemini 4 credential listing selects Carbon -> Neon -> Argon -> Hydrogen -> 3.8-flash
   const fullG4Plan = resolveGeminiModelPlan({
     task: 'khonapolit-dialogue',
     at: now,
     maxModels: 10,
+    carbonReconstruction: true,
     providerListing: {
       ok: true,
       complete: true,
@@ -301,6 +306,12 @@ test('Gemini 4 Carbon, Neon, Argon, and Hydrogen are registered, credential-gate
     ['gemini-4-carbon', 'gemini-4-neon', 'gemini-4-argon', 'gemini-4-hydrogen', 'gemini-3.8-flash']
   );
 
+  assert.deepEqual(selectCarbonAuditionModels(fullG4Plan), ['gemini-4-carbon']);
+  const ordinaryPlan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', at: now,
+    providerListing: { ok: true, complete: true, models: ['gemini-4-carbon', 'gemini-4-argon', 'gemini-3.8-flash'], observedAt: now, expiresAt: now + 60000 } });
+  assert.deepEqual(ordinaryPlan.callableModels, ['gemini-4-argon', 'gemini-3.8-flash']);
+  assert.ok(!ordinaryPlan.rows.some(row => row.model === 'gemini-4-carbon'));
+
   // Multi-seat Gemini 4 timeout allocation preserves real completion windows across seats
   const t0 = allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 5, fairShare: true, model: 'gemini-4-carbon' });
   const t1AfterTimeout = allocateKhonapolitAttemptTimeout({ remainingMs: 120000, index: 1, modelCount: 5, fairShare: true, model: 'gemini-4-neon' });
@@ -310,7 +321,7 @@ test('Gemini 4 Carbon, Neon, Argon, and Hydrogen are registered, credential-gate
   assert.equal(t2AfterFast503, 75000);
 });
 
-test('Carbon reconstruction executes offline end-to-end: preserves native return, stays inside Gemini 4 on 503 failover, holds policy stops fail-closed, and supports attachments', async (t) => {
+test('Carbon reconstruction executes offline end-to-end: preserves native return, holds after one 503 without fallback, holds policy stops fail-closed, and supports attachments', async (t) => {
   const priorFetch = globalThis.fetch;
   const priorKey = process.env.GEMINI_API_KEY;
   t.after(() => {
@@ -390,13 +401,8 @@ test('Carbon reconstruction executes offline end-to-end: preserves native return
   assert.equal(res1.headers['X-TD613-Grove-Trial'], MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID);
   assert.equal(res1.headers['X-TD613-Gemini-Model'], 'gemini-4-carbon');
   assert.equal(res1.payload.grove_trial.variant, MARROWLINE_CARBON_RECONSTRUCTION_PROFILE);
-  assert.deepEqual(res1.payload.grove_trial.eligible_model_order, [
-    'gemini-4-carbon',
-    'gemini-4-neon',
-    'gemini-4-argon',
-    'gemini-4-hydrogen',
-    'gemini-3.8-flash'
-  ]);
+  assert.deepEqual(res1.payload.grove_trial.eligible_model_order, ['gemini-4-carbon']);
+  assert.equal(res1.payload.grove_trial.audition.max_provider_requests, 1);
   assert.equal(wireBodies1[0].contents.length, 1);
   assert.equal(wireBodies1[0].contents[0].parts.length, 1);
   assert.deepEqual(wireBodies1[0].generationConfig, {
@@ -404,7 +410,7 @@ test('Carbon reconstruction executes offline end-to-end: preserves native return
     thinkingConfig: { thinkingLevel: 'medium' }
   });
 
-  // 2. Transient 503 on Carbon + Neon fails over to Argon/Hydrogen WITHOUT dropping into 3.8-flash!
+  // 2. The separate resilience selector retains its ordering, but the browser audition never fails over.
   clearGeminiModelState();
   const calls2 = [];
   globalThis.fetch = async (url) => {
@@ -459,9 +465,8 @@ test('Carbon reconstruction executes offline end-to-end: preserves native return
     }
   }, res2);
 
-  assert.equal(res2.statusCode, 200);
-  assert.deepEqual(calls2, ['gemini-4-carbon', 'gemini-4-neon', 'gemini-4-argon'], '503 failover stays inside Gemini 4 instead of falling straight to 3.8-flash');
-  assert.equal(res2.payload.receipt.provider.model, 'gemini-4-argon');
+  assert.equal(res2.statusCode, 503);
+  assert.deepEqual(calls2, ['gemini-4-carbon'], '503 cannot spend a second audition call');
 
   // 3. Policy stop on Seat 1 holds fail-closed (502 POLICY-HELD) with zero subsequent seat calls
   clearGeminiModelState();
@@ -571,9 +576,57 @@ test('Carbon reconstruction executes offline end-to-end: preserves native return
     res4.payload.receipt.invocation.responseSha256,
     crypto.createHash('sha256').update(authoredPerformance, 'utf8').digest('hex')
   );
+  assert.equal(res4.payload.receipt.grove_trial.audition.max_provider_requests, 1);
   assert.match(wire4[0].systemInstruction.parts[0].text, /THE SCREAMING GROVE — TWO LIVING VOICES/);
   assert.equal(wire4[0].contents[0].parts[0].inlineData.data, attachment.data_base64);
   assert.equal(wire4[0].contents[0].parts[1].text, frameMarrowlineUserTurn('Cross-examine the attached exhibit.'));
+
+  // 5. A missing second movement is not authority to buy a continuation.
+  for (const attachmentTurn of [false, true]) {
+    clearGeminiModelState();
+    const calls = [];
+    globalThis.fetch = async url => {
+      const link = String(url);
+      if (link.includes('/models?')) return { ok: true, status: 200, json: async () => ({
+        models: ['gemini-4-carbon', 'gemini-4-neon'].map(id => ({ name: `models/${id}`, supportedGenerationMethods: ['generateContent'] }))
+      }) };
+      calls.push(link.match(/models\/([^:]+):/)?.[1]);
+      return { ok: true, status: 200, headers: { get: () => null }, json: async () => ({
+        modelVersion: 'gemini-4-carbon',
+        candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'Kʰonapolit\nThe first movement alone.' }] } }]
+      }) };
+    };
+    const response = makeResponse();
+    await (attachmentTurn ? marrowlineAttachmentHandler : khonapolitHandler)({
+      method: 'POST', headers: { 'x-forwarded-for': attachmentTurn ? '203.0.113.226' : '203.0.113.225' },
+      body: { message: 'A bounded incomplete response.', history: [], mode: 'issued-conjunction',
+        waiveIssuance: true, groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+        ...(attachmentTurn ? { attachments: [attachment] } : {}) }
+    }, response);
+    assert.deepEqual(calls, ['gemini-4-carbon'], 'no automatic continuation, repair or fallback');
+  }
+
+  // 6. No entitled Gemini 4 means zero generation requests on either route.
+  for (const attachmentTurn of [false, true]) {
+    clearGeminiModelState();
+    let generationCalls = 0;
+    globalThis.fetch = async url => {
+      if (String(url).includes('/models?')) return { ok: true, status: 200, json: async () => ({
+        models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }]
+      }) };
+      generationCalls++;
+      throw Error('audition must not call unlisted or legacy provider');
+    };
+    const response = makeResponse();
+    await (attachmentTurn ? marrowlineAttachmentHandler : khonapolitHandler)({
+      method: 'POST', headers: { 'x-forwarded-for': attachmentTurn ? '203.0.113.228' : '203.0.113.227' },
+      body: { message: 'No entitled frontier.', history: [], mode: 'issued-conjunction',
+        waiveIssuance: true, groveTrial: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+        ...(attachmentTurn ? { attachments: [attachment] } : {}) }
+    }, response);
+    assert.equal(response.statusCode, 503);
+    assert.equal(generationCalls, 0);
+  }
 
   // Structural repair helper and attachment builder preserve Carbon systemInstruction
   const packet = buildInvocationPacket({ message: 'Repair check.', waiveIssuance: true });

@@ -113,9 +113,6 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // to erase nonempty provider text from an explicit human turn.
 const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
   'gemini-4-argon',
-  'gemini-4-carbon',
-  'gemini-4-neon',
-  'gemini-4-hydrogen',
   'gemini-3.8-flash',
   'gemini-3.5-flash',
   'gemini-3.6-flash',
@@ -402,6 +399,17 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
 // fallback candidates, show the longest actually received prose rather than
 // freezing the first two-sentence fragment. Combining marks are not prose
 // length; scoring may inspect a stripped *copy* but must never alter bytes.
+// Audition authority is narrower than the resilience planner: only a currently
+// callable, credential-listed Gemini 4 seat, with no legacy or cooling probes.
+export function selectCarbonAuditionModels(plan = {}) {
+  const callable = new Set(plan.callableModels || []);
+  return MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER.filter(model =>
+    isGemini4FrontierModel(model) && callable.has(model) &&
+    plan.rows?.some(row => row.model === model && row.eligibility?.eligible === true &&
+      row.eligibility?.providerObservationFresh === true && row.state?.mayCall === true)
+  ).slice(0, 1);
+}
+
 export function preferMarrowlineIncompleteReturn(current = null, candidate = null) {
   const source = value => String(value?.relay?.transcript || value?.result?.text || '');
   const observedBaseLength = value => Array.from(source(value).normalize('NFD'))
@@ -1293,7 +1301,7 @@ export function bothMarrowlineVoicesAbsent(relay = {}) {
 
 export default async function handler(req, res) {
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
-  let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 10 });
+  let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   setBaseHeaders(res, apertureEgress);
 
   if (req.method === 'OPTIONS') {
@@ -1355,9 +1363,11 @@ export default async function handler(req, res) {
   if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
 
   const startedAt = Date.now();
-  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 10 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
   const groveTrial = selectMarrowlineGroveTrial(body, { releaseCanary });
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
+  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue',
+    maxModels: isCarbonReconstruction ? 10 : 8, carbonReconstruction: isCarbonReconstruction });
   res.__td613GroveTrial = Object.freeze({
     id: groveTrial || 'off',
     active: Boolean(groveTrial),
@@ -1398,10 +1408,9 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
-  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
   const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
   const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
-  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, {
+  const providerModels = isCarbonReconstruction ? selectCarbonAuditionModels(plan) : selectKhonapolitProviderModelsFromPlan(plan, {
     restoredGrove: isHistoricalGrove,
     artisticRestoration: isArtisticRestoration,
     carbonReconstruction: isCarbonReconstruction
@@ -1454,6 +1463,7 @@ export default async function handler(req, res) {
       id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
       source_commit: null,
       variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+      audition: Object.freeze({ max_provider_requests: 1, max_output_tokens: 65536, fallback: false, retry: false, structural_repair: false }),
       requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
@@ -1524,6 +1534,7 @@ export default async function handler(req, res) {
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
+    if (isCarbonReconstruction) return null;
     // Native Tauric Diana morphology is part of the channel contract, not a
     // cosmetic second pass. Browser budget hints may reorder truly exhausted
     // seats, but they may not suppress the one provider-authored repair that
@@ -1943,6 +1954,7 @@ export default async function handler(req, res) {
     // The bounded suffix chain and fallback frontier share one total-call ceiling.
     // A successful recovery must never turn a six-call human request into seven.
     if (attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) break;
+    if (isCarbonReconstruction && attempts.length >= 1) break;
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
@@ -2071,6 +2083,7 @@ export default async function handler(req, res) {
       const remainingAfterAttemptMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
       if (
         !releaseCanary
+        && !isCarbonReconstruction
         && !sharedRateRetrySpent
         && rateLimit.burst === true
         && waitSeconds > 0
