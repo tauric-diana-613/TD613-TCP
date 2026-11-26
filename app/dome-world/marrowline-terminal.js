@@ -922,6 +922,30 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     });
     return saveChain;
   };
+  const commitEpisodeBeforeConsume = async (episodeRecord, claimAuthToken) => {
+    if (!await scheduleSave()) {
+      if (episodeRecord?.episodeId) {
+        // The last durable snapshot still contains the pending capability.
+        // Restore it in memory, too; reload can retrieve the same result.
+        state.pendingEpisode = episodeRecord;
+      }
+      return false;
+    }
+    if (episodeRecord && claimAuthToken) {
+      void consumeMarrowlineEpisode({
+        fetchImpl: root.fetch || fetch,
+        episodeId: episodeRecord.episodeId,
+        claimAuthToken
+      });
+    }
+    return true;
+  };
+  const holdEpisodeSaveFailure = () => {
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (status) status.dataset.progressStage = 'held';
+    setPedagogueStatus(status, 'held', 'SAVE HELD · original episode retained',
+      'Local persistence failed. The server result has not been consumed. Reload this conversation to recover the original episode before its expiry; do not generate a replacement.');
+  };
   const markReloadOutcomeUnknown = (record) => {
     state.pendingEpisode = null;
     state.lastFailure = {
@@ -1024,12 +1048,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           };
           root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
           if (prompt) { prompt.value = message; prompt.style.height = ''; }
-          await scheduleSave();
-          void consumeMarrowlineEpisode({
-            fetchImpl: root.fetch || fetch,
-            episodeId: episodeRecord.episodeId,
-            claimAuthToken: claimResult.claimAuthToken
-          });
+          if (!await commitEpisodeBeforeConsume(episodeRecord, claimResult.claimAuthToken)) {
+          holdEpisodeSaveFailure();
+          return;
+        }
           syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state);
           if (status) { status.dataset.progressStage = 'held'; status.dataset.outcomeState = 'failed'; }
           setPedagogueStatus(status, 'held', 'TASK PRESERVED · retry when ready',
@@ -1050,7 +1072,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD',
           sealed: false
         };
-        state.messages.push(entry);
+        if (!state.messages.some(item => item.role === 'model' && item.receipt?.episodeContinuity?.episodeId === episodeRecord.episodeId)) state.messages.push(entry);
         state.pendingEpisode = null;
         state.pendingTask = incompleteReturn ? message : '';
         state.lastFailure = null;
@@ -1067,12 +1089,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         if (activeThread && nextTitleSource !== activeThread.titleSource) {
           activeThread = { ...activeThread, titleSource: nextTitleSource };
         }
-        await scheduleSave();
-        void consumeMarrowlineEpisode({
-          fetchImpl: root.fetch || fetch,
-          episodeId: episodeRecord.episodeId,
-          claimAuthToken: claimResult.claimAuthToken
-        });
+        if (!await commitEpisodeBeforeConsume(episodeRecord, claimResult.claimAuthToken)) {
+          holdEpisodeSaveFailure();
+          return;
+        }
         syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state);
         displayClassification(doc, receipt); syncConversationTitle(doc, state);
         const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
@@ -1130,8 +1150,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       && !record.lastReceipt
       && state.messages.at(-1)?.role === 'user'
     );
-    const resumableEpisode = interruptedInFlightOnReload
-      && state.pendingEpisode?.episodeId
+    const resumableEpisode = state.pendingEpisode?.episodeId
       && state.pendingEpisode?.rootSecretB64
       && Date.now() < Number(state.pendingEpisode.hardExpiresAt || 0)
       ? state.pendingEpisode
@@ -1480,6 +1499,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     // A fresh human gesture can override an advisory short-window timer, but
     // never double-submit while another request is already in flight.
     if (!storeReady || requestInFlight) return;
+    if (state.pendingEpisode?.episodeId && Date.now() < Number(state.pendingEpisode.hardExpiresAt || 0)) {
+      holdEpisodeSaveFailure();
+      return;
+    }
     if (attachmentStagingActive) {
       setPedagogueStatus(status, 'pending', 'Preparing attachment…',
         'The selected attachment is still being prepared in this browser; Send will unlock when staging is complete.');
@@ -1679,7 +1702,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         if (createdEpisode) {
           state.pendingEpisode = createdEpisode.episodeRecord;
           activeEpisodeRecord = createdEpisode.episodeRecord;
-          await scheduleSave();
+          if (!await scheduleSave()) {
+            createdEpisode = null;
+            activeEpisodeRecord = null;
+            state.pendingEpisode = null;
+            throw new Error('episode-capability-persistence-failed');
+          }
         }
       }
       if (activeRequestCancelRequested || requestController.signal.aborted) throw new Error('operator-cancelled');
@@ -1852,13 +1880,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         activeThread = { ...activeThread, titleSource: nextTitleSource };
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
-      await scheduleSave();
-      if (consumeTokenAfterCommit && createdEpisode) {
-        void consumeMarrowlineEpisode({
-          fetchImpl: root.fetch || fetch,
-          episodeId: createdEpisode.episodeRecord.episodeId,
-          claimAuthToken: consumeTokenAfterCommit
-        });
+      if (!await commitEpisodeBeforeConsume(createdEpisode?.episodeRecord, consumeTokenAfterCommit)) {
+        renderMessages(doc, state);
+        holdEpisodeSaveFailure();
+        return;
       }
       syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
@@ -1903,13 +1928,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (failedRouteReceipt) renderModelRouteReceipt(doc, failedRouteReceipt);
       prompt.value = message;
       prompt.style.height = '';
-      await scheduleSave();
-      if (consumeTokenAfterCommit && createdEpisode) {
-        void consumeMarrowlineEpisode({
-          fetchImpl: root.fetch || fetch,
-          episodeId: createdEpisode.episodeRecord.episodeId,
-          claimAuthToken: consumeTokenAfterCommit
-        });
+      if (!await commitEpisodeBeforeConsume(createdEpisode?.episodeRecord, consumeTokenAfterCommit)) {
+        renderMessages(doc, state);
+        holdEpisodeSaveFailure();
+        return;
       }
       syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       renderGeminiBrowserLedger(doc, root);
@@ -2069,6 +2091,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   let retryPreparationActive = false;
   const retryLastPrompt = async ({ independentRetry = false } = {}) => {
+    if (state.pendingEpisode?.episodeId && Date.now() < Number(state.pendingEpisode.hardExpiresAt || 0)) { holdEpisodeSaveFailure(); return; }
     if (retryPreparationActive) return;
     if(isLoomEvidenceHold(state.lastFailure)) {
       openMarrowlineLoomGate(doc,root);

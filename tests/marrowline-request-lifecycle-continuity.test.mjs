@@ -1200,7 +1200,8 @@ test('Safe Harbor cryptography, 15-minute (900s) zero-lag expiry, attachment iso
   const instanceA = createMarrowlineEpisodeStore({ clock: () => now, runtimeCache: mockRuntimeCache });
   const instanceB = createMarrowlineEpisodeStore({ clock: () => now, runtimeCache: mockRuntimeCache });
   assert.equal(instanceA.descriptor.backend, 'vercel-runtime-cache-plus-fluid-memory');
-  assert.equal(instanceA.descriptor.cross_instance_durable, true);
+  assert.equal(instanceA.descriptor.cross_instance_durable, false);
+  assert.equal(instanceA.descriptor.regional_lookup_best_effort, true);
   const epCache = await createMarrowlineEpisode({ crypto: crypto.webcrypto }, bodyJson, { now });
   const cacheAuthSha = crypto.createHash('sha256').update(epCache.claimAuthToken).digest('hex');
   await instanceA.registerOrAttach({
@@ -1341,4 +1342,26 @@ test('Safe Harbor cryptography, 15-minute (900s) zero-lag expiry, attachment iso
     if (prevCtx === undefined) delete globalThis[ctxSymbol];
     else globalThis[ctxSymbol] = prevCtx;
   }
+});
+
+
+// All operations start before either registration has completed.
+test('simultaneous episode registration and consumed replay never acquire a second local generation owner', async () => {
+  const store = createMarrowlineEpisodeStore({ environment: {} });
+  const args = { episodeId: 'ep_' + 'a'.repeat(32), authSha256: 'b'.repeat(64), requestBodySha256: 'c'.repeat(64), ipHash: 'test-ip' };
+  try {
+    const owners = await Promise.all(Array.from({length: 12}, () => store.registerOrAttach(args)));
+    assert.equal(owners.filter(row => row.status === 'CREATED').length, 1);
+    assert.equal(owners.filter(row => row.status === 'ATTACHED').length, 11);
+    assert.equal((await store.consume(args)).status, 'RUNNING');
+    const seal = await store.sealTerminal({ episodeId: args.episodeId, nextState: 'COMPLETED', envelope: { ciphertext: 'synthetic' } });
+    assert.equal(seal.committed, true);
+    assert.equal((await store.consume(args)).status, 'DELETED');
+    assert.equal(store.size(), 0);
+    assert.equal(store.inspectRawForTest(args.episodeId).envelope, null);
+    assert.equal((await store.registerOrAttach(args)).status, 'ATTACHED');
+    assert.equal((await store.getClaim(args)).status, 'NOT_FOUND');
+    assert.equal((await store.consume(args)).status, 'ALREADY_DELETED');
+    assert.equal((await store.sealTerminal({ episodeId: args.episodeId, nextState: 'COMPLETED', envelope: { ciphertext: 'late' } })).committed, false);
+  } finally { store.clearAllForTest(); }
 });

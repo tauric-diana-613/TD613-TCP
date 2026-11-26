@@ -215,10 +215,20 @@ function createEphemeralMemoryEpisodeStore({
 } = {}) {
   const records = new Map();
   const timers = new Map();
+  // All read-modify-write transitions share a single instance-local ownership lock.
+  // Never hold it across provider execution.
+  let transitionTail = Promise.resolve();
+  const serialized = fn => (...args) => {
+    const result = transitionTail.then(() => fn(...args));
+    transitionTail = result.then(() => undefined, () => undefined);
+    return result;
+  };
 
   const descriptor = Object.freeze({
     backend: runtimeCache ? 'vercel-runtime-cache-plus-fluid-memory' : 'vercel-fluid-ephemeral-memory',
-    cross_instance_durable: Boolean(runtimeCache),
+    cross_instance_durable: false,
+    regional_lookup_best_effort: Boolean(runtimeCache),
+    generation_ownership_scope: 'single-instance',
     cross_region_durable: false,
     atomic_cas: !runtimeCache ? 'single-instance-strict' : 'best-effort-regional-cache',
     at_rest_encryption: 'AES-256-GCM',
@@ -239,7 +249,7 @@ function createEphemeralMemoryEpisodeStore({
     clearTimer(episodeId);
     const existed = records.delete(episodeId);
     if (runtimeCache) {
-      try { await runtimeCache.delete(`marrowline-ep:${episodeId}`); } catch {}
+      await runtimeCache.delete(`marrowline-ep:${episodeId}`);
     }
     return existed;
   };
@@ -255,33 +265,20 @@ function createEphemeralMemoryEpisodeStore({
 
   const readRaw = async (episodeId) => {
     if (runtimeCache) {
-      try {
-        const cached = await runtimeCache.get(`marrowline-ep:${episodeId}`);
-        if (cached && typeof cached === 'object') return cached;
-        clearTimer(episodeId);
-        records.delete(episodeId);
-        return null;
-      } catch {
-        // Fall back to local Fluid memory only if Runtime Cache throws
-      }
+      const cached = await runtimeCache.get(`marrowline-ep:${episodeId}`);
+      if (cached && typeof cached === 'object') return cached;
+      clearTimer(episodeId);
+      records.delete(episodeId);
+      return null;
     }
     return records.get(episodeId) || null;
   };
 
   const writeRaw = async (entry, now) => {
     records.set(entry.episodeId, entry);
-    if (records.size > maxRecords) {
-      const oldestKey = records.keys().next().value;
-      if (oldestKey && oldestKey !== entry.episodeId) {
-        clearTimer(oldestKey);
-        records.delete(oldestKey);
-      }
-    }
     if (runtimeCache) {
       const ttlSeconds = Math.max(1, Math.ceil((entry.hardExpiresAt - now) / 1000));
-      try {
-        await runtimeCache.set(`marrowline-ep:${entry.episodeId}`, entry, { ttl: ttlSeconds });
-      } catch {}
+      await runtimeCache.set(`marrowline-ep:${entry.episodeId}`, entry, { ttl: ttlSeconds });
     }
   };
 
@@ -298,7 +295,7 @@ function createEphemeralMemoryEpisodeStore({
 
   return Object.freeze({
     descriptor,
-    size: () => records.size,
+    size: () => [...records.values()].filter(record => record.state !== 'CONSUMED').length,
     inspectRawForTest: (episodeId) => {
       const item = records.get(episodeId);
       return item ? JSON.parse(JSON.stringify(item)) : null;
@@ -308,7 +305,7 @@ function createEphemeralMemoryEpisodeStore({
       records.clear();
     },
 
-    async registerOrAttach({ episodeId, authSha256, requestBodySha256, ipHash }) {
+    registerOrAttach: serialized(async ({ episodeId, authSha256, requestBodySha256, ipHash }) => {
       const now = clock();
       purgeExpired(now);
       const existing = await readRaw(episodeId);
@@ -336,6 +333,8 @@ function createEphemeralMemoryEpisodeStore({
         return { status: 'ATTACHED', record: existing };
       }
 
+      // Do not evict live ownership or replay tombstones to admit another billable turn.
+      if (records.size >= maxRecords) return { status: 'CAPACITY_HELD' };
       let activeForIp = 0;
       for (const candidate of records.values()) {
         if (candidate.ipHash === ipHash && candidate.state === 'RUNNING' && now < candidate.leaseExpiresAt && now < candidate.hardExpiresAt) {
@@ -362,9 +361,9 @@ function createEphemeralMemoryEpisodeStore({
       await writeRaw(created, now);
       scheduleExpiryTimer(episodeId, created.hardExpiresAt, now);
       return { status: 'CREATED', record: created };
-    },
+    }),
 
-    async sealTerminal({ episodeId, nextState, reason = null, envelope }) {
+    sealTerminal: serialized(async ({ episodeId, nextState, reason = null, envelope }) => {
       const now = clock();
       purgeExpired(now);
       const existing = await readRaw(episodeId);
@@ -372,7 +371,7 @@ function createEphemeralMemoryEpisodeStore({
         await physicalDelete(episodeId);
         return { committed: false, reason: 'expired-or-missing' };
       }
-      if (existing.state !== 'RUNNING') {
+      if (existing.state !== 'RUNNING' || now >= existing.leaseExpiresAt) {
         return { committed: false, reason: `state-already-${existing.state}` };
       }
       const updated = Object.freeze({
@@ -386,9 +385,9 @@ function createEphemeralMemoryEpisodeStore({
       });
       await writeRaw(updated, now);
       return { committed: true, record: updated };
-    },
+    }),
 
-    async getClaim({ episodeId, authSha256 }) {
+    getClaim: serialized(async ({ episodeId, authSha256 }) => {
       const now = clock();
       const existing = await readRaw(episodeId);
       if (!existing) {
@@ -401,6 +400,7 @@ function createEphemeralMemoryEpisodeStore({
         await physicalDelete(episodeId);
         return { status: 'EXPIRED' };
       }
+      if (existing.state === 'CONSUMED') return { status: 'NOT_FOUND' };
       if (existing.state === 'RUNNING' && now >= existing.leaseExpiresAt) {
         const reconciled = Object.freeze({
           ...existing,
@@ -413,9 +413,9 @@ function createEphemeralMemoryEpisodeStore({
         return { status: 'OK', record: reconciled };
       }
       return { status: 'OK', record: existing };
-    },
+    }),
 
-    async cancel({ episodeId, authSha256 }) {
+    cancel: serialized(async ({ episodeId, authSha256 }) => {
       const now = clock();
       const existing = await readRaw(episodeId);
       if (!existing) return { status: 'NOT_FOUND' };
@@ -424,6 +424,7 @@ function createEphemeralMemoryEpisodeStore({
         await physicalDelete(episodeId);
         return { status: 'EXPIRED' };
       }
+      if (existing.state === 'CONSUMED') return { status: 'NOT_FOUND' };
       const cancelled = Object.freeze({
         ...existing,
         state: 'CANCELLED',
@@ -433,9 +434,9 @@ function createEphemeralMemoryEpisodeStore({
       });
       await writeRaw(cancelled, now);
       return { status: 'CANCELLED', record: cancelled };
-    },
+    }),
 
-    async consume({ episodeId, authSha256 }) {
+    consume: serialized(async ({ episodeId, authSha256 }) => {
       const now = clock();
       const existing = await readRaw(episodeId);
       if (!existing) {
@@ -448,9 +449,14 @@ function createEphemeralMemoryEpisodeStore({
         await physicalDelete(episodeId);
         return { status: 'EXPIRED' };
       }
-      await physicalDelete(episodeId);
+      if (existing.state === 'CONSUMED') return { status: 'ALREADY_DELETED' };
+      if (existing.state === 'RUNNING') return { status: 'RUNNING' };
+      // Erase the ciphertext, retain only bounded non-content replay ownership.
+      const tombstone = Object.freeze({ ...existing, state: 'CONSUMED', reason: null,
+        updatedAt: now, envelope: null });
+      await writeRaw(tombstone, now);
       return { status: 'DELETED' };
-    }
+    })
   });
 }
 
@@ -977,13 +983,9 @@ export function createMarrowlineEpisodeStore({
       maxActivePerIp
     });
   }
-  const detectedCache = runtimeCache || (() => {
-    try {
-      return globalThis[Symbol.for('@vercel/request-context')]?.get?.()?.cache || null;
-    } catch {
-      return null;
-    }
-  })();
+  // Runtime Cache has no documented atomic register/CAS contract. Keep it
+  // available for explicitly injected diagnostics, never auto-promote it.
+  const detectedCache = runtimeCache;
   return createEphemeralMemoryEpisodeStore({
     clock,
     leaseMs,
@@ -1075,6 +1077,7 @@ export async function episodeConsumeHandler(req, res, { store = defaultMarrowlin
   if (outcome.status === 'EXPIRED') {
     return sendJson(res, 410, { schema: MARROWLINE_EPISODE_CLAIM_SCHEMA, ok: false, state: 'EXPIRED', error: 'episode-expired', continuity: store.descriptor });
   }
+  if (outcome.status === 'RUNNING') return sendJson(res, 409, { ok: false, error: 'episode-still-running' });
   return sendJson(res, 200, {
     schema: MARROWLINE_EPISODE_CLAIM_SCHEMA,
     ok: true,
@@ -1117,7 +1120,7 @@ export async function episodeCancelHandler(req, res, { store = defaultMarrowline
     episode_id: episodeId,
     state: 'CANCELLED',
     upstream_abort_signaled: Boolean(live),
-    ciphertext_purged: true,
+    ciphertext_purged: outcome.status === 'CANCELLED',
     continuity: store.descriptor
   });
 }
@@ -1184,6 +1187,9 @@ export async function runWithMarrowlineEpisodeContinuity(
     });
   }
 
+  if (registration.status === 'CAPACITY_HELD') {
+    return sendJson(res, 429, { ok: false, error: 'episode-ownership-capacity-held' });
+  }
   // Idempotent duplicate POST attachment: NEVER dispatch a second Gemini generation!
   if (registration.status === 'ATTACHED') {
     return sendJson(res, 200, claimPayload(registration.record, store.descriptor, { attached_idempotent: true }));
