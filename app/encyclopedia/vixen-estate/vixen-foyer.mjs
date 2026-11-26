@@ -49,7 +49,13 @@ function initialize(){
   const list=latest();
   const value=Array.isArray(list)?list.length:Number(native.textContent)||0;
   const n=Math.max(0,Math.min(999,Math.floor(value)));
-  count.textContent=String(n);
+  if(n>0){
+   count.textContent=String(n);
+   count.hidden=false;
+  }else{
+   count.textContent='';
+   count.hidden=true;
+  }
   carry.dataset.items=String(n);
   carry.setAttribute('aria-label',n+' source-bound items carried in the current session');
   const selected=window.VIXEN_STUDY_TRAY?.list?.()||[];

@@ -1,21 +1,26 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import {mkdir,readFile} from 'node:fs/promises';
+import path from 'node:path';
 const base='http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
-const dest='artifacts/vixen-browser-witness';
+const dest=path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
+ ? path.join(process.env.VIXEN_WITNESS_OUT_DIR,'vixen-browser-witness')
+ : 'artifacts/vixen-browser-witness');
 await mkdir(dest,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const go=async page=>{
  await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
+ await page.locator('#footerPodiumLink').waitFor({state:'attached',timeout:15000});
+ await page.evaluate(()=>{
+  const podium=document.querySelector('#footerPodiumLink');
+  if(!podium)throw Error('NO_PODIUM_NAVIGATION');
+  podium.click();
+ });
+ await page.waitForURL('**/encyclopedia/vix-cyb/podium.html',{timeout:16000});
+ await page.locator('#podiumDoorHuman').click();
+ await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:16000});
  await page.waitForFunction(()=>window.VixenAIModes?.mounted===true&&
   window.VixenComparativeFieldTrial?.mounted===true,null,{timeout:25000});
- await page.evaluate(()=>{
-  const nav=document.querySelector('#vixenRoomRail [data-view="collection"]')||
-   document.querySelector('button[data-view="collection"]');
-  if(!nav)throw Error('NO_ORIGINAL_COLLECTION_NAVIGATION');
-  nav.click();
- });
- await page.locator('#view-collection:not([hidden])').waitFor({timeout:16000});
 };
 const ids=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'];
 try{
@@ -53,14 +58,16 @@ try{
  assert.equal(userView.method_parity,'HELD_UNPROVEN');
  // Confirm real Work reader responds to the visitor click without losing trial state.
  await page.getByRole('button',{name:'Read this original Work'}).first().click();
+ await page.waitForURL('**/encyclopedia/vix-cyb.html#works/*',{timeout:15000});
  await page.locator('#view-works:not([hidden])').waitFor({timeout:15000});
  assert.equal(await page.locator('#worksExperimentAReaderMount').getAttribute('data-work-id'),ids[0]);
  await page.locator('#vmaJourneyDock').click();
- await page.locator('#view-collection:not([hidden])').waitFor({timeout:15000});
+ await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:15000});
+ await page.waitForFunction(()=>window.VixenAIModes?.mounted===true&&window.VixenComparativeFieldTrial?.status().phase==='REVIEW',null,{timeout:20000});
  // Provide deliberate fake evidence. The validator must refuse it even when other judgments are filled.
  const extracts=await page.evaluate(async ids=>{
   const catalogue=JSON.parse(document.getElementById('vixen-corpus-bundle').textContent);
-  const data=await import('./vixen-estate/corpus-experiment-a.mjs');
+  const data=await import('../vixen-estate/corpus-experiment-a.mjs');
   const selections=[];
   for(const id of ids){
    const idx=catalogue.works.findIndex(w=>w.work_id===id),w=catalogue.works[idx];

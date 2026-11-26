@@ -16,6 +16,7 @@ const workIDs=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e2
 const digest=s=>createHash('sha256').update(s).digest('hex');
 const asset=JSON.parse(readFileSync(resolve(root,'app/encyclopedia/vixen-estate/field-lens-public-calibration.json'),'utf8'));
 const html=readFileSync(resolve(root,'app/encyclopedia/vix-cyb.html'),'utf8');
+const humanPodiumHtml=readFileSync(resolve(root,'app/encyclopedia/vix-cyb/human-podium.html'),'utf8');
 const corpus=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
 async function docs(){
  const result=[];
@@ -113,6 +114,6 @@ test('visitor-facing copy does not expose source-side names or import foreign Wo
  assert.match(trustworthyLabels,/Neither was trustworthy/);
  assert.match(code,/original_python_host_executed:false/);
  assert.match(code,/no_network_submission:true/);
- assert.match(html,/id="vmaComparativeFieldLab"/);
- assert.match(html,/vixen-comparative-field-trial\.mjs/);
+ assert.match(humanPodiumHtml,/id="vmaComparativeFieldLab"/);
+ assert.match(humanPodiumHtml,/vixen-comparative-field-trial\.mjs/);
 });

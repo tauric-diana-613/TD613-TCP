@@ -692,6 +692,55 @@ export async function exactSearchInExperimentAShards(query, {
       from = idx + 1;
     }
     if (firstMatch) firstMatch.source_match_count = countForSource;
+
+    const fn = String(rec.original_filename || rec.filename || '');
+    if (fn && rawQuery.length >= 3) {
+      const fnIdx = fn.indexOf(rawQuery);
+      const fnLowIdx = fnIdx >= 0 ? fnIdx : fn.toLowerCase().indexOf(rawQuery.toLowerCase());
+      if (fnLowIdx >= 0) {
+        const fnMatchedSlice = fn.slice(fnLowIdx, fnLowIdx + rawQuery.length);
+        const fnU8 = UTF8_ENCODER.encode(fn);
+        const prefixU8 = UTF8_ENCODER.encode(fn.slice(0, fnLowIdx));
+        const matchU8 = UTF8_ENCODER.encode(fnMatchedSlice);
+        const matchSha = await computeSha256HexAsync(matchU8);
+        const exactStem = fn.replace(/\.(md|pdf|txt)$/i, '').toLowerCase() === rawQuery.trim().toLowerCase();
+        allMatches.push({
+          id: `${rec.source_file_id || rec.instrument_id}#filename`,
+          unit_kind: uk,
+          match_locus: 'ORIGINAL_FILENAME',
+          work_id: rec.work_id || null,
+          source_file_id: rec.source_file_id || null,
+          instrument_id: rec.instrument_id || null,
+          title: rec.recorded_title || rec.title || fn,
+          original_filename: fn,
+          cluster: rec.cluster || null,
+          identity_status: rec.identity_status || (rec.instrument_id ? 'DOCUMENTARY_PROTOCOL' : null),
+          gate_num: rec.gate_num ?? null,
+          format: rec.format || 'md',
+          media_type: rec.media_type || null,
+          custody_status: rec.custody_status || 'EXPERIMENT_A_PREVIEW_AUTHORIZED',
+          body_representation: rec.body_representation || null,
+          shard: rec.shard ?? null,
+          offset_unit: 'UTF8_BYTE',
+          start_utf8: prefixU8.length,
+          end_utf8: prefixU8.length + matchU8.length,
+          byte_length: matchU8.length,
+          char_offset: 0,
+          char_length: Math.min(2400, rec.text_body.length),
+          exact_utf8_sha256: matchSha,
+          observed_quote: fnMatchedSlice,
+          snippet: `Received filename match: ${fn} (${rec.recorded_title || rec.title || rec.source_file_id})`,
+          sha256: rec.declared_source_sha256 || rec.declared_sha256 || null,
+          derivative_sha256: rec.derivative_sha256 || rec.body_sha256 || null,
+          why: [`exact UTF-8 filename match [${prefixU8.length}, ${prefixU8.length + matchU8.length}) of ${fnU8.length}B`],
+          score_total: exactStem ? 1.0 : 0.96,
+          _sortBoost: exactStem ? 0.25 : 0.08,
+          highest_rung: 'MECHANISM_CANDIDATE',
+          empirical_replication_credit: 0,
+          paired_manifestation_preserved: true
+        });
+      }
+    }
   }
 
   let metadataOnlyPendingCount = 0;
@@ -736,7 +785,7 @@ export async function exactSearchInExperimentAShards(query, {
     }
   }
 
-  allMatches.sort((a, b) => b.score_total - a.score_total || a.id.localeCompare(b.id));
+  allMatches.sort((a, b) => ((b.score_total + (b._sortBoost || 0)) - (a.score_total + (a._sortBoost || 0))) || a.id.localeCompare(b.id));
   const safeOffset = Math.max(0, Number(offset) || 0);
   const safeLimit = Math.max(1, Math.min(200, Number(limit) || 20));
   const pageHits = allMatches.slice(safeOffset, safeOffset + safeLimit);

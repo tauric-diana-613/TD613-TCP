@@ -397,6 +397,36 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
   const saved=archive();
   return receipt('SUPPORTED',{archive:saved.result,message:'Session ended. Choose a new role to begin a separate session.'});
  };
- return Object.freeze({start,choose,report,handoff,permission,notes,archive,finish,status:currentStatus,
+ const exportSnapshot=()=>{
+  if(!current)return null;
+  const clone=JSON.parse(JSON.stringify(current));
+  if(clone.notesPermission==='AWAITING_HUMAN_PERMISSION'){
+   clone.notesRequest=false;
+   clone.notesPermission='NOT_REQUESTED';
+  }
+  return {
+   schema:'vixen.ai.session-snapshot/v1',
+   sequence,generation,requestSequence,
+   session:clone
+  };
+ };
+ const restoreSnapshot=(snap)=>{
+  if(!snap||snap.schema!=='vixen.ai.session-snapshot/v1'||!snap.session||
+     !VIXEN_AI_ROLES.includes(snap.session.role))
+   return receipt('HELD',stateError('INVALID_SESSION_SNAPSHOT'));
+  const restored=JSON.parse(JSON.stringify(snap.session));
+  if(restored.notesPermission==='AWAITING_HUMAN_PERMISSION'){
+   restored.notesRequest=false;
+   restored.notesPermission='NOT_REQUESTED';
+  }
+  sequence=Math.max(sequence,Number(snap.sequence)||1);
+  generation=Math.max(generation,Number(snap.generation)||1)+1;
+  requestSequence=Math.max(requestSequence,Number(snap.requestSequence)||1);
+  restored.generation=generation;
+  current=restored;
+  return currentStatus();
+ };
+ return Object.freeze({start,choose,report,handoff,permission,notes,archive,finish,
+  exportSnapshot,restoreSnapshot,status:currentStatus,
   availableRoles:()=>VIXEN_AI_ROLES.slice()});
 }

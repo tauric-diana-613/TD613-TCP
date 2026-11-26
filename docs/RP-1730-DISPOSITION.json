@@ -1,0 +1,828 @@
+{
+  "schema": "td613.vixen.rp-disposition/v1",
+  "commission": "TD613-VIXEN-REDPEN-DOUBLE-COMMISSION-20261123",
+  "baseline_sha": "658835a7691c2abf67c86e27e4c818488eae2e65",
+  "branch": "fix/pr-1730-redpen",
+  "redpens": [
+    {
+      "rp_id": "RP-01",
+      "requirement": "Full source-title provenance audit explaining what the 32 Works are, original received filenames vs displayed H1 titles, title variants, and authorship/synthesis origin.",
+      "implementation": "Documented complete 32-Work / 53-manifestation crosswalk in docs/RP-1730-FORENSIC-AUDIT.md verifying zero AI-generated Work titles (VERBATIM_INTERNAL_H1_EXTRACTION) and UNRESOLVED authorship; exposed .work-received-filenames, .vs-received-filename, and unresolved #workSortNotice honesty across Works and Salon.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "docs/RP-1730-FORENSIC-AUDIT.md",
+        "docs/RP-1730-SEAM-ALLOWANCE.md",
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Refine filename subtitle typography inside Works cards and Salon selectors.",
+      "remaining_human": "Human gate adjudication (Gates 1-8) and historical authorship resolution remain reserved.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-02",
+      "requirement": "Make the 32 recorded Works / 53 linked manifestations partition (and relation to 87 archive intake files) intelligible in the application.",
+      "implementation": "Traced 87->54->53->32 partition (11 singletons, 13 confirmed pairs, 8 human-gated pairs, 33 AppleDouble sidecars) in docs/RP-1730-FORENSIC-AUDIT.md, surfaced plain summary in Works intro and Help Census tab.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "docs/RP-1730-FORENSIC-AUDIT.md",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "Editorial hierarchy polish on Works count summary header.",
+      "remaining_human": "Human split/merge closure on Gates 1-8 ([32, 40] interval).",
+      "held": false
+    },
+    {
+      "rp_id": "RP-03",
+      "requirement": "Audit The Architecture of Control case study (Algedonic Systems Deep Research .pdf vs .md) without collapsing two manifestations into two independent sources.",
+      "implementation": "Measured normalized lexical overlap (Jaccard 0.9061 across 19 headings) and base64/URL vs Skia token-split differences in docs/RP-1730-FORENSIC-AUDIT.md (Gate #2, UNADJUDICATED_PAIR) and labeled paired manifestations separately in Works and Salon.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "docs/RP-1730-FORENSIC-AUDIT.md",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "None beyond unified Work/manifestation chip polish.",
+      "remaining_human": "Binary PDF bytes remain HELD (EXTRACTED_NATIVE_PDF_TEXT bundled); Gate #2 remains UNADJUDICATED_PAIR.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-04",
+      "requirement": "Audit Works ordering, computational synthesis scoring, and whether the 7-source hydration reached the deployed site.",
+      "implementation": "Verified Works order is ascending hex work_id, Salon default works[1]/works[2] is hardcoded array index, 8-axis scoreUnifiedSynthesisCandidates formula uses deterministic local axes (0 credit), and PR #1730 runs A0 seven-free (supplementalSources=[]).",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "docs/RP-1730-FORENSIC-AUDIT.md",
+        "app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs"
+      ],
+      "remaining_artistic": "Visual differentiation between fixed accession index and computed score rank in Salon.",
+      "remaining_human": "No automatic 7-source promotion into canonical roster without explicit governance.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-05",
+      "requirement": "Differentiate Works (#view-works) clearly as the usable original-scholarship reading catalogue vs Salon (#view-collection) as comparative synthesis.",
+      "implementation": "Added sorting/filtering bar and visible received filenames in #view-works, direct open from Search/Salon/Maestro, and explicit framing separating original-work reading in Works from bilateral/multi-source synthesis in Salon.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Clarify visual mood distinction between Obsidian Reading Room (Works) and luminous/obsidian Salon stage.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-06",
+      "requirement": "Fix original-filename Search failure (e.g. LLM Architecture Deep Dive) across hybrid, lexical, phrase, exact shard UTF-8 modes, and Works filter.",
+      "implementation": "Indexed workFilenames and sourceFilenames in semantic-semiotic-search.mjs with hybrid/lexical boost + phrase filenameHayLow match, extended exactSearchInExperimentAShards in corpus-experiment-a.mjs to original_filename UTF-8 bytes, surfaced original_filename in #globalSearchResults, added async shard fallback on 0 sync hits, and verified user-facing LLM Architecture Deep Dive search -> open route in Chromium.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/semantic-semiotic-search.mjs",
+        "app/encyclopedia/vixen-estate/corpus-experiment-a.mjs",
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Tighten search result provenance badge spacing.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-07",
+      "requirement": "Add basic catalogue sorting and filtering (alphabetical title, filename, date/author status honest, cluster, manifestation count, asc/desc).",
+      "implementation": "Added complete #workSortSelect options (order, filename, title, date, author, cluster, manifestations, status) and #workSortOrderBtn (asc/desc with deterministic order_num tie-breaking) wired into renderWorksView in app/encyclopedia/vix-cyb.html, displaying #workSortNotice whenever date or author is chosen so CHRONOLOGY_UNRESOLVED / authorship: UNRESOLVED remain explicit without invented metadata.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "docs/RP-1730-SEAM-ALLOWANCE.md",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Couture styling of .works-sort-bar.",
+      "remaining_human": "Author and creation-date fields stay UNRESOLVED until source metadata permits.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-08",
+      "requirement": "Fix broken desktop 1-word-per-line manuscript typography, raw base64 blocks in prose, and unparsed Markdown tables without sacrificing couture identity.",
+      "implementation": "Passed raw bodyRec.text_body and {sourceFormat, documentTitle, showRaw:true} in synthesis-salon.mjs and vix-cyb.html mountWorkExperimentAReader, added GFM pipe table parsing (.vix-reader-table) and [id]:<data:image/...> inline <img> rendering in manuscript-reader.mjs, repaired discrete #vixFolioPrevious/#vixFolioNext window scroll timing (behavior: instant) in Seam Allowance, and separated Class B WCAG AA contrast checks from legacy Class C warm-paper hex locks.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/manuscript-reader.mjs",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-browser-visual-witness.mjs",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Polish scholarly serif measure (62ch-74ch), mathematical table borders, and dark obsidian paper richness (data-couture-slot='works-manuscript-measure').",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-09",
+      "requirement": "Remove excessive concealment layers/drawers hiding original manuscripts before visitors can read them.",
+      "implementation": "Works and Salon mount complete reflowed prose immediately without extra collapsed wrappers, keeping raw exact source inside a single non-intrusive disclosure (.vix-reader-raw).",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "docs/RP-1730-SEAM-ALLOWANCE.md"
+      ],
+      "remaining_artistic": "Coordinate visual framing between manuscript header bar and body.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-10",
+      "requirement": "Replace oversized competing PDF and Markdown buttons with small compact manifestation switcher and download controls.",
+      "implementation": "Built compact .works-manifestation-bar pills in Works and download controls in Salon; Seam Allowance enforced strict .extracted.txt filenames (text/plain;charset=utf-8, never .pdf) for all 20 PDF text derivatives plus explicit representation custody labels distinguishing 5 source/derivative classes.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "docs/RP-1730-SEAM-ALLOWANCE.md",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Refine .works-manifestation-pill micro-typography and hover states.",
+      "remaining_human": "Downloads provide verified UTF-8 .md or extracted .txt derivative; raw binary PDF remains HELD.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-11",
+      "requirement": "Restore coherent Salon intellectual purpose (crosswalks, leads, ranked proposals, live Mathematical Crib, Dynamic Synthesis Manifesto, exploratory questions).",
+      "implementation": "Added #salonInviteAiBtn CTA at top, removed oversized inline cart, exposed live Mathematical Crib (#salonMathCrib) and Dynamic Synthesis Manifesto (#salonManifestoPanel) synced across pages via vixen-shared-session-bridge.mjs to standalone human-podium.html#composer, and upgraded conjectures.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Choreograph overall Salon flow and visual section pacing (OPUS-COUTURE-HANDOFF.md).",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-12",
+      "requirement": "Explain and connect the two-Work bilateral comparison architecture and support multi-source (3+) Research Cart + Composer synthesis.",
+      "implementation": "Clarified bilateral W1/W2 probe role alongside compact Cart scope pill in Salon and wired dynamic multi-source Cart context into #salonManifestoPanel and Podium #vmaComposerWorkbench.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "app/encyclopedia/vixen-estate/vixen-ai-journey.mjs",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "Highlight multi-source vs bilateral comparison hierarchy visually.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-13",
+      "requirement": "Replace cryptic central seam control (≠II ▷ I ⇄) with clear route-reversal label and consequence explainer.",
+      "implementation": "Updated center seam label in synthesis-salon.mjs to 'Route I ▷ II ⇄' with plain-language .vs-seam-caption explaining that flipping comparison order preserves identical source files while recomputing asymmetric forward/reverse clock and holonomy deltas.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "app/encyclopedia/vixen-estate/synthesis-salon.css"
+      ],
+      "remaining_artistic": "Integrate Route flip pill visually with seam hairline and diamond.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-14",
+      "requirement": "Clarify Salon naming and subtitle hierarchy so visitors understand page purpose immediately.",
+      "implementation": "Updated Salon subtitle copy and header context in vix-cyb.html / synthesis-salon.mjs while preserving required Glinda luminous stage headline contracts.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs"
+      ],
+      "remaining_artistic": "Final couture typography scale and hierarchy inside #view-collection header.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-15",
+      "requirement": "Audit the hidden research brief ('two recorded Works, six prospective giveback tracks...') and dynamically sync it with actual live state.",
+      "implementation": "Injected dynamic #salonLiveBrief inside .vs-overture-notes updated on render from live 32-Work corpus counts, selected W1/W2 pair, Research Cart count, active track/protocol, and lag ticks while keeping folded disclosure intact for visual regression contract.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "tests/vixen-browser-visual-witness.mjs"
+      ],
+      "remaining_artistic": "Style #salonLiveBrief pill typography cleanly inside overture disclosure.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-16",
+      "requirement": "Scrub Operahouse term 'Phasonic Counterpoint · Two Crossed Probes' (and Empty Operahouse / Atelier) from public Opera UI while preserving OPERAHOUSE != OPERA != PERFORMER and internal machine IDs.",
+      "implementation": "Removed 'Phasonic Counterpoint' from vix-cyb.html (#synthHeaderTagline, #synthAxiomMarginalia, #synthResearchQuestionMeta) and synthesis-salon-engine.mjs display titles (retaining internal cand-phasonic-frontispiece ID/rank #1), enforced vixen-opera-public-copy.mjs with TD613 Encyclopedia exception.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs",
+        "app/encyclopedia/vixen-estate/vixen-opera-public-copy.mjs",
+        "tests/vixen-public-copy.test.mjs",
+        "tests/vixen-public-copy-browser.test.mjs",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": "Ensure all Turn II microcopy respects public-language boundary.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-17",
+      "requirement": "Eliminate perceived purple, plum, violet, and eggplant washes and composite shifts in favor of obsidian/raven black with restrained champagne/rose luminaires.",
+      "implementation": "Switched synthesis-salon.css panels to neutral obsidian charcoal (#060708/#10171d) and in Seam Allowance scoped tests/vixen-palette-contract.test.mjs + tests/vixen-browser-visual-witness.mjs to rendered visitor-facing Opera Zero Purple Law (permitting microscopic raven/pearlescent optical interference while protecting source artwork and fixtures).",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "tests/vixen-palette-contract.test.mjs",
+        "tests/vixen-browser-visual-witness.mjs",
+        "docs/RP-1730-SEAM-ALLOWANCE.md"
+      ],
+      "remaining_artistic": "Deliver final raven-feathered / iridescent black surface polish across Salon sections without violet creep.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-18",
+      "requirement": "Eliminate 'Google Forms vibes' in THE QUESTION IS THE GARMENT and Develop the Question panels.",
+      "implementation": "Replaced pale ivory administrative form chrome in synthesis-salon.css / vix-cyb.html with dark obsidian quest-first containers while preserving accessible inputs/labels/actions.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "Full spatial/editorial redesign of question composition in Turn II away from stacked boxy inputs (RP-52..54).",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-19",
+      "requirement": "Reduce excessive negative space, giant idle cards, and inconsistent hierarchy across the Salon.",
+      "implementation": "Relocated oversized inline Cart, hid empty .vs-cart-scope, moved .vs-cart-scope below seamWrap, and compacted candidate grids and manifestation bars.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "Global Salon vertical cadence, proportions, and scale refinement in Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-20",
+      "requirement": "Replace '<- Overview' with chic home symbol '⌂' and add compact '🢔  🢖' history navigation arrows to its right backed by real navigation history.",
+      "implementation": "Added #vixenReturnLink (⌂) + #vixenHistoryBack (🢔) + #vixenHistoryForward (🢖) in .header-nav-cluster backed by state.viewHistory / stepSessionHistory() in vix-cyb.html.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Fine-tune arrow glyph optical alignment and borderless minimalism.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-21",
+      "requirement": "Change header control order to: Search · Research Cart · Menu · Still · Inspector(?).",
+      "implementation": "Reordered .header-actions in vix-cyb.html cleanly to Search, Research Cart, Menu (#menuToggle), SVG Motion (#motionBtn), and Help (#headerHelpBtn) and verified 390px mobile fit.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-browser-visual-witness.mjs"
+      ],
+      "remaining_artistic": "Preserve exact visual balance across desktop and 390px breakpoints.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-22",
+      "requirement": "Remove visible 'Ctrl+K' shortcut label from header Search button while preserving Ctrl/Cmd+K keyboard shortcut.",
+      "implementation": "Removed #searchShortcutKbd from header Search button in vix-cyb.html while retaining global Ctrl/Cmd+K keydown handler opening #searchDialog.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-23",
+      "requirement": "Hide default '(0)' cart count when empty; show tiny Arc-Flash-yellow badge glow when items are added.",
+      "implementation": "Empty Cart renders zero counter text (#collectionCount and #vixenCarryCount stay empty and hidden at 0 across vix-cyb.html, podium.html, human-podium.html, and vixen-foyer.mjs, dynamically appending .hdr-cart-badge-num only when count > 0) with #FFF2A9 styling.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/vixen-foyer.mjs",
+        "app/encyclopedia/vix-cyb/podium.html",
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Optional luminescence timing polish on data-cart-pulse.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-24",
+      "requirement": "Preserve Menu button identity cohesively in new header order.",
+      "implementation": "Retained #menuToggle with responsive label/hamburger icon coherent inside .header-actions across desktop, 1024px, and 390px.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-browser-visual-witness.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-25",
+      "requirement": "Replace 'Still' visible text with custom non-emoji SVG play/pause toggle retaining accessible motion state.",
+      "implementation": "Removed text label from #motionBtn, rendering pure crisp inline SVG pause/play bars driven by updateMotionBtn() while keeping class='hdr-pill hdr-motion-control' and broadcastVixenMotion().",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-motion-graph.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Match compact icon diameter with #headerHelpBtn.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-26",
+      "requirement": "Replace oversized header 'Inspector' pill with small circular '?' button and 0.4s hover tooltip 'Need help?'.",
+      "implementation": "Updated #headerHelpBtn with circular stroke SVG '?' emblem, preserved data-pua-emblem='􍘓' & data-action='inspector', and added CSS 0.4s delayed .hdr-help-tooltip ('Need help?').",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Polish circular pill proportions alongside SVG motion toggle.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-27",
+      "requirement": "Substantively audit and rewrite the outdated Inspector/help modal against actual current features (Search, Works, Salon, Cart, Podium roles).",
+      "implementation": "Rewrote all tabs of renderInspectorBody() inside #inspectorDialog in vix-cyb.html into a 4-step visitor workflow guide (Works search/sort/reader, Research Cart & 4 local exports, Salon Crib/Manifesto & Gates, Dual-Door Podium & AI brief) with zero host diagnostic benches.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-public-copy.test.mjs",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Couture modal layout finish inside #inspectorDialog.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-28",
+      "requirement": "Clicking Research Cart in header opens an accessible popout drawer explaining purpose, items, Salon staging, Podium transfer, and exports.",
+      "implementation": "Added #researchCartPopout toggled from #researchCartBtn with #collectionItemsContainer, #cartStageSalonBtn ('Stage in Salon'), #cartToPodiumBtn ('Carry to Podium'), export controls, and explicit 4-export non-commercial custody note.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Refine popout entrance motion and dark couture card finish.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-29",
+      "requirement": "Remove the oversized inline Research Cart block and obsolete 'survives this makeover' copy from the Salon bottom.",
+      "implementation": "Removed #researchCartPanel inline block and obsolete makeover copy from #view-collection while keeping full study-tray functionality intact in #researchCartPopout.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-proscenium-seam.test.mjs",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-30",
+      "requirement": "Move Export Original Research Cart into Research Cart popout and prevent empty-cart useless export.",
+      "implementation": "Moved #exportTrayBtn inside #researchCartPopout and disabled it (plus guard in handler) when state.collection.size === 0.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-31",
+      "requirement": "Move Save current session into Research Cart popout while preserving strict separation across Cart, Session ZIP, Salon Proposal, and Podium Journey.",
+      "implementation": "Relocated #footerSaveSessionBtn into #researchCartPopout beside #exportTrayBtn and documented the 4 distinct local exports in popout custody text and Help modal.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-32",
+      "requirement": "Remove 'only' from 'PODIUM (AI entrance only) ->', double CTA visual prominence, and route to threshold entrance page.",
+      "implementation": "Updated #footerPodiumLink to PODIUM (AI entrance) ⟶ routing to standalone Dual-Door entrance ./vix-cyb/podium.html outside the 8-room rail with enlarged CTA presence.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vix-cyb/podium.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Couture elevation of #footerPodiumLink glow/typography.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-33",
+      "requirement": "Create a real separate Dual-Door entrance page (HUMAN left, AI/LLM -> llms.txt right) visually related to the Vixen loading screen.",
+      "implementation": "Replaced inline threshold modal/hash redirect with genuinely standalone app/encyclopedia/vix-cyb/podium.html (data-page=podium-entrance) pairing #podiumDoorHuman (./human-podium.html) left and #podiumDoorAi (./llms.txt) right with shared Research Cart header.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/podium.html",
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "tests/vixen-turn1-instrument-browser.test.mjs",
+        "tests/vixen-public-copy-browser.test.mjs"
+      ],
+      "remaining_artistic": "Harmonize loading-veil obsidian shimmer, ambient fox emblem, and dramatic spacing on #view-podium-threshold (data-couture-slot='podium-threshold').",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-34",
+      "requirement": "Host Human Podium as a dedicated destination outside the 8-item primary navigation rail.",
+      "implementation": "Hosted Dual-Door entrance (vix-cyb/podium.html) and Dedicated Human Podium (vix-cyb/human-podium.html) as truly separate HTML destinations outside #vixenRoomRail (strictly 8 rooms) sharing state via vixen-shared-session-bridge.mjs without duplicating #vixen-corpus-bundle.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/podium.html",
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "app/encyclopedia/vixen-estate/vixen-shared-session-bridge.mjs",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Give Human Podium bespoke atmospheric staging distinct from Salon.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-35",
+      "requirement": "Move and substantially develop Maestro and Composer (discovery + passage peeking vs multi-source hypothesis + score gate + Manifesto projection) without chatbot imposture.",
+      "implementation": "Relocated Maestro, Composer (#vmaComposerWorkbench), Comparative Field Trial, and Source Challenge into standalone human-podium.html, fixed module mount order so cross-page ?resume=1 excursion return restores REVIEW/SOURCE/COMPOSER state cleanly via #vmaJourneyDock, preserved deliberate #vmaRestoreBanner on F5, and kept HELD_AWAITING_HUMAN_COMPOSER and model_connected: false.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "app/encyclopedia/vixen-estate/vixen-ai-journey.mjs",
+        "app/encyclopedia/vixen-estate/vixen-shared-session-bridge.mjs",
+        "tests/vixen-ai-journey-browser.test.mjs",
+        "tests/vixen-human-comparative-field-browser.test.mjs",
+        "tests/vixen-maestro-source-challenge-browser.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Elevate Maestro chapter theater & Composer Workbench form choreography.",
+      "remaining_human": "Remote model remains unattached (model_connected: false); Compose remains human-gated.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-36",
+      "requirement": "Give Human Podium dedicated internal tab navigation across Maestro, Composer, Settings & Ledger, Help, and AI/LLM entrance.",
+      "implementation": "Built 4-tab [data-podium-tab] navigation (maestro, composer, settings, help), history back/forward, Cart sync, and secondary LLM Entrance ↗ inside standalone human-podium.html.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Refined couture tab bar & separator treatment in Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-37",
+      "requirement": "Relocate Podium Settings & Ledger out of Salon footer into Human Podium navigation.",
+      "implementation": "Removed Settings & Ledger link from Salon/footer and hosted Podium Settings & Ledger cleanly under [data-podium-tab=settings] in standalone human-podium.html reading synced vixen.synthesis_log.v1 while preserving main Opera #operator compatibility.",
+      "disposition": "REPAIRED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "app/encyclopedia/vixen-estate/vixen-shared-session-bridge.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Polish dark Settings & Ledger diagnostic strip formatting inside Podium.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-38",
+      "requirement": "Include dedicated accurate Human Podium Help inside the Podium navigation.",
+      "implementation": "Built dedicated #podiumHelpPane under [data-podium-tab=help] in human-podium.html plus context-appropriate #inspectorDialog help guide explaining Maestro, Composer, F5 restore, cross-page resume, and epistemic ceilings.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Typography finish on .vix-podium-help-card grid.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-39",
+      "requirement": "Provide convenient standalone LLM Entrance control inside Human Podium opening llms.txt in a new tab.",
+      "implementation": "Placed target=_blank rel=noopener LLM Entrance ↗ link in both standalone human-podium.html tabs/footer and vix-cyb/podium.html #podiumDoorAi opening ./llms.txt.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "app/encyclopedia/vix-cyb/podium.html",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-40",
+      "requirement": "Update machine-facing encyclopedia/vix-cyb/llms.txt against actual Podium, Maestro, Composer, search, reader, and custody contracts.",
+      "implementation": "Updated app/encyclopedia/vix-cyb/llms.txt in Turn I and synced standalone podium.html / human-podium.html routes, .extracted.txt custody, and bridge contracts in Seam Allowance while preserving machine checks.",
+      "disposition": "REPAIRED_IN_SEAM_ALLOWANCE",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/llms.txt",
+        "tests/vixen-stage35-visual-redpen.test.mjs",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-41",
+      "requirement": "Audit all Salon/Podium action buttons ('generate', 'synthesize', 'preview', 'save', 'export') to verify deterministic computation vs template vs handoff vs disconnected LLM.",
+      "implementation": "Documented complete 14-row action-button truth table in docs/RP-1730-FORENSIC-AUDIT.md Section I.E establishing deterministic local computation/handoff and zero live model calls (model_connected: false).",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "docs/RP-1730-FORENSIC-AUDIT.md",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "Make computed-vs-unratified button feedback visually clearer.",
+      "remaining_human": "Remote Gemini/LLM API connectivity intentionally NOT enabled; awaiting separate operator decision.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-42",
+      "requirement": "Reflect semantic-semiotic fusion, Podium 27-route dispatch, and Composer scoring genuinely inside Human Podium without leaking fake telemetry.",
+      "implementation": "Connected Maestro passage peek, Cart import, Composer Workbench bilateral/refraction + reachPodiumComposeGate SHA scoring, and Salon Manifesto projection to genuine estate modules while keeping HELD_AWAITING_HUMAN_COMPOSER explicit.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "app/encyclopedia/vixen-estate/vixen-ai-journey.mjs",
+        "scripts/vixen-podium-native-adapters.mjs",
+        "tests/vixen-podium.test.mjs"
+      ],
+      "remaining_artistic": "Visual storytelling polish around score telemetry cards.",
+      "remaining_human": "Empirical credit = 0; external live provider HELD.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-43",
+      "requirement": "Reorganize footer utility controls compactly beside the enlarged Podium entrance, removing Save & Settings from footer.",
+      "implementation": "Compacted footer.footer in vix-cyb.html with the 3 utility controls (User Help Guide, Search Catalogue, TD613 Encyclopedia) aligned cleanly beside #footerPodiumLink and relocated Save/Settings into Cart Popout/Podium.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": "Final horizontal rhythm and border composition in footer.footer.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-44",
+      "requirement": "Rename footer 'Open Source Inspector (Alt+I)' to clear help label retaining Alt+I shortcut.",
+      "implementation": "Renamed footer button to 'User Help Guide (Alt+I)' retaining data-action='inspector' and Alt+I shortcut.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-45",
+      "requirement": "Retain working footer 'Search Catalogue (Ctrl/Cmd+K)' button and keyboard shortcut.",
+      "implementation": "Retained functional footer Search button opening #searchDialog alongside global Ctrl/Cmd+K listener.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-46",
+      "requirement": "Replace footer '𝌋 Collection index ->' with '𝌋 TD613 Encyclopedia ->'.",
+      "implementation": "Updated #footerEncyclopediaLink text to '𝌋 TD613 Encyclopedia →' and added negative lookahead exception in vixen-opera-public-copy.mjs and vixen-public-copy-browser.test.mjs so bare TD613 remains scrubbed everywhere else.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/vixen-opera-public-copy.mjs",
+        "tests/vixen-public-copy.test.mjs",
+        "tests/vixen-public-copy-browser.test.mjs"
+      ],
+      "remaining_artistic": null,
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-47",
+      "requirement": "Give footer 'VIXEN CYBERNETICS' wordmark a proper luminous couture presence (champagne sprite, pearl glow, animated type, or mini neon).",
+      "implementation": "Preserved required <strong>VIXEN CYBERNETICS</strong> inside <span id='footerVixenWordmark' data-couture-slot='footer-wordmark'> so Opus can craft the finishing luminous gesture without breaking footer wordmark contracts.",
+      "disposition": "SLOT_PREPARED_FOR_OPUS_TURN_II",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "docs/OPUS-COUTURE-HANDOFF.md",
+        "tests/vixen-stage35-visual-redpen.test.mjs"
+      ],
+      "remaining_artistic": "Apply Glinda champagne-yellow/iridescent neon or luminous sprite finishing to #footerVixenWordmark.",
+      "remaining_human": "Human aesthetic signoff after Turn II.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-48",
+      "requirement": "Add 'Invite YOUR AI inside ⇓' CTA near top of Salon scrolling down to Podium entrance and blinking it 3-4 times.",
+      "implementation": "Added #salonInviteAiBtn at top of Salon scrolling smoothly (or instant under Reduced Motion) to #footerPodiumLink and toggling data-arrival-pulse='true' (3-cycle vixArrivalPulse keyframes).",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Polish CTA badge placement and arrival pulse timing in Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-49",
+      "requirement": "Explain comparison holonomy graphic marked 'HUH' in screenshot.",
+      "implementation": "Expanded makeHolonomySvg annotations and added structured .vs-holonomy-grid plain-language readout beneath diagram showing W1->W2 forward vs W2->W1 reverse divergence without source merge.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "app/encyclopedia/vixen-estate/synthesis-salon.css"
+      ],
+      "remaining_artistic": "Refine holonomy SVG proportions, line weights, and typography in Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-50",
+      "requirement": "Eliminate 'EMPTY' wasted horizontal area beside comparison trajectory cards.",
+      "implementation": "Balanced bilateral trajectory memory and expanded .vs-holonomy-grid cards across full container measure in synthesis-salon.mjs / synthesis-salon.css.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs",
+        "app/encyclopedia/vixen-estate/synthesis-salon.css"
+      ],
+      "remaining_artistic": "Final grid density and alignment across desktop/tablet/mobile.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-51",
+      "requirement": "Explain five-clock and lag adjustment panel marked with handwritten question marks.",
+      "implementation": "Added plain-language five-clock vernier explainer beneath clock bars in synthesis-salon.mjs explaining K_LAYER, N_TOKEN, TAU_CONT, T_WALL, and T_PLANT sensitivity demonstration vs physical clock equivalence.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.mjs"
+      ],
+      "remaining_artistic": "Make slider tracks and clock annotations visually cohesive in dark couture.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-52",
+      "requirement": "Audit and fix individual question fields and action hierarchy inside THE QUESTION IS THE GARMENT (screenshot arrows/question marks).",
+      "implementation": "Restyled #ciForm in synthesis-salon.css away from pale ivory form fields, scrubbed CLI strings from #ciStatusLine, and wired Preview / Synthesize controls clearly.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "app/encyclopedia/vix-cyb.html"
+      ],
+      "remaining_artistic": "Recompose question prompts and actions as an inviting editorial quest stage in Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-53",
+      "requirement": "Review low placement and naming of 'Develop the Question' section.",
+      "implementation": "Preserved semantic hook ids (#ciForm / #constitutiveInquirySection) while shifting styling to dark obsidian quest framing and integrating live updates directly into #salonCribAndManifesto above the lower grids.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vixen-estate/synthesis-salon.css"
+      ],
+      "remaining_artistic": "Opus holds architectural freedom to reposition or re-title Develop the Question higher in Salon flow while preserving DOM IDs.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-54",
+      "requirement": "Honor screenshot directive 'more quests, less forms' in Salon question drafting and Maestro/Composer.",
+      "implementation": "Implemented quest-framed prompts, interactive Maestro moves/clues, Composer refraction workbench, and dark editorial styling replacing ivory administrative form blocks.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "app/encyclopedia/vixen-estate/vixen-ai-journey.mjs"
+      ],
+      "remaining_artistic": "Further convert static input affordances into tactile research quests during Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-55",
+      "requirement": "Clarify 'Preview This Inquiry' and 'Synthesize 7 Lenses' controls, what they compute, and trace outputs directly to them.",
+      "implementation": "Wired Preview This Inquiry and Synthesize 7 Lenses cleanly to scoreUnifiedSynthesisCandidates / synthesizeOutsidePerspectiveConjectures, scrubbed CLI leaks from #ciStatusLine, and projected active results directly into #salonManifestoPanel and #ciConjectureGrid.",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "docs/RP-1730-FORENSIC-AUDIT.md"
+      ],
+      "remaining_artistic": "Visual button labeling and active-output trace highlight.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-56",
+      "requirement": "Fix ranked synthesis section marked '2 LONG?' and '2 big?' in screenshot.",
+      "implementation": "Compacted #ciCandidateGrid cards, tightened grid density/padding in synthesis-salon.css, and suppressed boilerplate 'THE ARCHITECTURE OF' filler while retaining 8-axis diagnostic weights.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon.css",
+        "app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs"
+      ],
+      "remaining_artistic": "Refine multi-column comparison scannability in Turn II.",
+      "remaining_human": null,
+      "held": false
+    },
+    {
+      "rp_id": "RP-57",
+      "requirement": "Upgrade 7 cross-domain conjecture cards ('Cute, but more dangerous ideas') with genuine theoretical daring, counterexamples, and attributable filenames without false authority.",
+      "implementation": "Enriched all 7 OUTSIDE_CONJECTURE_SPECS in synthesis-salon-engine.mjs with attributable_filenames, mechanism_vs_metaphor, competing_interpretation, counterexample, exposed_assumption, and diagnostic_coordinates; rendered cleanly in renderConjectures().",
+      "disposition": "ADDRESSED_IN_TURN_I",
+      "evidence": [
+        "app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs",
+        "app/encyclopedia/vix-cyb.html",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Couture card hierarchy for conjecture tension/counterexample blocks.",
+      "remaining_human": "All conjectures carry UNRATIFIED_OUTSIDE_PERSPECTIVE_CONJECTURE_NOT_EVIDENCE ceiling.",
+      "held": false
+    },
+    {
+      "rp_id": "RP-58",
+      "requirement": "Resolve collective footer, oversized Cart, and bottom-of-Salon spatial layout failures crossed out in desktop screenshot.",
+      "implementation": "Removed inline Salon cart, moved Cart & Session ZIP export to #researchCartPopout, separated Dual-Door podium.html and Dedicated human-podium.html outside main rail, enlarged #footerPodiumLink, and released Class C styling assertions to Opus in docs/OPUS-COUTURE-HANDOFF.md.",
+      "disposition": "ADDRESSED_WITH_COUTURE_FOLLOWUP",
+      "evidence": [
+        "app/encyclopedia/vix-cyb.html",
+        "app/encyclopedia/vix-cyb/podium.html",
+        "app/encyclopedia/vix-cyb/human-podium.html",
+        "docs/OPUS-COUTURE-HANDOFF.md",
+        "tests/vixen-turn1-instrument.test.mjs",
+        "tests/vixen-turn1-instrument-browser.test.mjs"
+      ],
+      "remaining_artistic": "Apply final Turn II visual composition to footer band, Podium entrance, and bottom-of-Salon transitions.",
+      "remaining_human": "Human visual & artistic closure required at Turn II completion.",
+      "held": false
+    }
+  ],
+  "turn1_predecessor_sha": "2cd6b3cb31d48090f01450e9a205aa55f6361030",
+  "intermission": "THE_SEAM_ALLOWANCE"
+}

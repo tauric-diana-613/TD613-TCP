@@ -13,7 +13,8 @@ try{
  try{probe=await chromium.launch({headless:true});await probe.close();}
  catch(error){console.error(JSON.stringify({status:'HELD_EXTERNAL_BROWSER_PREREQUISITE',assertions_executed:false,reason:error.message}));process.exitCode=2;}
  if(!process.exitCode){
-  server=spawn('python3',['-m','http.server','6130','--bind','127.0.0.1','--directory','app'],{stdio:['ignore','ignore','pipe']});
+  const pythonBin=process.env.VIXEN_PYTHON||process.env.TD613_NATIVE_PYTHON||'python3';
+  server=spawn(pythonBin,['-m','http.server','6130','--bind','127.0.0.1','--directory','app'],{stdio:['ignore','ignore','pipe']});
   let serverError='';server.stderr.on('data',b=>serverError+=b);
   let ready=false;
   for(let attempt=0;attempt<50;attempt++){

@@ -74,8 +74,11 @@ try{
    JSON.stringify(preflight).slice(0,18000));
   assert.equal(preflight.manifest.reference.index_census_verified,true);
   assert.equal(preflight.manifest.reference.bundled_verified_record_bodies,0);
+  if (await page.locator('#researchCartPopout').isHidden()) {
+    await page.locator('#researchCartBtn').click();
+  }
   const button=page.locator('#footerSaveSessionBtn');
-  await button.waitFor({state:'attached',timeout:15000});
+  await button.waitFor({state:'visible',timeout:15000});
   const downloadPromise=page.waitForEvent('download',{timeout:65000});
   await button.click({timeout:15000});
   const download=await downloadPromise;

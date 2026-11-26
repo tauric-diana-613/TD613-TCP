@@ -172,7 +172,12 @@ export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'observatory-foundry-kernel.mjs',
   'observatory-foundry-renderer.mjs',
   'observatory-foundry.frag',
+  'observatory-open-form-protocol.mjs',
+  'observatory-score-auditions.mjs',
   'observatory-vixen-corpus.mjs',
+  'podium-composition-score.mjs',
+  'podium-salon-optical-bridge.mjs',
+  'manuscript-reader.mjs',
   'research-chamber.css',
   'research-chamber.mjs',
   'role-boundary.mjs',
@@ -191,17 +196,26 @@ export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'synthesis-salon.css',
   'synthesis-salon.mjs',
   'vixen-beat-radiometry-rgi15.mjs',
+  'vixen-bias-cut-couture.css',
+  'vixen-bias-draft.mjs',
+  'vixen-desktop-manuscript-opera-rgi28.css',
   'vixen-electrical-breath-rgi13.css',
   'vixen-folded-cuirass.mjs',
   'vixen-foyer.css',
   'vixen-foyer.mjs',
   'vixen-live-mesh-rgi13.mjs',
+  'vixen-mobile-manuscript-opera-rgi27.css',
+  'vixen-mobile-reading-rgi17.css',
+  'vixen-mobile-seams-rgi16.css',
   'vixen-motion-governor.mjs',
   'vixen-motion.css',
   'vixen-opaline-couture-rgi14.css',
   'vixen-opaline-couture-rgi14.mjs',
+  'vixen-proscenium-seam.css',
+  'vixen-redpen-couture-rgi18.css',
   'vixen-salon-ambient-field.mjs',
   'vixen-salon-light.mjs',
+  'vixen-shared-session-bridge.mjs',
   'vixen-stage-architecture-rgi10b.css'
 ]);
 
@@ -353,6 +367,8 @@ export async function collectVixenSessionFiles({
   }
   // 4-7. Fetch LLM guides, site preflight, vixen-estate, assets/vixen, and reference files in bounded parallel batches
   const batchTargets = [
+    ['./vix-cyb/podium.html', 'encyclopedia/vix-cyb/podium.html'],
+    ['./vix-cyb/human-podium.html', 'encyclopedia/vix-cyb/human-podium.html'],
     ['./vix-cyb/llms.txt', 'encyclopedia/vix-cyb/llms.txt'],
     ['./llms.txt', 'encyclopedia/llms.txt'],
     ['../site-epoch-preflight.js', 'site-epoch-preflight.js'],

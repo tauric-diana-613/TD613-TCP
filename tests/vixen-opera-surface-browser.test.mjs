@@ -14,7 +14,9 @@ import path from 'node:path';
 const BASE='7500e294003e8a5effa52921c8d4b7eba673be9d';
 const current=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const origin='http://127.0.0.1:6130/encyclopedia/';
-const root=path.resolve('artifacts/vixen-opera-redpen');
+const root=path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
+ ? path.join(process.env.VIXEN_WITNESS_OUT_DIR,'vixen-opera-redpen')
+ : 'artifacts/vixen-opera-redpen');
 const app=path.resolve('app/encyclopedia');
 const snapshots=[
  ['vix-cyb.html','__vixen-opera-before-rgi27.html'],

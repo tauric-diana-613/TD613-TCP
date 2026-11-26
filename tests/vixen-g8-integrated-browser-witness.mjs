@@ -57,8 +57,7 @@ try{
   try{
    const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:35000});
    assert.equal(response?.status(),200,'Original Vixen must load from checked-out source');
-   await page.waitForFunction(()=>window.VixenAIModes?.mounted===true&&
-    window.VixenSourceChallenge?.mounted===true,null,{timeout:30000});
+   await page.waitForFunction(()=>!!document.getElementById('vixen-corpus-bundle'),null,{timeout:20000});
    const corpus=await page.evaluate(()=>{
     const c=JSON.parse(document.getElementById('vixen-corpus-bundle').textContent);
     return {works:c.works.length,linked_sources:c.works.reduce(
@@ -66,10 +65,14 @@ try{
    });
    assert.deepEqual(corpus,{works:32,linked_sources:53});
    rec.source_census=corpus;
+   await page.locator('#footerPodiumLink').waitFor({state:'attached',timeout:15000});
+   await page.evaluate(()=>document.querySelector('#footerPodiumLink')?.click());
+   await page.waitForURL('**/encyclopedia/vix-cyb/podium.html',{timeout:15000});
+   await page.locator('#podiumDoorHuman').click();
+   await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:15000});
+   await page.waitForFunction(()=>window.VixenAIModes?.mounted===true&&
+    window.VixenSourceChallenge?.mounted===true,null,{timeout:30000});
    assert.equal(await page.evaluate(()=>window.VixenAIModes.model_connected),false);
-   const nav=page.locator('#vixenRoomRail [data-view="collection"]').first();
-   await nav.click();
-   await page.locator('#view-collection:not([hidden])').waitFor({timeout:16000});
    const role=page.locator('[data-vma-role="MAESTRO"]');
    await role.focus();
    await role.press('Enter');
@@ -113,7 +116,8 @@ try{
    await dock.waitFor({state:'visible',timeout:15000});
    await dock.scrollIntoViewIfNeeded();
    await dock.click();
-   await page.locator('#view-collection:not([hidden])').waitFor({timeout:18000});
+   await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:18000});
+   await page.waitForFunction(()=>window.VixenAIModes?.mounted===true&&window.VixenAIModes.status().result?.active===true,null,{timeout:18000});
    const returned=await page.evaluate(()=>{
     const session=window.VixenAIModes.status();
     return {session_id:session.result?.session_id,
@@ -230,8 +234,6 @@ try{
    assert.equal(fresh.start_disabled,true);
    // Fresh role selection is required before a post-reload permission state
    // can be inspected. Merely finding no selected role proves less.
-   await page.locator('#vixenRoomRail [data-view="collection"]').first().click();
-   await page.locator('#view-collection:not([hidden])').waitFor({timeout:15000});
    await page.locator('[data-vma-role="MAESTRO"]').click();
    await page.locator('#vmaStart').click();
    await page.waitForFunction(()=>

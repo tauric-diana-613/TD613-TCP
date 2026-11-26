@@ -309,11 +309,39 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
  const roleChange=()=>{if(!maestro())wipe();redraw()};
  window.addEventListener('vixen-maestro-session-state',roleChange);
  redraw();
+ const exportSnapshot=()=>({
+  phase:state.phase,sourceA:state.sourceA,sourceB:state.sourceB,question:state.question,focus:state.focus,
+  documents:state.documents?JSON.parse(JSON.stringify(state.documents)):null,
+  result:state.result?JSON.parse(JSON.stringify(state.result)):null,
+  report:state.report?JSON.parse(JSON.stringify(state.report)):null,
+  receipt:state.receipt?JSON.parse(JSON.stringify(state.receipt)):null,
+  draft:{...state.draft},draftRevision:state.draftRevision,
+  receiptExportRequested:state.receiptExportRequested
+ });
+ const restoreSnapshot=(snap)=>{
+  if(!snap||typeof snap!=='object'||!maestro())return false;
+  state.epoch++;state.busy=false;
+  state.phase=typeof snap.phase==='string'?snap.phase:'SETUP';
+  state.sourceA=Number.isInteger(snap.sourceA)?snap.sourceA:0;
+  state.sourceB=Number.isInteger(snap.sourceB)?snap.sourceB:1;
+  state.question=typeof snap.question==='string'?snap.question:'';
+  state.focus=snap.focus||null;
+  state.documents=snap.documents?JSON.parse(JSON.stringify(snap.documents)):null;
+  state.result=snap.result?JSON.parse(JSON.stringify(snap.result)):null;
+  state.report=snap.report?JSON.parse(JSON.stringify(snap.report)):null;
+  state.receipt=snap.receipt?JSON.parse(JSON.stringify(snap.receipt)):null;
+  state.draft=Object.assign(Object.create(null),snap.draft||{});
+  state.draftRevision=Number(snap.draftRevision)||0;
+  state.receiptExportRequested=Boolean(snap.receiptExportRequested);
+  redraw();
+  return true;
+ };
  const api=Object.freeze({mounted:true,status:()=>({
   phase:state.phase,role_active:authorized(),report_recorded:!!state.receipt,
   original_python_executed:false,source_census:32,scientific_credit:0,
   human_closure_required:true,
   motif_candidate:state.result?.source_derived_candidate||null}),
+  exportSnapshot,restoreSnapshot,
   copyLocalReceipt:()=>state.receipt?JSON.parse(JSON.stringify(state.receipt)):null,
   draftStatus:()=>Object.freeze({
    schema:'td613.vixen.unsent-draft-status/v1',role:'MAESTRO',phase:state.phase,

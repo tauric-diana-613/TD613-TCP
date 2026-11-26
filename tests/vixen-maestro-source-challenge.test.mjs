@@ -12,6 +12,7 @@ import {validateSourceChallengeCatalogue,validateSourceChallengeDocuments,
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const html=readFileSync(resolve(ROOT,'app/encyclopedia/vix-cyb.html'),'utf8');
+const humanPodiumHtml=readFileSync(resolve(ROOT,'app/encyclopedia/vix-cyb/human-podium.html'),'utf8');
 const catalogue=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
 const IDs=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'];
 const digest=x=>createHash('sha256').update(x,'utf8').digest('hex');
@@ -117,9 +118,9 @@ test('exact-passage human report validates two actual excerpts, but human mappin
 });
 test('public HTML surfaces a separately gated Maestro source expedition, no authorial name leakage or hidden native-browser code',()=>{
  const script=readFileSync(resolve(ROOT,'app/encyclopedia/vixen-estate/vixen-source-challenge.mjs'),'utf8');
- assert.match(html,/id="vmaSourceChallenge"/);
- assert.match(html,/vixen-source-challenge\.css/);
- assert.match(html,/vixen-source-challenge\.mjs/);
+ assert.match(humanPodiumHtml,/id="vmaSourceChallenge"/);
+ assert.match(humanPodiumHtml,/vixen-source-challenge\.css/);
+ assert.match(humanPodiumHtml,/vixen-source-challenge\.mjs/);
  assert.match(script,/window\.addEventListener\('vixen-maestro-session-state',roleChange\)/);
  assert.match(script,/if\(!maestro\(\)\)wipe\(\)/);
  assert.match(script,/runBrowserSourceChallenge/);

@@ -484,11 +484,24 @@ export class SemanticSemioticSearchEngine {
     ];
     this.graphAdjacency = new Map();
     this.nodeInfo = new Map();
+    this.workFilenames = new Map();
+    this.sourceFilenames = new Map();
     this._initNodesAndGraph(rawIndex.graph?.edges || []);
   }
 
   _initNodesAndGraph(rawEdges) {
     for (const m of this.sourcesMeta) {
+      if (m.source_file_id && m.original_filename) {
+        this.sourceFilenames.set(m.source_file_id, m.original_filename);
+      }
+      if (m.work_id && m.original_filename) {
+        let fset = this.workFilenames.get(m.work_id);
+        if (!fset) {
+          fset = new Set();
+          this.workFilenames.set(m.work_id, fset);
+        }
+        fset.add(m.original_filename);
+      }
       const ids = [m.work_id, m.source_file_id, m.instrument_id].filter(Boolean);
       for (const nid of ids) {
         if (!this.nodeInfo.has(nid)) {
@@ -1293,6 +1306,15 @@ export class SemanticSemioticSearchEngine {
       if (!includeImages && uk === 'image_asset') continue;
 
       const docMatchedTerms = matchedTermsByDoc.get(i);
+      const linkedFilenames = m.work_id && this.workFilenames?.has(m.work_id)
+        ? [...this.workFilenames.get(m.work_id)]
+        : (m.original_filename ? [m.original_filename] : []);
+      const effectiveFilename = m.original_filename
+        || (m.source_file_id ? this.sourceFilenames?.get(m.source_file_id) : null)
+        || linkedFilenames[0]
+        || null;
+      const filenameHayLow = linkedFilenames.map((f) => String(f).toLowerCase()).join(' | ');
+      const filenameStemList = linkedFilenames.map((f) => String(f).replace(/\.(md|pdf|txt)$/i, '').trim().toLowerCase());
       const rawBody = this.shardTexts.get(m.source_file_id || m.instrument_id || '') || null;
       const rawChunkSlice = rawBody && (doc.len || 0) > 0
         ? scrubBase64BlobsForDisplay(rawBody.slice(doc.off || 0, (doc.off || 0) + (doc.len || 0)).normalize('NFC'))
@@ -1300,7 +1322,8 @@ export class SemanticSemioticSearchEngine {
       const metaHayLow = [
         doc.id,
         m.title,
-        m.original_filename,
+        effectiveFilename,
+        ...linkedFilenames,
         m.work_id,
         m.source_file_id,
         m.instrument_id,
@@ -1321,10 +1344,13 @@ export class SemanticSemioticSearchEngine {
         }
       }
 
-      // A phrase claim requires the ordered literal sequence in an attached body.
-      // A title/snippet or BM25F co-occurrence is only an unverified candidate.
+      // A phrase claim requires the ordered literal sequence in an attached body,
+      // OR an explicit match against the recorded original_filename of the source/work.
+      // Generic snippet or BM25F co-occurrence remains UNVERIFIED_COOCCURRENCE.
       let phraseMatchBoost = 0;
       let matchedPhraseLabel = null;
+      let matchedPhraseInBody = false;
+      let matchedPhraseInFilename = false;
       if (parsed.phrases.length > 0) {
         let allPhrasesSatisfied = true;
         for (let pIdx = 0; pIdx < parsed.phrases.length; pIdx++) {
@@ -1332,6 +1358,12 @@ export class SemanticSemioticSearchEngine {
           const pToks = parsed.phraseTokenLists[pIdx] || [];
           if (rawChunkSlice && rawChunkSlice.toLowerCase().includes(phr)) {
             matchedPhraseLabel = phr;
+            matchedPhraseInBody = true;
+            continue;
+          }
+          if (filenameHayLow && filenameHayLow.includes(phr)) {
+            matchedPhraseLabel = phr;
+            matchedPhraseInFilename = true;
             continue;
           }
           if (!rawChunkSlice && pToks.length > 0 &&
@@ -1342,7 +1374,7 @@ export class SemanticSemioticSearchEngine {
           break;
         }
         if (!allPhrasesSatisfied) continue;
-        phraseMatchBoost = 0.22; // body-verified adjacency only
+        phraseMatchBoost = matchedPhraseInFilename && !matchedPhraseInBody ? 0.28 : 0.22;
       }
 
       // Channel 3: Semiotic Plane/Cluster/Protocol/Tag Affinity + Rung Cap
@@ -1435,7 +1467,19 @@ export class SemanticSemioticSearchEngine {
       // Compute raw diagnostics unchanged; disabled channels cannot authorize
       // eligibility, add score, or manufacture an evidence rung.
       const active=fusionControls.channels;
-      const evidLex=active.lexical&&(sLex>=0.08||(parsed.phrases.length>0&&phraseMatchBoost>0));
+      const posQueryLow = parsed.positiveRaw.toLowerCase().trim();
+      const exactStemMatch = posQueryLow.length >= 3 && filenameStemList.some((s) => s === posQueryLow);
+      const substrFilenameMatch = !exactStemMatch && posQueryLow.length >= 3 && filenameHayLow.includes(posQueryLow);
+      const tokenFilenameMatch = !exactStemMatch && !substrFilenameMatch && parsed.tokens.length >= 2 &&
+        filenameHayLow.length > 0 && parsed.tokens.every((t) => filenameHayLow.includes(t));
+      const filenameBoost = active.lexical
+        ? (exactStemMatch ? 0.34 : (substrFilenameMatch ? 0.22 : (tokenFilenameMatch ? 0.12 : 0)))
+        : 0;
+      if (exactStemMatch) why.push('exact original filename match');
+      else if (substrFilenameMatch) why.push('original filename substring match');
+      else if (matchedPhraseInFilename && !matchedPhraseInBody) why.push('original filename phrase match');
+
+      const evidLex=active.lexical&&(sLex>=0.08||filenameBoost>0||(parsed.phrases.length>0&&phraseMatchBoost>0));
       const evidSem=active.semantic&&sSem>=0.42&&alphaSupport>=0.5;
       const evidSemi=active.semiotic&&sSemi>=(parsed.mode==='src_projective'?0.25:0.30);
       const evidSrc=active.src&&(parsed.mode==='src_projective'
@@ -1445,12 +1489,12 @@ export class SemanticSemioticSearchEngine {
       // fusion request. A deliberate ablation uses only its active channels.
       const unmodifiedFusion=active.lexical&&active.semantic&&active.semiotic&&active.src;
       const originalEvidence=parsed.mode==='lexical'
-        ?(sLex>=0.08||(parsed.phrases.length>0&&phraseMatchBoost>0))
+        ?(sLex>=0.08||filenameBoost>0||(parsed.phrases.length>0&&phraseMatchBoost>0))
         :(parsed.mode==='phrase'||parsed.mode==='exact')
-          ?(phraseMatchBoost>0||sLex>=0.08)
+          ?(phraseMatchBoost>0||sLex>=0.08||filenameBoost>0)
           :parsed.mode==='src_projective'
-            ?(srcEval.s_src_combined>=0.14||sLex>=0.08||sSemi>=0.25||phraseMatchBoost>0)
-            :(sLex>=0.08||(sSem>=0.42&&alphaSupport>=0.5)||sSemi>=0.30||
+            ?(srcEval.s_src_combined>=0.14||sLex>=0.08||filenameBoost>0||sSemi>=0.25||phraseMatchBoost>0)
+            :(sLex>=0.08||filenameBoost>0||(sSem>=0.42&&alphaSupport>=0.5)||sSemi>=0.30||
               phraseMatchBoost>0||(srcCond.analysis.hasSrcUntypicalCue&&srcEval.s_src_combined>=0.16));
       if(!(unmodifiedFusion?originalEvidence:(evidLex||evidSem||evidSemi||evidSrc)))continue;
 
@@ -1462,7 +1506,7 @@ export class SemanticSemioticSearchEngine {
         src_proj:srcEval.s_src_proj,src_sig:srcEval.s_src_sig
       },fusionControls,parsed.mode,srcCond.analysis.hasSrcUntypicalCue,srcWeights);
       const total=Math.min(1,fusionScore.active_score+
-        (active.lexical?phraseMatchBoost:0)+titlePhraseBonus+kindPrior);
+        (active.lexical?phraseMatchBoost:0)+titlePhraseBonus+filenameBoost+kindPrior);
       if(total<0.09)continue;
 
       let displaySnippet = doc.sn || '';
@@ -1474,7 +1518,7 @@ export class SemanticSemioticSearchEngine {
 
       const chunkSha = this._getChunkSha256(i);
       const isDuplicate = Boolean(m.duplicate_of_source_file_id);
-      const sortScore = isDuplicate ? Math.max(0, total - 0.03) : total;
+      const sortScore = total + filenameBoost + (matchedPhraseInFilename ? 0.1 : 0) - (isDuplicate ? 0.03 : 0);
       if (isDuplicate) why.push(`duplicate_of:${m.duplicate_of_source_file_id}`);
 
       const deltaChan = +(sLex - sSem).toFixed(4);
@@ -1490,8 +1534,9 @@ export class SemanticSemioticSearchEngine {
         work_id: m.work_id || null,
         source_file_id: m.source_file_id || null,
         instrument_id: m.instrument_id || null,
-        title: m.title || m.original_filename || doc.id,
-        original_filename: m.original_filename || null,
+        title: m.title || effectiveFilename || doc.id,
+        original_filename: effectiveFilename,
+        original_filenames: linkedFilenames,
         cluster: m.cluster || null,
         identity_status: m.identity_status || null,
         gate_num: m.gate_num ?? null,
@@ -1520,7 +1565,9 @@ export class SemanticSemioticSearchEngine {
         protocol_ids: m.protocol_ids || [],
         semiotic_tags: tags,
         highest_rung: highestRung,
-        phrase_verification_status: parsed.phrases.length > 0 ? 'BODY_VERIFIED_PHRASE' : 'NOT_APPLICABLE',
+        phrase_verification_status: parsed.phrases.length > 0
+          ? (matchedPhraseInBody ? 'BODY_VERIFIED_PHRASE' : 'FILENAME_VERIFIED_PHRASE')
+          : 'NOT_APPLICABLE',
         score_total: +total.toFixed(4),
         fusion_contributions:fusionScore.effective_contributions,
         fusion_normalization_factor:fusionScore.normalization_factor,

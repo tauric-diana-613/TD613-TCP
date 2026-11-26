@@ -11,7 +11,7 @@ import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 
 const origin=process.env.VIXEN_WITNESS_ORIGIN || 'http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
-const root=path.resolve('artifacts/vixen-full-surface');
+const root=path.resolve(process.env.VIXEN_WITNESS_OUT_DIR || 'artifacts/vixen-full-surface');
 const isHostedPreview=origin.startsWith('https://');
 const startedAt=Date.now();
 const revision=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
@@ -264,7 +264,7 @@ try{
    }catch(e){failure.push({profile:profile.name,route,error:String(e)});}
   }
   try{
-   await page.evaluate(()=>document.querySelector('[data-view="operator"]')?.click());
+   await page.evaluate(()=>{ window.location.hash = '#operator'; });
    await page.waitForFunction(()=>document.body.dataset.view==='operator',null,{timeout:9000});
    matrix.push({profile:profile.name,...await scrollCapture(page,profile,'operator-settings')});
   }catch(e){failure.push({profile:profile.name,route:'operator-settings',error:String(e)});}
@@ -378,7 +378,10 @@ try{
   }catch(e){failure.push({profile:profile.name,route:'works-original-reader',error:String(e)});}
   // Record the human-facing role choices without granting Program Notes consent.
   try{
-   await page.locator('#vixenRoomRail button[data-view="collection"]').click({force:true,timeout:8000});
+   const humanPodiumUrl=new URL('./vix-cyb/human-podium.html',origin).href;
+   const hpResp=await page.goto(humanPodiumUrl,{waitUntil:'domcontentloaded',timeout:30000});
+   if(hpResp?.status()!==200)throw Error('HUMAN_PODIUM_HTTP_FAILED '+hpResp?.status());
+   await page.waitForFunction(()=>window.VixenAIModes?.mounted===true,null,{timeout:25000});
    for(const role of ['MAESTRO','COMPOSER']){
     const selector='[data-vma-role="'+role+'"]';
     await page.locator(selector).click({force:true,timeout:5000});
@@ -409,7 +412,7 @@ try{
    }
    await page.locator('#vmaNotesRequest').waitFor({state:'visible',timeout:10000});
    const notesOff=(await page.locator('#vmaNotesState').innerText()).trim();
-   if(!/Notes OFF/i.test(notesOff))throw Error('PROGRAM_NOTES_DEFAULT_NOT_OFF '+notesOff);
+   if(!/^(?:Notes )?OFF\b/i.test(notesOff))throw Error('PROGRAM_NOTES_DEFAULT_NOT_OFF '+notesOff);
    await capture(page,path.join(profile.name,'podium-roles','program-notes-off.jpg'),{
     profile:profile.name,surface:'program-notes-off',kind:'consent_off',
     program_notes_permission:'NOT_REQUESTED',grant_performed:false
@@ -422,6 +425,8 @@ try{
     program_notes_permission:'AWAITING_HUMAN_PERMISSION',grant_performed:false
    });
    matrix.push({profile:profile.name,route:'program-notes-pending',covered_bottom:true,tiles:1});
+   await page.goto(origin,{waitUntil:'domcontentloaded',timeout:30000});
+   await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:20000});
   }catch(e){failure.push({profile:profile.name,route:'podium-role-choices',error:String(e)});}
   // Inspect every public research-inspector pane, including scrollable
   // dialog content. A hidden/pinned developer panel is not omitted silently.
