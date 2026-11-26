@@ -60,11 +60,11 @@ export default function handler(req, res) {
     return geminiReadinessHandler(req, res);
   }
   if (requestHasAttachments(req)) {
-    return runWithMarrowlineEpisodeContinuity(req, res, (epReq, epRes) => marrowlineAttachmentHandler(epReq, epRes));
+    return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => marrowlineAttachmentHandler(req, res));
   }
-  return runWithMarrowlineEpisodeContinuity(req, res, (epReq, epRes) => withGeminiGenerationProfile(
+  return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => withGeminiGenerationProfile(
     GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
-    () => khonapolitHandler(epReq, epRes)
+    () => khonapolitHandler(req, res)
   ));
 }
 
