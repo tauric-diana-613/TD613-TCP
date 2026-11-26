@@ -102,10 +102,11 @@ try {
       .filter({hasText:/The Architecture of Control/i}).first();
     await architectureWork.click({timeout:20000});
     const workMount=page.locator('#worksExperimentAReaderMount');
-    const pdfManifest=workMount.locator('[data-select-manifestation]')
-      .filter({hasText:/Algedonic Systems Deep Research\.pdf/i}).first();
+    const pdfManifest=page.locator('#worksReaderPanel [data-inspect-manifestation]').filter({has:page.locator('[title="Algedonic Systems Deep Research.pdf"]')}).first();
     await pdfManifest.waitFor({state:'visible',timeout:25000});
     await pdfManifest.click({timeout:20000});
+    assert.equal(await page.locator('#worksReaderPanel .works-manifestation-bar').count(),1,'One version switcher only');
+    assert.equal(await workMount.locator('.expa-tabs').count(),0,'No repeated manifestation menu');
     await page.waitForFunction(()=>{
       const doc=document.querySelector('#expaCompanionBodyPre');
       return doc?.dataset.lineation==='pdf-source-wordflow-reconstructed' &&

@@ -1213,7 +1213,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="view-number" aria-hidden="true">32</div>
       </div>
 
-      <section class="vix-couture-route-guide" aria-labelledby="vixWorksPathTitle">
+      <details class="vix-couture-route-guide works-reading-guide" aria-labelledby="vixWorksPathTitle"><summary>About this catalogue · 32 entries, 53 files</summary>
         <p class="vix-route-kicker">32 WORKS · 53 MANIFESTATIONS · FIVE RESEARCH CLUSTERS</p>
         <h2 id="vixWorksPathTitle">Enter the repertoire, then examine the evidence.</h2>
         <p class="vix-route-dek">Three deliberate moves through a source-bound collection. Use the perspective and filters to locate an actual Work; the adjacent reader holds the selected record without rewriting its historical identity.</p>
@@ -1226,7 +1226,7 @@ body[data-view="overview"] .reading-back{display:none}
           <summary>How to interpret the Work identities</summary>
           <p>Eight linked Markdown/PDF pairs remain human-gated. The catalogue's route labels describe available evidence; they do not adjudicate equivalence, authorship or provenance. Use GATES for hypothetical identity sensitivity, never to rewrite a source file.</p>
         </details>
-      </section>
+      </details>
 
       <div class="aia-bar" role="region" aria-label="Catalogue Research Perspectives">
         <span>CATALOGUE PERSPECTIVE (PRESERVING ROUTE INTEGRITY):</span>
@@ -3429,15 +3429,15 @@ body[data-view="overview"] .reading-back{display:none}
               : (src.original_filename || (src.source_file_id + '.md'));
             const formatBadge = isPdfSrc ? 'PDF text only (.pdf binary held)' : 'Authentic .md';
             return '<div class="works-manifestation-pill' + (active ? ' is-active' : '') + '">' +
-              '<button type="button" class="secondary-btn" data-inspect-manifestation="' + esc(src.source_file_id) + '" data-select-manifestation="' + esc(src.source_file_id) + '" aria-pressed="' + active + '">' +
-                '<span class="vix-source-filename">' + esc(src.original_filename) + '</span>' +
-                '<span class="vix-source-badge">' + (active ? 'Reading' : 'Read') + ' · ' + formatBadge + '</span>' +
+              '<button type="button" class="secondary-btn" data-inspect-manifestation="' + esc(src.source_file_id) + '" data-select-manifestation="' + esc(src.source_file_id) + '" aria-pressed="' + active + '" aria-label="Read ' + esc(src.original_filename) + ' · ' + formatBadge + '">' +
+                '<span class="vix-source-filename" title="' + esc(src.original_filename) + '">' + (isPdfSrc ? 'PDF text' : 'Markdown') + '</span>' +
+                '<span class="vix-source-badge">' + (active ? ' · Reading' : '') + '</span>' +
               '</button>' +
-              '<button type="button" class="secondary-btn works-dl-btn" data-download-manifestation="' + esc(src.source_file_id) + '" data-download-filename="' + esc(downloadFname) + '" data-download-kind="' + (isPdfSrc ? 'EXTRACTED_NATIVE_PDF_TEXT' : 'NATIVE_MARKDOWN') + '" data-binary-pdf-available="' + (isPdfSrc ? 'false' : 'n/a') + '" aria-label="' + (isPdfSrc ? 'Download extracted UTF-8 text from ' + esc(src.original_filename) + ' (original binary PDF unavailable)' : 'Download authentic Markdown ' + esc(src.original_filename)) + '" title="' + (isPdfSrc ? 'Downloads extracted UTF-8 text (' + esc(downloadFname) + '); original binary .pdf bytes are unavailable/held' : 'Downloads authentic Markdown (' + esc(downloadFname) + ')') + '">' + (isPdfSrc ? '↓ .extracted.txt' : '↓ .md') + '</button>' +
+              '<button type="button" class="secondary-btn works-dl-btn" data-download-manifestation="' + esc(src.source_file_id) + '" data-download-filename="' + esc(downloadFname) + '" data-download-kind="' + (isPdfSrc ? 'EXTRACTED_NATIVE_PDF_TEXT' : 'NATIVE_MARKDOWN') + '" data-binary-pdf-available="' + (isPdfSrc ? 'false' : 'n/a') + '" aria-label="' + (isPdfSrc ? 'Download extracted UTF-8 text from ' + esc(src.original_filename) + ' (original binary PDF unavailable)' : 'Download authentic Markdown ' + esc(src.original_filename)) + '" title="' + (isPdfSrc ? 'Downloads extracted UTF-8 text (' + esc(downloadFname) + '); original binary .pdf bytes are unavailable/held' : 'Downloads authentic Markdown (' + esc(downloadFname) + ')') + '">' + '↓</button>' +
             '</div>';
           }).join('') +
           (sel.linked_sources.length > 1
-            ? '<button type="button" class="secondary-btn works-diff-btn" data-open-folios="' + esc(sel.work_id) + '">Compare versions in Folios ↗</button>'
+            ? '<button type="button" class="secondary-btn works-diff-btn" data-open-folios="' + esc(sel.work_id) + '">Compare versions ↗</button>'
             : '') +
           '</div>';
 
@@ -3453,7 +3453,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<button type="button" class="secondary-btn reader-close-mobile" id="closeMobileWorkBtn">← Back to 32-Work Index</button>' +
           '<div data-membrane="RESEARCH_OBJECT" class="vix-public-work-header">' +
             '<h2>' + esc(sel.declared_title) + '</h2>' +
-            '<p class="vix-public-byline">' + esc((sel.linked_sources || []).map((s) => s.original_filename).join(' · ')) +
+            '<p class="vix-public-byline">' + esc(sel.linked_sources.find(s => s.source_file_id === state.activeManifestationId)?.original_filename || sel.linked_sources[0]?.original_filename || '') +
             ((sel.authorship && !/^(?:UNRESOLVED|UNKNOWN|N\/A)$/i.test(sel.authorship))
               ? ' · Recorded author: ' + esc(sel.authorship) : '') + '</p>' +
           '</div>' +
@@ -3470,7 +3470,6 @@ body[data-view="overview"] .reading-back{display:none}
               : '') +
           '</details>' +
           '<div data-membrane="RESEARCH_OBJECT" class="reader-section">' +
-            '<h3>Manuscript versions</h3>' +
             manifestsHtml +
             '<div id="worksExperimentAReaderMount" class="expa-reader-shell" data-work-id="' + esc(sel.work_id) + '"></div>' +
           '</div>' +
@@ -3688,13 +3687,6 @@ body[data-view="overview"] .reading-back{display:none}
     const passageExcerpt = passageSliceObj ? (passageSliceObj.readableExcerpt || passageSliceObj.excerpt || '') : '';
 
     const isPaired = work.linked_sources.length > 1;
-    const manifestTabsHtml = '<div class="expa-tabs" role="tablist" aria-label="Manifestation Format Selector">' +
-      work.linked_sources.map((s, idx) =>
-        '<button type="button" class="secondary-btn" role="tab" data-select-manifestation="' + esc(s.source_file_id) + '" aria-pressed="' + (s.source_file_id === activeSrc.source_file_id) + '">' +
-          (idx + 1) + '. ' + esc(s.original_filename) + ' [' + esc((s.media_type || '').split('/').pop()) + ']' +
-        '</button>'
-      ).join('') +
-    '</div>';
 
     const custodyBody =
       '<div style="font:500 10px/1.6 var(--font-mono);color:#d8cbb8;margin-bottom:8px">' +
@@ -3725,11 +3717,7 @@ body[data-view="overview"] .reading-back{display:none}
     } else {
       bodyDisplayHtml =
         '<div class="vix-reading-atelier-bar" role="group" aria-label="Manuscript reading controls">' +
-          '<div class="vix-folio-identity">' +
-            '<span class="vix-reading-atelier-eyebrow">THE OBSIDIAN READING ROOM · EDITORIAL EDITION</span>' +
-            '<span class="vix-reading-atelier-name">' + esc(work.declared_title || 'Recorded manuscript') + '</span>' +
-            '<span class="vix-reading-atelier-custody">' + (String(activeSrc.media_type || '').includes('pdf') ? 'PDF text derivative · reading projection' : 'Native manuscript · original structure') + ' · source intact</span>' +
-          '</div>' +
+          '<span class="works-format-note">' + (String(activeSrc.media_type || '').includes('pdf') ? 'Extracted PDF text · original PDF unavailable' : 'Original Markdown') + '</span>' +
           '<div class="vix-folio-controls" role="group" aria-label="Manuscript density controls">' +
             '<button type="button" data-folio-density="compact" aria-pressed="true">COMPACT</button>' +
             '<button type="button" data-folio-density="comfort" aria-pressed="false">RELAXED</button>' +
@@ -3749,11 +3737,10 @@ body[data-view="overview"] .reading-back{display:none}
       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">' +
         '' +
       '</div>' +
-      renderPhaseRail() +
-      manifestTabsHtml +
-      custodyLine +
       bodyDisplayHtml +
-      renderLocalDropSection();
+      '<details class="works-extra-tools"><summary>Reading tools and source details</summary>' +
+        renderPhaseRail() + custodyLine + renderLocalDropSection() +
+      '</details>';
 
     // The Works reader shares the exact-source, MathML-aware presentation kernel
     // with the Salon. Preserve the original manuscript bytes and hash witness;
@@ -3830,7 +3817,7 @@ body[data-view="overview"] .reading-back{display:none}
       const syncReadingFocus=()=>{
         const focus=readingLayout?.dataset.readingFocus==='true';
         readingFocusButton.setAttribute('aria-pressed',String(focus));
-        readingFocusButton.textContent=focus?'Return to index ↙':'Expand reading atelier ↗';
+        readingFocusButton.textContent=focus?'Show index ↙':'Full width ↗';
       };
       syncReadingFocus();
       readingFocusButton.addEventListener('click',()=>{

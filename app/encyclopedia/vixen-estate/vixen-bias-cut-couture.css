@@ -1098,3 +1098,58 @@ body #vixenSynthesisSalon .vs-question-advanced{border-top:1px solid var(--bc-ha
 body #vixenSynthesisSalon .vs-question-advanced summary{cursor:pointer;color:var(--bc-champagne);font-size:12px;line-height:1.4}
 body #vixenSynthesisSalon .vs-question-advanced-fields{display:grid;gap:8px;margin-top:8px}
 body #view-collection .ci-candidate-card .ci-conj-body{font-size:14px;line-height:1.5}
+
+/* Operator audition: compact filename catalogue and uninterrupted manuscript flow. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works > .page-pad > .view-heading{padding-block:8px!important;margin-bottom:6px!important;min-height:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .works-reading-guide{padding:8px 12px!important;margin:4px 0 8px!important;background:#16191e!important;color:#f4f1ea!important;box-shadow:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .works-reading-guide>summary{font:600 12px/1.4 system-ui,sans-serif!important;cursor:pointer!important;color:#f4f1ea!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .works-reading-guide:not([open])>:not(summary){display:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .aia-bar{padding:6px 9px!important;margin:0 0 6px!important;gap:4px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .aia-bar button{min-height:26px!important;padding:4px 7px!important;font-size:10px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .toolbar{padding:7px!important;gap:5px!important;margin-bottom:6px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .toolbar :is(.segmented button,.works-sort-bar button,.works-sort-bar select){min-height:28px!important;padding:4px 8px!important;font-size:10px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksListContainer .term-name.work-received-filenames{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;font:600 13px/1.33 system-ui,sans-serif!important;color:inherit!important;letter-spacing:0!important;word-break:normal!important;overflow-wrap:anywhere!important;margin:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksListContainer .work-internal-title{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;font:400 12px/1.35 Georgia,serif!important;color:inherit!important;opacity:.78!important;margin:3px 0 0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksListContainer.lexicon-list .lexicon-item>button{padding:8px 10px!important;min-height:0!important;gap:8px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel.lexicon-reader{position:relative!important;top:auto!important;align-self:start!important;padding:12px!important;box-shadow:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header h2{font:500 clamp(20px,1.65vw,25px)/1.22 Georgia,serif!important;max-width:none!important;margin:0 0 4px!important;text-wrap:pretty!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-byline{display:block!important;background:none!important;border:0!important;padding:0!important;margin:0 0 6px!important;color:#c9ccd1!important;font:400 12px/1.4 system-ui,sans-serif!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .reader-section{padding:4px 0!important;margin:3px 0!important;border:0!important;box-shadow:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-bar{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:5px!important;margin:2px 0 5px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-pill{display:inline-flex!important;background:#1b1e24!important;border:1px solid #62666c!important;box-shadow:none!important;min-width:0!important;width:auto!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-pill.is-active{border-color:#e8d7a8!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(.works-manifestation-pill .secondary-btn,.works-diff-btn){display:inline-flex!important;align-items:center!important;width:auto!important;min-width:0!important;min-height:28px!important;padding:4px 8px!important;margin:0!important;background:transparent!important;color:#f4f1ea!important;border:0!important;font:500 11px/1.3 system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;box-shadow:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-pill .works-dl-btn{border-left:1px solid #62666c!important;color:#fff2a9!important;font-size:15px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-pill.is-active [data-select-manifestation]{color:#fff2a9!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-pill .vix-source-filename{color:inherit!important;font:inherit!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .works-manifestation-pill .vix-source-badge{color:inherit!important;font:400 10px/1.3 system-ui,sans-serif!important;letter-spacing:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-bar{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;justify-content:space-between!important;align-items:center!important;gap:5px!important;padding:4px 0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .works-format-note{font:400 11px/1.3 system-ui,sans-serif!important;color:#c9ccd1!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-controls{display:inline-flex!important;flex-direction:row!important;width:auto!important;gap:4px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-controls button{width:auto!important;min-width:0!important;min-height:28px!important;padding:4px 8px!important;font:500 10px/1.2 system-ui,sans-serif!important;letter-spacing:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-topline{display:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-footer{position:static!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .works-extra-tools{margin:12px 0!important;color:#c9ccd1!important;font-size:12px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .works-extra-tools summary{cursor:pointer!important;padding:6px 0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript{padding:clamp(18px,3vw,42px)!important;max-width:none!important;font:400 16px/1.62 Georgia,serif!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph{font:400 16px/1.62 Georgia,serif!important;max-width:78ch!important;margin:0 auto 12px!important;text-indent:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading{max-width:78ch!important;margin:22px auto 8px!important;font:500 21px/1.25 Georgia,serif!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph::before{content:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph::after{content:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph:first-of-type::first-letter{float:none!important;font:inherit!important;color:inherit!important;background:none!important;border:0!important;padding:0!important;margin:0!important;-webkit-text-fill-color:currentColor!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph:first-of-type::first-line{font-variant:normal!important;letter-spacing:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title{display:none!important}
+@media(min-width:681px){
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout.lexicon-layout:not([data-reading-focus="true"]){grid-template-columns:minmax(230px,28%) minmax(0,1fr)!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout>.lexicon-index{top:82px!important;max-height:calc(100dvh - 110px)!important}
+}
+@media(max-width:680px){
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout:not(.has-mobile-reader)>.lexicon-index{max-height:none!important;height:auto!important;overflow:visible!important;position:static!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout:not(.has-mobile-reader) #worksReaderPanel{display:none!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel.lexicon-reader{padding:2px 0 14px!important;border:0!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header h2{font:500 20px/1.2 Georgia,serif!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript{padding:15px 14px 22px!important;font:400 15.5px/1.55 Georgia,serif!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph{font:400 15.5px/1.55 Georgia,serif!important;margin:0 0 11px!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading{font:500 19px/1.25 Georgia,serif!important}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works:has(#worksLexiconLayout.has-mobile-reader) :is(.view-heading,.works-reading-guide,.aia-bar,.toolbar,#worksResultSummary,#workSortNotice){display:none!important}
+}
