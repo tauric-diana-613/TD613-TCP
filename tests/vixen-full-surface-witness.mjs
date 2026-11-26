@@ -329,14 +329,14 @@ try{
    await page.locator('#globalSearchInput').fill('provenance');
    await page.waitForTimeout(180);
    if(!await page.locator('#vixenFusionConsole').evaluate(el=>el.open))
-    await page.locator('#vixenFusionConsole > summary').click({force:true,noWaitAfter:true,timeout:5000});
+    await clickExposed(page.locator('#vixenFusionConsole > summary'),15000);
    await page.waitForFunction(()=>document.getElementById('vixenFusionConsole')?.open===true,null,{timeout:8000});
    await page.waitForTimeout(120);
    await capture(page,path.join(profile.name,'search-dialog','fusion-laboratory.jpg'),{
     profile:profile.name,surface:'fusion-laboratory',kind:'fusion_laboratory',device_scale_factor:profile.deviceScaleFactor??1
    });
    matrix.push({profile:profile.name,route:'fusion-laboratory',covered_bottom:true,tiles:1,modal:true});
-   await page.locator('#closeSearchBtn').click({force:true,timeout:5000});
+   await clickExposed(page.locator('#closeSearchBtn'),15000);
    if(await page.locator('#searchDialog').isVisible())throw Error('SEARCH_OVERLAY_FAILED_TO_CLOSE');
   }catch(e){
    failure.push({profile:profile.name,route:'search-and-fusion',error:String(e)});

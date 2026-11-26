@@ -298,10 +298,25 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
     (e.draft||e.visitor_observation||e.highlighted_work||'Structured local outline')));
   }
  }
+ const emitRoleState=(extra={})=>{
+  try{
+   window.dispatchEvent(new CustomEvent('vixen:podium-role-state',{
+    detail:{role,active:Boolean(active),locked:Boolean(active),...extra}
+   }));
+  }catch(_){}
+ };
  host.querySelectorAll('[data-vma-role]').forEach(x=>x.addEventListener('click',()=>{
-  if(active)return;role=x.dataset.vmaRole;
+  if(active){
+   if(x.dataset.vmaRole&&x.dataset.vmaRole!==role){
+    announce('Role locked to '+role+' for this active session; end session before switching to '+x.dataset.vmaRole+'.');
+    emitRoleState({refusedRole:x.dataset.vmaRole});
+   }
+   return;
+  }
+  role=x.dataset.vmaRole;
   host.querySelectorAll('[data-vma-role]').forEach(z=>z.setAttribute('aria-pressed',String(z===x)));
   by('vmaStart').disabled=false;announce('Role selected: '+role+'.');
+  emitRoleState();
  }));
  by('vmaStart').addEventListener('click',()=>lock(async()=>{
   if(!role)return;
@@ -314,6 +329,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
    active=true;announce('Your ontological role is locked for this session.');render();
    persistExcursion({excursionInFlight:false});
    by('vmaRestoreBanner')&&(by('vmaRestoreBanner').hidden=true);
+   emitRoleState();
   }
   else announce('Held · '+(v.result?.reason||'session unavailable'));
  }));
@@ -389,6 +405,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
    'Session ended. Completed browser field receipts are included in the final local archive. Download it before starting another session.':
    'Session ended. Your final archive is available for local download; no role or notes consent will auto-restore.');
   render();
+  emitRoleState();
  });
  by('vmaSaveFinal').addEventListener('click',()=>{
    if(!lastArchive)return;
@@ -460,6 +477,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   if(snap.source_challenge)window.VixenSourceChallenge?.restoreSnapshot?.(snap.source_challenge);
   if(by('vmaRestoreBanner'))by('vmaRestoreBanner').hidden=true;
   window.VixenSetPodiumTab?.(role==='COMPOSER'?'composer':'maestro');
+  emitRoleState();
   announce('Restored paused '+role+' session.');
   return true;
  };
@@ -491,11 +509,19 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
  }
  window.addEventListener('vixen:podium-select-role',(ev)=>{
   const nextRole=ev?.detail?.role;
-  if(active||!['MAESTRO','COMPOSER'].includes(nextRole))return;
+  if(!['MAESTRO','COMPOSER'].includes(nextRole))return;
+  if(active){
+   if(nextRole!==role){
+    announce('Role locked to '+role+' for this active session; end session before switching to '+nextRole+'.');
+    emitRoleState({refusedRole:nextRole});
+   }
+   return;
+  }
   role=nextRole;
   host.querySelectorAll('[data-vma-role]').forEach(z=>z.setAttribute('aria-pressed',String(z.dataset.vmaRole===role)));
   by('vmaStart').disabled=false;
   announce('Role selected: '+role+'.');
+  emitRoleState();
  });
  window.addEventListener('vixen:project-manifesto-to-podium',(ev)=>{
   const d=ev?.detail||{};
@@ -525,6 +551,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   role='COMPOSER';
   host.querySelectorAll('[data-vma-role]').forEach(z=>z.setAttribute('aria-pressed',String(z.dataset.vmaRole==='COMPOSER')));
   by('vmaStart').disabled=false;
+  emitRoleState();
   announce('Composer preselected with Salon Manifesto draft. Press Begin to lock session.');
  }
  const api=Object.freeze({mounted:true,roles:['MAESTRO','COMPOSER'],model_connected:false,

@@ -112,7 +112,7 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
       </div>
       <a class="brand-link" href="../vix-cyb.html#overview" aria-label="Vixen Cybernetics Main Opera">
         <svg class="vixen-fox-emblem" viewBox="0 0 64 64" aria-hidden="true"><polygon points="10,10 24,22 20,42 8,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="54,10 40,22 44,42 56,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="20,24 44,24 32,54" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="26" cy="33" r="2.2" fill="#FFF2A9"/><circle cx="38" cy="33" r="2.2" fill="#FFF2A9"/></svg>
-        <span class="brand-name"><strong>VIXEN CYBERNETICS</strong><small>HUMAN PODIUM · OUTSIDE MAIN RAIL</small></span>
+        <span class="brand-name"><strong>VIXEN CYBERNETICS</strong><small>HUMAN PODIUM · RESEARCH WORKSPACE</small></span>
       </a>
     </div>
     <div class="header-actions">
@@ -280,7 +280,7 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
             <button type="button" class="vma-btn" id="vmaEnd">End session · Choose another role</button>
           </div>
           <textarea id="vmaCopyFallback" hidden readonly aria-label="AI handoff text to copy"></textarea>
-          <p class="vma-muted">The page offers genuine source-grounded local guidance and a structured AI handoff. Live-model conversation requires your connected AI chat (<code>model_connected: false</code>; <code>empirical_replication_credit: 0</code>).</p>
+          <p class="vma-muted">The page offers genuine source-grounded local guidance and a structured AI handoff. Live-model conversation requires your connected AI chat (read-only local workspace; no live model connected; zero empirical credit).</p>
         </div>
         <p role="status" aria-live="polite" id="vmaStatus">Loading canonical Vixen corpus…</p>
       </section>
@@ -353,7 +353,7 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
   <div class="dialog-body">
     <p><strong>Maestro &amp; Composer:</strong> Pick one role per session. Maestro explores original Works, received filenames, and Source Challenge trials. Composer compares pairs or Cart items and computes an unexecuted Podium Score.</p>
     <p><strong>Program Notes &amp; Refresh:</strong> Program Notes start <code>OFF</code> and require explicit two-step consent. Direct URL refresh never silently auto-locks a role or re-grants Program Notes permission.</p>
-    <p><strong>Boundary:</strong> <code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code>. <code>model_connected: false</code>; <code>empirical_replication_credit: 0</code>.</p>
+    <p><strong>Boundary:</strong> Separate archives, this collection, and source works remain distinct. No live model is connected and zero empirical credit is claimed.</p>
   </div>
 </dialog>
 
@@ -384,7 +384,16 @@ let lookup = new Map();
 let podiumRuntimePromise = null;
 
 function setTab(tab, opts = {}) {
-  const next = ['maestro', 'composer', 'settings', 'help'].includes(tab) ? tab : 'maestro';
+  let next = ['maestro', 'composer', 'settings', 'help'].includes(tab) ? tab : 'maestro';
+  const activeState = window.VixenAIModes?.status?.()?.result;
+  let refusedRole = '';
+  if (activeState?.active && (next === 'maestro' || next === 'composer')) {
+    const lockedTab = activeState.role === 'COMPOSER' ? 'composer' : 'maestro';
+    if (next !== lockedTab) {
+      refusedRole = next === 'composer' ? 'COMPOSER' : 'MAESTRO';
+      next = lockedTab;
+    }
+  }
   document.querySelectorAll('[data-podium-tab]').forEach((b) => {
     b.setAttribute('aria-pressed', String(b.getAttribute('data-podium-tab') === next));
   });
@@ -397,8 +406,14 @@ function setTab(tab, opts = {}) {
   if (hPane) hPane.hidden = next !== 'help';
   if (opSec) opSec.hidden = next !== 'settings';
   if (next === 'settings') renderSharedLedger();
-  if (!opts.skipHash && location.hash !== '#' + next) {
+  if ((!opts.skipHash || refusedRole) && location.hash !== '#' + next) {
     try { history.replaceState(history.state, '', '#' + next); } catch (_) {}
+  }
+  if (refusedRole) {
+    window.dispatchEvent(new CustomEvent('vixen:podium-select-role', {
+      detail: { role: refusedRole }
+    }));
+    return;
   }
   if (opts.selectRole === true && (next === 'maestro' || next === 'composer')) {
     window.dispatchEvent(new CustomEvent('vixen:podium-select-role', {
@@ -700,6 +715,20 @@ ensureCanonicalCorpusDom({ vixHtmlUrl: '../vix-cyb.html' }).then(async ({ corpus
       attributes: true, childList: true, subtree: true, attributeFilter: ['aria-pressed', 'hidden']
     });
     window.addEventListener('vixen:podium-select-role', schedulePodiumDraft);
+    window.addEventListener('vixen:podium-role-state', (ev) => {
+      const detail = ev?.detail || {};
+      const r = detail.role;
+      if (r === 'COMPOSER' || r === 'MAESTRO') {
+        document.body.dataset.podiumEnv = r === 'COMPOSER' ? 'composer' : 'maestro';
+        const onSettingsOrHelp = location.hash === '#settings' || location.hash === '#help';
+        if (!onSettingsOrHelp || detail.locked || detail.refusedRole) {
+          setTab(r === 'COMPOSER' ? 'composer' : 'maestro', { skipHash: false });
+        }
+      } else {
+        delete document.body.dataset.podiumEnv;
+      }
+      schedulePodiumDraft();
+    });
   }
 }).catch((err) => {
   const s = document.getElementById('vmaStatus');

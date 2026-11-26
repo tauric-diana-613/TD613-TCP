@@ -79,16 +79,18 @@ Every directive and mathematical/visual red pen from Amari's review has been imp
 
 ---
 
-### Stage III · Proceeding Horizon (After Review of This PR)
-1. **Turn III — The Fitting & Emergence HQ Closure**:
-   - Human artistic, typographic, and physical-device inspection (`QA04` remains `HELD` until human review on physical desktop/iPhone hardware).
-   - Upon operator approval, merge into `research/vixen-dual-estate-encyclopedia-20261108` ([PR #1730](https://github.com/tauric-diana-613/TD613-TCP/pull/1730)).
-2. **Prospective `Vixen Optics` Composable Extraction**:
-   - [`vixen-bias-draft.mjs`](app/encyclopedia/vixen-estate/vixen-bias-draft.mjs) already exposes pure, DOM-decoupled exports (`BIAS_DRAFT_CONTRACT`, `encounterPhase`, `composeBiasDraft`, `renderBiasDraftSVG`, `mountBiasDraft`) ready for clean packaging alongside `observatory-foundry-kernel.mjs`, `vixen-beat-radiometry-rgi15.mjs`, and `vixen-folded-cuirass.mjs`.
-3. **Governed Release & Separate Scientific Flights (Strictly Held Here)**:
-   - **Preview / Production Release**: Governed separately via Issue `#1744` (`PREPARE` / `DEPLOY`) and Issue `#405` (`/td613-vercel-release PRODUCTION <commit>`).
-   - **Human Identity Gates (`G1`–`G8`)**: Remain `UNADJUDICATED_PAIR` (`[32, 40]` Work sensitivity interval) pending explicit human split/merge adjudication.
-   - **Seven-Source Hydration (`7 + 1`) & Experiment B**: Remain separate preregistered research flights (`#1777` / `#1782` / `#1797` and 4-arm Experiment B harness), never auto-promoted by product UI or CI green status.
+### Stage III · Turn III — The Final Fitting & Proceeding Horizon
+1. **Final Fitting Reconciliation (`RP-F01`–`RP-F06`)**:
+   - **`RP-F01` (Public Constitutional Separation):** Replaced backstage `OPERAHOUSE`/`OPERA`/`PERFORMER` labels, raw machine-state fields (`model_connected: false`, `empirical_credit: 0`), and raw internal filenames (`human-podium.html`, `llms.txt`) on visitor-facing Podium pages and rendered SVGs with natural research language (`SEPARATE ARCHIVE`, `THIS COLLECTION`, `SOURCE WORK`), while preserving constitutional distinctions in contracts and machine docs.
+   - **`RP-F02` (Maestro / Composer State Coherence):** Synchronized `[data-podium-tab]`, `location.hash`, `[data-vma-role]`, `data-podium-env`, `#bcPodiumStave`, and `aria-live` announcements across role selection, active-session refusal in both directions, and deliberate `F5` restoration.
+   - **`RP-F03` (Carrier Conservation Honesty):** Exposed `carrier_conservation` distinguishing the 39/39 carrier roster and rendered SVG paths from field-deformed trajectories vs fallback safety chords.
+   - **`RP-F04` (Directional Geometry Qualification):** Verified all $\binom{32}{2} = 496$ distinct unordered pairs of the 32 recorded Works in both directions plus identical-input degeneracy (`0` displacement), documenting `4093` modular hash/index bounds and preserving `FORMAL_GEOMETRY_NOT_TEXTUAL_SEMANTICS`.
+   - **`RP-F05` (Accessible Mode-Specific Descriptions):** Added distinct SVG `<title>`/`<desc>` descriptions for Salon (`8` gates), Threshold (`3` role-separation lockstitches), and Podium (`1` role-conditioned lockstitch), plus `aria-hidden="true"` on mouse-only SVG hit paths paired with focusable controls.
+   - **`RP-F06` (Final 58-RP Reconciliation):** Retired all 21 obsolete Turn II preparation statuses in [`docs/RP-1730-DISPOSITION.json`](docs/RP-1730-DISPOSITION.json) while keeping all human-held obligations (`QA04`, `G1`–`G8` `UNADJUDICATED_PAIR`, binary PDFs `HELD`, unresolved date/author) intact.
+2. **Proceeding Horizon (Separately Governed Gates)**:
+   - **Preview / Production Release:** Governed separately via Issue `#1744` (`PREPARE` / `DEPLOY`) and Issue `#405` (`/td613-vercel-release PRODUCTION <commit>`).
+   - **Human Identity Gates (`G1`–`G8`) & `QA04`:** Remain `UNADJUDICATED_PAIR` (`[32, 40]`) and `HELD` until human review.
+   - **Seven-Source Hydration (`7 + 1`) & Experiment B:** Remain separate preregistered research flights (`#1777` / `#1782` / `#1797` and 4-arm Experiment B).
 
 ---
 

@@ -109,7 +109,7 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
       </div>
       <a class="brand-link" href="../vix-cyb.html#overview" aria-label="Vixen Cybernetics Main Opera">
         <svg class="vixen-fox-emblem" viewBox="0 0 64 64" aria-hidden="true"><polygon points="10,10 24,22 20,42 8,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="54,10 40,22 44,42 56,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="20,24 44,24 32,54" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="26" cy="33" r="2.2" fill="#FFF2A9"/><circle cx="38" cy="33" r="2.2" fill="#FFF2A9"/></svg>
-        <span class="brand-name"><strong>VIXEN CYBERNETICS</strong><small>PODIUM ENTRANCE · OUTSIDE MAIN RAIL</small></span>
+        <span class="brand-name"><strong>VIXEN CYBERNETICS</strong><small>PODIUM ENTRANCE · COLLABORATION THRESHOLD</small></span>
       </a>
     </div>
     <div class="header-actions">
@@ -148,7 +148,7 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
     <button type="button" class="primary-btn" id="exportTrayBtn" disabled>Export Cart JSON ↓</button>
     <button type="button" class="secondary-btn" id="footerSaveSessionBtn">Save Portable Session ZIP ⭳</button>
   </div>
-  <p class="cart-popout-custody"><strong>OPERAHOUSE ≠ OPERA ≠ PERFORMER:</strong> Cart selections stay local in your browser session. Opening Podium connects no remote model and mutates no original Work.</p>
+  <p class="cart-popout-custody"><strong>Separate roles, read-only sources:</strong> Cart selections stay local in your browser session. Opening Podium connects no remote model and mutates no original Work.</p>
 </aside>
 
 <main id="main">
@@ -165,16 +165,16 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
         <a class="podium-door podium-door-human" id="podiumDoorHuman" href="./human-podium.html">
           <span class="podium-door-kicker">01 · DEDICATED HUMAN DESTINATION</span>
           <strong>HUMAN</strong>
-          <span>Open the dedicated Human Podium (<code>./human-podium.html</code>): choose <em>Maestro</em> for documentary exploration or <em>Composer</em> for cross-work drafting, plus Podium Settings &amp; Ledger and Help.</span>
+          <span>Open the dedicated Human Podium workspace: choose <em>Maestro</em> for documentary exploration or <em>Composer</em> for cross-work drafting, plus Podium Settings &amp; Ledger and Help.</span>
           <span class="podium-door-meta" id="podiumDoorCartStatus">Session Research Cart ready · notes remain OFF until approved</span>
           <span class="podium-door-cta">Enter Human Podium →</span>
         </a>
         <a class="podium-door podium-door-ai" id="podiumDoorAi" href="./llms.txt">
           <span class="podium-door-kicker">02 · MACHINE / LLM ENTRANCE</span>
           <strong>AI / LLM</strong>
-          <span>Read plain-text <code>llms.txt</code>: source-custody law (<code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code>), the 27 read-only collaborator tasks, falsifier discipline, and human-closure ceiling.</span>
-          <span class="podium-door-meta">Static contract · model_connected: false · empirical_credit: 0</span>
-          <span class="podium-door-cta">Open llms.txt ↗</span>
+          <span>Read the plain-text AI collaboration guide: source boundaries (separate archive, this collection, and source works), the 27 read-only collaborator tasks, falsifier discipline, and human-closure ceiling.</span>
+          <span class="podium-door-meta">Read-only plain-text guide · no live model · zero empirical credit</span>
+          <span class="podium-door-cta">Open AI Guide ↗</span>
         </a>
       </div>
     </div>
@@ -193,9 +193,9 @@ footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clam
     <button type="button" class="hdr-pill" id="closeInspectorBtn">Close ✕</button>
   </div>
   <div class="dialog-body">
-    <p><strong>Why two separate doors?</strong> The Podium sits outside the 8-room Opera so human research direction (<code>./human-podium.html</code>) and AI-collaborator instructions (<code>./llms.txt</code>) never impersonate an original manuscript.</p>
-    <p><strong>What carries across pages:</strong> Works added to your header Research Cart and active drafts staged in Synthesis Salon carry seamlessly across <code>vix-cyb.html</code>, <code>podium.html</code>, and <code>human-podium.html</code> in your browser session.</p>
-    <p><strong>Custody boundary:</strong> <code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code>. Opening Podium grants zero backend write access and connects no external model automatically.</p>
+    <p><strong>Why two separate doors?</strong> The Podium sits outside the 8-room collection so human research direction and plain-text AI collaborator instructions never impersonate an original manuscript.</p>
+    <p><strong>What carries across pages:</strong> Works added to your header Research Cart and active drafts staged in Synthesis Salon carry seamlessly across the catalogue, Podium Entrance, and Human Podium in your browser session.</p>
+    <p><strong>Custody boundary:</strong> Separate archives, this collection, and source works remain distinct. Opening Podium grants zero backend write access and connects no external model automatically.</p>
   </div>
 </dialog>
 
@@ -364,10 +364,10 @@ window.addEventListener('pageshow', syncCartUi);
     lag: 36,
     workIdA: 'vixen_human_podium',
     workIdB: 'vixen_llms_contract',
-    labelA: 'HUMAN PODIUM',
-    fileA: 'human-podium.html',
-    labelB: 'AI / LLM GUIDE',
-    fileB: 'llms.txt',
+    labelA: 'HUMAN EXPEDITION',
+    fileA: 'Guided workspace',
+    labelB: 'AI / LLM BRIEF',
+    fileB: 'Plain-text guide',
     reversed: activeDoor === 'ai',
     cartCount: readSharedStudyTray().length
   }), {

@@ -47,6 +47,7 @@ export const BIAS_DRAFT_CONTRACT = Object.freeze({
   fold_relief_operator: 'ABS_FIELD_DIFFERENCE_AND_GRADIENT_MISFIT',
   computational_carriers_per_panel: 39,
   guaranteed_rendered_carriers_per_panel: 39,
+  carrier_conservation_mode: 'EXACT_ROSTER_AND_RENDERED_PATHS_WITH_EXPLICIT_FALLBACK_ACCOUNTING',
   optical_inheritance: Object.freeze([
     'observatory-foundry-kernel.mjs',
     'vixen-beat-radiometry-rgi15.mjs',
@@ -56,7 +57,7 @@ export const BIAS_DRAFT_CONTRACT = Object.freeze({
   gates_basted: 8,
   human_closure: 'RESERVED_UNWORKED',
   aperture_meaning: 'SYNTHETIC_OPTICAL_GRADIENT_MATRIX_NOT_MANUSCRIPT_IDENTIFIABILITY',
-  epistemic: 'FORMAL_DIRECTIONAL_GEOMETRY_NOT_EVIDENCE',
+  epistemic: 'FORMAL_GEOMETRY_NOT_TEXTUAL_SEMANTICS',
   empirical_credit: 0
 });
 
@@ -140,6 +141,8 @@ function cutPanel({ side, width, clothH, selvW, seam, gap, field, cuirassPairs, 
   const threads = [];
   const sampleCandidates = [];
   const isLeft = side === 'I';
+  let fallbackCount = 0;
+  let fieldDeformedCount = 0;
   let maxSpanW = 0;
   for (let i = 0; i <= 32; i++) {
     const sy = seam((i / 32) * clothH);
@@ -192,24 +195,30 @@ function cutPanel({ side, width, clothH, selvW, seam, gap, field, cuirassPairs, 
     }
 
     // Fallback safety chord if extreme curvature pinched a corner carrier
+    let usedFallback = false;
     if (pts.length < 2) {
+      usedFallback = true;
+      fallbackCount += 1;
       const ym = clamp(u * 0.5, 4, clothH - 4);
       const lim = isLeft ? (seam(ym) - gap - selvW) : (width - selvW - (seam(ym) + gap));
       const x0 = isLeft ? selvW + 1 : width - selvW - 1;
       const x1 = isLeft ? selvW + Math.max(6, lim * 0.45) : width - selvW - Math.max(6, lim * 0.45);
       pts.length = 0;
       pts.push([x0, clamp(ym + 6, 0, clothH)], [x1, clamp(ym - 6, 0, clothH)]);
+    } else {
+      fieldDeformedCount += 1;
     }
 
     threads.push({
       carrier,
       pts,
       terminus,
+      usedFallback,
       sign: isLeft ? 1 : -1,
       luster: r2(peakLuster)
     });
   }
-  return { threads, sampleCandidates };
+  return { threads, sampleCandidates, fallbackCount, fieldDeformedCount };
 }
 
 /**
@@ -424,9 +433,13 @@ export function composeBiasDraft({
     const y = ((j + 0.58) / 8.3) * (clothH - 22) + 20;
     return [seam.at(y), y];
   });
-  const custodyLocks = ['OPERAHOUSE', 'OPERA', 'PERFORMER'].map((role, j) => {
+  const custodyLocks = [
+    { role: 'OPERAHOUSE', label: 'SEPARATE ARCHIVE' },
+    { role: 'OPERA', label: 'THIS COLLECTION' },
+    { role: 'PERFORMER', label: 'SOURCE WORK' }
+  ].map((item, j) => {
     const y = clothH * (0.24 + j * 0.27);
-    return { role, x: seam.at(y), y };
+    return { ...item, x: seam.at(y), y };
   });
 
   const labels = reversed
@@ -457,6 +470,15 @@ export function composeBiasDraft({
     rendered_carriers: Object.freeze({
       left: leftCut.threads.length,
       right: rightCut.threads.length
+    }),
+    carrier_conservation: Object.freeze({
+      computational_carriers_per_panel: CARRIERS.length,
+      rendered_paths_left: leftCut.threads.length,
+      rendered_paths_right: rightCut.threads.length,
+      field_deformed_paths_left: leftCut.fieldDeformedCount,
+      field_deformed_paths_right: rightCut.fieldDeformedCount,
+      fallback_chord_count_left: leftCut.fallbackCount,
+      fallback_chord_count_right: rightCut.fallbackCount
     }),
     optics: Object.freeze({
       peakCount: optics.peakCount,
@@ -552,23 +574,23 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
       `</g>`;
   }).join('');
 
-  // Seam stitches: 8 human-gated pairs in Salon; 3 role-separation lockstitches in Threshold/Podium
+  // Seam stitches: 8 human-gated pairs in Salon; 3 role-separation lockstitches in Threshold; 1 active role stitch in Podium
   let seamMarks = '';
   if (mode === 'threshold') {
-    seamMarks = m.custodyLocks.map(({ role, x, y }) => {
-      const boxW = role.length * 6.4 + 16;
+    seamMarks = m.custodyLocks.map(({ label, x, y }) => {
+      const boxW = label.length * 6.4 + 16;
       const bx = clamp(x - boxW * 0.5, selvW + 8, W - selvW - boxW - 8);
       return `<g class="bc-d-lock">` +
         `<line x1="${r2(x - 24)}" y1="${r2(y)}" x2="${r2(x + 24)}" y2="${r2(y)}" stroke="#e8d7a8" stroke-width="1.25" stroke-dasharray="4 3"/>` +
         `<rect x="${r2(bx)}" y="${r2(y - 9)}" width="${r2(boxW)}" height="18" rx="2" fill="#0b0c0f" stroke="#e8d7a8" stroke-opacity="0.72"/>` +
-        `<text x="${r2(bx + boxW * 0.5)}" y="${r2(y + 3.5)}" text-anchor="middle" class="bc-d-micro" fill="#fff2a9">${esc(role)}</text>` +
+        `<text x="${r2(bx + boxW * 0.5)}" y="${r2(y + 3.5)}" text-anchor="middle" class="bc-d-micro" fill="#fff2a9">${esc(label)}</text>` +
         `</g>`;
     }).join('');
   } else if (mode === 'podium') {
     const roleTag = m.podiumRole === 'MAESTRO'
       ? 'MAESTRO · SOURCE EXPEDITION'
       : m.podiumRole === 'COMPOSER'
-        ? 'COMPOSER · COUNTERPOINT HELD'
+        ? 'COMPOSER · COUNTERPOINT'
         : 'CHOOSE ONE ROLE PER SESSION';
     const ryLock = Math.abs(m.waist[1] - clothH * 0.32) < 30 ? clothH * 0.68 : clothH * 0.32;
     const rx = m.seam.at(ryLock);
@@ -600,7 +622,7 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
     const rad = (a * Math.PI) / 180;
     return `<line x1="${r2(wx)}" y1="${r2(wy)}" x2="${r2(wx + L * Math.cos(rad))}" y2="${r2(wy + L * Math.sin(rad))}"/>`;
   };
-  const apText = compact ? `synthetic κ ${kappa}` : `OPTICAL κ ${kappa} · SYNTHETIC`;
+  const apText = compact ? `synthetic κ ${kappa}` : `SYNTHETIC FIELD κ ${kappa}`;
   const apBoxW = apText.length * 6.5 + 16;
   const apPlaceLeft = mode === 'threshold'
     ? true
@@ -694,7 +716,7 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
   }
 
   const rulerCallouts = mode === 'threshold'
-    ? `<text x="${r2(W * 0.5)}" y="${ry + Math.round(m.rulerH * 0.62)}" text-anchor="middle" class="bc-d-micro" fill="#e8d7a8">${compact ? 'OPERAHOUSE ≠ OPERA ≠ PERFORMER · credit 0' : 'OPERAHOUSE ≠ OPERA ≠ PERFORMER · model_connected: false · empirical_credit: 0'}</text>`
+    ? `<text x="${r2(W * 0.5)}" y="${ry + Math.round(m.rulerH * 0.62)}" text-anchor="middle" class="bc-d-micro" fill="#e8d7a8">${compact ? 'SEPARATE ROLES · READ-ONLY · NO MODEL LINK' : 'SEPARATE ROLES · READ-ONLY CONTRACT · NO LIVE MODEL · ZERO REPLICATION CREDIT'}</text>`
     : m.clockCallouts.map((c) => {
         const dotY = ry + 12.5;
         const textY = ry + (c.row === 0 ? 16 : 30);
@@ -705,17 +727,23 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
       }).join('');
 
   const hitTargets = mode === 'threshold'
-    ? `<path class="bc-d-hit" data-bc-door="human" d="${leftPoly}" fill="transparent"/>` +
-      `<path class="bc-d-hit" data-bc-door="ai" d="${rightPoly}" fill="transparent"/>`
+    ? `<path class="bc-d-hit" aria-hidden="true" data-bc-door="human" d="${leftPoly}" fill="transparent"/>` +
+      `<path class="bc-d-hit" aria-hidden="true" data-bc-door="ai" d="${rightPoly}" fill="transparent"/>`
     : mode === 'salon'
-      ? `<path class="bc-d-hit" data-bc-panel="I" d="${leftPoly}" fill="transparent"/>` +
-        `<path class="bc-d-hit" data-bc-panel="II" d="${rightPoly}" fill="transparent"/>` +
-        `<path class="bc-d-hit bc-d-hit-seam" data-bc-seam-flip="true" d="${band}" fill="transparent"/>`
+      ? `<path class="bc-d-hit" aria-hidden="true" data-bc-panel="I" d="${leftPoly}" fill="transparent"/>` +
+        `<path class="bc-d-hit" aria-hidden="true" data-bc-panel="II" d="${rightPoly}" fill="transparent"/>` +
+        `<path class="bc-d-hit bc-d-hit-seam" aria-hidden="true" data-bc-seam-flip="true" d="${band}" fill="transparent"/>`
       : '';
 
+  const cc = m.carrier_conservation;
+  const fallbackNote = (cc.fallback_chord_count_left + cc.fallback_chord_count_right) > 0
+    ? ` (${cc.fallback_chord_count_left + cc.fallback_chord_count_right} fallback safety chord(s) where corner curvature pinched)`
+    : '';
   const descText = mode === 'threshold'
-    ? `Dual-door threshold pattern draft. Left bias panel (${L.A}, ${L.fA}) and right counter-bias panel (${L.B}, ${L.fB}) each compute and render ${m.rendered_carriers.left}/${m.computational_carriers_per_panel} and ${m.rendered_carriers.right}/${m.computational_carriers_per_panel} carriers across a non-merging custody seam (OPERAHOUSE != OPERA != PERFORMER). Synthetic optical waist condition ${kappa}. Human closure reserved.`
-    : `Bias-cut pattern draft (${m.reversed ? 'Route II before I' : 'Route I before II'}). Panel ${L.oA} (${L.A}) renders ${m.rendered_carriers.left} of ${m.computational_carriers_per_panel} D3-displaced carriers; Panel ${L.oB} (${L.B}) renders ${m.rendered_carriers.right} of ${m.computational_carriers_per_panel} phi-quasiperiodic counter-bias carriers. Signed seam x_s(y) = x_0 + 1.15a(T - Q) with ${m.optics.peakCount} bounded interference blooms. Synthetic optical gradient condition ${kappa} (formal geometry, not empirical identifiability). Eight unadjudicated human gates basted; human closure reserved.`;
+    ? `Dual-door threshold seam. Left bias panel (${L.A}) and right counter-bias panel (${L.B}) render ${m.rendered_carriers.left}/${m.computational_carriers_per_panel} and ${m.rendered_carriers.right}/${m.computational_carriers_per_panel} threads${fallbackNote} across three role-separation lockstitches (Separate Archive, This Collection, Source Work). Synthetic field condition ${kappa}. Human closure reserved.`
+    : mode === 'podium'
+      ? `Human Podium role-conditioned seam (${m.podiumRole || 'choose one role per session'}). Left panel (${L.A}) and right panel (${L.B}) render ${m.rendered_carriers.left}/${m.computational_carriers_per_panel} and ${m.rendered_carriers.right}/${m.computational_carriers_per_panel} threads${fallbackNote} with one role-conditioned lockstitch, ${m.cartCount} cart item(s), and program notes ${m.notesActive ? 'active' : 'off'}. Synthetic field condition ${kappa}.`
+      : `Bias-cut pattern draft (${m.reversed ? 'Route II before I' : 'Route I before II'}). Panel ${L.oA} (${L.A}) renders ${m.rendered_carriers.left} of ${m.computational_carriers_per_panel} D3-displaced threads; Panel ${L.oB} (${L.B}) renders ${m.rendered_carriers.right} of ${m.computational_carriers_per_panel} phi-quasiperiodic counter-bias threads${fallbackNote}. Signed seam x_s(y) = x_0 + 1.15a(T - Q) with ${m.optics.peakCount} bounded interference blooms. Synthetic field condition ${kappa} (formal geometry, not empirical identifiability). Eight unadjudicated human identity brackets (G1-G8) basted; human closure reserved.`;
 
   return `<svg class="bc-draft-svg bc-draft-svg--${esc(mode)}" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-labelledby="${uid}T ${uid}D" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
 <title id="${uid}T">${esc(title)}</title>

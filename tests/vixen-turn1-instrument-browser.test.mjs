@@ -110,12 +110,35 @@ try {
   assert.equal(await page.locator('#collectionCount').innerText(), '1', 'Cart badge must carry into human-podium.html');
   assert.equal(await page.locator('#vmaStart').isDisabled(), true, 'Fresh Human Podium entry must keep Start disabled until role choice');
 
-  // Composer Workbench inside standalone Human Podium
+  // Composer Workbench inside standalone Human Podium + RP-F02 active-session role lock & tab coherence
+  await page.locator('[data-podium-tab="composer"]').click();
+  assert.equal(await page.locator('[data-podium-tab="composer"]').getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.locator('[data-vma-role="COMPOSER"]').getAttribute('aria-pressed'), 'true');
+  await page.locator('#vmaStart').click();
+  await page.locator('#vmaComposerWorkbench:not([hidden])').waitFor({ timeout: 25000 });
+  assert.equal(await page.evaluate(() => document.body.dataset.podiumEnv), 'composer', 'Active Composer must set data-podium-env="composer"');
+  // Attempted switch to Maestro while Composer is locked must be refused and keep Composer tab active
+  await page.locator('[data-podium-tab="maestro"]').click();
+  assert.equal(await page.locator('[data-podium-tab="composer"]').getAttribute('aria-pressed'), 'true', 'Active Composer lock must keep composer tab highlighted');
+  assert.equal(await page.locator('[data-podium-tab="maestro"]').getAttribute('aria-pressed'), 'false', 'Active Composer lock must refuse maestro tab highlight');
+  assert.match(await page.locator('#vmaStatus').innerText(), /locked to COMPOSER/i);
+  await page.getByRole('button', { name: 'Compute Podium Score & Gate' }).click();
+  await page.waitForFunction(() => document.querySelector('#vmaComposerWorkbench .vma-comp-output')?.innerText?.includes('HELD_AWAITING_HUMAN_COMPOSER'), null, { timeout: 20000 });
+
+  // End Composer session, lock Maestro, and verify reverse-direction refusal (Maestro -> Composer)
+  await page.locator('#vmaEnd').click();
+  await page.locator('#vmaEndSummary:not([hidden])').waitFor({ timeout: 10000 });
+  await page.locator('[data-podium-tab="maestro"]').click();
+  await page.locator('#vmaStart').click();
+  await page.waitForFunction(() => window.VixenAIModes?.status()?.result?.role === 'MAESTRO', null, { timeout: 15000 });
+  await page.locator('[data-podium-tab="composer"]').click();
+  assert.equal(await page.locator('[data-podium-tab="maestro"]').getAttribute('aria-pressed'), 'true', 'Active Maestro lock must keep maestro tab highlighted');
+  assert.equal(await page.locator('[data-podium-tab="composer"]').getAttribute('aria-pressed'), 'false', 'Active Maestro lock must refuse composer tab highlight');
+  assert.match(await page.locator('#vmaStatus').innerText(), /locked to MAESTRO/i);
+  await page.locator('#vmaEnd').click();
   await page.locator('[data-podium-tab="composer"]').click();
   await page.locator('#vmaStart').click();
   await page.locator('#vmaComposerWorkbench:not([hidden])').waitFor({ timeout: 25000 });
-  await page.getByRole('button', { name: 'Compute Podium Score & Gate' }).click();
-  await page.waitForFunction(() => document.querySelector('#vmaComposerWorkbench .vma-comp-output')?.innerText?.includes('HELD_AWAITING_HUMAN_COMPOSER'), null, { timeout: 20000 });
 
   // Verify F5 Refresh preserves deliberate restore rather than silently locking role/notes
   await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
