@@ -62,10 +62,12 @@ export default function handler(req, res) {
   if (requestHasAttachments(req)) {
     return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => marrowlineAttachmentHandler(req, res));
   }
-  return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => withGeminiGenerationProfile(
-    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
-    () => khonapolitHandler(req, res)
-  ));
+  return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => {
+    return withGeminiGenerationProfile(
+      GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+      () => khonapolitHandler(req, res)
+    );
+  });
 }
 
 export * from '../server/khonapolit-quality.js';
