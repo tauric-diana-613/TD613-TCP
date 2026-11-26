@@ -596,7 +596,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    cartScopeBar.append(listRow);
   }
   const inputPane=mk('section','vs-question');
-  inputPane.append(paragraph('RESEARCH QUEST COMPOSER · POSE A FALSIFIABLE QUESTION','vs-eyebrow'));
+  inputPane.append(paragraph('Optional two-source experiment · draft a comparison question','vs-eyebrow'));
   const q=mk('textarea','vs-textarea');q.placeholder='Optional: your own falsifiable question. Leave blank for a source-attributed construction.';
   q.rows=3;q.maxLength=900;q.value=state.question;q.setAttribute('aria-label','Compose an original research question');
   q.addEventListener('input',()=>{state.question=q.value;withdrawVisibleProposal()});
@@ -606,14 +606,15 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const counter=mk('textarea','vs-textarea');counter.placeholder='Optional: the world in which this hypothesis fails';counter.rows=2;counter.maxLength=450;counter.value=state.counterworld;
   counter.setAttribute('aria-label','Define a counterfactual world');
   counter.addEventListener('input',()=>{state.counterworld=counter.value;withdrawVisibleProposal()});
-  append(inputPane,q,observable,counter);
+  const advancedQuestion=details('Add a measurable test and counterexample',append(mk('div','vs-question-advanced-fields'),observable,counter),'vs-question-advanced');
+  append(inputPane,q,advancedQuestion);
   const actions=mk('div','vs-actions');
   if(state.resting){
    actions.append(button('Resume this unfinished inquiry',resume));
    append(inputPane,paragraph('REST · Temporal suspension honored without penalty. Your selected Works, encounter route, lag ticks, and draft question remain intact; the Opera has made zero decisions for you.','vs-rest'));
   }else{
    append(actions,
-    button('Compose an unratified theory ↓',compose,'vs-action vs-primary'),
+    button('Draft a two-source proposal ↓',compose,'vs-action vs-primary'),
     button('Place both Works in the research cart',saveWorks),
     button('Rest without penalty',rest,'vs-action vs-quiet'));
   }

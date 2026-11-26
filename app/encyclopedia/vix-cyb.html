@@ -1610,8 +1610,8 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="ci-main-grid ci-studio-grid">
           <div class="ci-card bc-quest-composer" aria-label="Research Question Composer">
             <h3 class="ci-card-title">
-              <span>Develop your own question</span>
-              <span>LOCAL · NOTHING IS SENT</span>
+              <span>Develop your own question or refine a selected lead</span>
+              <span>Local draft · nothing is sent</span>
             </h3>
             <label class="ci-field-label" for="ciQuestionInput">Your question</label>
             <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
@@ -1623,7 +1623,7 @@ body[data-view="overview"] .reading-back{display:none}
               <button type="button" class="ci-btn primary" id="ciApplyBtn" title="Applies your question to the live Manifesto, crib and proposal ranking">Preview This Inquiry</button>
               <button type="button" class="ci-btn" id="ciSynthesizeBtn" title="Re-derives the seven conjectures below at the current clock lag">Synthesize 7 Lenses</button>
               <label class="bc-lag-control">
-                <span>Clock lag τ</span>
+                <span>Demonstration lag τ</span>
                 <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
                 <span id="ciLagReadout">36</span>
               </label>
@@ -6308,14 +6308,14 @@ import {
         `PROPOSED QUESTION: ${activeQ}`,
         `FORMAL EXPRESSION: ${planText}`,
         `REQUIRED FALSIFIER: ${falsifierText}`,
-        `BOUNDARIES HELD: OPERAHOUSE ≠ OPERA ≠ PERFORMER · Empirical credit = 0 · Human closure required`
+        `Research boundary: original manuscripts retain separate custody; this proposal has no empirical validation and requires human review.`
       ].join('\n\n');
       const body = document.createElement('div');
       body.className = 'salon-manifesto-body';
       body.textContent = thesis;
       const meta = document.createElement('p');
       meta.className = 'salon-manifesto-meta';
-      meta.textContent = `Work I: ${wA?.work_id || '—'} · Work II: ${wB?.work_id || '—'} · Cart items: ${cartIds.length}`;
+      meta.textContent = `Compared files: ${fA} · ${fB} · Cart items: ${cartIds.length}`;
       const act = document.createElement('div');
       act.className = 'ci-actions-row';
       const copyBtn = document.createElement('button');
@@ -6355,6 +6355,13 @@ import {
       act.append(copyBtn, podBtn);
       man.append(k, h, body, meta, act);
     }
+  }
+
+  function revealResearchQuestion() {
+    const field=document.getElementById('ciQuestionInput');
+    if(!field)return;
+    field.scrollIntoView({block:'center',behavior:'auto'});
+    field.focus({preventScroll:true});
   }
 
   function renderConjectures() {
@@ -6450,6 +6457,7 @@ import {
           question: `${item.title}: ${item.now_notice} (${item.exact_falsifier})`,
           method: `${item.lens} · ${(item.atlas_engines || []).join(' + ')}`
         });
+        revealResearchQuestion();
       });
       foot.appendChild(btn);
 
@@ -6656,7 +6664,7 @@ import {
       button.type='button';
       button.className='ci-btn'+(active?' primary':'');
       button.textContent=active?'CURRENTLY SELECTED ✓':'USE AS NEXT RESEARCH QUESTION';
-      button.addEventListener('click',()=>promoteCandidate(candidate.id));
+      button.addEventListener('click',()=>{promoteCandidate(candidate.id); revealResearchQuestion();});
       foot.append(button);
       const identity=document.createElement('div');
       identity.className='ci-proposal-identity';

@@ -88,7 +88,10 @@ try {
   await page.locator('#vixenRoomRail [data-view="collection"]').click();
   await page.locator('#view-collection:not([hidden])').waitFor({ timeout: 12000 });
   assert.ok((await page.locator('#salonMathCrib').innerText()).includes('S ≠ W ≠ A'));
-  assert.ok((await page.locator('#salonManifestoPanel').innerText()).includes('OPERAHOUSE ≠ OPERA ≠ PERFORMER'));
+  const manifestoText=await page.locator('#salonManifestoPanel').innerText();
+  assert.match(manifestoText,/original manuscripts retain separate custody/i);
+  assert.match(manifestoText,/no empirical validation/i);
+  assert.doesNotMatch(manifestoText,/OPERAHOUSE ≠ OPERA ≠ PERFORMER/);
   assert.equal(await page.locator('#ciConjectureGrid .ci-conj-files').count(), 7);
   // Switch Salon Work I to Algedonic Systems PDF manifestation and verify .extracted.txt download
   await page.locator('#vixenSynthesisSalon select[aria-label="Choose Work 1"]').selectOption('emwork_085223e721130117f5510975');
