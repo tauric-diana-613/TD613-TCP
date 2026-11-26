@@ -1,0 +1,229 @@
+/*
+ * Vixen Cybernetics · THE RESEARCH ADVENTURE
+ * Two exclusive visitor-facing roles; responsive source-led narrative layout.
+ * The source corpus, scientific engines and ownership records remain untouched.
+ */
+#vixenAiJourney{
+ --vma-ink:#f6eade;--vma-muted:#d3bcb4;--vma-gold:#f9dba6;
+ --vma-pink:#ff9cb6;--vma-line:#ad817e80;
+ position:relative;isolation:isolate;min-width:0;margin:0 0 24px!important;
+ padding:clamp(13px,1.5vw,23px)!important;border:1px solid #b59b8d!important;
+ background:
+ radial-gradient(ellipse 40% 70% at 92% 3%,#963c5752,transparent 85%),
+ radial-gradient(ellipse 55% 65% at 3% 92%,#1d5b6256,transparent 88%),
+ linear-gradient(120deg,#101a20,#161e21 45%,#0c1419)!important;
+ color:var(--vma-ink)!important;border-radius:3px!important;box-shadow:0 18px 45px #0008!important;
+ font:400 12px/1.56 "Aptos",ui-sans-serif,system-ui,sans-serif!important
+}
+#vixenAiJourney *{box-sizing:border-box}
+#vixenAiJourney .vma-header{
+ display:flex;gap:14px;align-items:start;justify-content:space-between;
+ border-bottom:1px solid #a9878466;padding-bottom:13px;margin-bottom:13px
+}
+#vixenAiJourney .vma-kicker,#vixenAiJourney .vma-micro,#vixenAiJourney .vma-actor{
+ color:var(--vma-pink)!important;font:800 9px/1.4 "Aptos",ui-sans-serif,sans-serif!important;
+ letter-spacing:.15em;text-transform:uppercase
+}
+#vixenAiJourney h2{
+ color:#f9e2c5!important;font:italic 400 clamp(27px,2.4vw,40px)/.97
+ Didot,"Bodoni MT","Iowan Old Style",Georgia,serif!important;letter-spacing:-.045em;
+ max-width:30ch;margin:5px 0 7px!important
+}
+#vixenAiJourney .vma-intro{
+ color:#e4d2c5!important;font-size:12px!important;line-height:1.52!important;
+ max-width:86ch!important;margin:0!important
+}
+#vixenAiJourney .vma-season{
+ flex:0 0 auto;color:#ead6bb!important;border:1px solid #d9bb9b76!important;
+ padding:6px 10px!important;font:750 9px/1.3 ui-sans-serif,sans-serif!important;
+ letter-spacing:.12em;background:#0c181c!important
+}
+#vixenAiJourney .vma-roles{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0!important
+}
+#vixenAiJourney .vma-role{
+ min-width:0;display:grid;gap:7px;text-align:left;cursor:pointer;
+ padding:16px!important;min-height:120px;border:1px solid #a388827e!important;
+ background:#142125e8!important;color:#efe4d4!important;border-radius:2px!important;
+ transition:border-color .14s ease,transform .14s ease!important
+}
+#vixenAiJourney .vma-role:hover{border-color:#f4c39a!important;transform:translateY(-1px)}
+#vixenAiJourney .vma-role[aria-pressed="true"]{
+ border:2px solid var(--vma-pink)!important;background:#343638d9!important;
+ box-shadow:inset 0 0 0 1px #f9c8a92b!important
+}
+#vixenAiJourney .vma-role strong{
+ color:#ffe9cf!important;font:italic 400 clamp(23px,2vw,32px)/1 Didot,Georgia,serif!important;
+ letter-spacing:-.035em
+}
+#vixenAiJourney .vma-role span{color:#d8c4bb!important;font-size:11.5px!important}
+#vixenAiJourney label[for="vmaGoal"]{
+ display:block;color:#efd2ae!important;font-weight:700!important;margin:10px 0 5px!important;
+ font-size:10px!important;letter-spacing:.07em!important;text-transform:uppercase
+}
+#vixenAiJourney :is(input,textarea){
+ display:block;width:100%;border:1px solid #bfa18c89!important;border-radius:2px!important;
+ padding:10px 11px!important;background:#0b1519!important;color:#f8e6d2!important;
+ font:400 12px/1.5 ui-sans-serif,sans-serif!important;resize:vertical
+}
+#vixenAiJourney :is(button,input,textarea):focus-visible{
+ outline:2px solid var(--vma-gold)!important;outline-offset:3px!important
+}
+#vixenAiJourney .vma-btn,#vixenAiJourney .vma-small{
+ border:1px solid #bca085!important;background:#232b2c!important;
+ color:#f8e8d3!important;cursor:pointer!important;border-radius:2px!important;
+ font:750 10px/1.35 ui-sans-serif,sans-serif!important;padding:9px 13px!important;
+ min-height:34px!important;letter-spacing:.04em!important
+}
+#vixenAiJourney .vma-btn{min-height:41px!important;padding:11px 17px!important}
+#vixenAiJourney .vma-btn.vma-primary,#vixenAiJourney .vma-small.vma-primary{
+ background:#ffdcb0!important;color:#192024!important;border-color:#ffe3bc!important
+}
+#vixenAiJourney :is(.vma-btn,.vma-small):hover{
+ color:#fff6e2!important;border-color:#f6b1b6!important;background:#474449!important
+}
+#vixenAiJourney :is(.vma-btn,.vma-small):disabled{opacity:.45;cursor:not-allowed!important}
+#vixenAiJourney .vma-muted,#vixenAiJourney .vma-limit{
+ color:#cabdb5!important;font:400 10.5px/1.5 ui-sans-serif,sans-serif!important
+}
+#vixenAiJourney .vma-limit{border-top:1px solid #ba9f814c;margin-top:13px;padding-top:8px}
+#vixenAiJourney .vma-quiet{background:#13282c!important}
+#vixenAiJourney .vma-subtle{background:#151d22!important;opacity:.8}
+#vixenAiJourney .vma-actions,#vixenAiJourney .vma-inline{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+#vixenAiJourney #vmaStatus{
+ padding:7px 10px!important;border-left:2px solid #e9a8aa!important;
+ color:#f5e5d4!important;background:#1d2a2ddc!important;margin:11px 0 0!important
+}
+#vixenAiJourney #vmaPlayPanel{min-width:0}
+#vixenAiJourney .vma-session-bar{
+ display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;
+ border-bottom:1px solid #d1ad896d;padding:8px 0 12px;margin-bottom:13px
+}
+#vixenAiJourney #vmaCurrentRole{color:#ffe0b9!important;font:800 10px/1.25 ui-sans-serif,sans-serif!important;letter-spacing:.09em}
+#vixenAiJourney .vma-board{
+ display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:12px
+}
+#vixenAiJourney .vma-board>*{min-width:0}
+#vixenAiJourney .vma-panel{
+ min-width:0;border:1px solid #bc988776;padding:clamp(11px,1.25vw,17px)!important;
+ background:#102027c7!important;border-radius:2px!important
+}
+#vixenAiJourney #vmaStory{background:linear-gradient(115deg,#18282b,#32282c 83%)!important}
+#vixenAiJourney .vma-story{
+ margin:6px 0 9px!important;font:400 clamp(15px,1.3vw,20px)/1.3
+ "Iowan Old Style",Georgia,serif!important;letter-spacing:-.018em!important;
+ color:#fff0d9!important
+}
+#vixenAiJourney .vma-hook{
+ color:#f5b7b8!important;font:italic 400 13.5px/1.4 Georgia,serif!important;
+ margin:0!important
+}
+#vixenAiJourney .vma-section-title{
+ color:#fce2bc!important;font:italic 400 clamp(19px,1.5vw,25px)/1.12
+ Didot,"Bodoni MT",Georgia,serif!important;letter-spacing:-.025em!important;
+ margin:0 0 10px!important
+}
+#vixenAiJourney .vma-choice{
+ display:block;text-align:left;width:100%;cursor:pointer;
+ margin:0 0 5px!important;border:1px solid #997d746a!important;
+ color:#f9e1c7!important;background:#19272ad9!important;
+ border-radius:2px!important;padding:9px 11px!important;
+ font:500 11.5px/1.35 ui-sans-serif,sans-serif!important
+}
+#vixenAiJourney .vma-choice:hover{border-color:#f7b0ba!important;background:#35282b!important}
+#vixenAiJourney .vma-quest,#vixenAiJourney .vma-source{
+ border-top:1px solid #b493815c!important;padding:9px 1px!important;margin:0!important;
+ overflow-wrap:anywhere!important
+}
+#vixenAiJourney .vma-quest h5,#vixenAiJourney .vma-source h5{
+ color:#f6e1c6!important;font:600 13px/1.33 ui-sans-serif,sans-serif!important;
+ margin:3px 0 6px!important
+}
+#vixenAiJourney .vma-quest p,#vixenAiJourney .vma-source p{
+ color:#d9c9bf!important;font:400 11px/1.51 ui-sans-serif,sans-serif!important;margin:4px 0!important
+}
+#vixenAiJourney .vma-saved{
+ padding:5px 7px;margin:4px 0;background:#152f30!important;
+ color:#e2d2be!important;border-left:2px solid #d4aa8b;font-size:10.5px
+}
+#vixenAiJourney .vma-note{
+ padding:8px!important;border-left:2px solid #f0c7a0!important;margin:6px 0!important;
+ background:#1a2929!important;color:#ead7c3!important;font-size:10.5px
+}
+#vixenAiJourney .vma-exit{
+ margin-top:12px;padding-top:11px;border-top:1px solid #b19b8966;
+ display:flex;gap:6px;flex-wrap:wrap
+}
+#vixenAiJourney #vmaReportPanel{
+ border:1px solid #f5b4b7!important;background:#24282a!important;
+ padding:14px!important;margin:12px 0!important;color:#f9ead6!important
+}
+#vixenAiJourney #vmaCopyFallback{min-height:95px}
+#vmaJourneyDock{
+ position:fixed;z-index:275;right:clamp(8px,2vw,24px);bottom:clamp(18px,4vh,46px);
+ background:#10272c!important;color:#f7debe!important;border:1px solid #efbaaf!important;
+ border-radius:30px!important;box-shadow:0 9px 35px #0009!important;
+ padding:11px 17px!important;cursor:pointer;font:750 11px/1.25 ui-sans-serif,sans-serif!important
+}
+#vmaJourneyDock:hover{background:#474246!important;color:#fff2dd!important}
+#vixenAiJourney [hidden],#vmaJourneyDock[hidden]{display:none!important}
+@media(max-width:940px){
+ #vixenAiJourney .vma-board{grid-template-columns:minmax(0,1fr)}
+ #vixenAiJourney .vma-roles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+ #vixenAiJourney{padding:12px!important}
+ #vixenAiJourney .vma-header{display:block}
+ #vixenAiJourney .vma-season{display:inline-block;margin-top:9px}
+ #vixenAiJourney .vma-roles{grid-template-columns:minmax(0,1fr)}
+ #vixenAiJourney .vma-role{min-height:93px!important;padding:12px!important}
+ #vixenAiJourney .vma-board{gap:8px}
+ #vmaJourneyDock{bottom:18px;right:10px;max-width:58vw;font-size:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #vixenAiJourney .vma-role{transition:none!important}
+ #vixenAiJourney .vma-role:hover{transform:none}
+}
+
+/* Stage III.5: the living optical field remains present through the reading
+   aperture, but it must sit behind Maestro's text and source controls.
+   An intentionally translucent matte lets a small amount of movement read
+   through instead of deleting the chromepunk room's ambience. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenAiJourney{
+ position:relative;z-index:2!important;isolation:isolate;
+ background:
+  radial-gradient(ellipse 40% 70% at 92% 3%,rgba(150,60,87,.14),transparent 85%),
+  radial-gradient(ellipse 55% 65% at 3% 92%,rgba(29,91,98,.17),transparent 88%),
+  linear-gradient(120deg,rgba(16,26,32,.86),rgba(22,30,33,.87) 45%,rgba(12,20,25,.88))!important;
+}
+#vixenAiJourney .vma-source-files{
+ font:600 10px/1.4 ui-monospace,monospace;color:#fff2a9!important;margin:2px 0 4px!important;overflow-wrap:anywhere;
+}
+#vixenAiJourney .vma-passage-peek{
+ margin:8px 0 0;padding:8px 10px;max-height:170px;overflow:auto;white-space:pre-wrap;
+ background:#090d11;border:1px solid rgba(255,242,169,.32);color:#f3ebe4;
+ font:400 11px/1.5 ui-monospace,monospace;
+}
+#vixenAiJourney .vma-composer-workbench{
+ margin-top:14px;border:1px solid rgba(255,145,175,.48)!important;background:#10171d!important;
+ max-width:100%;min-width:0;box-sizing:border-box;
+}
+#vixenAiJourney .vma-comp-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0;min-width:0;
+}
+#vixenAiJourney .vma-comp-grid > div,
+#vixenAiJourney .vma-comp-select,
+#vixenAiJourney #vmaComposerWorkbench input,
+#vixenAiJourney #vmaComposerWorkbench textarea{
+ max-width:100%;width:100%;min-width:0;box-sizing:border-box;
+}
+#vixenAiJourney .vma-comp-select{
+ text-overflow:ellipsis;overflow:hidden;white-space:nowrap;padding:7px 9px;
+ background:#090d11;color:#f4ede6;border:1px solid rgba(255,255,255,.18);
+}
+#vixenAiJourney .vma-inline{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#vixenAiJourney .vma-comp-output{
+ margin-top:10px;padding:11px 13px;background:#090d11;border-left:3px solid #fff2a9;
+ font:400 12px/1.5 Georgia,serif;color:#f4ede6;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+@media(max-width:740px){#vixenAiJourney .vma-comp-grid{grid-template-columns:minmax(0,1fr)}}

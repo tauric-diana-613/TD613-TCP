@@ -1,0 +1,61 @@
+{
+  "schema": "wendbine-public-profile-delta/v0.4",
+  "snapshot_id": "wendbine-public-reddit-profile-delta-20260916-v04",
+  "atelier_id": "WENDBINE",
+  "retrieval_day_utc": "2026-09-16",
+  "retrieval_surface": "public Reddit user profile first visible page sorted new",
+  "source_account": {
+    "handle": "Upset-Ratio502",
+    "profile_display_name": "Wendbine",
+    "community": "r/Wendbine"
+  },
+  "parent_state": {
+    "pull_request": 1134,
+    "head_before_sync": "11574a1f687de92065d80cdb8471e3ef3baa20e9",
+    "head_before_sync_validation": {
+      "workflow": "TD613 Consolidated Validation",
+      "run_number": 3582,
+      "conclusion": "success"
+    }
+  },
+  "coverage": {
+    "state": "PUBLIC_PROFILE_FIRST_PAGE_BOUNDED_NOT_EXHAUSTIVE",
+    "observed_post_cards": 25,
+    "text_excerpt_cards": 14,
+    "media_only_or_unhydrated_cards": 11,
+    "next_page_link_observed": true,
+    "next_page_retrieval_state": "CACHE_MISS_NOT_SYNCED",
+    "known_missingness": "This is a bounded first-page public-profile synchronization, not an exhaustive census of all posts made on 2026-09-16. A next-page cursor was visible but could not be retrieved in this pass. NOT_RETRIEVED != DID_NOT_EXIST."
+  },
+  "date_policy": {
+    "observed_on": "2026-09-16",
+    "observed_on_basis": "current-session public profile retrieval plus user report that the account had been posting throughout the day",
+    "per_post_exact_timestamp_adjudicated": false,
+    "per_post_public_date_promoted": false
+  },
+  "rights": {
+    "full_post_bodies_copied": false,
+    "public_profile_excerpts_mirrored": false,
+    "canonical_urls_and_bounded_normalized_summaries_only": true
+  },
+  "authority": {
+    "human_closure_required": true,
+    "real_person_identity_adjudicated": false,
+    "author_intent_adjudicated": false,
+    "private_state_admitted": false,
+    "cross_actor_coordination_adjudicated": false,
+    "merge_authority": false,
+    "deployment_authority": false
+  },
+  "claim_ceiling": [
+    "PUBLIC_PROFILE_FIRST_PAGE != EXHAUSTIVE_DAY_CENSUS",
+    "PROFILE_CARD_ORDER != EXACT_TIMESTAMP",
+    "PUBLIC_POST != AUTHOR_INTENT",
+    "PUBLIC_POST_TOPOLOGY != PRIVATE_STATE",
+    "TEMPORAL_ADJACENCY != CAUSAL_ROUTE",
+    "RELATIONAL_RESEMBLANCE != CROSS_ACTOR_COORDINATION",
+    "MEDIA_CARD_OBSERVED != MEDIA_SEMANTICS_ADMITTED",
+    "NOT_RETRIEVED != DID_NOT_EXIST"
+  ],
+  "seal": "⟐"
+}

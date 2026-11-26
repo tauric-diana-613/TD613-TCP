@@ -1,0 +1,33 @@
+{
+  "authority": {
+    "deployment": false,
+    "donor_import": false,
+    "human_closure_required": true,
+    "merge": false,
+    "td613_promotion": false
+  },
+  "captured_at": "2026-09-13T23:44:21Z",
+  "coverage_state": "PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS",
+  "full_source_bodies_stored": false,
+  "handle_binding_status": "HUMAN_PROVENANCE_ONLY",
+  "human_reported_handle": "u/Upset-Ratio502",
+  "known_missingness": [
+    "The public search surface did not expose an exhaustive live subreddit census.",
+    "No 2026-09-12 r/Wendbine post was source-bound in this pass; absence from retrieval is not evidence of absence.",
+    "Publication time is retained only at DAY precision in the normalized source records."
+  ],
+  "parent_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "private_google_group_admitted": false,
+  "publication_day_counts": {"2026-09-13": 2},
+  "real_person_identity_adjudicated": false,
+  "requested_window": {"end_utc":"2026-09-13T23:44:21Z","mode":"SINCE_PARENT_SNAPSHOT","start_utc":"2026-09-11T09:27:00Z"},
+  "schema": "wendbine-public-intake-receipt/v0.1",
+  "snapshot_id": "wendbine-public-reddit-delta-20260913T234421Z-v02",
+  "snapshot_sha256": "25c734893e1fffc1c7261fa01274405683f3b23430644b714f9031307abcc63c",
+  "source_count": 2,
+  "source_registry_sha256": "4d07ff7421c76b35563cd3144313122a77ce6827138d96272e38539ce3b723d2",
+  "source_rights_note": "No full Reddit post bodies are mirrored. Canonical URLs remain the source reference.",
+  "source_surface": "public Reddit / r/Wendbine",
+  "topology_index_sha256": "3d083407b01e2c3a45223b7b5b345c4460b7b0283e1e06427cc511618c22c426",
+  "typed_relation_registry_sha256": "61b5e386e2c33ffda20acc82b8a78c9bb7a7266f22933fcf149ae6647fc6d891"
+}

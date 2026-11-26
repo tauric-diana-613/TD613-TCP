@@ -1,0 +1,514 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1794524020397-ba6f5339",
+  "timestamp": "2026-11-12T22:53:40.398Z",
+  "source_revision": "a19a100e5b6ab965f8f0cfb280be8842175de127",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "a19a100e5b6ab965f8f0cfb280be8842175de127",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "a19a100e5b6ab965f8f0cfb280be8842175de127",
+    "audit_execution_revision": "a19a100e5b6ab965f8f0cfb280be8842175de127",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [
+    {
+      "role": "APERTURE",
+      "property": "classification_replay_stability",
+      "status": "HELD_NOT_YET_WITNESSED",
+      "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+    }
+  ],
+  "is_historical_commit_only": false,
+  "task_scope": "VIXEN_RGI13_15_APERTURE_MACRO_VISUAL_FIDELITY",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    {
+      "path": "work\\vixen-audit\\evidence\\work-events.json",
+      "sha256": "1b366598d52bc9310e2cd77186995aca28e4e3d2ee51c584c4d1aa7f016a3403"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\rest-control.json",
+      "sha256": "7ebb986cc3c6e38499a7aa278251ad0a74f0a21d667146bc8f925901ee6cb435"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\exit-control.json",
+      "sha256": "2b58d43ebcaf80edb1f51d2b8eee1732b758825bb2fac6fbb485bcbe778d583b"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\aperture-response-matrix.json",
+      "sha256": "c16954281037e77b5b4a808b05c37a7bc3453bc5788379bf78c5d98a2e1b4687"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\desktop-controlled-painter.json",
+      "sha256": "fde0da710c4bd443dcad9bc7575048e56c98d2951e194508d39af0a7bc5611bf"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\served-optics-comparison.json",
+      "sha256": "8f61834bac9078e4712f8627f361a090dca1a7a2ef0fef468c5cc61beb2ccef2"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\pixel-comparisons.json",
+      "sha256": "6a4aaadd38176baf29d4aa35f176a07a0f10bb361fb6f0696aab27728af132bd"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\kernel-execution.json",
+      "sha256": "6f3bd0c31c6c16f70680ef1e107374e8ae678b3b366a1eafdf05d3ab1cf6128e"
+    },
+    {
+      "path": "work\\vixen-audit\\evidence\\pr-close-observation.json",
+      "sha256": "29ad986262d98450c3e262ec4d643630f126758af353dac8764f5536e5fe12ef"
+    },
+    {
+      "path": "work\\candidate3\\reconstruction\\app\\encyclopedia\\vixen-estate\\vixen-beat-radiometry-rgi15.mjs",
+      "sha256": "f28316e116c92ef9be7895a42d18e5c04d8649f0dcdc763b32c386048197fcc8"
+    },
+    {
+      "path": "work\\candidate3\\reconstruction\\app\\encyclopedia\\vixen-estate\\vixen-opaline-couture-rgi14.mjs",
+      "sha256": "8ec272f4dfe7d7a7edb250cdc4344e5f7c76a1e2d3f3f0cf59c2e77e01ba0933"
+    },
+    {
+      "path": "work\\candidate3\\reconstruction\\app\\encyclopedia\\vixen-estate\\vixen-opaline-couture-rgi14.css",
+      "sha256": "4b09d23bcdc68a39e959f3b4a4e9ebcbbf423316786965bb7fa22a3425a3df28"
+    }
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "work\\vixen-audit\\evidence\\work-events.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1b366598d52bc9310e2cd77186995aca28e4e3d2ee51c584c4d1aa7f016a3403",
+      "byte_digest_verified": true,
+      "sha256": "1b366598d52bc9310e2cd77186995aca28e4e3d2ee51c584c4d1aa7f016a3403"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\rest-control.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "7ebb986cc3c6e38499a7aa278251ad0a74f0a21d667146bc8f925901ee6cb435",
+      "byte_digest_verified": true,
+      "sha256": "7ebb986cc3c6e38499a7aa278251ad0a74f0a21d667146bc8f925901ee6cb435"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\exit-control.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "2b58d43ebcaf80edb1f51d2b8eee1732b758825bb2fac6fbb485bcbe778d583b",
+      "byte_digest_verified": true,
+      "sha256": "2b58d43ebcaf80edb1f51d2b8eee1732b758825bb2fac6fbb485bcbe778d583b"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\aperture-response-matrix.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "c16954281037e77b5b4a808b05c37a7bc3453bc5788379bf78c5d98a2e1b4687",
+      "byte_digest_verified": true,
+      "sha256": "c16954281037e77b5b4a808b05c37a7bc3453bc5788379bf78c5d98a2e1b4687"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\desktop-controlled-painter.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "fde0da710c4bd443dcad9bc7575048e56c98d2951e194508d39af0a7bc5611bf",
+      "byte_digest_verified": true,
+      "sha256": "fde0da710c4bd443dcad9bc7575048e56c98d2951e194508d39af0a7bc5611bf"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\served-optics-comparison.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "8f61834bac9078e4712f8627f361a090dca1a7a2ef0fef468c5cc61beb2ccef2",
+      "byte_digest_verified": true,
+      "sha256": "8f61834bac9078e4712f8627f361a090dca1a7a2ef0fef468c5cc61beb2ccef2"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\pixel-comparisons.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6a4aaadd38176baf29d4aa35f176a07a0f10bb361fb6f0696aab27728af132bd",
+      "byte_digest_verified": true,
+      "sha256": "6a4aaadd38176baf29d4aa35f176a07a0f10bb361fb6f0696aab27728af132bd"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\kernel-execution.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6f3bd0c31c6c16f70680ef1e107374e8ae678b3b366a1eafdf05d3ab1cf6128e",
+      "byte_digest_verified": true,
+      "sha256": "6f3bd0c31c6c16f70680ef1e107374e8ae678b3b366a1eafdf05d3ab1cf6128e"
+    },
+    {
+      "reference": "work\\vixen-audit\\evidence\\pr-close-observation.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "29ad986262d98450c3e262ec4d643630f126758af353dac8764f5536e5fe12ef",
+      "byte_digest_verified": true,
+      "sha256": "29ad986262d98450c3e262ec4d643630f126758af353dac8764f5536e5fe12ef"
+    },
+    {
+      "reference": "work\\candidate3\\reconstruction\\app\\encyclopedia\\vixen-estate\\vixen-beat-radiometry-rgi15.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "f28316e116c92ef9be7895a42d18e5c04d8649f0dcdc763b32c386048197fcc8",
+      "byte_digest_verified": true,
+      "sha256": "f28316e116c92ef9be7895a42d18e5c04d8649f0dcdc763b32c386048197fcc8"
+    },
+    {
+      "reference": "work\\candidate3\\reconstruction\\app\\encyclopedia\\vixen-estate\\vixen-opaline-couture-rgi14.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "8ec272f4dfe7d7a7edb250cdc4344e5f7c76a1e2d3f3f0cf59c2e77e01ba0933",
+      "byte_digest_verified": true,
+      "sha256": "8ec272f4dfe7d7a7edb250cdc4344e5f7c76a1e2d3f3f0cf59c2e77e01ba0933"
+    },
+    {
+      "reference": "work\\candidate3\\reconstruction\\app\\encyclopedia\\vixen-estate\\vixen-opaline-couture-rgi14.css",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "4b09d23bcdc68a39e959f3b4a4e9ebcbbf423316786965bb7fa22a3425a3df28",
+      "byte_digest_verified": true,
+      "sha256": "4b09d23bcdc68a39e959f3b4a4e9ebcbbf423316786965bb7fa22a3425a3df28"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": null,
+            "observed_world_answer_dwell": null,
+            "rest_required": true,
+            "exit_required": true,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 1794486861689,
+            "ACT": 1794486879082,
+            "WORLD_ANSWERS": 1794486879988,
+            "REST": 1794505033770,
+            "EXIT": 1794505035607,
+            "NAME": 1794505239498
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "vixen-observed-work-rest-exit",
+            "clock_unit": "OBSERVER_WALL_CLOCK_MILLISECONDS",
+            "phase_times": {
+              "NOTICE": 1794486861689,
+              "ACT": 1794486879082,
+              "WORLD_ANSWERS": 1794486879988,
+              "REST": 1794505033770,
+              "EXIT": 1794505035607,
+              "NAME": 1794505239498
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": null,
+              "observed_world_answer_dwell": null,
+              "rest_required": true,
+              "exit_required": true,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability_and_identifiability",
+      "verdict": "HELD",
+      "status": "VIOLATION_DETECTED",
+      "defect_class": "CALLER_SUPPLIED_MATHEMATICAL_VIOLATION",
+      "claim": "Aperture deficit detected: NOISE_GEOMETRY_INCOMPLETE",
+      "infractions": [
+        "NOISE_GEOMETRY_INCOMPLETE"
+      ],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "epistemic_deficit": {
+          "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+          "version": "v3.2-alpha",
+          "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+          "authority_class": "A2_DERIVATIONAL",
+          "input": {
+            "latent_dimension": 3,
+            "current_rank": 3,
+            "sigma_min": 0.11060848747653101,
+            "condition_number": 350.76428792784924,
+            "uncertainty_status": "INCOMPLETE",
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "threshold_authority": "OPERATOR_DECLARED_LOCAL_DEFAULT_ENGINE_THRESHOLDS_NOT_EMPIRICALLY_CALIBRATED"
+          },
+          "deficit_class": "NOISE_GEOMETRY_INCOMPLETE",
+          "disposition": "ABSTAIN",
+          "admissible_question_criterion": null,
+          "reason": "disposition-relevant uncertainty geometry is unresolved; missing reliability is not neutral reliability",
+          "pedagogue_companion_cue": "RESOLVE_UNCERTAINTY_GEOMETRY_BEFORE_CANDIDATE_COMPARISON",
+          "candidate_probe_evaluation": null,
+          "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+          "no_scalar_crown": true,
+          "missing_is_neutral": false,
+          "proposal_is_execution": false,
+          "widening_is_validation": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "promotion_authority": false,
+          "production_mutation": false,
+          "human_closure_required": true
+        },
+        "matrix_svd": {
+          "m": 16,
+          "n": 3,
+          "rank": 3,
+          "singular_values": [
+            38.79750734848183,
+            1.9358068229148546,
+            0.11060848747653101
+          ],
+          "sigma_max": 38.79750734848183,
+          "sigma_min": 0.11060848747653101,
+          "condition_number": 350.76428792784924
+        }
+      }
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "OPEN",
+      "defect_class": "NONE",
+      "claim": "custody-diff-recorded-without-external-enforcement",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "phason_custody_diff": {
+          "schema": "td613.phason.custody-diff/v0.5-governed",
+          "status": "OPEN",
+          "content_invariant": true,
+          "projection_changed": false,
+          "collision_detected": false,
+          "decision": "custody-diff-recorded-without-external-enforcement",
+          "verified_algorithm": "fnv32",
+          "claim_ceiling": "phason-custody-diff-not-external-enforcement-or-permission-proof",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "finite_support_boundary",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "fiber_bounds": {
+          "antecedent_count": 3,
+          "union_support": [
+            "ATTRIBUTE_CURRENT_RENDER",
+            "CHECK_KERNEL_ALGEBRA",
+            "CONTINUE_READ_ONLY_AUDIT"
+          ],
+          "union_cardinality": 3,
+          "intersection_support": [
+            "CONTINUE_READ_ONLY_AUDIT"
+          ],
+          "intersection_cardinality": 1,
+          "irreducible_gap": [
+            "ATTRIBUTE_CURRENT_RENDER",
+            "CHECK_KERNEL_ALGEBRA"
+          ],
+          "irreducible_gap_cardinality": 2,
+          "exact_descent_exists": false,
+          "universally_sound_available": true,
+          "disposition": "HOLD_IRREDUCIBLE_GAP",
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "HELD",
+      "status": "VIOLATION_DETECTED",
+      "defect_class": "CALLER_SUPPLIED_MATHEMATICAL_VIOLATION",
+      "claim": "Local component success cannot mask failed, held, unknown or unperformed route phases.",
+      "infractions": [
+        "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION"
+      ],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "HELD",
+          "veto_applied": true,
+          "veto_authority": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION",
+          "evaluations": {
+            "SOURCE_BYTES": "PASS",
+            "CURRENT_SERVED_BYTES": "PASS",
+            "CONTROLLED_RENDER": "PASS",
+            "ORIGINAL_REJECTION_EPISODE": "UNKNOWN",
+            "HUMAN_ARTISTIC_CLOSURE": "HELD"
+          },
+          "violations": [],
+          "rationale": "Local component success cannot mask failed, held, unknown or unperformed route phases."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [
+    "NOISE_GEOMETRY_INCOMPLETE",
+    "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION",
+    "MALFORMED_OBSERVATION_SCHEMA"
+  ],
+  "orchestrator": {
+    "decision": "HELD",
+    "consensus": "HELD_DISSENT",
+    "primary_verdicts_consensus": "HELD_DISSENT",
+    "nested_extension_holds": [
+      {
+        "role": "APERTURE",
+        "property": "classification_replay_stability",
+        "status": "HELD_NOT_YET_WITNESSED",
+        "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+      }
+    ],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [
+      "NOISE_GEOMETRY_INCOMPLETE",
+      "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION",
+      "MALFORMED_OBSERVATION_SCHEMA"
+    ],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Infractions detected: NOISE_GEOMETRY_INCOMPLETE, UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION, MALFORMED_OBSERVATION_SCHEMA."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 327
+}

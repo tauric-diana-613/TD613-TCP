@@ -1,0 +1,209 @@
+/* VIXEN OPERA · RGI27 · rebuilt mobile manuscript reader.
+ * Independent article-flow system: former nested-width/couture mobile
+ * manuscript rules are retired. No source text or desktop CSS is changed.
+ */
+@media screen and (max-width:680px) {
+  /* Opera reading: the fixed global animation was visibly painting *over*
+     verified manuscript letters on the 428px Chromium screenshot.
+     Restrict removal to Works; Salon and Observatory retain their visuals. */
+  body[data-view="works"] #vixenLivingMesh.vixen-living-mesh {
+    display:none!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works>.page-pad {
+    box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+    padding-inline:12px!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout.has-mobile-reader {
+    display:block!important;box-sizing:border-box!important;
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    grid-template-columns:minmax(0,1fr)!important;margin:0!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout.has-mobile-reader>.lexicon-index {display:none!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksLexiconLayout.has-mobile-reader #worksReaderPanel.lexicon-reader {
+    display:block!important;box-sizing:border-box!important;
+    width:100%!important;min-width:0!important;max-width:none!important;
+    margin:0!important;padding:12px 0 32px!important;
+    background:transparent!important;color:#2a2729!important;
+    border:0!important;border-radius:0!important;box-shadow:none!important;
+    overflow:visible!important;position:static!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel::before,
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel::after {content:none!important;display:none!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel>.reader-section {
+    box-sizing:border-box!important;width:100%!important;min-width:0!important;
+    padding:10px 9px!important;margin:9px 0!important;
+  }
+  /* Visitor-facing Works now begins with its title and clean manuscript picker;
+     scholarly interpretation stays available as an opt-in disclosure. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header {
+    margin:5px 0 9px!important;padding:0 8px!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header h2 {
+    font:400 26px/1.16 "Iowan Old Style","New York",Georgia,serif!important;
+    color:#f2d4bc!important;letter-spacing:-.023em!important;
+    margin:0 0 5px!important;max-width:100%!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-byline {
+    font:500 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    margin:4px 0 9px!important;color:#dfcdbc!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(.vix-public-work-context,.vix-public-work-methods) {
+    display:block!important;width:100%!important;
+    padding:8px 11px!important;margin:6px 0!important;
+    border:1px solid #8a7461!important;background:#1b2425!important;
+    color:#e6d7c9!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel :is(.vix-public-work-context,.vix-public-work-methods) summary {
+    cursor:pointer!important;font:600 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:0!important;color:#f4d4af!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-source-picker {
+    box-sizing:border-box!important;display:flex!important;align-items:center!important;
+    justify-content:space-between!important;gap:8px!important;flex-wrap:wrap!important;
+    width:100%!important;margin:4px 0!important;padding:9px 10px!important;
+    background:#272f30!important;border:1px solid #8a796e!important;
+    color:#f5e8d8!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-source-picker .vix-source-filename {
+    min-width:0!important;flex:1 1 155px!important;
+    font:400 13.5px/1.35 "Iowan Old Style","New York",Georgia,serif!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;
+    color:#f5e8d8!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-source-picker button {
+    flex:0 0 auto!important;min-height:32px!important;padding:6px 9px!important;
+    font:650 10px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:0!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount.expa-reader-shell {
+    display:block!important;box-sizing:border-box!important;
+    width:100%!important;min-width:0!important;max-width:100%!important;
+    padding:0!important;margin:12px 0!important;
+    border:0!important;border-radius:0!important;background:transparent!important;
+    box-shadow:none!important;overflow:visible!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-bar {
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    gap:7px!important;padding:11px 12px!important;margin:0!important;
+    background:#242d2e!important;border:0!important;border-radius:3px 3px 0 0!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-name {
+    font:italic 400 22px/1.16 "Iowan Old Style","New York",Georgia,serif!important;
+    color:#f4ddc6!important;letter-spacing:-.025em!important;max-width:100%!important;
+    text-wrap:wrap!important;overflow-wrap:normal!important;word-break:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-eyebrow,
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-custody {
+    font:500 10px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:0!important;overflow-wrap:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-controls {
+    justify-content:flex-start!important;flex-wrap:wrap!important;gap:5px!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-controls button {
+    min-height:31px!important;padding:5px 9px!important;font-size:10px!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-noir-folio-frame {
+    display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+    padding:0!important;margin:0!important;background:#fffaf6!important;
+    border:0!important;border-radius:0!important;box-shadow:none!important;
+    overflow:visible!important;contain:none!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-topline,
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-footer {
+    display:flex!important;flex-wrap:wrap!important;gap:6px!important;
+    padding:7px 12px!important;margin:0!important;color:#494347!important;
+    background:#f1e9e5!important;font:500 10px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:0!important;border:0!important;
+  }
+  /* Single normal-flow literary article, explicitly replacing the
+     fixed-height dark nested scrollport and all column/word-breaking rules. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript {
+    display:flow-root!important;position:static!important;float:none!important;
+    box-sizing:border-box!important;width:100%!important;min-width:0!important;
+    max-width:100%!important;min-height:0!important;max-height:none!important;
+    margin:0!important;padding:15px 13px 22px!important;
+    border:0!important;border-radius:0!important;box-shadow:none!important;
+    columns:unset!important;column-count:1!important;column-width:auto!important;
+    writing-mode:horizontal-tb!important;
+    overflow:visible!important;overflow-x:visible!important;overflow-y:visible!important;
+    background:#fffaf6!important;color:#252326!important;
+    font:400 15.5px/1.53 "Iowan Old Style","New York",Georgia,serif!important;
+    letter-spacing:0!important;text-align:left!important;text-transform:none!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important;
+    hyphens:none!important;text-wrap:wrap!important;
+    text-shadow:none!important;filter:none!important;mix-blend-mode:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(p,li,blockquote,em,strong,span) {
+    box-sizing:border-box!important;max-width:none!important;min-width:0!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important;
+    hyphens:none!important;text-wrap:wrap!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-paragraph {
+    display:block!important;width:auto!important;max-width:none!important;
+    margin:0 0 11px!important;padding:0!important;
+    color:#252326!important;background:transparent!important;
+    font:400 15.5px/1.53 "Iowan Old Style","New York",Georgia,serif!important;
+    letter-spacing:0!important;white-space:normal!important;text-wrap:wrap!important;
+    /* Preserve normal literary words; break only oversized source URL tokens. */
+    word-break:normal!important;overflow-wrap:break-word!important;hyphens:none!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading {
+    display:block!important;width:auto!important;max-width:100%!important;
+    margin:18px 0 7px!important;padding:0!important;color:#292d30!important;
+    font-family:"Iowan Old Style","New York",Georgia,serif!important;
+    font-weight:600!important;line-height:1.22!important;letter-spacing:-.018em!important;
+    word-break:normal!important;overflow-wrap:normal!important;text-wrap:wrap!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre h3.vix-reader-heading {font-size:22px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(h4,h5,h6).vix-reader-heading {font-size:18px!important}
+  /* Retire RGI18's oversized 31-60px gold poster title and drop-cap
+     without changing the source's actual title or manuscript bytes. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading.vix-pdf-source-title {
+    font:600 18.5px/1.23 "Iowan Old Style","New York",Georgia,serif!important;
+    color:#292e30!important;text-shadow:none!important;
+    width:auto!important;max-width:100%!important;
+    margin:0 0 10px!important;padding:0 0 8px!important;
+    border-bottom:1px solid #d0c5ba!important;
+    letter-spacing:-.013em!important;text-transform:none!important;
+    text-wrap:wrap!important;overflow-wrap:normal!important;word-break:normal!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-lineation="pdf-source-wordflow-reconstructed"]>.vix-reader-paragraph:first-of-type::first-letter {
+    float:none!important;margin:0!important;padding:0!important;
+    font:inherit!important;color:inherit!important;line-height:inherit!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-topline span:last-child {
+    display:none!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-pdf-source-title::before {
+    display:none!important;content:none!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(.vix-reader-list,.vix-reader-quote) {
+    font:inherit!important;color:inherit!important;line-height:1.5!important;
+    margin:8px 0 12px!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-list {padding-inline-start:23px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-quote {
+    padding:7px 0 7px 12px!important;border-left:2px solid #af8d7e!important;
+    background:transparent!important;
+  }
+  /* Only unbroken code and TeX may scroll horizontally; never prose. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre :is(pre,.vix-reader-code,.vix-math-display,.vix-reader-raw pre) {
+    display:block;box-sizing:border-box!important;max-width:100%!important;
+    overflow-x:auto!important;overflow-y:visible!important;overflow-wrap:anywhere!important;
+    white-space:pre-wrap!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-raw {
+    margin:15px 0 0!important;padding:9px 0!important;
+    border-top:1px solid #d8cbc3!important;background:transparent!important;
+    color:#555056!important;font:500 11px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-raw summary {color:#555a5b!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-folio-density="comfort"] {
+    font-size:16.5px!important;line-height:1.63!important;
+  }
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre[data-folio-density="comfort"] .vix-reader-paragraph {
+    font-size:16.5px!important;line-height:1.63!important;margin-bottom:14px!important;
+  }
+}

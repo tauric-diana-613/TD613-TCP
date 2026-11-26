@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script id="td613-sitewide-reset-preflight" src="../../site-epoch-preflight.js" defer></script>
+<link rel="stylesheet" href="../vixen-estate/fusion-console.css">
+<link rel="stylesheet" href="../vixen-estate/research-chamber.css">
+<link rel="stylesheet" href="../vixen-estate/synthesis-salon.css">
+<link rel="stylesheet" href="../vixen-estate/vixen-ai-journey.css">
+<link rel="stylesheet" href="../vixen-estate/vixen-comparative-field-trial.css">
+<link rel="stylesheet" href="../vixen-estate/vixen-source-challenge.css">
+<link rel="stylesheet" href="../vixen-estate/vixen-motion.css">
+<link rel="stylesheet" href="../reference/vixen-operator-encounter.css">
+<link rel="stylesheet" href="../vixen-estate/glinda-cybergoth-rgi10.css" data-visual-system="GLINDA_CYBERGOTH_RGI10">
+<link rel="stylesheet" href="../vixen-estate/vixen-stage-architecture-rgi10b.css" data-visual-system="THEATRE_OF_CONSEQUENCE_RGI10B">
+<link rel="stylesheet" href="../vixen-estate/glinda-luminous-proscenium-rgi12.css" data-visual-system="GLINDA_PEARL_CHROME_PROSCENIUM_RGI12">
+<link rel="stylesheet" href="../vixen-estate/vixen-electrical-breath-rgi13.css" data-visual-system="VIXEN_LIVING_MESH_ELECTRIC_COUTURE_RGI13">
+<link rel="stylesheet" href="../vixen-estate/vixen-opaline-couture-rgi14.css" data-visual-system="VIXEN_OPALINE_NO_PLUM_RGI14">
+<link rel="stylesheet" href="../assets/vixen/brand-assets.css" data-vixen-brand-contract="SVG_FOX_AND_APPROVED_FRONTISPIECE">
+<link rel="stylesheet" href="../vixen-estate/vixen-mobile-seams-rgi16.css" data-visual-system="VIXEN_OPERATOR_MOBILE_SEAM_REPAIR_RGI16">
+<link rel="stylesheet" href="../vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
+<link rel="stylesheet" href="../vixen-estate/vixen-proscenium-seam.css">
+<link rel="alternate" type="application/json" title="Vixen Podium machine research contract" href="../reference/podium/manifest.json">
+<meta name="td613-podium" content="HUMAN_PODIUM_DEDICATED_WORKSPACE_READ_ONLY_HUMAN_CLOSURE_RESERVED">
+<title>Human Podium · Maestro &amp; Composer · Vixen Cybernetics</title>
+<style>
+:root{
+  --font-sans:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-display:'Syne','Trebuchet MS','Arial Black','Arial Narrow',Impact,sans-serif;
+  --font-serif:'Cormorant Garamond',Didot,'Bodoni MT','Palatino Linotype',Palatino,Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,'Courier New',monospace;
+  --obsidian:#0a0e12;
+  --porcelain:#F6F4F0;
+  --vixen-pink:#FF91AF;
+  --arc-flash:#FFF2A9;
+  --graphite:#1a2228;
+  --line:rgba(246,244,240,.18);
+  --line-strong:rgba(246,244,240,.42);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto!important;overflow-x:clip}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--obsidian);color:var(--porcelain);font:15px/1.68 var(--font-sans);overflow-x:clip}
+a{color:inherit}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--arc-flash);outline-offset:3px}
+svg.icon{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;pointer-events:none;flex-shrink:0}
+.podium-standalone-header{position:sticky;top:0;z-index:60;background:rgba(10,14,18,.96);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1440px;margin:0 auto;padding:12px clamp(14px,3vw,42px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.header-left{display:flex;align-items:center;gap:12px;min-width:0}
+.header-nav-cluster{display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
+.reading-back,.hdr-pill,.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid var(--line-strong);border-radius:8px;font:500 11px/1.2 var(--font-mono);text-decoration:none;color:var(--porcelain);background:rgba(255,255,255,.03)}
+.reading-back:hover,.hdr-pill:hover,.secondary-btn:hover{background:rgba(255,255,255,.1)}
+.primary-btn,.ci-btn.primary{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 14px;border:1px solid var(--arc-flash);border-radius:8px;background:var(--arc-flash);color:#12181d;font:600 11px/1.2 var(--font-mono);text-decoration:none}
+.brand-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.brand-link .vixen-fox-emblem{width:34px;height:34px;flex-shrink:0;display:block}
+.brand-name strong{display:block;font:600 12px/1.1 var(--font-mono);letter-spacing:.12em}
+.brand-name small{display:block;font:500 10px/1.25 var(--font-mono);color:var(--vixen-pink);letter-spacing:.08em}
+.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hdr-cart-pill{position:relative}
+.hdr-cart-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--arc-flash);color:#12181d;font:700 10.5px/1 var(--font-mono)}
+.hdr-help-btn{position:relative;width:40px;padding:0;border-radius:999px}
+.hdr-help-tooltip{position:absolute;top:calc(100% + 6px);right:0;white-space:nowrap;padding:4px 8px;border-radius:6px;background:#12181d;border:1px solid var(--line-strong);color:var(--porcelain);font:500 10.5px/1.2 var(--font-mono);opacity:0;pointer-events:none;transition:opacity .2s}
+.hdr-help-btn:hover .hdr-help-tooltip,.hdr-help-btn:focus-visible .hdr-help-tooltip{opacity:1}
+main{flex:1;width:100%;max-width:1340px;margin:0 auto;padding:clamp(22px,4vw,44px) clamp(14px,3vw,42px)}
+.vix-podium-inner{display:grid;gap:20px}
+.vix-podium-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.eyebrow{font:600 11px/1.3 var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--vixen-pink)}
+h1{font:600 clamp(26px,3.6vw,38px)/1.1 var(--font-display);margin:4px 0 0}
+.vix-podium-nav-links{display:flex;flex-wrap:wrap;gap:8px}
+.podium-tabs{display:flex;flex-wrap:wrap;gap:8px}
+.podium-tabs button{min-height:42px;padding:0 14px;border:1px solid var(--line-strong);border-radius:8px;font:600 11.5px/1.2 var(--font-mono);background:rgba(255,255,255,.04);color:var(--porcelain)}
+.podium-tabs button[aria-pressed="true"]{background:var(--arc-flash);color:#12181d;border-color:var(--arc-flash)}
+.vma-restore-banner,.vma-carried-draft{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--arc-flash);border-radius:10px;background:rgba(255,242,169,.08);font:500 12.5px/1.55 var(--font-sans)}
+.vma-carried-draft{border-color:var(--vixen-pink);background:rgba(255,145,175,.09)}
+.vix-podium-help-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.vix-podium-help-card{padding:18px;border:1px solid var(--line-strong);border-radius:12px;background:#10161b}
+.vix-podium-help-card h3{font:600 16px/1.25 var(--font-display);margin:0 0 8px;color:var(--vixen-pink)}
+.research-cart-popout{position:fixed;top:68px;right:18px;z-index:90;width:min(420px,calc(100vw - 24px));max-height:80vh;overflow:auto;padding:18px;border:1px solid var(--line-strong);border-radius:12px;background:#10151a;color:var(--porcelain);box-shadow:0 20px 54px rgba(0,0,0,.6)}
+.cart-popout-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.cart-popout-items{display:grid;gap:8px;margin-bottom:12px}
+.cart-popout-item{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.03)}
+.cart-popout-stage-actions,.cart-popout-exports{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.cart-popout-custody{margin-top:10px;font:400 11.5px/1.55 var(--font-sans);color:rgba(246,244,240,.75)}
+dialog.dialog{max-width:740px;width:calc(100vw - 24px);border:1px solid var(--line-strong);border-radius:14px;background:#11171c;color:var(--porcelain);padding:0}
+dialog.dialog::backdrop{background:rgba(4,7,10,.78)}
+.dialog-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dialog-body{padding:18px;display:grid;gap:12px;font-size:14px;line-height:1.65}
+.tag{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font:600 10.5px/1.2 var(--font-mono);border:1px solid var(--line-strong)}
+.tag.gold{background:rgba(255,242,169,.14);color:var(--arc-flash);border-color:rgba(255,242,169,.5)}
+footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clamp(16px,3.5vw,42px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;font:500 11.5px/1.4 var(--font-mono);background:#080b0e}
+.footer-actions,.footer-end-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+@media(max-width:680px){
+  .lbl-desktop,.brand-name small{display:none}
+  .header-inner{padding:10px 12px;gap:8px}
+  .reading-back,.hdr-pill{min-height:36px;padding:0 8px}
+}
+</style>
+<link rel="stylesheet" href="../vixen-estate/vixen-bias-cut-couture.css" data-visual-system="VIXEN_BIAS_CUT_COUTURE_TURN_II">
+<link rel="stylesheet" href="../vixen-estate/vixen-phoenix-opera.css" data-visual-system="VIXEN_PHOENIX_OPERA_DD02">
+</head>
+<body data-page="podium" data-view="podium" data-vixen-motion="live">
+<header class="podium-standalone-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-nav-cluster" role="group" aria-label="Podium Return Navigation">
+        <a class="reading-back" id="vixenReturnLink" href="../vix-cyb.html#overview" aria-label="Return to Vixen Entrance" title="Return to Vixen Entrance"><span aria-hidden="true">⌂</span><span class="lbl-desktop"> Home</span></a>
+        <button type="button" class="hdr-pill" id="vixenHistoryBack" aria-label="Go Back" title="Go Back">🢔</button>
+        <button type="button" class="hdr-pill" id="vixenHistoryForward" aria-label="Go Forward" title="Go Forward">🢖</button>
+      </div>
+      <a class="brand-link" href="../vix-cyb.html#overview" aria-label="Vixen Cybernetics Main Opera">
+        <svg class="vixen-fox-emblem" viewBox="0 0 64 64" aria-hidden="true"><polygon points="10,10 24,22 20,42 8,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="54,10 40,22 44,42 56,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="20,24 44,24 32,54" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="26" cy="33" r="2.2" fill="#FFF2A9"/><circle cx="38" cy="33" r="2.2" fill="#FFF2A9"/></svg>
+        <span class="brand-name"><strong>VIXEN CYBERNETICS</strong><small>HUMAN PODIUM · RESEARCH WORKSPACE</small></span>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a class="secondary-btn" href="./podium.html"><span aria-hidden="true">←</span> Entrance</a>
+      <a class="secondary-btn" href="../vix-cyb.html#works">Works</a>
+      <a class="secondary-btn" href="../vix-cyb.html#collection">Salon</a>
+      <button type="button" class="hdr-pill hdr-cart-pill" id="researchCartBtn" aria-expanded="false" aria-controls="researchCartPopout" aria-label="Open Research Cart">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2l2.2 10h9.6l2-7H7.2"/><circle cx="10" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>
+        <span class="lbl-desktop">Research cart</span>
+        <span class="hdr-cart-badge" id="collectionCount" hidden aria-hidden="true"></span>
+      </button>
+      <button type="button" class="hdr-pill hdr-motion-control" id="motionBtn" aria-pressed="false" aria-label="Pause animations">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <button type="button" class="hdr-pill hdr-help-btn" id="headerHelpBtn" data-action="inspector" data-pua-emblem="􍘓" aria-label="Human Podium Help">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.5a2.4 2.4 0 0 1 4.8 0c0 1.6-2.4 2-2.4 3.6"/><circle cx="12" cy="16.8" r=".8" fill="currentColor" stroke="none"/></svg>
+        <span class="hdr-help-tooltip" role="tooltip">Need help?</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<aside id="researchCartPopout" class="research-cart-popout" role="dialog" aria-label="Research Cart" hidden>
+  <div class="cart-popout-head">
+    <div>
+      <span class="eyebrow">SESSION STUDY CART</span>
+      <h3>Research Cart <small id="researchCartPopoutCount">0 items</small></h3>
+    </div>
+    <button type="button" class="hdr-pill" id="closeResearchCartBtn" aria-label="Close Research Cart">✕</button>
+  </div>
+  <div class="cart-popout-items" id="collectionItemsContainer"></div>
+  <div class="cart-popout-stage-actions">
+    <a class="secondary-btn" id="cartStageSalonBtn" href="../vix-cyb.html#collection">Stage in Salon ↗</a>
+    <button type="button" class="secondary-btn" id="cartSyncToComposerBtn">Load Cart into Composer</button>
+  </div>
+  <div class="cart-popout-exports">
+    <button type="button" class="primary-btn" id="exportTrayBtn" disabled>Export Cart JSON ↓</button>
+    <button type="button" class="secondary-btn" id="footerSaveSessionBtn">Save Portable Session ZIP ⭳</button>
+  </div>
+  <p class="cart-popout-custody"><strong>4 Distinct Exports:</strong> Cart JSON, Portable Session ZIP, Salon Receipt JSON, and Podium Journey JSON stay separate.</p>
+</aside>
+
+<main id="main">
+  <section class="vix-podium-inner" id="view-podium" data-page="podium" aria-label="Human Podium Workspace">
+    <header class="vix-podium-header">
+      <div>
+        <p class="eyebrow">THE PODIUM · DEDICATED HUMAN RESEARCH &amp; SYNTHESIS STAGE</p>
+        <h1>Human Podium Workspace</h1>
+      </div>
+      <div class="vix-podium-nav-links">
+        <a class="secondary-btn" href="./podium.html">← Podium Entrance</a>
+        <a class="secondary-btn" href="../vix-cyb.html#collection">← Synthesis Salon</a>
+        <a class="secondary-btn" href="../vix-cyb.html#works">← Works Catalogue</a>
+        <a class="secondary-btn" id="humanPodiumLlmLink" href="./llms.txt" target="_blank" rel="noopener">LLM Entrance ↗</a>
+      </div>
+    </header>
+
+    <div class="podium-tabs" role="tablist" aria-label="Human Podium Sections">
+      <button type="button" data-podium-tab="maestro" role="tab" aria-pressed="true">01 · Maestro</button>
+      <button type="button" data-podium-tab="composer" role="tab" aria-pressed="false">02 · Composer</button>
+      <button type="button" data-podium-tab="settings" role="tab" aria-pressed="false">03 · Podium Settings &amp; Ledger</button>
+      <button type="button" data-podium-tab="help" role="tab" aria-pressed="false">04 · Human Podium Help</button>
+    </div>
+
+    <div id="vmaRestoreBanner" class="vma-restore-banner" role="region" aria-label="Saved Podium Session Available" hidden>
+      <div>
+        <strong>Paused Podium session available in this browser tab.</strong>
+        <span>Role selection and Program Notes consent remain OFF by default until you deliberately choose to restore.</span>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button type="button" class="primary-btn" id="vmaRestoreSessionBtn">Restore Podium Session</button>
+        <button type="button" class="secondary-btn" id="vmaDiscardSessionBtn">Discard &amp; Start Fresh</button>
+      </div>
+    </div>
+
+    <div id="vmaCarriedSalonDraft" class="vma-carried-draft" role="status" hidden></div>
+
+    <div id="podiumJourneyPane">
+      <figure class="bc-draft bc-draft--podium" id="bcPodiumStave" aria-label="Role-conditioned computational seam for Maestro and Composer">
+        <div class="bc-draft-host" data-bc-draft></div>
+      </figure>
+      <section id="vixenAiJourney" role="region" aria-label="Guided AI research adventure">
+        <div class="vma-header">
+          <div>
+            <span class="vma-kicker">GUIDED AI RESEARCH JOURNEY · SELECT ONE COLLABORATIVE ROLE</span>
+            <h2>Explore with Maestro.<br>Challenge with Composer.</h2>
+            <p class="vma-intro">Choose how your local research partner engages the 32 preserved Works: <strong>Maestro</strong> follows documentary rabbit holes, received filenames, and branching field clues; <strong>Composer</strong> stress-tests competing hypotheses, counterreads your assumptions, and frames falsifiable multi-source proposals. Your sources, judgments, and authorship remain yours.</p>
+          </div>
+          <span class="vma-season">LOCAL GUIDED ENGINE · HUMAN CLOSURE RESERVED</span>
+        </div>
+        <div id="vmaStartPanel">
+          <div class="vma-roles" role="group" aria-label="Choose one ontological role for your research session">
+            <button type="button" class="vma-role" data-vma-role="MAESTRO" aria-pressed="false">
+              <span>01 · DOCUMENTARY EXPLORATION</span>
+              <strong>Maestro</strong>
+              <span>Your AI research guide follows rabbit holes, traces sources, proposes side quests, and suggests overlooked places to go. You decide where the journey travels.</span>
+            </button>
+            <button type="button" class="vma-role" data-vma-role="COMPOSER" aria-pressed="false">
+              <span>02 · INTERPRETIVE RESEARCH</span>
+              <strong>Composer</strong>
+              <span>Your AI research partner develops competing interpretations, challenges attractive claims, and helps frame questions that could actually be tested.</span>
+            </button>
+          </div>
+          <label for="vmaGoal">What are you curious about? · Optional</label>
+          <input id="vmaGoal" type="text" maxlength="300" autocomplete="off"
+            placeholder="A theme, a puzzling passage, a contradiction, or something you cannot explain…">
+          <div class="vma-inline">
+            <button type="button" class="vma-btn vma-primary" id="vmaStart" disabled>Begin the research adventure ↗</button>
+            <span class="vma-muted">You choose one role per session. To change roles, end this journey and begin a new one.</span>
+          </div>
+        </div>
+        <div id="vmaEndSummary" class="vma-panel" hidden style="margin-top:13px">
+          <span class="vma-kicker">FINALE · THE RESEARCH TRAIL IS YOURS</span>
+          <h3 class="vma-section-title">An ending is another doorway.</h3>
+          <p class="vma-muted">Your session has concluded. Keep its source trail, save any previously authorized Program Notes, or choose another research role. The original collection remains unchanged.</p>
+          <div class="vma-inline">
+            <button type="button" class="vma-btn vma-primary" id="vmaSaveFinal">Save the completed journey ↓</button>
+            <button type="button" class="vma-btn" id="vmaDownloadFinalNotes">Save its Program Notes ↓</button>
+          </div>
+        </div>
+        <div id="vmaPlayPanel" hidden>
+          <div class="vma-session-bar">
+            <span id="vmaCurrentRole">NO ROLE SELECTED</span>
+            <span id="vmaChapter" class="vma-season">CHAPTER 00</span>
+          </div>
+          <div class="vma-board">
+            <div>
+              <div class="vma-panel" id="vmaStory" aria-live="polite"></div>
+              <div class="vma-panel" id="vmaMoves" style="margin-top:10px"></div>
+              <div class="vma-panel" id="vmaMissions" style="margin-top:10px"></div>
+            </div>
+            <div>
+              <div class="vma-panel" id="vmaSources"></div>
+              <div class="vma-panel" id="vmaCart" style="margin-top:10px"></div>
+              <div class="vma-panel" style="margin-top:10px">
+                <h4 class="vma-section-title">Program Notes</h4>
+                <p id="vmaNotesState" class="vma-muted">OFF · future note authoring requires separate permission</p>
+                <div class="vma-inline">
+                  <button type="button" class="vma-small" id="vmaNotesRequest">Ask to begin Program Notes</button>
+                  <button type="button" class="vma-small vma-primary" id="vmaNotesApprove" hidden>Allow future notes</button>
+                  <button type="button" class="vma-small vma-quiet" id="vmaNotesRevoke" hidden>Stop writing notes</button>
+                  <button type="button" class="vma-small vma-quiet" id="vmaDownloadNotes">Save Program Notes</button>
+                </div>
+                <div id="vmaNotesView"></div>
+              </div>
+            </div>
+          </div>
+          <section id="vmaComparativeFieldLab" class="vma-panel" role="region" aria-label="Optional human-led research comparison" hidden></section>
+          <section id="vmaSourceChallenge" class="vma-panel" role="region" aria-label="Optional source-first hostile interpretation challenge" hidden></section>
+          <div id="vmaReportPanel" hidden>
+            <span class="vma-kicker">A FIELD NOTE · YOUR OBSERVATION</span>
+            <h4 class="vma-section-title" id="vmaReportTitle">Report a clue</h4>
+            <p class="vma-muted">Describe what you saw, heard, compared, or tested. Your report is recorded as your account; it does not automatically become verified evidence. The guide will seek an alternative explanation.</p>
+            <label for="vmaReportText">What did you notice?</label>
+            <textarea id="vmaReportText" maxlength="1200" rows="4"
+              placeholder="I observed… The passage or setting was… I wondered whether…"></textarea>
+            <div class="vma-inline">
+              <button type="button" class="vma-btn vma-primary" id="vmaReportSubmit">Return my clue to the guide</button>
+              <button type="button" class="vma-btn" id="vmaReportCancel">Keep exploring</button>
+            </div>
+          </div>
+          <div class="vma-exit">
+            <button type="button" class="vma-btn vma-primary" id="vmaCopyAi">Carry this journey into AI chat</button>
+            <button type="button" class="vma-btn" id="vmaSave">Save research journey ↓</button>
+            <button type="button" class="vma-btn" id="vmaEnd">End session · Choose another role</button>
+          </div>
+          <textarea id="vmaCopyFallback" hidden readonly aria-label="AI handoff text to copy"></textarea>
+          <p class="vma-muted">The page offers genuine source-grounded local guidance and a structured AI handoff. Live-model conversation requires your connected AI chat (read-only local workspace; no live model connected; zero empirical credit).</p>
+        </div>
+        <p role="status" aria-live="polite" id="vmaStatus">Loading canonical Vixen corpus…</p>
+      </section>
+    </div>
+
+    <div id="podiumSettingsPane" hidden>
+      <section class="vix-operator-view" id="view-operator" data-page="operator" aria-label="Podium Settings and Ledger">
+        <div class="vixen-inquiry-inner">
+          <header class="ci-head">
+            <div><h2 class="ci-title">Podium Settings &amp; Ledger</h2></div>
+            <div class="badge-row"><span class="tag gold" id="ciActiveEntryBadge">CURRENT PRESENTATION</span></div>
+          </header>
+          <div class="ci-main-grid vix-operator-grid">
+            <section id="vixOperatorHistory" aria-label="Presentation history">
+              <h2 class="vix-operator-section-title">01 · Presentation history</h2>
+              <div class="ci-card">
+                <h3 class="ci-card-title">
+                  <span>Presentation History &amp; Review</span>
+                  <span id="ciLogCount">BASELINE · SESSION ONLY</span>
+                </h3>
+                <p style="margin:0 0 12px;font:400 13px/1.55 var(--font-sans);color:rgba(246,244,240,.84)">
+                  Synced browser-session synthesis events from Synthesis Salon and Composer. Local presentation switches never mutate original Works or grant independent Compose approval.
+                </p>
+                <div class="ci-log-list" id="ciSynthesisLogList" role="list"></div>
+              </div>
+              <a class="secondary-btn" href="../vix-cyb.html#operator" style="margin-top:10px">Open Main Opera Presentation Ledger (#operator) ↗</a>
+            </section>
+            <section id="vixOperatorDiagnostics" aria-label="Epistemic Ceilings">
+              <h2 class="vix-operator-section-title">02 · Epistemic Ceilings &amp; Machine Contract</h2>
+              <div class="ci-card">
+                <div class="ci-telemetry-strip">
+                  <div class="ci-metric"><div class="ci-metric-label">CONNECTED MODEL</div><div class="ci-metric-val">model_connected: false</div></div>
+                  <div class="ci-metric"><div class="ci-metric-label">REPLICATION CREDIT</div><div class="ci-metric-val">0 (Human closure required)</div></div>
+                  <div class="ci-metric"><div class="ci-metric-label">HUMAN GATES 1–8</div><div class="ci-metric-val">UNADJUDICATED_PAIR</div></div>
+                  <div class="ci-metric"><div class="ci-metric-label">CUSTODY LAW</div><div class="ci-metric-val">OPERAHOUSE ≠ OPERA ≠ PERFORMER</div></div>
+                </div>
+                <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+                  <a class="secondary-btn" href="./llms.txt" target="_blank" rel="noopener">AI Research Guide (llms.txt) ↗</a>
+                  <a class="secondary-btn" href="../vix-cyb.html#collection">Return to Synthesis Salon</a>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="podiumHelpPane" class="vix-podium-help-grid" hidden>
+      <article class="vix-podium-help-card">
+        <h3>Maestro vs. Composer</h3>
+        <p><strong>Maestro</strong> leads documentary exploration across recorded Works, received filenames, inline source snippets, Comparative Field Trials, and Source Challenges. <strong>Composer</strong> develops competing hypotheses, refracts route orders, and computes a read-only Podium Score &amp; Compose Gate (<code>HELD_AWAITING_HUMAN_COMPOSER</code>).</p>
+      </article>
+      <article class="vix-podium-help-card">
+        <h3>Role-Lock &amp; Program Notes Consent</h3>
+        <p>Each research adventure locks one role until you explicitly end the session. Program Notes begin <code>OFF</code> and activate only after explicit human request + confirmation. Refreshing the page requires deliberate restoration via the banner above.</p>
+      </article>
+      <article class="vix-podium-help-card">
+        <h3>Cross-Page Continuity</h3>
+        <p>Clicking <strong>Read the work</strong> from Maestro or Composer opens that canonical Work in <code>vix-cyb.html#works/...</code> with a floating resume pill bringing you right back to this active Podium journey.</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<dialog class="dialog" id="inspectorDialog" closedby="any" aria-label="Human Podium Help Guide">
+  <div class="dialog-header">
+    <strong style="font:600 11px/1.2 var(--font-mono);letter-spacing:.1em;color:var(--vixen-pink)">HUMAN PODIUM HELP GUIDE</strong>
+    <button type="button" class="hdr-pill" id="closeInspectorBtn">Close ✕</button>
+  </div>
+  <div class="dialog-body">
+    <p><strong>Maestro &amp; Composer:</strong> Pick one role per session. Maestro explores original Works, received filenames, and Source Challenge trials. Composer compares pairs or Cart items and computes an unexecuted Podium Score.</p>
+    <p><strong>Program Notes &amp; Refresh:</strong> Program Notes start <code>OFF</code> and require explicit two-step consent. Direct URL refresh never silently auto-locks a role or re-grants Program Notes permission.</p>
+    <p><strong>Boundary:</strong> Separate archives, this collection, and source works remain distinct. No live model is connected and zero empirical credit is claimed.</p>
+  </div>
+</dialog>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-brand">
+    <span id="footerVixenWordmark" data-couture-slot="footer-wordmark"><strong>VIXEN CYBERNETICS</strong></span>
+  </div>
+  <div class="footer-actions">
+    <a href="./podium.html">Dual-Door Podium Entrance</a>
+    <a href="../vix-cyb.html#works">32 Works Catalogue</a>
+    <a href="../vix-cyb.html#collection">Synthesis Salon</a>
+    <a id="footerEncyclopediaLink" href="/encyclopedia/">𝌋 TD613 Encyclopedia →</a>
+  </div>
+  <div class="footer-end-controls">
+    <a class="footer-podium-cta footer-podium-link" id="footerPodiumLink" href="./podium.html">PODIUM THRESHOLD ⟶</a>
+  </div>
+</footer>
+
+<script type="module">
+import {
+  readSharedStudyTray, writeSharedStudyTray,
+  readSharedSynthesisState, ensureCanonicalCorpusDom, buildCorpusLookup
+} from '../vixen-estate/vixen-shared-session-bridge.mjs';
+import { mountBiasDraft } from '../vixen-estate/vixen-bias-draft.mjs';
+
+let corpusData = null;
+let lookup = new Map();
+let podiumRuntimePromise = null;
+
+function setTab(tab, opts = {}) {
+  let next = ['maestro', 'composer', 'settings', 'help'].includes(tab) ? tab : 'maestro';
+  const activeState = window.VixenAIModes?.status?.()?.result;
+  let refusedRole = '';
+  if (activeState?.active && (next === 'maestro' || next === 'composer')) {
+    const lockedTab = activeState.role === 'COMPOSER' ? 'composer' : 'maestro';
+    if (next !== lockedTab) {
+      refusedRole = next === 'composer' ? 'COMPOSER' : 'MAESTRO';
+      next = lockedTab;
+    }
+  }
+  document.querySelectorAll('[data-podium-tab]').forEach((b) => {
+    b.setAttribute('aria-pressed', String(b.getAttribute('data-podium-tab') === next));
+  });
+  const jPane = document.getElementById('podiumJourneyPane');
+  const sPane = document.getElementById('podiumSettingsPane');
+  const hPane = document.getElementById('podiumHelpPane');
+  const opSec = document.getElementById('view-operator');
+  if (jPane) jPane.hidden = !(next === 'maestro' || next === 'composer');
+  if (sPane) sPane.hidden = next !== 'settings';
+  if (hPane) hPane.hidden = next !== 'help';
+  if (opSec) opSec.hidden = next !== 'settings';
+  if (next === 'settings') renderSharedLedger();
+  if ((!opts.skipHash || refusedRole) && location.hash !== '#' + next) {
+    try { history.replaceState(history.state, '', '#' + next); } catch (_) {}
+  }
+  if (refusedRole) {
+    window.dispatchEvent(new CustomEvent('vixen:podium-select-role', {
+      detail: { role: refusedRole }
+    }));
+    return;
+  }
+  if (opts.selectRole === true && (next === 'maestro' || next === 'composer')) {
+    window.dispatchEvent(new CustomEvent('vixen:podium-select-role', {
+      detail: { role: next === 'composer' ? 'COMPOSER' : 'MAESTRO' }
+    }));
+  }
+}
+window.VixenSetPodiumTab = setTab;
+
+function renderSharedLedger() {
+  const snap = readSharedSynthesisState();
+  const list = document.getElementById('ciSynthesisLogList');
+  const badge = document.getElementById('ciActiveEntryBadge');
+  const countEl = document.getElementById('ciLogCount');
+  if (!list) return;
+  if (!snap || !Array.isArray(snap.synthesis_log) || !snap.synthesis_log.length) {
+    if (badge) badge.textContent = 'BASELINE · SESSION';
+    if (countEl) countEl.textContent = '0 SALON EVENTS IN SESSION STORAGE';
+    list.replaceChildren();
+    const empty = document.createElement('p');
+    empty.style.cssText = 'font:400 13px/1.6 var(--font-sans);color:rgba(246,244,240,.78)';
+    empty.textContent = 'Visit Synthesis Salon or click Review Baseline Ledger in the main Opera (#operator) to inspect full local presentation snapshots.';
+    list.append(empty);
+    return;
+  }
+  if (badge) badge.textContent = 'ACTIVE: ' + (snap.active_entry_id || 'syn-0000-baseline');
+  if (countEl) countEl.textContent = snap.synthesis_log.length + ' SESSION ENTR' + (snap.synthesis_log.length === 1 ? 'Y' : 'IES');
+  list.replaceChildren(...[...snap.synthesis_log].reverse().map((e) => {
+    const row = document.createElement('div');
+    row.className = 'ci-log-row';
+    row.setAttribute('role', 'listitem');
+    const id = document.createElement('div');
+    id.className = 'ci-log-id';
+    id.textContent = '#' + e.seq + ' · ' + e.entry_id + ' [' + e.kind + ']';
+    const sum = document.createElement('div');
+    sum.className = 'ci-log-summary';
+    sum.textContent = e.summary || e.researchQuestion || 'Salon presentation entry';
+    row.append(id, sum);
+    return row;
+  }));
+}
+
+function syncCartUi() {
+  const ids = readSharedStudyTray();
+  const count = ids.length;
+  const badge = document.getElementById('collectionCount');
+  if (badge) {
+    badge.replaceChildren();
+    if (count > 0) {
+      const num = document.createElement('span');
+      num.className = 'hdr-cart-badge-num';
+      num.textContent = String(count);
+      badge.append(num);
+      badge.hidden = false;
+      badge.setAttribute('aria-hidden', 'false');
+    } else {
+      badge.hidden = true;
+      badge.setAttribute('aria-hidden', 'true');
+    }
+  }
+  const popCount = document.getElementById('researchCartPopoutCount');
+  if (popCount) popCount.textContent = count + (count === 1 ? ' item' : ' items');
+  const expBtn = document.getElementById('exportTrayBtn');
+  if (expBtn) expBtn.disabled = count === 0;
+  const list = document.getElementById('collectionItemsContainer');
+  if (list) {
+    list.replaceChildren();
+    if (!count) {
+      const empty = document.createElement('p');
+      empty.style.cssText = 'font:400 12.5px/1.6 var(--font-sans);color:rgba(246,244,240,.72)';
+      empty.textContent = 'No Works staged in your Research Cart yet.';
+      list.append(empty);
+    } else {
+      for (const id of ids) {
+        const meta = lookup.get(id) || { id, title: id, sub: '' };
+        const card = document.createElement('div');
+        card.className = 'cart-popout-item';
+        const info = document.createElement('div');
+        const strong = document.createElement('strong');
+        strong.style.cssText = 'display:block;font-size:13px';
+        strong.textContent = meta.title;
+        const small = document.createElement('small');
+        small.style.cssText = 'display:block;font-size:11px;color:rgba(246,244,240,.72)';
+        small.textContent = meta.sub || id;
+        info.append(strong, small);
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.className = 'hdr-pill';
+        rm.textContent = 'Remove';
+        rm.addEventListener('click', () => {
+          window.VIXEN_STUDY_TRAY.remove(id);
+        });
+        card.append(info, rm);
+        list.append(card);
+      }
+    }
+  }
+}
+
+document.querySelectorAll('[data-podium-tab]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const t = btn.getAttribute('data-podium-tab');
+    setTab(t, { selectRole: t === 'maestro' || t === 'composer' });
+  });
+});
+
+document.getElementById('vixenHistoryBack')?.addEventListener('click', () => history.back());
+document.getElementById('vixenHistoryForward')?.addEventListener('click', () => history.forward());
+
+const cartBtn = document.getElementById('researchCartBtn');
+const cartPop = document.getElementById('researchCartPopout');
+const setCartOpen = (open) => {
+  if (!cartPop || !cartBtn) return;
+  cartPop.hidden = !open;
+  cartBtn.setAttribute('aria-expanded', String(open));
+  if (open) syncCartUi();
+};
+cartBtn?.addEventListener('click', (e) => { e.stopPropagation(); setCartOpen(cartPop.hidden); });
+document.getElementById('closeResearchCartBtn')?.addEventListener('click', () => setCartOpen(false));
+document.addEventListener('click', (e) => {
+  if (cartPop && !cartPop.hidden && !cartPop.contains(e.target) && e.target !== cartBtn) setCartOpen(false);
+});
+
+document.getElementById('cartSyncToComposerBtn')?.addEventListener('click', () => {
+  const workIds = readSharedStudyTray().filter((id) => corpusData?.works?.some((w) => w.work_id === id));
+  setTab('composer', { selectRole: true });
+  if (workIds.length) {
+    window.dispatchEvent(new CustomEvent('vixen:project-manifesto-to-podium', { detail: { works: workIds } }));
+  }
+  setCartOpen(false);
+});
+
+document.getElementById('exportTrayBtn')?.addEventListener('click', () => {
+  const ids = readSharedStudyTray();
+  if (!ids.length) return;
+  const records = ids.map((id) => lookup.get(id) || { id });
+  const blob = new Blob([JSON.stringify({ exported_at: new Date().toISOString(), capability_ceiling: 'READ_ONLY_STUDY_TRAY', records }, null, 2)], { type: 'application/json' });
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u; a.download = 'vixen-study-tray-metadata.json'; a.click();
+  setTimeout(() => URL.revokeObjectURL(u), 500);
+});
+
+document.getElementById('footerSaveSessionBtn')?.addEventListener('click', async () => {
+  const mod = await import('../vixen-estate/session-zip.mjs');
+  const currentAiJourney = window.VixenAIModes?.session?.archive?.();
+  await mod.downloadVixenSessionZip({
+    baseHref: new URL('../vix-cyb.html', window.location.href).href,
+    synthesisState: readSharedSynthesisState() || {},
+    aiJourneyArchive: currentAiJourney?.status === 'SUPPORTED' ? currentAiJourney.result : null,
+    sessionMeta: { study_tray_work_ids: readSharedStudyTray(), page: 'human-podium' }
+  });
+});
+
+const motionBtn = document.getElementById('motionBtn');
+motionBtn?.addEventListener('click', () => {
+  const held = document.body.dataset.vixenMotion === 'still';
+  const nextStill = !held;
+  document.body.dataset.vixenMotion = nextStill ? 'still' : 'live';
+  motionBtn.setAttribute('aria-pressed', String(nextStill));
+});
+
+const helpDlg = document.getElementById('inspectorDialog');
+document.getElementById('headerHelpBtn')?.addEventListener('click', () => {
+  if (helpDlg && !helpDlg.open) helpDlg.showModal();
+});
+document.getElementById('closeInspectorBtn')?.addEventListener('click', () => helpDlg?.close());
+
+if (location.protocol === 'file:') {
+  const f = document.getElementById('footerEncyclopediaLink');
+  if (f) { f.href = '../vix-cyb.html#overview'; f.textContent = '𝌋 Return to Opera Overview'; }
+}
+
+function applyHashTab() {
+  const h = (location.hash || '').replace(/^#/, '');
+  if (['maestro', 'composer', 'settings', 'help'].includes(h)) {
+    setTab(h, { skipHash: true });
+  }
+}
+window.addEventListener('hashchange', applyHashTab);
+applyHashTab();
+
+ensureCanonicalCorpusDom({ vixHtmlUrl: '../vix-cyb.html' }).then(async ({ corpus, manifest }) => {
+  corpusData = corpus;
+  lookup = buildCorpusLookup(corpus);
+
+  const knownId = (id) => lookup.has(id);
+  const dispatchTray = () => {
+    syncCartUi();
+    window.dispatchEvent(new CustomEvent('vixen-study-tray-change', { detail: { count: readSharedStudyTray().length } }));
+  };
+  window.VIXEN_STUDY_TRAY = Object.freeze({
+    has: (id) => knownId(id) && readSharedStudyTray().includes(id),
+    list: () => readSharedStudyTray(),
+    add: (id) => {
+      if (!knownId(id)) return false;
+      const cur = readSharedStudyTray();
+      if (cur.includes(id)) return false;
+      writeSharedStudyTray([...cur, id]);
+      dispatchTray();
+      return true;
+    },
+    remove: (id) => {
+      const cur = readSharedStudyTray();
+      if (!cur.includes(id)) return false;
+      writeSharedStudyTray(cur.filter((x) => x !== id));
+      dispatchTray();
+      return true;
+    }
+  });
+
+  const loadPodium = () => {
+    if (!podiumRuntimePromise) {
+      podiumRuntimePromise = Promise.all([
+        import('../reference/vixen-podium.mjs'),
+        import('../vixen-estate/semantic-semiotic-search.mjs')
+      ]).then(async ([podiumMod, searchMod]) => {
+        const engine = await searchMod.loadSemanticSemioticEngine().catch(() => null);
+        return { podiumMod, engine };
+      });
+    }
+    return podiumRuntimePromise;
+  };
+
+  window.VixenReference = Object.freeze({
+    openWork: (workId) => {
+      const work = corpus.works.find((w) => w.work_id === workId);
+      if (!work) return { opened: false, reason: 'UNKNOWN_CANONICAL_WORK' };
+      window.VixenAIModes?.persistForExcursion?.(work.work_id);
+      location.href = '../vix-cyb.html#works/' + encodeURIComponent(work.work_id);
+      return { opened: true, work_id: work.work_id, read_only: true };
+    },
+    manifest: () => manifest,
+    podium: async (opts = {}) => {
+      const { podiumMod, engine } = await loadPodium();
+      return podiumMod.createVixenPodium({
+        corpus,
+        semanticSearch: engine,
+        operatorAuthorized: Boolean(opts?.operatorAuthorized === true),
+        sourceRevision: opts?.sourceRevision || 'BROWSER_SESSION_READ_ONLY'
+      });
+    },
+    exportTray: () => ({
+      exported_at: new Date().toISOString(),
+      covenant: manifest?.covenant || 'Khona\u200clit-po',
+      capability_ceiling: 'EXPERIMENT_A_CORPUS_READABLE_MAIN_RELEASE_HELD',
+      records: readSharedStudyTray().map((id) => lookup.get(id)).filter(Boolean)
+    })
+  });
+
+  syncCartUi();
+  window.addEventListener('pageshow', syncCartUi);
+
+  await Promise.all([
+    import('../vixen-estate/vixen-comparative-field-trial.mjs'),
+    import('../vixen-estate/vixen-source-challenge.mjs')
+  ]);
+  await import('../vixen-estate/vixen-ai-journey.mjs');
+  await import('../vixen-estate/vixen-opera-public-copy.mjs');
+
+  const st = window.VixenAIModes?.status?.();
+  if (st?.status === 'SUPPORTED' && st.result?.active && st.result.role === 'COMPOSER') {
+    setTab('composer', { skipHash: false });
+  }
+
+  const podiumDraftHost = document.querySelector('#bcPodiumStave [data-bc-draft]');
+  const journeyEl = document.getElementById('vixenAiJourney');
+  if (podiumDraftHost && journeyEl) {
+    const readPodiumDraft = () => {
+      const maestroPressed = journeyEl.querySelector('[data-vma-role="MAESTRO"]')?.getAttribute('aria-pressed') === 'true';
+      const composerPressed = journeyEl.querySelector('[data-vma-role="COMPOSER"]')?.getAttribute('aria-pressed') === 'true';
+      const activeRole = composerPressed ? 'COMPOSER' : maestroPressed ? 'MAESTRO' : '';
+      const notesTxt = document.getElementById('vmaNotesState')?.textContent || '';
+      const notesOn = /\bON\b|APPROVED|ACTIVE/i.test(notesTxt) && !/^OFF\b/i.test(notesTxt.trim());
+      const trayIds = readSharedStudyTray();
+      const syn = readSharedSynthesisState();
+      return {
+        mode: 'podium',
+        podiumRole: activeRole,
+        notesActive: notesOn,
+        cartCount: trayIds.length,
+        indexA: activeRole === 'COMPOSER' ? 9 : 2,
+        indexB: activeRole === 'COMPOSER' ? 18 : 7,
+        workIdA: trayIds[0] || 'maestro_expedition',
+        workIdB: trayIds[1] || 'composer_counterpoint',
+        lag: Number(syn?.lag_ticks || 36),
+        labelA: 'MAESTRO · EXPEDITION',
+        fileA: trayIds.length ? `${trayIds.length} cart item(s)` : 'documentary trail',
+        labelB: 'COMPOSER · COUNTERPOINT',
+        fileB: notesOn ? 'notes approved' : 'notes OFF · held',
+        reversed: activeRole === 'COMPOSER'
+      };
+    };
+    const schedulePodiumDraft = mountBiasDraft(podiumDraftHost, readPodiumDraft, {
+      height: (w) => (w < 560 ? 176 : 192),
+      title: 'Human Podium computational seam · Maestro documentary chart and Composer counterpoint'
+    });
+    new MutationObserver(schedulePodiumDraft).observe(journeyEl, {
+      attributes: true, childList: true, subtree: true, attributeFilter: ['aria-pressed', 'hidden']
+    });
+    window.addEventListener('vixen:podium-select-role', schedulePodiumDraft);
+    window.addEventListener('vixen:podium-role-state', (ev) => {
+      const detail = ev?.detail || {};
+      const r = detail.role;
+      if (r === 'COMPOSER' || r === 'MAESTRO') {
+        document.body.dataset.podiumEnv = r === 'COMPOSER' ? 'composer' : 'maestro';
+        const onSettingsOrHelp = location.hash === '#settings' || location.hash === '#help';
+        if (!onSettingsOrHelp || detail.locked || detail.refusedRole) {
+          setTab(r === 'COMPOSER' ? 'composer' : 'maestro', { skipHash: false });
+        }
+      } else {
+        delete document.body.dataset.podiumEnv;
+      }
+      schedulePodiumDraft();
+    });
+  }
+}).catch((err) => {
+  const s = document.getElementById('vmaStatus');
+  if (s) s.textContent = 'Podium corpus unavailable: ' + (err?.message || String(err));
+});
+</script>
+</body>
+</html>

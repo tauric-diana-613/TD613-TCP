@@ -1,0 +1,302 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "vixen-frontispiece-constitutive-inquiry-route",
+  "surface_reference": "Vixen/Frontispiece-Constitutive-Inquiry",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-11-15T00:15:00Z",
+    "idSeed": "vixen-frontispiece-route-design-v1",
+    "idScope": "Vixen/Frontispiece-Constitutive-Inquiry"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "vixen_frontispiece_constitutive_inquiry_v1",
+    "provenance": {
+      "source_references": [
+        "app/encyclopedia/vix-cyb.html#cover",
+        "app/encyclopedia/vix-cyb.html#constitutiveInquiry",
+        "app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs",
+        "app/encyclopedia/reference/vixen-podium.mjs"
+      ],
+      "evidence_basis": [
+        "Vixen frontispiece clearance geometry across desktop and 390px viewports",
+        "Computational candidate scoring and Podium promotion without empirical inflation"
+      ],
+      "transformations": [
+        "separate .cover-word-two above Enter the Opera trigger",
+        "render hero thesis and subtitle directly from scored synthesis candidates",
+        "expose ranked candidates and append-only predecessor-linked rollback log"
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Inspect the Vixen sculpture frontier and engine-scored thesis first, compare candidate syntheses without leaving the Opera stage, and preserve monotonic rollback history before touching external Operahouse references.",
+      "surface_reference": "Vixen/Frontispiece-Constitutive-Inquiry"
+    },
+    "available_affordances": [
+      {
+        "action_id": "promote_scored_candidate",
+        "purpose": "Promote a mathematically scored synthesis candidate or operator-dictated inquiry into the session state without claiming empirical credit.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Frontispiece Sculpture & Thesis (#cover)",
+      "exit": "Rest without penalty or Exit to Works / Operahouse",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {
+          "step_id": "vixen_notice",
+          "label": "See sculpture clearance, non-collapsing subtitle, and Didone thesis",
+          "phase": "NOTICE",
+          "required_fields": ["sculpture frontier", "engine thesis", "clearance gap"],
+          "dependencies": [],
+          "legibility_millipoints": 945,
+          "affordance_millipoints": 925,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "vixen_act",
+          "label": "Enter foyer and inspect scored candidates or author an inquiry",
+          "phase": "ACT",
+          "required_fields": ["candidate score", "inquiry question", "promote action"],
+          "dependencies": ["vixen_notice"],
+          "legibility_millipoints": 935,
+          "affordance_millipoints": 945,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "vixen_world_answers",
+          "label": "Frontispiece updates from engine diagnostics and append-only log links predecessor",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": ["active entry id", "predecessor sha", "zero credit boundary"],
+          "dependencies": ["vixen_act"],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 930,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "vixen_transfer",
+          "label": "Restore prior snapshot, export session ZIP, or step to Rest/Works",
+          "phase": "TRANSFER",
+          "required_fields": ["restore target", "session export", "rest or exit"],
+          "dependencies": ["vixen_world_answers"],
+          "legibility_millipoints": 920,
+          "affordance_millipoints": 935,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "32-work Vixen corpus, 5 non-commutative clocks, and operator candidate selection",
+      "operator": "scoreUnifiedSynthesisCandidates and Vixen Podium append-only state transition",
+      "observable": "ranked candidate list, updated frontispiece slots, and monotonic predecessor chain",
+      "authority": "TD613 Opera separation law (OPERAHOUSE != OPERA != PERFORMER); human closure reserved",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Does scoring and promoting candidates directly from the unified synthesis engine improve structural legibility without erasing route history?",
+      "hypothesis": "Surfacing ranked multi-axis scores and separating cover typography reduces visual ambiguity while preserving zero empirical inflation.",
+      "observable_behavior": [
+        "operator reads frontispiece subtitle and thesis without overlap against Enter trigger",
+        "operator compares scored candidates and promotes or rolls back while predecessor hash stays linked",
+        "panels stay locked to DOM scroll position instead of drifting with background mesh"
+      ],
+      "alternative_explanations": [
+        "aesthetic margin increases alone might reduce overlap independently of engine scoring"
+      ],
+      "expected_failure_modes": [
+        "operator confuses high candidate composite score with empirical verification",
+        "operator expects rollback to overwrite history rather than append a ROLLBACK entry"
+      ],
+      "falsifier": [
+        "cover subtitle touches Enter trigger or panels drift relative to scroll delta on overview or collection"
+      ],
+      "abstention_conditions": [
+        "external scientific witnesses remain absent",
+        "eight split-plane gates remain unadjudicated"
+      ]
+    },
+    "missingness": [
+      "external laboratory empirical measurements remain unacquired",
+      "human identity closure across 8 paired gates remains open"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "candidate synthesis rankings reflect internal mathematical diagnostics",
+        "append-only synthesis and rollback preserve predecessor order",
+        "OPERAHOUSE, OPERA, and PERFORMER remain separated"
+      ],
+      "forbidden_claims": [
+        "a high candidate score grants empirical replication credit",
+        "frontispiece layout or preview ZIP authorizes release or deployment"
+      ]
+    },
+    "technical_terms_withheld": [
+      "Hestenes-Jacobi rotation angle",
+      "Canvas2D exclusion clipping",
+      "PKZIP CRC-32 central directory"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "base_cover",
+      "label": "Decode congested cover subtitle and clipped thesis",
+      "phase": "NOTICE",
+      "required_fields": ["subtitle overlap", "clipped thesis", "generic template"],
+      "dependencies": [],
+      "legibility_millipoints": 440,
+      "affordance_millipoints": 460,
+      "gluing_obstruction_millipoints": 180,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "base_scroll",
+      "label": "Navigate cards while mesh z-index flickers",
+      "phase": "ACT",
+      "required_fields": ["mesh cutout lag", "panel drift", "hidden candidate scores"],
+      "dependencies": ["base_cover"],
+      "legibility_millipoints": 490,
+      "affordance_millipoints": 540,
+      "gluing_obstruction_millipoints": 160,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "base_answer",
+      "label": "Receive unranked static string and aliased rollback",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": ["static subtitle", "aliased predecessor", "skipped hydration"],
+      "dependencies": ["base_cover", "base_scroll"],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 550,
+      "gluing_obstruction_millipoints": 150,
+      "projection_crossings": 1,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "base_transfer",
+      "label": "Export session with stale selector",
+      "phase": "TRANSFER",
+      "required_fields": ["empty dom selector", "missing tray items", "unrestored scroll"],
+      "dependencies": ["base_answer"],
+      "legibility_millipoints": 520,
+      "affordance_millipoints": 560,
+      "gluing_obstruction_millipoints": 150,
+      "projection_crossings": 2,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "promote_scored_candidate"
+  },
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "candidate synthesis scores computed across kappa, Vernier lag, [111] mirror, XOR synergy, and FADT C3 fiber",
+      "selected candidate promoted via Podium append-only log with sha256 predecessor chain",
+      "DOM frontispiece and SSR HTML slots reflect promoted theorem without touching immutable corpus bytes"
+    ],
+    "losses": [],
+    "missingness": [
+      "external scientific replication remains unobserved"
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "candidate score does not resolve authorship or Experiment B flight posture"
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Score candidates mathematically, promote one via append-only Podium log, and inspect frontispiece updates with rest/exit intact.",
+      "steps": ["read frontispiece", "compare scored candidates", "promote or roll back"]
+    }
+  },
+  "name": {
+    "plain_language": "Engine-scored candidate synthesis keeps route history, rest, and exit intact while letting operators choose or dictate the active thesis.",
+    "glyph_relation": null,
+    "technical_term": "non-collapsing multi-clock candidate synthesis",
+    "non_equivalence": [
+      "candidate score is not empirical proof",
+      "rollback appends a new record instead of deleting history"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Vixen/Frontispiece-Constitutive-Inquiry"
+    },
+    "shared_relation_candidate": "scored synthesis candidates and rollback history survive session export and Podium CLI roundtrip",
+    "observable_correspondence": [
+      "exported session ZIP retains selected_candidate_id and full synthesis_log"
+    ],
+    "alternative_explanations": [
+      "static SSR overrides might mask runtime hydration failures unless tested explicitly"
+    ],
+    "abstention_conditions": [
+      "corpus bundle digest fails verification"
+    ]
+  },
+  "interface_specimen": {
+    "schema": "td613.pedagogue-interface-specimen/v0.1",
+    "surface_reference": "Vixen/Constitutive-Inquiry",
+    "specimen_kind": "INTERFACE_FIELD_SYSTEM",
+    "observed": {
+      "shared_control_rule": true,
+      "dedicated_input_typography": false,
+      "mobile_font_size_px": 16,
+      "dedicated_textarea_treatment": false,
+      "dedicated_numeric_typography": false,
+      "native_temporal_control": true,
+      "placeholder_is_primary_visual": true
+    },
+    "actions": [
+      {
+        "action_id": "apply_inquiry",
+        "label": "Apply Inquiry to Frontispiece",
+        "context_effect": "PRESERVE_ACTIVE_CONTEXT",
+        "destination_reference": null
+      },
+      {
+        "action_id": "promote_scored_candidate",
+        "label": "Promote Candidate",
+        "context_effect": "PRESERVE_ACTIVE_CONTEXT",
+        "destination_reference": null
+      },
+      {
+        "action_id": "reset_to_baseline",
+        "label": "Reset to Baseline",
+        "context_effect": "RESTORE_ACTIVE_CONTEXT",
+        "destination_reference": "Vixen/Frontispiece"
+      }
+    ],
+    "constraints": {
+      "implementation_this_round": false,
+      "preserve_native_accessibility": true,
+      "automatic_redesign": false
+    }
+  }
+}

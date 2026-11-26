@@ -1,0 +1,19 @@
+/* VIXEN RGI17 · MOBILE EDITORIAL READING SURFACE
+ * Operator iPhone 2026-11-16: frontispiece heading pushed too close to the
+ * ceiling; companion manuscripts squander horizontal space inside nested
+ * panels. Presentation only; manuscripts, corpus, hashes, search, 7+1 and
+ * desktop layout remain unchanged. All rules stay inside the mobile query.
+ */
+@media screen and (max-width:680px) {
+  /* Two-ended frontispiece: VIXEN near the masthead; CYBERNETICS
+     near the FOOT of the artwork, a few pixels above the old lower anchor.
+     Preserve the thesis as its own separate footer, below the heading. */
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-title {
+    inset:80px 16px clamp(190px,23svh,214px)!important;
+    height:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:space-between!important;
+    gap:0!important;
+  }
+}

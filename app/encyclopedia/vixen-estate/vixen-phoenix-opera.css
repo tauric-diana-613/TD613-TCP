@@ -1,0 +1,1003 @@
+/* 𝌋 TD613 · VIXEN CYBERNETICS — THE PHOENIX OPERA ARCHITECTURE (DD-02 · COMM-VIXEN-PHOENIX-OPERA-V5)
+   End-of-cascade unified Dollhouse Design couture architecture & Sedgwickian Live-Flight Redpen Resolution.
+   Zero-Purple Law strictly enforced: Raven Obsidian (#090b0e..#161b20), Liquid Chrome (#c9ccd1..#e4eaef),
+   Pearl Vellum (#f7f4ee), Champagne/Arc-Flash (#e8d7a8 / #fff2a9), and Controlled Glinda Rose (#ff91af).
+   Zero external font or CDN requests (STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0). */
+
+@font-face{
+  font-family:"TD613 FlowCore";
+  src:url(data:font/woff2;base64,d09GMgABAAAAAAI8AAwAAAAABCQAAAHtAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAMAgEEQgKgRyBKAE2AiQDBgsGAAQgBYJ0ByAbVwMAHgPuzIiOdKoTmSjmyXzh98VDtde93bufhFK6Y1DNo2pRGY9wKIRj0BiFs6BRmW8Use/XtsevDFns0c4cqZZNvBFJiRgYUmCe/dkAtq2tBCLTaW+NalRd0t01GBVM1+7qt9wJNo9v3gOGmAbNEww8aFFCEQb+D3KQUOCc7YQoCpHrU5tBLW00NORHbuDTefHHCAipGQEgUQEPr7kJXoBLRkASrZzjwm4bt9jmMaOk8YJ1AGH6lxpNEHYyDoghAA9QekXBETgDUAFlD4V6f3UwpcUnw53hCVN6+ek6hy9wfunZ+Iwt/wBbsKvvvpXGuUl5ln8o3eXvy7c5/u4Q8ztKcXKsqsSLky4mSBqNyArf1gr4ZnrkiX90KnXFXFwtKugPClL/7Bzs6I03NY8IFd6/AiAQ/A8VspPI/0NhSwsMCgsagEHx8wkUjly5yDn0JAjyG/3yIyxcLnAAgCituDAO6QgDiRA4pQLo6mOijuAQaoR1JtKkOxRXOqgOfNDY9H2nY98fGXsHTydLcwsXhDcmICadySUjK3tnC1cVWS6DheRt7N1l7J1MlUzNXW0MneTt7VzyOydzU8Sk0pE0UrVzsXSxMTVhcG9IUSQov5h/d0Ua1kydnC3lDtHpjIzl2lhiSmUgbbiIQxAAAAA=) format("woff2");
+  font-style:normal;
+  font-weight:400;
+  font-display:block;
+  unicode-range:U+10D613;
+}
+
+:root{
+  --font-sans:"TD613 FlowCore",'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-display:"TD613 FlowCore",'Syne','Trebuchet MS','Arial Black','Arial Narrow',Impact,sans-serif;
+  --font-serif:"TD613 FlowCore",'Cormorant Garamond',Didot,'Bodoni MT','Palatino Linotype',Palatino,Georgia,serif;
+  --font-mono:"TD613 FlowCore",'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,'Courier New',monospace;
+  --phx-obsidian:#090b0e;
+  --phx-obsidian-2:#0f1318;
+  --phx-obsidian-3:#151a20;
+  --phx-graphite:#1c2228;
+  --phx-vellum:#f7f4ee;
+  --phx-pearl:#f4f1ea;
+  --phx-chrome:#cfd4da;
+  --phx-chrome-dim:#98a0a8;
+  --phx-champagne:#e8d7a8;
+  --phx-arc:#fff2a9;
+  --phx-rose:#ff91af;
+  --phx-ink:#14171b;
+  --dd-phasonic-gamma:0.62;
+  --dd-paratactic-gap:22px;
+  --dd-citational-tracking:0.016em;
+}
+
+/* ── RP-LIVE-02 · HARD UNMOUNT OF ENTRY VEIL ON REVEAL OR DEEP HASH ENTRY ─── */
+#vixEntryVeil[data-state="revealed"],
+body[data-vixen-arrival="ready"] #vixEntryVeil{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  display:none!important;
+}
+
+/* ── GLOBAL MASTHEAD, VISIBLE HISTORY CONTROLS & COUTURE CURTAIN MENU ─────── */
+body .site-header .hdr-nav-history{
+  border:1px solid rgba(207,212,218,.28)!important;
+  background:rgba(21,26,32,.72)!important;
+  color:var(--phx-pearl)!important;
+  border-radius:2px!important;
+}
+body .site-header .hdr-nav-history:disabled{
+  opacity:.56!important;
+  color:var(--phx-chrome-dim)!important;
+  border-color:rgba(207,212,218,.18)!important;
+}
+body .site-header .hdr-nav-history:hover:not(:disabled){
+  border-color:var(--phx-arc)!important;
+  color:var(--phx-arc)!important;
+}
+
+/* RP-LIVE-06 · Couture Menu Curtain & Styled Podium Threshold Link (no #0000EE) */
+body .site-header .mobile-nav{
+  background:linear-gradient(180deg,#0f1318 0%,#090b0e 100%)!important;
+  color:var(--phx-pearl)!important;
+  border-bottom:1px solid rgba(232,215,168,.45)!important;
+  box-shadow:0 28px 72px rgba(0,0,0,.78)!important;
+}
+body .site-header .mobile-nav button,
+body .site-header .mobile-nav a.mobile-nav-podium-link{
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  width:100%!important;
+  min-height:48px!important;
+  padding:10px 6px!important;
+  font:400 clamp(19px,2.4vw,24px)/1.18 var(--font-serif)!important;
+  color:var(--phx-pearl)!important;
+  text-decoration:none!important;
+  border-bottom:1px solid rgba(207,212,218,.16)!important;
+  transition:background-color .16s ease,color .16s ease,padding-left .16s ease;
+}
+body .site-header .mobile-nav button small,
+body .site-header .mobile-nav a.mobile-nav-podium-link small{
+  font:600 10px/1 var(--font-mono)!important;
+  letter-spacing:.14em!important;
+  text-transform:uppercase!important;
+  color:var(--phx-champagne)!important;
+  min-width:56px!important;
+}
+body .site-header .mobile-nav a.mobile-nav-podium-link{
+  margin-top:6px!important;
+  padding:12px 14px!important;
+  background:linear-gradient(90deg,rgba(232,215,168,.16),rgba(255,145,175,.12))!important;
+  border:1px solid rgba(232,215,168,.55)!important;
+  color:var(--phx-arc)!important;
+}
+body .site-header .mobile-nav button:hover,
+body .site-header .mobile-nav a.mobile-nav-podium-link:hover{
+  background:rgba(255,242,169,.08)!important;
+  color:var(--phx-arc)!important;
+  padding-left:12px!important;
+}
+
+/* ── EIGHT-ACT OPERA PROSCENIUM SCORE RIBBON (#vixenPhoenixScoreBar) ──────── */
+.vx-phx-scorebar{
+  position:relative;
+  z-index:25;
+  margin-top:72px;
+  background:linear-gradient(180deg,#11161b 0%,#0a0d10 100%);
+  border-bottom:1px solid rgba(207,212,218,.24);
+  box-shadow:0 12px 34px rgba(0,0,0,.42);
+}
+body[data-view="overview"] .vx-phx-scorebar{
+  margin-top:0;
+  border-top:1px solid rgba(232,215,168,.42);
+}
+body:not([data-view="overview"]) main{
+  padding-top:0!important;
+}
+body:not([data-view="overview"]) .hero{
+  padding-top:0;
+}
+body[data-active-research-stage="OPERAHOUSE"] .vx-phx-scorebar{
+  display:none!important;
+}
+.vx-phx-scorebar-inner{
+  max-width:var(--page);
+  margin:0 auto;
+  padding:6px var(--gutter) 7px max(var(--gutter),88px);
+  display:grid;
+  grid-template-columns:minmax(220px,1.15fr) minmax(180px,.85fr) auto;
+  align-items:center;
+  gap:8px 20px;
+}
+.vx-phx-act-ident{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+}
+.vx-phx-kicker{
+  font:600 9.5px/1.25 var(--font-mono);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--phx-champagne);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.vx-phx-act-title{
+  font:400 clamp(17px,1.45vw,21px)/1.12 var(--font-serif);
+  color:var(--phx-pearl);
+  letter-spacing:.01em;
+}
+.vx-phx-coupling{
+  font:500 9.5px/1.3 var(--font-mono);
+  color:var(--phx-chrome-dim);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.vx-phx-stave-host{
+  height:34px;
+  border-left:1px dashed rgba(207,212,218,.22);
+  border-right:1px dashed rgba(207,212,218,.22);
+  padding:0 8px;
+  display:flex;
+  align-items:center;
+}
+.vx-phx-act-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  align-items:center;
+  justify-content:flex-end;
+}
+.vx-phx-act-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:30px;
+  padding:3px 8px;
+  background:rgba(21,26,32,.85);
+  border:1px solid rgba(207,212,218,.22);
+  color:var(--phx-chrome);
+  font:600 9.5px/1 var(--font-mono);
+  letter-spacing:.06em;
+  cursor:pointer;
+  transition:border-color .16s ease,background-color .16s ease,color .16s ease;
+}
+.vx-phx-act-pill span{color:var(--phx-champagne)}
+.vx-phx-act-pill em{font-style:normal;opacity:.88}
+.vx-phx-act-pill:hover{
+  border-color:var(--phx-rose);
+  color:var(--phx-pearl);
+}
+.vx-phx-act-pill.is-active{
+  background:var(--phx-champagne);
+  border-color:var(--phx-arc);
+  color:var(--phx-ink);
+}
+.vx-phx-act-pill.is-active span{color:var(--phx-ink)}
+
+@media(max-width:1180px),(max-height:840px){
+  .vx-phx-scorebar-inner{
+    grid-template-columns:minmax(0,1fr) minmax(140px,220px);
+    padding:3px var(--gutter) 4px max(var(--gutter),82px);
+  }
+  .vx-phx-kicker{font-size:8.5px}
+  .vx-phx-act-title{font-size:15px}
+  .vx-phx-act-pills,.vx-phx-coupling{display:none}
+  .vx-phx-stave-host{height:22px}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works{padding-top:6px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .view-heading{margin-bottom:6px!important;padding:8px 14px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .toolbar{padding:4px 6px!important;margin-bottom:4px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel.lexicon-reader{padding:8px 12px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header{padding-top:2px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-header h2{font-size:18px!important;line-height:1.16!important;margin:0 0 2px!important}
+}
+@media(max-width:959px){
+  .vx-phx-scorebar-inner{padding-left:var(--gutter)}
+}
+@media(max-width:680px){
+  body:not([data-view="overview"]) .vx-phx-scorebar{display:none!important}
+  body:not([data-view="overview"]) main{padding-top:72px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference{padding-top:4px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference .view-heading{margin-bottom:10px!important;padding:10px 14px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenReferenceChamber .vxe-heading{margin-bottom:8px!important}
+  #closeMobileWorkBtn{scroll-margin-top:88px}
+  .vx-phx-scorebar-inner{
+    grid-template-columns:minmax(0,1fr);
+    padding:6px 14px 7px;
+    gap:4px;
+  }
+  .vx-phx-stave-host,.vx-phx-coupling{display:none}
+}
+
+/* ── ACT 00 · ENTRANCE COLONNADE, NON-WRAPPING STATS & CHIAROSCURO SPINE ─── */
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
+  background:linear-gradient(180deg,#0e1217 0%,#090b0e 100%)!important;
+  border-top:1px solid rgba(232,215,168,.38)!important;
+  border-bottom:1px solid rgba(207,212,218,.26)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-doorways button{
+  position:relative;
+  background:linear-gradient(165deg,#151a20 0%,#0d1014 68%,#090b0e 100%)!important;
+  border:1px solid rgba(207,212,218,.26)!important;
+  color:var(--phx-pearl)!important;
+  padding:22px 22px 20px!important;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-doorways button:hover,
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-doorways button:focus-visible{
+  transform:translateY(-3px);
+  border-color:var(--phx-champagne)!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.55),inset 0 2px 0 var(--phx-rose)!important;
+}
+.vx-phx-door-crest-wrap{
+  display:block;
+  margin-bottom:10px;
+  padding-bottom:8px;
+  border-bottom:1px dashed rgba(207,212,218,.2);
+}
+.vx-phx-door-crest{
+  display:block;
+  width:88px;
+  height:32px;
+}
+
+/* Fix Entrance wrapping of [32, 40] and 12 W / 18 M */
+body .archive-directory .stat-btn{
+  grid-template-columns:minmax(116px,auto) minmax(0,1fr) 22px!important;
+}
+body .archive-directory .stat-value{
+  white-space:nowrap!important;
+  font-variant-numeric:tabular-nums;
+}
+body .signal-bar-btn{
+  grid-template-columns:minmax(150px,1.1fr) minmax(80px,1fr) minmax(82px,auto)!important;
+}
+body .signal-bar-btn > span:last-child{
+  white-space:nowrap!important;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+@media(max-width:680px){
+  body .archive-directory .stat-btn{
+    grid-template-columns:minmax(92px,auto) minmax(0,1fr) 18px!important;
+  }
+  body .archive-directory .stat-value{font-size:24px!important}
+  body .signal-bar-btn{
+    grid-template-columns:minmax(116px,1fr) minmax(56px,1fr) minmax(72px,auto)!important;
+  }
+}
+
+/* Reborn 10-Stage Lineage Chronicle Score & Threshold Directory */
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory{
+  background:linear-gradient(180deg,#11151a 0%,#0b0e12 100%)!important;
+  color:var(--phx-pearl)!important;
+  border-top:1px solid rgba(207,212,218,.28)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .stat-btn{
+  color:var(--phx-pearl)!important;
+  border-bottom:1px solid rgba(207,212,218,.2)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .stat-value{
+  color:var(--phx-champagne)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .stat-label small{
+  color:var(--phx-chrome-dim)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .attribution-box{
+  background:rgba(21,26,32,.88)!important;
+  color:var(--phx-pearl)!important;
+  border:1px solid rgba(207,212,218,.32)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .signal-bar-btn{
+  background:rgba(21,26,32,.82)!important;
+  color:var(--phx-pearl)!important;
+  border:1px solid rgba(207,212,218,.24)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .signal-track{
+  background:rgba(207,212,218,.14)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .archive-directory .signal-fill{
+  background:linear-gradient(90deg,var(--phx-champagne),var(--phx-rose))!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .editorial-questions{
+  background:linear-gradient(180deg,var(--phx-vellum) 0%,#ece7dd 100%)!important;
+  color:var(--phx-ink)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .procession-section{
+  background:linear-gradient(180deg,#0f1318 0%,#090b0e 100%)!important;
+  color:var(--phx-pearl)!important;
+  border-top:1px solid rgba(232,215,168,.42)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .procession-track{
+  border-block:1px solid rgba(207,212,218,.28)!important;
+  background:rgba(21,26,32,.55);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .stage-btn{
+  color:var(--phx-chrome)!important;
+  padding:14px 8px!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .stage-btn[aria-pressed="true"]{
+  color:var(--phx-arc)!important;
+  background:rgba(232,215,168,.09);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .stage-btn[aria-pressed="true"]::after{
+  background:var(--phx-rose)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .stage-watermark{
+  color:var(--phx-champagne)!important;
+  opacity:.34!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .stage-formula-card{
+  background:var(--phx-vellum)!important;
+  color:var(--phx-ink)!important;
+  border:1px solid var(--phx-champagne)!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.45);
+}
+
+/* ── RP-LIVE-01 · COLLISION-FREE, COLLAPSIBLE BOTTOM-RIGHT SHUTTLE STACK ─── */
+body .vixen-carry-rail{
+  position:fixed!important;
+  right:16px!important;
+  bottom:16px!important;
+  z-index:140!important;
+  width:auto!important;
+  max-width:min(280px,calc(100vw - 32px))!important;
+  padding:7px 10px 7px 13px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  background:linear-gradient(145deg,rgba(21,26,32,.96),rgba(9,11,14,.98))!important;
+  border:1px solid rgba(232,215,168,.62)!important;
+  border-radius:999px!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.62)!important;
+}
+body .vixen-carry-rail::before{display:none!important}
+body .vixen-carry-rail .vixen-carry-kicker{display:none!important}
+body .vixen-carry-rail .vixen-carry-action{
+  width:auto!important;
+  gap:8px!important;
+}
+body .vixen-carry-rail .vixen-carry-title{
+  font:500 13.5px/1.1 var(--font-mono)!important;
+  letter-spacing:.04em!important;
+  white-space:nowrap!important;
+}
+body .vixen-carry-rail .vixen-carry-count{
+  min-width:20px!important;
+  height:20px!important;
+  padding:0 5px!important;
+  border-radius:999px!important;
+  background:var(--phx-arc)!important;
+  color:var(--phx-ink)!important;
+  border:0!important;
+  font:700 10.5px/20px var(--font-mono)!important;
+}
+body .vixen-carry-rail .vixen-carry-arrow{
+  font:600 13px/1 var(--font-mono)!important;
+}
+.vx-phx-carry-collapse{
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:1px solid rgba(207,212,218,.32)!important;
+  background:rgba(255,255,255,.04)!important;
+  color:var(--phx-chrome)!important;
+  font:700 12px/1 var(--font-mono)!important;
+  flex-shrink:0;
+}
+.vx-phx-carry-collapse:hover{
+  border-color:var(--phx-arc)!important;
+  color:var(--phx-arc)!important;
+}
+body .vixen-carry-rail[data-collapsed="true"] .vixen-carry-title,
+body .vixen-carry-rail[data-collapsed="true"] .vixen-carry-arrow{
+  display:none!important;
+}
+body .vixen-carry-rail[data-items="0"],
+body[data-view="overview"] .vixen-carry-rail,
+body[data-view="collection"] .vixen-carry-rail{
+  display:none!important;
+}
+/* Stack Maestro/Composer Excursion Dock cleanly ABOVE Carry Shuttle */
+body #vmaJourneyDock:not([hidden]){
+  position:fixed!important;
+  right:16px!important;
+  bottom:16px!important;
+  z-index:145!important;
+  padding:9px 15px!important;
+  border-radius:999px!important;
+  background:linear-gradient(135deg,#1c2228,#0f1318)!important;
+  border:1.5px solid var(--phx-arc)!important;
+  color:var(--phx-arc)!important;
+  font:600 11.5px/1.2 var(--font-mono)!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.68)!important;
+}
+body.has-podium-excursion-dock .vixen-carry-rail:not([data-items="0"]){
+  bottom:64px!important;
+}
+/* Safe bottom clearance on main views & footer so floating pill never blocks PODIUM CTA */
+body footer.footer{
+  padding-bottom:72px!important;
+}
+@media(max-width:680px){
+  body .vixen-carry-rail{display:none!important}
+  body #vmaJourneyDock:not([hidden]){
+    bottom:74px!important;
+    right:12px!important;
+    max-width:calc(100vw - 24px)!important;
+  }
+  body footer.footer{
+    padding-bottom:84px!important;
+  }
+}
+
+/* ── RP-LIVE-03 & 04 · WORKS CURATORIAL CONTRAST, INLINE SYMBOLS & STEPPERS ─ */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-context{
+  margin-top:4px!important;
+  padding:4px 10px!important;
+  background:#151a20!important;
+  border:1px solid rgba(207,212,218,.34)!important;
+  color:var(--phx-pearl)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-context[open]{
+  margin-top:8px!important;
+  padding:10px 14px!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-context h3{
+  margin:10px 0 8px!important;
+  font:600 10.5px/1.4 var(--font-mono)!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+  color:var(--phx-arc)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-context p,
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .reader-section p{
+  color:rgba(244,241,234,.94)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel .vix-public-work-context strong{
+  color:var(--phx-champagne)!important;
+}
+body #view-works .lexicon-item .record-num,
+body #view-protocols .lexicon-item .record-num{
+  white-space:nowrap!important;
+  min-width:2.4ch!important;
+  flex-shrink:0!important;
+  font-variant-numeric:tabular-nums!important;
+}
+
+/* Inline symbol/equation PNGs stay inline inside sentences; block figures center */
+.vix-couture-reader img.vix-reader-inline-img{
+  display:inline-block!important;
+  max-height:1.45em!important;
+  width:auto!important;
+  max-width:100%!important;
+  margin:0 .16em!important;
+  padding:1px 4px!important;
+  vertical-align:-.26em!important;
+  background:rgba(255,253,249,.94)!important;
+  border:1px solid rgba(20,23,27,.14)!important;
+  border-radius:2px!important;
+}
+.vix-couture-reader p.vix-reader-figure-block{
+  text-indent:0!important;
+  text-align:center!important;
+  margin:16px 0!important;
+}
+.vix-couture-reader p.vix-reader-figure-block img.vix-reader-inline-img{
+  display:block!important;
+  margin:0 auto!important;
+  max-height:360px!important;
+  padding:8px 12px!important;
+}
+
+/* Clarified Folio Footer: Intra-manuscript Paging + Prev/Next Work Steppers */
+body #view-works .vix-folio-footer{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px 12px!important;
+  padding:10px 14px!important;
+  background:#14181e!important;
+  color:var(--phx-pearl)!important;
+  border-top:1px solid rgba(207,212,218,.32)!important;
+}
+body #view-works .vix-folio-footer .vix-folio-btn-group{
+  display:inline-flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+}
+body #view-works .vix-folio-footer button{
+  min-height:34px!important;
+  padding:5px 10px!important;
+  border:1px solid rgba(207,212,218,.38)!important;
+  background:#1c2228!important;
+  color:var(--phx-pearl)!important;
+  font:600 10px/1.2 var(--font-mono)!important;
+  letter-spacing:.06em!important;
+  text-transform:uppercase!important;
+}
+body #view-works .vix-folio-footer button.vix-work-step-btn{
+  border-color:rgba(232,215,168,.62)!important;
+  color:var(--phx-arc)!important;
+}
+body #view-works .vix-folio-footer button:hover:not(:disabled){
+  background:var(--phx-champagne)!important;
+  color:var(--phx-ink)!important;
+}
+
+/* ── ACT 02 · OBSERVATORY DIAL BADGES & EVIDENCE COLUMN GAP ──────────────── */
+#vixenElectricFoundry .ef-dial-label{
+  flex-wrap:nowrap!important;
+  overflow-wrap:normal!important;
+}
+#vixenElectricFoundry .ef-dial output{
+  white-space:nowrap!important;
+  flex-shrink:0!important;
+  min-width:3.8ch!important;
+  text-align:right!important;
+  font-variant-numeric:tabular-nums!important;
+}
+#vixenElectricFoundry .ef-evidence{
+  column-gap:28px!important;
+  row-gap:16px!important;
+}
+
+/* ── ACT 03 · SALON DOLLHOUSE DESIGN DIAPASON & STUDIO COUPLING ──────────── */
+.vx-phx-diapason{
+  margin:0 0 22px;
+  padding:18px 20px;
+  background:linear-gradient(180deg,#14191f 0%,#0c0f13 100%);
+  border:1px solid rgba(232,215,168,.44);
+  box-shadow:0 20px 50px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,242,169,.14);
+}
+.vx-phx-diapason-head{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px 18px;
+  margin-bottom:12px;
+}
+.vx-phx-eyebrow{
+  font:600 9.5px/1.3 var(--font-mono);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--phx-champagne);
+  margin:0 0 4px;
+}
+.vx-phx-diapason-title{
+  font:400 clamp(21px,2.2vw,30px)/1.12 var(--font-serif);
+  color:var(--phx-pearl);
+  margin:0;
+}
+.vx-phx-diapason-title em{color:var(--phx-rose)}
+.vx-phx-ceiling-pill{
+  padding:5px 10px;
+  border:1px solid rgba(232,215,168,.5);
+  background:rgba(232,215,168,.1);
+  color:var(--phx-arc);
+  font:600 9.5px/1.2 var(--font-mono);
+  letter-spacing:.08em;
+}
+.vx-phx-inst-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:14px;
+}
+.vx-phx-inst-btn{
+  min-height:36px;
+  padding:6px 12px;
+  border:1px solid rgba(207,212,218,.3);
+  background:#151a20;
+  color:var(--phx-pearl);
+  font:600 10px/1.2 var(--font-mono);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.vx-phx-inst-btn[aria-pressed="true"],
+.vx-phx-inst-btn:hover{
+  background:var(--phx-champagne);
+  border-color:var(--phx-arc);
+  color:var(--phx-ink);
+}
+.vx-phx-diapason-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
+  gap:16px;
+  align-items:center;
+}
+.vx-phx-wave-card{
+  padding:12px 14px;
+  background:#090b0e;
+  border:1px solid rgba(207,212,218,.24);
+}
+.vx-phx-law-line{
+  margin-top:8px;
+  font:500 10px/1.45 var(--font-mono);
+  color:var(--phx-chrome);
+}
+.vx-phx-controls-card{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  padding:12px 14px;
+  background:#101419;
+  border:1px solid rgba(207,212,218,.22);
+}
+.vx-phx-slider-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font:600 10.5px/1.3 var(--font-mono);
+  color:var(--phx-pearl);
+  text-transform:uppercase;
+}
+.vx-phx-slider-row output{
+  color:var(--phx-arc);
+  font-variant-numeric:tabular-nums;
+}
+#vxPhxParamSlider{
+  width:100%;
+  accent-color:var(--phx-rose);
+}
+.vx-phx-probe-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.vx-phx-cadence-metrics{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 14px;
+  padding-top:6px;
+  border-top:1px dashed rgba(207,212,218,.22);
+  font:500 10px/1.4 var(--font-mono);
+  color:var(--phx-chrome);
+}
+.vx-phx-cadence-metrics strong{color:var(--phx-champagne)}
+/* Causal coupling: active studio gap & subtitle tracking respond to slider */
+body #constitutiveInquiry .bc-salon-top-studio{
+  gap:var(--dd-paratactic-gap,22px)!important;
+}
+body #constitutiveInquiry .ci-candidate-subtitle{
+  letter-spacing:calc(.06em + var(--dd-citational-tracking,0em))!important;
+}
+@media(max-width:900px){
+  .vx-phx-diapason-grid{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ── ACT 05, 06, 07 · METHODS SIEVE, GATES LATTICE & REFUSALS FULL WIDTH ─── */
+/* RP-LIVE-08: Prevent decorative giant view-number (21, 2^8, 05) from overlapping h1 */
+body .view-heading{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:start!important;
+  column-gap:28px!important;
+}
+body .view-heading .view-number{
+  position:static!important;
+  margin:0!important;
+  padding-left:12px!important;
+  pointer-events:none;
+}
+@media(max-width:960px){
+  body .view-heading{grid-template-columns:minmax(0,1fr)!important}
+  body .view-heading .view-number{display:none!important}
+}
+
+/* Formatted Protocol Reader in 05 · Methods */
+.vx-phx-protocol-rendered{
+  padding:22px 24px;
+  background:var(--phx-vellum);
+  color:var(--phx-ink);
+  border:1px solid rgba(207,212,218,.55);
+  font:400 16px/1.68 var(--font-serif);
+  max-height:560px;
+  overflow:auto;
+}
+.vx-phx-protocol-rendered .vix-reader-heading{
+  font:600 20px/1.25 var(--font-serif);
+  color:var(--phx-ink);
+  margin:1.3em 0 .5em;
+  padding-bottom:.3em;
+  border-bottom:1px solid rgba(20,23,27,.2);
+}
+.vx-phx-protocol-rendered .vix-reader-code{
+  background:#14181e;
+  color:var(--phx-pearl);
+  padding:12px 14px;
+  font:500 11.5px/1.55 var(--font-mono);
+  overflow-x:auto;
+}
+.vx-phx-protocol-raw-details{
+  margin-top:10px;
+}
+.vx-phx-protocol-raw-details > summary{
+  cursor:pointer;
+  font:600 10px/1.4 var(--font-mono);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--phx-champagne);
+  padding:6px 0;
+}
+
+/* Caro Intake Sieve Diagram in 05 · Methods */
+.vx-phx-sieve-diagram{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  margin:14px 0 18px;
+  padding:14px 16px;
+  background:#0d1116;
+  border:1px solid rgba(232,215,168,.38);
+}
+.vx-phx-sieve-node{
+  flex:1 1 150px;
+  padding:10px 12px;
+  background:#151a20;
+  border:1px solid rgba(207,212,218,.24);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.vx-phx-sieve-quarantine{border-left:3px solid var(--phx-rose)}
+.vx-phx-sieve-substantive{border-left:3px solid var(--phx-pearl)}
+.vx-phx-sieve-registry{border-left:3px solid var(--phx-arc)}
+.vx-phx-sieve-num{
+  font:400 24px/1 var(--font-serif);
+  color:var(--phx-arc);
+}
+.vx-phx-sieve-lbl{
+  font:500 9.5px/1.4 var(--font-mono);
+  color:var(--phx-pearl);
+}
+.vx-phx-sieve-arrow{
+  font:600 15px/1 var(--font-mono);
+  color:var(--phx-champagne);
+}
+
+/* 8-Gate Binary Partition Matrix & Split-Plane Diptychs in 06 · Gates */
+.vx-phx-gates-lattice{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px 16px;
+  margin:0 0 20px;
+  padding:12px 16px;
+  background:#101419;
+  border:1px solid rgba(232,215,168,.42);
+}
+.vx-phx-lattice-label{
+  font:600 9.5px/1.3 var(--font-mono);
+  letter-spacing:.14em;
+  color:var(--phx-champagne);
+}
+.vx-phx-lattice-strip{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.vx-phx-gate-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:32px;
+  padding:4px 10px;
+  background:#161b20;
+  border:1px dashed rgba(232,215,168,.52);
+  color:var(--phx-pearl);
+  font:600 10px/1 var(--font-mono);
+  cursor:pointer;
+}
+.vx-phx-gate-chip strong{color:var(--phx-arc)}
+.vx-phx-gate-chip[data-gate-state="HYP_MERGED"]{
+  border-style:solid;
+  border-color:var(--phx-arc);
+  background:rgba(255,242,169,.12);
+}
+.vx-phx-gate-chip[data-gate-state="HYP_SPLIT"]{
+  border-style:solid;
+  border-color:var(--phx-rose);
+  background:rgba(255,145,175,.12);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card{
+  background:linear-gradient(180deg,#14181e 0%,#0d1014 100%)!important;
+  color:var(--phx-pearl)!important;
+  border:1px solid rgba(207,212,218,.32)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:first-child{
+  background:var(--phx-vellum)!important;
+  color:var(--phx-ink)!important;
+  border:1px solid rgba(207,212,218,.6)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:first-child h3,
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:first-child div,
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:first-child strong,
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:first-child code{
+  color:var(--phx-ink)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:first-child code{
+  background:rgba(20,23,27,.07)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:last-child{
+  background:#161b20!important;
+  color:var(--phx-pearl)!important;
+  border:1px solid rgba(232,215,168,.4)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .optical-seam{
+  width:36px!important;
+  background:transparent!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .optical-seam::before{
+  display:none!important;
+}
+
+/* Refusals (07): Full-Width Active Candidates & E-00.1 Equilibrium Scale */
+body #view-holds .holds-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+body #view-holds .hold-panel,
+body #view-holds .comp-table-wrap{
+  max-width:100%!important;
+  width:100%!important;
+}
+.vx-phx-tie-scale{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:stretch;
+  gap:8px;
+  margin:14px 0;
+}
+.vx-phx-tie-arm{
+  flex:1 1 160px;
+  padding:10px 12px;
+  background:#14181e;
+  border:1px solid rgba(207,212,218,.26);
+  color:var(--phx-pearl);
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+body #view-holds .vx-phx-tie-arm span,
+.vx-phx-tie-arm span{
+  font:600 9.5px/1.3 var(--font-mono)!important;
+  letter-spacing:.1em!important;
+  color:var(--phx-champagne)!important;
+}
+body #view-holds .vx-phx-tie-arm strong,
+.vx-phx-tie-arm strong{
+  font:400 15px/1.25 var(--font-serif)!important;
+  color:var(--phx-pearl)!important;
+}
+.vx-phx-tie-null{border-top:2px solid var(--phx-pearl)}
+.vx-phx-tie-recip{border-top:2px solid var(--phx-rose)}
+.vx-phx-tie-fulcrum{
+  display:grid;
+  place-items:center;
+  padding:0 10px;
+  font:700 11px/1 var(--font-mono);
+  color:var(--phx-arc);
+}
+
+/* ── RP-LIVE-10 · MOBILE FOX HOUSE BOTTOM RAIL SCROLL CUE & FIT ──────────── */
+@media(max-width:959px){
+  body #vixenRoomRail{
+    padding-inline:10px 26px!important;
+    scroll-padding-inline:16px!important;
+    mask-image:linear-gradient(90deg,#000 0%,#000 calc(100% - 22px),transparent 100%);
+    -webkit-mask-image:linear-gradient(90deg,#000 0%,#000 calc(100% - 22px),transparent 100%);
+  }
+  body #vixenRoomRail .vixen-room{
+    flex:0 0 auto!important;
+    padding-inline:9px!important;
+  }
+}
+
+/* ── RP-LIVE-05 & 09 · PODIUM THRESHOLD SPOTLIGHT & HUMAN PODIUM SCRIMS ──── */
+body[data-page="podium-entrance"] .podium-standalone-header,
+body[data-page="podium"] .podium-standalone-header{
+  background:#0a0d11!important;
+  backdrop-filter:none!important;
+  border-bottom:1px solid rgba(232,215,168,.36)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.68)!important;
+}
+#bcThresholdPortal[data-active-door="human"] #podiumDoorHuman{
+  border-color:var(--phx-arc)!important;
+  background:linear-gradient(155deg,#1d242c,#10151b)!important;
+  box-shadow:0 20px 48px rgba(0,0,0,.62),0 0 0 1px var(--phx-arc),inset 0 3px 0 var(--phx-arc)!important;
+  transform:translateY(-3px);
+}
+#bcThresholdPortal[data-active-door="human"] #podiumDoorAi{
+  opacity:.72;
+}
+#bcThresholdPortal[data-active-door="ai"] #podiumDoorAi{
+  border-color:var(--phx-rose)!important;
+  background:linear-gradient(155deg,#1d2229,#101419)!important;
+  box-shadow:0 20px 48px rgba(0,0,0,.62),0 0 0 1px var(--phx-rose),inset 0 3px 0 var(--phx-rose)!important;
+  transform:translateY(-3px);
+}
+#bcThresholdPortal[data-active-door="ai"] #podiumDoorHuman{
+  opacity:.72;
+}
+#bcThresholdPortal[data-active-door="human"] .bc-draft--threshold{
+  box-shadow:inset 4px 0 0 var(--phx-arc),0 24px 64px rgba(0,0,0,.55)!important;
+}
+#bcThresholdPortal[data-active-door="ai"] .bc-draft--threshold{
+  box-shadow:inset -4px 0 0 var(--phx-rose),0 24px 64px rgba(0,0,0,.55)!important;
+}
+
+/* Human Podium Settings & Ledger opaque scrims over living mesh */
+body[data-page="podium"] #podiumSettingsPane .vix-operator-view,
+body #view-operator.vix-operator-view{
+  position:relative;
+  z-index:4;
+}
+body[data-page="podium"] .vix-operator-section-title,
+body #view-operator .vix-operator-section-title{
+  display:inline-block;
+  padding:6px 12px;
+  margin:0 0 10px;
+  background:#0d1116;
+  border:1px solid rgba(232,215,168,.38);
+  color:var(--phx-arc);
+  box-shadow:0 8px 22px rgba(0,0,0,.55);
+}
+body[data-page="podium"] #podiumSettingsPane .ci-card{
+  background:linear-gradient(180deg,#141920 0%,#0c1015 100%)!important;
+  border:1px solid rgba(207,212,218,.34)!important;
+}
+@media(max-width:680px){
+  body[data-page="podium"] .header-inner,
+  body[data-page="podium-entrance"] .header-inner{
+    padding:8px 10px!important;
+    gap:6px!important;
+  }
+  body[data-page="podium"] .header-actions,
+  body[data-page="podium-entrance"] .header-actions{
+    gap:4px!important;
+  }
+  body[data-page="podium"] .header-actions .secondary-btn,
+  body[data-page="podium-entrance"] .header-actions .secondary-btn{
+    min-height:34px!important;
+    padding:0 8px!important;
+    font-size:10px!important;
+  }
+}

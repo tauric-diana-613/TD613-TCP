@@ -40,10 +40,10 @@ jobs:
     name: Vixen source-bound engineering qualification
     if: >-
       (github.event_name == 'pull_request' &&
-       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-'))) ||
+       (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-oop-product-') || startsWith(github.head_ref, 'fix/vixen-prehydration-redpens-') || startsWith(github.head_ref, 'fix/vixen-opera-surface-'))) ||
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification')
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 85
     steps:
       - uses: actions/checkout@v4
         with:
@@ -81,6 +81,8 @@ jobs:
           TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/vixen-em-pinned-archive-qualifier.mjs > "$RUNNER_TEMP/vixen-original-receipt.json"
           TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/verify-vixen-historical-negative-controls.mjs > "$RUNNER_TEMP/vixen-historical-negatives.json"
       - name: Source-first desktop geometry
+        env:
+          VIXEN_CAPTURE_SCROLL_GALLERY: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' && '0' || '1' }}
         run: npm run test:vixen:browser
       - name: Dedicated iPhone first frame
         run: node scripts/run-vixen-browser-tests.mjs tests/vixen-mobile-frontispiece-witness.mjs
@@ -88,6 +90,23 @@ jobs:
         run: |
           node scripts/run-vixen-browser-tests.mjs tests/vixen-g8-integrated-browser-witness.mjs tests/vixen-g5-extracted-archive-browser.mjs
           python scripts/package-vixen-preview.py --out "$RUNNER_TEMP/vixen-preview.zip"
+      - name: Prepare complete scoped Vixen stack ZIP for human inspection
+        run: |
+          mkdir -p artifacts/vixen-review-stack
+          python3 scripts/package-vixen-review-stack.py --out artifacts/vixen-review-stack/Vixen_Cybernetics_Full_Stack.zip
+      # The operator elected human preview testing after the last complete gallery.
+      # Keep all named release-gate assertions; replay exhaustive images on demand.
+      - name: Capture complete desktop and mobile scroll witnesses
+        if: ${{ !(github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108') }}
+        run: node scripts/run-vixen-browser-tests.mjs tests/vixen-full-surface-witness.mjs
+      - name: Historical before/after manuscript gallery (explicit qualification)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification' }}
+        run: |
+          git worktree add --detach --no-checkout "$RUNNER_TEMP/vixen-redpen-before" 7500e294003e8a5effa52921c8d4b7eba673be9d
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout init --cone
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout set app/encyclopedia
+          git -C "$RUNNER_TEMP/vixen-redpen-before" checkout --detach 7500e294003e8a5effa52921c8d4b7eba673be9d
+          VIXEN_BASELINE_ROOT="$RUNNER_TEMP/vixen-redpen-before" node scripts/run-vixen-browser-tests.mjs tests/vixen-opera-mobile-manuscript-browser.mjs
       - name: QA04 human acceptance remains HELD
         run: |
           mkdir -p artifacts/vixen-oop
@@ -102,10 +121,28 @@ jobs:
           path: |
             artifacts/vixen-oop
             artifacts/vixen-*
+            !artifacts/vixen-full-surface/**
+            !artifacts/vixen-review-stack/**
             ${{ runner.temp }}/vixen-original-receipt.json
             ${{ runner.temp }}/vixen-historical-negatives.json
             ${{ runner.temp }}/vixen-preview.zip
           if-no-files-found: error
+      - name: Publish full-scroll visual witness ZIP
+        if: ${{ always() && !(github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-full-surface-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/vixen-full-surface/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish complete Vixen stack ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-full-stack-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/vixen-review-stack/Vixen_Cybernetics_Full_Stack.zip
+          if-no-files-found: warn
+          retention-days: 30
 
   scope:
     name: Classify exact-head browser witness scope
@@ -155,6 +192,229 @@ jobs:
             echo 'validation_scope=full' >> "$GITHUB_OUTPUT"
             echo 'practice_fixture_changed=false' >> "$GITHUB_OUTPUT"
           fi
+
+  # Operator RGI20: release a reviewable iPhone screenshot BEFORE the long
+  # Vixen geometry suite finishes. Standalone job, no deployment rights.
+  vixen_mobile_first_frame:
+    name: Vixen iPhone frontispiece first-frame REDPEN witness
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification' &&
+      github.ref_name == 'research/vixen-dual-estate-encyclopedia-20261108'
+    runs-on: ubuntu-24.04
+    # GitHub apt/Chromium provisioning can exceed eight minutes without test failure.
+    # Keep the source-bound witness mandatory; extend only its runner budget.
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Prepare isolated mobile Chromium
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Capture mobile first-frame chrome and locked anchors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-mobile-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 25); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          node tests/vixen-mobile-frontispiece-witness.mjs
+      - name: Publish FIRST mobile screenshots for independent self-adjudication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-mobile-redpen-${{ github.sha }}
+          path: artifacts/vixen-mobile-redpen/
+          retention-days: 14
+          if-no-files-found: warn
+
+  vixen_browser_qualification:
+    name: Vixen exact-head Chromium source-first geometry witness
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'pull_request' &&
+      startsWith(github.head_ref, 'fix/vixen-opera-surface-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install source-bound Chromium witness engine
+        run: |
+          node --check tests/vixen-opera-mobile-manuscript-browser.mjs
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Render Vixen Opera over HTTP and assert first-source geometry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 25); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          # Source-identical baseline from the PR #1730 repair starting point.
+          # Sparse checkout avoids acquiring unrelated monorepo content.
+          git worktree add --detach --no-checkout "$RUNNER_TEMP/vixen-redpen-before" 7500e294003e8a5effa52921c8d4b7eba673be9d
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout init --cone
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout set app/encyclopedia
+          git -C "$RUNNER_TEMP/vixen-redpen-before" checkout --detach 7500e294003e8a5effa52921c8d4b7eba673be9d
+          VIXEN_BASELINE_ROOT="$RUNNER_TEMP/vixen-redpen-before" node tests/vixen-opera-mobile-manuscript-browser.mjs
+          node tests/vixen-public-copy-browser.test.mjs
+          node tests/vixen-ai-journey-browser.test.mjs
+          node tests/vixen-human-comparative-field-browser.test.mjs
+          node tests/vixen-maestro-source-challenge-browser.test.mjs
+          node tests/vixen-browser-visual-witness.mjs
+          node tests/vixen-observatory-open-form-browser.test.mjs
+          node tests/vixen-foundry-webgl-canary.mjs
+      - name: Preserve exact-head screenshots for human qualification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-browser-geometry-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-browser-witness/
+          if-no-files-found: warn
+          retention-days: 14
+
+  vixen_g5_extracted_browser:
+    name: Vixen G5 extracted ZIP Chromium source-and-replay witness
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'research/vixen-seven-estate-braid-g5-20261120' &&
+      github.event.pull_request.base.ref == 'research/vixen-seven-estate-braid-g4-20261120'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install bounded original-source Chromium test dependencies
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Download, extract, serve, verify and render source-bound G5 archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tests/vixen-g5-extracted-archive-browser.mjs
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-g5-source-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 40); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          node tests/vixen-g5-extracted-archive-browser.mjs
+      - name: Save exact-head export ZIP, SHA-256 receipt, missing-resource diagnostics and browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-g5-extracted-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-g5-extracted/
+          retention-days: 14
+          if-no-files-found: warn
+
+  vixen_g8_integrated_browser:
+    name: Vixen G8 exact-head 1440/390 consent, local return, ZIP replay and QA04 HOLD
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'research/vixen-seven-estate-braid-g8-20261121' &&
+      github.event.pull_request.base.ref == 'research/vixen-seven-estate-braid-g6-20261121'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Prepare exact-head local Chromium, no provider credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Render desktop/390px, verify native-disconnected, archive, privacy, ZIP replay and evidence-class holds
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha }}'
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-g8-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 40); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          node tests/vixen-g8-integrated-browser-witness.mjs
+          node tests/vixen-g5-extracted-archive-browser.mjs
+          node scripts/vixen-g8-evidence-register-cli.mjs
+      - name: Retain source-bound G8 screenshots, extracted ZIP and human HOLD record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-g8-evidence-${{ github.event.pull_request.head.sha }}
+          path: |
+            artifacts/vixen-g8-browser/
+            artifacts/vixen-g5-extracted/
+          retention-days: 14
+          if-no-files-found: warn
 
   budget_bundle:
     name: Neon budget deployment ZIP startup
@@ -208,6 +468,11 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Wendbine native research-engine source restoration · exact original tests
+        run: |
+          python3 -m py_compile scripts/wendbine-*-v1.py
+          python3 -m unittest discover -s tests -p 'test_wendbine_*_v1.py' -v
+          node --test tests/atelier-method-v01.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
@@ -215,6 +480,95 @@ jobs:
           node tests/tcp-smoke.test.mjs
           node scripts/build-encyclopedia-reference.mjs --check
           node --test tests/encyclopedia-navigation.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-intake.test.mjs
+          if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
+          node --test tests/vixen-native-atelier-bridge.test.mjs
+          # Host-only historical compiler and retrospective Wendbine reconstruction controls.
+          node --test tests/wendbine-proscenium-assay.test.mjs
+          node --test tests/vixen-wendbine-method-transfer.test.mjs
+          node --test tests/wendbine-maestro-research-loop.test.mjs
+          node --test tests/wendbine-proscenium-dollhouse.test.mjs
+          node --test tests/wendbine-frequency-null-challenge.test.mjs
+          node --test tests/wendbine-topology-rewire-challenge.test.mjs
+          node --test tests/wendbine-directed-walk-falsification.test.mjs
+          node --test tests/wendbine-open-world-ceiling.test.mjs
+          node --test tests/vixen-dual-atelier-comparative-maestro.test.mjs
+          node --test tests/vixen-human-comparative-field.test.mjs
+          node --test tests/vixen-em-atelier-proscenium.test.mjs
+          node --test tests/vixen-em-hostile-method-expedition.test.mjs
+          node --test tests/vixen-maestro-source-challenge.test.mjs
+          node --check app/encyclopedia/vixen-estate/em-source-challenge-probes.mjs
+          node --check app/encyclopedia/vixen-estate/vixen-source-challenge.mjs
+          node --check app/encyclopedia/vixen-estate/comparative-field-probes.mjs
+          node --check app/encyclopedia/vixen-estate/vixen-comparative-field-trial.mjs
+          node --test tests/vixen-observatory-throughput.test.mjs
+          # Execute the original Python SRC typed traverser against real verified Vixen derivatives.
+          node --test tests/vixen-src-original-typed-traversal.test.mjs
+          # Original SRC Phase II role compiler, evidence interface, and tomography must execute on verified Vixen Works.
+          node --test tests/vixen-src-original-phase2-host.test.mjs
+          # Keep Vixen optical-layer and antique-gold manuscript redpens enforceable.
+          node --test tests/vixen-stage35-visual-redpen.test.mjs
+          node --test tests/vixen-public-copy.test.mjs
+          node --test tests/vixen-ai-session.test.mjs
+          node --test tests/vixen-seven-estate-g1.test.mjs
+          node --test tests/vixen-seven-estate-g2.test.mjs
+          python3 -m unittest discover -s tests -p 'test_vixen_braid_g3.py' -v
+          node --test tests/vixen-seven-estate-g3.test.mjs
+          node --test tests/vixen-seven-estate-g4.test.mjs
+          node --test tests/vixen-seven-estate-g5.test.mjs
+          node --test tests/vixen-seven-estate-g7.test.mjs
+          node --test tests/vixen-seven-estate-g6.test.mjs
+          node --test tests/vixen-seven-estate-g8.test.mjs
+          # TMP-06 stays a separate, source-pinned private-local candidate.
+          # Only synthetic tests run; never ingest operator/provider records.
+          V2_SOURCE_SHA="c1d51e47bcc1f488eb47cdf77286aa2d8d90a6e8"
+          V2_BRANCH="research/atelier-sync-v2-g7-receipt-recovery-20261121"
+          git fetch --no-tags origin "refs/heads/$V2_BRANCH"
+          [[ "$(git rev-parse FETCH_HEAD)" == "$V2_SOURCE_SHA" ]] || {
+            echo "HELD_G7_V2_SOURCE_REVISION_CHANGED" >&2; exit 1;
+          }
+          git worktree add --detach "$RUNNER_TEMP/g7-v2-private-local" "$V2_SOURCE_SHA"
+          (cd "$RUNNER_TEMP/g7-v2-private-local" && \
+            PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p 'test_atelier_operator_inbox_sync_v2.py' -v)
+          # Source-free tests may create only Python bytecode caches; remove
+          # those isolated disposable caches, never the source evidence tree.
+          find "$RUNNER_TEMP/g7-v2-private-local" -type d -name '__pycache__' -prune -exec rm -rf -- {} +
+          git worktree remove "$RUNNER_TEMP/g7-v2-private-local"
+          node --test tests/vixen-semantic-semiotic-search.test.mjs
+          node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
+          for source_bound_suite in \
+            tests/vixen-podium-compose-score-custody.test.mjs \
+            tests/vixen-podium-redpen-adjudication.test.mjs \
+            tests/vixen-podium-redpen-route.test.mjs \
+            tests/vixen-podium-native-visual-diff.test.mjs \
+            tests/vixen-compose-human-webauthn.test.mjs \
+            tests/vixen-compose-custody-ledger.test.mjs \
+            tests/vixen-compose-host-session.test.mjs \
+            tests/reconcile-vixen-seven.test.mjs \
+            tests/vixen-open-form-composition.test.mjs \
+            tests/vixen-open-form-runtime.test.mjs \
+            tests/vixen-score-audition.test.mjs \
+            tests/vixen-observatory-composer-deck.test.mjs \
+            tests/vixen-observatory-optical-instrument.test.mjs \
+            tests/vixen-living-mesh-rgi22.test.mjs \
+            tests/vixen-observatory-live-composition.test.mjs \
+            tests/vixen-podium-salon-optical-bridge.test.mjs; do
+            if [[ -f "$source_bound_suite" ]]; then node --test "$source_bound_suite"; fi
+          done
+          if [[ -f tests/vixen-brand-asset-contract.test.mjs ]]; then node --test tests/vixen-brand-asset-contract.test.mjs; fi
+          if [[ -f scripts/install-vixen-brand-assets.py ]]; then python3 scripts/install-vixen-brand-assets.py --check; fi
+          node --test tests/vixen-synthesis-salon.test.mjs
+          node --test tests/vixen-rgi10-couture.test.mjs
+          node --test tests/vixen-rgi11-light.test.mjs
+          node --test tests/vixen-rgi13-mesh.test.mjs
+          node --test tests/vixen-rgi14-couture.test.mjs
+          node --test tests/vixen-rgi15-beat-radiometry.test.mjs
+          node --test tests/vixen-electric-foundry.test.mjs
+          # Each constitutional subject boundary must execute on this exact commit, not merely exist as a file.
+          node --test tests/vixen-stage-subject-contract.test.mjs tests/vixen-math-wardrobe.test.mjs
+          node --test tests/vixen-original-work-mathematics.test.mjs
+          node --test tests/vixen-foyer.test.mjs
+          node --test tests/vixen-folded-cuirass.test.mjs tests/vixen-motion-graph.test.mjs tests/vixen-palette-contract.test.mjs tests/vixen-room-optics.test.mjs tests/vixen-room-radiance.test.mjs tests/vixen-salon-ambient-field.test.mjs
+          node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/vixen-frontispiece-route-design.json
           node --test tests/loom-observer-channel.test.mjs tests/loom-observer-chamber.test.mjs tests/loom-targeted-ux.test.mjs
           node --test tests/loom-tutorial-temporal-20261014.test.mjs tests/loom-first-crossing-binding-race.test.mjs tests/loom-tutorial-gesture.test.mjs tests/loom-tutorial-artifact.test.mjs
           node scripts/sync-portable-loom-tomography-assets.mjs --check
@@ -265,12 +619,112 @@ jobs:
           node tests/gemini-quality-pilot.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+      - name: Qualify pinned EMSTD613 original estate and native journey out of tree
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        env:
+          ORIGINAL_EM_HEAD: 70b5a0f9e94626cba6068f41c6117e7978800bbd
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$ORIGINAL_EM_HEAD"
+          git worktree add --detach "$RUNNER_TEMP/em-original-archive" "$ORIGINAL_EM_HEAD"
+          export TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/em-original-archive"
+          node scripts/vixen-em-pinned-archive-qualifier.mjs > "$RUNNER_TEMP/em-pinned-original-native-qualification.json"
+          cat "$RUNNER_TEMP/em-pinned-original-native-qualification.json"
+          git worktree remove --force "$RUNNER_TEMP/em-original-archive"
+      - name: Preserve EMSTD613 original-source qualification receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-em-original-archive-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/em-pinned-original-native-qualification.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Verify RGI08 exact-predecessor Vixen source and functional fidelity
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-rgi08-fidelity.mjs
+      - name: Preserve RGI08 predecessor fidelity evidence
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-rgi08-fidelity-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/rgi08-vixen-source-fidelity.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Execute corrected RGI09 native Dollhouse Design with full-source ingestion
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/run-vixen-rgi09-design.mjs
+      - name: Preserve RGI09 design and source-voice separation
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-rgi09-native-design-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/rgi09-vixen-native-design.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Execute RGI08 native Dollhouse Design eight-stage commission
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/run-vixen-dd02-makeover.mjs
+      - name: Preserve RGI08 Dollhouse Design structural receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-rgi08-design-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/rgi08-vixen-dollhouse-design-return.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Inspect exact Podium source contract and execute scoped five-role audit
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-podium-source-audit.mjs
+      - name: Preserve exact-source Podium audit and evidence hashes
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-podium-source-audit-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/ci-podium-source-audit.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Execute Podium native five-specialist Dollhouse synthetic refusal witness
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-podium-dollhouse.mjs
+      - name: Preserve Podium native audit machine receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-podium-native-dollhouse-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/ci-podium-native-dollhouse-receipt.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Vixen SRC capability parity — Atlas FADT Aperture deterministic redpen
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/audit-vixen-src-dollhouse-parity.mjs
+      - name: Preserve SRC parity and Dollhouse source-bound machine receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-src-dollhouse-parity-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/ci-vixen-src-dollhouse-parity.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Witness three-stage Maestro research descent with actual SRC Python on verified Vixen Works
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-maestro-native-journey.mjs
+      - name: Preserve the original-method Maestro journey and source-custody receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-maestro-native-journey-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/ci-vixen-maestro-native-journey.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Validate bounded Dollhouse role upgrades and source-only export kit
         run: npm run test:dollhouse:audits
       - name: Validate Loom Instrument Lab, held gates, advisory minimization, and declared service resolution
         run: npm run test:loom:instrument
       - name: Validate Dome-World runtime weather and hash regression
         run: node --test tests/dome-world-runtime-weather-hash-regression.test.mjs
+      - name: Validate P-044 bounded ambiance coupling and mutation controls
+        run: npm run test:ambiance
       - name: Validate restored 5-role Dollhouse specialist suites and native skill
         run: |
           node --test \
@@ -293,6 +747,8 @@ jobs:
           node tests/test-evaluator-oracle.mjs
       - name: Execute clean exact-head Dollhouse browser witness
         run: |
+          # Python engine tests intentionally compile research modules; clean only generated bytecode.
+          find scripts tests -type d -name '__pycache__' -prune -exec rm -rf {} +
           mkdir -p artifacts/dollhouse-browser-witness
           node scripts/verify-dollhouse-repair-witness.mjs --out artifacts/dollhouse-browser-witness/witness_receipt.json --expected-revision "${{ github.event.pull_request.head.sha || github.sha }}" --require-clean
       - name: Upload clean Dollhouse browser witness receipt
@@ -489,6 +945,31 @@ jobs:
       - name: Validate Flow-Core runtime browser contract
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-runtime-browser-probe.test.mjs
+      - name: Package exact-head Vixen dual-estate browser preview
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: |
+          python3 scripts/package-vixen-preview.py --out artifacts/vixen-preview/Vixen_Cybernetics_Encyclopedia_PR1730.zip
+      - name: Upload isolated Vixen browser preview ZIP
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-vixen-browser-preview-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-preview/Vixen_Cybernetics_Encyclopedia_PR1730.zip
+          if-no-files-found: error
+          retention-days: 14
+      - name: Package source-editable exact-head Vixen agent handoff
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: |
+          python3 -m py_compile scripts/package-vixen-agent-handoff.py
+          python3 scripts/package-vixen-agent-handoff.py --out artifacts/vixen-preview/VIXEN_PR1730_COMPLETE_AGENT_HANDOFF.zip
+      - name: Upload Vixen PR1730 full editable agent handoff
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-vixen-agent-handoff-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-preview/VIXEN_PR1730_COMPLETE_AGENT_HANDOFF.zip
+          if-no-files-found: error
+          retention-days: 14
       - name: Preserve diagnostics only when held
         if: failure()
         uses: actions/upload-artifact@v4
@@ -1092,7 +1573,9 @@ jobs:
     if: github.event_name == 'pull_request' && needs.scope.outputs.head_is_current == 'true'
     # Playwright 1.53.2 installers support this qualified runner, unlike ubuntu26.04.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # Full exact-head, cross-engine layout witnesses exceed the historical 10-minute cap.
+    # Preserve all current tests rather than allowing GitHub to cancel late witnesses.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
