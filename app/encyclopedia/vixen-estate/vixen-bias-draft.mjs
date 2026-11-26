@@ -779,13 +779,26 @@ ${hitTargets}
 export function mountBiasDraft(host, readInputs, { height = 420, title } = {}) {
   if (!host || typeof readInputs !== 'function') return () => {};
   let last = '';
+  let lastClientW = 0;
   let pending = 0;
+  const resolveWidth = () => {
+    const cw = Math.round(host.clientWidth || 0);
+    if (cw > 0) return Math.max(300, cw);
+    const vw = typeof window !== 'undefined' && window.innerWidth ? window.innerWidth : 1280;
+    return Math.max(300, vw <= 680 ? vw - 32 : Math.min(1260, vw - 140));
+  };
   const cut = () => {
-    pending = 0;
-    const width = Math.max(300, Math.round(host.clientWidth || 1200));
+    if (pending) {
+      clearTimeout(pending);
+      pending = 0;
+    }
+    const cw = Math.round(host.clientWidth || 0);
+    const width = resolveWidth();
     const h = typeof height === 'function' ? height(width) : height;
+    host.style.height = `${h}px`;
     const input = { ...readInputs(), width, height: h };
     const sig = JSON.stringify(input);
+    lastClientW = cw;
     if (sig === last) return;
     const recut = last !== '';
     last = sig;
@@ -800,6 +813,11 @@ export function mountBiasDraft(host, readInputs, { height = 420, title } = {}) {
     }));
   };
   const schedule = () => {
+    const cw = Math.round(host.clientWidth || 0);
+    if (lastClientW === 0 && cw > 0) {
+      cut();
+      return;
+    }
     if (!pending) pending = setTimeout(cut, 90);
   };
   cut();

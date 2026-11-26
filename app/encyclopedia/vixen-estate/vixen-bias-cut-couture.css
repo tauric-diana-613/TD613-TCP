@@ -85,8 +85,8 @@ body #view-collection .bc-draft--salon-crown{
 body .bc-draft::before{
   content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--bc-selvedge);z-index:2;
 }
-body .bc-draft-host{display:block;line-height:0;min-height:152px}
-body .bc-draft-svg{display:block;width:100%;height:auto}
+body .bc-draft-host{display:block;line-height:0;min-height:152px;overflow:hidden}
+body .bc-draft-svg{display:block;width:100%;height:100%}
 body .bc-draft-svg .bc-d-micro{font:600 10.5px/1 var(--font-mono);letter-spacing:.06em;font-variant-numeric:tabular-nums}
 body .bc-draft-svg .bc-d-label{font:600 9.5px/1 var(--font-mono);letter-spacing:.18em}
 body .bc-draft-svg .bc-d-selv{font:600 10px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase}
@@ -131,8 +131,10 @@ body .bc-draft-cap-legend .lg-hum{border:1.5px dashed var(--bc-champagne);height
   html body:not([data-vixen-motion="still"]) .bc-draft-host .bc-d-gate path:first-child{animation:bc-d-baste 2.6s linear 3}
   html body:not([data-vixen-motion="still"]) .bc-draft-host[data-bc-cut="recut"] .bc-d-thread{animation-duration:.75s}
 }
-@media (max-width:1080px){
-  body .bc-draft-cap{grid-template-columns:minmax(0,1fr)}
+@media (max-width:1180px){
+  body .bc-draft-cap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:6px 12px;gap:4px 12px}
+  body .bc-draft-cap-t,
+  body .bc-draft-cap-legend{display:none}
 }
 
 /* ── STUDY TRAY · popout with chrome selvedge & champagne carry ─────────── */
@@ -466,27 +468,57 @@ html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .v
   padding:14px 20px!important;margin:0!important;font:italic 400 15px/1.5 var(--font-serif)!important;
 }
 
+@media (max-width:1180px) and (min-width:741px), (max-height:830px) and (min-width:741px){
+  body #view-collection > .page-pad > .view-heading{padding-block:4px 5px!important;margin-bottom:4px!important}
+  body #view-collection > .page-pad > .view-heading h2{font-size:27px!important;line-height:1.04!important;margin:2px 0!important}
+  body #view-collection > .page-pad > .view-heading p{font-size:12.8px!important;line-height:1.32!important;margin:2px 0 0!important}
+  body #view-collection .bc-quest-map{margin:4px 0 6px}
+  body #view-collection .bc-quest-map button{min-height:38px;padding:5px 10px 6px}
+  body #view-collection .bc-quest-map small{display:none}
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head,
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage,
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
+    min-height:166px!important;
+  }
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
+    padding:11px 18px!important;gap:5px!important;
+  }
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{
+    font-size:27px!important;line-height:1!important;
+  }
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-intro{
+    font-size:12.5px!important;line-height:1.32!important;
+  }
+  html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-now-why-exact{
+    display:none!important;
+  }
+}
+
 @media (max-width:740px){
+  body #view-collection > .page-pad > .view-heading{padding-block:4px 4px!important;margin-bottom:4px!important}
+  body #view-collection > .page-pad > .view-heading h2{font-size:22px!important;line-height:1.05!important;margin:2px 0!important}
+  body #view-collection > .page-pad > .view-heading p{font-size:12px!important;line-height:1.28!important;margin:2px 0 0!important}
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head,
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
     min-height:0!important;
   }
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
-    background:var(--bc-vellum)!important;padding:11px 14px!important;gap:6px!important;
+    background:var(--bc-vellum)!important;padding:8px 12px!important;gap:4px!important;
   }
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{
-    font-size:26px!important;line-height:1.02!important;
+    font-size:22px!important;line-height:1.02!important;
   }
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-intro{
-    font-size:12.5px!important;line-height:1.34!important;
+    font-size:12px!important;line-height:1.28!important;
   }
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-now-why-exact{
     display:none!important;
   }
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{
-    min-height:132px!important;height:132px!important;max-height:140px!important;
+    min-height:164px!important;height:164px!important;max-height:168px!important;
   }
-  body #view-collection .bc-draft-cap{padding:7px 10px 8px;gap:5px 10px}
+  body #view-collection .bc-draft-cap{padding:5px 9px 6px;gap:4px 8px}
+  body #view-collection .bc-draft-cap-lead,
   body #view-collection .bc-draft-cap-t,
   body #view-collection .bc-draft-cap-legend{display:none}
   html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
@@ -715,10 +747,10 @@ html body[data-vixen-motion="still"] footer.footer .footer-podium-cta.is-arrivin
     overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;
   }
   body #view-collection .bc-quest-map::-webkit-scrollbar{display:none}
-  body #view-collection .bc-quest-map button{scroll-snap-align:start;min-height:58px;padding:10px 12px 11px;column-gap:9px}
-  body #view-collection .bc-quest-map b{font-size:22px}
-  body #view-collection .bc-quest-map span{font-size:11px;letter-spacing:.15em}
-  body #view-collection .bc-quest-map small{font-size:12px}
+  body #view-collection .bc-quest-map button{scroll-snap-align:start;min-height:44px;padding:6px 10px 7px;column-gap:8px}
+  body #view-collection .bc-quest-map b{font-size:19px}
+  body #view-collection .bc-quest-map span{font-size:10.5px;letter-spacing:.14em}
+  body #view-collection .bc-quest-map small{display:none}
   body #constitutiveInquiry .bc-action-legend{grid-template-columns:minmax(0,1fr)}
   body #constitutiveInquiry .bc-action-legend > div{border-right:0;border-bottom:1px dashed rgba(201,204,209,.2);padding:8px 2px}
   body #constitutiveInquiry .bc-action-legend > div:last-child{border-bottom:0}
