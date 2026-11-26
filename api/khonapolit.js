@@ -43,20 +43,19 @@ function requestHasAttachments(req = {}) {
 }
 
 export default function handler(req, res) {
-  const operation = requestedOperation(req);
-  if (operation === 'attachment-upload') return marrowlineAttachmentUploadHandler(req, res);
-  if (operation === 'episode-claim') return episodeClaimHandler(req, res);
-  if (operation === 'episode-consume') return episodeConsumeHandler(req, res);
-  if (operation === 'episode-cancel') return episodeCancelHandler(req, res);
-  if (operation === 'loom-assay-credential') return loomAssayCredentialHandler(req, res);
-  if (operation === 'loom-assay') return loomAssayHandler(req, res);
-  if (operation === 'loom-advisory') return withGeminiGenerationProfile(
+  if (requestedOperation(req) === 'attachment-upload') return marrowlineAttachmentUploadHandler(req, res);
+  if (requestedOperation(req) === 'episode-claim') return episodeClaimHandler(req, res);
+  if (requestedOperation(req) === 'episode-consume') return episodeConsumeHandler(req, res);
+  if (requestedOperation(req) === 'episode-cancel') return episodeCancelHandler(req, res);
+  if (requestedOperation(req) === 'loom-assay-credential') return loomAssayCredentialHandler(req, res);
+  if (requestedOperation(req) === 'loom-assay') return loomAssayHandler(req, res);
+  if (requestedOperation(req) === 'loom-advisory') return withGeminiGenerationProfile(
     GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
     () => loomAdvisoryHandler(req, res)
   );
-  if (operation === 'loom-demo-task') return loomDemoTaskHandler(req, res);
-  if (operation === 'loom-task') return loomTaskHandler(req, res);
-  if (operation === 'gemini-readiness') {
+  if (requestedOperation(req) === 'loom-demo-task') return loomDemoTaskHandler(req, res);
+  if (requestedOperation(req) === 'loom-task') return loomTaskHandler(req, res);
+  if (requestedOperation(req) === 'gemini-readiness') {
     return geminiReadinessHandler(req, res);
   }
   if (requestHasAttachments(req)) {
