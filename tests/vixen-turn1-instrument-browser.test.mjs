@@ -114,9 +114,15 @@ try {
   const aiHit = page.locator('#bcThresholdPortal [data-bc-door="ai"]');
   const prepareReversedThreshold = async () => {
     await humanHit.waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('#podiumDoorHuman').focus();
+    await page.waitForFunction(() => document.getElementById('bcThresholdPortal')?.dataset.activeDoor === 'human', null, { timeout: 10000 });
     const initial = await humanHit.getAttribute('d');
     await page.locator('#podiumDoorAi').focus();
-    await page.waitForFunction(d => document.querySelector('#bcThresholdPortal [data-bc-door="human"]')?.getAttribute('d') !== d, initial, { timeout: 10000 });
+    await page.waitForFunction(d => {
+      const portal = document.getElementById('bcThresholdPortal');
+      const hit = document.querySelector('#bcThresholdPortal [data-bc-door="human"]');
+      return portal?.dataset.activeDoor === 'ai' && hit && hit.getAttribute('d') !== d;
+    }, initial, { timeout: 10000 });
     assert.match(await page.locator('#bcThresholdPortal svg desc').textContent(), /Left bias panel \(HUMAN EXPEDITION\) and right counter-bias panel \(AI \/ LLM BRIEF\)/);
   };
   await prepareReversedThreshold();

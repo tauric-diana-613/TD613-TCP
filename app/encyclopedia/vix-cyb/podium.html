@@ -356,7 +356,8 @@ window.addEventListener('pageshow', syncCartUi);
   const host = document.querySelector('.bc-draft--threshold [data-bc-draft]');
   const doorHuman = document.getElementById('podiumDoorHuman');
   const doorAi = document.getElementById('podiumDoorAi');
-  let activeDoor = '';
+  let activeDoor = document.activeElement === doorAi ? 'ai' : (document.activeElement === doorHuman ? 'human' : '');
+  if (activeDoor && portal) portal.dataset.activeDoor = activeDoor;
   const schedule = mountBiasDraft(host, () => ({
     mode: 'threshold',
     indexA: 6,
