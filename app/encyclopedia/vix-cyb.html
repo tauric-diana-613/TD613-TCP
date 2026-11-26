@@ -1208,7 +1208,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div>
           <p class="eyebrow">02 · 32-WORK CATALOGUE</p>
           <h1>THE WORKS.<span class="title-annotation">32 recorded Works · 53 linked manifestations</span></h1>
-          <p class="intro">Thirty-two canonical works across five research clusters. Read their recorded manuscripts, explore linked manifestations, and follow the documentary methods.</p>
+          <p class="intro">Find an original manuscript by its received filename or its internal title. The archive contains 53 files grouped into 32 catalogue entries; eight pairings remain unresolved. These are original records, not generated proposals.</p>
         </div>
         <div class="view-number" aria-hidden="true">32</div>
       </div>
@@ -1546,9 +1546,10 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="view-heading">
         <div>
           <p class="eyebrow">06 · THE SALON · WHERE THEORIES ARE BUILT FROM SOURCES</p>
-          <h1>The Salon<span class="title-annotation">Set two Works side by side. Ask what neither can say alone.</span></h1>
+          <h1>The Salon<span class="title-annotation">Discover a research question worth pursuing.</span></h1>
+          <p class="intro salon-purpose">Explore ranked research leads, challenge a conjecture, or develop your own question. Read original manuscripts in Works; use Compare for a focused two-source experiment. Proposals are local computations, not verified discoveries or live AI responses.</p>
           <details class="vs-overture-notes">
-            <summary>What happens here</summary>
+            <summary>Current research scope</summary>
             <p class="intro">Works is where you read. The Salon is where you build: compare two recorded Works, pose a falsifiable question, weigh ranked proposals, test the conjectures that try to break them, and carry what survives to the Podium. Every proposal stays unratified; the original manuscripts never change.</p>
             <div class="salon-live-brief" id="salonLiveBrief">Preparing live Salon probe summary…</div>
           </details>
@@ -1560,11 +1561,104 @@ body[data-view="overview"] .reading-back{display:none}
 
       <nav class="bc-quest-map" aria-label="Salon research route">
         <button type="button" data-bc-scroll="vixenSynthesisSalon" data-bc-quest="compare"><b>I</b><span>Compare</span><small>two Works, read in either order</small></button>
-        <button type="button" data-bc-scroll="constitutiveInquiry" data-bc-quest="question"><b>II</b><span>Pose</span><small>a question you could lose</small></button>
+        <button type="button" data-bc-scroll="ciQuestionInput" data-bc-quest="question"><b>II</b><span>Pose</span><small>a question you could lose</small></button>
         <button type="button" data-bc-scroll="ciCandidateGrid" data-bc-quest="ranked"><b>III</b><span>Weigh</span><small>ranked proposals, side by side</small></button>
         <button type="button" data-bc-scroll="ciConjectureGrid" data-bc-quest="dares"><b>IV</b><span>Dare</span><small>conjectures and what breaks them</small></button>
         <button type="button" data-bc-scroll="salonCribAndManifesto" data-bc-quest="manifesto"><b>V</b><span>Carry</span><small>crib, Manifesto, Podium</small></button>
       </nav>
+
+<section class="vixen-inquiry-stage" id="constitutiveInquiry" aria-label="Constitutive Inquiry Observatory">
+      <div class="vixen-inquiry-inner">
+        <div class="ci-head">
+          <div>
+            <p class="ci-kicker">Explore · question · challenge</p>
+            <h2 class="ci-title">Research leads</h2>
+          </div>
+          <div class="badge-row">
+            <span class="tag gold">LOCAL RESEARCH · PROPOSAL ONLY</span>
+            <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
+          </div>
+        </div>
+
+        <div class="ci-card bc-ranked-index" aria-label="Ranked Unified Synthesis Candidates">
+          <h3 class="ci-card-title">
+            <span>Ranked research proposals</span>
+            <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
+          </h3>
+          <p class="bc-index-dek">
+            <strong>Ranked research proposals, not verified discoveries.</strong> Eight declared checks weigh each proposal; a percentage is a rubric fit, <strong>never</strong> a probability of truth. Open any row's ledger to see why it ranked where it did.
+          </p>
+          <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
+          <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
+        </div>
+
+        <div class="ci-cadence-bar" role="region" aria-label="Guided research: observation, purpose, and evidence">
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">NOW · NOTICE</div>
+            <p class="ci-cadence-copy">Dictate your own inquiry question and method—or load one of seven cross-domain conjectures grounded across C1–C5 works.</p>
+          </div>
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">WHY · OPERA AUTONOMY</div>
+            <p class="ci-cadence-copy">Every inquiry is independently authored. The hosting tools supply research assistance without claiming ownership of the work.</p>
+          </div>
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">EXACT · BOUNDARY</div>
+            <p class="ci-cadence-copy">Proposals update the live research question, clock and matrix-stability readings, and a recoverable session history while keeping empirical credit at 0.</p>
+          </div>
+        </div>
+
+        <div class="ci-main-grid ci-studio-grid">
+          <div class="ci-card bc-quest-composer" aria-label="Research Question Composer">
+            <h3 class="ci-card-title">
+              <span>Develop your own question</span>
+              <span>LOCAL · NOTHING IS SENT</span>
+            </h3>
+            <label class="ci-field-label" for="ciQuestionInput">Your question</label>
+            <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
+
+            <label class="ci-field-label" for="ciMethodInput">How you would test it <small>(method)</small></label>
+            <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. compare clock order across two Works · check whether the claim survives a reversed reading" />
+
+            <div class="ci-actions-row bc-quest-actions">
+              <button type="button" class="ci-btn primary" id="ciApplyBtn" title="Applies your question to the live Manifesto, crib and proposal ranking">Preview This Inquiry</button>
+              <button type="button" class="ci-btn" id="ciSynthesizeBtn" title="Re-derives the seven conjectures below at the current clock lag">Synthesize 7 Lenses</button>
+              <label class="bc-lag-control">
+                <span>Clock lag τ</span>
+                <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
+                <span id="ciLagReadout">36</span>
+              </label>
+            </div>
+            <dl class="bc-action-legend">
+              <div><dt>Preview</dt><dd>re-dresses the Manifesto, crib and ranking around your words.</dd></div>
+              <div><dt>Synthesize</dt><dd>re-derives the seven conjectures below at this lag.</dd></div>
+              <div><dt>Clock lag</dt><dd>shifts the synthetic clock offset; rankings and dares recompute live.</dd></div>
+            </dl>
+            <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
+              BASELINE LOADED · Edit above or click any cross-domain conjecture below to project into this session.
+            </p>
+          </div>
+
+          
+        </div>
+
+        <div class="ci-card bc-dares" aria-label="Outside-Perspective Cross-Domain Conjectures">
+          <h3 class="ci-card-title">
+            <span>IV · Dare — seven conjectures, each beside what would break it</span>
+            <span>PROPOSAL ONLY · UNRATIFIED</span>
+          </h3>
+          <div class="ci-filter-bar" id="ciFilterBar" role="group" aria-label="Filter conjectures by corpus cluster">
+            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">ALL CLUSTERS</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C1" aria-pressed="false">C1 · Hypervisors &amp; Viable AI</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C2" aria-pressed="false">C2 · Audio / Mixxx DSP</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C3" aria-pressed="false">C3 · E-Textile / Drone</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C4" aria-pressed="false">C4 · Virtualization</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C5" aria-pressed="false">C5 · Sui-Generis</button>
+          </div>
+          <div class="ci-conjecture-grid" id="ciConjectureGrid"></div>
+        </div>
+      </div>
+        <p class="vix-operator-boundary-note">Proposals stay open to challenge. Continue collaborative research in the <a class="ci-btn" href="./vix-cyb/podium.html">Podium</a>.</p>
+    </section>
 
       <figure class="bc-draft bc-draft--salon-crown" id="bcBiasDraft" aria-labelledby="bcBiasDraftCap">
         <div class="bc-draft-host" data-bc-draft></div>
@@ -1651,98 +1745,7 @@ body[data-view="overview"] .reading-back{display:none}
         <p>The Vixen Synthesis Salon is preparing its historical source catalogue.</p>
       </div>
 
-<section class="vixen-inquiry-stage" id="constitutiveInquiry" aria-label="Constitutive Inquiry Observatory">
-      <div class="vixen-inquiry-inner">
-        <div class="ci-head">
-          <div>
-            <p class="ci-kicker">II · THE QUEST · ORIGINAL WORKS FIRST</p>
-            <h2 class="ci-title">Pose the Question</h2>
-          </div>
-          <div class="badge-row">
-            <span class="tag gold">LOCAL RESEARCH · PROPOSAL ONLY</span>
-            <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
-          </div>
-        </div>
 
-        <div class="ci-cadence-bar" role="region" aria-label="Guided research: observation, purpose, and evidence">
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">NOW · NOTICE</div>
-            <p class="ci-cadence-copy">Dictate your own inquiry question and method—or load one of seven cross-domain conjectures grounded across C1–C5 works.</p>
-          </div>
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">WHY · OPERA AUTONOMY</div>
-            <p class="ci-cadence-copy">Every inquiry is independently authored. The hosting tools supply research assistance without claiming ownership of the work.</p>
-          </div>
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">EXACT · BOUNDARY</div>
-            <p class="ci-cadence-copy">Proposals update the live research question, clock and matrix-stability readings, and a recoverable session history while keeping empirical credit at 0.</p>
-          </div>
-        </div>
-
-        <div class="ci-main-grid ci-studio-grid">
-          <div class="ci-card bc-quest-composer" aria-label="Research Question Composer">
-            <h3 class="ci-card-title">
-              <span>Write the question you are willing to lose</span>
-              <span>LOCAL · NOTHING IS SENT</span>
-            </h3>
-            <label class="ci-field-label" for="ciQuestionInput">Your question</label>
-            <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
-
-            <label class="ci-field-label" for="ciMethodInput">How you would test it <small>(method)</small></label>
-            <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. compare clock order across two Works · check whether the claim survives a reversed reading" />
-
-            <div class="ci-actions-row bc-quest-actions">
-              <button type="button" class="ci-btn primary" id="ciApplyBtn" title="Applies your question to the live Manifesto, crib and proposal ranking">Preview This Inquiry</button>
-              <button type="button" class="ci-btn" id="ciSynthesizeBtn" title="Re-derives the seven conjectures below at the current clock lag">Synthesize 7 Lenses</button>
-              <label class="bc-lag-control">
-                <span>Clock lag τ</span>
-                <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
-                <span id="ciLagReadout">36</span>
-              </label>
-            </div>
-            <dl class="bc-action-legend">
-              <div><dt>Preview</dt><dd>re-dresses the Manifesto, crib and ranking around your words.</dd></div>
-              <div><dt>Synthesize</dt><dd>re-derives the seven conjectures below at this lag.</dd></div>
-              <div><dt>Clock lag</dt><dd>shifts the synthetic clock offset; rankings and dares recompute live.</dd></div>
-            </dl>
-            <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
-              BASELINE LOADED · Edit above or click any cross-domain conjecture below to project into this session.
-            </p>
-          </div>
-
-          
-        </div>
-
-        <div class="ci-card bc-ranked-index" aria-label="Ranked Unified Synthesis Candidates">
-          <h3 class="ci-card-title">
-            <span>III · Weigh — ranked proposals, a comparative index</span>
-            <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
-          </h3>
-          <p class="bc-index-dek">
-            <strong>Ranked research proposals, not verified discoveries.</strong> Eight declared checks weigh each proposal; a percentage is a rubric fit, <strong>never</strong> a probability of truth. Open any row's ledger to see why it ranked where it did.
-          </p>
-          <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
-          <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
-        </div>
-
-        <div class="ci-card bc-dares" aria-label="Outside-Perspective Cross-Domain Conjectures">
-          <h3 class="ci-card-title">
-            <span>IV · Dare — seven conjectures, each beside what would break it</span>
-            <span>PROPOSAL ONLY · UNRATIFIED</span>
-          </h3>
-          <div class="ci-filter-bar" id="ciFilterBar" role="group" aria-label="Filter conjectures by corpus cluster">
-            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">ALL CLUSTERS</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C1" aria-pressed="false">C1 · Hypervisors &amp; Viable AI</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C2" aria-pressed="false">C2 · Audio / Mixxx DSP</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C3" aria-pressed="false">C3 · E-Textile / Drone</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C4" aria-pressed="false">C4 · Virtualization</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C5" aria-pressed="false">C5 · Sui-Generis</button>
-          </div>
-          <div class="ci-conjecture-grid" id="ciConjectureGrid"></div>
-        </div>
-      </div>
-        <p class="vix-operator-boundary-note">Proposals stay open to challenge. Presentation history, restores and machine receipts live in the <a class="ci-btn" href="./vix-cyb/human-podium.html#settings">Human Podium · Settings &amp; Ledger</a>.</p>
-    </section>
 
       <section class="salon-crib-manifesto" id="salonCribAndManifesto" aria-label="Mathematical Crib and Dynamic Synthesis Manifesto">
         <div class="salon-crib-panel" id="salonMathCrib"></div>
@@ -3402,8 +3405,8 @@ body[data-view="overview"] .reading-back{display:none}
           return '<li class="lexicon-item" data-membrane="RESEARCH_OBJECT"><button type="button" data-select-work="' + esc(w.work_id) + '" aria-current="' + current + '">' +
             '<span class="record-num">' + String(w.order_num).padStart(2, '0') + '</span>' +
             '<span style="flex:1;min-width:0">' +
-              '<span class="term-name">' + esc(w.declared_title) + '</span>' +
-              '<span class="work-received-filenames">' + esc(receivedFiles) + '</span>' +
+              '<span class="term-name work-received-filenames">' + esc(receivedFiles || w.declared_title) + '</span>' +
+              '<span class="work-internal-title">' + esc(w.declared_title) + '</span>' +
               '<span class="term-sub">' + esc(projLine) + '</span>' +
             '</span>' +
           '</button></li>';
@@ -6655,16 +6658,21 @@ import {
       button.textContent=active?'CURRENTLY SELECTED ✓':'USE AS NEXT RESEARCH QUESTION';
       button.addEventListener('click',()=>promoteCandidate(candidate.id));
       foot.append(button);
-      card.append(eyebrow,metrics,heading,subtitle,summary,domains,detail,foot);
+      const identity=document.createElement('div');
+      identity.className='ci-proposal-identity';
+      identity.append(eyebrow,heading,subtitle);
+      detail.insertBefore(summary,axes);
+      detail.insertBefore(domains,axes);
+      card.append(identity,metrics,foot,detail);
       return card;
     });
     // Pedagogical framing is part of the evidence interface, not an opaque score.
-    const primer=document.createElement('section');
+    const primer=document.createElement('details');
     primer.className='ci-scoring-primer';
     primer.setAttribute('aria-label','How to read scored research proposals');
-    const kicker=document.createElement('div');
+    const kicker=document.createElement('summary');
     kicker.className='ci-primer-kicker';
-    kicker.textContent='THE RESEARCH SCORE · AN EXPLAINED RUBRIC';
+    kicker.textContent='How proposals are ranked · eight weighted criteria';
     const headline=document.createElement('h3');
     headline.className='ci-primer-title';
     headline.textContent='An instrument for asking better questions—not awarding scientific truth.';
@@ -6683,7 +6691,7 @@ import {
       step.append(strong,body);steps.append(step);
     }
     primer.append(kicker,headline,explanation,steps);
-    grid.replaceChildren(primer,...cards);
+    grid.replaceChildren(...cards,primer);
   }
 
   function recompute(patch) {

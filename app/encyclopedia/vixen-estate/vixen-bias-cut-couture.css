@@ -1069,3 +1069,27 @@ body[data-page="podium"] .vix-podium-help-card h3::before{content:"";display:blo
   body[data-page="podium-entrance"] .podium-door{border:1px solid CanvasText}
   body #constitutiveInquiry .bc-score-rail i{background:CanvasText}
 }
+
+/* Human audition correction: research leads first; compact comparative rows. */
+body #view-collection .salon-purpose{max-width:80ch;font-size:15px;line-height:1.5;margin:6px 0 8px;color:#f4f1ea}
+body #constitutiveInquiry .ci-candidate-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+body #constitutiveInquiry .ci-candidate-card{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(82px,130px) auto;align-items:center;gap:6px 18px!important;padding:10px 14px!important;margin:0!important;min-height:0!important;box-shadow:none!important;border-top:0!important;border-bottom:1px solid var(--bc-hair)!important}
+body #constitutiveInquiry .ci-proposal-identity{min-width:0}
+body #constitutiveInquiry .ci-candidate-card .ci-candidate-eyebrow{font-size:9px!important;line-height:1.2;margin:0 0 4px!important;letter-spacing:.06em!important}
+body #constitutiveInquiry .ci-candidate-card .ci-conj-title{font:500 18px/1.2 var(--font-serif)!important;margin:0 0 3px!important;overflow-wrap:break-word}
+body #constitutiveInquiry .ci-candidate-card .ci-candidate-subtitle{font-size:12px!important;line-height:1.35;margin:0!important}
+body #constitutiveInquiry .ci-candidate-card .ci-candidate-metrics{gap:3px!important;margin:0!important}
+body #constitutiveInquiry .ci-candidate-card .ci-cand-score{font-size:19px!important;line-height:1.1!important}
+body #constitutiveInquiry .ci-candidate-card .ci-candidate-metrics>span:last-child{font-size:8px!important;line-height:1.2!important}
+body #constitutiveInquiry .ci-candidate-card .ci-actions-row{margin:0!important;display:flex;align-items:center}
+body #constitutiveInquiry .ci-candidate-card .ci-btn{font-size:10px!important;min-height:32px!important;padding:6px 9px!important;white-space:normal}
+body #constitutiveInquiry .ci-candidate-card .ci-candidate-explanation{grid-column:1/-1;margin:0!important;padding:4px 0!important;min-height:0!important;background:transparent!important}
+body #constitutiveInquiry .ci-candidate-card .ci-candidate-explanation>summary{font-size:10px!important;line-height:1.3;cursor:pointer}
+body #constitutiveInquiry .ci-scoring-primer{grid-column:1/-1;padding:8px 12px!important;margin:5px 0!important;min-height:0!important}
+body #constitutiveInquiry .ci-scoring-primer>summary{cursor:pointer}
+body #constitutiveInquiry .ci-candidate-key{margin:4px 0!important}
+body #constitutiveInquiry .bc-index-dek{margin:4px 0 8px!important}
+body #view-works .work-internal-title{display:block;color:var(--bc-chrome-dim);font:400 12px/1.35 var(--font-serif);margin:2px 0;overflow-wrap:anywhere}
+body #view-works .term-name.work-received-filenames{font:600 13px/1.3 var(--font-sans)!important;overflow-wrap:anywhere;margin:0!important}
+body #view-works .lexicon-item button{padding-block:8px!important;min-height:0!important}
+@media (max-width:680px){body #constitutiveInquiry .ci-candidate-card{grid-template-columns:minmax(0,1fr) 76px;gap:5px 8px!important;padding:9px!important}body #constitutiveInquiry .ci-candidate-card .ci-actions-row{grid-column:1/-1}body #constitutiveInquiry .ci-candidate-card .ci-conj-title{font-size:16px!important}body #view-works .term-name.work-received-filenames{font-size:12px!important}}

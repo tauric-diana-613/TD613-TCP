@@ -277,11 +277,9 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   host.dataset.couture=folded?'folded-chrome':'legacy';
   const head=mk('header','vs-head');
   const eyebrow=mk('div','vs-eyebrow','06 · VIXEN SYNTHESIS SALON · COUTURE LABORATORY');
-  const title=mk('h2','vs-title','The theorem');
-  title.append(mk('em','vs-title-italics',' never'));
-  title.append(document.createTextNode(' finished dressing.'));
+  const title=mk('h2','vs-title','Compare two original Works');
   const description=paragraph(
-   'Collect evidence like a fox; compose hypotheses like an opera. Every claim changes what the next question must ask. No source is sold, merged, or made to testify beyond its recorded boundary.','vs-intro');
+   'Select two original manuscripts, then reverse their reading order to explore a different framing. This is a focused comparison, not the complete ranked synthesis.','vs-intro');
   // Optical costume derived from Dome D3, phi, Loom carriers and [111] projection.
   // Literal costume emojis are absent: visual rhetoric now lives in silhouette.
   const veil=persistentVeil;
@@ -318,7 +316,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    append(side,
     paragraph((i===0?'I':'II')+' · ORIGINAL RECORDED WORK · SOURCE-TITLE','vs-source-tag'),
     select('Choose Work '+(i+1),corpus.works.map((x,j)=>({
-     id:x.work_id,label:String(j+1).padStart(2,'0')+' · '+titleText(x)+' ['+(x.linked_sources[0]?.original_filename||x.work_id)+']'
+     id:x.work_id,label:(x.linked_sources||[]).map(s=>s.original_filename).filter(Boolean).join(' / ')+' — '+titleText(x)
     })),w.work_id,v=>chooseWork(i,v)),
     mk('h3','vs-work-title',titleText(w)),
     paragraph('Received filename: '+(src?.original_filename||w.work_id)+' ('+(w.linked_sources.length)+' manifestation'+(w.linked_sources.length===1?'':'s')+' · '+(isPdfSrc?'extracted PDF text derivative; binary .pdf unavailable':'authentic Markdown')+')','vs-received-filename'),
@@ -327,7 +325,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    );
    const manuscript=mk('div','vs-manuscript-body');
    manuscript.textContent='Expand to read the complete recorded manuscript.';
-   const manuscriptReader=details('Read complete Experiment-A manuscript',manuscript,'vs-manuscript');
+   const manuscriptReader=details('Read original manuscript',manuscript,'vs-manuscript');
    manuscriptReader.dataset.sourceId=src.source_file_id;
    manuscriptReader.addEventListener('toggle',async()=>{
     if(!manuscriptReader.open||manuscriptReader.dataset.loaded==='true'||manuscriptReader.dataset.loaded==='loading')return;
@@ -557,7 +555,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    mk('span','vixen-hud-pill',`CARRIERS · ${carrierCounts.total} (${carrierCounts.near} NEAR · ${carrierCounts.mid} MID · ${carrierCounts.far} FAR)`),
    mk('span','vixen-hud-pill',`NYQUIST α_N ≤ 0.45 · ${vernier.active_clock.code} (${vernier.active_clock.custodyName})`),
    mk('span','vixen-hud-pill',`ROUTE PARITY · ${state.route==='A_B'?'I ▷ II (+)':'II ▷ I (−)'} · CREDIT = 0`),
-   mk('span','vixen-hud-pill','OPERAHOUSE ≠ OPERA ≠ PERFORMER')
+   mk('span','vixen-hud-pill','Original manuscripts remain separate')
   ];
   append(apertureHud,...hudCells);
   updateClockDOMInPlace();

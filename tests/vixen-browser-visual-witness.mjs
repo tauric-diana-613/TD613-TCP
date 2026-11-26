@@ -1357,7 +1357,8 @@ try {
 
     const overture=page.locator('#view-collection .vs-overture-notes');
     assert.equal(await overture.count(),1,'The original research briefing must remain available');
-    assert.equal(await overture.getAttribute('open'),null,'The duplicate introduction begins folded');
+    assert.equal(await overture.getAttribute('open'),null,'Supplementary scope starts folded');
+    assert.equal(await page.locator('#view-collection .salon-purpose').isVisible(),true,'Primary orientation must never be concealed');
     await overture.locator('summary').click();
     assert.equal(await overture.locator('p.intro').isVisible(),true,'The full historical brief remains available on request');
     await overture.locator('summary').click();
@@ -1387,7 +1388,7 @@ try {
     });
     const salonGeom=await page.evaluate(()=>{
       const root=document.querySelector('#vixenSynthesisSalon');
-      const original=root.querySelector('.vs-source-card');
+      const original=document.querySelector('#ciCandidateGrid .ci-candidate-card');
       const header=document.querySelector('.site-header').getBoundingClientRect();
       const r=original.getBoundingClientRect();
       return {top:r.top,headerBottom:header.bottom,
@@ -1396,7 +1397,7 @@ try {
     });
     assert(salonGeom.documentWidth <= width+1,'Salon horizontal overflow at '+width);
     assert(salonGeom.top<height-55,
-      'Original Vixen source must be visible in first Salon viewport: width='+width+
+      'A ranked research proposal must be visible in the first Salon viewport: width='+width+
       ', top='+salonGeom.top+', stageTop='+salonGeom.stageTop+
       ', scrollY='+salonGeom.scrollY+', viewportHeight='+height);
     // Class A/B rendered Zero Purple Law + WCAG AA readability across bilateral cards
