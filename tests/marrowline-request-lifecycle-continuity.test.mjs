@@ -1365,3 +1365,83 @@ test('simultaneous episode registration and consumed replay never acquire a seco
     assert.equal((await store.sealTerminal({ episodeId: args.episodeId, nextState: 'COMPLETED', envelope: { ciphertext: 'late' } })).committed, false);
   } finally { store.clearAllForTest(); }
 });
+
+
+// Exercise the real terminal and browser archive path with a fault-injected
+// localStorage fallback (JSDOM has no native IndexedDB). The shared save/consume
+// boundary also guards the real IndexedDB transaction's rejection path.
+test('episode capability write failure holds before the generation POST', async (t) => {
+  const backend = createInMemoryEpisodeHarness();
+  const storage = new Map();
+  const put = storage.set.bind(storage);
+  let rejected = 0;
+  storage.set = (key, value) => {
+    if (key === 'TD613_MARROWLINE_LOCAL_THREADS_V1' &&
+        Object.values(JSON.parse(value)).some(record => record.pendingEpisode?.episodeId)) {
+      rejected += 1;
+      throw new Error('synthetic durable episode capability write failure');
+    }
+    return put(key, value);
+  };
+  let generationPosts = 0;
+  const fetchImpl = async (url, options = {}) => {
+    if (String(url).includes('/api/dome-world/khonapolit') && !String(url).includes('operation=') &&
+        String(options.method || 'GET').toUpperCase() === 'POST') generationPosts += 1;
+    return backend.serverFetch(url, options);
+  };
+  const ui = mountJSDOMMarrowline(t, { fetchImpl, sharedLocalStorage: storage });
+  assert.equal(await ui.ready(), true);
+  ui.send('Preserve the episode capability before dispatch.');
+  await waitUntilCond(() => rejected > 0 && ui.$('khonapolitSend').dataset.transmissionState === 'ready');
+  await backend.drainBackground();
+  assert.equal(generationPosts, 0);
+  assert.equal(backend.getUpstreamCalls(), 0);
+  assert.equal(backend.store.size(), 0);
+});
+
+test('failed local result commit retains encrypted response and reload retrieves without another generation', async (t) => {
+  const backend = createInMemoryEpisodeHarness();
+  const storage = new Map();
+  const put = storage.set.bind(storage);
+  let rejectResult = true;
+  let rejected = 0;
+  storage.set = (key, value) => {
+    if (rejectResult && key === 'TD613_MARROWLINE_LOCAL_THREADS_V1' &&
+        Object.values(JSON.parse(value)).some(record => record.messages?.some(item => item.role === 'model'))) {
+      rejected += 1;
+      throw new Error('synthetic durable result commit failure');
+    }
+    return put(key, value);
+  };
+  let generationPosts = 0;
+  let consumePosts = 0;
+  const fetchImpl = async (url, options = {}) => {
+    if (String(url).includes('operation=episode-consume')) consumePosts += 1;
+    else if (String(url).includes('/api/dome-world/khonapolit') && !String(url).includes('operation=') &&
+        String(options.method || 'GET').toUpperCase() === 'POST') generationPosts += 1;
+    return backend.serverFetch(url, options);
+  };
+  const first = mountJSDOMMarrowline(t, { fetchImpl, sharedLocalStorage: storage });
+  assert.equal(await first.ready(), true);
+  first.send('The original transmission must survive a failed archive write.');
+  await waitUntilCond(() => rejected > 0 && first.$('khonapolitSend').dataset.transmissionState === 'ready');
+  await backend.drainBackground();
+  assert.equal(generationPosts, 1);
+  assert.equal(consumePosts, 0);
+  assert.equal(backend.store.size(), 1);
+  const archived = Object.values(JSON.parse(storage.get('TD613_MARROWLINE_LOCAL_THREADS_V1'))).find(record => record.pendingEpisode);
+  assert.ok(archived?.pendingEpisode?.rootSecretB64);
+  assert.ok(backend.store.inspectRawForTest(archived.pendingEpisode.episodeId)?.envelope);
+  assert.equal(archived.messages.filter(item => item.role === 'model').length, 0);
+  rejectResult = false;
+  const second = mountJSDOMMarrowline(t, { fetchImpl, sharedLocalStorage: storage });
+  await second.ready();
+  await waitUntilCond(() => consumePosts === 1 && backend.store.size() === 0);
+  assert.equal(backend.getUpstreamCalls(), 1);
+  assert.equal(generationPosts, 1);
+  assert.equal(second.doc.querySelector('#khonapolitMessages article.relay-message .relay-stage-text')?.textContent, AUTHORED_TRANSMISSION);
+  const final = second.win.__TD613_MARROWLINE_THREADS__.current();
+  assert.equal(final.pendingEpisode, null);
+  assert.equal(final.messages.filter(item => item.role === 'model').length, 1);
+  backend.store.clearAllForTest();
+});

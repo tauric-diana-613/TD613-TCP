@@ -987,7 +987,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const status = byId(doc, 'khonapolitTerminalStatus');
     const submit = byId(doc, 'khonapolitSend');
     const prompt = byId(doc, 'khonapolitPrompt');
-    const message = safe(state.pendingTask || state.messages.at(-1)?.text);
+    const message = safe(state.pendingTask || [...state.messages].reverse().find(item => item.role === 'user')?.text);
     const reattachController = new AbortController();
     requestInFlight = true;
     activeRequestCancelRequested = false;
@@ -1049,9 +1049,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
           if (prompt) { prompt.value = message; prompt.style.height = ''; }
           if (!await commitEpisodeBeforeConsume(episodeRecord, claimResult.claimAuthToken)) {
-          holdEpisodeSaveFailure();
-          return;
-        }
+            holdEpisodeSaveFailure();
+            return;
+          }
           syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state);
           if (status) { status.dataset.progressStage = 'held'; status.dataset.outcomeState = 'failed'; }
           setPedagogueStatus(status, 'held', 'TASK PRESERVED · retry when ready',
