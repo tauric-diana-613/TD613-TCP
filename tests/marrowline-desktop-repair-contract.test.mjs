@@ -429,10 +429,13 @@ test('honest pending heartbeats and actual return events share a continuous vesi
     ['Listening at the shoreline…','The shoreline keeps watch…','The Red Deer holds the shoreline…']);
 });
 
-test('background recovery retains one preserved-task restoration gesture without automatic duplicate submission', () => {
-  assert.match(terminalJs, /keepalive: backgroundKeepaliveEligible/);
+test('background recovery uses framed heartbeat streaming and read-only episode reattachment without automatic duplicate submission', () => {
+  assert.match(terminalJs, /keepalive:\s*false/);
+  assert.match(terminalJs, /pollMarrowlineEpisodeClaim/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('pagehide', observePageHide\)/);
   assert.match(terminalJs, /root\.removeEventListener\?\.\('pagehide', observePageHide\)/);
+  assert.match(terminalJs, /root\.addEventListener\?\.\('blur', observeWindowBlur\)/);
+  assert.match(terminalJs, /root\.removeEventListener\?\.\('blur', observeWindowBlur\)/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('pageshow', resumeWhenVisible\)/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('online', resumeWhenVisible\)/);
   assert.match(terminalJs, /backgroundResumeSpentTask = message/);

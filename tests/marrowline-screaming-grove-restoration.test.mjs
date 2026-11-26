@@ -1824,7 +1824,9 @@ test('RP-06 & RP-07: classifyMarrowlineClientFailure separates background discon
     await waitUntil(() => doc1.getElementById('khonapolitSend').dataset.transmissionState === 'ready'
       && doc1.getElementById('khonapolitTerminalStatus').dataset.phase === 'held');
     await flushDom();
-    assert.equal(postOpts1[0].keepalive, true);
+    assert.equal(postOpts1[0].keepalive, false);
+    assert.ok(postOpts1[0].headers['X-TD613-Episode-Id']);
+    assert.equal(postOpts1[0].headers['X-TD613-Transport-Stream'], 'heartbeat-v1');
     assert.equal(postCalls1.length, 1, 'RP-06: must NOT dispatch an automatic second paid provider request on background return');
     const fail1 = win1.__TD613_KHONAPOLIT_LAST_FAILURE__;
     assert.equal(fail1.backgroundInterrupted, true);
