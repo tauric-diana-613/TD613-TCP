@@ -649,3 +649,53 @@
  min-height:36px;padding:6px 14px;font:700 11px/1.2 system-ui,sans-serif;
 }
 #vixenElectricFoundry .ef-composer-restore[hidden]{display:none!important}
+
+/* Turn IV · Live Cohesive Laboratory Stage: Canvas + Regime Presets + 4 Variable Dials + Consequence Readout */
+#vixenElectricFoundry .ef-header{padding:14px clamp(18px,2.8vw,36px) 14px}
+#vixenElectricFoundry .ef-heading{font-size:clamp(28px,3.4vw,52px);margin:0 0 6px}
+#vixenElectricFoundry .ef-hero-tab{min-height:56px;padding:9px 14px}
+#vixenElectricFoundry .ef-pane{padding:14px clamp(18px,2.8vw,36px) 14px;column-gap:26px}
+#vixenElectricFoundry .ef-lab-title{font-size:clamp(22px,2.6vw,38px);margin:8px 0 4px}
+#vixenElectricFoundry .ef-instrument-stage{position:relative;z-index:1;background:#0e1318;border-bottom:2px solid #f5d8ba}
+#vixenElectricFoundry .ef-eye{min-height:390px;border-bottom:1px solid rgba(245,216,186,.45)}
+#vixenElectricFoundry .ef-stage,#vixenElectricFoundry .ef-canvas,#vixenElectricFoundry .ef-notation{min-height:390px}
+#vixenElectricFoundry .ef-readout{min-height:390px;max-height:460px}
+#vixenElectricFoundry .ef-dial-cabinet{background:#12171d;border-top:1px solid rgba(255,242,169,.32)}
+#vixenElectricFoundry .ef-dial-cabinet > summary{
+ list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;
+ padding:9px clamp(16px,2.6vw,34px);background:linear-gradient(90deg,#1a2128,#12171d);
+ color:#FFF2A9;font:700 10px/1.4 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
+ border-bottom:1px solid rgba(245,216,186,.24);
+}
+#vixenElectricFoundry .ef-dial-cabinet > summary::-webkit-details-marker{display:none}
+#vixenElectricFoundry .ef-dial-cabinet > summary::after{content:"▾ LIVE BENCH";color:#f5d8ba;font-size:9.5px}
+#vixenElectricFoundry .ef-dial-cabinet:not([open]) > summary::after{content:"▸ EXPAND DIALS"}
+#vixenElectricFoundry .ef-preset-bar{
+ display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+ padding:10px clamp(16px,2.6vw,34px) 8px;background:#0f1419;border-bottom:1px dashed rgba(245,216,186,.24);
+}
+#vixenElectricFoundry .ef-preset-kicker{
+ color:#f5d8ba;font:700 9.5px/1.3 ui-monospace,monospace;letter-spacing:.12em;margin-right:4px;
+}
+#vixenElectricFoundry .ef-preset-btn{
+ cursor:pointer;min-height:32px;padding:6px 12px;background:#182027;color:#F6F4F0;
+ border:1px solid rgba(255,242,169,.48);font:600 10.5px/1.25 ui-monospace,monospace;letter-spacing:.03em;
+ transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+#vixenElectricFoundry .ef-preset-btn:hover,#vixenElectricFoundry .ef-preset-btn.is-active{
+ background:#FFF2A9;color:#11161b;border-color:#FFF2A9;font-weight:700;
+}
+#vixenElectricFoundry .ef-controls{
+ padding:12px clamp(16px,2.6vw,34px) 14px;gap:10px 16px;background:#141a20;border-bottom:1px solid rgba(245,216,186,.26);
+}
+#vixenElectricFoundry .ef-dial-label{margin-bottom:5px;font-size:10px}
+#vixenElectricFoundry .ef-dial input{height:24px}
+#vixenElectricFoundry .ef-live-consequence{
+ margin:0;padding:10px clamp(16px,2.6vw,34px);background:#0c1116;color:#F6F4F0;
+ border-left:3px solid #FFF2A9;font:500 11.5px/1.5 ui-monospace,monospace;letter-spacing:.02em;
+}
+@media(max-width:740px){
+ #vixenElectricFoundry .ef-eye,#vixenElectricFoundry .ef-stage,#vixenElectricFoundry .ef-canvas,#vixenElectricFoundry .ef-notation{min-height:310px}
+ #vixenElectricFoundry .ef-preset-bar{padding:9px 14px}
+ #vixenElectricFoundry .ef-live-consequence{padding:9px 14px;font-size:10.5px}
+}

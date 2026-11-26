@@ -215,7 +215,13 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity,lastBoxCacheMs=-Infinity;
  const width=()=>Math.max(1,win.innerWidth),height=()=>Math.max(1,win.innerHeight);
  const view=()=>doc.body.dataset.view||'overview';
- const stageOwned=()=>['collection','observatory'].includes(view());
+ const salonStageActive=()=>{
+  const c=doc.querySelector('#vixenSynthesisSalon canvas');
+  if(!c)return false;
+  const r=c.getBoundingClientRect();
+  return r.width>=2&&r.height>=2;
+ };
+ const stageOwned=()=>view()==='observatory'||(view()==='collection'&&salonStageActive());
  const outsideOpera=()=>doc.body.dataset.activeResearchStage==='OPERAHOUSE';
  const paused=()=>{
   const btn=doc.getElementById('motionBtn')||motion;
@@ -347,9 +353,11 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   lastOuterScrollPaint=now;
   onLayout();
  };
+ const onToggle=e=>{if(e?.target?.id==='salonSourceComparison')changed();};
  win.addEventListener('pointermove',onPointer,{passive:true});
  win.addEventListener('resize',onLayout,{passive:true});
  win.addEventListener('scroll',onOuterScroll,{passive:true,capture:true});
+ doc.addEventListener('toggle',onToggle,true);
  doc.addEventListener('visibilitychange',changed);doc.addEventListener('vixen:motionchange',changed);
  win.addEventListener('vixen:motionchange',changed);mq.addEventListener('change',changed);
  schedule();
@@ -376,6 +384,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
     if(!force&&now-lastObservatoryPaint<meshFrameIntervalMs(width())-1)return last;
     lastObservatoryPaint=now;
    }
+   if(raf)cancel();
    if(force)readExclusions(true);
    hostFrame={time:phase,sourceIds,scene,stageRect,held,view:route,
     opticalField:normalizeComposerVisualField(opticalField)};
@@ -383,7 +392,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   },
   dispose(){disposed=true;cancel();if(layoutRaf)win.cancelAnimationFrame(layoutRaf);layoutRaf=0;mutation.disconnect();canvas.remove();
    win.removeEventListener('pointermove',onPointer);win.removeEventListener('resize',onLayout);
-   win.removeEventListener('scroll',onOuterScroll,true);doc.removeEventListener('visibilitychange',changed);
+   win.removeEventListener('scroll',onOuterScroll,true);doc.removeEventListener('toggle',onToggle,true);doc.removeEventListener('visibilitychange',changed);
    doc.removeEventListener('vixen:motionchange',changed);win.removeEventListener('vixen:motionchange',changed);
    mq.removeEventListener('change',changed);}
  });

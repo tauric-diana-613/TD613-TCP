@@ -2,7 +2,8 @@
  * VIXEN / ELECTRIC FOUNDRY · complete human-facing Observatory.
  *
  * Six source-linked research inquiries are art-directed here. Optical
- * stage machinery remains distinct from the scholarly source Works.
+ * stage machinery remains distinct from the scholarly source Works
+ * (OPERAHOUSE ≠ OPERA ≠ PERFORMER).
  * 22 canonical Vixen formula folios + six prospective giveback tracks remain
  * available to inspect as proposals, NOT twenty-eight equally polished labs.
  * Loom, Dome-Art, Aperture and Couture supply optical engines only.
@@ -289,10 +290,13 @@ export async function mountVixenElectricFoundry({
  const pane=node('div','ef-pane');
  const toolbar=node('div','ef-toolbar');
  const controls=node('div','ef-controls');
+ const liveConsequence=node('div','ef-live-consequence');
+ liveConsequence.setAttribute('aria-live','polite');
  const dialCabinet=node('details','ef-dial-cabinet');
- const dialInvitation=node('summary','ef-dial-invitation','IV · THE INSTRUMENTS · OPEN FOUR MEASURABLE CONTROLS');
+ dialCabinet.open=true;
+ const dialInvitation=node('summary','ef-dial-invitation','LIVE MATHEMATICAL VARIABLES · STEER PARAMETERS & REGIMES');
  dialInvitation.setAttribute('aria-label','Open four controls for the synthetic Vixen mathematical model');
- add(dialCabinet,dialInvitation,controls);
+ add(dialCabinet,dialInvitation,controls,liveConsequence);
  const evidence=node('div','ef-evidence');
  const gallery=node('div','ef-gallery');
  const score=node('div','ef-score');
@@ -373,13 +377,45 @@ export async function mountVixenElectricFoundry({
   node('span','vixen-hud-pill','39 CARRIERS (6 NEAR · 13 MID · 20 FAR)'),
   node('span','vixen-hud-pill','MONOTONIC CUSTODY · SIM PHASE RESETTABLE'),
   node('span','vixen-hud-pill','PROBE (0.00, 0.00)'),
-  node('span','vixen-hud-pill','OPERAHOUSE ≠ OPERA ≠ PERFORMER')
+  node('span','vixen-hud-pill','MODEL SIMULATION · SOURCES UNMODIFIED')
  ];
  add(apertureHud,...hudPills);
+ function describeConsequence(cur,p){
+  const m=state.model,metrics=Array.isArray(p?.metrics)?p.metrics:[];
+  const findM=k=>metrics.find(x=>x.name===k)?.value;
+  if(cur.id==='LAB_TCC-01'){
+   const guarded=m.witness>.5&&m.voltage>.3;
+   return `LIVE CONSEQUENCE · Semantic gain k_S=${pct(m.gain)}% cannot substitute for external witness w_τ=${pct(m.witness)}% (semantic_alignment_entails_witness = false). Status: ${guarded?'GUARDED IN MODEL — witness fresh enough to gate actuation':'ACTUATION HELD — witness too stale or impulse below threshold'}.`;
+  }
+  if(cur.id==='LAB_TCC-04'){
+   const clocks=findM('five_distinct_clocks');
+   const seq=Array.isArray(clocks)?clocks.map(c=>`${c.id}:${c.tick}t`).join(' · '):'5 non-commensurable cadences';
+   return `LIVE CONSEQUENCE · At gain=${pct(m.gain)}%, the five clocks advance at non-interchangeable rates (${seq}). Equal slider positions never establish one shared physical timebase.`;
+  }
+  if(cur.id==='LAB_TCC-05'){
+   const preempts=findM('raw_preempts_0_65');
+   const alpha=(0.05+0.9*m.gain).toFixed(2);
+   return `LIVE CONSEQUENCE · Impulse V=${pct(m.voltage)}% vs 65% algedonic hazard threshold (EMA α=${alpha}): ${preempts?'RAW SPIKE PREEMPTS THRESHOLD while EMA smoothing lags behind — why emergency channels bypass slow averages':'Below 65% hazard trigger — raise Impulse voltage above 66% and lower Constitutive gain to watch EMA lag hide a spike'}.`;
+  }
+  if(cur.id==='LAB_TCC-06'){
+   const proj=findM('coordinate_projection');
+   const nullE=proj?.nullspace_energy!==undefined?Number(proj.nullspace_energy).toFixed(3):'live';
+   return `LIVE CONSEQUENCE · Vector [${pct(m.gain)}%, ${pct(m.witness)}%, ${pct(m.voltage)}%] projects orthogonally onto P_⊥ while common-mode glare hides in ker P (nullspace energy = ${nullE}; constitutive_coupling_demonstrated = false).`;
+  }
+  if(cur.id==='LAB_TCC-03'){
+   return `LIVE CONSEQUENCE · Recursive self-consistency at gain k_S=${pct(m.gain)}% stabilizes internal residuals while independent_witness_content remains null — why an isolated loop can converge on a confident false setpoint.`;
+  }
+  if(cur.id==='LAB_TCC-07'){
+   return `LIVE CONSEQUENCE · Cross-work promotion ladder holds L3_FALSIFIABLE = UNEXECUTED; vocabulary overlap stops at L0 while typed operator correspondence (L1/L2) preserves domain contradictions.`;
+  }
+  const sv=findM('singular_values');
+  if(sv)return `LIVE CONSEQUENCE · Operator rank=${sv.rank}, condition κ=${sv.condition_number??'N/A'} (${sv.classification||'bounded'}). Drag sliders or click the field to move probe (${state.pointer.x.toFixed(2)}, ${state.pointer.y.toFixed(2)}).`;
+  return `LIVE CONSEQUENCE · Steer any of the four variables above or click inside the optical field to pin probe (${state.pointer.x.toFixed(2)}, ${state.pointer.y.toFixed(2)}); live scalar=${Number(p?.visual_scalar||0).toFixed(3)}.`;
+ }
  function updateFoundryHud(){
   const cur=display(),running=state.playing&&!globalMotionHeld(document);
    const subjectId=cur.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?cur.id.replace(/^LAB_/,''):cur.folio_id;
-  const p=state.probe;
+  const p=state.probe||probe();
   const svMetric=p?.metrics?.find?.(m=>m.name==='singular_values')?.value;
   hudPills[0].textContent=svMetric
    ?`APERTURE · rank=${svMetric.rank} · κ=${svMetric.condition_number??'N/A'}`
@@ -387,7 +423,8 @@ export async function mountVixenElectricFoundry({
   hudPills[1].textContent=`CARRIERS · 39 (${CARRIERS.filter(c=>c.near).length}/${CARRIERS.filter(c=>c.mid).length}/${CARRIERS.filter(c=>c.far).length})`;
   hudPills[2].textContent=`CLOCK ${state.time.toFixed(2)}s · PHASE ${state.simPhase.toFixed(2)}s · ${state.renderingBackend}`;
   hudPills[3].textContent=`PROBE (${state.pointer.x.toFixed(2)}, ${state.pointer.y.toFixed(2)})${state.locked?' PINNED':''}`;
-  hudPills[4].textContent='OPERAHOUSE ≠ OPERA ≠ PERFORMER';
+  hudPills[4].textContent='MODEL SIMULATION · SOURCES UNMODIFIED';
+  liveConsequence.textContent=describeConsequence(cur,p);
   if(state.held||!running){
    holdBanner.hidden=false;
    holdBanner.textContent=state.held
@@ -429,7 +466,7 @@ export async function mountVixenElectricFoundry({
  ariaScore.setAttribute('aria-label','Choose one of six source-linked Vixen research inquiry models');
  add(ariaScore,railHeading,heroRail);
  const instrumentStage=node('div','ef-instrument-stage');
- add(instrumentStage,toolbar,eye,composerReview,apertureHud,holdBanner);
+ add(instrumentStage,toolbar,eye,dialCabinet,composerReview,apertureHud,holdBanner);
  add(proscenium,ariaScore,instrumentStage);
  function renderRail(){
   heroRail.replaceChildren();
@@ -482,13 +519,51 @@ export async function mountVixenElectricFoundry({
    ' · NO EMPIRICAL CLAIM';
   updateFoundryHud();
  }
+ const LAB_PRESETS=Object.freeze({
+  'LAB_TCC-01':[
+   ['Guarded Equilibrium',{gain:.72,witness:.88,voltage:.83,twist:.45}],
+   ['Stale Witness Hold',{gain:.94,witness:.18,voltage:.85,twist:.45}],
+   ['Zero-Impulse Idle',{gain:.55,witness:.82,voltage:.12,twist:.30}]
+  ],
+  'LAB_TCC-04':[
+   ['Low Drift (18t)',{gain:.15,witness:.80,voltage:.70,twist:.30}],
+   ['Vernier Crossing (66t)',{gain:.55,witness:.80,voltage:.78,twist:.52}],
+   ['Extreme Shear (114t)',{gain:.95,witness:.80,voltage:.88,twist:.76}]
+  ],
+  'LAB_TCC-05':[
+   ['Smoothed Masked Spike',{gain:.12,witness:.75,voltage:.92,twist:.40}],
+   ['Sub-Threshold Calm',{gain:.60,witness:.85,voltage:.42,twist:.35}],
+   ['Fast Algedonic Track',{gain:.92,witness:.88,voltage:.95,twist:.62}]
+  ],
+  'LAB_TCC-06':[
+   ['Pure [111] Glare (Nullspace)',{gain:.80,witness:.80,voltage:.80,twist:.50}],
+   ['Orthogonal Cleave',{gain:.95,witness:.18,voltage:.52,twist:.72}],
+   ['Twisted Shear Plane',{gain:.32,witness:.90,voltage:.76,twist:.92}]
+  ],
+  DEFAULT:[
+   ['Balanced Probe',{gain:.72,witness:.88,voltage:.83,twist:.45}],
+   ['High-Gain Stress',{gain:.95,witness:.24,voltage:.92,twist:.78}],
+   ['Low-Coupling Null',{gain:.14,witness:.86,voltage:.28,twist:.18}]
+  ]
+ });
  function renderDials(){
   controls.replaceChildren();
-  add(controls,label('THE FOUR CONTROL SURFACES · NOT FOUR RESEARCH MODELS'),
-   rangeControl('Constitutive gain','gain',state,()=>pulse('DIAL')),
-   rangeControl('Witness freshness','witness',state,()=>pulse('DIAL')),
-   rangeControl('Impulse voltage','voltage',state,()=>pulse('DIAL')),
-   rangeControl('Refractive twist','twist',state,()=>pulse('DIAL')));
+  const presets=LAB_PRESETS[state.labId]||LAB_PRESETS.DEFAULT;
+  const presetBar=node('div','ef-preset-bar');
+  add(presetBar,node('span','ef-preset-kicker','TRY REGIME:'));
+  for(const [pName,vals] of presets){
+   const pb=BTN(pName,()=>{
+    Object.assign(state.model,vals);
+    log('REGIME_PRESET_APPLIED',{preset:pName,lab:state.labId,model:{...state.model}});
+    renderDials();pulse('DIAL');
+   },'ef-preset-btn');
+   presetBar.append(pb);
+  }
+  add(controls,presetBar,
+   rangeControl('Constitutive gain (k_S)','gain',state,()=>pulse('DIAL')),
+   rangeControl('Witness freshness (w_τ)','witness',state,()=>pulse('DIAL')),
+   rangeControl('Impulse voltage (V_λ)','voltage',state,()=>pulse('DIAL')),
+   rangeControl('Refractive twist (θ)','twist',state,()=>pulse('DIAL')));
  }
  function renderScore(){
   score.replaceChildren();
@@ -546,10 +621,16 @@ export async function mountVixenElectricFoundry({
    }
   pane.append(equation);
   const labrefs=node('div','ef-linked-sources');
-  add(labrefs,label('DECLARED WORK AND PROTOCOL COORDINATES'),
-   claim('Linked Works: '+(current.work_refs.length?current.work_refs.join(' · '):'No direct Work correspondence declared in this folio')),
-   claim('Documentary methods: '+(current.instrument_refs.length?current.instrument_refs.join(' · '):'No direct method declared')),
-   claim('Authority: '+current.ceiling));
+  const humanWorkLabels=current.work_refs.map(wid=>{
+   const w=source.works.find(x=>x.work_id===wid);
+   if(!w)return wid;
+   const fn=w.linked_sources?.[0]?.original_filename||'';
+   return (fn?fn+' — ':'')+(w.display_title||w.declared_title||wid);
+  });
+  add(labrefs,label('LINKED SOURCE SCHOLARSHIP & METHODS'),
+   claim('Source Works: '+(humanWorkLabels.length?humanWorkLabels.join(' · '):'General programme model — no single Work claimed')),
+   claim('Documentary methods: '+(current.instrument_refs.length?current.instrument_refs.map(m=>m.replaceAll('_',' ')).join(' · '):'No direct method declared')),
+   claim('Boundary: '+current.ceiling.replaceAll('_',' ')));
   pane.append(labrefs);
   // Candidate 3's "INVESTIGATE SOURCE" restored as actual native routes
   // into the original Vixen Work/Method registry. No synthetic relationship
@@ -617,7 +698,7 @@ export async function mountVixenElectricFoundry({
  host.dataset.stageRole='VIXEN_OPERA';
  // The live computed field is the centerpiece, not a reward after a wall
  // of metadata. Source folio and provenance remain visible in its inspector.
- add(host,heading,proscenium,pane,dialCabinet,score,evidence,gallery);
+ add(host,heading,proscenium,pane,score,evidence,gallery);
  renderScore();renderEvidence();renderHero();renderCatalogue();
  stage.tabIndex=0;
  stage.setAttribute('aria-label','Calculated Vixen optical field; arrow keys move the computational probe; click to pin');

@@ -148,12 +148,12 @@ function sourceSeam(ctx,cx,cy,r,params){
  mono(ctx,'SOURCE B',B[0],B[1]-r*.35,10,ink.arc,'center');
 }
 function control(ctx,w,h,params,time){
- const cx=w*.5,cy=h*.54,r=Math.min(w,h)*.33;
+ const cx=w*.5,cy=h*.55,r=Math.min(w,h)*.32;
  const pitch=.1+params.gain*.42,delta=.22+params.witness*.48;
  const family=[
-  {n:'S',t:'SEMANTIC',col:ink.pink,x:-.78,y:.27,skew:pitch},
-  {n:'W',t:'WITNESS',col:ink.arc,x:0,y:-.45,skew:-delta},
-  {n:'A',t:'ACTUATOR',col:ink.opal,x:.78,y:.27,skew:pitch*.6}
+  {n:'S',t:'SEMANTIC (k_S '+Math.round(params.gain*100)+'%)',col:ink.pink,x:-.78,y:.27,skew:pitch},
+  {n:'W',t:'WITNESS (w_τ '+Math.round(params.witness*100)+'%)',col:ink.arc,x:0,y:-.46,skew:-delta},
+  {n:'A',t:'ACTUATOR (V '+Math.round(params.voltage*100)+'%)',col:ink.opal,x:.78,y:.27,skew:pitch*.6}
  ];
  for(const d of family){
   const tx=cx+r*d.x,ty=cy+r*d.y,rx=r*.38,ry=r*.2;
@@ -164,7 +164,8 @@ function control(ctx,w,h,params,time){
   glassPlane(ctx,points,d.col,.10+.12*params.voltage);
   ring(ctx,tx,ty,r*.145,d.col,1.5,.9);
   mono(ctx,d.n,tx,ty+7,21,d.col,'center');
-  mono(ctx,d.t,tx,ty+ry+26,10,d.col,'center');
+  const labelY=d.n==='W'?ty-ry-14:ty+ry+24;
+  mono(ctx,d.t,tx,labelY,9.5,d.col,'center');
   const to=[cx+r*d.x*.25,cy+r*d.y*.22];
   line(ctx,[tx,ty],to,d.col,1.3,9);
   if(d.n==='W')computedArc(ctx,[tx,ty],to,params.voltage,time,1.7);
@@ -172,7 +173,7 @@ function control(ctx,w,h,params,time){
  ring(ctx,cx,cy,r*.27,ink.porcelain,1.4,.74,Math.PI*.2,Math.PI*1.85,11);
  const alive=params.witness>.5&&params.voltage>.3;
  bubble(ctx,cx,cy,alive?5:3,alive?ink.arc:ink.pink);
- mono(ctx,alive?'GUARDED IN MODEL':'ACTUATION HELD',
+ mono(ctx,alive?'GUARDED IN MODEL (w_τ > 50%)':'ACTUATION HELD (STALE WITNESS)',
   cx,cy+r*.48,10,alive?ink.arc:ink.pink,'center');
  graduated(ctx,cx,cy,r*.91,time,48);
 }

@@ -1203,78 +1203,82 @@ body[data-view="overview"] .reading-back{display:none}
 
   <!-- 02 EXHAUSTIVE 32-WORK CATALOGUE & LINEAGE NAVIGATOR -->
   <section class="view" id="view-works" data-page="works" aria-label="32-Work Source-Free Catalogue" hidden>
-    <div class="page-pad">
-      <div class="view-heading">
-        <div>
-          <p class="eyebrow">01 · DOCUMENTARY ARCHIVE</p>
-          <h1>Works<span class="title-annotation">Original source library</span></h1>
-          <p class="intro">Browse the uploaded source documents by filename or internal title. These are external source records, not works authored by Vixen. The 53 files are grouped into 32 catalogue entries; eight pairings remain unresolved. Authorship is shown only where established.</p>
+    <div class="page-pad works-library-pad">
+      <div class="view-heading works-compact-masthead">
+        <div class="works-masthead-lead">
+          <p class="eyebrow">01 · ORIGINAL SOURCE LIBRARY · EM &amp; CONTRIBUTORS</p>
+          <h1>Works<span class="title-annotation">32 preserved works · 53 received files</span></h1>
+          <p class="intro">Original source library: read the uploaded scholarship directly by original filename or manuscript title (preserved works, not works authored by Vixen; eight Markdown/PDF pairings remain unadjudicated).</p>
         </div>
-        <div class="view-number" aria-hidden="true">32</div>
+        <div class="works-masthead-drawers">
+          <details class="vix-couture-route-guide works-reading-guide" aria-labelledby="vixWorksPathTitle"><summary>Archive guide · 32 / 53</summary>
+            <p class="vix-route-kicker">32 WORKS · 53 MANIFESTATIONS · FIVE RESEARCH CLUSTERS</p>
+            <h2 id="vixWorksPathTitle">Enter the repertoire, then examine the evidence.</h2>
+            <p class="vix-route-dek">Three deliberate moves through a source-bound collection. Use the perspective and filters to locate an actual Work; the adjacent reader holds the selected record without rewriting its historical identity.</p>
+            <div class="vix-route-stages" role="list" aria-label="Three-step Work reading guide">
+              <div class="vix-route-stage" role="listitem"><b>01</b><strong>Choose a reading lens</strong><span>Experiential, historical, audit or implementation perspectives change the route of inspection—not the source record.</span></div>
+              <div class="vix-route-stage" role="listitem"><b>02</b><strong>Find a Work</strong><span>Search by filename, title or concept; narrow by cluster and declared identity status.</span></div>
+              <div class="vix-route-stage" role="listitem"><b>03</b><strong>Open the folio</strong><span>Read one Work and its available manifestations in the source-bound pane.</span></div>
+            </div>
+            <details class="vix-route-custody">
+              <summary>How to interpret the Work identities</summary>
+              <p>Eight linked Markdown/PDF pairs remain human-gated. The catalogue's route labels describe available evidence; they do not adjudicate equivalence, authorship or provenance. Use GATES for hypothetical identity sensitivity, never to rewrite a source file.</p>
+            </details>
+          </details>
+          <details class="works-lenses-drawer">
+            <summary>Lenses &amp; pairing filters</summary>
+            <div class="works-lenses-panel">
+              <div class="aia-bar" role="region" aria-label="Catalogue Research Perspectives">
+                <span>READING LENS:</span>
+                <div class="aia-pills">
+                  <button type="button" data-aia-proj="EXPERIENTIAL" aria-pressed="true">Reading Guide</button>
+                  <button type="button" data-aia-proj="CUSTODIAL" aria-pressed="false">Curatorial Custody</button>
+                  <button type="button" data-aia-proj="AUDIT" aria-pressed="false">Evidence &amp; Audit</button>
+                  <button type="button" data-aia-proj="IMPLEMENTATION" aria-pressed="false">System Architecture</button>
+                </div>
+              </div>
+              <div class="segmented works-status-segmented" role="group" aria-label="Identity Status Filter">
+                <button type="button" data-work-status="ALL" aria-pressed="true">Any Pairing (32)</button>
+                <button type="button" data-work-status="SAME_WORK_SUPPORTED" aria-pressed="false">Human-Gated (8)</button>
+                <button type="button" data-work-status="SAME_WORK_CONFIRMED" aria-pressed="false">Confirmed Dual (13)</button>
+                <button type="button" data-work-status="SINGLETON_WORK_SURFACE" aria-pressed="false">Singleton (11)</button>
+              </div>
+            </div>
+          </details>
+        </div>
       </div>
 
-      <details class="vix-couture-route-guide works-reading-guide" aria-labelledby="vixWorksPathTitle"><summary>About this catalogue · 32 entries, 53 files</summary>
-        <p class="vix-route-kicker">32 WORKS · 53 MANIFESTATIONS · FIVE RESEARCH CLUSTERS</p>
-        <h2 id="vixWorksPathTitle">Enter the repertoire, then examine the evidence.</h2>
-        <p class="vix-route-dek">Three deliberate moves through a source-bound collection. Use the perspective and filters to locate an actual Work; the adjacent reader holds the selected record without rewriting its historical identity.</p>
-        <div class="vix-route-stages" role="list" aria-label="Three-step Work reading guide">
-          <div class="vix-route-stage" role="listitem"><b>01</b><strong>Choose a reading lens</strong><span>Experiential, historical, audit or implementation perspectives change the route of inspection—not the source record.</span></div>
-          <div class="vix-route-stage" role="listitem"><b>02</b><strong>Find a Work</strong><span>Search by accession, title or concept; narrow by cluster and declared identity status. The index remains browsable.</span></div>
-          <div class="vix-route-stage" role="listitem"><b>03</b><strong>Open the folio</strong><span>Read one Work and its available manifestations in the source-bound pane. Linked texts retain independent file identity.</span></div>
-        </div>
-        <details class="vix-route-custody">
-          <summary>How to interpret the Work identities</summary>
-          <p>Eight linked Markdown/PDF pairs remain human-gated. The catalogue's route labels describe available evidence; they do not adjudicate equivalence, authorship or provenance. Use GATES for hypothetical identity sensitivity, never to rewrite a source file.</p>
-        </details>
-      </details>
-
-      <div class="aia-bar" role="region" aria-label="Catalogue Research Perspectives">
-        <span>CATALOGUE PERSPECTIVE (PRESERVING ROUTE INTEGRITY):</span>
-        <div class="aia-pills">
-          <button type="button" data-aia-proj="EXPERIENTIAL" aria-pressed="true">Reading Guide (Experiential)</button>
-          <button type="button" data-aia-proj="CUSTODIAL" aria-pressed="false">Curatorial Custody (Historical)</button>
-          <button type="button" data-aia-proj="AUDIT" aria-pressed="false">Evidence &amp; Verification (Audit)</button>
-          <button type="button" data-aia-proj="IMPLEMENTATION" aria-pressed="false">System Architecture (Technical)</button>
-        </div>
-      </div>
-
-      <div class="toolbar">
-        <label class="field" aria-label="Search 32 Work routes and SHA-256 digests">
+      <div class="toolbar works-compact-toolbar">
+        <label class="field works-search-field" aria-label="Search 32 Work routes and SHA-256 digests">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="workSearchInput" type="search" placeholder="Search by title, original filename (.md/.pdf), work ID, or keyword…">
+          <input id="workSearchInput" type="search" placeholder="Find paper by filename (e.g. LLM Architecture Deep Dive, 1+1=3), title, or topic…">
         </label>
+        <div class="segmented works-cluster-segmented" role="group" aria-label="Cluster Filter">
+          <button type="button" data-work-cluster="ALL" aria-pressed="true">All 32</button>
+          <button type="button" data-work-cluster="C1" aria-pressed="false">C1 AI (12)</button>
+          <button type="button" data-work-cluster="C2" aria-pressed="false">C2 Audio (9)</button>
+          <button type="button" data-work-cluster="C3" aria-pressed="false">C3 E-Textile (2)</button>
+          <button type="button" data-work-cluster="C4" aria-pressed="false">C4 Virtual (5)</button>
+          <button type="button" data-work-cluster="C5" aria-pressed="false">C5 Myth/Frontier (4)</button>
+        </div>
         <div class="works-sort-bar" role="group" aria-label="Sort Works">
           <label for="workSortSelect">Sort</label>
           <select id="workSortSelect" aria-label="Sort Works by field">
-            <option value="order">Catalogue (01–32)</option>
+            <option value="order">Index (01–32)</option>
             <option value="filename">Filename (A–Z)</option>
             <option value="title">Title (A–Z)</option>
-            <option value="date">Recorded date (unresolved)</option>
-            <option value="author">Established author (unresolved)</option>
+            <option value="date">Date (unresolved)</option>
+            <option value="author">Author (unresolved)</option>
             <option value="cluster">Cluster (C1–C5)</option>
-            <option value="manifestations">Manifestations</option>
-            <option value="status">Identity Status</option>
+            <option value="manifestations">Files count</option>
+            <option value="status">Pairing status</option>
           </select>
           <button type="button" class="secondary-btn" id="workSortOrderBtn" aria-pressed="false" aria-label="Toggle sort direction">Asc ↑</button>
         </div>
-        <div class="segmented" role="group" aria-label="Cluster Filter">
-          <button type="button" data-work-cluster="ALL" aria-pressed="true">All 32</button>
-          <button type="button" data-work-cluster="C1" aria-pressed="false">C1 Hypervisors (12)</button>
-          <button type="button" data-work-cluster="C2" aria-pressed="false">C2 Audio/DSP (9)</button>
-          <button type="button" data-work-cluster="C3" aria-pressed="false">C3 E-Textile (2)</button>
-          <button type="button" data-work-cluster="C4" aria-pressed="false">C4 OSSL/Host (5)</button>
-          <button type="button" data-work-cluster="C5" aria-pressed="false">C5 Sui-Generis (4)</button>
-        </div>
-        <div class="segmented" role="group" aria-label="Identity Status Filter">
-          <button type="button" data-work-status="ALL" aria-pressed="true">Any Status</button>
-          <button type="button" data-work-status="SAME_WORK_SUPPORTED" aria-pressed="false">Human-Gated (8)</button>
-          <button type="button" data-work-status="SAME_WORK_CONFIRMED" aria-pressed="false">Confirmed Dual (13)</button>
-          <button type="button" data-work-status="SINGLETON_WORK_SURFACE" aria-pressed="false">Singleton (11)</button>
-        </div>
       </div>
 
-      <p id="workSortNotice" class="works-sort-notice" role="status" aria-live="polite" hidden style="font:500 11.5px/1.6 var(--font-mono);padding:10px 14px;border:1px solid var(--line-strong,#24282A66);border-radius:8px;margin:0 0 12px"></p>
-      <p id="worksResultSummary" style="font:500 10px/1.6 var(--font-mono);margin-bottom:16px"></p>
+      <p id="workSortNotice" class="works-sort-notice" role="status" aria-live="polite" hidden></p>
+      <p id="worksResultSummary" class="works-result-summary"></p>
 
       <div class="lexicon-layout" id="worksLexiconLayout">
         <div class="lexicon-index">
@@ -1560,19 +1564,19 @@ body[data-view="overview"] .reading-back{display:none}
       </div>
 
       <nav class="bc-quest-map" aria-label="Salon research route">
-        <button type="button" data-bc-scroll="salonSourceComparison" data-bc-quest="compare"><b>I</b><span>Compare sources</span><small>optional experiment</small></button>
-        <button type="button" data-bc-scroll="ciQuestionInput" data-bc-quest="question"><b>II</b><span>Pose</span><small>a question you could lose</small></button>
-        <button type="button" data-bc-scroll="ciCandidateGrid" data-bc-quest="ranked"><b>III</b><span>Weigh</span><small>ranked proposals, side by side</small></button>
-        <button type="button" data-bc-scroll="ciConjectureGrid" data-bc-quest="dares"><b>IV</b><span>Dare</span><small>conjectures and what breaks them</small></button>
-        <button type="button" data-bc-scroll="salonCribAndManifesto" data-bc-quest="manifesto"><b>V</b><span>Carry</span><small>crib, Manifesto, Podium</small></button>
+        <button type="button" data-bc-scroll="ciCandidateGrid" data-bc-quest="ranked"><b>I</b><span>Research Leads</span><small>ranked cross-source proposals</small></button>
+        <button type="button" data-bc-scroll="bcQuestWorkbench" data-bc-quest="question"><b>II</b><span>Active Quest</span><small>branching prompts &amp; question</small></button>
+        <button type="button" data-bc-scroll="ciConjectureGrid" data-bc-quest="dares"><b>III</b><span>Dangerous Dares</span><small>7 collisions &amp; what breaks them</small></button>
+        <button type="button" data-bc-scroll="salonCribAndManifesto" data-bc-quest="manifesto"><b>IV</b><span>Crib &amp; Manifesto</span><small>math crib &amp; Podium handoff</small></button>
+        <button type="button" data-bc-scroll="salonSourceComparison" data-bc-quest="compare"><b>V</b><span>Two-Work Lab</span><small>Bias Cut &amp; Five Clocks</small></button>
       </nav>
 
 <section class="vixen-inquiry-stage" id="constitutiveInquiry" aria-label="Constitutive Inquiry Observatory">
       <div class="vixen-inquiry-inner">
         <div class="ci-head">
           <div>
-            <p class="ci-kicker">Explore · question · challenge</p>
-            <h2 class="ci-title">Research leads</h2>
+            <p class="ci-kicker">I &amp; II · DISCOVERY STUDIO · QUESTS BEFORE FORMS</p>
+            <h2 class="ci-title">Research Leads &amp; Active Quest — <span>An instrument for asking better questions</span></h2>
           </div>
           <div class="badge-row">
             <span class="tag gold">LOCAL RESEARCH · PROPOSAL ONLY</span>
@@ -1580,74 +1584,97 @@ body[data-view="overview"] .reading-back{display:none}
           </div>
         </div>
 
-        <div class="ci-card bc-ranked-index" aria-label="Ranked Unified Synthesis Candidates">
-          <h3 class="ci-card-title">
-            <span>Ranked research proposals</span>
-            <span id="ciCandidateSummary">Ranked by research criteria</span>
-          </h3>
-          <p class="bc-index-dek">
-            <strong>Ranked research proposals, not verified discoveries.</strong> Eight declared checks weigh each proposal; a percentage is a rubric fit, <strong>never</strong> a probability of truth. Open any row's ledger to see why it ranked where it did.
-          </p>
-          <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
-          <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
-        </div>
-
-        <div class="ci-cadence-bar" role="region" aria-label="Guided research: observation, purpose, and evidence">
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">NOW · NOTICE</div>
-            <p class="ci-cadence-copy">Dictate your own inquiry question and method—or load one of seven cross-domain conjectures grounded across C1–C5 works.</p>
-          </div>
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">WHY · OPERA AUTONOMY</div>
-            <p class="ci-cadence-copy">Every inquiry is independently authored. The hosting tools supply research assistance without claiming ownership of the work.</p>
-          </div>
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">EXACT · BOUNDARY</div>
-            <p class="ci-cadence-copy">Proposals update the live research question, clock and matrix-stability readings, and a recoverable session history while keeping empirical credit at 0.</p>
-          </div>
-        </div>
-
-        <div class="ci-main-grid ci-studio-grid">
-          <div class="ci-card bc-quest-composer" aria-label="Research Question Composer">
+        <div class="bc-salon-top-studio">
+          <div class="ci-card bc-ranked-index" aria-label="Ranked Unified Synthesis Candidates">
             <h3 class="ci-card-title">
-              <span>Develop your own question or refine a selected lead</span>
-              <span>Local draft · nothing is sent</span>
+              <span>I · Ranked Research Leads</span>
+              <span id="ciCandidateSummary">Ranked by research criteria</span>
             </h3>
-            <label class="ci-field-label" for="ciQuestionInput">Your question</label>
-            <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
-
-            <label class="ci-field-label" for="ciMethodInput">How you would test it <small>(method)</small></label>
-            <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. compare clock order across two Works · check whether the claim survives a reversed reading" />
-
-            <div class="ci-actions-row bc-quest-actions">
-              <button type="button" class="ci-btn primary" id="ciApplyBtn" title="Applies your question to the live Manifesto, crib and proposal ranking">Preview This Inquiry</button>
-              <button type="button" class="ci-btn" id="ciSynthesizeBtn" title="Re-derives the seven conjectures below at the current clock lag">Synthesize 7 Lenses</button>
-              <label class="bc-lag-control">
-                <span>Demonstration lag τ</span>
-                <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
-                <span id="ciLagReadout">36</span>
-              </label>
-            </div>
-            <dl class="bc-action-legend">
-              <div><dt>Preview</dt><dd>re-dresses the Manifesto, crib and ranking around your words.</dd></div>
-              <div><dt>Synthesize</dt><dd>re-derives the seven conjectures below at this lag.</dd></div>
-              <div><dt>Clock lag</dt><dd>shifts the synthetic clock offset; rankings and dares recompute live.</dd></div>
-            </dl>
-            <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
-              BASELINE LOADED · Edit above or click any cross-domain conjecture below to project into this session.
+            <p class="bc-index-dek">
+              <strong>Comparative synthesis leads, not proven claims.</strong> Eight weighted checks score each cross-work question; open any row’s ledger to inspect its axes and falsifier, or click <em>Pursue Lead</em> to load it into your Active Quest.
             </p>
+            <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
+            <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
           </div>
 
-          
+          <div class="ci-card bc-quest-composer" id="bcQuestWorkbench" aria-label="Research Question Composer">
+            <h3 class="ci-card-title">
+              <span>II · Launch a Quest or Pose Your Own</span>
+              <span>Local studio · zero remote calls</span>
+            </h3>
+            <p class="bc-quest-dek">Pick a live cross-domain quest below to collide two preserved Works immediately—or draft your own falsifiable question and test how the rankings respond.</p>
+            <div class="bc-quest-chips" id="bcQuestChips" role="group" aria-label="Guided cross-source research quests">
+              <button type="button" class="bc-quest-chip" data-quest-w1="emwork_67768e8d5148dd461eb34cac" data-quest-w2="emwork_085223e721130117f5510975" data-quest-q="Can a 48 kHz wait-free audio ring buffer preempt an AI hypervisor's semantic drift without violating Beer's System-3/5 algedonic boundary?" data-quest-m="48 kHz SPSC interrupt vs EMA smoothing lag (A-01 + A-05)">
+                <span class="bc-quest-chip-tag">QUEST 01 · AUDIO × VIABLE AI</span>
+                <strong>48 kHz Interrupt vs. Hypervisor Policy</strong>
+                <small>Lock-Free DSP Architecture × Algedonic Systems</small>
+              </button>
+              <button type="button" class="bc-quest-chip" data-quest-w1="emwork_d9462f54ea32585c5d4f05ac" data-quest-w2="emwork_6377a9e4c9fd59e427517771" data-quest-q="Why does a single capacitive e-textile channel mistake skin humidity shift for drone distance—and what minimal second probe restores rank 2?" data-quest-m="Bilinear visibility SVD conditioning κ(A) (A-07)">
+                <span class="bc-quest-chip-tag">QUEST 02 · DSP × E-TEXTILE</span>
+                <strong>Cleaving Glare in the Capacitive Glove</strong>
+                <small>Optimal Gamma Smoothing × Theremin Drone Glove</small>
+              </button>
+              <button type="button" class="bc-quest-chip" data-quest-w1="emwork_80ef3cd291f5f4fe6fdbcdbb" data-quest-w2="emwork_48f6c55fadb2e4d6b9dc4be8" data-quest-q="When long-horizon LLM memory culls vectors by cosine similarity, what exact discrete fork-lineage invariants from F_p stylometry get erased?" data-quest-m="Finite-field rank vs continuous cosine pruning (A-04)">
+                <span class="bc-quest-chip-tag">QUEST 03 · LINEAGE × MEMORY</span>
+                <strong>What Cosine Vector Culling Destroys</strong>
+                <small>Fork Stylometric Lineage × LLM Architecture Deep Dive</small>
+              </button>
+              <button type="button" class="bc-quest-chip" data-quest-w1="emwork_3c6593d85fd5b744f24c7a9f" data-quest-w2="emwork_0d33e61fc09e51761acb87d9" data-quest-q="When two agents share a room ('1 + 1 = 3'), how can we distinguish genuine emergent third-occupant constraints from ungrounded prompt correlation?" data-quest-m="Quotient gap Γ = U \\ I + mandatory W-plane witness">
+                <span class="bc-quest-chip-tag">QUEST 04 · ROOM SURPLUS</span>
+                <strong>Testing the “1 + 1 = 3” Third Occupant</strong>
+                <small>1+1=3.md × Cybernetic Memory Algorithms</small>
+              </button>
+            </div>
+
+            <div class="bc-quest-editor">
+              <label class="ci-field-label" for="ciQuestionInput">Active research question</label>
+              <textarea class="ci-textarea" id="ciQuestionInput" rows="2" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
+
+              <label class="ci-field-label" for="ciMethodInput">Falsifier / test method</label>
+              <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. reverse Work I ▷ II encounter order · check whether SVD rank stays 2" />
+
+              <div class="ci-actions-row bc-quest-actions">
+                <button type="button" class="ci-btn primary" id="ciApplyBtn" title="Updates the live Manifesto, Mathematical Crib, and proposal ranking with your question">Preview This Inquiry</button>
+                <button type="button" class="ci-btn" id="ciSynthesizeBtn" title="Recomputes the seven cross-domain dares below at the current clock lag">Synthesize 7 Lenses</button>
+                <label class="bc-lag-control">
+                  <span>Lag τ</span>
+                  <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
+                  <span id="ciLagReadout">36</span>
+                </label>
+              </div>
+              <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
+                Select any Quest or Ranked Lead to re-score the studio and update the Manifesto below.
+              </p>
+            </div>
+
+            <details class="ci-cadence-disclosure">
+              <summary>How this studio preserves source independence</summary>
+              <div class="ci-cadence-bar" role="region" aria-label="Guided research: observation, purpose, and evidence">
+                <div class="ci-cadence-step">
+                  <div class="ci-cadence-label">NOW · EXPLORE</div>
+                  <p class="ci-cadence-copy">Launch a quest, promote a ranked lead, or pose your own falsifiable question across C1–C5 works.</p>
+                </div>
+                <div class="ci-cadence-step">
+                  <div class="ci-cadence-label">WHY · SEPARATE CUSTODY</div>
+                  <p class="ci-cadence-copy">Every inquiry stays distinct from Em’s preserved manuscripts; no source is rewritten or claimed.</p>
+                </div>
+                <div class="ci-cadence-step">
+                  <div class="ci-cadence-label">EXACT · BOUNDARY</div>
+                  <p class="ci-cadence-copy">Updates live rankings, clock readings, and session Manifesto while empirical credit stays 0.</p>
+                </div>
+              </div>
+            </details>
+          </div>
         </div>
 
         <div class="ci-card bc-dares" aria-label="Outside-Perspective Cross-Domain Conjectures">
           <h3 class="ci-card-title">
-            <span>IV · Dare — seven conjectures, each beside what would break it</span>
-            <span>PROPOSAL ONLY · UNRATIFIED</span>
+            <span>III · Dangerous Dares — seven high-tension collisions &amp; their kill-switches</span>
+            <span>UNRATIFIED CONJECTURES · TEST TO BREAK</span>
           </h3>
+          <p class="bc-index-dek">Unexpected structural collisions across audio DSP, wearable e-textiles, AI hypervisors, cryptographic forks, and Bronze Age philology—each paired with the exact counterexample that would falsify it.</p>
           <div class="ci-filter-bar" id="ciFilterBar" role="group" aria-label="Filter conjectures by corpus cluster">
-            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">ALL CLUSTERS</button>
+            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">All 7 Dares</button>
             <button type="button" class="ci-chip" data-ci-cluster="C1" aria-pressed="false">C1 · Hypervisors &amp; Viable AI</button>
             <button type="button" class="ci-chip" data-ci-cluster="C2" aria-pressed="false">C2 · Audio / Mixxx DSP</button>
             <button type="button" class="ci-chip" data-ci-cluster="C3" aria-pressed="false">C3 · E-Textile / Drone</button>
@@ -1657,18 +1684,14 @@ body[data-view="overview"] .reading-back{display:none}
           <div class="ci-conjecture-grid" id="ciConjectureGrid"></div>
         </div>
       </div>
-        <p class="vix-operator-boundary-note">Proposals stay open to challenge. Continue collaborative research in the <a class="ci-btn" href="./vix-cyb/podium.html">Podium</a>.</p>
+        <p class="vix-operator-boundary-note">Proposals stay open to challenge. Continue collaborative research in the <a class="ci-btn" href="./vix-cyb/podium.html">Podium</a> or manage <a class="ci-btn" href="./vix-cyb/human-podium.html#settings">Podium Settings</a>.</p>
     </section>
-
-
-
-
 
       <section class="salon-crib-manifesto" id="salonCribAndManifesto" aria-label="Mathematical Crib and Dynamic Synthesis Manifesto">
         <div class="salon-crib-panel" id="salonMathCrib"></div>
         <div class="salon-manifesto-panel" id="salonManifestoPanel"></div>
       </section>
-      <details id="salonSourceComparison" class="salon-source-comparison"><summary>Source comparison · optional two-document experiment</summary><p class="comparison-scope-note">These are external documents selected from the source archive, not Vixen-authored research. The optical and directional experiment below is optional; it does not limit the wider synthesis to two documents.</p>
+      <details id="salonSourceComparison" class="salon-source-comparison"><summary><span>V · Two-Source Comparison Lab — Bias Cut Pattern Table, Folded Cuirass &amp; Five Clocks</span><small>Expand two-document directional experiment ▾</small></summary><p class="comparison-scope-note">Compare any two preserved source manuscripts on opposing bias grains and reverse their encounter direction (I ▷ II vs. II ▷ I). Source documents remain unmodified in Works.</p>
       <figure class="bc-draft bc-draft--salon-crown" id="bcBiasDraft" aria-labelledby="bcBiasDraftCap">
         <div class="bc-draft-host" data-bc-draft></div>
         <figcaption id="bcBiasDraftCap" class="bc-draft-cap">
@@ -3394,9 +3417,10 @@ body[data-view="overview"] .reading-back{display:none}
 
         listEl.innerHTML = filtered.map((w) => {
           const current = w.work_id === sel.work_id;
+          const inCart = state.collection.has(w.work_id);
           // Catalogue typography carries reader-oriented metadata only.
           // Canonical IDs, gate states and source relations stay in DATA.
-          let projLine = w.cluster + ' · ' + w.manifestations_count + ' manuscript version(s)';
+          let projLine = w.cluster + ' · ' + w.manifestations_count + (w.manifestations_count === 1 ? ' file' : ' files') + (w.human_gate_required ? ' · Gate #' + w.gate_num : '');
           if (state.aiaProjection === 'CUSTODIAL') {
             projLine = 'Recorded source versions · ' + w.manifestations_count;
           } else if (state.aiaProjection === 'AUDIT') {
@@ -3405,14 +3429,17 @@ body[data-view="overview"] .reading-back{display:none}
             projLine = 'Source manifestations · ' + w.linked_sources.length;
           }
           const receivedFiles = (w.linked_sources || []).map((s) => s.original_filename).join(' · ');
-          return '<li class="lexicon-item" data-membrane="RESEARCH_OBJECT"><button type="button" data-select-work="' + esc(w.work_id) + '" aria-current="' + current + '">' +
-            '<span class="record-num">' + String(w.order_num).padStart(2, '0') + '</span>' +
-            '<span style="flex:1;min-width:0">' +
-              '<span class="term-name work-received-filenames">' + esc(receivedFiles || w.declared_title) + '</span>' +
-              '<span class="work-internal-title">' + esc(w.declared_title) + '</span>' +
-              '<span class="term-sub">' + esc(projLine) + '</span>' +
-            '</span>' +
-          '</button></li>';
+          return '<li class="lexicon-item works-library-row' + (current ? ' is-current' : '') + '" data-membrane="RESEARCH_OBJECT">' +
+            '<button type="button" class="works-row-select" data-select-work="' + esc(w.work_id) + '" aria-current="' + current + '">' +
+              '<span class="record-num">' + String(w.order_num).padStart(2, '0') + '</span>' +
+              '<span class="works-row-copy">' +
+                '<span class="term-name work-received-filenames">' + esc(receivedFiles || w.declared_title) + '</span>' +
+                '<span class="work-internal-title">' + esc(w.declared_title) + '</span>' +
+                '<span class="term-sub">' + esc(projLine) + '</span>' +
+              '</span>' +
+            '</button>' +
+            '<button type="button" class="works-quick-cart' + (inCart ? ' is-saved' : '') + '" data-quick-cart="' + esc(w.work_id) + '" aria-pressed="' + inCart + '" aria-label="' + (inCart ? 'Remove from Research Cart' : 'Add to Research Cart') + '" title="' + (inCart ? 'Saved in Research Cart (click to remove)' : 'Save to Research Cart') + '">' + (inCart ? '★' : '+') + '</button>' +
+          '</li>';
         }).join('');
 
         if (sel) {
@@ -3430,18 +3457,19 @@ body[data-view="overview"] .reading-back{display:none}
             const downloadFname = isPdfSrc
               ? String(src.original_filename || src.source_file_id).replace(/\.pdf$/i, '') + '.extracted.txt'
               : (src.original_filename || (src.source_file_id + '.md'));
-            const formatBadge = isPdfSrc ? 'PDF text only (.pdf binary held)' : 'Authentic .md';
+            const formatBadge = isPdfSrc ? 'PDF text (.pdf held)' : 'Markdown';
             return '<div class="works-manifestation-pill' + (active ? ' is-active' : '') + '">' +
               '<button type="button" class="secondary-btn" data-inspect-manifestation="' + esc(src.source_file_id) + '" data-select-manifestation="' + esc(src.source_file_id) + '" aria-pressed="' + active + '" aria-label="Read ' + esc(src.original_filename) + ' · ' + formatBadge + '">' +
-                '<span class="vix-source-filename" title="' + esc(src.original_filename) + '">' + (isPdfSrc ? 'PDF text' : 'Markdown') + '</span>' +
-                '<span class="vix-source-badge">' + (active ? ' · Reading' : '') + '</span>' +
+                '<span class="vix-source-filename" title="' + esc(src.original_filename) + '">' + esc(src.original_filename) + '</span>' +
+                '<span class="vix-source-badge"> · ' + formatBadge + (active ? ' ✓' : '') + '</span>' +
               '</button>' +
-              '<button type="button" class="secondary-btn works-dl-btn" data-download-manifestation="' + esc(src.source_file_id) + '" data-download-filename="' + esc(downloadFname) + '" data-download-kind="' + (isPdfSrc ? 'EXTRACTED_NATIVE_PDF_TEXT' : 'NATIVE_MARKDOWN') + '" data-binary-pdf-available="' + (isPdfSrc ? 'false' : 'n/a') + '" aria-label="' + (isPdfSrc ? 'Download extracted UTF-8 text from ' + esc(src.original_filename) + ' (original binary PDF unavailable)' : 'Download authentic Markdown ' + esc(src.original_filename)) + '" title="' + (isPdfSrc ? 'Downloads extracted UTF-8 text (' + esc(downloadFname) + '); original binary .pdf bytes are unavailable/held' : 'Downloads authentic Markdown (' + esc(downloadFname) + ')') + '">' + '↓</button>' +
+              '<button type="button" class="secondary-btn works-dl-btn" data-download-manifestation="' + esc(src.source_file_id) + '" data-download-filename="' + esc(downloadFname) + '" data-download-kind="' + (isPdfSrc ? 'EXTRACTED_NATIVE_PDF_TEXT' : 'NATIVE_MARKDOWN') + '" data-binary-pdf-available="' + (isPdfSrc ? 'false' : 'n/a') + '" aria-label="' + (isPdfSrc ? 'Download extracted UTF-8 text from ' + esc(src.original_filename) + ' (original binary PDF unavailable)' : 'Download authentic Markdown ' + esc(src.original_filename)) + '" title="' + (isPdfSrc ? 'Downloads extracted UTF-8 text (' + downloadFname + '); original binary .pdf bytes are unavailable/held' : 'Downloads authentic Markdown (' + downloadFname + ')') + '">' + '↓</button>' +
             '</div>';
           }).join('') +
           (sel.linked_sources.length > 1
             ? '<button type="button" class="secondary-btn works-diff-btn" data-open-folios="' + esc(sel.work_id) + '">Compare versions ↗</button>'
             : '') +
+          '<button type="button" class="secondary-btn works-diff-btn works-top-cart-btn" data-save-tray="' + esc(sel.work_id) + '">' + (saved ? '★ In Cart' : '+ Add to Cart') + '</button>' +
           '</div>';
 
         const LENS_HEADINGS = {
@@ -3455,29 +3483,30 @@ body[data-view="overview"] .reading-back{display:none}
         readerEl.innerHTML =
           '<button type="button" class="secondary-btn reader-close-mobile" id="closeMobileWorkBtn">← Back to 32-Work Index</button>' +
           '<div data-membrane="RESEARCH_OBJECT" class="vix-public-work-header">' +
+            '<div class="vix-public-work-topline">' +
+              '<span class="vix-public-byline">' + esc((sel.linked_sources || []).map(s => s.original_filename).join(' · ')) +
+              ((sel.authorship && !/^(?:UNRESOLVED|UNKNOWN|N\/A)$/i.test(sel.authorship))
+                ? ' · Recorded author: ' + esc(sel.authorship) : '') + '</span>' +
+              '<details class="vix-public-work-context"><summary>Provenance &amp; notes</summary>' +
+                '<h3>' + esc(lensTitle) + '</h3>' +
+                '<p style="font-size:13px;line-height:1.75"><strong>Observed Title Variants:</strong> ' + esc((sel.title_variants || []).join('  |  ')) + '</p>' +
+                '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Identity Basis:</strong> ' + esc((sel.identity_basis || []).join(', ')) + '</p>' +
+                ((sel.substantive_differences_if_any && sel.substantive_differences_if_any.length)
+                  ? '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Substantive Differences:</strong> ' + esc(sel.substantive_differences_if_any.join(' ')) + '</p>'
+                  : '') +
+                ((sel.unresolved_questions && sel.unresolved_questions.length)
+                  ? '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Unresolved Questions:</strong> ' + esc(sel.unresolved_questions.join(' ')) + '</p>'
+                  : '') +
+              '</details>' +
+            '</div>' +
             '<h2>' + esc(sel.declared_title) + '</h2>' +
-            '<p class="vix-public-byline">' + esc(sel.linked_sources.find(s => s.source_file_id === state.activeManifestationId)?.original_filename || sel.linked_sources[0]?.original_filename || '') +
-            ((sel.authorship && !/^(?:UNRESOLVED|UNKNOWN|N\/A)$/i.test(sel.authorship))
-              ? ' · Recorded author: ' + esc(sel.authorship) : '') + '</p>' +
           '</div>' +
-          '<details class="reader-section vix-public-work-context">' +
-            '<summary>About this work</summary>' +
-            '<h3>' + esc(lensTitle) + '</h3>' +
-            '<p style="font-size:13px;line-height:1.75"><strong>Observed Title Variants:</strong> ' + esc((sel.title_variants || []).join('  |  ')) + '</p>' +
-            '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Identity Basis:</strong> ' + esc((sel.identity_basis || []).join(', ')) + '</p>' +
-            ((sel.substantive_differences_if_any && sel.substantive_differences_if_any.length)
-              ? '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Substantive Differences:</strong> ' + esc(sel.substantive_differences_if_any.join(' ')) + '</p>'
-              : '') +
-            ((sel.unresolved_questions && sel.unresolved_questions.length)
-              ? '<p style="font-size:12.5px;line-height:1.75;margin-top:6px"><strong>Unresolved Questions:</strong> ' + esc(sel.unresolved_questions.join(' ')) + '</p>'
-              : '') +
-          '</details>' +
-          '<div data-membrane="RESEARCH_OBJECT" class="reader-section">' +
+          '<div data-membrane="RESEARCH_OBJECT" class="reader-section works-primary-reader-section">' +
             manifestsHtml +
             '<div id="worksExperimentAReaderMount" class="expa-reader-shell" data-work-id="' + esc(sel.work_id) + '"></div>' +
           '</div>' +
           '<details class="reader-section vix-public-work-methods">' +
-            '<summary>Related methods</summary>' +
+            '<summary>Related methods (' + sel.protocols.length + ')</summary>' +
             '<div class="badge-row">' +
               sel.protocols.map((pid) => '<button type="button" class="secondary-btn" data-open-ref="' + esc(pid) + '">' + esc(pid) + ' ↗</button>').join('') +
             '</div>' +
@@ -3485,7 +3514,6 @@ body[data-view="overview"] .reading-back{display:none}
           '<div class="reader-section" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">' +
             gateJump +
             '<button type="button" class="secondary-btn" data-open-folios="' + esc(sel.work_id) + '">Inspect in Folios Chamber ↗</button>' +
-            '<button type="button" class="secondary-btn" data-save-tray="' + esc(sel.work_id) + '">' + (saved ? '★ Saved in Cart' : '☆ Save to Research Cart') + '</button>' +
             '<button type="button" class="secondary-btn" data-cite-id="' + esc(sel.work_id) + '">Copy Citation</button>' +
           '</div>';
 
@@ -3512,6 +3540,16 @@ body[data-view="overview"] .reading-back{display:none}
             state.mobileWorkReaderOpen = true;
             renderWorksView();
             if (window.matchMedia('(max-width:680px)').matches) window.scrollTo({top:0,behavior:'instant'});
+          });
+        });
+        listEl.querySelectorAll('[data-quick-cart]').forEach((b) => {
+          b.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            const wid = b.getAttribute('data-quick-cart');
+            if (wid) {
+              toggleCollection(wid);
+              renderWorksView({ skipHistory: true });
+            }
           });
         });
       }
@@ -6131,17 +6169,26 @@ import {
     return activeEntryId;
   }
 
+  function publicHeaderTagline(raw) {
+    const s = String(raw || '').trim();
+    if (!s || /phasonic\s+counterpoint|two\s+crossed\s+probes/i.test(s)) {
+      return 'Source library · Computational research';
+    }
+    return s;
+  }
+
   function applyHeadline(h) {
     currentHeadline = h;
     document.body.dataset.synthesisRegime = h.regime;
+    const publicHdr = publicHeaderTagline(h.headerTagline);
     // Opera editorial headers follow the same live synthesis result as the
     // cover, without giving the Observatory research/Podium authority.
     document.dispatchEvent(new CustomEvent('vixen:editorial-synthesis', {
-      detail: { patternSubtitle: h.patternSubtitle, headerTagline: h.headerTagline,
+      detail: { patternSubtitle: h.patternSubtitle, headerTagline: publicHdr,
                 regime: h.regime, source: 'SYNTHESIS_PRESENTATION_ONLY' }
     }));
     const hdr = document.getElementById('synthHeaderTagline');
-    if (hdr) hdr.textContent = h.headerTagline;
+    if (hdr) hdr.textContent = publicHdr;
     const sub = document.getElementById('synthPatternSubtitle');
     if (sub) sub.textContent = h.patternSubtitle;
     const spine = document.getElementById('synthLeftSpine');
@@ -6152,9 +6199,9 @@ import {
     if (qBody && h.researchQuestion) qBody.textContent = h.researchQuestion;
     const marg = document.getElementById('synthAxiomMarginalia');
     if (marg && Array.isArray(h.axiomMarginalia)) {
-      marg.replaceChildren(...h.axiomMarginalia.map((line) => {
+      marg.replaceChildren(...h.axiomMarginalia.map((line, i) => {
         const s = document.createElement('span');
-        s.textContent = line;
+        s.textContent = i === 0 ? publicHdr : line;
         return s;
       }));
     }
@@ -6439,11 +6486,16 @@ import {
       foot.className = 'ci-actions-row';
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'ci-btn';
+      btn.className = 'ci-btn primary';
       btn.textContent = 'Load as Active Quest';
       btn.addEventListener('click', () => {
         selectedConjectureId = item.id;
         live.conjectureFalsifier = item.exact_falsifier;
+        if (Array.isArray(item.attributable_work_ids) && item.attributable_work_ids.length >= 2) {
+          window.dispatchEvent(new CustomEvent('vixen:stage-salon-pair', {
+            detail: { workIdA: item.attributable_work_ids[0], workIdB: item.attributable_work_ids[1], openComparison: false }
+          }));
+        }
         authorInquiry({
           question: `${item.title}: ${item.now_notice} (${item.exact_falsifier})`,
           method: `${item.lens} · ${(item.atlas_engines || []).join(' + ')}`
@@ -6451,6 +6503,26 @@ import {
         revealResearchQuestion();
       });
       foot.appendChild(btn);
+      if (Array.isArray(item.attributable_work_ids) && item.attributable_work_ids.length >= 2) {
+        const pairBtn = document.createElement('button');
+        pairBtn.type = 'button';
+        pairBtn.className = 'ci-btn';
+        pairBtn.dataset.ciStageSalon = '1';
+        pairBtn.textContent = 'Compare These 2 Works ↓';
+        pairBtn.addEventListener('click', () => {
+          selectedConjectureId = item.id;
+          live.conjectureFalsifier = item.exact_falsifier;
+          const comp = document.getElementById('salonSourceComparison');
+          if (comp) comp.open = true;
+          window.dispatchEvent(new CustomEvent('vixen:stage-salon-pair', {
+            detail: { workIdA: item.attributable_work_ids[0], workIdB: item.attributable_work_ids[1], openComparison: true }
+          }));
+          const still = document.body.dataset.vixenMotion === 'still' ||
+            window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+          (comp || document.getElementById('vixenSynthesisSalon'))?.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
+        });
+        foot.appendChild(pairBtn);
+      }
 
       top.append(meta, h, filesEl, mechBadge, body, coords, detail);
       card.append(top, foot);
@@ -6722,7 +6794,7 @@ import {
     renderCandidates();
     const status = document.getElementById('ciStatusLine');
     if (status) {
-      status.textContent = `STAGED CANDIDATE ${candidateId} AS ${entryId} · Human closure required (empirical credit: 0).`;
+      status.textContent = `Active lead updated: “${operaResearchLabel(currentHeadline?.patternSubtitle || candidateId)}” · Manifesto & Mathematical Crib synchronized (unratified, credit 0).`;
     }
     return getSessionSnapshot();
   }
@@ -6744,7 +6816,7 @@ import {
     renderSynthesisLog();
     const status = document.getElementById('ciStatusLine');
     if (status) {
-      status.textContent = `APPLIED AS ${entryId} · Live question & manifesto updated (empirical credit: 0).`;
+      status.textContent = `Quest active · Rankings, Manifesto, and Mathematical Crib recomputed around your question (local draft, credit 0).`;
     }
     return getSessionSnapshot();
   }
@@ -6909,6 +6981,24 @@ import {
     const focusTarget = target.querySelector('h1,h2,h3') || target;
     if (!focusTarget.hasAttribute('tabindex')) focusTarget.setAttribute('tabindex', '-1');
     focusTarget.focus({ preventScroll: true });
+  });
+  document.getElementById('bcQuestChips')?.addEventListener('click', (event) => {
+    const chip = event.target.closest('button[data-quest-q]');
+    if (!chip) return;
+    document.querySelectorAll('#bcQuestChips .bc-quest-chip').forEach((c) => c.classList.toggle('is-active', c === chip));
+    const q = chip.getAttribute('data-quest-q') || '';
+    const m = chip.getAttribute('data-quest-m') || '';
+    const w1 = chip.getAttribute('data-quest-w1') || '';
+    const w2 = chip.getAttribute('data-quest-w2') || '';
+    if (w1 && w2) {
+      window.dispatchEvent(new CustomEvent('vixen:stage-salon-pair', {
+        detail: { workIdA: w1, workIdB: w2, openComparison: false }
+      }));
+    }
+    authorInquiry({ question: q, method: m });
+  });
+  document.getElementById('salonSourceComparison')?.addEventListener('toggle', () => {
+    window.dispatchEvent(new Event('vixen:fieldlayout'));
   });
   document.getElementById('salonInviteAiBtn')?.addEventListener('click', () => {
     // Invitation, not teleport: travel to the Podium entrance, then let it announce itself.

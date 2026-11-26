@@ -491,8 +491,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const clocks=state.route==='B_A'?vernier.reverse:vernier.forward;
   const clockBox=mk('section','vs-clocks');
   clockBox.append(
-   paragraph('FIVE CLOCKS · INTERACTIVE VERNIER & NON-COMMUTATIVE HYSTERESIS','vs-eyebrow'),
-   paragraph('What this instrument tests: five non-commensurable clocks—k (layer step), n (token step), τ (continuous integrator), t_wall (wall time), and t_plant (48 kHz audio)—run at distinct cadences. Dragging the lag reveals arrival-order inversions (Δ) without assuming any physical time equivalence.','vs-vernier-explainer')
+   paragraph('FIVE CLOCKS · WHY SYSTEM TIME DOMAINS CANNOT BE AVERAGED','vs-eyebrow'),
+   paragraph('Real cybernetic systems run on five incompatible clocks at once: neural layers (k), token steps (n), continuous model integrators (τ), OS frame timers (wall), and 48 kHz hardware audio samples (plant). Dragging the lag slider below tests when one subsystem overtakes another (arrival inversions Δ) if Work I and Work II swap roles.','vs-vernier-explainer')
   );
   const lagLabel=mk('label','vs-slider-label','Demonstration lag · '+state.lag+' dimensionless ticks');
   const slider=mk('input','vs-slider');slider.type='range';slider.min='0';slider.max='120';slider.step='1';slider.value=String(state.lag);
@@ -862,6 +862,19 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
      addEvent('CART_STAGED_IN_SALON',{work_ids:[...state.works]});
      render();
     }
+   }
+  });
+  window.addEventListener('vixen:stage-salon-pair',(ev)=>{
+   const w0=corpus.works.find(w=>w.work_id===ev?.detail?.workIdA);
+   const w1=corpus.works.find(w=>w.work_id===ev?.detail?.workIdB);
+   if(w0&&w1&&w0.work_id!==w1.work_id){
+    state.works=[w0.work_id,w1.work_id];
+    state.sources=[w0.linked_sources[0].source_file_id,w1.linked_sources[0].source_file_id];
+    void warmSalonBody(state.sources[0]);void warmSalonBody(state.sources[1]);
+    changed();
+    state.notice='Staged '+(w0.linked_sources[0]?.original_filename||w0.work_id)+' and '+(w1.linked_sources[0]?.original_filename||w1.work_id)+' onto the Bias Cut & Five-Clock bench.';
+    addEvent('QUEST_PAIR_STAGED_IN_SALON',{work_ids:[...state.works]});
+    render();
    }
   });
  }

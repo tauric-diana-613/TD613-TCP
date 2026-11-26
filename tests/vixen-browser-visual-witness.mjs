@@ -243,6 +243,26 @@ try {
     for(const room of ['works','gates','holds']){
       if(room!=='works')await foxRail.locator('button[data-view="'+room+'"]').click();
       const view=page.locator('#view-'+room);
+      if(room==='works'){
+        if(await view.locator('#closeMobileWorkBtn').isVisible()){
+          await view.locator('#closeMobileWorkBtn').click();
+        }
+        await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+        assert.equal(await view.locator('#worksListContainer [data-quick-cart]').count(),32,
+          'Every Work row must offer direct + Research Cart staging');
+        if(width>900){
+          const firstViewport=await view.evaluate(el=>({
+            firstRowTop:el.querySelector('#worksListContainer button[data-select-work]')?.getBoundingClientRect().top??9999,
+            manuscriptTop:el.querySelector('#expaCompanionBodyPre')?.getBoundingClientRect().top??9999
+          }));
+          assert(firstViewport.firstRowTop<height-280&&firstViewport.manuscriptTop<height-110,
+            'Works library and manuscript prose must appear immediately in the first desktop viewport: '+JSON.stringify(firstViewport));
+        }
+        const guideDetails=view.locator('.works-reading-guide');
+        if(await guideDetails.getAttribute('open')===null){
+          await guideDetails.locator('> summary').click();
+        }
+      }
       await view.locator('.vix-couture-route-guide h2').waitFor({state:'visible',timeout:10000});
       assert.equal(await view.locator('.vix-route-stage').count(),3,
         room+' route must present exactly three readable evidentiary operations');
@@ -266,12 +286,20 @@ try {
         room+' source-reading guide must paint ABOVE the ambient optical field: '+JSON.stringify(surface));
       assert(!/rgb\(60,\s*20,\s*60\)/.test(surface.headingBackground),
         room+' heading should not regress to plum');
+      if(room==='works'){
+        const guideDetails=view.locator('.works-reading-guide');
+        if(await guideDetails.getAttribute('open')!==null){
+          await guideDetails.locator('> summary').click();
+        }
+        await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+      }else{
+        await view.locator('.vix-couture-route-guide').scrollIntoViewIfNeeded();
+      }
       if(room==='holds'){
         const ink=await view.locator('.holds-grid>.hold-panel:first-child>p').evaluate(el=>getComputedStyle(el).color);
         assert.equal(ink,'rgb(245, 238, 225)',
           'Refusals bounded-tie explanation must have legible light ink on dark couture panel');
       }
-      await view.locator('.vix-couture-route-guide').scrollIntoViewIfNeeded();
       await page.screenshot({
         path:path.join(output,stem+'-rgi23-'+room+'-couture.png'),
         fullPage:false,animations:'disabled',timeout:60000
@@ -716,12 +744,13 @@ try {
     await foundry.locator('.ef-inspector-switch').click();
     assert.equal(await foundry.locator('.ef-readout').isHidden(),true,'The evidence curtain must close safely');
     const dials=foundry.locator('.ef-dial-cabinet');
-    assert.equal(await dials.getAttribute('open'),null,'The synthetic control cabinet begins gracefully folded');
-    await dials.locator('summary').click();
-    assert.notEqual(await dials.getAttribute('open'),null,'Operator can unfold and manipulate the original model controls');
+    assert.notEqual(await dials.getAttribute('open'),null,'Observatory variable controls and regime presets begin live beside the stage');
+    assert.equal(await dials.locator('.ef-preset-btn').count(),3,'Three mathematical regime presets must be immediately clickable');
     assert.equal(await dials.locator('[data-foundry-dial]').count(),4);
     await dials.locator('summary').click();
-    assert.equal(await dials.getAttribute('open'),null,'Research instrument controls return to a folded state');
+    assert.equal(await dials.getAttribute('open'),null,'Operator can optionally fold the control bench');
+    await dials.locator('summary').click();
+    assert.notEqual(await dials.getAttribute('open'),null,'Operator can re-open the live control bench');
 
     assert.equal(await foundry.locator('.ef-carrier').count(),39);
     assert.equal(await foundry.locator('[data-foundry-dial]').count(),4);
@@ -1087,7 +1116,8 @@ try {
     await page.locator('#mobileNav button[data-view="collection"]').click();
     const salon=page.locator('#vixenSynthesisSalon');
     if(await page.locator('#salonSourceComparison').getAttribute('open')===null) await page.locator('#salonSourceComparison > summary').click();
-     await salon.locator('.vs-source-card').first().waitFor({timeout:15000});
+    await salon.locator('.vs-source-card').first().waitFor({timeout:15000});
+    await salon.locator('.vs-head').scrollIntoViewIfNeeded();
     await page.waitForTimeout(510);
     assert.equal(await salon.locator('.vs-source-card').count(),2);
     assert.equal(await salon.locator('.vs-clock-row').count(),5);
@@ -1413,6 +1443,11 @@ try {
       'A ranked research proposal must be visible in the first Salon viewport: width='+width+
       ', top='+salonGeom.top+', stageTop='+salonGeom.stageTop+
       ', scrollY='+salonGeom.scrollY+', viewportHeight='+height);
+    assert.equal(await page.locator('#bcQuestChips .bc-quest-chip').count(),4,
+      'Salon Discovery Studio must present four clickable cross-source Quest provocations');
+    if(await page.locator('#salonSourceComparison').getAttribute('open')===null){
+      await page.locator('#salonSourceComparison > summary').click();
+    }
     // Class A/B rendered Zero Purple Law + WCAG AA readability across bilateral cards
     const readability=await page.evaluate(()=>{
       const salon=document.getElementById('vixenSynthesisSalon');
@@ -1587,6 +1622,9 @@ try {
           if(btn?.getAttribute('aria-pressed')==='true')btn.click();
         });
         await page.waitForFunction(()=>document.body.dataset.vixenMotion==='live');
+        if(await page.locator('#salonSourceComparison').getAttribute('open')===null){
+          await page.locator('#salonSourceComparison > summary').click();
+        }
         const stage=page.locator('#vixenSynthesisSalon .vs-optical-stage');
         await stage.scrollIntoViewIfNeeded();
         await page.waitForFunction(()=>{
