@@ -314,13 +314,13 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     ? String(src.original_filename||src.source_file_id).replace(/\.pdf$/i,'')+'.extracted.txt'
     : (src.original_filename||(src.source_file_id+'.md'));
    append(side,
-    paragraph((i===0?'I':'II')+' · ORIGINAL RECORDED WORK · SOURCE-TITLE','vs-source-tag'),
+    paragraph((i===0?'I':'II')+' · EXTERNAL SOURCE DOCUMENT','vs-source-tag'),
     select('Choose Work '+(i+1),corpus.works.map((x,j)=>({
      id:x.work_id,label:(x.linked_sources||[]).map(s=>s.original_filename).filter(Boolean).join(' / ')+' — '+titleText(x)
     })),w.work_id,v=>chooseWork(i,v)),
     mk('h3','vs-work-title',titleText(w)),
     paragraph('Received filename: '+(src?.original_filename||w.work_id)+' ('+(w.linked_sources.length)+' manifestation'+(w.linked_sources.length===1?'':'s')+' · '+(isPdfSrc?'extracted PDF text derivative; binary .pdf unavailable':'authentic Markdown')+')','vs-received-filename'),
-    paragraph('RECORDED CATALOGUE TITLE · NOT A GENERATED SYNTHESIS CANDIDATE · AUTHORSHIP UNRESOLVED','vs-title-provenance'),
+    paragraph('Recorded source title · not a synthesis candidate · authorship unresolved','vs-title-provenance'),
     makeSelectSource(w,state.sources[i],v=>pickSource(i,v))
    );
    const manuscript=mk('div','vs-manuscript-body');

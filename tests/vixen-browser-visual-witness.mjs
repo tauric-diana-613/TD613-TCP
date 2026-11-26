@@ -861,11 +861,12 @@ try {
     await page.locator('#mobileNav button[data-view="collection"]').click();
     await page.waitForFunction(()=>document.body.dataset.view==='collection' &&
       !!document.querySelector('#vixenSynthesisSalon button.vs-seam'),null,{timeout:16000});
+    await page.locator('#salonSourceComparison > summary').click();
     const salonRedpen=page.locator('#vixenSynthesisSalon');
     const sourceCard=salonRedpen.locator('.vs-source-card').first();
     assert.match(await sourceCard.locator('.vs-work-title').innerText(),/^The Architecture of Control:/);
     assert.match(await sourceCard.locator('.vs-title-provenance').innerText(),
-      /NOT A GENERATED SYNTHESIS CANDIDATE/);
+      /not a synthesis candidate/i);
     const seam=salonRedpen.locator('button.vs-seam');
     await seam.scrollIntoViewIfNeeded();
     const seamWitness=await seam.evaluate(el=>{
@@ -1075,7 +1076,8 @@ try {
     await page.locator('#menuToggle').click();
     await page.locator('#mobileNav button[data-view="collection"]').click();
     const salon=page.locator('#vixenSynthesisSalon');
-    await salon.locator('.vs-source-card').first().waitFor({timeout:15000});
+    if(await page.locator('#salonSourceComparison').getAttribute('open')===null) await page.locator('#salonSourceComparison > summary').click();
+     await salon.locator('.vs-source-card').first().waitFor({timeout:15000});
     await page.waitForTimeout(510);
     assert.equal(await salon.locator('.vs-source-card').count(),2);
     assert.equal(await salon.locator('.vs-clock-row').count(),5);
@@ -1475,7 +1477,7 @@ try {
     assert.equal(await page.locator('#collectionCount').innerText(),'2');
     await salon.getByRole('textbox',{name:'Compose an original research question'}).fill(
       'Which independently witnessed observation could falsify this proposed relation?');
-    await salon.getByRole('button',{name:/Compose an unratified theory/}).click();
+    await salon.getByRole('button',{name:/Draft a two-source proposal/}).click();
     await salon.locator('.vs-result').waitFor();
     assert.equal(await salon.locator('.vs-result').getAttribute('data-claim-class'),'OPEN_FIELD_UNRATIFIED_QUESTION');
     const proposalCopy=await salon.locator('.vs-result').innerText();

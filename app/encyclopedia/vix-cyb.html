@@ -1206,9 +1206,9 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">02 · 32-WORK CATALOGUE</p>
-          <h1>THE WORKS.<span class="title-annotation">32 recorded Works · 53 linked manifestations</span></h1>
-          <p class="intro">Find an original manuscript by its received filename or its internal title. The archive contains 53 files grouped into 32 catalogue entries; eight pairings remain unresolved. These are original records, not generated proposals.</p>
+          <p class="eyebrow">01 · DOCUMENTARY ARCHIVE</p>
+          <h1>Works<span class="title-annotation">Original source library</span></h1>
+          <p class="intro">Browse the uploaded source documents by filename or internal title. These are external source records, not works authored by Vixen. The 53 files are grouped into 32 catalogue entries; eight pairings remain unresolved. Authorship is shown only where established.</p>
         </div>
         <div class="view-number" aria-hidden="true">32</div>
       </div>
@@ -1545,9 +1545,9 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">06 · THE SALON · WHERE THEORIES ARE BUILT FROM SOURCES</p>
+          <p class="eyebrow">03 · VIXEN RESEARCH</p>
           <h1>The Salon<span class="title-annotation">Discover a research question worth pursuing.</span></h1>
-          <p class="intro salon-purpose">Explore ranked research leads, challenge a conjecture, or develop your own question. Read original manuscripts in Works; use Compare for a focused two-source experiment. Proposals are local computations, not verified discoveries or live AI responses.</p>
+          <p class="intro salon-purpose">Explore Vixen’s computational research proposals, cross-source connections and conjectures. These are new research outputs to investigate, not the uploaded manuscripts. Source documents remain in Works. All proposals require review.</p>
           <details class="vs-overture-notes">
             <summary>Current research scope</summary>
             <p class="intro">Works is where you read. The Salon is where you build: compare two recorded Works, pose a falsifiable question, weigh ranked proposals, test the conjectures that try to break them, and carry what survives to the Podium. Every proposal stays unratified; the original manuscripts never change.</p>
@@ -1560,7 +1560,7 @@ body[data-view="overview"] .reading-back{display:none}
       </div>
 
       <nav class="bc-quest-map" aria-label="Salon research route">
-        <button type="button" data-bc-scroll="vixenSynthesisSalon" data-bc-quest="compare"><b>I</b><span>Compare</span><small>two Works, read in either order</small></button>
+        <button type="button" data-bc-scroll="salonSourceComparison" data-bc-quest="compare"><b>I</b><span>Compare sources</span><small>optional experiment</small></button>
         <button type="button" data-bc-scroll="ciQuestionInput" data-bc-quest="question"><b>II</b><span>Pose</span><small>a question you could lose</small></button>
         <button type="button" data-bc-scroll="ciCandidateGrid" data-bc-quest="ranked"><b>III</b><span>Weigh</span><small>ranked proposals, side by side</small></button>
         <button type="button" data-bc-scroll="ciConjectureGrid" data-bc-quest="dares"><b>IV</b><span>Dare</span><small>conjectures and what breaks them</small></button>
@@ -1576,14 +1576,14 @@ body[data-view="overview"] .reading-back{display:none}
           </div>
           <div class="badge-row">
             <span class="tag gold">LOCAL RESEARCH · PROPOSAL ONLY</span>
-            <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
+            <span class="tag porcelain">Unverified proposals · review required</span>
           </div>
         </div>
 
         <div class="ci-card bc-ranked-index" aria-label="Ranked Unified Synthesis Candidates">
           <h3 class="ci-card-title">
             <span>Ranked research proposals</span>
-            <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
+            <span id="ciCandidateSummary">Ranked by research criteria</span>
           </h3>
           <p class="bc-index-dek">
             <strong>Ranked research proposals, not verified discoveries.</strong> Eight declared checks weigh each proposal; a percentage is a rubric fit, <strong>never</strong> a probability of truth. Open any row's ledger to see why it ranked where it did.
@@ -1660,6 +1660,15 @@ body[data-view="overview"] .reading-back{display:none}
         <p class="vix-operator-boundary-note">Proposals stay open to challenge. Continue collaborative research in the <a class="ci-btn" href="./vix-cyb/podium.html">Podium</a>.</p>
     </section>
 
+
+
+
+
+      <section class="salon-crib-manifesto" id="salonCribAndManifesto" aria-label="Mathematical Crib and Dynamic Synthesis Manifesto">
+        <div class="salon-crib-panel" id="salonMathCrib"></div>
+        <div class="salon-manifesto-panel" id="salonManifestoPanel"></div>
+      </section>
+      <details id="salonSourceComparison" class="salon-source-comparison"><summary>Source comparison · optional two-document experiment</summary><p class="comparison-scope-note">These are external documents selected from the source archive, not Vixen-authored research. The optical and directional experiment below is optional; it does not limit the wider synthesis to two documents.</p>
       <figure class="bc-draft bc-draft--salon-crown" id="bcBiasDraft" aria-labelledby="bcBiasDraftCap">
         <div class="bc-draft-host" data-bc-draft></div>
         <figcaption id="bcBiasDraftCap" class="bc-draft-cap">
@@ -1742,15 +1751,9 @@ body[data-view="overview"] .reading-back{display:none}
       </script>
 
       <div id="vixenSynthesisSalon" role="region" data-stage-role="VIXEN_OPERA" aria-label="Vixen couture synthesis laboratory and experiment design">
-        <p>The Vixen Synthesis Salon is preparing its historical source catalogue.</p>
+        <p>Preparing the optional source comparison.</p>
       </div>
-
-
-
-      <section class="salon-crib-manifesto" id="salonCribAndManifesto" aria-label="Mathematical Crib and Dynamic Synthesis Manifesto">
-        <div class="salon-crib-panel" id="salonMathCrib"></div>
-        <div class="salon-manifesto-panel" id="salonManifestoPanel"></div>
-      </section>
+      </details>
     </div>
   </section>
 
@@ -1921,7 +1924,7 @@ body[data-view="overview"] .reading-back{display:none}
     <a class="text-link footer-td613-mark" id="footerEncyclopediaLink" href="#overview">𝌋 TD613 Encyclopedia →</a>
   </div>
   <div class="footer-end-controls">
-    <a class="footer-podium-cta footer-podium-link" id="footerPodiumLink" href="./vix-cyb/podium.html"><span class="bc-podium-word">PODIUM</span> <span class="bc-podium-sub">(AI entrance)</span> <span class="bc-podium-arrow" aria-hidden="true">⟶</span></a>
+    <a class="footer-podium-cta footer-podium-link" id="footerPodiumLink" href="./vix-cyb/podium.html"><span class="bc-podium-word">PODIUM</span> <span class="bc-podium-sub">(Research entrance)</span> <span class="bc-podium-arrow" aria-hidden="true">⟶</span></a>
   </div>
 </footer>
 
@@ -6898,6 +6901,7 @@ import {
     if (!button) return;
     const target = document.getElementById(button.dataset.bcScroll);
     if (!target) return;
+    if (target.id === "salonSourceComparison") target.open = true;
     const still = document.body.dataset.vixenMotion === 'still' ||
       window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
     target.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });

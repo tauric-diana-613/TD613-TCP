@@ -93,6 +93,8 @@ try {
   assert.match(manifestoText,/no empirical validation/i);
   assert.doesNotMatch(manifestoText,/OPERAHOUSE ≠ OPERA ≠ PERFORMER/);
   assert.equal(await page.locator('#ciConjectureGrid .ci-conj-files').count(), 7);
+  assert.equal(await page.locator('#salonSourceComparison').getAttribute('open'),null,'External source reader must not occupy the default synthesis page');
+  await page.locator('#salonSourceComparison > summary').click();
   // Switch Salon Work I to Algedonic Systems PDF manifestation and verify .extracted.txt download
   await page.locator('#vixenSynthesisSalon select[aria-label="Choose Work 1"]').selectOption('emwork_085223e721130117f5510975');
   const salonPdfBtn = page.locator('#vixenSynthesisSalon [data-download-kind="EXTRACTED_NATIVE_PDF_TEXT"]').first();

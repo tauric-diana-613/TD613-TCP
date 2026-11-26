@@ -1153,3 +1153,23 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre .vix-reader-heading{font:500 19px/1.25 Georgia,serif!important}
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works:has(#worksLexiconLayout.has-mobile-reader) :is(.view-heading,.works-reading-guide,.aia-bar,.toolbar,#worksResultSummary,#workSortNotice){display:none!important}
 }
+
+/* Distinct public purposes: a source library and a research studio. */
+body #view-collection .salon-source-comparison{margin:24px 0 12px!important;border:1px solid #62666c!important;background:#12151a!important;color:#f4f1ea!important;padding:12px!important}
+body #view-collection .salon-source-comparison>summary{cursor:pointer;font:500 16px/1.4 Georgia,serif;padding:6px 2px;color:#fff2a9}
+body #view-collection .salon-source-comparison:not([open])>:not(summary){display:none!important}
+body #view-collection .comparison-scope-note{font:400 13px/1.5 system-ui,sans-serif;max-width:76ch;color:#d2d4d7;margin:8px 0 14px}
+body #view-collection .salon-purpose{display:block!important;color:#f4f1ea!important}
+body #view-collection .bc-quest-map{display:flex!important;flex-wrap:wrap!important;gap:4px!important;overflow:visible!important}
+body #view-collection .bc-quest-map button{flex:1 1 auto!important;min-width:0!important;min-height:34px!important;padding:5px 8px!important}
+body #view-collection .bc-quest-map button small{display:none!important}
+body #view-collection #constitutiveInquiry{padding:8px 0!important;margin:0!important}
+body #view-collection #constitutiveInquiry .ci-head{padding:4px 10px!important;margin-bottom:4px!important}
+body #view-collection #constitutiveInquiry .bc-ranked-index{padding:8px 10px!important;margin:0!important}
+body #view-collection #constitutiveInquiry .ci-candidate-card{background:#15181c!important;border:0!important;border-bottom:1px solid #4b4f54!important;box-shadow:none!important}
+body #view-collection #constitutiveInquiry .ci-candidate-card.is-active{border-left:2px solid #fff2a9!important}
+body #view-collection #constitutiveInquiry .ci-candidate-card .ci-candidate-subtitle{color:#d9d4cb!important}
+body #view-collection #constitutiveInquiry .ci-candidate-card .ci-conj-title{color:#f4f1ea!important}
+body #view-collection #constitutiveInquiry .ci-candidate-key{display:flex!important;flex-wrap:wrap!important;gap:4px 10px!important;font-size:9px!important;padding:3px 0!important}
+html body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{background:#f4f1ea!important;color:#15171b!important}
+@media(max-width:680px){body #view-collection .bc-quest-map button{flex:0 1 auto!important;font-size:11px!important}body #view-collection .bc-quest-map button b{display:none!important}body #view-collection #constitutiveInquiry .ci-head .badge-row{display:none!important}body #view-collection #constitutiveInquiry .ci-candidate-key{display:none!important}}

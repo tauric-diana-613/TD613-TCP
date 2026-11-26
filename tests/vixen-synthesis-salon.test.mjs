@@ -131,7 +131,7 @@ test('materialized Salon retains source selectors, research cart, rest, theory a
    assert(b,'Button not found: '+piece);b.click()
   };
   click('Place both Works');assert.equal(saved.size,2);
-  click('Compose an unratified theory');assert.equal(app.phase(),'PROPOSED');
+  click('Draft a two-source proposal');assert.equal(app.phase(),'PROPOSED');
   assert.equal(host.querySelector('.vs-result').dataset.claimClass,'OPEN_FIELD_UNRATIFIED_QUESTION');
   assert.match(host.textContent,/Experiment B/);
   assert.equal(host.querySelectorAll('.vs-metric').length,4);
@@ -327,9 +327,9 @@ test('Human-facing Salon explicitly differentiates immutable Work title and prop
   assert.equal(mounted.mounted,true);
   const original=dom.window.document.querySelector('.vs-source-card');
   assert.match(original.querySelector('.vs-work-title').textContent,/^The Architecture of Control:/);
-  assert.match(original.querySelector('.vs-source-tag').textContent,/ORIGINAL RECORDED WORK/);
+  assert.match(original.querySelector('.vs-source-tag').textContent,/EXTERNAL SOURCE DOCUMENT/);
   assert.match(original.querySelector('.vs-title-provenance').textContent,
-   /NOT A GENERATED SYNTHESIS CANDIDATE/);
+   /not a synthesis candidate/i);
   assert.equal(original.querySelector('.vs-field select').value,
    'emwork_085223e721130117f5510975');
   assert.equal(dom.window.document.querySelectorAll('button.vs-seam').length,1);

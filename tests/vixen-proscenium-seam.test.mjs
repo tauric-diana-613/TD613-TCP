@@ -35,10 +35,13 @@ test('Source-first Salon owns the research question, candidate scoring and conje
  assert(!salon.querySelector('#vixenAiJourney'),'AI Journey moved out of Salon into dedicated Podium');
  assert(!one('#vixenAiJourney'),'Dedicated Human Podium lives in separate document human-podium.html');
  assert(humanPodiumDom.window.document.querySelector('#view-podium #vixenAiJourney'),'Standalone Human Podium hosts AI Journey');
- assert(salon.querySelector('#vixenSynthesisSalon'));
+ assert(salon.querySelector('#salonSourceComparison:not([open]) #vixenSynthesisSalon'));
+ assert(!one('#view-works #ciCandidateGrid'));
+ assert(!salon.querySelector('#worksListContainer'));
+ assert(salon.querySelector('#ciCandidateGrid').compareDocumentPosition(salon.querySelector('#salonSourceComparison')) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING);
  assert(
-  salon.querySelector('a[href="./vix-cyb/human-podium.html#settings"], button[data-view="operator"]'),
-  'Salon must link to Podium Settings & Ledger review'
+  salon.querySelector('a[href="./vix-cyb/podium.html"]'),
+  'Salon must lead to the Podium without exposing the settings ledger'
  );
 });
 
