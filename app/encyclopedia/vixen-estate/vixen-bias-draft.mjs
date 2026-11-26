@@ -442,7 +442,9 @@ export function composeBiasDraft({
     return { ...item, x: seam.at(y), y };
   });
 
-  const labels = reversed
+  // Door and role materials keep their identities during optical recutting.
+  // Only the Salon's ordered Work encounter exchanges displayed panels.
+  const labels = reversed && mode === 'salon'
     ? { A: labelB, B: labelA, fA: fileB, fB: fileA, oA: 'II', oB: 'I', idA: workIdB, idB: workIdA }
     : { A: labelA, B: labelB, fA: fileA, fB: fileB, oA: 'I', oB: 'II', idA: workIdA, idB: workIdB };
 
@@ -665,8 +667,8 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
 
   // Grain arrows & compact horizontal nameplates
   const L = m.labels;
-  const grainLabelA = mode === 'threshold' ? 'HUMAN · ON THE BIAS' : 'CUT I · ON THE BIAS';
-  const grainLabelB = mode === 'threshold' ? 'AI / LLM · COUNTER-BIAS' : 'CUT II · COUNTER-BIAS';
+  const grainLabelA = mode === 'threshold' ? 'HUMAN · ON THE BIAS' : `CUT ${L.oA} · ON THE BIAS`;
+  const grainLabelB = mode === 'threshold' ? 'AI / LLM · COUNTER-BIAS' : `CUT ${L.oB} · COUNTER-BIAS`;
   const gSpan = compact ? 36 : 58;
   const gA = [selvW + (m.seam.at(clothH * 0.76) - selvW) * 0.42, clothH * 0.76];
   const gB = [W - selvW - (W - selvW - m.seam.at(clothH * 0.76)) * 0.42, clothH * 0.76];
@@ -730,8 +732,8 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
     ? `<path class="bc-d-hit" aria-hidden="true" data-bc-door="human" d="${leftPoly}" fill="transparent"/>` +
       `<path class="bc-d-hit" aria-hidden="true" data-bc-door="ai" d="${rightPoly}" fill="transparent"/>`
     : mode === 'salon'
-      ? `<path class="bc-d-hit" aria-hidden="true" data-bc-panel="I" d="${leftPoly}" fill="transparent"/>` +
-        `<path class="bc-d-hit" aria-hidden="true" data-bc-panel="II" d="${rightPoly}" fill="transparent"/>` +
+      ? `<path class="bc-d-hit" aria-hidden="true" data-bc-panel="${L.oA}" d="${leftPoly}" fill="transparent"/>` +
+        `<path class="bc-d-hit" aria-hidden="true" data-bc-panel="${L.oB}" d="${rightPoly}" fill="transparent"/>` +
         `<path class="bc-d-hit bc-d-hit-seam" aria-hidden="true" data-bc-seam-flip="true" d="${band}" fill="transparent"/>`
       : '';
 

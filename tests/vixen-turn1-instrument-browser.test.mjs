@@ -104,7 +104,22 @@ try {
   await page.waitForURL('**/encyclopedia/vix-cyb/podium.html', { timeout: 10000 });
   assert.equal(await page.locator('#podiumDoorAi').getAttribute('href'), './llms.txt');
   assert.equal(await page.locator('#collectionCount').innerText(), '1', 'Cart badge must carry across standalone podium.html');
-  await page.locator('#podiumDoorHuman').click();
+  // RP-F07: exercise actual optical links after AI focus reverses the geometry.
+  const humanHit = page.locator('#bcThresholdPortal [data-bc-door="human"]');
+  const aiHit = page.locator('#bcThresholdPortal [data-bc-door="ai"]');
+  const prepareReversedThreshold = async () => {
+    await humanHit.waitFor({ state: 'visible', timeout: 10000 });
+    const initial = await humanHit.getAttribute('d');
+    await page.locator('#podiumDoorAi').focus();
+    await page.waitForFunction(d => document.querySelector('#bcThresholdPortal [data-bc-door="human"]')?.getAttribute('d') !== d, initial, { timeout: 10000 });
+    assert.match(await page.locator('#bcThresholdPortal svg desc').textContent(), /Left bias panel \(HUMAN EXPEDITION\) and right counter-bias panel \(AI \/ LLM BRIEF\)/);
+  };
+  await prepareReversedThreshold();
+  await aiHit.click();
+  await page.waitForURL('**/encyclopedia/vix-cyb/llms.txt', { timeout: 10000 });
+  await page.goto(entranceUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await prepareReversedThreshold();
+  await humanHit.click();
   await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*', { timeout: 10000 });
   await page.waitForFunction(() => window.VixenAIModes?.mounted === true, null, { timeout: 25000 });
   assert.equal(await page.locator('#collectionCount').innerText(), '1', 'Cart badge must carry into human-podium.html');

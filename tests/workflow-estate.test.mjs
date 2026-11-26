@@ -130,6 +130,21 @@ for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase I
   assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: github\\.event_name == 'workflow_dispatch' && inputs\\.mode == 'full-browser'`));
 }
 
+// Canonical Vixen PR keeps the trusted release verifier's named checks, but
+// does not repeat the exhaustive visual gallery or duplicate mobile/geometry jobs.
+const vixenQual=consolidated.match(/  vixen_qualification:[\s\S]*?\n  scope:/)?.[0]||'';
+for(const step of ['Source and constitutional contracts','Historical original source and native route','Source-first desktop geometry','Dedicated iPhone first frame','G1-G8 integration and portable extracted replay','QA04 human acceptance remains HELD'])
+  assert.ok(vixenQual.includes('- name: '+step),'Required Vixen release step missing: '+step);
+assert.match(vixenQual,/VIXEN_CAPTURE_SCROLL_GALLERY:.*github\.head_ref == 'research\/vixen-dual-estate-encyclopedia-20261108'.*'0'/);
+assert.match(vixenQual,/- name: Capture complete desktop and mobile scroll witnesses\n\s+if:.*!\(github\.event_name == 'pull_request'/);
+assert.match(vixenQual,/- name: Publish full-scroll visual witness ZIP\n\s+if:.*!\(github\.event_name == 'pull_request'/);
+const vixenMobileGate=consolidated.match(/  vixen_mobile_first_frame:[\s\S]*?    runs-on:/)?.[0]||'';
+assert.match(vixenMobileGate,/github\.event_name == 'workflow_dispatch'/);
+assert.doesNotMatch(vixenMobileGate,/github\.event_name == 'pull_request'/);
+const vixenGeometryGate=consolidated.match(/  vixen_browser_qualification:[\s\S]*?    runs-on:/)?.[0]||'';
+assert.doesNotMatch(vixenGeometryGate,/github\.head_ref == 'research\/vixen-dual-estate-encyclopedia-20261108'/);
+assert.match(vixenGeometryGate,/startsWith\(github\.head_ref, 'fix\/vixen-opera-surface-'\)/);
+
 const pages = readFileSync(join(workflowDir, 'pages.yml'), 'utf8').replace(/\r\n/g, '\n');
 assert.match(pages, /workflow_dispatch:/);
 assert.doesNotMatch(pages, /pull_request:/, 'GitHub Pages must not duplicate PR validation.');

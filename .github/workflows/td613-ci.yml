@@ -81,6 +81,8 @@ jobs:
           TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/vixen-em-pinned-archive-qualifier.mjs > "$RUNNER_TEMP/vixen-original-receipt.json"
           TD613_EM_ARCHIVE_CHECKOUT="$RUNNER_TEMP/vixen-historical" node scripts/verify-vixen-historical-negative-controls.mjs > "$RUNNER_TEMP/vixen-historical-negatives.json"
       - name: Source-first desktop geometry
+        env:
+          VIXEN_CAPTURE_SCROLL_GALLERY: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' && '0' || '1' }}
         run: npm run test:vixen:browser
       - name: Dedicated iPhone first frame
         run: node scripts/run-vixen-browser-tests.mjs tests/vixen-mobile-frontispiece-witness.mjs
@@ -92,8 +94,19 @@ jobs:
         run: |
           mkdir -p artifacts/vixen-review-stack
           python3 scripts/package-vixen-review-stack.py --out artifacts/vixen-review-stack/Vixen_Cybernetics_Full_Stack.zip
+      # The operator elected human preview testing after the last complete gallery.
+      # Keep all named release-gate assertions; replay exhaustive images on demand.
       - name: Capture complete desktop and mobile scroll witnesses
+        if: ${{ !(github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108') }}
         run: node scripts/run-vixen-browser-tests.mjs tests/vixen-full-surface-witness.mjs
+      - name: Historical before/after manuscript gallery (explicit qualification)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification' }}
+        run: |
+          git worktree add --detach --no-checkout "$RUNNER_TEMP/vixen-redpen-before" 7500e294003e8a5effa52921c8d4b7eba673be9d
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout init --cone
+          git -C "$RUNNER_TEMP/vixen-redpen-before" sparse-checkout set app/encyclopedia
+          git -C "$RUNNER_TEMP/vixen-redpen-before" checkout --detach 7500e294003e8a5effa52921c8d4b7eba673be9d
+          VIXEN_BASELINE_ROOT="$RUNNER_TEMP/vixen-redpen-before" node scripts/run-vixen-browser-tests.mjs tests/vixen-opera-mobile-manuscript-browser.mjs
       - name: QA04 human acceptance remains HELD
         run: |
           mkdir -p artifacts/vixen-oop
@@ -115,7 +128,7 @@ jobs:
             ${{ runner.temp }}/vixen-preview.zip
           if-no-files-found: error
       - name: Publish full-scroll visual witness ZIP
-        if: always()
+        if: ${{ always() && !(github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108') }}
         uses: actions/upload-artifact@v4
         with:
           name: vixen-full-surface-${{ github.event.pull_request.head.sha || github.sha }}
@@ -187,8 +200,8 @@ jobs:
     needs: scope
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
-      github.event_name == 'pull_request' &&
-      github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108'
+      github.event_name == 'workflow_dispatch' && inputs.mode == 'vixen-qualification' &&
+      github.ref_name == 'research/vixen-dual-estate-encyclopedia-20261108'
     runs-on: ubuntu-24.04
     # GitHub apt/Chromium provisioning can exceed eight minutes without test failure.
     # Keep the source-bound witness mandatory; extend only its runner budget.
@@ -198,7 +211,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -228,7 +241,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vixen-mobile-redpen-${{ github.event.pull_request.head.sha }}
+          name: vixen-mobile-redpen-${{ github.sha }}
           path: artifacts/vixen-mobile-redpen/
           retention-days: 14
           if-no-files-found: warn
@@ -239,7 +252,7 @@ jobs:
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&
-      (github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' || startsWith(github.head_ref, 'fix/vixen-opera-surface-'))
+      startsWith(github.head_ref, 'fix/vixen-opera-surface-')
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:

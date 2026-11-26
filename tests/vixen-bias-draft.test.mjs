@@ -117,3 +117,32 @@ test('Directional geometry qualification across all 496 distinct pairs of 32 rec
   assert.equal(phaseDistinctPairs, 496, `Expected 496/496 phase-distinct pairs, got ${phaseDistinctPairs}`);
   assert.equal(seamDisplacedPairs, 496, `Expected 496/496 seam-displaced pairs, got ${seamDisplacedPairs} (minMaxDisplacement=${minMaxDisplacement})`);
 });
+
+test('RP-F07: recutting keeps entrance/role identities fixed; reversed Salon hit targets follow displayed Works', () => {
+  for (const width of [390, 1180]) {
+    for (const mode of ['threshold', 'podium', 'salon']) {
+      const input = { mode, width, height: 210, indexA: 6, indexB: 13,
+        labelA: 'HUMAN EXPEDITION', labelB: 'AI / LLM BRIEF',
+        fileA: 'Guided workspace', fileB: 'Plain-text guide',
+        workIdA: 'test_a', workIdB: 'test_b', podiumRole: 'COMPOSER' };
+      const a = composeBiasDraft(input);
+      const b = composeBiasDraft({ ...input, reversed: true });
+      assert.ok(a.seam.xs.some((x, i) => Math.abs(x - b.seam.xs[i]) > 0.5), 'Reversal still changes the optical seam');
+      const svg = renderBiasDraftSVG(b);
+      if (mode === 'salon') {
+        assert.equal(b.labels.A, input.labelB);
+        assert.equal(b.labels.B, input.labelA);
+        assert.deepEqual([...svg.matchAll(/data-bc-panel="(I{1,2})"/g)].map(m => m[1]), ['II', 'I']);
+      } else {
+        assert.equal(b.labels.A, input.labelA);
+        assert.equal(b.labels.B, input.labelB);
+        assert.equal(b.labels.fA, input.fileA);
+        assert.equal(b.labels.fB, input.fileB);
+        if (mode === 'threshold') {
+          assert.deepEqual([...svg.matchAll(/data-bc-door="(human|ai)"/g)].map(m => m[1]), ['human', 'ai']);
+          assert.match(svg, /Left bias panel \(HUMAN EXPEDITION\) and right counter-bias panel \(AI \/ LLM BRIEF\)/);
+        }
+      }
+    }
+  }
+});

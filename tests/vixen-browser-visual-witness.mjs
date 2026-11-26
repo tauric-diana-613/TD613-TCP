@@ -16,6 +16,8 @@ const output = path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
   ? path.join(process.env.VIXEN_WITNESS_OUT_DIR, 'vixen-browser-witness')
   : 'artifacts/vixen-browser-witness');
 const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+// Routine product PRs retain all DOM/route assertions; archival scroll tiles are opt-in.
+const captureScrollGallery = process.env.VIXEN_CAPTURE_SCROLL_GALLERY !== '0';
 function channelContrast(fgRgb, bgRgb){
   const lum=rgb=>rgb.slice(0,3).map(v=>{
     const c=v/255;
@@ -1594,6 +1596,7 @@ try {
           document.getElementById('motionBtn').click();
       });
       await page.waitForTimeout(250);
+      if (!captureScrollGallery) continue;
       const bottom=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);
       for(let offset=0,n=0;;offset+=Math.floor(height*.83),n++){
         await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),Math.min(offset,bottom));
@@ -1615,6 +1618,7 @@ await writeFile(path.join(output, 'witness.json'), JSON.stringify({
   scope: 'source-first layout, same-Work role boundary, accessible route, local Rest',
   creative_scientific_qualification: 'HUMAN_RESERVED',
   hosted_verification: 'NOT_PERFORMED',
+  route_scroll_gallery: captureScrollGallery ? 'CAPTURED' : 'DEFERRED_OPERATOR_REQUEST',
   head, witness
 }, null, 2) + '\n');
 console.log('Vixen exact-head browser geometry passed:', head, witness.map(x => x.width + '×' + x.height).join(', '));
