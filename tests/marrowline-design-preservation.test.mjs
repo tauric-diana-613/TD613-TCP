@@ -710,7 +710,9 @@ test('RP-06: backgrounded mobile request uses keepalive, suppresses automatic du
   const task = 'Keep this one task preserved while the app is backgrounded.';
   h.send(task);
   await h.settled(); await flush();
-  assert.equal(h.fetchOptions[0].keepalive, true, 'the original request opts into browser background delivery');
+  assert.equal(h.fetchOptions[0].keepalive, false, 'streaming generation avoids the 64 KiB beacon keepalive loader');
+  assert.ok(h.fetchOptions[0].headers['X-TD613-Episode-Id'], 'request carries per-turn episode continuity capability');
+  assert.equal(h.fetchOptions[0].headers['X-TD613-Transport-Stream'], 'heartbeat-v1');
   assert.equal(h.calls.length, 1, 'RP-06: background disconnect must NEVER trigger an automatic second paid provider call on page return');
   const failure = h.win.__TD613_KHONAPOLIT_LAST_FAILURE__;
   assert.ok(failure, 'background disconnect records an explicit client lifecycle observation');

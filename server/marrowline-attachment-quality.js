@@ -197,8 +197,13 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 
-async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false, structuralRepair = null, groveTrial = null } = {}) {
+async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false, structuralRepair = null, groveTrial = null, externalAbortSignal = null } = {}) {
   const controller = new AbortController();
+  const onExternalAbort = () => controller.abort();
+  if (externalAbortSignal) {
+    if (externalAbortSignal.aborted) controller.abort();
+    else externalAbortSignal.addEventListener('abort', onExternalAbort, { once: true });
+  }
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   // Preserve the exact submitted provider envelope as receipt provenance.
   // Attachment turns currently use the unprofiled HIGH request; changing that
@@ -221,10 +226,11 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
     const payload = await response.json().catch(() => ({}));
     return { response, payload, text: extractGeminiText(payload), timedOut: false, submittedGenerationConfig, submittedRequestObservation };
   } catch (error) {
-    const timedOut = error?.name === 'AbortError';
+    const operatorAborted = Boolean(externalAbortSignal?.aborted);
+    const timedOut = !operatorAborted && error?.name === 'AbortError';
     return {
-      response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
-      payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
+      response: { ok: false, status: operatorAborted ? 499 : (timedOut ? 408 : 599), headers: { get: () => null } },
+      payload: { error: { status: operatorAborted ? 'CANCELLED' : (error?.name || 'FETCH_ERROR'), message: safe(error?.message || error) } },
       text: '',
       timedOut,
       submittedGenerationConfig,
@@ -232,6 +238,7 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
     };
   } finally {
     clearTimeout(timer);
+    externalAbortSignal?.removeEventListener?.('abort', onExternalAbort);
   }
 }
 
@@ -324,6 +331,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
   };
 
   for (let index = 0; index < models.length; index += 1) {
+    if (req?.episodeAbortSignal?.aborted) break;
     if (isCarbonReconstruction && attempts.length >= 1) break;
     const model = models[index];
     const fallback = index > 0;
@@ -339,7 +347,8 @@ export default async function marrowlineAttachmentHandler(req, res) {
       streamed: false
     });
     const attemptStartedAt = Date.now();
-    const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback, groveTrial });
+    const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback, groveTrial, externalAbortSignal: req?.episodeAbortSignal || null });
+    if (req?.episodeAbortSignal?.aborted) break;
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
@@ -428,14 +437,15 @@ export default async function marrowlineAttachmentHandler(req, res) {
         STRUCTURAL_REPAIR_TIMEOUT_MS,
         WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS
       );
-      if (repairBudget >= MIN_STRUCTURAL_REPAIR_BUDGET_MS) {
+      if (repairBudget >= MIN_STRUCTURAL_REPAIR_BUDGET_MS && !req?.episodeAbortSignal?.aborted) {
         repairAttempted = true;
         const sourceAttemptIndex = attempts.length - 1;
         const repairStartedAt = Date.now();
         const repairResult = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, repairBudget, {
           fallback,
           groveTrial,
-          structuralRepair: { heldText: result.text, reasons: structuralReasons }
+          structuralRepair: { heldText: result.text, reasons: structuralReasons },
+          externalAbortSignal: req?.episodeAbortSignal || null
         });
         const repairOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
         const repairTransport = classifyGeminiTransport({ status: Number(repairResult.response.status || 0), timedOut: repairResult.timedOut });

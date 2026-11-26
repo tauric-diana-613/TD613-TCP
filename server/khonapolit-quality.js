@@ -1209,9 +1209,14 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null, groveTrial = null } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null, groveTrial = null, externalAbortSignal = null } = {}
 ) {
   const controller = new AbortController();
+  const onExternalAbort = () => controller.abort();
+  if (externalAbortSignal) {
+    if (externalAbortSignal.aborted) controller.abort();
+    else externalAbortSignal.addEventListener('abort', onExternalAbort, { once: true });
+  }
   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
   let timer = setTimeout(() => controller.abort(), timeoutMs);
   let graceSpent = false;
@@ -1264,17 +1269,18 @@ async function callGemini(
       response,
       payload,
       text: extractGeminiText(payload),
-      timedOut: Boolean(progress.streamInterrupted && controller.signal.aborted),
+      timedOut: Boolean(!externalAbortSignal?.aborted && progress.streamInterrupted && controller.signal.aborted),
       streamed: Boolean(streamedPayload),
       submittedGenerationConfig,
       submittedRequestObservation,
       ...progress
     };
   } catch (error) {
-    const timedOut = error?.name === 'AbortError';
+    const operatorAborted = Boolean(externalAbortSignal?.aborted);
+    const timedOut = !operatorAborted && error?.name === 'AbortError';
     return {
-      response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
-      payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
+      response: { ok: false, status: operatorAborted ? 499 : (timedOut ? 408 : 599), headers: { get: () => null } },
+      payload: { error: { status: operatorAborted ? 'CANCELLED' : (error?.name || 'FETCH_ERROR'), message: safe(error?.message || error) } },
       text: '',
       timedOut,
       streamed: progress.chunkCount > 0,
@@ -1284,6 +1290,7 @@ async function callGemini(
     };
   } finally {
     clearTimeout(timer);
+    externalAbortSignal?.removeEventListener?.('abort', onExternalAbort);
   }
 }
 
@@ -1590,10 +1597,12 @@ export default async function handler(req, res) {
       sourceAttemptIndex
     } = candidate;
     const repairStartedAt = Date.now();
+    if (req?.episodeAbortSignal?.aborted) return null;
     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
       fallback, streamGraceMs: 0,
       structuralRepair: { heldText, reasons },
-      wallDeadlineAt: providerWallDeadlineAt, groveTrial
+      wallDeadlineAt: providerWallDeadlineAt, groveTrial,
+      externalAbortSignal: req?.episodeAbortSignal || null
     });
     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
@@ -1985,6 +1994,7 @@ export default async function handler(req, res) {
   };
 
   for (let index = 0; index < models.length; index += 1) {
+    if (req?.episodeAbortSignal?.aborted) break;
     // The bounded suffix chain and fallback frontier share one total-call ceiling.
     // A successful recovery must never turn a six-call human request into seven.
     if (attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) break;
@@ -2016,8 +2026,10 @@ export default async function handler(req, res) {
       wholeFrameCompact,
       syntheticUnicodeAssay,
       groveTrial,
-      wallDeadlineAt: providerWallDeadlineAt
+      wallDeadlineAt: providerWallDeadlineAt,
+      externalAbortSignal: req?.episodeAbortSignal || null
     });
+    if (req?.episodeAbortSignal?.aborted) break;
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });

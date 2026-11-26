@@ -5,6 +5,12 @@ import loomDemoTaskHandler from '../server/loom-demo-task.js';
 import marrowlineAttachmentHandler from '../server/marrowline-attachment-quality.js';
 import marrowlineAttachmentUploadHandler from '../server/marrowline-attachment-upload.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
+import {
+  episodeCancelHandler,
+  episodeClaimHandler,
+  episodeConsumeHandler,
+  runWithMarrowlineEpisodeContinuity
+} from '../server/marrowline-episode-continuity.js';
 import loomAdvisoryHandler from '../server/holonomy-loom-khonapolit-advisory.js';
 import loomAssayHandler from '../server/loom-assay.js';
 import loomAssayCredentialHandler from '../server/loom-assay-credential.js';
@@ -37,23 +43,29 @@ function requestHasAttachments(req = {}) {
 }
 
 export default function handler(req, res) {
-  if (requestedOperation(req) === 'attachment-upload') return marrowlineAttachmentUploadHandler(req, res);
-  if (requestedOperation(req) === 'loom-assay-credential') return loomAssayCredentialHandler(req, res);
-  if (requestedOperation(req) === 'loom-assay') return loomAssayHandler(req, res);
-  if (requestedOperation(req) === 'loom-advisory') return withGeminiGenerationProfile(
+  const operation = requestedOperation(req);
+  if (operation === 'attachment-upload') return marrowlineAttachmentUploadHandler(req, res);
+  if (operation === 'episode-claim') return episodeClaimHandler(req, res);
+  if (operation === 'episode-consume') return episodeConsumeHandler(req, res);
+  if (operation === 'episode-cancel') return episodeCancelHandler(req, res);
+  if (operation === 'loom-assay-credential') return loomAssayCredentialHandler(req, res);
+  if (operation === 'loom-assay') return loomAssayHandler(req, res);
+  if (operation === 'loom-advisory') return withGeminiGenerationProfile(
     GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
     () => loomAdvisoryHandler(req, res)
   );
-  if (requestedOperation(req) === 'loom-demo-task') return loomDemoTaskHandler(req, res);
-  if (requestedOperation(req) === 'loom-task') return loomTaskHandler(req, res);
-  if (requestedOperation(req) === 'gemini-readiness') {
+  if (operation === 'loom-demo-task') return loomDemoTaskHandler(req, res);
+  if (operation === 'loom-task') return loomTaskHandler(req, res);
+  if (operation === 'gemini-readiness') {
     return geminiReadinessHandler(req, res);
   }
-  if (requestHasAttachments(req)) return marrowlineAttachmentHandler(req, res);
-  return withGeminiGenerationProfile(
+  if (requestHasAttachments(req)) {
+    return runWithMarrowlineEpisodeContinuity(req, res, (epReq, epRes) => marrowlineAttachmentHandler(epReq, epRes));
+  }
+  return runWithMarrowlineEpisodeContinuity(req, res, (epReq, epRes) => withGeminiGenerationProfile(
     GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
-    () => khonapolitHandler(req, res)
-  );
+    () => khonapolitHandler(epReq, epRes)
+  ));
 }
 
 export * from '../server/khonapolit-quality.js';
