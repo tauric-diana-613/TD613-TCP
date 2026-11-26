@@ -380,11 +380,19 @@ window.addEventListener('pageshow', syncCartUi);
     if (portal) portal.dataset.activeDoor = which;
     schedule();
   };
+  const syncFromFocus = () => {
+    if (document.activeElement === doorAi) { setDoorFocus('ai'); return; }
+    if (document.activeElement === doorHuman) { setDoorFocus('human'); return; }
+    activeDoor = '';
+    if (portal) delete portal.dataset.activeDoor;
+    schedule();
+  };
   doorHuman?.addEventListener('mouseenter', () => setDoorFocus('human'));
   doorHuman?.addEventListener('focus', () => setDoorFocus('human'));
   doorAi?.addEventListener('mouseenter', () => setDoorFocus('ai'));
   doorAi?.addEventListener('focus', () => setDoorFocus('ai'));
-  portal?.addEventListener('mouseleave', () => { activeDoor = ''; delete portal.dataset.activeDoor; schedule(); });
+  portal?.addEventListener('mouseleave', syncFromFocus);
+  portal?.addEventListener('focusout', () => setTimeout(syncFromFocus, 0));
   host?.addEventListener('click', (ev) => {
     const hit = ev.target.closest?.('[data-bc-door]');
     if (!hit) return;
