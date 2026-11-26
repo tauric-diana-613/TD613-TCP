@@ -297,6 +297,9 @@ try {
       await livePage.evaluate(()=>{
         document.querySelector('#vixenRoomRail button[data-view="collection"]').click();
       });
+      if(await livePage.locator('#salonSourceComparison').getAttribute('open')===null){
+        await livePage.locator('#salonSourceComparison > summary').click();
+      }
       await livePage.locator('#vixenSynthesisSalon .vs-optical-stage').scrollIntoViewIfNeeded();
       await livePage.waitForFunction(()=>{
         const s=window.VIXEN_SALON_PRESENTATION?.status?.();
