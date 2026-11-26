@@ -604,49 +604,55 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
       `<text x="${r2(rbx + rw * 0.5)}" y="${r2(ryLock + 3.5)}" text-anchor="middle" class="bc-d-micro" fill="#fff2a9">${esc(roleTag)}</text>` +
       `</g>`;
   } else {
-    seamMarks = m.gates.map(([x, y], j) =>
-      `<g class="bc-d-gate"><path d="M${r2(x - 18)} ${r2(y - 6)} L${r2(x + 18)} ${r2(y + 6)}" stroke="#e8d7a8" stroke-width="1.3" stroke-dasharray="4 3"/>` +
-      `<path d="M${r2(x - gap - 5.5)} ${r2(y - 3)} l4.5 3 l-4.5 3z" fill="#e8d7a8"/><path d="M${r2(x + gap + 5.5)} ${r2(y - 3)} l-4.5 3 l4.5 3z" fill="#e8d7a8"/>` +
-      `<text x="${r2(x + 21)}" y="${r2(y + 9)}" class="bc-d-micro" fill="#e8d7a8">G${j + 1}</text></g>`
-    ).join('');
+    seamMarks = m.gates.map(([x, y], j) => {
+      const placeLeft = compact && (j % 2 === 1);
+      const tx = placeLeft ? Math.max(selvW + 4, x - 28) : Math.min(W - selvW - 18, x + (compact ? 12 : 21));
+      const span = compact ? 11 : 18;
+      return `<g class="bc-d-gate"><path d="M${r2(x - span)} ${r2(y - 4)} L${r2(x + span)} ${r2(y + 4)}" stroke="#e8d7a8" stroke-width="1.2" stroke-dasharray="4 3"/>` +
+        `<path d="M${r2(x - gap - 5)} ${r2(y - 2.6)} l4 2.6 l-4 2.6z" fill="#e8d7a8"/><path d="M${r2(x + gap + 5)} ${r2(y - 2.6)} l-4 2.6 l4 2.6z" fill="#e8d7a8"/>` +
+        `<text x="${r2(tx)}" y="${r2(y + (compact ? 3 : 8))}" class="bc-d-micro" fill="#e8d7a8">G${j + 1}</text></g>`;
+    }).join('');
   }
 
   // Synthetic optical waist aperture + [111] triad spokes
   const [wx, wy] = m.waist;
   const ap = m.aperture;
-  const rMax = compact ? 24 : 33;
+  const rMax = compact ? 19 : 33;
   const rMin = typeof ap.condition === 'number' ? Math.max(1.4, rMax / Math.min(ap.condition, 24)) : 1.1;
   const angle = (Math.atan2(m.gradT[1], m.gradT[0]) * 180) / Math.PI;
   const kappa = typeof ap.condition === 'number' ? ap.condition.toFixed(2) : '∞';
   const proj = m.mirror.projection;
   const spoke = (i, a) => {
-    const L = 7 + Math.min(1, Math.abs(proj[i]) * 2.2) * (compact ? 18 : 25);
+    const L = 7 + Math.min(1, Math.abs(proj[i]) * 2.2) * (compact ? 14 : 25);
     const rad = (a * Math.PI) / 180;
     return `<line x1="${r2(wx)}" y1="${r2(wy)}" x2="${r2(wx + L * Math.cos(rad))}" y2="${r2(wy + L * Math.sin(rad))}"/>`;
   };
-  const apText = compact ? `synthetic κ ${kappa}` : `SYNTHETIC FIELD κ ${kappa}`;
-  const apBoxW = apText.length * 6.5 + 16;
+  const apText = compact ? `κ ${kappa}` : `SYNTHETIC FIELD κ ${kappa}`;
+  const apBoxW = apText.length * 6.4 + (compact ? 12 : 16);
   const apPlaceLeft = mode === 'threshold'
     ? true
     : (wx + rMax + apBoxW + 14 > W - selvW - 6);
   const apBoxX = apPlaceLeft
-    ? Math.max(selvW + 6, wx - rMax - apBoxW - 10)
-    : wx + rMax + 10;
-  const apBoxY = clamp(wy - 9.5, 32, clothH - 28);
+    ? Math.max(selvW + 6, wx - rMax - apBoxW - 8)
+    : Math.min(W - selvW - apBoxW - 6, wx + rMax + 8);
+  const apBoxY = clamp(wy - 9.5, compact ? 58 : 32, clothH - (compact ? 48 : 28));
 
   // Caustic peak / Salon unratified inquiry marker (Salon mode only)
   let causticMarkup = '';
   if (mode === 'salon') {
-    const [px, py, fVal] = m.proposal;
+    const [px, pyRaw, fVal] = m.proposal;
+    const py = compact && Math.abs(pyRaw - apBoxY) < 26
+      ? clamp(pyRaw + (pyRaw > clothH * 0.5 ? -30 : 30), 36, clothH - 34)
+      : pyRaw;
     const tagTxt = m.proposalFit !== null
-      ? `UNRATIFIED FIT ${(m.proposalFit * 100).toFixed(1)}%`
+      ? (compact ? `FIT ${(m.proposalFit * 100).toFixed(0)}%` : `UNRATIFIED FIT ${(m.proposalFit * 100).toFixed(1)}%`)
       : `CAUSTIC |T−Q| ${fVal.toFixed(2)}`;
-    const tagW = tagTxt.length * 6.2 + 14;
+    const tagW = tagTxt.length * 6.2 + (compact ? 10 : 14);
     const placeRight = px - tagW - 14 < selvW + 6;
-    const tx = placeRight ? Math.min(W - selvW - tagW - 6, px + 13) : Math.max(selvW + 6, px - tagW - 13);
+    const tx = placeRight ? Math.min(W - selvW - tagW - 6, px + 11) : Math.max(selvW + 6, px - tagW - 11);
     causticMarkup = `<g class="bc-d-proposal">` +
-      `<path d="M${r2(px)} ${r2(py - 9)} L${r2(px + 2.8)} ${r2(py - 2.8)} L${r2(px + 9)} ${r2(py)} L${r2(px + 2.8)} ${r2(py + 2.8)} L${r2(px)} ${r2(py + 9)} L${r2(px - 2.8)} ${r2(py + 2.8)} L${r2(px - 9)} ${r2(py)} L${r2(px - 2.8)} ${r2(py - 2.8)}Z" fill="#ff91af" stroke="#15171b" stroke-width="0.7"/>` +
-      `<rect x="${r2(tx)}" y="${r2(py - 9)}" width="${r2(tagW)}" height="18" rx="2" fill="rgba(244,241,234,.92)" stroke="#a3204f" stroke-opacity="0.55"/>` +
+      `<path d="M${r2(px)} ${r2(py - 8)} L${r2(px + 2.6)} ${r2(py - 2.6)} L${r2(px + 8)} ${r2(py)} L${r2(px + 2.6)} ${r2(py + 2.6)} L${r2(px)} ${r2(py + 8)} L${r2(px - 2.6)} ${r2(py + 2.6)} L${r2(px - 8)} ${r2(py)} L${r2(px - 2.6)} ${r2(py - 2.6)}Z" fill="#ff91af" stroke="#15171b" stroke-width="0.7"/>` +
+      `<rect x="${r2(tx)}" y="${r2(py - 9)}" width="${r2(tagW)}" height="18" rx="2" fill="rgba(244,241,234,.94)" stroke="#a3204f" stroke-opacity="0.55"/>` +
       `<text x="${r2(tx + tagW * 0.5)}" y="${r2(py + 3.5)}" text-anchor="middle" class="bc-d-micro" fill="#a3204f">${esc(tagTxt)}</text>` +
       `</g>`;
   }
@@ -654,15 +660,15 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
   // Unworked human-closure buttonhole: clamped strictly within [selvW + 8, W - selvW - 8]
   const bhX = m.seam.at(16);
   const bhY = 15;
-  const bhLabel = compact ? 'CLOSURE · RESERVED' : 'HUMAN CLOSURE · RESERVED';
-  const bhLabelW = bhLabel.length * 6.3 + 12;
-  const bhTotalW = 28 + 6 + bhLabelW;
-  const bhLeft = clamp(bhX - 14, selvW + 8, Math.max(selvW + 8, W - selvW - bhTotalW - 8));
+  const bhLabel = compact ? 'CLOSURE HELD' : 'HUMAN CLOSURE · RESERVED';
+  const bhLabelW = bhLabel.length * 6.3 + 10;
+  const bhTotalW = 24 + 6 + bhLabelW;
+  const bhLeft = clamp(bhX - 12, selvW + 8, Math.max(selvW + 8, W - selvW - bhTotalW - 8));
   const closureMarkup = `<g class="bc-d-closure">` +
-    `<rect x="${r2(bhLeft - 3)}" y="${r2(bhY - 9)}" width="${r2(bhTotalW + 6)}" height="18" rx="3" fill="rgba(11,12,15,.88)" stroke="#e8d7a8" stroke-opacity="0.38"/>` +
-    `<rect x="${r2(bhLeft)}" y="${r2(bhY - 4.5)}" width="26" height="9" rx="4.5" fill="#0b0c0f" stroke="#fff2a9" stroke-width="1.4"/>` +
-    `<line x1="${r2(bhLeft + 5)}" y1="${r2(bhY)}" x2="${r2(bhLeft + 21)}" y2="${r2(bhY)}" stroke="#fff2a9" stroke-width="0.9" stroke-dasharray="2 2"/>` +
-    `<text x="${r2(bhLeft + 32)}" y="${r2(bhY + 3.5)}" class="bc-d-micro" fill="#fff2a9">${bhLabel}</text>` +
+    `<rect x="${r2(bhLeft - 3)}" y="${r2(bhY - 9)}" width="${r2(bhTotalW + 6)}" height="18" rx="3" fill="rgba(11,12,15,.92)" stroke="#e8d7a8" stroke-opacity="0.45"/>` +
+    `<rect x="${r2(bhLeft)}" y="${r2(bhY - 4.5)}" width="22" height="9" rx="4.5" fill="#0b0c0f" stroke="#fff2a9" stroke-width="1.4"/>` +
+    `<line x1="${r2(bhLeft + 4)}" y1="${r2(bhY)}" x2="${r2(bhLeft + 18)}" y2="${r2(bhY)}" stroke="#fff2a9" stroke-width="0.9" stroke-dasharray="2 2"/>` +
+    `<text x="${r2(bhLeft + 28)}" y="${r2(bhY + 3.5)}" class="bc-d-micro" fill="#fff2a9">${bhLabel}</text>` +
     `</g>`;
 
   // Grain arrows & compact horizontal nameplates
@@ -673,7 +679,7 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
   const gA = [selvW + (m.seam.at(clothH * 0.76) - selvW) * 0.42, clothH * 0.76];
   const gB = [W - selvW - (W - selvW - m.seam.at(clothH * 0.76)) * 0.42, clothH * 0.76];
 
-  const showGrainArrows = !compact || clothH >= 180;
+  const showGrainArrows = !compact;
   const grainMarkup = showGrainArrows
     ? `<g class="bc-d-grain" stroke-width="1" fill="none">
   <g transform="rotate(-45 ${r2(gA[0])} ${r2(gA[1])})" stroke="#23262c">
@@ -689,17 +695,18 @@ export function renderBiasDraftSVG(m, { title = 'The Bias Draft' } = {}) {
 </g>`
     : '';
 
-  const room = Math.max(18, Math.floor((clothH - 22) / 6.8));
+  const room = Math.max(14, Math.floor((clothH - 36) / 7.5));
   const selA = clipText(`${L.oA} · ${L.A}${L.fA ? ' · ' + L.fA : ''}`, room);
   const selB = clipText(`${L.oB} · ${L.B}${L.fB ? ' · ' + L.fB : ''}`, room);
 
-  // On compact viewports, add crisp horizontal selvedge badges at top-left / bottom-right
+  // On compact viewports, add crisp horizontal selvedge badges away from top closure & bottom ruler
+  const badgeW = Math.min(132, Math.round(W * 0.36));
   const compactBadges = compact
     ? `<g class="bc-d-compact-plate">` +
-      `<rect x="${selvW + 6}" y="38" width="${Math.min(148, Math.round(W * 0.4))}" height="20" rx="2" fill="rgba(244,241,234,.94)" stroke="#8d939a"/>` +
-      `<text x="${selvW + 12}" y="51.5" class="bc-d-micro" fill="#15171b">${esc(clipText(`${L.oA} · ${L.fA || L.A}`, 21))}</text>` +
-      `<rect x="${W - selvW - Math.min(148, Math.round(W * 0.4)) - 6}" y="${clothH - 28}" width="${Math.min(148, Math.round(W * 0.4))}" height="20" rx="2" fill="rgba(16,18,24,.92)" stroke="#8d939a"/>` +
-      `<text x="${W - selvW - 12}" y="${clothH - 14.5}" text-anchor="end" class="bc-d-micro" fill="#f4f1ea">${esc(clipText(`${L.oB} · ${L.fB || L.B}`, 21))}</text>` +
+      `<rect x="${selvW + 5}" y="34" width="${badgeW}" height="18" rx="2" fill="rgba(244,241,234,.94)" stroke="#8d939a"/>` +
+      `<text x="${selvW + 10}" y="46.5" class="bc-d-micro" fill="#15171b">${esc(clipText(`${L.oA} · ${L.fA || L.A}`, 18))}</text>` +
+      `<rect x="${W - selvW - badgeW - 5}" y="${clothH - 25}" width="${badgeW}" height="18" rx="2" fill="rgba(16,18,24,.94)" stroke="#8d939a"/>` +
+      `<text x="${W - selvW - 10}" y="${clothH - 12.5}" text-anchor="end" class="bc-d-micro" fill="#f4f1ea">${esc(clipText(`${L.oB} · ${L.fB || L.B}`, 18))}</text>` +
       `</g>`
     : '';
 
@@ -791,8 +798,8 @@ ${grainMarkup}
   <rect x="${W - selvW}" y="0" width="${selvW}" height="${clothH}" fill="url(#${uid}Chrome)"/>
   <line x1="${selvW}" y1="0" x2="${selvW}" y2="${clothH}" stroke="#23262c" stroke-width="1"/>
   <line x1="${W - selvW}" y1="0" x2="${W - selvW}" y2="${clothH}" stroke="#23262c" stroke-width="1"/>
-  <text transform="translate(${r2(selvW * 0.68)} ${clothH - 10}) rotate(-90)" class="bc-d-selv" fill="#15171b">${esc(selA)}</text>
-  <text transform="translate(${r2(W - selvW * 0.68)} 10) rotate(90)" class="bc-d-selv" fill="#15171b">${esc(selB)}</text>
+  <text transform="translate(${r2(selvW * 0.72)} ${clothH - 16}) rotate(-90)" class="bc-d-selv" fill="#15171b">${esc(selA)}</text>
+  <text transform="translate(${r2(W - selvW * 0.72)} 16) rotate(90)" class="bc-d-selv" fill="#15171b">${esc(selB)}</text>
 </g>
 ${compactBadges}
 ${closureMarkup}

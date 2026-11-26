@@ -675,7 +675,7 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  const clock=getState().opticalClock||{time:0};
  let raf=0,disposed=false,visible=false,lastMs=null,lastPaint=-Infinity,dirty=true,frames=0,last=null,latestRad=null;
  let resolution=null,paintCosts=[],geometryFrames=0,lastScene=null,lastStageRect=null;
- let motionFrames=0,lastMotionPaint=-Infinity,motionPaintCostMs=0,motionPresentedFps=0;
+ let motionFrames=0,motionSinceGeometry=0,lastMotionPaint=-Infinity,motionPaintCostMs=0,motionPresentedFps=0;
  let scrollActiveUntil=-Infinity;
  const held=()=>reduced.matches||motion?.getAttribute('aria-pressed')==='true'||doc.body.dataset.vixenMotion==='still'||getState().resting;
  const active=()=>!doc.hidden&&doc.body.dataset.view==='collection'&&doc.body.dataset.activeResearchStage!=='OPERAHOUSE';
@@ -698,7 +698,7 @@ export function mountFoldedCuirass(canvas,getState,options={}){
   ctx.setTransform(back.width/r.width,0,0,back.height/r.height,0,0);
   const m=buildFoldedCuirass({width:r.width,height:r.height,time:clock.time,sourceIds,
    integrated:win.innerWidth?win.innerWidth>740:r.width>800,route,lag,activeClock});
-  const painted=paintFoldedCuirass(ctx,m);geometryFrames++;
+  const painted=paintFoldedCuirass(ctx,m);geometryFrames++;motionSinceGeometry=0;
   lastScene=m.scene;lastStageRect={left:r.left,top:r.top,width:r.width,height:r.height};
   win.VixenLivingMesh?.renderHostFrame?.({time:clock.time,sourceIds:m.sourceIds,
    scene:m.scene,stageRect:lastStageRect,
@@ -725,7 +725,7 @@ export function mountFoldedCuirass(canvas,getState,options={}){
   motionPaintCostMs=win.performance.now()-begin;
   if(Number.isFinite(lastMotionPaint)&&lastMotionPaint>=0&&ms>lastMotionPaint)
    motionPresentedFps=1000/(ms-lastMotionPaint);
-  lastMotionPaint=ms;motionFrames++;
+  lastMotionPaint=ms;motionFrames++;motionSinceGeometry++;
   // Scroll redpen: the same Salon RAF owns presentation and host projection.
   // While scrolling on desktop, update stage coordinates at the 60Hz light
   // cadence instead of lagging behind the 24Hz garment geometry redraw.
@@ -743,7 +743,11 @@ export function mountFoldedCuirass(canvas,getState,options={}){
   if(lastMs!==null&&!held())clock.time+=Math.min(.1,Math.max(0,(ms-lastMs)/1000));
   lastMs=ms;
   const interval=1000/(canvas.clientWidth<500?CUIRASS_POLICY.mobile_fps:CUIRASS_POLICY.desktop_fps);
-  if(dirty||(!held()&&ms-lastPaint>=interval)){paint();lastPaint=ms;}
+  const needCachedCharge=visible&&Boolean(motionCtx)&&geometryFrames>0&&motionSinceGeometry<2;
+  if(dirty||(!held()&&!needCachedCharge&&ms-lastPaint>=interval)){
+   const p0=win.performance.now();paint();
+   lastPaint=ms+Math.max(0,win.performance.now()-p0);
+  }
   // The bright charges now have their OWN presentation rate, but remain
   // under the same sole Salon RAF and shared optical phase.
   const lightInterval=1000/SALON_PRESENTATION_CONSTITUTION.presentation_fps;

@@ -14,6 +14,7 @@ const PUBLIC_TERMS=Object.freeze([
   // manuscript bytes are protected below, including original citations.
   [/\bEXPERIMENT_A_PREVIEW_AUTHORIZED\b/gi,''],
   [/\bEXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD\b/gi,''],
+  [/\bExperiment[- ]A\s+preview\b/gi,'research preview'],
   [/\bExperiment[- ]A\b/gi,'research preview'],
   [/\bExperiment[- ]B\b/gi,'prospective comparison'],
   [/\bExperiment[- ]C\b/gi,'future publication review'],
@@ -31,12 +32,14 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bWendbine\b/gi,'external-source research'],
   [/\bEMSTD613\b/gi,'Vixen manuscript collection'],
   [/\bSRC\b/g,'documentary source-route analysis'],
+  [/\bIrreducible\s+FADT\s+Obstruction\b/g,'Irreducible Finite Evidence Classification Obstruction'],
   [/\bFADT\b/gi,'finite evidence classification'],
   [/\bAteliers\b/gi,'research workspaces'],
   [/\bAtelier\b/gi,'research workspace'],
   [/\bTD613-TCP\b/g,'the hosting archive'],
   [/\bTD613\b(?!\s+Encyclopedia\b)/g,'the research host'],
   [/\b(?:ChatGPT|Gemini|Antigravity|Codex|Amari)\b/gi,''],
+  [/\bresearch preview\s+preview\b/gi,'research preview'],
   // The constitutional roles are public terms of art. Never erase their identity.
 ]);
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);

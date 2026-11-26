@@ -620,7 +620,9 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="stylesheet" href="./vixen-estate/vixen-proscenium-seam.css">
 <link rel="stylesheet" href="./vixen-estate/vixen-desktop-manuscript-opera-rgi28.css" data-editorial-system="VIXEN_DESKTOP_READING_RGI28">
 <link rel="stylesheet" href="./vixen-estate/vixen-bias-cut-couture.css" data-visual-system="VIXEN_BIAS_CUT_COUTURE_TURN_II">
+<link rel="stylesheet" href="./vixen-estate/vixen-phoenix-opera.css" data-visual-system="VIXEN_PHOENIX_OPERA_DD02">
 <link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
+<link rel="modulepreload" href="./vixen-estate/vixen-phoenix-opera.mjs">
 <link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
 <link rel="modulepreload" href="./vixen-estate/vixen-live-mesh-rgi13.mjs">
 <link rel="modulepreload" href="./vixen-estate/vixen-arrival-prewarm-rgi19.mjs">
@@ -674,13 +676,13 @@ body[data-view="overview"] .reading-back{display:none}
 
     <nav class="main-nav" aria-label="Opera Departments">
       <button type="button" class="nav-btn" data-view="overview" aria-current="page"><small>00</small> Entrance</button>
-      <button type="button" class="nav-btn" data-view="observatory"><small>01</small> The Lab</button>
-      <button type="button" class="nav-btn" data-view="works"><small>02</small> Works</button>
-      <button type="button" class="nav-btn" data-view="gates"><small>03</small> Gates</button>
-      <button type="button" class="nav-btn" data-view="protocols"><small>04</small> Methods</button>
-      <button type="button" class="nav-btn" data-view="holds"><small>05</small> Refusals</button>
-      <button type="button" class="nav-btn" data-view="collection"><small>06</small> Salon ✦</button>
-      <button type="button" class="nav-btn" data-view="reference"><small>07</small> Folios · Trace</button>
+      <button type="button" class="nav-btn" data-view="works"><small>01</small> Works</button>
+      <button type="button" class="nav-btn" data-view="observatory"><small>02</small> Observatory</button>
+      <button type="button" class="nav-btn" data-view="collection"><small>03</small> Salon ✦</button>
+      <button type="button" class="nav-btn" data-view="reference"><small>04</small> Folios</button>
+      <button type="button" class="nav-btn" data-view="protocols"><small>05</small> Methods</button>
+      <button type="button" class="nav-btn" data-view="gates"><small>06</small> Gates</button>
+      <button type="button" class="nav-btn" data-view="holds"><small>07</small> Refusals</button>
     </nav>
 
     <div class="header-actions">
@@ -707,15 +709,15 @@ body[data-view="overview"] .reading-back{display:none}
   </div>
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Opera Navigation" hidden>
-    <button type="button" data-view="overview"><small>00</small> Cover &amp; Threshold</button>
-    <button type="button" data-view="observatory"><small>01</small> Synthesis Observatory (S ≠ W ≠ A)</button>
-    <button type="button" data-view="works"><small>02</small> 32-Work Lineage Catalogue</button>
-    <button type="button" data-view="gates"><small>03</small> 8 Split-Plane Human Gates</button>
-    <button type="button" data-view="protocols"><small>04</small> 21 Documentary Protocols</button>
-    <button type="button" data-view="holds"><small>05</small> Competent-Null &amp; Holds</button>
-    <button type="button" data-view="collection"><small>06</small> Synthesis Salon</button>
-    <button type="button" data-view="reference"><small>07</small> Vixen Folios</button>
-    <a class="mobile-nav-podium-link" href="./vix-cyb/podium.html"><small>PODIUM</small> Podium Entrance (Human / AI)</a>
+    <button type="button" data-view="overview"><small>00</small> Entrance · Cover &amp; Threshold</button>
+    <button type="button" data-view="works"><small>01</small> Works · 32-Work Source Repertoire</button>
+    <button type="button" data-view="observatory"><small>02</small> Observatory · Electric Foundry (S ≠ W ≠ A)</button>
+    <button type="button" data-view="collection"><small>03</small> Salon · Discovery Studio &amp; Bias Cut</button>
+    <button type="button" data-view="reference"><small>04</small> Folios · Facing Manifestation Chamber</button>
+    <button type="button" data-view="protocols"><small>05</small> Methods · 21 Documentary Protocols</button>
+    <button type="button" data-view="gates"><small>06</small> Gates · 8 Split-Plane Human Gates</button>
+    <button type="button" data-view="holds"><small>07</small> Refusals · Competent-Null &amp; Holds</button>
+    <a class="mobile-nav-podium-link" href="./vix-cyb/podium.html"><small>PODIUM</small> Podium Threshold (Human / AI) ⟶</a>
     <button type="button" data-action="inspector"><small>HELP</small> User Help Guide (Alt+I)</button>
   </nav>
 </header>
@@ -970,46 +972,46 @@ body[data-view="overview"] .reading-back{display:none}
                   <td><code>HUMAN_CLOSURE_REQUIRED</code></td>
                 </tr>
                 <tr>
-                  <th scope="row">01 · Observatory</th>
-                  <td>Electric Foundry (6 Vixen Inquiries / 16 Borrowed Optical Programs) &amp; 8 Stage Folios</td>
-                  <td><code>OPERA</code></td>
-                  <td><code>BOUNDED_AUTHORED_MODEL</code></td>
-                </tr>
-                <tr>
-                  <th scope="row">02 · Works</th>
+                  <th scope="row">01 · Works</th>
                   <td>32 Canonical Work Routes · 53 Linked Manifestations</td>
                   <td><code>PERFORMER</code></td>
                   <td><code>32/32 AUTHORSHIP: UNRESOLVED</code></td>
                 </tr>
                 <tr>
-                  <th scope="row">03 · Gates</th>
-                  <td>8 Split-Plane (.md/.pdf) Human Identity Gates ([32, 40])</td>
+                  <th scope="row">02 · Observatory</th>
+                  <td>Electric Foundry (6 Vixen Inquiries / 16 Borrowed Optical Programs) &amp; 8 Stage Folios</td>
                   <td><code>OPERA</code></td>
-                  <td><code>UNADJUDICATED_PAIR (256 STATES)</code></td>
+                  <td><code>BOUNDED_AUTHORED_MODEL</code></td>
                 </tr>
                 <tr>
-                  <th scope="row">04 · Methods</th>
-                  <td>21 Documentary Instruments (06-INSTRUMENTS · 0 Executors)</td>
-                  <td><code>OPERA</code></td>
-                  <td>—</td>
-                </tr>
-                <tr>
-                  <th scope="row">05 · Refusals</th>
-                  <td>E-00.1 Competent-Null Tie, LFP Warrants &amp; Holds</td>
-                  <td><code>OPERA</code></td>
-                  <td><code>EMPIRICAL_CREDIT: 0</code></td>
-                </tr>
-                <tr>
-                  <th scope="row">06 · Salon ✦</th>
+                  <th scope="row">03 · Salon ✦</th>
                   <td>Reparative Question Composer, Five Clocks &amp; Research Cart</td>
                   <td><code>OPERA</code></td>
                   <td><code>SESSION_LOCAL_REHEARSAL</code></td>
                 </tr>
                 <tr>
-                  <th scope="row">07 · Folios</th>
+                  <th scope="row">04 · Folios</th>
                   <td>Source-Bound Comparison Chamber &amp; Separate Operahouse Encounter</td>
                   <td><code>OPERA ⊥ OPERAHOUSE</code></td>
                   <td><code>NO_AUTOMATIC_CROSSWALK</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">05 · Methods</th>
+                  <td>21 Documentary Instruments (06-INSTRUMENTS · 0 Executors)</td>
+                  <td><code>OPERA</code></td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <th scope="row">06 · Gates</th>
+                  <td>8 Split-Plane (.md/.pdf) Human Identity Gates ([32, 40])</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>UNADJUDICATED_PAIR (256 STATES)</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">07 · Refusals</th>
+                  <td>E-00.1 Competent-Null Tie, LFP Warrants &amp; Holds</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>EMPIRICAL_CREDIT: 0</code></td>
                 </tr>
               </tbody>
             </table>
@@ -1081,11 +1083,11 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">01 · MULTI-MODEL SYNTHESIS OBSERVATORY · TYPED CONSTITUTIVE CYBERNETICS</p>
-          <h1>Control Planes, Five Clocks<span class="title-annotation">&amp; the Vixen Theory Wardrobe</span></h1>
+          <p class="eyebrow">02 · MULTI-MODEL SYNTHESIS OBSERVATORY · TYPED CONSTITUTIVE CYBERNETICS</p>
+          <h1>Control Planes, Five Clocks <span class="title-annotation">&amp; the Vixen Theory Wardrobe</span></h1>
           <p class="intro">Explore Vixen’s typed control planes, non-interchangeable clocks and source-grounded synthesis questions through live mathematical models. Original research sources remain distinct from the host optics that render them; scientific conclusions and authorship require their own evidence and review.</p>
         </div>
-        <div class="view-number" aria-hidden="true">01</div>
+        <div class="view-number" aria-hidden="true">02</div>
       </div>
 
       <!-- RGI09 · Source-derived chrome foundry, with original mathematical
@@ -1175,7 +1177,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="toolbar">
           <label class="field" aria-label="Filter mathematical folios">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input id="formulaSearchInput" type="search" placeholder="Search mathematical folios (S ≠ W ≠ A, five clocks…)">
+            <input id="formulaSearchInput" type="search" autocomplete="off" placeholder="Search mathematical folios (S ≠ W ≠ A, five clocks…)">
           </label>
           <div class="segmented" role="group" aria-label="Folio family filter">
             <button type="button" data-formula-group="all" aria-pressed="true">All folios</button>
@@ -1207,7 +1209,7 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="view-heading works-compact-masthead">
         <div class="works-masthead-lead">
           <p class="eyebrow">01 · ORIGINAL SOURCE LIBRARY · EM &amp; CONTRIBUTORS</p>
-          <h1>Works<span class="title-annotation">32 preserved works · 53 received files</span></h1>
+          <h1>Works <span class="title-annotation">32 preserved works · 53 received files</span></h1>
           <p class="intro">Original source library: read the uploaded scholarship directly by original filename or manuscript title (preserved works, not works authored by Vixen; eight Markdown/PDF pairings remain unadjudicated).</p>
         </div>
         <div class="works-masthead-drawers">
@@ -1251,7 +1253,7 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="toolbar works-compact-toolbar">
         <label class="field works-search-field" aria-label="Search 32 Work routes and SHA-256 digests">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="workSearchInput" type="search" placeholder="Find paper by filename (e.g. LLM Architecture Deep Dive, 1+1=3), title, or topic…">
+          <input id="workSearchInput" type="search" autocomplete="off" placeholder="Find paper by filename (e.g. LLM Architecture Deep Dive, 1+1=3), title, or topic…">
         </label>
         <div class="segmented works-cluster-segmented" role="group" aria-label="Cluster Filter">
           <button type="button" data-work-cluster="ALL" aria-pressed="true">All 32</button>
@@ -1294,8 +1296,8 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">03 · MANIFESTATION IDENTITY SENSITIVITY · [32, 40] ENVELOPE (2⁸ = 256 STATES)</p>
-          <h1>THE UNRESOLVED EIGHT.<span class="title-annotation">[32, 40] · human identity gates remain unadjudicated</span></h1>
+          <p class="eyebrow">06 · MANIFESTATION IDENTITY SENSITIVITY · [32, 40] ENVELOPE (2⁸ = 256 STATES)</p>
+          <h1>THE UNRESOLVED EIGHT. <span class="title-annotation">[32, 40] · human identity gates remain unadjudicated</span></h1>
           <p class="intro">Eight canonical Work routes link both a Markdown surface (<code>.md</code>) and a typeset PDF surface (<code>.pdf</code>) whose substantive equivalence requires human editorial closure. All eight gates initialize strictly to <code>UNADJUDICATED_PAIR</code>; toggling hypothetical merge or split states recomputes the local study interval without mutating committed repository manifests.</p>
         </div>
         <div class="view-number" aria-hidden="true">2⁸</div>
@@ -1330,8 +1332,8 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">04 · COMMITTED 06-INSTRUMENTS REGISTRY · BIJECTIVE 6 + 7 + 4 + 4 = 21</p>
-          <h1>THE APPARATUS.<span class="title-annotation">21 documentary methods · 6 prospective giveback routes</span></h1>
+          <p class="eyebrow">05 · COMMITTED 06-INSTRUMENTS REGISTRY · BIJECTIVE 6 + 7 + 4 + 4 = 21</p>
+          <h1>THE APPARATUS. <span class="title-annotation">21 documentary methods · 6 prospective giveback routes</span></h1>
           <p class="intro">Twenty-one recorded documentary methods. Explore each method and the Works connected to it.</p>
         </div>
         <div class="view-number" aria-hidden="true">21</div>
@@ -1366,7 +1368,7 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="toolbar">
         <label class="field" aria-label="Search 21 documentary instruments">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="protocolSearchInput" type="search" placeholder="Search protocol ID, scope, family F1–F4, or SHA-256…">
+          <input id="protocolSearchInput" type="search" autocomplete="off" placeholder="Search protocol ID, scope, family F1–F4, or SHA-256…">
         </label>
         <div class="segmented" role="group" aria-label="Protocol Family Filter">
           <button type="button" data-inst-family="ALL" aria-pressed="true">All 21 Instruments</button>
@@ -1394,11 +1396,11 @@ body[data-view="overview"] .reading-back{display:none}
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">05 · SCIENTIFIC HONESTY · E-00.1 BOUNDED TIE, WARRANTS &amp; SEPARATE-TRACK HOLDS</p>
-          <h1>A BEAUTIFUL REFUSAL.<span class="title-annotation">Competent-null, warrants &amp; open holds</span></h1>
+          <p class="eyebrow">07 · SCIENTIFIC HONESTY · E-00.1 BOUNDED TIE, WARRANTS &amp; SEPARATE-TRACK HOLDS</p>
+          <h1>A BEAUTIFUL REFUSAL. <span class="title-annotation">Competent-null, warrants &amp; open holds</span></h1>
           <p class="intro">Preserves the negative and bounded determinations that prevent decorative self-congratulation: the E-00.1 four-arm <code>BOUNDED_TIE</code>, syntax-bounded LFP warrants, archaeological attribution negative controls, and unexecuted separate-track gates.</p>
         </div>
-        <div class="view-number" aria-hidden="true">05</div>
+        <div class="view-number" aria-hidden="true">07</div>
       </div>
 
       <section class="vix-couture-route-guide" aria-labelledby="vixRefusalPathTitle">
@@ -1550,7 +1552,7 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="view-heading">
         <div>
           <p class="eyebrow">03 · VIXEN RESEARCH</p>
-          <h1>The Salon<span class="title-annotation">Discover a research question worth pursuing.</span></h1>
+          <h1>The Salon <span class="title-annotation">Discover a research question worth pursuing.</span></h1>
           <p class="intro salon-purpose">Explore Vixen’s computational research proposals, cross-source connections and conjectures. These are new research outputs to investigate, not the uploaded manuscripts. Source documents remain in Works. All proposals require review.</p>
           <details class="vs-overture-notes">
             <summary>Current research scope</summary>
@@ -1591,7 +1593,7 @@ body[data-view="overview"] .reading-back{display:none}
               <span id="ciCandidateSummary">Ranked by research criteria</span>
             </h3>
             <p class="bc-index-dek">
-              <strong>Comparative synthesis leads, not proven claims.</strong> Eight weighted checks score each cross-work question; open any row’s ledger to inspect its axes and falsifier, or click <em>Pursue Lead</em> to load it into your Active Quest.
+              <strong>Comparative synthesis leads, not proven claims.</strong> Eight weighted checks score each cross-work question; open any row’s ledger to inspect its axes and falsifier, or click <em>Use as Next Research Question</em> to load it into your Active Quest.
             </p>
             <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
             <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
@@ -1853,12 +1855,12 @@ body[data-view="overview"] .reading-back{display:none}
 <dialog class="dialog search-dialog" id="searchDialog" closedby="any" aria-label="Search Vixen Cybernetics Catalogue">
   <div class="dialog-shell">
     <div class="dialog-header">
-      <span style="font:600 10px var(--font-mono);letter-spacing:.1em;text-transform:uppercase">Vixen Semantic-Semiotic Search (32 Works · Full Companion Bodies · 21 Protocols · 22 Folios)</span>
+      <span style="font:600 10px var(--font-mono);letter-spacing:.1em;text-transform:uppercase">Vixen Semantic-Semiotic Search (32 Works · Full Companion Bodies · 21 Methods · 18 Math-Verified Works)</span>
       <button type="button" class="hdr-pill" id="closeSearchBtn" style="color:var(--porcelain);border-color:rgba(246,244,240,.35)">Esc ✕</button>
     </div>
     <div class="command-input">
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="globalSearchInput" type="search" placeholder="Search .md, .pdf, protocols, folios, tracks · supports &quot;exact phrase&quot;, -exclude, W-PLANE…">
+      <input id="globalSearchInput" type="search" autocomplete="off" placeholder="Search .md, .pdf, protocols, folios, tracks · supports &quot;exact phrase&quot;, -exclude, W-PLANE…">
     </div>
     <div class="expa-search-modes" id="globalSearchModes" role="radiogroup" aria-label="Search Retrieval Mode">
       <button type="button" class="expa-mode-btn" data-search-mode="hybrid" role="radio" aria-checked="true">Hybrid SVD+BM25F</button>
@@ -2409,17 +2411,30 @@ body[data-view="overview"] .reading-back{display:none}
     }
     syncCartHeaderBadge();
   }
+  function humanTrayItemName(id) {
+    const w = DATA.works.find((x) => x.work_id === id);
+    if (w) {
+      const f = w.linked_sources?.[0]?.original_filename;
+      return '“' + (f || w.declared_title || id) + '”';
+    }
+    const inst = DATA.instruments.find((x) => x.instrument_id === id);
+    if (inst) return '“' + inst.instrument_id.replaceAll('_', ' ') + '”';
+    const tr = DATA.giveback_tracks.find((x) => x.id === id);
+    if (tr) return '“' + (tr.title || id) + '”';
+    return id;
+  }
   let cartPulseTimer = 0;
   function toggleCollection(id) {
     if(!knownTrayId(id))return false;
     let added = false;
+    const label = humanTrayItemName(id);
     if (state.collection.has(id)) {
       state.collection.delete(id);
-      showToast('Removed ' + id + ' from Research Cart');
+      showToast('Removed ' + label + ' from Research Cart');
     } else {
       state.collection.add(id);
       added = true;
-      showToast('Saved ' + id + ' to Research Cart');
+      showToast('Saved ' + label + ' to Research Cart');
     }
     writeTrayStorage();
     syncCartHeaderBadge();
@@ -3769,8 +3784,16 @@ body[data-view="overview"] .reading-back{display:none}
         '<div class="vix-noir-folio-frame">' +
           '<div class="vix-folio-topline"><span>DOCUMENTARY SOURCE · MANUSCRIPT</span><span id="vixFolioProgress">POSITION 0%</span></div>' +
           '<article class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Complete companion manuscript" tabindex="0"></article>' +
-          '<div class="vix-folio-footer" role="group" aria-label="Manuscript navigation">' +
-            '<button type="button" id="vixFolioPrevious">← PREVIOUS</button><span>Exact source preserved · Reflow changes whitespace only</span><button type="button" id="vixFolioNext">NEXT →</button>' +
+          '<div class="vix-folio-footer" role="group" aria-label="Manuscript and repertoire navigation">' +
+            '<div class="vix-folio-btn-group">' +
+              '<button type="button" class="vix-work-step-btn" id="vixPrevWorkBtn" title="Open previous Work in the 32-Work repertoire">← Prev Work</button>' +
+              '<button type="button" id="vixFolioPrevious" title="Scroll up inside this manuscript">↑ Page Up</button>' +
+            '</div>' +
+            '<span>Exact source preserved · Reflow changes whitespace only</span>' +
+            '<div class="vix-folio-btn-group">' +
+              '<button type="button" id="vixFolioNext" title="Scroll down inside this manuscript">Page Down ↓</button>' +
+              '<button type="button" class="vix-work-step-btn" id="vixNextWorkBtn" title="Open next Work in the 32-Work repertoire">Next Work →</button>' +
+            '</div>' +
           '</div>' +
         '</div>';
     }
@@ -3851,6 +3874,19 @@ body[data-view="overview"] .reading-back{display:none}
           folio.focus({preventScroll:true});
         });
       }
+      const stepRepertoireWork=(delta)=>{
+        const idx=DATA.works.findIndex(w=>w.work_id===work.work_id);
+        if(idx<0)return;
+        const nextWork=DATA.works[(idx+delta+DATA.works.length)%DATA.works.length];
+        if(!nextWork)return;
+        state.selectedWorkId=nextWork.work_id;
+        state.activeManifestationId=nextWork.linked_sources?.[0]?.source_file_id||null;
+        state.mobileWorkReaderOpen=true;
+        renderWorksView();
+        window.scrollTo({top:0,behavior:'instant'});
+      };
+      mountEl.querySelector('#vixPrevWorkBtn')?.addEventListener('click',()=>stepRepertoireWork(-1));
+      mountEl.querySelector('#vixNextWorkBtn')?.addEventListener('click',()=>stepRepertoireWork(1));
     }
 
     const readingFocusButton=mountEl.querySelector('#expaReaderFocusButton');
@@ -4181,13 +4217,13 @@ body[data-view="overview"] .reading-back{display:none}
             '<h3>WORKS GOVERNED BY THIS INSTRUMENT (' + linkedWorks.length + ')</h3>' +
             '<div class="badge-row">' +
               linkedWorks.map((w) =>
-                '<button type="button" class="secondary-btn" data-open-ref="' + esc(w.work_id) + '">' + esc(w.work_id.slice(0, 13)) + '… · ' + esc(w.declared_title.slice(0, 34)) + '… ↗</button>' +
+                '<button type="button" class="secondary-btn" data-open-ref="' + esc(w.work_id) + '">#' + String(w.order_num).padStart(2, '0') + ' · ' + esc((w.linked_sources?.[0]?.original_filename || w.declared_title).slice(0, 38)) + ' ↗</button>' +
                 (w.human_gate_required ? '<button type="button" class="tag gold" data-open-gate="' + w.gate_num + '" title="Jump to Human Gate #' + w.gate_num + '">[Gate #' + w.gate_num + '] ↗</button>' : '')
               ).join('') +
             '</div>' +
           '</div>' +
           '<div class="reader-section" style="display:flex;flex-wrap:wrap;gap:10px">' +
-            '<button type="button" class="secondary-btn" data-save-tray="' + esc(sel.instrument_id) + '">' + (saved ? '★ Saved in Tray' : '☆ Save to Study Tray') + '</button>' +
+            '<button type="button" class="secondary-btn" data-save-tray="' + esc(sel.instrument_id) + '">' + (saved ? '★ Saved in Research Cart' : '☆ Save to Research Cart') + '</button>' +
             '<button type="button" class="secondary-btn" data-cite-id="' + esc(sel.instrument_id) + '">Copy Citation</button>' +
           '</div>';
          }
@@ -4247,7 +4283,24 @@ body[data-view="overview"] .reading-back{display:none}
       '<div style="font:500 9.5px/1.5 var(--font-mono);color:#cfd3d6;margin-bottom:8px">' +
         'Declared SHA-256: <code>' + esc(instRec.declared_sha256 || 'N/A') + '</code> · Live WebCrypto SHA-256: <code style="color:#FFF0A8">' + esc(computedSha || 'N/A') + '</code> (' + (instRec.sha256_verified_match ? 'EXACT_MATCH' : 'DERIVATIVE') + ')' +
       '</div>' +
-      '<pre class="expa-body-pre">' + esc(cleanText) + '</pre>';
+      '<article class="vx-phx-protocol-rendered vix-couture-reader" id="protocolFormattedBody"></article>' +
+      '<details class="vx-phx-protocol-raw-details"><summary>Inspect exact protocol Markdown bytes</summary><pre class="expa-body-pre">' + esc(cleanText) + '</pre></details>';
+    const formattedTarget = mountEl.querySelector('#protocolFormattedBody');
+    if (formattedTarget) {
+      try {
+        const { mountVixenManuscript } = await import('./vixen-estate/manuscript-reader.mjs');
+        if (mountEl.isConnected && mountEl.dataset.instrumentId === instrumentId) {
+          mountVixenManuscript(formattedTarget, cleanText, {
+            sourceId: instrumentId,
+            sourceFormat: 'text/markdown',
+            documentTitle: instrumentId,
+            showRaw: false
+          });
+        }
+      } catch (_) {
+        formattedTarget.textContent = cleanText;
+      }
+    }
   }
 
   // 6. Render Research Cart Popout
@@ -6601,14 +6654,15 @@ import {
   // The Vixen Opera supplies meaning first; exact names remain inspectable
   // in developer artifacts without implying ownership or attribution.
   const operaResearchLabel=value=>String(value||'')
-    .replace(/\bFADT\b/g,'finite admissibility')
+    .replace(/\bIrreducible\s+FADT\s+Obstruction\b/g,'Irreducible Finite Admissibility Obstruction')
+    .replace(/\bFADT\b/g,'Finite Admissibility')
     .replace(/\bSignalRupture\b/gi,'documentary route analysis')
     .replace(/\bWendbine\b/gi,'external-source archive')
     .replace(/\bSRC\b/g,'documentary source-route')
     .replace(/\bOSSL\b/g,'recorded fork lineage')
-    .replace(/\bL0\b/g,'vocabulary-only')
-    .replace(/\bL1\b/g,'mathematical correspondence')
-    .replace(/\bL2\b/g,'physical implementation');
+    .replace(/\bL0\b(?![=:])/g,'vocabulary-only')
+    .replace(/\bL1\b(?![=:])/g,'mathematical correspondence')
+    .replace(/\bL2\b(?![=:])/g,'physical implementation');
   const operaClusterLabel=Object.freeze({
     C1:'AI & viability',C2:'Audio & signal',C3:'Wearable sensors',
     C4:'Virtual systems',C5:'Historical & emergent works'
@@ -7174,6 +7228,7 @@ import {
 <script type="module" src="./vixen-estate/fox-house-dock.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-live-mesh-rgi13.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-opaline-couture-rgi14.mjs"></script>
+<script type="module" src="./vixen-estate/vixen-phoenix-opera.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-arrival-prewarm-rgi19.mjs"></script>
 </body>
 </html>

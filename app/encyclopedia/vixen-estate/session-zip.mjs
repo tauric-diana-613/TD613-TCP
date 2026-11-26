@@ -198,6 +198,8 @@ export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'vixen-beat-radiometry-rgi15.mjs',
   'vixen-bias-cut-couture.css',
   'vixen-bias-draft.mjs',
+  'vixen-phoenix-opera.css',
+  'vixen-phoenix-opera.mjs',
   'vixen-desktop-manuscript-opera-rgi28.css',
   'vixen-electrical-breath-rgi13.css',
   'vixen-folded-cuirass.mjs',

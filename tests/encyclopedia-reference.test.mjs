@@ -134,8 +134,8 @@ test('Vixen Encyclopedia preserves sovereign Opera, named Performers, and separa
  assert.equal(m.release_authority,false);
  assert.equal(m.experiment_b_flight,'HELD');
  assert.match(page,/data-view="reference"/);
- assert.match(page,/07<\/small> Folios/);
- assert.match(page,/07<\/small> Vixen Folios/);
+ assert.match(page,/04<\/small> Folios/);
+ assert.match(page,/04<\/small> Folios · Facing Manifestation Chamber/);
  assert.match(page,/vixen-estate\/research-chamber.mjs/);
  assert.match(page,/const VALID_VIEWS = \[[^\]]*'reference', 'operator'\]/);
   assert.match(page,/id="view-operator"[^>]*data-page="operator"/);

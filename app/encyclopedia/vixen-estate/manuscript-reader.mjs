@@ -4,11 +4,22 @@
  * corpus-experiment-a.mjs, which verifies every body before this presentation layer.
  * No telemetry, mutations, auto-Podium execution, or external math CDN.
  */
-const INLINE_TOKENS = /(\\\([\s\S]+?\\\)|(?<!\\)\$(?!\$)[^\n$]+?(?<!\\)\$|!\[[^\]]*\]\[[^\]]+\]|\*\*[^*\n]+\*\*|\*[^*\n]+\*|\x60[^\x60\n]+\x60)/g;
+const INLINE_TOKENS = /(\\\([\s\S]+?\\\)|(?<!\\)\$(?!\$)[^\n$]+?(?<!\\)\$|\\(?:sum|prod|int|frac|sqrt|ge|le|neq|approx|equiv|sim|pm|times|cdot)(?:_\{[^}\n]+\}|_[A-Za-z0-9]|\^\{[^}\n]+\}|\^[A-Za-z0-9]|\s*\\(?:theta|alpha|beta|gamma|delta|lambda|tau|kappa|sigma|omega|phi|psi))*\b|!\[[^\]]*\]\[[^\]]+\]|\*\*[^*\n]+\*\*|(?<!\\)\*[^*\n]+(?<!\\)\*|\x60[^\x60\n]+\x60)/g;
 const SECTION = /^#{1,6}\s+(.+)$/;
 const FENCE = /^\s*(`{3,}|~{3,})(.*)$/;
 const DATA_IMAGE_DEF = /^\s*\[([^\]]+)\]:\s*<?(data:image\/(?:png|jpeg|jpg|webp|gif|svg\+xml);base64,[A-Za-z0-9+/=\s]+)>?\s*$/i;
 const TABLE_SEP = /^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)+\|?\s*$/;
+
+function unescapeMarkdownProse(str) {
+  return String(str ?? '')
+    .replace(/\\&lt;/g, '<')
+    .replace(/\\&gt;/g, '>')
+    .replace(/\\&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\\\\([=+\-*_])/g, '$1')
+    .replace(/\\([!#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])/g, '$1');
+}
 
 function splitPipeRow(line) {
   const trimmed = String(line || '').trim().replace(/^\|/, '').replace(/\|$/, '');
@@ -44,15 +55,18 @@ function appendInline(doc, parent, raw, imageRefs = null) {
   let offset = 0;
   for (const match of value.matchAll(INLINE_TOKENS)) {
     const at = match.index ?? 0;
-    if (at > offset) parent.append(doc.createTextNode(value.slice(offset, at)));
+    if (at > offset) parent.append(doc.createTextNode(unescapeMarkdownProse(value.slice(offset, at))));
     const token = match[0];
     if (token.startsWith('\\(') && token.endsWith('\\)')) {
       parent.append(mathNode(doc, token.slice(2, -2), false));
     } else if (token.startsWith('$') && token.endsWith('$')) {
       parent.append(mathNode(doc, token.slice(1, -1), false));
+    } else if (token.startsWith('\\')) {
+      parent.append(mathNode(doc, token, false));
     } else if (token.startsWith('![')) {
       const m = token.match(/^!\[([^\]]*)\]\[([^\]]+)\]$/);
-      const refSrc = m && imageRefs ? imageRefs.get(m[2].trim()) : null;
+      const refKey = m ? m[2].trim() : '';
+      const refSrc = refKey && imageRefs ? imageRefs.get(refKey) : null;
       if (refSrc) {
         const img = doc.createElement('img');
         img.className = 'vix-reader-inline-img';
@@ -63,16 +77,16 @@ function appendInline(doc, parent, raw, imageRefs = null) {
       } else {
         const span = doc.createElement('span');
         span.className = 'vix-reader-image-ref';
-        span.textContent = `[Figure/Equation ${m ? m[2] : token}]`;
+        span.textContent = m && m[1] ? unescapeMarkdownProse(m[1]) : `[Figure ${refKey || 'ref'}]`;
         parent.append(span);
       }
     } else if (token.startsWith('**')) {
       const strong = doc.createElement('strong');
-      strong.textContent = token.slice(2, -2);
+      strong.textContent = unescapeMarkdownProse(token.slice(2, -2));
       parent.append(strong);
     } else if (token.startsWith('*')) {
       const italic = doc.createElement('em');
-      italic.textContent = token.slice(1, -1);
+      italic.textContent = unescapeMarkdownProse(token.slice(1, -1));
       parent.append(italic);
     } else {
       const code = doc.createElement('code');
@@ -81,14 +95,18 @@ function appendInline(doc, parent, raw, imageRefs = null) {
     }
     offset = at + token.length;
   }
-  if (offset < value.length) parent.append(doc.createTextNode(value.slice(offset)));
+  if (offset < value.length) parent.append(doc.createTextNode(unescapeMarkdownProse(value.slice(offset))));
 }
 
 function flushParagraph(doc, frag, lines, imageRefs = null, paraCounter = null) {
   if (!lines.length) return;
   const p = doc.createElement('p');
   p.className = 'vix-reader-paragraph';
-  if (paraCounter && typeof paraCounter.n === 'number') {
+  const joinedTrimmed = lines.join(' ').trim();
+  const soleImage = /^!\[[^\]]*\]\[[^\]]+\]$/.test(joinedTrimmed);
+  if (soleImage) {
+    p.classList.add('vix-reader-figure-block');
+  } else if (paraCounter && typeof paraCounter.n === 'number') {
     paraCounter.n += 1;
     p.dataset.displayPara = String(paraCounter.n);
   }
@@ -97,7 +115,7 @@ function flushParagraph(doc, frag, lines, imageRefs = null, paraCounter = null) 
   // The exact original bytes remain available through the raw-source disclosure.
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const hardBreak = /(?: {2,}|\\)$/.test(line);
+    const hardBreak = /(?: {2,}|(?<!\\)\\)$/.test(line) && !/\\[.)\]*+=_-]$/.test(line);
     appendInline(doc, p, hardBreak ? line.replace(/(?: {2,}|\\)$/, '') : line, imageRefs);
     if (i < lines.length - 1) {
       p.append(hardBreak ? doc.createElement('br') : doc.createTextNode(' '));
@@ -154,9 +172,14 @@ function reflowExtractedPdf(source, documentTitle = '') {
     }
   }
 
-  // Group extracted sentences into literary paragraphs. Long runs without
-  // reliable full stops are broken only at spaces, never inside source words.
-  const sentences = prose.split(/(?<=[.!?…])\s+(?=(?:["“'‘(\[])?\p{Lu})/u);
+  // Group extracted sentences into literary paragraphs while keeping leading
+  // Title-Case section headers separated from the opening sentence that follows.
+  const splitLeadingHeader = (sent) => {
+    const m = String(sent).match(/^((?:[A-Z][\p{L}\p{N}'’-]*\s+){3,10}(?:of|and|in|for|to|with|the|on|by)\s+(?:[A-Z][\p{L}\p{N}'’-]*\s+){1,5}[A-Z][\p{L}\p{N}'’-]*)\s+((?:The|A|An|In|To|When|While|For|As|Under|Across|Within|Every|This|These)\s+[\s\S]+)$/u);
+    return m ? [m[1].trim(), m[2].trim()] : [sent];
+  };
+  const rawSentences = prose.split(/(?<=[.!?…])\s+(?=(?:["“'‘(\[])?\p{Lu})/u);
+  const sentences = rawSentences.flatMap(splitLeadingHeader);
   const paragraphs = [];
   let paragraph = '';
   const flush = () => {
@@ -360,7 +383,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
       flush(); closeList(); fragment.append(doc.createElement('hr')); continue;
     }
     const bullet = line.match(/^\s*[-+*]\s+(.+)$/);
-    const numbered = line.match(/^\s*\d+[.)]\s+(.+)$/);
+    const numbered = line.match(/^\s*\d+\\?[.)]\s+(.+)$/);
     if (bullet || numbered) {
       flush();
       const kind = numbered ? 'ol' : 'ul';

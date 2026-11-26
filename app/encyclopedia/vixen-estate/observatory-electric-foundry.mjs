@@ -366,7 +366,7 @@ export async function mountVixenElectricFoundry({
   node('span','ef-nwe-cell','WHY · Observe conditioning, nullspace & clock non-equivalence in browser'),
   node('span','ef-nwe-cell','EXACT · Model-only output · Empirical credit = 0 · Flight HELD')
  );
- add(heading,label('01 / ELECTRIC FOUNDRY · VIXEN MATHEMATICAL OPERA'),
+ add(heading,label('02 / ELECTRIC FOUNDRY · VIXEN MATHEMATICAL OPERA'),
   node('h2','ef-heading','A cathedral of computed consequences.'),
   node('p','ef-dek','Six source-linked Vixen inquiry models, choreographed through separate optical instrumentation. Their light is a synthetic interpretation of recorded research questions, never proof of authorship or physical effect.'),
   headingNwe);

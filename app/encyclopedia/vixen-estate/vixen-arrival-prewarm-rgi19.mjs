@@ -41,7 +41,9 @@ export function inspectOperaArrival(doc=globalThis.document,win=globalThis.windo
  const rooms=Object.fromEntries(Object.entries(EXPECTED_ROOMS).map(([id,selector])=>
   [id,Boolean(doc.querySelector(selector))]));
  const cover=doc.querySelector(EXPECTED_ROOMS.overview);
- const imageReady=!!cover && cover.complete && cover.naturalWidth>0;
+ const overviewSection=doc.querySelector?.('#view-overview')||null;
+ const overviewHidden=Boolean(overviewSection&&overviewSection.hidden);
+ const imageReady=overviewHidden?Boolean(cover):(!!cover && cover.complete && cover.naturalWidth>0);
  const meshReady=win?.VixenLivingMesh?.mounted===true;
  const foundry=win?.VIXEN_ELECTRIC_FOUNDRY;
  const gpuPrepared=Boolean(foundry?.status?.()?.backend&&foundry.status().backend!=='PENDING');
@@ -80,7 +82,10 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
   if(veil){
    veil.dataset.state='revealed';
    veil.setAttribute('aria-hidden','true');
-   win.setTimeout(()=>veil.remove(),440);
+   veil.style.opacity='0';
+   veil.style.visibility='hidden';
+   veil.style.pointerEvents='none';
+   win.setTimeout(()=>veil.remove(),120);
   }
   win.dispatchEvent(new win.CustomEvent('vixen:opera-arrived',{
    detail:{reason:why,rooms:report().rooms,source_mutation:false}
