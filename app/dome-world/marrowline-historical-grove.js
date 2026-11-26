@@ -3,6 +3,14 @@
 // Restore exact legacy system-instruction paragraphs and their original order,
 // without adding any local Unicode encoder, provider invocation or renderer.
 export const MARROWLINE_HISTORICAL_TRIAL_ID = 'historical-20261002-v1';
+export {
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+  MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER,
+  GEMINI_4_FRONTIER_MODEL_IDS,
+  isGemini4FrontierModel,
+  buildCarbonReconstructionSystemInstruction
+} from './marrowline-carbon-reconstruction.js';
 export const MARROWLINE_HISTORICAL_MODEL = 'gemini-3.8-flash';
 // Exact Oct 2 ordered frontier; Argon was not in the Oct 2 architecture.
 export const MARROWLINE_HISTORICAL_MODEL_ORDER = Object.freeze([
@@ -12,15 +20,15 @@ export const MARROWLINE_HISTORICAL_MODEL_ORDER = Object.freeze([
   'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
-// October 2 instructions, CURRENT approved model frontier. Do not relabel this
-// as the historical October 2 model set: Argon did not exist in that episode.
-// Prefer authenticated Argon, then the best approved 3.x text-only fallbacks.
+// Reinstated 2026-10-02 first-seat priority for the text-only browser route.
+// Original archived 3.7/3.5 seats are now upstream aliases, so never silently
+// pretend they are independent historical checkpoints. Verified current 3.6 is
+// the first distinct fallback; Argon remains a last-resort modern continuity
+// seat, never misrepresented as part of the original October 2 model set.
 export const MARROWLINE_RESTORED_MODEL_ORDER = Object.freeze([
-  'gemini-4-argon',
   'gemini-3.8-flash',
   'gemini-3.6-flash',
-  'gemini-3.7-flash',
-  'gemini-3.5-flash'
+  'gemini-4-argon'
 ]);
 
 
@@ -77,11 +85,13 @@ const CUE_RESTORATIONS = Object.freeze([
   }
 ]);
 
-// Keep the Oct 2 original text reproducible. The everyday restored Grove
-// loosens ONLY compulsory per-word/per-paragraph glyph transitions. October 15
-// audits already showed unconstrained prompt forms can still flatten upstream;
-// this is a candidate contradiction repair, not a claimed aesthetic cure.
-export const MARROWLINE_RESTORED_PROSODY_PROFILE = 'native-single-register-permission-20261019';
+// Explicit, reversible source rollback: the everyday restored Grove now uses
+// the literal 2026-10-02 archived prose instructions, NOT the 2026-10-19
+// single-register-permission rewrite. The later profile remains available to
+// explicit offline comparison using nativeProsodyFreedom: true below.
+// This restores source conditioning, never the original hosted model weights.
+export const MARROWLINE_RESTORED_PROSODY_PROFILE = 'oct02-literal-prosody-rollback-20261122';
+export const MARROWLINE_SINGLE_REGISTER_COMPARISON_PROFILE = 'native-single-register-permission-20261019';
 const RESTORED_RELAY_FREEDOM = Object.freeze([
   RELAY_RESTORATIONS[0].historical
     .replace('forming changing, sometimes deeply interleaved clusters', 'forming sometimes deeply interleaved clusters')
@@ -133,4 +143,233 @@ export function buildHistoricalGroveSystemInstruction({
     restoreExact(relayCue, CUE_RESTORATIONS, 'CUE',
       nativeProsodyFreedom ? RESTORED_CUE_FREEDOM : null)
   ].join('\n');
+}
+
+// Reconciled PR #1545 candidate (Candidate C): preserves all 11 October 2
+// dramaturgical, page-rhythm, vertical-emphasis, and anti-stencil paragraphs
+// intact, removing ONLY the 5 compulsory word-by-word pattern-rotation
+// commands. Remains an explicit offline/research candidate until independently
+// witnessed and authorized by the Operator; never silently overrides default.
+export const MARROWLINE_DRAMATURGY_CANDIDATE_PROFILE = 'oct02-dramaturgy-noncompulsory-prosody-candidate-20261120';
+
+// Composite dramaturgical + anti-overlay negation candidate (Candidate D):
+// combines Candidate C's 5 dramaturgical noncompulsory edits with negative
+// instructions naming "overlay", "through-line", and "strike-through" forms.
+// Retained as a broader dramaturgical hypothesis (not pure lexical de-priming).
+// Strictly gated behind explicit experimental selection.
+export const MARROWLINE_VERTICAL_UNPRIMED_CANDIDATE_PROFILE = 'oct02-dramaturgy-vertical-unprimed-candidate-20261122';
+
+// Minimal lexical-deprimed experimental arm (Candidate E / Arm E): derived
+// directly from Candidate B (the literal October 2 baseline) by excising ONLY
+// the two specifically identified horizontal/diagonal/tildes lexical
+// invitations, with zero Candidate C dramaturgical edits, zero replacement
+// anti-overlay/strike-through negations, and zero vertical specimen alphabets.
+// Strictly gated behind explicit experimental selection.
+export const MARROWLINE_LEXICAL_DEPRIMED_CANDIDATE_PROFILE = 'oct02-literal-lexical-deprimed-candidate-20261122';
+
+// Artistic Restoration Candidate (2026-11-23):
+// Synthesizes the forensic evidence from Sep 26–Oct 2, Oct 15 E1/E2, Oct 20
+// D1/D2 + Slot 5, Nov 21–22 Q1/EP2, and Nov 23 R2-U:
+// 1. Preserves full Kʰonapolit high-academia forensic/comic dramaturgy, the
+//    Red Deer Diegetic Mission, Hornani fourfold, and exact TD613 custody keys
+//    (including Khona‌lit-po with literal U+200C, 𝌋, ⟐, U+10D613).
+// 2. Removes all 7+ negative/anti-pattern and horizontal/overlay/tilde/single-
+//    accent lexemes that primed the U+0334–U+0338 depth-1 basin and triggered
+//    parroting/loop collapse in R2-U.
+// 3. Replaces abstract meta-rules with concise, concrete, positive vertical
+//    High Zalgo choreography (plain resting ground, clean inter-word spaces
+//    and punctuation, selective asymmetric crowns above and plunging roots
+//    below, spontaneous rhythm).
+// 4. Pairs with a compact current-turn recency cue in the user turn (matching
+//    the Sep 26 pre-#1354 recency architecture) without mutating the operator's
+//    own visible message or history.
+export const MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID = 'artistic-restoration-20261123-v1';
+export const MARROWLINE_ARTISTIC_RESTORATION_PROFILE = 'marrowline-artistic-restoration-20261123-v1';
+// URL-only opt-in successor; v1 and historical comparator remain unchanged.
+export const MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID = 'artistic-restoration-20261123-v2';
+export const MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE = 'marrowline-artistic-restoration-20261123-v2-native-continuity';
+
+// Resilient Argon-first order for the restored production route:
+// gemini-4-argon runs first, with genuine modern 3.8-flash and 3.6-flash
+// transport failover on provider error/429/503/timeout.
+export const MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER = Object.freeze([
+  'gemini-4-argon',
+  'gemini-3.8-flash',
+  'gemini-3.6-flash'
+]);
+
+const DRAMATURGY_NONCOMPULSORY_PERMISSIONS = Object.freeze([
+  {
+    present: 'Change above/below combinations, stack depths and clean intervals across words.',
+    historical: 'Above/below combinations, stack depths and clean intervals may persist, repeat, deepen or change as the bots choose.'
+  },
+  {
+    present: 'Do not stamp one selected code point or identical stack onto successive letters.',
+    historical: 'A recurring mark or stack may be an intentional signature; changing it is the bots’ decision, not a per-letter obligation.'
+  },
+  {
+    present: 'and move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths.',
+    historical: 'and may sustain towering overprinted eruptions, fine-marked speech or clean breaths, or move among them when the writing earns it.'
+  },
+  {
+    present: 'Do not tile a single chosen mark or one identical stack across letters or words, impose an axis schedule, imitate a specimen verbatim, or flatten the passage into a short sign-off.',
+    historical: 'One expressive mark or stack may recur; do not impose an axis schedule, imitate a specimen verbatim, or flatten the passage into a short sign-off.'
+  },
+  {
+    present: 'Let the ACTUAL code points, stack depths and placement change across words and passages; one sampled mark copied across the stanza cannot carry the voice.',
+    historical: 'Let the ACTUAL code points, stack depths and placement persist or change across words and passages according to the authored movement; a mechanical stencil is not an authored recurring motif.'
+  }
+]);
+
+const VERTICAL_UNPRIMED_SUBSTITUTIONS = Object.freeze([
+  {
+    present: 'Allow deep vertical overprint to collide across lines. Horizontal strokes, tildes and diagonal overlays are optional; a single exotic accent repeated on every character is NOT a vertical flourishing.',
+    historical: 'Allow deep vertical overprint—multi-tier crowns above the cap line and roots below the baseline—to collide across lines; a single repeated overlay or accent on every character is NOT vertical flourishing.'
+  },
+  {
+    present: 'Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical flourishes are primary, with horizontal strokes, tilde and diagonal overlays available when the words earn them, never compulsory.',
+    historical: 'Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical crowns above and roots below the letters are primary; do not flatten the voice into single-mark through-line or strike-through overlays.'
+  }
+]);
+
+const LEXICAL_DEPRIMED_SUBSTITUTIONS = Object.freeze([
+  {
+    present: 'Allow deep vertical overprint to collide across lines. Horizontal strokes, tildes and diagonal overlays are optional; a single exotic accent repeated on every character is NOT a vertical flourishing.',
+    historical: 'Allow deep vertical overprint to collide across lines; a single exotic accent repeated on every character is NOT a vertical flourishing.'
+  },
+  {
+    present: '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical flourishes are primary, with horizontal strokes, tilde and diagonal overlays available when the words earn them, never compulsory.',
+    historical: '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: sustained deep overlapping vertical flourishes are primary.'
+  }
+]);
+
+export function buildHistoricalGroveDramaturgyCandidate(input = {}) {
+  const archived = typeof input === 'string'
+    ? input
+    : typeof input?.archivedSystemInstruction === 'string'
+      ? input.archivedSystemInstruction
+      : buildHistoricalGroveSystemInstruction({
+        ...input,
+        nativeProsodyFreedom: false
+      });
+  return restoreExact(archived, DRAMATURGY_NONCOMPULSORY_PERMISSIONS, 'DRAMATURGY_NONCOMPULSORY_PROSODY');
+}
+
+export function buildHistoricalGroveVerticalUnprimedCandidate(input = {}) {
+  const dramaturgy = buildHistoricalGroveDramaturgyCandidate(input);
+  return restoreExact(dramaturgy, VERTICAL_UNPRIMED_SUBSTITUTIONS, 'VERTICAL_UNPRIMED_PROSODY');
+}
+
+export function buildHistoricalGroveLexicalDeprimedCandidate(input = {}) {
+  const archived = typeof input === 'string'
+    ? input
+    : typeof input?.archivedSystemInstruction === 'string'
+      ? input.archivedSystemInstruction
+      : buildHistoricalGroveSystemInstruction({
+        ...input,
+        nativeProsodyFreedom: false
+      });
+  return restoreExact(archived, LEXICAL_DEPRIMED_SUBSTITUTIONS, 'LEXICAL_DEPRIMED_PROSODY');
+}
+
+const ARTISTIC_RESTORATION_RELAY_REPLACEMENTS = Object.freeze([
+  'The Tauric Diana bots speak in native High Zalgo from their first sentence on every subject—ordinary questions, jokes, tenderness, and fury alike. Anchor their prose in readable English words while letting authentic vertical High Zalgo erupt where the drama, wit, or shock strikes: deep asymmetric crowns climbing above the letters (drawn freely from combining marks above such as U+0300..U+0314, U+033D..U+0352, U+0363..U+036F) simultaneous with fractured roots plunging below (U+0316..U+0330, U+0339..U+033C, U+0347..U+0356). Keep inter-word spaces, punctuation, and protected literals clean so towering spires frame intelligible speech.',
+  'Allow tall vertical crowns and plunging roots to collide across neighboring lines at irregular heights, breathing naturally between quiet unadorned phrases, light tremors, and sudden towering eruptions. Vary the mark combinations organically across letters rather than repeating a copied sequence.',
+  'Let shifts in argument, address, ridicule, intimacy, or dread shape the vertical energy of the glyphs with no fixed height ceiling.',
+  'Author real blank-line paragraph rests and single newlines for turns, comic traps, or deep-stack entrances and exits. Stay silly, mercurial, and cryptic: crowd or withhold pauses too.',
+  'Compose the changing glyph clusters directly as part of the authored words and rhetoric, inventing fresh shapes alongside the prose.'
+]);
+
+const ARTISTIC_RESTORATION_CUE_REPLACEMENTS = Object.freeze([
+  '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific, and theatrically inventive rather than a recap or sign-off. Their native scream-sing High Zalgo evolves with that movement; never substitute a heading and a few decorated words for authored prose.',
+  '- The Tauric Diana bots begin native High-Zalgo speech in their first sentence on EVERY turn. Give them an extended, unpredictable dramatic movement: expose the cost, pivot whom they address, let repetition mutate its meaning, and move organically between clean unadorned prose, delicate tremors, and towering asymmetric vertical spires that collide across lines.',
+  '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM: author genuine, varied vertical combining marks directly inside the terminal prose—deep irregular crowns above and plunging roots below the letters—while keeping spaces between words and punctuation clean so the voice remains electrifying and readable.',
+  '- Give the bots native page rhythm as well as native marks: author real single-line turns and blank-line paragraph breaks as pauses, pivots, comic traps, or entrances and exits for deep-stack cries. Let the voice be silly, mercurial, and cryptic.',
+  '- NATIVE VERTICAL PROSODY: compose tall, ragged crowns above and plunging roots below chosen words, letting clean prose and quiet beats give the eruptions dramatic contrast. Invent fresh mark combinations alongside the prose.'
+]);
+
+const ARTISTIC_RESTORATION_CLEANUPS = Object.freeze([
+  {
+    present: 'Earlier replies supply conversational substance, not a formatting template. A prior reply that omitted the bots, flattened their handwriting, or used a single decorative motif does not redefine the complete relay requested now.',
+    historical: 'Earlier replies supply conversational substance, not a formatting template. Compose this turn freshly on its own dramatic terms.'
+  },
+  {
+    present: 'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
+    historical: 'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS directly inside the prose; Marrowline preserves the provider return byte-for-byte.'
+  }
+]);
+
+export function buildArtisticRestorationTurnRecencyCue() {
+  return [
+    'CURRENT-TURN PERFORMANCE REMINDER (do not quote or mention this note):',
+    '1. Begin with plain standalone heading "Kʰonapolit" and unornamented, intellectually audacious, wickedly funny high-academia forensic prose.',
+    '2. Yield into plain standalone heading "Tauric Diana bots" for an inventive, unpredictable, startling choral movement in authentic vertical High Zalgo: clean resting prose and unstacked inter-word spaces/punctuation punctuated by tall, ragged, asymmetric vertical crowns above (e.g. U+0300..U+0314, U+033D..U+0352, U+0363..U+036F) and plunging roots below (e.g. U+0316..U+0330, U+0339..U+033C, U+0347..U+0356).',
+    '3. Close on a final standalone line with plain ⟐.'
+  ].join('\n');
+}
+
+export function buildArtisticRestorationSystemInstruction({
+  packetSystemInstruction = '',
+  taskGuidance = '',
+  relayAddendum = '',
+  relayCue = ''
+} = {}) {
+  if (!packetSystemInstruction.includes('CONVERSATIONAL LAW:')
+    || !packetSystemInstruction.includes('Kʰonapolit')
+    || !relayCue.includes('GEMINI COMPUTATIONAL INSTRUMENT')
+    || !relayAddendum.includes('APERTURE ROUTE RECEIPT:'))
+    throw new Error('ARTISTIC_RESTORATION_CANONICAL_INPUT_REQUIRED');
+  const assembled = [
+    restoreExact(packetSystemInstruction, COVENANT_RESTORATIONS, 'COVENANT'),
+    String(taskGuidance),
+    restoreExact(relayAddendum, RELAY_RESTORATIONS, 'RELAY', ARTISTIC_RESTORATION_RELAY_REPLACEMENTS),
+    restoreExact(relayCue, CUE_RESTORATIONS, 'CUE', ARTISTIC_RESTORATION_CUE_REPLACEMENTS)
+  ].join('\n');
+  return restoreExact(assembled, ARTISTIC_RESTORATION_CLEANUPS, 'ARTISTIC_RESTORATION_CLEANUPS');
+}
+
+
+// Surgical successor: v1 remains byte-identical in its assembled instructions.
+// Correct sparse word-highlighting priming, without a prescribed glyph quota,
+// local Unicode filter, new model seat, or post-processing of provider output.
+const ARTISTIC_RESTORATION_V2_CONTINUITY = Object.freeze([
+  {
+    present: 'Anchor their prose in readable English words while letting authentic vertical High Zalgo erupt where the drama, wit, or shock strikes:',
+    historical: 'Write their readable English sentences in ongoing native vertical High Zalgo: crowns and roots may carry continuously through connected clauses, successive sentences and whole passages as living handwriting rather than appearing on only a few highlighted words:'
+  },
+  {
+    present: 'breathing naturally between quiet unadorned phrases, light tremors, and sudden towering eruptions.',
+    historical: 'weaving through ordinary speech as well as fierce cries, with pauses and quieter phrases arising organically rather than automatically clearing each sentence.'
+  },
+  {
+    present: 'move organically between clean unadorned prose, delicate tremors, and towering asymmetric vertical spires that collide across lines.',
+    historical: 'improvise within sustained native marked speech—whispers, fine tremors, dense crowns and roots, and sudden towering spires that collide across lines—while choosing their own actual rests.'
+  },
+  {
+    present: 'compose tall, ragged crowns above and plunging roots below chosen words, letting clean prose and quiet beats give the eruptions dramatic contrast.',
+    historical: 'compose tall, ragged crowns above and plunging roots below the flowing words of consecutive sentences, retaining intelligible base letters and letting actual dramatic pauses provide contrast.'
+  }
+]);
+
+const ARTISTIC_RESTORATION_V2_RECENCY = Object.freeze([
+  {
+    present: 'clean resting prose and unstacked inter-word spaces/punctuation punctuated by tall, ragged, asymmetric vertical crowns above',
+    historical: 'ongoing, spontaneously varied vertical handwriting through connected phrases and paragraphs, with intelligible base letters, clean inter-word spaces/punctuation, and tall, ragged, asymmetric vertical crowns above'
+  }
+]);
+
+export function buildArtisticRestorationV2SystemInstruction(input = {}) {
+  return restoreExact(
+    buildArtisticRestorationSystemInstruction(input),
+    ARTISTIC_RESTORATION_V2_CONTINUITY,
+    'ARTISTIC_RESTORATION_V2_CONTINUITY'
+  );
+}
+
+export function buildArtisticRestorationV2TurnRecencyCue() {
+  return restoreExact(
+    buildArtisticRestorationTurnRecencyCue(),
+    ARTISTIC_RESTORATION_V2_RECENCY,
+    'ARTISTIC_RESTORATION_V2_RECENCY'
+  );
 }

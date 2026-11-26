@@ -4,7 +4,13 @@
  * unavailable. Neither is an account, backup, or cross-device sync service.
  * Exact provider text and receipts are copied, never regenerated on branching.
  */
-import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle, legacyMarrowlineTitle } from './marrowline-title.js';
+import {
+  DEFAULT_MARROWLINE_TITLE,
+  LEGACY_DEFAULT_MARROWLINE_TITLE,
+  isDefaultMarrowlineTitle,
+  deriveMarrowlineConversationTitle,
+  legacyMarrowlineTitle
+} from './marrowline-title.js';
 
 export const MARROWLINE_THREADS_SCHEMA = 'td613.marrowline.local-threads/v1';
 export const MARROWLINE_THREADS_DB = 'td613-marrowline-conversations-v1';
@@ -179,16 +185,17 @@ export async function createMarrowlineThreadLibrary(root = window) {
       // Completed legacy/provisional records are eligible for deterministic
       // repair. Blank is an intentional "not named yet" value, never a title.
       const generated = ['local-topic-v2','local-topic-v3-after-return','pending-return'].includes(thread.titleSource);
-      if (!generated && current && current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
+      if (!generated && current && current !== legacyMarrowlineTitle(first.text) && !isDefaultMarrowlineTitle(current)) continue;
       const next = deriveMarrowlineConversationTitle(first.text);
-      if (next === DEFAULT_MARROWLINE_TITLE || (generated && next === current)) continue;
+      if (isDefaultMarrowlineTitle(next) || (generated && next === current)) continue;
       await put({ ...thread, conversationTitle: next, titleSource: 'local-topic-v3-after-return' });
       changed++;
     }
     return changed;
   };
   const pruneEmptyGeneratedThreads = async () => {
-    // "The speaking grove" is presentation language, never durable thread data.
+    // "The Screaming Grove" (and legacy "The speaking grove") is presentation
+    // language, never durable thread data.
     // Delete truly empty legacy phantoms. Preserve meaningful interrupted work
     // by converting its old/default title into an explicitly untitled
     // provisional record; completed records are named by the migration below.
@@ -202,7 +209,7 @@ export async function createMarrowlineThreadLibrary(root = window) {
       const noFailure = !thread.lastFailure;
       const hasReply = messages.some(entry => entry?.role === 'model');
       const storedTitle = String(thread.conversationTitle || '').trim();
-      const defaultTitle = !storedTitle || storedTitle === DEFAULT_MARROWLINE_TITLE;
+      const defaultTitle = isDefaultMarrowlineTitle(storedTitle);
       if (!defaultTitle) continue;
       if (emptyMessages && emptyDraft && emptyPending && noFailure) {
         await remove(thread.id);

@@ -2,8 +2,9 @@ import crypto from 'node:crypto';
 import { verifyMarrowlineUploadProof } from './marrowline-attachment-upload.js';
 import { buildInvocationPacket, KHONAPOLIT_REQUEST_MAX_UTF8_BYTES } from '../app/dome-world/khonapolit-covenant.js';
 import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';
-import { buildApertureV3InvocationReceipt } from '../app/engine/aperture-v3-task-intent.js';
+import { buildApertureV3InvocationReceipt, classifyApertureDiscourseMode } from '../app/engine/aperture-v3-task-intent.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
+import { POLICY_NONSTOP_FINISH_REASONS, observeMarrowlineCompletion } from './marrowline-completion.js';
 import {
   GEMINI_MODEL_POLICY_VERSION,
   recordGeminiModelOutcome,
@@ -15,6 +16,7 @@ import {
   geminiRequestHeaders
 } from './gemini-provider-transport.js';
 import {
+  GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
   allocateKhonapolitAttemptTimeout,
   bothMarrowlineVoicesAbsent,
   buildGeminiRequest,
@@ -27,9 +29,15 @@ import {
   selectKhonapolitProviderModelsFromPlan,
   terminalContinuationEligible,
   assembleProviderTerminalContinuation,
-  severeMorphologyRepairWarnings
+  selectCarbonAuditionModels
 } from './khonapolit-quality.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
+import {
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+  MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER
+} from '../app/dome-world/marrowline-historical-grove.js';
+import { selectMarrowlineGroveTrial } from '../app/dome-world/marrowline-grove-trial.js';
 
 export const MARROWLINE_ATTACHMENT_API_VERSION = 'td613.marrowline-attachment-ingress/v0.2-frontier-custody';
 export const MARROWLINE_ATTACHMENT_SCHEMA = 'td613.marrowline.attachment/v0.1';
@@ -165,15 +173,15 @@ function addAttachmentContext(request, packet, attachments) {
   return request;
 }
 
-export function buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback = false } = {}) {
-  return addAttachmentContext(buildGeminiRequest(packet, apertureReceipt, model, { fallback }), packet, attachments);
+export function buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback = false, groveTrial = null } = {}) {
+  return addAttachmentContext(buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial }), packet, attachments);
 }
 
-export function buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, heldText, reasons, { fallback = false } = {}) {
+export function buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, heldText, reasons, { fallback = false, groveTrial = null } = {}) {
   // Reuse the text route's same-provider, terminal-only directive rather than
   // adding a competing composition prompt or losing the attachment context.
   return addAttachmentContext(
-    buildGeminiStructuralRepairRequest(packet, apertureReceipt, model, heldText, reasons, { fallback }),
+    buildGeminiStructuralRepairRequest(packet, apertureReceipt, model, heldText, reasons, { fallback, groveTrial }),
     packet,
     attachments
   );
@@ -189,8 +197,13 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 
-async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false, structuralRepair = null } = {}) {
+async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false, structuralRepair = null, groveTrial = null, externalAbortSignal = null } = {}) {
   const controller = new AbortController();
+  const onExternalAbort = () => controller.abort();
+  if (externalAbortSignal) {
+    if (externalAbortSignal.aborted) controller.abort();
+    else externalAbortSignal.addEventListener('abort', onExternalAbort, { once: true });
+  }
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   // Preserve the exact submitted provider envelope as receipt provenance.
   // Attachment turns currently use the unprofiled HIGH request; changing that
@@ -199,8 +212,8 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
   let submittedRequestObservation = null;
   try {
     const request = structuralRepair
-      ? buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, structuralRepair.heldText, structuralRepair.reasons, { fallback })
-      : buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback });
+      ? buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, structuralRepair.heldText, structuralRepair.reasons, { fallback, groveTrial })
+      : buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback, groveTrial });
     submittedGenerationConfig = request.generationConfig;
     const wire = serializeGeminiRequest(request, model);
     submittedRequestObservation = wire.observation;
@@ -213,10 +226,11 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
     const payload = await response.json().catch(() => ({}));
     return { response, payload, text: extractGeminiText(payload), timedOut: false, submittedGenerationConfig, submittedRequestObservation };
   } catch (error) {
-    const timedOut = error?.name === 'AbortError';
+    const operatorAborted = Boolean(externalAbortSignal?.aborted);
+    const timedOut = !operatorAborted && error?.name === 'AbortError';
     return {
-      response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
-      payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
+      response: { ok: false, status: operatorAborted ? 499 : (timedOut ? 408 : 599), headers: { get: () => null } },
+      payload: { error: { status: operatorAborted ? 'CANCELLED' : (error?.name || 'FETCH_ERROR'), message: safe(error?.message || error) } },
       text: '',
       timedOut,
       submittedGenerationConfig,
@@ -224,6 +238,7 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
     };
   } finally {
     clearTimeout(timer);
+    externalAbortSignal?.removeEventListener?.('abort', onExternalAbort);
   }
 }
 
@@ -258,27 +273,82 @@ export default async function marrowlineAttachmentHandler(req, res) {
   // Match text ingress: the local bucket records burst pressure but never blocks
   // an explicit human retry before Gemini has a chance to answer.
   const startedAt = Date.now();
+  const releaseCanary = headerValue(req.headers, 'x-td613-release-canary') === '1';
+  const candidateTrial = selectMarrowlineGroveTrial(body, { releaseCanary, allowAttachments: true });
+  const groveTrial = candidateTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID ? candidateTrial : null;
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
-  const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: isCarbonReconstruction ? 10 : 8, carbonReconstruction: isCarbonReconstruction });
+  const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
     invocationMode: packet.mode,
     issuanceState: packet.issuance.state,
     apertureEgress,
-    modelPlan: plan
+    modelPlan: plan,
+    discourseMode,
+    contentScanned: true
   });
-  const models = selectKhonapolitProviderModelsFromPlan(plan);
+  const models = isCarbonReconstruction ? selectCarbonAuditionModels(plan) : selectKhonapolitProviderModelsFromPlan(plan);
+  if (groveTrial) res.setHeader('X-TD613-Grove-Trial', groveTrial);
   const attempts = [];
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
+  // RP-01: Provider policy termination is an immediate, terminal fail-closed
+  // 502 POLICY-HELD boundary on /api/marrowline-attachment. Never fall over to
+  // another seat or surface an un-repaired partial draft as HTTP 200 after a
+  // provider policy block.
+  const sendAttachmentPolicyHeldResponse = (triggerModel = null, {
+    finishReason = null,
+    promptBlockReason = null
+  } = {}) => {
+    const policyTerminatedAttempts = attempts.filter((attempt) => attempt.policyTermination);
+    if (triggerModel) res.setHeader('X-TD613-Gemini-Model', triggerModel);
+    res.setHeader('X-TD613-Completion-State', 'POLICY-HELD');
+    return send(res, 502, {
+      ok: false,
+      status: 'HELD',
+      error: 'gemini-provider-policy-held',
+      diagnostic: {
+        stage: 'provider-termination',
+        code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+        finishReason: finishReason || policyTerminatedAttempts.at(-1)?.policyTermination?.finishReason || null,
+        promptBlockReason: promptBlockReason || policyTerminatedAttempts.at(-1)?.policyTermination?.promptBlockReason || null,
+        finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
+        promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
+        policyTerminatedSeatCount: policyTerminatedAttempts.length,
+        transportFailedSeatCount: attempts.filter((attempt) => !attempt.ok).length,
+        hasMixedTransportFailure: attempts.some((attempt) => !attempt.ok),
+        observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into terminal continuation, and subsequent seats were not called.'
+      },
+      attempts,
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    });
+  };
+
   for (let index = 0; index < models.length; index += 1) {
+    if (req?.episodeAbortSignal?.aborted) break;
+    if (isCarbonReconstruction && attempts.length >= 1) break;
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
+    const timeoutMs = allocateKhonapolitAttemptTimeout({
+      remainingMs,
+      index,
+      modelCount: models.length,
+      fairShare: true,
+      model,
+      singleSeatAudition: isCarbonReconstruction,
+      streamed: false
+    });
     const attemptStartedAt = Date.now();
-    const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback });
+    const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback, groveTrial, externalAbortSignal: req?.episodeAbortSignal || null });
+    if (req?.episodeAbortSignal?.aborted) break;
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
@@ -292,6 +362,24 @@ export default async function marrowlineAttachmentHandler(req, res) {
     });
     attempts.push({ model, ok: Boolean(result.response.ok), status: Number(result.response.status || 0), timedOut: result.timedOut, timeoutMs, elapsedMs: Date.now() - attemptStartedAt, transportClass: transport.class, error, output: providerOutput, cooldown: outcome });
 
+    const policyTerminated = Boolean(
+      (providerOutput.finishReason && POLICY_NONSTOP_FINISH_REASONS.has(providerOutput.finishReason))
+      || providerOutput.promptBlockReason
+    );
+    if (result.response.ok && policyTerminated) {
+      attempts.at(-1).policyTermination = Object.freeze({
+        finishReason: providerOutput.finishReason,
+        ...(providerOutput.promptBlockReason ? { promptBlockReason: providerOutput.promptBlockReason } : {}),
+        ...(providerOutput.finishMessage ? { finishMessage: providerOutput.finishMessage } : {}),
+        providerTextSha256: result.text ? sha256(result.text) : null,
+        admittedAsIncompleteDraft: false,
+        fedToStructuralRepair: false
+      });
+      return sendAttachmentPolicyHeldResponse(model, {
+        finishReason: providerOutput.finishReason,
+        promptBlockReason: providerOutput.promptBlockReason || null
+      });
+    }
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
       attempts.at(-1).outputAdmission = Object.freeze({
         admissible: false,
@@ -313,9 +401,26 @@ export default async function marrowlineAttachmentHandler(req, res) {
     if (!result.response.ok || !result.text) continue;
 
     const initialRelay = parseRelayEnvelope(result.text, { model, apertureReceipt });
-    attempts.at(-1).outputAdmission = initialRelay.admission || null;
+    attempts.at(-1).outputAdmission = providerOutput.outputTokenLimitReached
+      ? Object.freeze({
+          ...(initialRelay.admission || {}),
+          admissible: false,
+          quality: 'PARTIAL',
+          reasons: Object.freeze(['provider-output-token-limit', ...(initialRelay.admission?.reasons || []).filter((r) => r !== 'provider-output-token-limit')])
+        })
+      : (initialRelay.admission || null);
     let selectedText = result.text;
-    let selectedRelay = initialRelay;
+    let selectedRelay = providerOutput.outputTokenLimitReached
+      ? Object.freeze({
+          ...initialRelay,
+          signal: Object.freeze({
+            ...initialRelay.signal,
+            state: 'NOT_LOCKED',
+            downstreamAdmitted: false,
+            notes: [initialRelay.signal?.notes, 'Provider MAX_TOKENS reached; preserved partial text is not downstream-admitted.'].filter(Boolean).join(' ')
+          })
+        })
+      : initialRelay;
     let selectedProviderOutput = providerOutput;
     let continuation = null;
     let repairAttempted = false;
@@ -325,19 +430,22 @@ export default async function marrowlineAttachmentHandler(req, res) {
     // It is never a quality grade, morphology repaint, or a reason to discard a
     // human-visible first return when the second provider call cannot complete.
     if (headerValue(req.headers, 'x-td613-release-canary') !== '1'
+      && !isCarbonReconstruction
       && !providerOutput.outputTokenLimitReached
       && terminalContinuationEligible(result.text, structuralReasons)) {
       const repairBudget = Math.min(
         STRUCTURAL_REPAIR_TIMEOUT_MS,
         WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS
       );
-      if (repairBudget >= MIN_STRUCTURAL_REPAIR_BUDGET_MS) {
+      if (repairBudget >= MIN_STRUCTURAL_REPAIR_BUDGET_MS && !req?.episodeAbortSignal?.aborted) {
         repairAttempted = true;
         const sourceAttemptIndex = attempts.length - 1;
         const repairStartedAt = Date.now();
         const repairResult = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, repairBudget, {
           fallback,
-          structuralRepair: { heldText: result.text, reasons: structuralReasons }
+          groveTrial,
+          structuralRepair: { heldText: result.text, reasons: structuralReasons },
+          externalAbortSignal: req?.episodeAbortSignal || null
         });
         const repairOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
         const repairTransport = classifyGeminiTransport({ status: Number(repairResult.response.status || 0), timedOut: repairResult.timedOut });
@@ -358,15 +466,36 @@ export default async function marrowlineAttachmentHandler(req, res) {
           transportClass: repairTransport.class, error: repairError, output: repairOutput, cooldown: repairOutcome
         };
         attempts.push(repairAttempt);
-        if (repairResult.response.ok && repairResult.text && !repairOutput.outputTokenLimitReached) {
+        const repairPolicyTerminated = Boolean(
+          (repairOutput.finishReason && POLICY_NONSTOP_FINISH_REASONS.has(repairOutput.finishReason))
+          || repairOutput.promptBlockReason
+        );
+        if (repairResult.response.ok && repairPolicyTerminated) {
+          repairAttempt.policyTermination = Object.freeze({
+            finishReason: repairOutput.finishReason,
+            ...(repairOutput.promptBlockReason ? { promptBlockReason: repairOutput.promptBlockReason } : {}),
+            ...(repairOutput.finishMessage ? { finishMessage: repairOutput.finishMessage } : {}),
+            providerTextSha256: repairResult.text ? sha256(repairResult.text) : null,
+            admittedAsIncompleteDraft: false,
+            fedToStructuralRepair: false
+          });
+          return sendAttachmentPolicyHeldResponse(model, {
+            finishReason: repairOutput.finishReason,
+            promptBlockReason: repairOutput.promptBlockReason || null
+          });
+        } else if (
+          repairResult.response.ok
+          && repairResult.text
+          && !repairOutput.outputTokenLimitReached
+          && (!repairOutput.finishReason || repairOutput.finishReason === 'STOP')
+        ) {
           // Only a genuine terminal suffix is eligible. Reject a rewritten
           // Kʰonapolit draft or malformed suffix and preserve the initial bytes.
           const joined = assembleProviderTerminalContinuation(result.text, repairResult.text);
           if (joined) {
             const joinedRelay = parseRelayEnvelope(joined.text, { model, apertureReceipt });
             repairAttempt.outputAdmission = joinedRelay.admission || null;
-            if (joinedRelay.admission?.admissible
-              && severeMorphologyRepairWarnings(joinedRelay.admission?.qualityWarnings || []).length === 0) {
+            if (joinedRelay.admission?.admissible) {
               selectedText = joined.text;
               selectedRelay = joinedRelay;
               selectedProviderOutput = repairOutput;
@@ -404,6 +533,30 @@ export default async function marrowlineAttachmentHandler(req, res) {
       });
     }
 
+    const rawCompletion = observeMarrowlineCompletion(
+      selectedRelay.transcript,
+      selectedProviderOutput,
+      { streamed: false, parseErrors: 0, creative: discourseMode === 'CREATIVE' }
+    );
+    const structuralVoiceIncomplete = rawCompletion.complete
+      && selectedRelay.admission?.admissible === false
+      && terminalContinuationEligible(selectedText, selectedRelay.admission?.reasons || []);
+    const completion = structuralVoiceIncomplete
+      ? Object.freeze({ ...rawCompletion, complete: false, reason: 'required-voice-structure-incomplete' })
+      : rawCompletion;
+    attempts.at(-1).completion = completion;
+    if (structuralVoiceIncomplete) {
+      selectedRelay = Object.freeze({
+        ...selectedRelay,
+        signal: Object.freeze({
+          ...selectedRelay.signal,
+          state: 'NOT_LOCKED',
+          downstreamAdmitted: false,
+          notes: [selectedRelay.signal?.notes, 'Provider STOP witnessed; mandatory two-voice structure remains incomplete.'].filter(Boolean).join(' ')
+        })
+      });
+    }
+
     const baseReceipt = buildTerminalReceipt({
       packet, text: selectedText, relay: selectedRelay, model, providerStatus: result.response.status,
       providerOutput: selectedProviderOutput, apertureEgress, apertureReceipt, attempts,
@@ -413,12 +566,16 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const attachment_digest = sha256(Buffer.from(JSON.stringify(attachment_receipt), 'utf8'));
     const receipt = Object.freeze({
       ...baseReceipt,
+      ...(completion.complete === false ? {
+        status: structuralVoiceIncomplete ? 'MODEL_STRUCTURE_INCOMPLETE' : 'MODEL_RESPONSE_INCOMPLETE'
+      } : {}),
       apiVersion: MARROWLINE_ATTACHMENT_API_VERSION,
       invocation: Object.freeze({ ...baseReceipt.invocation, attachmentCount: attachments.length, attachmentDigest: attachment_digest, promptSha256: sha256(Buffer.from(`${baseReceipt.invocation.promptSha256}:${attachment_digest}`, 'utf8')) }),
       attachments: attachment_receipt,
       provider: Object.freeze({
         ...baseReceipt.provider,
         routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+        completion,
         ...(repairAttempted ? { structuralRepair: Object.freeze({
           used: true,
           succeeded: Boolean(continuation),
@@ -426,11 +583,41 @@ export default async function marrowlineAttachmentHandler(req, res) {
         }) } : {})
       }),
       modelPolicy: plan,
+      ...(isCarbonReconstruction ? {
+        grove_trial: Object.freeze({
+          id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+          variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+          audition: Object.freeze({
+            max_provider_requests: 1,
+            max_output_tokens: 65536,
+            initial_timeout_ms: GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
+            stream_grace_ms: 0,
+            max_provider_runway_ms: GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
+            wall_timeout_ms: WALL_TIMEOUT_MS,
+            response_reserve_ms: RESPONSE_RESERVE_MS,
+            fallback: false,
+            retry: false,
+            structural_repair: false
+          }),
+          requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
+          eligible_model_order: [...models],
+          attempt_models: attempts.map((attempt) => attempt.model),
+          native_prosody_profile: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE
+        })
+      } : {}),
       elapsedMs: Date.now() - startedAt,
       claimCeiling: `${packet.claimCeiling}; attachment-receipt-proves-admitted-request-bytes-not-human-interpretation-or-semantic-correctness`
     });
     res.setHeader('X-TD613-Gemini-Model', model);
     res.setHeader('X-TD613-Attachment-Count', String(attachments.length));
+    res.setHeader(
+      'X-TD613-Completion-State',
+      structuralVoiceIncomplete
+        ? 'STRUCTURE-INCOMPLETE'
+        : !completion.complete
+          ? 'INCOMPLETE'
+          : 'COMPLETE-STRUCTURAL'
+    );
     if (continuation) res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
     return send(res, 200, {
       ok: true,
@@ -444,11 +631,37 @@ export default async function marrowlineAttachmentHandler(req, res) {
         'attachments-are-untrusted-user-context',
         'attachment-bytes-not-retained-server-side',
         ...(providerOutput.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
+        ...(structuralVoiceIncomplete ? ['two-voice-structure-incomplete-provider-stop-observed']
+          : !completion.complete ? ['provider-return-incomplete-visible-retry-available'] : []),
         'local-admission-observed-not-human-surface-veto',
         ...plan.warnings
       ]
     });
   }
 
+  const policyTerminatedAttempts = attempts.filter((attempt) => attempt.policyTermination);
+  if (policyTerminatedAttempts.length > 0) {
+    return send(res, 502, {
+      ok: false,
+      status: 'HELD',
+      error: 'gemini-provider-policy-held',
+      diagnostic: {
+        stage: 'provider-termination',
+        code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+        finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
+        promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
+        policyTerminatedSeatCount: policyTerminatedAttempts.length,
+        transportFailedSeatCount: attempts.filter((attempt) => !attempt.ok).length,
+        hasMixedTransportFailure: attempts.some((attempt) => !attempt.ok),
+        observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into terminal continuation. Any mixed transport seat failures are preserved alongside policy counts.'
+      },
+      attempts,
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    }, { 'X-TD613-Completion-State': 'POLICY-HELD' });
+  }
   return send(res, 502, { ok: false, error: 'gemini-provider-unavailable', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 }

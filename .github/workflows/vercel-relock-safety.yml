@@ -551,6 +551,178 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"
 
+  # Single-failure Vercel check investigation. This job reads but never deploys.
+  # Original PREPARE/DEPLOY and production authorization remain unchanged.
+  vixen-preview-check-diagnose:
+    name: Vixen failed-preview check forensics — READ ONLY
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'issue_comment' &&
+      github.event.issue.number == 1744 &&
+      github.event.issue.pull_request == null &&
+      (
+        github.event.comment.user.login == github.repository_owner ||
+        github.event.comment.user.login == 'chatgpt-codex-connector[bot]'
+      ) &&
+      github.event.comment.body == '/td613-vixen-preview CHECK-LOGS DYr8M6wJMiwyxQUUmaHizRkxH874'
+    permissions:
+      contents: read
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: vixen-preview
+    env:
+      VERCEL_SCOPE: tauric-diana-s-projects
+      VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
+      VERCEL_PROJECT_ID: prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7
+      FAILED_DEPLOYMENT_ID: DYr8M6wJMiwyxQUUmaHizRkxH874
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Set up Node 22 for the pinned diagnostic CLI
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the already-reviewed Vercel CLI version
+        run: npm install --global vercel@65.16.0
+      - name: Inspect only the known failed preview's checks and build events
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "${VERCEL_TOKEN:-}" ]] || { echo 'Vercel diagnostic credentials missing' >&2; exit 1; }
+          mkdir -p "$RUNNER_TEMP/vixen-check-diagnostics"
+          cd "$RUNNER_TEMP/vixen-check-diagnostics"
+          set +e
+          vercel inspect "$FAILED_DEPLOYMENT_ID" --logs --scope "$VERCEL_SCOPE" > inspect.txt 2>&1
+          INSPECT_EXIT=$?
+          vercel api "/v13/deployments/$FAILED_DEPLOYMENT_ID?teamId=$VERCEL_ORG_ID" --method GET > deployment.json 2> deployment.err
+          DEPLOYMENT_EXIT=$?
+          vercel api "/v3/deployments/$FAILED_DEPLOYMENT_ID/events?teamId=$VERCEL_ORG_ID&builds=1" --method GET > events.json 2> events.err
+          EVENTS_EXIT=$?
+          vercel api "/v1/deployments/$FAILED_DEPLOYMENT_ID/checks?teamId=$VERCEL_ORG_ID" --method GET > checks.json 2> checks.err
+          CHECKS_EXIT=$?
+          set -e
+          INSPECT_EXIT="$INSPECT_EXIT" DEPLOYMENT_EXIT="$DEPLOYMENT_EXIT" EVENTS_EXIT="$EVENTS_EXIT" CHECKS_EXIT="$CHECKS_EXIT" python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          def clean(s):
+              s = str(s).replace(os.getenv('VERCEL_TOKEN','<unset>'),'[REDACTED]')
+              s = re.sub(r'(?i)(token|secret|password|authorization)(\s*[:=]\s*)([^\s,;]+)',r'\1\2[REDACTED]',s)
+              return s[:380]
+          print('CHECK_DIAGNOSTIC_ONLY: true')
+          print('TARGET: original failed Preview DYr8M6wJMiwyxQUUmaHizRkxH874')
+          for k in ('INSPECT_EXIT','DEPLOYMENT_EXIT','EVENTS_EXIT','CHECKS_EXIT'): print(k,os.environ[k])
+          for fname in ('deployment.json','events.json','checks.json'):
+              try: data=json.loads(Path(fname).read_text())
+              except Exception as e: print(fname,'JSON_UNAVAILABLE',clean(e)); continue
+              if isinstance(data,dict):
+                  source=data.get('deployment',data)
+                  if fname=='deployment.json':
+                      print('DEPLOYMENT_FIELDS',json.dumps({k:clean(source[k]) for k in ('id','readyState','state','errorCode','errorMessage','projectId','url','checksState') if k in source},sort_keys=True))
+                      for key in ('checks','checksState','checkStatus','buildError'):
+                          if key in source:print('CHECK_FIELD',key,clean(json.dumps(source[key])))
+                  elif fname=='checks.json':
+                      entries=data.get('checks',data.get('data',[]))
+                      if isinstance(entries,dict): entries=entries.get('checks',[])
+                      if isinstance(entries,list):
+                          print('CHECKS_COUNT',len(entries))
+                          for entry in entries[:50]:
+                              if isinstance(entry,dict):
+                                  print('DEPLOYMENT_CHECK',json.dumps({k:clean(entry[k]) for k in ('name','status','state','conclusion','blocking','id','detailsUrl','output') if k in entry},sort_keys=True))
+                  else:
+                      events=data.get('events',data.get('data',[]))
+                      if isinstance(events,dict):events=events.get('events',[])
+                      if isinstance(events,list):
+                          print('EVENT_COUNT',len(events))
+                          for event in events[-100:]:
+                              if not isinstance(event,dict):continue
+                              info=' '.join(str(event.get(k,'')) for k in ('type','level','text','message','payload'))
+                              if re.search('error|failed|check|build|limit|bundle|memory|size|invalid|python|install|quota',info,re.I):
+                                  print('BUILD_EVENT',clean(info))
+          t=Path('inspect.txt').read_text(errors='replace') if Path('inspect.txt').exists() else ''
+          lines=[clean(l) for l in t.splitlines() if re.search('error|failed|check|build|limit|bundle|memory|size|invalid|python|quota',l,re.I)]
+          print('INSPECT_RELEVANT_LINES',len(lines))
+          for line in lines[-55:]: print('INSPECT',line)
+          if not t.strip() and all(not Path(f).stat().st_size for f in ('deployment.json','events.json','checks.json')):
+              raise SystemExit('FAILED_TO_ACQUIRE_ANY_CHECK_LOGS')
+          print('READ_ONLY_NO_DEPLOY_NO_ALIAS_CHANGE')
+          PY
+      - name: Read named failed-deployment checks through Vercel REST
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const id=process.env.FAILED_DEPLOYMENT_ID;
+          const team=process.env.VERCEL_ORG_ID;
+          const token=process.env.VERCEL_TOKEN;
+          if(!token||!/^DYr8M6wJMiwyxQUUmaHizRkxH874$/.test(id)||team!=='team_pX5L7AFivMzMU1lH28Y6RIhX')throw Error('Fixed diagnostic scope failed');
+          const clean=v=>String(typeof v==='string'?v:JSON.stringify(v??'')).replaceAll(token,'[REDACTED]').slice(0,420);
+          const paths=[
+            ['DEPLOYMENT',`/v13/deployments/${id}?teamId=${encodeURIComponent(team)}`],
+            ['CHECKS',`/v1/deployments/${id}/checks?teamId=${encodeURIComponent(team)}`],
+            ['BUILD_EVENTS',`/v3/deployments/${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
+            ['DEPLOYMENT_CANONICAL',`/v13/deployments/dpl_${id}?teamId=${encodeURIComponent(team)}&withGitRepoInfo=true`],
+            ['CHECKS_CANONICAL',`/v1/deployments/dpl_${id}/checks?teamId=${encodeURIComponent(team)}`],
+            ['BUILD_EVENTS_CANONICAL',`/v3/deployments/dpl_${id}/events?teamId=${encodeURIComponent(team)}&builds=1&limit=250`],
+            ['CONTROL_READY',`/v13/deployments/dpl_DeZXgMdYYPmT9GZHL66aQtixeL5m?teamId=${encodeURIComponent(team)}&withGitRepoInfo=true`],
+          ];
+          console.log('READ_ONLY_FAILED_DEPLOYMENT_DIAGNOSTIC',id);
+          for(const [label,path] of paths){
+            try{
+              const response=await fetch(`https://api.vercel.com${path}`,{
+                method:'GET',redirect:'error',headers:{Authorization:`Bearer ${token}`,Accept:'application/json'}
+              });
+              console.log('VERCEL_REST_RESULT',label,'HTTP',response.status);
+              const data=await response.json().catch(()=>({unparsed:true}));
+              if(!response.ok){
+                const er=data?.error??data;
+                console.log('VERCEL_REST_ERROR',label,clean(er?.code??''),clean(er?.message??''));
+                continue;
+              }
+              if(label.startsWith('DEPLOYMENT')||label==='CONTROL_READY'){
+                const d=data?.deployment??data;
+                const fields=['id','url','state','readyState','errorCode','errorMessage','checksState','projectId','target','buildingAt','ready'];
+                console.log('DEPLOYMENT_STATE',JSON.stringify(Object.fromEntries(fields.filter(k=>k in d).map(k=>[k,clean(d[k])]))));
+                // Explain Neon's failed branch lookup without exposing environment variables.
+                for(const field of ['gitSource','source','gitBranch','gitRepository','gitRepo','gitRef'])if(field in d){
+                  const v=d[field];
+                  const allowed=['type','ref','sha','repoId','repo','repoName','org','repoOwner','repositoryId','gitUrl','branch','commitSha'];
+                  console.log('GIT_ATTRIBUTION',label,field,JSON.stringify(v&&typeof v==='object'?Object.fromEntries(allowed.filter(k=>k in v).map(k=>[k,clean(v[k])])):clean(v)));
+                }
+                const meta=d.meta??{};
+                const metaFields=['githubCommitRef','githubCommitSha','githubRepo','githubOrg','githubCommitOrg','githubDeployment','githubRepoId','githubCommitRepo','gitlabBranch','gitlabCommitSha','bitbucketBranch','gitCommitRef','gitCommitSha','branch','ref'];
+                console.log('GIT_METADATA_KEYS',label,Object.keys(meta).filter(k=>/git|commit|branch|ref|repo/i.test(k)).slice(0,60));
+                console.log('GIT_METADATA',label,JSON.stringify(Object.fromEntries(metaFields.filter(k=>k in meta).map(k=>[k,clean(meta[k])]))));
+                for(const field of ['checks','buildError','builds'])if(field in d){
+                  const val=d[field];
+                  const compact=Array.isArray(val)?val.slice(-8):val;
+                  console.log('DEPLOYMENT_DIAGNOSTIC_FIELD',field,clean(compact));
+                }
+              }else if(label.startsWith('CHECKS')){
+                let c=Array.isArray(data)?data:data?.checks??data?.data??data?.results??[];
+                if(!Array.isArray(c)&&Array.isArray(c?.checks))c=c.checks;
+                if(!Array.isArray(c)){console.log('CHECKS_SHAPE',Object.keys(data??{}));continue;}
+                console.log('NAMED_CHECK_COUNT',c.length);
+                for(const item of c.slice(0,75)){
+                  if(!item||typeof item!=='object')continue;
+                  const fields=['id','name','status','state','conclusion','blocking','rerequestable','detailsUrl','errorCode','errorMessage','output'];
+                  console.log('NAMED_CHECK',JSON.stringify(Object.fromEntries(fields.filter(k=>k in item).map(k=>[k,clean(item[k])]))));
+                }
+              }else{
+                let ev=Array.isArray(data)?data:data?.events??data?.data??data?.results??[];
+                if(!Array.isArray(ev)&&Array.isArray(ev?.events))ev=ev.events;
+                if(!Array.isArray(ev)){console.log('EVENTS_SHAPE',Object.keys(data??{}));continue;}
+                console.log('EVENT_COUNT',ev.length);
+                for(const event of ev.slice(-160)){
+                  const content=[event?.type,event?.level,event?.text,event?.message,event?.payload?.text].filter(Boolean).join(' ');
+                  if(/error|fail|check|build|quota|limit|memory|size|invalid|python|bundle|install|artifact/i.test(content)){
+                    console.log('BUILD_EVENT',clean(content));
+                  }
+                }
+              }
+            }catch(err){console.log('VERCEL_REST_UNAVAILABLE',label,clean(err?.message??err));}
+          }
+          console.log('DIAGNOSTIC_COMPLETE_NO_DEPLOY_NO_ALIAS_NO_MUTATION');
+          NODE
   # PR #1730 source-only preflight: no Vercel credentials, no deployment.
 
   vixen-preview-prepare:
@@ -848,6 +1020,27 @@ jobs:
           }
           NODE
 
+      # Keep immutable source identity while recovering the real tracked Git
+      # branch name; Neon preview branching cannot resolve a detached HEAD.
+      - name: Restore verified Git branch identity for Neon preview check
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          EXPECTED_BRANCH='research/vixen-dual-estate-encyclopedia-20261108'
+          [[ "$(git rev-parse HEAD)" == "$INPUT_SHA" ]] || { echo 'Checkout drift before local branch restoration.' >&2; exit 1; }
+          PR="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730")"
+          jq -e --arg sha "$INPUT_SHA" --arg branch "$EXPECTED_BRANCH" --arg repo "$GITHUB_REPOSITORY" \
+            '.state == "open" and .merged == false and .head.sha == $sha and .head.ref == $branch and
+             .head.repo.full_name == $repo and .base.ref == "main"' <<< "$PR" >/dev/null || {
+            echo 'Remote branch, PR or exact SHA changed. Preview remains HELD.' >&2; exit 1;
+          }
+          git switch -c "$EXPECTED_BRANCH" "$INPUT_SHA"
+          [[ "$(git rev-parse --abbrev-ref HEAD)" == "$EXPECTED_BRANCH" ]] || exit 1
+          [[ "$(git rev-parse HEAD)" == "$INPUT_SHA" ]] || exit 1
+          git diff --quiet && git diff --cached --quiet || { echo 'Local branch restoration modified source bytes.' >&2; exit 1; }
+          echo 'Verified source SHA retained; named Git branch restored locally for Vercel/Neon preview metadata.'
       - name: Set up Node 22
         uses: actions/setup-node@v4
         with:

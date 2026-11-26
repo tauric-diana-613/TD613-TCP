@@ -4,7 +4,12 @@ import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { isLoomEvidenceHold, projectLoomEvidenceReview } from './holonomy-loom/ai-evidence-diagnostic.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
 import { marrowlineUploadRequired, prepareMarrowlineAttachmentWire } from './marrowline-attachment-upload.js';
-import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
+import {
+  DEFAULT_MARROWLINE_TITLE,
+  LEGACY_DEFAULT_MARROWLINE_TITLE,
+  isDefaultMarrowlineTitle,
+  deriveMarrowlineConversationTitle
+} from './marrowline-title.js';
 import { formatMarrowlineReplyForCopy } from './marrowline-speaker-frames.js';
 import {
   clearMarrowlineAttachments,
@@ -38,9 +43,19 @@ import {
 import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
 import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
 import {
+  cancelMarrowlineEpisode,
+  consumeMarrowlineEpisode,
+  createMarrowlineEpisode,
+  pollMarrowlineEpisodeClaim,
+  readMarrowlineTransportResponse
+} from './marrowline-episode-continuity-client.js';
+import {
   resolveMarrowlineGroveTrialTab
 } from './marrowline-grove-trial.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID } from './marrowline-historical-grove.js';
+import {
+  MARROWLINE_HISTORICAL_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID
+} from './marrowline-historical-grove.js';
 import {
   currentGeminiDailyBudgetHints,
   ingestGeminiConsumption,
@@ -64,16 +79,44 @@ const PORTABLE_RULES = Object.freeze([
 function byId(doc, id) { return doc.getElementById(id); }
 function safe(value = '') { return String(value ?? '').trim(); }
 
-export function classifyMarrowlineClientFailure(error, stage = 'request', httpStatus = null) {
+export function classifyMarrowlineClientFailure(
+  error,
+  stage = 'request',
+  httpStatus = null,
+  { hiddenDuringRequest = false, unfocusedDuringRequest = false, episodeOutcomeUnknown = false, deadlineTimedOut = false } = {}
+) {
   const transportStage = stage === 'request' || stage === 'response-body';
-  const code = transportStage && error?.name === 'AbortError' ? 'request-timeout'
+  const backgroundInterrupted = Boolean((hiddenDuringRequest || unfocusedDuringRequest || episodeOutcomeUnknown) && transportStage && !deadlineTimedOut);
+  const isTimeout = transportStage && (deadlineTimedOut || (!backgroundInterrupted && error?.name === 'AbortError'));
+  const code = isTimeout ? 'request-timeout'
     : stage === 'request' ? 'network-request-failed'
     : stage === 'response-body' ? 'response-body-failed'
     : 'client-response-processing-failed';
+  const outcomeState = backgroundInterrupted
+    ? 'OUTCOME_UNKNOWN'
+    : isTimeout
+      ? 'CLIENT_DEADLINE_EXCEEDED'
+      : 'KNOWN_FAILED';
   return {
     error: code,
     httpStatus,
-    diagnostic: { stage, code, errorClass: safe(error?.name || 'Error').slice(0, 64) }
+    outcomeState,
+    ...(backgroundInterrupted ? {
+      backgroundInterrupted: true,
+      ...(unfocusedDuringRequest && !hiddenDuringRequest ? { windowFocusShifted: true } : {}),
+      serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+      automaticRetrySuppressed: true
+    } : {}),
+    diagnostic: {
+      stage,
+      code: backgroundInterrupted ? 'background-connection-interrupted-outcome-unknown' : code,
+      errorClass: safe(error?.name || 'Error').slice(0, 64),
+      ...(backgroundInterrupted ? {
+        outcomeState: 'OUTCOME_UNKNOWN',
+        serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+        automaticRetrySuppressed: true
+      } : {})
+    }
   };
 }
 
@@ -141,11 +184,20 @@ function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
 const DEFAULT_CONVERSATION_TITLE = DEFAULT_MARROWLINE_TITLE;
-export { deriveMarrowlineConversationTitle } from './marrowline-title.js';
+export {
+  DEFAULT_MARROWLINE_TITLE,
+  LEGACY_DEFAULT_MARROWLINE_TITLE,
+  isDefaultMarrowlineTitle,
+  deriveMarrowlineConversationTitle
+} from './marrowline-title.js';
 
 function syncConversationTitle(doc, state = {}) {
   const node = byId(doc, 'marrowlineConversationTitle');
-  if (node) node.textContent = safe(state.conversationTitle) || DEFAULT_CONVERSATION_TITLE;
+  const rawTitle = safe(state.conversationTitle);
+  if (node) {
+    node.textContent = (state.titleSource === 'operator' ? rawTitle : (!isDefaultMarrowlineTitle(rawTitle) ? rawTitle : ''))
+      || DEFAULT_CONVERSATION_TITLE;
+  }
 }
 
 function portableEntry(entry = {}) {
@@ -193,11 +245,12 @@ function readStoredShi(root = window) {
 function loadSession(root = window) {
   try {
     const parsed = JSON.parse(root.sessionStorage.getItem(SESSION_KEY) || '{}');
+    const rawTitle = safe(parsed.conversationTitle);
     return {
       messages: Array.isArray(parsed.messages) ? parsed.messages : [],
       lastReceipt: parsed.lastReceipt || null, pendingTask: safe(parsed.pendingTask),
       lastFailure: parsed.lastFailure || null,
-      conversationTitle: safe(parsed.conversationTitle) || DEFAULT_CONVERSATION_TITLE
+      conversationTitle: !isDefaultMarrowlineTitle(rawTitle) ? rawTitle : DEFAULT_CONVERSATION_TITLE
     };
   } catch {
     return { messages: [], lastReceipt: null, pendingTask: '', lastFailure: null,
@@ -395,8 +448,11 @@ export function marrowlineThreadMatchesSearch(thread = {}, query = '') {
 
 function updateReceipt(doc, root, state) {
   const node = byId(doc, 'khonapolitReceipt');
+  const failureStatus = state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN' || state.lastFailure?.backgroundInterrupted === true
+    ? 'CURRENT_REQUEST_OUTCOME_UNKNOWN'
+    : 'CURRENT_REQUEST_FAILED';
   if (node) node.textContent = state.lastFailure
-    ? JSON.stringify({ status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure,
+    ? JSON.stringify({ status: failureStatus, failure: state.lastFailure,
         transportInterpretation: classifyMarrowlineRetryWindow(state.lastFailure) }, null, 2)
     : state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'Awaiting a return for the current request.';
   root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = state.lastReceipt;
@@ -761,6 +817,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   };
   let activeRequestController = null;
   let activeRequestCancelRequested = false;
+  let activeEpisodeRecord = null;
   const sendControl = byId(doc, 'khonapolitSend');
   const setSendControlState = generating => {
     if (!sendControl) return;
@@ -798,9 +855,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const row = doc.createElement('div'); row.className = 'marrowline-thread-row';
       row.dataset.threadId = thread.id;
       const open = doc.createElement('button'); open.type = 'button'; open.className = 'marrowline-thread-open';
+      const rawThreadTitle = safe(thread.conversationTitle);
       const threadLabel = thread.titleSource === 'pending-return'
         ? 'Unfinished conversation'
-        : (thread.conversationTitle || DEFAULT_CONVERSATION_TITLE);
+        : ((thread.titleSource === 'operator' ? rawThreadTitle : (!isDefaultMarrowlineTitle(rawThreadTitle) ? rawThreadTitle : ''))
+          || DEFAULT_CONVERSATION_TITLE);
       open.textContent = (thread.parentId ? '⤴ ' : '') + threadLabel;
       open.setAttribute('aria-current', thread.id === activeThread?.id ? 'true' : 'false');
       open.addEventListener('click', () => void switchThread(thread.id));
@@ -832,6 +891,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     messages: Array.isArray(record?.messages) ? record.messages : [],
     lastReceipt: record?.lastReceipt || null,
     pendingTask: record?.pendingTask || '',
+    pendingEpisode: record?.pendingEpisode || null,
     lastFailure: record?.lastFailure || null,
     conversationTitle: record?.conversationTitle || '',
     titleSource: record?.titleSource || null,
@@ -847,7 +907,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       ? ''
       : state.conversationTitle;
     const snapshot = JSON.parse(JSON.stringify({ ...activeThread, messages: state.messages, lastReceipt: state.lastReceipt,
-      pendingTask: state.pendingTask, lastFailure: state.lastFailure, conversationTitle: persistedTitle,
+      pendingTask: state.pendingTask, pendingEpisode: state.pendingEpisode || null,
+      lastFailure: state.lastFailure, conversationTitle: persistedTitle,
       draft: byId(doc, 'khonapolitPrompt')?.value || '' }));
     if (JSON.stringify(threadContentSnapshot(snapshot)) === JSON.stringify(threadContentSnapshot(activeThread))) return saveChain;
     saveChain = saveChain.catch(() => false).then(() => threadLibrary.put(snapshot)).then(record => {
@@ -861,28 +922,293 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     });
     return saveChain;
   };
-  const restoreThread = record => {
-    activeThread = record;
-    state.messages = Array.isArray(record.messages) ? record.messages : [];
-    state.lastReceipt = record.lastReceipt || null;
-    state.lastFailure = record.lastFailure || null;
-    state.pendingTask = record.pendingTask || '';
-    state.conversationTitle = record.conversationTitle || DEFAULT_CONVERSATION_TITLE;
+  const commitEpisodeBeforeConsume = async (episodeRecord, claimAuthToken) => {
+    if (!await scheduleSave()) {
+      if (episodeRecord?.episodeId) {
+        // The last durable snapshot still contains the pending capability.
+        // Restore it in memory, too; reload can retrieve the same result.
+        state.pendingEpisode = episodeRecord;
+      }
+      return false;
+    }
+    if (episodeRecord && claimAuthToken) {
+      void consumeMarrowlineEpisode({
+        fetchImpl: root.fetch || fetch,
+        episodeId: episodeRecord.episodeId,
+        claimAuthToken
+      });
+    }
+    return true;
+  };
+  const holdEpisodeSaveFailure = () => {
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (status) status.dataset.progressStage = 'held';
+    setPedagogueStatus(status, 'held', 'SAVE HELD · original episode retained',
+      'Local persistence failed. The server result has not been consumed. Reload this conversation to recover the original episode before its expiry; do not generate a replacement.');
+  };
+  const markReloadOutcomeUnknown = (record) => {
+    state.pendingEpisode = null;
+    state.lastFailure = {
+      error: 'page-lifecycle-interrupted',
+      httpStatus: null,
+      observedAt: Date.now(),
+      backgroundInterrupted: true,
+      pageReloadInterrupted: true,
+      outcomeState: 'OUTCOME_UNKNOWN',
+      serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+      automaticRetrySuppressed: true,
+      diagnostic: {
+        stage: 'page-lifecycle',
+        code: 'page-suspended-or-reloaded-while-in-flight',
+        outcomeState: 'OUTCOME_UNKNOWN',
+        serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+        automaticRetrySuppressed: true
+      }
+    };
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
     const prompt = byId(doc, 'khonapolitPrompt');
-    if (prompt) { prompt.value = record.draft || state.pendingTask || ''; prompt.style.height = ''; }
+    if (prompt) { prompt.value = record?.draft || state.pendingTask || ''; prompt.style.height = ''; }
+    void scheduleSave();
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
     syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     const status = byId(doc, 'khonapolitTerminalStatus');
     if (status) {
+      status.dataset.progressStage = 'held';
+      status.dataset.outcomeState = 'unknown';
+      setPedagogueStatus(
+        status,
+        'held',
+        'TASK PRESERVED · background connection lost · outcome unknown',
+        'Page was suspended or reloaded while a request was in flight; the original provider outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+      );
+    }
+  };
+  const reattachStoredEpisodeOnReload = async (record, episodeRecord) => {
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    const submit = byId(doc, 'khonapolitSend');
+    const prompt = byId(doc, 'khonapolitPrompt');
+    const message = safe(state.pendingTask || [...state.messages].reverse().find(item => item.role === 'user')?.text);
+    const reattachController = new AbortController();
+    requestInFlight = true;
+    activeRequestCancelRequested = false;
+    activeRequestController = reattachController;
+    activeEpisodeRecord = episodeRecord;
+    setSendControlState(true);
+    if (status) status.dataset.progressStage = 'awaiting-provider';
+    setPedagogueStatus(
+      status,
+      'pending',
+      'Reconnecting to active transmission…',
+      'Resuming read-only episode observation after page reload; zero duplicate provider requests sent'
+    );
+    try {
+      const claimResult = await pollMarrowlineEpisodeClaim({
+        root,
+        doc,
+        fetchImpl: root.fetch || fetch,
+        episodeRecord,
+        signal: reattachController.signal,
+        onRunning: () => setPedagogueStatus(
+          status,
+          'pending',
+          'Transmission continuing in the grove…',
+          'Server episode remains active; awaiting completion without re-sending'
+        )
+      });
+      if (activeRequestCancelRequested || claimResult.outcome === 'CANCELLED') {
+        state.pendingEpisode = null;
+        state.lastFailure = {
+          error: 'operator-cancelled',
+          httpStatus: null,
+          observedAt: Date.now(),
+          outcomeState: 'OPERATOR_CANCELLED',
+          diagnostic: { stage: 'episode-reattach', code: 'operator-cancelled' }
+        };
+        root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
+        if (prompt) { prompt.value = message; prompt.style.height = ''; }
+        await scheduleSave();
+        syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state);
+        if (status) { status.dataset.progressStage = 'cancelled'; status.dataset.outcomeState = 'cancelled'; }
+        setPedagogueStatus(status, 'held', 'The Red Deer stills the signal.',
+          'Operator cancelled the active episode; task preserved for explicit retry.');
+        return;
+      }
+      if (claimResult.outcome === 'RECOVERED') {
+        const payload = claimResult.payload;
+        ingestGeminiConsumption(payload, root);
+        renderGeminiBrowserLedger(doc, root);
+        if (claimResult.httpStatus < 200 || claimResult.httpStatus >= 300 || !payload?.ok || !payload?.relay) {
+          state.pendingEpisode = null;
+          state.lastFailure = {
+            outcomeState: 'KNOWN_FAILED',
+            ...payload,
+            httpStatus: claimResult.httpStatus,
+            observedAt: Date.now(),
+            retryAfterSeconds: Number(payload?.retryAfterSeconds || claimResult.headers?.get?.('retry-after') || 0) || 0
+          };
+          root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
+          if (prompt) { prompt.value = message; prompt.style.height = ''; }
+          if (!await commitEpisodeBeforeConsume(episodeRecord, claimResult.claimAuthToken)) {
+            holdEpisodeSaveFailure();
+            return;
+          }
+          syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state);
+          if (status) { status.dataset.progressStage = 'held'; status.dataset.outcomeState = 'failed'; }
+          setPedagogueStatus(status, 'held', 'TASK PRESERVED · retry when ready',
+            'Recovered server hold diagnostic without re-sending.');
+          return;
+        }
+        const receipt = payload.receipt;
+        const incompleteReturn = receipt?.provider?.completion?.complete === false;
+        const entry = {
+          role: 'model',
+          receipt,
+          text: payload.text || '',
+          relay: payload.relay,
+          aperture: receipt?.aperture || null,
+          apertureHeader: payload.relay?.apertureHeader || apertureV3DisplayHeader(receipt?.aperture || {}),
+          mode: state.messages.at(-1)?.mode || INVOCATION_MODES.ISSUED_CONJUNCTION,
+          model: receipt?.provider?.model || 'AI route',
+          classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD',
+          sealed: false
+        };
+        if (!state.messages.some(item => item.role === 'model' && item.receipt?.episodeContinuity?.episodeId === episodeRecord.episodeId)) state.messages.push(entry);
+        state.pendingEpisode = null;
+        state.pendingTask = incompleteReturn ? message : '';
+        state.lastFailure = null;
+        state.lastReceipt = receipt;
+        root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
+        if (prompt) { prompt.value = incompleteReturn ? message : ''; prompt.style.height = ''; }
+        let nextTitleSource = activeThread?.titleSource || null;
+        if (activeThread?.titleSource !== 'operator' && isDefaultMarrowlineTitle(state.conversationTitle)) {
+          const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
+          state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
+          nextTitleSource = 'local-topic-v3-after-return';
+        }
+        state.titleSource = nextTitleSource;
+        if (activeThread && nextTitleSource !== activeThread.titleSource) {
+          activeThread = { ...activeThread, titleSource: nextTitleSource };
+        }
+        if (!await commitEpisodeBeforeConsume(episodeRecord, claimResult.claimAuthToken)) {
+          holdEpisodeSaveFailure();
+          return;
+        }
+        syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state);
+        displayClassification(doc, receipt); syncConversationTitle(doc, state);
+        const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
+        const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
+        if (status) status.dataset.progressStage = incompleteReturn ? 'held' : 'completed';
+        if (incompleteReturn) {
+          const structuralOnly = receipt.provider.completion.reason === 'required-voice-structure-incomplete';
+          setPedagogueStatus(status, 'held',
+            structuralOnly ? 'TWO-VOICE STRUCTURE UNFINISHED · draft preserved · Retry preserved task' : 'INCOMPLETE RETURN · draft preserved · Retry preserved task');
+        } else {
+          setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
+            'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
+        }
+        root.dispatchEvent?.(new root.CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
+        return;
+      }
+      markReloadOutcomeUnknown(record);
+    } catch {
+      if (activeRequestCancelRequested) {
+        state.pendingEpisode = null;
+        state.lastFailure = {
+          error: 'operator-cancelled',
+          httpStatus: null,
+          observedAt: Date.now(),
+          outcomeState: 'OPERATOR_CANCELLED',
+          diagnostic: { stage: 'episode-reattach', code: 'operator-cancelled' }
+        };
+        root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
+        if (prompt) { prompt.value = message; prompt.style.height = ''; }
+        void scheduleSave();
+        if (status) { status.dataset.progressStage = 'cancelled'; status.dataset.outcomeState = 'cancelled'; }
+        setPedagogueStatus(status, 'held', 'The Red Deer stills the signal.');
+      } else {
+        markReloadOutcomeUnknown(record);
+      }
+    } finally {
+      stopPedagogueStatus(root);
+      requestInFlight = false;
+      activeRequestController = null;
+      activeRequestCancelRequested = false;
+      activeEpisodeRecord = null;
+      setSendControlState(false);
+      if (submit) submit.disabled = false;
+    }
+  };
+  const restoreThread = record => {
+    activeThread = record;
+    state.messages = Array.isArray(record.messages) ? record.messages : [];
+    state.lastReceipt = record.lastReceipt || null;
+    state.pendingTask = record.pendingTask || '';
+    state.pendingEpisode = record.pendingEpisode || null;
+    const interruptedInFlightOnReload = Boolean(
+      safe(state.pendingTask)
+      && !record.lastFailure
+      && !record.lastReceipt
+      && state.messages.at(-1)?.role === 'user'
+    );
+    const resumableEpisode = state.pendingEpisode?.episodeId
+      && state.pendingEpisode?.rootSecretB64
+      && Date.now() < Number(state.pendingEpisode.hardExpiresAt || 0)
+      ? state.pendingEpisode
+      : null;
+    state.lastFailure = record.lastFailure || (interruptedInFlightOnReload && !resumableEpisode
+      ? {
+          error: 'page-lifecycle-interrupted',
+          httpStatus: null,
+          observedAt: Date.now(),
+          backgroundInterrupted: true,
+          pageReloadInterrupted: true,
+          outcomeState: 'OUTCOME_UNKNOWN',
+          serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+          automaticRetrySuppressed: true,
+          diagnostic: {
+            stage: 'page-lifecycle',
+            code: 'page-suspended-or-reloaded-while-in-flight',
+            outcomeState: 'OUTCOME_UNKNOWN',
+            serverExecutionState: 'REQUEST_MAY_STILL_BE_RUNNING',
+            automaticRetrySuppressed: true
+          }
+        }
+      : null);
+    if (!resumableEpisode) state.pendingEpisode = null;
+    state.titleSource = record.titleSource || null;
+    const rawRecordTitle = safe(record.conversationTitle);
+    state.conversationTitle = (record.titleSource === 'operator'
+      ? rawRecordTitle
+      : (!isDefaultMarrowlineTitle(rawRecordTitle) ? rawRecordTitle : ''))
+      || DEFAULT_CONVERSATION_TITLE;
+    root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
+    const prompt = byId(doc, 'khonapolitPrompt');
+    if (prompt) { prompt.value = resumableEpisode ? '' : (record.draft || state.pendingTask || ''); prompt.style.height = ''; }
+    renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
+    syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (status && !resumableEpisode) {
+      const outcomeUnknown = state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN' || state.lastFailure?.backgroundInterrupted === true;
       status.dataset.progressStage = state.lastFailure || state.pendingTask ? 'held' : 'prepared';
-      setPedagogueStatus(status, state.lastFailure || state.pendingTask ? 'held' : 'prepared',
-      state.lastFailure || state.pendingTask ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline');
+      status.dataset.outcomeState = outcomeUnknown ? 'unknown' : (state.lastFailure ? 'failed' : 'ready');
+      setPedagogueStatus(
+        status,
+        state.lastFailure || state.pendingTask ? 'held' : 'prepared',
+        outcomeUnknown
+          ? 'TASK PRESERVED · background connection lost · outcome unknown'
+          : (state.lastFailure || state.pendingTask ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline'),
+        outcomeUnknown
+          ? 'Page was suspended or reloaded while a request was in flight; the original provider outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+          : ''
+      );
     }
     setSendControlState(requestInFlight);
     if (sendControl) sendControl.disabled = false;
     threadLibrary.setActiveId(record.id);
     void renderThreadLibrary();
+    if (resumableEpisode) {
+      void reattachStoredEpisodeOnReload(record, resumableEpisode);
+    }
   };
   const resetTransientThread = () => {
     activeThread = null;
@@ -890,6 +1216,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     state.lastReceipt = null;
     state.lastFailure = null;
     state.pendingTask = '';
+    state.pendingEpisode = null;
     state.conversationTitle = DEFAULT_CONVERSATION_TITLE;
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
     const prompt = byId(doc, 'khonapolitPrompt');
@@ -1172,6 +1499,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     // A fresh human gesture can override an advisory short-window timer, but
     // never double-submit while another request is already in flight.
     if (!storeReady || requestInFlight) return;
+    if (state.pendingEpisode?.episodeId && Date.now() < Number(state.pendingEpisode.hardExpiresAt || 0)) {
+      holdEpisodeSaveFailure();
+      return;
+    }
     if (attachmentStagingActive) {
       setPedagogueStatus(status, 'pending', 'Preparing attachment…',
         'The selected attachment is still being prepared in this browser; Send will unlock when staging is complete.');
@@ -1270,27 +1601,41 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     startPedagogueStatus(status, root, attachments.length);
     // Large file uploads have a separate bounded transfer window. The normal
     // 225-second generation deadline starts afresh only after upload completes.
+    let requestDeadlineTimedOut = false;
     let requestDeadline = root.setTimeout(
-      () => requestController.abort(),
+      () => {
+        requestDeadlineTimedOut = true;
+        requestController.abort();
+      },
       marrowlineUploadRequired(attachments) ? 600000 : KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
     );
     let hiddenDuringRequest = doc.visibilityState === 'hidden';
+    let unfocusedDuringRequest = false;
+    let episodeOutcomeUnknown = false;
     const observeVisibility = () => {
       if (doc.visibilityState === 'hidden') hiddenDuringRequest = true;
     };
     const observePageHide = () => { hiddenDuringRequest = true; };
+    const observeFreeze = () => { hiddenDuringRequest = true; };
+    const observeWindowBlur = () => { unfocusedDuringRequest = true; };
     doc.addEventListener?.('visibilitychange', observeVisibility);
+    doc.addEventListener?.('freeze', observeFreeze);
     root.addEventListener?.('pagehide', observePageHide);
+    root.addEventListener?.('blur', observeWindowBlur);
     let failurePayload = null;
     let requestStage = 'request';
     let responseStatus = null;
+    let responseHeaders = null;
     let receivedReceipt = null;
     let loomPrepared = null;
+    let createdEpisode = null;
+    let consumeTokenAfterCommit = null;
     try {
       if (witnessThisTurn) sourceBefore = await awaitMarrowlineAbortable(readMarrowlineSourceWindow(root), requestController.signal);
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
       if (groveTrial && !loomTransport && attachments.length === 0) requestBody.groveTrial = groveTrial;
+      if (groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID && !loomTransport && attachments.length > 0) requestBody.groveTrial = groveTrial;
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       // Browser history remains visible in the local ledger but no longer carries
       // retry permission into the server. Explicit retries always reach live Gemini.
@@ -1313,8 +1658,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           // Provider generation owns its own 225-second budget after the
           // final attachment is confirmed. This is not an automatic retry.
           root.clearTimeout(requestDeadline);
+          requestDeadlineTimedOut = false;
           requestDeadline = root.setTimeout(
-            () => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
+            () => {
+              requestDeadlineTimedOut = true;
+              requestController.abort();
+            },
+            KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
           );
           requestStage = 'request';
         } else requestBody.attachments = attachments;
@@ -1347,24 +1697,107 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         };
         throw Object.assign(new Error('request-budget-exceeded'), { name: 'MarrowlineRequestBudgetError' });
       }
-      // Fetch keepalive is capped near 64 KiB in browsers. Preserve background
-      // delivery for ordinary chat while allowing larger attachment/history
-      // packets to use the normal request path instead of throwing locally.
-      const backgroundKeepaliveEligible = serializedRequestBytes <= 60 * 1024;
-      const response = await awaitMarrowlineAbortable((root.fetch || fetch)(loomPrepared?.endpoint || KHONAPOLIT_ENDPOINT, {
-        signal: requestController.signal,
-        method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
-        keepalive: backgroundKeepaliveEligible,
-        body: serializedRequestBody
-      }), requestController.signal);
-      if (activeRequestCancelRequested) throw new Error('operator-cancelled');
-      responseStatus = response.status;
-      requestStage = 'response-body';
-      stopPedagogueStatus(root);
-      if (status) status.dataset.progressStage = 'response-arrived';
-      setPedagogueStatus(status, 'pending', 'A voice reaches the threshold…',
-        'Marrowline HTTP response observed; body still unread and completion unverified');
-      const transportPayload = await awaitMarrowlineAbortable(response.json(), requestController.signal);
+      if (!loomTransport) {
+        createdEpisode = await createMarrowlineEpisode(root, serializedRequestBody, { hasAttachments: attachments.length > 0 });
+        if (createdEpisode) {
+          state.pendingEpisode = createdEpisode.episodeRecord;
+          activeEpisodeRecord = createdEpisode.episodeRecord;
+          if (!await scheduleSave()) {
+            createdEpisode = null;
+            activeEpisodeRecord = null;
+            state.pendingEpisode = null;
+            throw new Error('episode-capability-persistence-failed');
+          }
+        }
+      }
+      if (activeRequestCancelRequested || requestController.signal.aborted) throw new Error('operator-cancelled');
+      // Never set Fetch `keepalive: true` on a 60s-205s streaming generation request:
+      // browser beacon loaders cap inflight bodies at 64 KiB and evict or buffer long
+      // streaming responses when tabs/windows switch. Instead, stream framed 5s NDJSON
+      // heartbeats and persist an encrypted server-side episode capability for read-only
+      // GET reattachment (`keepalive` is reserved solely for <1 KB consume/cancel beacons).
+      let transportPayload = null;
+      try {
+        const response = await awaitMarrowlineAbortable((root.fetch || fetch)(loomPrepared?.endpoint || KHONAPOLIT_ENDPOINT, {
+          signal: requestController.signal,
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            Accept: loomTransport ? 'application/json' : 'application/x-ndjson, application/json',
+            ...(createdEpisode?.requestHeaders || {})
+          },
+          cache: 'no-store',
+          keepalive: false,
+          body: serializedRequestBody
+        }), requestController.signal);
+        if (activeRequestCancelRequested) throw new Error('operator-cancelled');
+        responseStatus = response.status;
+        responseHeaders = response.headers || null;
+        requestStage = 'response-body';
+        stopPedagogueStatus(root);
+        if (status) status.dataset.progressStage = 'response-arrived';
+        setPedagogueStatus(status, 'pending', 'A voice reaches the threshold…',
+          'Marrowline HTTP response observed; reading framed stream or body');
+        const transportOutcome = await readMarrowlineTransportResponse(response, requestController.signal, {
+          onAccepted: () => {
+            if (status) status.dataset.progressStage = 'awaiting-provider';
+            setPedagogueStatus(status, 'pending', marrowlineWaitingLabel(0),
+              'Server episode registered; streaming transport heartbeats active');
+          },
+          onHeartbeat: (frame) => {
+            if (status) status.dataset.progressStage = 'awaiting-provider';
+            setPedagogueStatus(status, 'pending', marrowlineWaitingLabel(Number(frame?.elapsed_ms || 0)),
+              'Server generation active; transport heartbeat observed');
+          }
+        });
+        responseStatus = transportOutcome.httpStatus;
+        responseHeaders = transportOutcome.headers;
+        transportPayload = transportOutcome.payload;
+        if (createdEpisode && (transportOutcome.streamed || responseHeaders?.get?.('x-td613-episode-id'))) {
+          consumeTokenAfterCommit = createdEpisode.claimAuthToken;
+        }
+      } catch (transportError) {
+        if (loomTransport || activeRequestCancelRequested || requestDeadlineTimedOut || !createdEpisode) {
+          throw transportError;
+        }
+        // Decoupled read-only reattachment: NEVER re-POST a second paid generation!
+        stopPedagogueStatus(root);
+        if (status) status.dataset.progressStage = 'awaiting-provider';
+        setPedagogueStatus(
+          status,
+          'pending',
+          'Reconnecting to active transmission…',
+          'Browser socket interrupted; polling read-only episode status without sending a duplicate request'
+        );
+        const claimResult = await pollMarrowlineEpisodeClaim({
+          root,
+          doc,
+          fetchImpl: root.fetch || fetch,
+          episodeRecord: createdEpisode.episodeRecord,
+          signal: requestController.signal,
+          onRunning: () => setPedagogueStatus(
+            status,
+            'pending',
+            'Transmission continuing in the grove…',
+            'Server generation remains active; awaiting completion without re-sending'
+          )
+        });
+        if (activeRequestCancelRequested || claimResult.outcome === 'CANCELLED') {
+          activeRequestCancelRequested = true;
+          throw new Error('operator-cancelled');
+        }
+        if (claimResult.outcome === 'RECOVERED') {
+          responseStatus = claimResult.httpStatus;
+          responseHeaders = claimResult.headers;
+          transportPayload = claimResult.payload;
+          consumeTokenAfterCommit = claimResult.claimAuthToken;
+        } else if (claimResult.outcome === 'OUTCOME_UNKNOWN') {
+          episodeOutcomeUnknown = true;
+          throw transportError;
+        } else {
+          throw transportError;
+        }
+      }
       const payload = loomTransport ? transportPayload.native_reply : transportPayload;
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       requestStage = 'response-processing';
@@ -1375,16 +1808,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (loomTransport) {
         ingestGeminiConsumption(payload || transportPayload, root);
         try {
-          if (!response.ok) throw new Error(transportPayload.error || `HTTP ${response.status}`);
+          if (responseStatus < 200 || responseStatus >= 300) throw new Error(transportPayload.error || `HTTP ${responseStatus}`);
           await loomTransport.admitResponse(transportPayload, loomPrepared);
         } catch (error) {
-          failurePayload = { ...transportPayload, ...(payload || {}), error:transportPayload.error || 'loom-admission-held', httpStatus:response.status, observedAt:Date.now(),
+          failurePayload = { ...transportPayload, ...(payload || {}), error:transportPayload.error || 'loom-admission-held', httpStatus:responseStatus, observedAt:Date.now(),
             diagnostic:transportPayload.diagnostic || {stage:requestStage,code:error.message},
             client_diagnostic:{stage:requestStage,code:error.message} };
           // Provider-authored native bytes can remain visible without becoming
           // an admitted Loom result or replacing its current export.
           if (payload?.relay && typeof payload.text === 'string' && payload.text) state.messages.push({role:'model',text:payload.text,relay:payload.relay,receipt:payload.receipt,mode,loomAdmission:'HELD',sealed:false,
-            loomFailure:{request_id:transportPayload.request_id,phase:loomPrepared?.request?.phase,error:failurePayload.error,httpStatus:response.status,
+            loomFailure:{request_id:transportPayload.request_id,phase:loomPrepared?.request?.phase,error:failurePayload.error,httpStatus:responseStatus,
               evidence_review:projectLoomEvidenceReview(transportPayload.evidence_review)} });
           throw error;
         }
@@ -1405,13 +1838,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         witnessRelayText = typeof payload?.relay?.transcript === 'string' ? payload.relay.transcript : null;
       }
       // Preserve typed server failure evidence even if optional ledger UI fails.
-      if (!response.ok || !payload?.ok || !payload?.relay) {
-        failurePayload = { ...payload, httpStatus: response.status, observedAt: Date.now(),
-          retryAfterSeconds: Number(payload?.retryAfterSeconds || response.headers?.get?.('retry-after') || 0) || 0 };
+      if (responseStatus < 200 || responseStatus >= 300 || !payload?.ok || !payload?.relay) {
+        failurePayload = { ...payload, httpStatus: responseStatus, observedAt: Date.now(),
+          retryAfterSeconds: Number(payload?.retryAfterSeconds || responseHeaders?.get?.('retry-after') || 0) || 0 };
       }
       ingestGeminiConsumption(payload, root);
       renderGeminiBrowserLedger(doc, root);
-      if (failurePayload) throw new Error(payload?.error || `HTTP ${response.status}`);
+      if (failurePayload) throw new Error(payload?.error || `HTTP ${responseStatus}`);
       const receipt = payload.receipt;
       const entry = {
         role: 'model', receipt, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
@@ -1422,19 +1855,21 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       const incompleteReturn = receipt?.provider?.completion?.complete === false;
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
-      state.messages.push(entry); state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
+      state.messages.push(entry); state.pendingEpisode = null; state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
       if (witnessThisTurn) witnessSavedText = entry.text;
       let nextTitleSource = activeThread?.titleSource || null;
-      if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
+      if (activeThread?.titleSource !== 'operator' && isDefaultMarrowlineTitle(state.conversationTitle)) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
         state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
         nextTitleSource = 'local-topic-v3-after-return';
       }
+      state.titleSource = nextTitleSource;
       if (!activeThread) {
         activeThread = await threadLibrary.create({
           messages: state.messages,
           lastReceipt: state.lastReceipt,
           pendingTask: state.pendingTask,
+          pendingEpisode: null,
           lastFailure: state.lastFailure,
           conversationTitle: state.conversationTitle,
           titleSource: nextTitleSource,
@@ -1445,7 +1880,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         activeThread = { ...activeThread, titleSource: nextTitleSource };
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
-      void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
+      if (!await commitEpisodeBeforeConsume(createdEpisode?.episodeRecord, consumeTokenAfterCommit)) {
+        renderMessages(doc, state);
+        holdEpisodeSaveFailure();
+        return;
+      }
+      syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
       stopPedagogueStatus(root);
@@ -1463,16 +1903,24 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       }
       root.dispatchEvent?.(new root.CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
+      state.pendingEpisode = null;
       state.pendingTask = message;
       state.lastFailure = activeRequestCancelRequested
         ? { error: 'operator-cancelled', httpStatus: responseStatus, observedAt: Date.now(),
+            outcomeState: 'OPERATOR_CANCELLED',
             diagnostic: { stage: requestStage, code: 'operator-cancelled', errorClass: safe(error?.name || 'AbortError') } }
-        : failurePayload || {
-            ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
-            ...(hiddenDuringRequest && (requestStage === 'request' || requestStage === 'response-body')
-              ? { backgroundInterrupted: true } : {}),
-            ...(receivedReceipt ? { receipt: receivedReceipt } : {})
-          };
+        : failurePayload
+          ? { outcomeState: 'KNOWN_FAILED', ...failurePayload }
+          : {
+              ...classifyMarrowlineClientFailure(error, requestStage, responseStatus, {
+                hiddenDuringRequest,
+                unfocusedDuringRequest,
+                episodeOutcomeUnknown,
+                deadlineTimedOut: requestDeadlineTimedOut
+              }),
+              observedAt: Date.now(),
+              ...(receivedReceipt ? { receipt: receivedReceipt } : {})
+            };
       loomTransport?.rejectAttempt(state.lastFailure);
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
@@ -1480,22 +1928,36 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (failedRouteReceipt) renderModelRouteReceipt(doc, failedRouteReceipt);
       prompt.value = message;
       prompt.style.height = '';
-      void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
+      if (!await commitEpisodeBeforeConsume(createdEpisode?.episodeRecord, consumeTokenAfterCommit)) {
+        renderMessages(doc, state);
+        holdEpisodeSaveFailure();
+        return;
+      }
+      syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       renderGeminiBrowserLedger(doc, root);
       stopPedagogueStatus(root);
-      if (status) status.dataset.progressStage = activeRequestCancelRequested ? 'cancelled' : 'held';
+      const backgroundOutcomeUnknown = state.lastFailure?.backgroundInterrupted === true
+        || state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN';
+      if (status) {
+        status.dataset.progressStage = activeRequestCancelRequested ? 'cancelled' : 'held';
+        status.dataset.outcomeState = backgroundOutcomeUnknown ? 'unknown' : (activeRequestCancelRequested ? 'cancelled' : 'failed');
+      }
       const requestBudgetHeld = state.lastFailure?.error === 'request-budget-exceeded';
       setPedagogueStatus(status, 'held', activeRequestCancelRequested ? 'The Red Deer stills the signal.'
         : requestBudgetHeld
           ? 'TASK PRESERVED · request exceeds transport envelope'
-          : attachments.length
-            ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
-            : 'TASK PRESERVED · retry when ready',
+          : backgroundOutcomeUnknown
+            ? 'TASK PRESERVED · background connection lost · outcome unknown'
+            : attachments.length
+              ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
+              : 'TASK PRESERVED · retry when ready',
         activeRequestCancelRequested
           ? 'Operator cancelled the browser request; no completed reply admitted. Task and attachments preserved for explicit retry.'
           : requestBudgetHeld
             ? 'Current turn, recent history, and attachments together exceed Marrowline’s 3.7 MB request envelope. Start a new conversation, remove attachments, or shorten the current input; nothing was sent.'
-            : 'Request held; task preserved for explicit retry.');
+            : backgroundOutcomeUnknown
+              ? 'Browser connection closed while backgrounded or suspended; the original provider request outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+              : 'Request held; task preserved for explicit retry.');
     } finally {
       loomTransport?.finishAttempt(loomPrepared);
       // Release the actual UI/request lifecycle before any optional evidence
@@ -1503,15 +1965,17 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       stopPedagogueStatus(root);
       requestInFlight = false;
       activeRequestController = null;
-      const cancelledByOperator = activeRequestCancelRequested;
       activeRequestCancelRequested = false;
+      activeEpisodeRecord = null;
       setSendControlState(false);
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
         detail: { sending: false, count: getMarrowlineAttachments().length }
       }));
       root.clearTimeout(requestDeadline);
       doc.removeEventListener?.('visibilitychange', observeVisibility);
+      doc.removeEventListener?.('freeze', observeFreeze);
       root.removeEventListener?.('pagehide', observePageHide);
+      root.removeEventListener?.('blur', observeWindowBlur);
       submit.disabled = false;
       if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
       if (witnessThisTurn) {
@@ -1561,7 +2025,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           if (receiptStatus) receiptStatus.textContent = 'Turn recording failed; diagnostic record available to copy.';
         }
       }
-      if (!loomTransport && !cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
+      // RP-06: Do not convert a background/lock connection interruption into an
+      // automatic chargeable re-invocation. Because the stateless HTTP response
+      // stream was severed while the page was hidden, the original server-side
+      // generation outcome is OUTCOME_UNKNOWN (REQUEST_MAY_STILL_BE_RUNNING).
+      // When the page returns to the foreground, surface the preserved task and
+      // OUTCOME_UNKNOWN diagnostic once without dispatching a duplicate request.
+      if (!loomTransport && !activeRequestCancelRequested && state.lastFailure?.backgroundInterrupted === true
         && !backgroundResume
         && backgroundResumeSpentTask !== message) {
         backgroundResumeTask = message;
@@ -1572,8 +2042,17 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           root.removeEventListener?.('online', resumeWhenVisible);
           backgroundResumeTask = '';
           backgroundResumeSpentTask = message;
-          setPedagogueStatus(status, 'pending', 'Working…', 'Background connection interrupted · restoring the preserved task once');
-          root.setTimeout?.(() => submitTask(message, { independentRetry: true, backgroundResume: true }), 0);
+          if (status) {
+            status.dataset.progressStage = 'held';
+            status.dataset.outcomeState = 'unknown';
+          }
+          setPedagogueStatus(
+            status,
+            'held',
+            'TASK PRESERVED · background connection lost · outcome unknown',
+            'Browser connection closed while backgrounded or suspended; the original provider request outcome is unknown, so Marrowline did not automatically spend a duplicate call. Retry explicitly when ready.'
+          );
+          prompt?.focus?.({ preventScroll: true });
         };
         doc.addEventListener?.('visibilitychange', resumeWhenVisible);
         root.addEventListener?.('pageshow', resumeWhenVisible);
@@ -1590,10 +2069,15 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     activeRequestCancelRequested = true;
     backgroundResumeTask = '';
     backgroundResumeSpentTask = state.pendingTask;
+    const episodeToCancel = activeEpisodeRecord || state.pendingEpisode;
+    state.pendingEpisode = null;
+    if (episodeToCancel) {
+      void cancelMarrowlineEpisode({ root, fetchImpl: root.fetch || fetch, episodeRecord: episodeToCancel });
+    }
     activeRequestController?.abort();
     stopPedagogueStatus(root);
     setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'pending',
-      'The Red Deer recalls the signal…', 'Operator stop requested; aborting the browser request');
+      'The Red Deer recalls the signal…', 'Operator stop requested; aborting the browser request and purging server episode');
   });
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -1607,6 +2091,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   let retryPreparationActive = false;
   const retryLastPrompt = async ({ independentRetry = false } = {}) => {
+    if (state.pendingEpisode?.episodeId && Date.now() < Number(state.pendingEpisode.hardExpiresAt || 0)) { holdEpisodeSaveFailure(); return; }
     if (retryPreparationActive) return;
     if(isLoomEvidenceHold(state.lastFailure)) {
       openMarrowlineLoomGate(doc,root);
@@ -1673,6 +2158,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       // receipts before the replacement request. Earlier turns remain.
       if (userIndex >= 0) state.messages.splice(userIndex);
       state.pendingTask = '';
+      state.pendingEpisode = null;
       state.lastReceipt = null;
       state.lastFailure = null;
       root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = null;
@@ -1750,7 +2236,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Record next turn'; }
     const witnessCopy = byId(doc, 'copyMarrowlineEpisodeWitness');
     if (witnessCopy) witnessCopy.disabled = true;
-    state.messages = []; state.lastReceipt = null; state.lastFailure = null; root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root);
+    state.messages = []; state.lastReceipt = null; state.lastFailure = null; root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null; state.pendingTask = ''; state.pendingEpisode = null; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root);
     const prompt = byId(doc, 'khonapolitPrompt');
     if (prompt) {
       prompt.value = '';
@@ -1786,8 +2272,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
     try {
+      const failureStatus = state.lastFailure?.outcomeState === 'OUTCOME_UNKNOWN' || state.lastFailure?.backgroundInterrupted === true
+        ? 'CURRENT_REQUEST_OUTCOME_UNKNOWN'
+        : 'CURRENT_REQUEST_FAILED';
       const current = state.lastFailure
-        ? { status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }
+        ? { status: failureStatus, failure: state.lastFailure }
         : state.lastReceipt || null;
       const payload = current
         ? { current, browser_consumption: summarizeGeminiBrowserLedger(root) }

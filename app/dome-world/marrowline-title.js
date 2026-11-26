@@ -3,7 +3,17 @@
  * than quotations of the first eight words or claims of model authorship.
  * No provider call, extra completion, or change to response morphology.
  */
-export const DEFAULT_MARROWLINE_TITLE = 'The speaking grove';
+export const DEFAULT_MARROWLINE_TITLE = 'The Screaming Grove';
+export const LEGACY_DEFAULT_MARROWLINE_TITLE = 'The speaking grove';
+export const DEFAULT_MARROWLINE_TITLES = Object.freeze([
+  DEFAULT_MARROWLINE_TITLE,
+  LEGACY_DEFAULT_MARROWLINE_TITLE
+]);
+
+export function isDefaultMarrowlineTitle(title = '') {
+  const trimmed = String(title || '').trim();
+  return !trimmed || DEFAULT_MARROWLINE_TITLES.includes(trimmed);
+}
 
 // Retain the original algorithm solely to recognize auto-titled older records.
 export function legacyMarrowlineTitle(text = '', seed = '') {

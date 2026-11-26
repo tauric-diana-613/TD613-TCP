@@ -3,12 +3,16 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {verifyFrozenEight,blockSummary,examineBotsText,AUTH,ACTIVATION,CALL_CAP} from '../research/marrowline-early-oct-full-voice-20261020/prosody-pair-original-sse-eight-once.mjs';
 import {ARMS,ORDER} from '../research/marrowline-early-oct-full-voice-20261020/historical-prosody-freedom-pair.mjs';
-test('frozen historical pair retains byte-exact request hashes, four arms and eight slots',()=>{
- const x=verifyFrozenEight();
- assert.equal(CALL_CAP,8);assert.equal(x.model,'gemini-3.8-flash');
- assert.equal(x.prereg.state,'SOURCE_ONLY_PROVIDER_UNOBSERVED');
- assert.deepEqual(x.prereg.order,ORDER);
- for(const a of ARMS)assert.deepEqual(x.serialized[a].observation,x.prereg.observations[a]);
+test('archived October 20 eight-slot runner fails closed after November 22 literal rollback while preserving immutable constants',()=>{
+ // The October 20 prosody-pair script is an immutable historical fixture that
+ // asserts the pre-rollback softened default (historicalProsodyFreedom=true).
+ // Never rewrite archived research scripts to make a default rollback pass;
+ // verify it fails closed with DEFAULT_PRODUCTION_REQUEST_CHANGED and keeps
+ // its frozen eight-slot schedule constants intact.
+ assert.throws(()=>verifyFrozenEight(),/DEFAULT_PRODUCTION_REQUEST_CHANGED/);
+ assert.equal(CALL_CAP,8);
+ assert.deepEqual(ARMS,['FREEDOM_FARCE','LITERAL_FARCE','FREEDOM_FORENSIC','LITERAL_FORENSIC']);
+ assert.equal(ORDER.length,8);
  for(let i=0;i<2;i++)assert.deepEqual(ORDER.slice(4*i,4*i+4).sort(),[...ARMS].sort());
 });
 test('bots depth transitions measure original second voice only and do not fabricate missing voices',()=>{

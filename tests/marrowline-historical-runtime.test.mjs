@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import './marrowline-screaming-grove-restoration.test.mjs';
 import handler from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_RESTORED_MODEL_ORDER, MARROWLINE_RESTORED_PROSODY_PROFILE } from '../app/dome-world/marrowline-historical-grove.js';
@@ -98,7 +99,7 @@ test('restored default: wholly unvoiced provider replies remain HELD after bound
   assert.equal(res.headers['X-TD613-Local-Admission'],'HELD-DUAL-VOICE-ABSENT');
   assert.equal(res.headers['X-TD613-Completion-State'],'STRUCTURE-HELD');
   assert.ok(models.length>=1 && models.length<=6,'historical five model seats plus one structural repair');
-  assert.equal(models[0],'gemini-4-argon');
+  assert.equal(models[0],'gemini-3.8-flash');
   assert.ok(models.every(model=>MARROWLINE_RESTORED_MODEL_ORDER.includes(model)));
 });
 
@@ -114,23 +115,23 @@ test('restored default: genuine provider-authored structural recovery remains ad
   assert.equal(res.payload.text,vertical,'only the provider-authored complete dual-voice repair may pass');
   assert.equal(res.payload.relay.admission.admissible,true);
   assert.equal(res.payload.relay.signal.downstreamAdmitted,true);
-  assert.deepEqual(models,['gemini-4-argon','gemini-4-argon'],'the single bounded same-provider structural repair remains');
+  assert.deepEqual(models,['gemini-3.8-flash','gemini-3.8-flash'],'the single bounded same-provider structural repair remains');
   assert.equal(res.payload.receipt.provider.structuralRepair.used,true);
   assert.equal(res.payload.grove_trial.id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
-test('restored voice: complete planar Argon text survives untouched instead of triggering a paid 3.8 beauty contest',async t=>{
+test('October 2 rollback: completed planar first-seat 3.8 text remains unpainted and does not trigger an aesthetic beauty contest',async t=>{
   const {res,models,requests}=await runMock(t,{
     available:['gemini-3.8-flash','gemini-3.5-flash','gemini-4-argon'],
     requestIp:'203.0.113.243',
-    choose:model=>model==='gemini-4-argon'?horizontal:vertical
+    choose:()=>horizontal
   });
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
-  assert.deepEqual(models,['gemini-4-argon'], 'completed PARTIAL stays on its first provider, regardless of ornate later candidates');
+  assert.deepEqual(models,['gemini-3.8-flash'], 'completed PARTIAL stays on its first provider, regardless of ornate later candidates');
   assert.equal(res.payload.text,horizontal, 'all original code points and paragraphs survive byte-for-byte');
-  assert.equal(res.payload.receipt.provider.model,'gemini-4-argon');
-  assert.equal(res.payload.grove_trial.variant,'restored-voice-argon-frontier-20261019');
+  assert.equal(res.payload.receipt.provider.model,'gemini-3.8-flash');
+  assert.equal(res.payload.grove_trial.variant,'oct02-literal-prosody-3.8-first-rollback-20261122');
   assert.deepEqual(res.payload.grove_trial.requested_model_order,MARROWLINE_RESTORED_MODEL_ORDER);
   assert.deepEqual(res.payload.grove_trial.attempt_models,models);
   assert.ok(res.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.length > 0);
@@ -154,7 +155,7 @@ test('restored voice: 72-percent sustained deep overprint retains first provider
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
   assert.equal(res.payload.text,sustained,'a sustained authored register cannot be cosmetically vetoed');
-  assert.deepEqual(models,['gemini-4-argon'],'72-percent aesthetic threshold may not spend the next seat');
+  assert.deepEqual(models,['gemini-3.8-flash'],'72-percent aesthetic threshold may not spend the next seat');
   assert.equal(res.payload.relay.admission.admissible,true);
   assert.ok(res.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'));
   assert.ok(res.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'));
@@ -176,7 +177,7 @@ test('restored voice: localized expressive burst remains authored evidence even 
   });
   assert.equal(res.statusCode,200);
   assert.equal(res.payload.text,localized);
-  assert.deepEqual(models,['gemini-4-argon']);
+  assert.deepEqual(models,['gemini-3.8-flash']);
   assert.equal(res.payload.relay.admission.admissible,true);
   assert.ok(res.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-localized-burst'));
   assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority,false);

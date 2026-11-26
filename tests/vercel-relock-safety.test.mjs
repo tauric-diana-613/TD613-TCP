@@ -65,4 +65,10 @@ assert.match(deploy, /git\?\.deploymentEnabled !== false/);
 assert.doesNotMatch(deploy, /git\.deploymentEnabled\s*=\s*true|git\.deploymentEnabled:\s*true/,
   'Preview DEPLOY must never unlock Git auto-deploy');
 
+// Preview-only Neon branch-routing regression: detached SHA checkouts must
+// regain the exact GitHub PR branch identity without changing source bytes.
+assert.match(deploy, /Restore verified Git branch identity for Neon preview check/);
+assert.match(deploy, /git switch -c "\$EXPECTED_BRANCH" "\$INPUT_SHA"/);
+assert.match(deploy, /git rev-parse --abbrev-ref HEAD/);
+assert.match(deploy, /Local branch restoration modified source bytes/);
 console.log('vercel-relock-safety.test.mjs passed');

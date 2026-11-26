@@ -130,6 +130,9 @@ function installHumanSurfaceVocabulary(doc = document, root = window) {
 export function boundedFailureMessage(failure = {}) {
   const evidence=loomEvidenceHoldSummary(failure);
   if(evidence)return `${evidence.title}. ${evidence.explanation} Inspect the flagged passage in Loom Gate before sending again.`;
+  if (failure?.backgroundInterrupted === true || failure?.outcomeState === 'OUTCOME_UNKNOWN') {
+    return 'The browser disconnected while in the background. Your message is saved, and no duplicate request was sent. Retry when you want to send a new request.';
+  }
   const typed = marrowlineRetryMessage(failure);
   if (typed) return typed;
   const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');
@@ -208,8 +211,10 @@ function installTerminalHoldNotice(doc = document, root = window) {
     if (signature !== lastSignature) {
       stopClock();
       card.replaceChildren();
+      const outcomeUnknown = failure?.backgroundInterrupted === true || failure?.outcomeState === 'OUTCOME_UNKNOWN';
       const title = doc.createElement('strong');
-      title.textContent = window.kind === 'evidence-held' ? 'Loom admission held'
+      title.textContent = outcomeUnknown ? 'Background connection lost'
+        : window.kind === 'evidence-held' ? 'Loom admission held'
         : window.kind === 'project-spend-cap' ? 'Project spending cap reached'
         : window.kind === 'return-held' ? 'Reply held'
         : window.kind === 'daily-report' ? 'Provider daily metric · HTTP 429'
@@ -219,7 +224,8 @@ function installTerminalHoldNotice(doc = document, root = window) {
         : 'Reply paused';
       const badge = doc.createElement('span');
       badge.className = 'terminal-hold-badge';
-      badge.textContent = window.kind === 'project-spend-cap' ? 'CAP REACHED'
+      badge.textContent = outcomeUnknown ? 'OUTCOME UNKNOWN'
+        : window.kind === 'project-spend-cap' ? 'CAP REACHED'
         : ['return-held','evidence-held'].includes(window.kind) ? 'HELD' : 'PAUSED';
       title.append(' ', badge);
       const body = doc.createElement('p');

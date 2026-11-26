@@ -156,27 +156,37 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
 
 
 
-test('speaking-grove placeholder is never durable: empty phantoms are pruned and interrupted work becomes untitled', async () => {
+test('Screaming Grove and legacy speaking-grove placeholders are never durable: empty phantoms are pruned and interrupted work becomes untitled', async () => {
   const archive = await createMarrowlineThreadLibrary(browser());
-  const phantom = await archive.create({ conversationTitle: 'The speaking grove' });
-  const draft = await archive.create({ draft: 'keep this draft', conversationTitle: 'The speaking grove' });
+  const phantomNew = await archive.create({ conversationTitle: 'The Screaming Grove' });
+  const phantomLegacy = await archive.create({ conversationTitle: 'The speaking grove' });
+  const draft = await archive.create({ draft: 'keep this draft', conversationTitle: 'The Screaming Grove' });
   const interrupted = await archive.create({
     messages: [{ role: 'user', text: 'Preserve this interrupted task.' }],
     pendingTask: 'Preserve this interrupted task.',
     conversationTitle: 'The speaking grove'
   });
-  const completed = await archive.create({
+  const completedLegacy = await archive.create({
     messages: [
       { role: 'user', text: 'Explain the archive threshold carefully.' },
       { role: 'model', text: glyph }
     ],
     conversationTitle: 'The speaking grove'
   });
+  const completedNewDefault = await archive.create({
+    messages: [
+      { role: 'user', text: 'Compare shoreline custody and origin.' },
+      { role: 'model', text: glyph }
+    ],
+    conversationTitle: 'The Screaming Grove'
+  });
   const renamed = await archive.create({ conversationTitle: 'Named Empty Thread', titleSource: 'operator' });
+  const operatorSpeakingGrove = await archive.create({ conversationTitle: 'The speaking grove', titleSource: 'operator' });
 
-  assert.equal((await archive.all()).length, 5);
-  assert.equal(await archive.pruneEmptyGeneratedThreads(), 1);
-  assert.equal(await archive.get(phantom.id), null);
+  assert.equal((await archive.all()).length, 8);
+  assert.equal(await archive.pruneEmptyGeneratedThreads(), 2);
+  assert.equal(await archive.get(phantomNew.id), null);
+  assert.equal(await archive.get(phantomLegacy.id), null);
 
   const repairedDraft = await archive.get(draft.id);
   assert.equal(repairedDraft.draft, 'keep this draft');
@@ -187,13 +197,18 @@ test('speaking-grove placeholder is never durable: empty phantoms are pruned and
   assert.equal(repairedInterrupted.conversationTitle, '');
   assert.equal(repairedInterrupted.titleSource, 'pending-return');
 
-  assert.equal(await archive.migrateLegacyGeneratedTitles(), 1);
-  const repairedCompleted = await archive.get(completed.id);
-  assert.notEqual(repairedCompleted.conversationTitle, 'The speaking grove');
-  assert.ok(repairedCompleted.conversationTitle.split(/\s+/u).length <= 5);
-  assert.equal(repairedCompleted.titleSource, 'local-topic-v3-after-return');
+  assert.equal(await archive.migrateLegacyGeneratedTitles(), 2);
+  for (const id of [completedLegacy.id, completedNewDefault.id]) {
+    const repairedCompleted = await archive.get(id);
+    assert.notEqual(repairedCompleted.conversationTitle, 'The speaking grove');
+    assert.notEqual(repairedCompleted.conversationTitle, 'The Screaming Grove');
+    assert.ok(repairedCompleted.conversationTitle.split(/\s+/u).length <= 5);
+    assert.equal(repairedCompleted.titleSource, 'local-topic-v3-after-return');
+  }
 
   assert.equal((await archive.get(renamed.id)).conversationTitle, 'Named Empty Thread');
+  assert.equal((await archive.get(operatorSpeakingGrove.id)).conversationTitle, 'The speaking grove',
+    'an explicit operator-renamed thread is never pruned or overwritten');
   archive.close();
 });
 

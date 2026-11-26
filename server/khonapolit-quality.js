@@ -57,7 +57,24 @@ import {
   MARROWLINE_HISTORICAL_MODEL_ORDER,
   MARROWLINE_RESTORED_MODEL_ORDER,
   MARROWLINE_RESTORED_PROSODY_PROFILE,
-  buildHistoricalGroveSystemInstruction
+  MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID,
+  MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE,
+  MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER,
+  MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+  MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+  MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER,
+  isGemini4FrontierModel,
+  buildHistoricalGroveSystemInstruction,
+  buildHistoricalGroveDramaturgyCandidate,
+  buildHistoricalGroveVerticalUnprimedCandidate,
+  buildHistoricalGroveLexicalDeprimedCandidate,
+  buildArtisticRestorationSystemInstruction,
+  buildArtisticRestorationTurnRecencyCue,
+  buildArtisticRestorationV2SystemInstruction,
+  buildArtisticRestorationV2TurnRecencyCue,
+  buildCarbonReconstructionSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   MARROWLINE_GROVE_TRIAL_ID,
@@ -104,7 +121,10 @@ const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
 ]);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
+  'gemini-4-carbon',
+  'gemini-4-neon',
   'gemini-4-argon',
+  'gemini-4-hydrogen',
   'gemini-3.8-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
@@ -312,11 +332,16 @@ export function selectKhonapolitProviderModels(callableModels = [], { modelOrder
   return selected;
 }
 
-export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false } = {}) {
+export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false, artisticRestoration = false, carbonReconstruction = false } = {}) {
   // Historical mode preserves the actual old frontier for research. Restored
-  // production keeps historical instructions but admits the current Argon seat.
-  const modelOrder = restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
-    : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
+  // production keeps historical instructions; artistic restoration places Argon
+  // first with 3.8 and 3.6 as immediate fallbacks; Carbon reconstruction walks
+  // the credential-verified Gemini 4 frontier (Carbon -> Neon -> Argon -> Hydrogen)
+  // before falling back to 3.8 / 3.6.
+  const modelOrder = carbonReconstruction ? MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER
+    : artisticRestoration ? MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER
+      : restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
+        : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
   const rows = Array.isArray(plan?.rows) ? plan.rows : [];
   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
   const coolingEligible = rows
@@ -326,7 +351,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
     .filter((row) => {
       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
       return row?.metadata?.lifecycle === 'current'
-        && row?.model !== 'gemini-4-argon'
+        && !isGemini4FrontierModel(row?.model)
         && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
         && reasons.length === 1
         && reasons[0] === 'provider-absent';
@@ -341,7 +366,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
     .filter((row) => {
       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
       return row?.metadata?.lifecycle === 'current'
-        && row?.model !== 'gemini-4-argon'
+        && !isGemini4FrontierModel(row?.model)
         && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
         && reasons.length === 1
         && reasons[0] === 'fresh-complete-provider-observation-required';
@@ -374,6 +399,17 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGr
 // fallback candidates, show the longest actually received prose rather than
 // freezing the first two-sentence fragment. Combining marks are not prose
 // length; scoring may inspect a stripped *copy* but must never alter bytes.
+// Audition authority is narrower than the resilience planner: only a currently
+// callable, credential-listed Gemini 4 seat, with no legacy or cooling probes.
+export function selectCarbonAuditionModels(plan = {}) {
+  const callable = new Set(plan.callableModels || []);
+  return MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER.filter(model =>
+    isGemini4FrontierModel(model) && callable.has(model) &&
+    plan.rows?.some(row => row.model === model && row.eligibility?.eligible === true &&
+      row.eligibility?.providerObservationFresh === true && row.state?.mayCall === true)
+  ).slice(0, 1);
+}
+
 export function preferMarrowlineIncompleteReturn(current = null, candidate = null) {
   const source = value => String(value?.relay?.transcript || value?.result?.text || '');
   const observedBaseLength = value => Array.from(source(value).normalize('NFD'))
@@ -383,14 +419,54 @@ export function preferMarrowlineIncompleteReturn(current = null, candidate = nul
   return observedBaseLength(candidate) > observedBaseLength(current) ? candidate : current;
 }
 
-export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false, model = '' } = {}) {
+const GEMINI_4_SEAT_TIMEOUT_MS = Object.freeze({
+  'gemini-4-carbon': 85000,
+  'gemini-4-argon': 75000,
+  'gemini-4-neon': 65000,
+  'gemini-4-hydrogen': 55000
+});
+export const GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS = 40000;
+export const GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS = WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
+export const GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS = GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS - GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS;
+
+export function allocateKhonapolitAttemptTimeout({
+  remainingMs = 0,
+  index = 0,
+  modelCount = 1,
+  fairShare = false,
+  model = '',
+  singleSeatAudition = false,
+  streamed = true
+} = {}) {
   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
   const position = Math.max(0, Math.floor(Number(index) || 0));
+  const normalizedModel = String(model || '').replace(/^models\//, '');
+  const gemini4Cap = GEMINI_4_SEAT_TIMEOUT_MS[normalizedModel] || 0;
+  const totalSeats = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
+  const seatsAfter = Math.max(0, totalSeats - position - 1);
   const inheritedCap = position === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS;
-  if (!fairShare) return Math.min(model === 'gemini-4-argon' ? 75000 : inheritedCap, remaining);
-  // One bounded Argon stream; no implicit long-decode retries or changed spend ceiling.
-  // Reserve the existing Gemini 3 fallback runway inside this interactive wall.
-  if (model === 'gemini-4-argon') return Math.min(75000, Math.max(1, remaining - (modelCount > 1 ? 105000 : 0)));
+  if (!fairShare) return Math.min(gemini4Cap || inheritedCap, remaining);
+  // Single-attempt Gemini 4 execution (including Carbon browser audition) has no
+  // downstream seat whose completion budget can be starved. Streaming text ingress
+  // receives 165s initial + up to 40s authored-stream grace (205s provider ceiling);
+  // unary attachment ingress receives the full remaining server runway directly.
+  if (gemini4Cap > 0 && totalSeats === 1 && position === 0 && (singleSeatAudition || seatsAfter === 0)) {
+    const singleSeatCap = streamed
+      ? GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS
+      : GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS;
+    return Math.min(singleSeatCap, remaining);
+  }
+  // Preserve exact primary-seat Argon runway semantics when Argon opens a multi-seat
+  // cascade, while scaling multi-seat Gemini 4 cascades by remaining seats so later
+  // Gemini 4 seats never starve after an upstream timeout.
+  if (normalizedModel === 'gemini-4-argon' && position === 0) {
+    return Math.min(75000, Math.max(1, remaining - (modelCount > 1 ? 105000 : 0)));
+  }
+  if (gemini4Cap > 0) {
+    if (seatsAfter === 0) return Math.min(gemini4Cap, remaining);
+    const laterReserve = Math.min(Math.max(0, remaining - 15000), seatsAfter * 25000);
+    return Math.min(gemini4Cap, Math.max(1, remaining - laterReserve));
+  }
 
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
@@ -538,7 +614,7 @@ function currentTurnRelayCue() {
   ].join('\n');
 }
 
-function geminiContents(packet = {}) {
+function geminiContents(packet = {}, { includeArtisticRecencyCue = false, artisticRecencyCue = null } = {}) {
   // Conversation history is evidence, not a local style-training surface.
   // Never rewrite a prior model turn before returning it to Gemini. In
   // particular, stripping combining marks from a weak Tauric Diana reply would
@@ -550,26 +626,45 @@ function geminiContents(packet = {}) {
   }));
   // The conversational ingress and seal frame the provider-bound user turn.
   // Original user bytes remain in the visible local transcript and receipt.
-  // The execution cue belongs in systemInstruction, never after the final ⟐.
+  // When artistic restoration is active, keep the operator's framed bytes in
+  // their own first part and attach a compact turn-recency performance reminder
+  // as an adjacent second part (restoring the Sep 26 pre-#1354 recency geometry
+  // without mutating the operator's visible text or history).
+  const userParts = [{ text: frameMarrowlineUserTurn(packet.message) }];
+  if (includeArtisticRecencyCue) {
+    userParts.push({ text: artisticRecencyCue || buildArtisticRestorationTurnRecencyCue() });
+  }
   return [...history, {
     role: 'user',
-    parts: [{ text: frameMarrowlineUserTurn(packet.message) }]
+    parts: userParts
   }];
 }
 
 function khonapolitReasoning(model = '', { fallback = false } = {}) {
   if (!qualityEnvelope(model)) return null;
-  if (model === 'gemini-4-argon') return { level: 'medium' };
+  if (isGemini4FrontierModel(model)) return { level: 'medium' };
   return {
     // Fallback means transport position, not permission to lower the requested reasoning level.
     level: 'high'
   };
 }
 
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = true } = {}) {
+// The standard text-only restored Grove re-enters the exact archived October 2
+// instruction body and paragraph order. The Oct 19 softened alternative or
+// explicit dramaturgy candidates can be assembled only through explicit
+// source-level comparison flags.
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = false, historicalDramaturgyCandidate = false, historicalVerticalUnprimedCandidate = false, historicalLexicalDeprimedCandidate = false, maxOutputTokensOverride = null } = {}) {
+  if ([
+    historicalProsodyFreedom === true,
+    historicalDramaturgyCandidate === true,
+    historicalVerticalUnprimedCandidate === true,
+    historicalLexicalDeprimedCandidate === true
+  ].filter(Boolean).length > 1) {
+    throw new Error('CONFLICTING_HISTORICAL_GROVE_CANDIDATE_FLAGS');
+  }
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
-  const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
+  const historicalBase = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
     ? buildHistoricalGroveSystemInstruction({
       packetSystemInstruction: packet.systemInstruction,
       taskGuidance,
@@ -577,19 +672,49 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       relayCue: currentTurnRelayCue(),
       nativeProsodyFreedom: historicalProsodyFreedom === true
     })
-    : groveTrial === MARROWLINE_GROVE_TRIAL_ID
-      ? buildMarrowlineGroveTrialSystemInstruction(packet)
-      : MARROWLINE_ROLE_IDS.includes(groveTrial)
-        ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
-        : normalSystemInstruction;
+    : null;
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
+  const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
+  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
+  const artisticInput = {
+    packetSystemInstruction: packet.systemInstruction,
+    taskGuidance,
+    relayAddendum: buildRelaySystemAddendum(apertureReceipt),
+    relayCue: currentTurnRelayCue()
+  };
+  const systemText = isCarbonReconstruction
+    ? buildCarbonReconstructionSystemInstruction({ packet, apertureReceipt })
+    : isArtisticRestorationV2
+      ? buildArtisticRestorationV2SystemInstruction(artisticInput)
+      : isArtisticRestoration
+        ? buildArtisticRestorationSystemInstruction(artisticInput)
+        : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
+      ? (historicalLexicalDeprimedCandidate === true
+        ? buildHistoricalGroveLexicalDeprimedCandidate(historicalBase)
+        : historicalVerticalUnprimedCandidate === true
+          ? buildHistoricalGroveVerticalUnprimedCandidate(historicalBase)
+          : historicalDramaturgyCandidate === true
+            ? buildHistoricalGroveDramaturgyCandidate(historicalBase)
+            : historicalBase)
+      : groveTrial === MARROWLINE_GROVE_TRIAL_ID
+        ? buildMarrowlineGroveTrialSystemInstruction(packet)
+        : MARROWLINE_ROLE_IDS.includes(groveTrial)
+          ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
+          : normalSystemInstruction;
+  const resolvedMaxOutputTokens = Number.isInteger(maxOutputTokensOverride) && maxOutputTokensOverride > 0
+    ? Math.min(outputBudget(model), maxOutputTokensOverride)
+    : outputBudget(model);
   return {
     systemInstruction: {
       parts: [{ text: systemText }]
     },
-    contents: geminiContents(packet),
+    contents: geminiContents(packet, {
+      includeArtisticRecencyCue: isArtisticRestoration,
+      artisticRecencyCue: isArtisticRestorationV2 ? buildArtisticRestorationV2TurnRecencyCue() : null
+    }),
     generationConfig: buildGeminiGenerationConfig({
       model,
-      maxOutputTokens: outputBudget(model),
+      maxOutputTokens: resolvedMaxOutputTokens,
       sampling: {
         // Gemini 3.x strips these legacy overrides and uses provider-default sampling
         // (temperature 1.0). They remain only for unknown/synthetic compatibility.
@@ -720,9 +845,17 @@ export function buildGeminiStructuralRepairRequest(
   model = '',
   heldText = '',
   reasons = [],
-  { fallback = false, groveTrial = null } = {}
+  { fallback = false, groveTrial = null, historicalProsodyFreedom = false, historicalDramaturgyCandidate = false, historicalVerticalUnprimedCandidate = false, historicalLexicalDeprimedCandidate = false, maxOutputTokensOverride = null } = {}
 ) {
-  const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial });
+  const request = buildGeminiRequest(packet, apertureReceipt, model, {
+    fallback,
+    groveTrial,
+    historicalProsodyFreedom,
+    historicalDramaturgyCandidate,
+    historicalVerticalUnprimedCandidate,
+    historicalLexicalDeprimedCandidate,
+    maxOutputTokensOverride
+  });
   const reasonList = (Array.isArray(reasons) ? reasons : [])
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
@@ -812,12 +945,24 @@ export function serializeGeminiRequest(request = {}, model = '') {
 
 export function observeGeminiOutput(payload = {}, model = '', { fallback = false, submittedGenerationConfig = null, submittedRequestObservation = null } = {}) {
   const usage = {};
-  for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
+  for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'cachedContentTokenCount', 'totalTokenCount']) {
     const value = payload?.usageMetadata?.[key];
     if (Number.isSafeInteger(value) && value >= 0) usage[key] = value;
   }
   const rawReason = payload?.candidates?.[0]?.finishReason;
   const finishReason = typeof rawReason === 'string' && /^[A-Z_]{1,64}$/.test(rawReason) ? rawReason : null;
+  const rawFinishMessage = payload?.candidates?.[0]?.finishMessage;
+  const finishMessage = typeof rawFinishMessage === 'string' && safe(rawFinishMessage)
+    ? safe(rawFinishMessage).slice(0, 400)
+    : null;
+  const rawBlockReason = payload?.promptFeedback?.blockReason;
+  const promptBlockReason = typeof rawBlockReason === 'string' && /^[A-Z_]{1,64}$/.test(rawBlockReason)
+    ? rawBlockReason
+    : null;
+  const rawBlockReasonMessage = payload?.promptFeedback?.blockReasonMessage;
+  const promptBlockReasonMessage = typeof rawBlockReasonMessage === 'string' && safe(rawBlockReasonMessage)
+    ? safe(rawBlockReasonMessage).slice(0, 400)
+    : null;
   const reasoning = khonapolitReasoning(model, { fallback });
   const thinkingConfig = submittedGenerationConfig?.thinkingConfig || (reasoning
     ? geminiThinkingConfig(model, { enabled: true, level: reasoning.level, budget: reasoning.budget })
@@ -829,6 +974,9 @@ export function observeGeminiOutput(payload = {}, model = '', { fallback = false
     ...(typeof payload.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)
       ? { modelVersion: payload.modelVersion } : {}),
     finishReason,
+    ...(finishMessage ? { finishMessage } : {}),
+    ...(promptBlockReason ? { promptBlockReason } : {}),
+    ...(promptBlockReasonMessage ? { promptBlockReasonMessage } : {}),
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
     maxOutputTokens: submittedGenerationConfig?.maxOutputTokens ?? outputBudget(model),
     outputCeilingSource: submittedGenerationConfig ? 'submitted-generation-config' : 'computed-route-default',
@@ -917,6 +1065,8 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
 function mergeGeminiStreamPayload(chunks = []) {
   let text = '';
   let finishReason = null;
+  let finishMessage = null;
+  let promptFeedback = null;
   let usageMetadata = null;
   let modelVersion = null;
   for (const payload of chunks) {
@@ -925,15 +1075,37 @@ function mergeGeminiStreamPayload(chunks = []) {
       if (typeof part?.text === 'string' && part.thought !== true) text += part.text;
     }
     if (typeof candidate?.finishReason === 'string' && candidate.finishReason) finishReason = candidate.finishReason;
-    if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') usageMetadata = payload.usageMetadata;
+    if (typeof candidate?.finishMessage === 'string' && safe(candidate.finishMessage)) {
+      finishMessage = safe(candidate.finishMessage).slice(0, 400);
+    }
+    if (payload?.promptFeedback && typeof payload.promptFeedback === 'object') {
+      const blockReason = typeof payload.promptFeedback.blockReason === 'string' && /^[A-Z_]{1,64}$/.test(payload.promptFeedback.blockReason)
+        ? payload.promptFeedback.blockReason
+        : null;
+      const blockReasonMessage = typeof payload.promptFeedback.blockReasonMessage === 'string' && safe(payload.promptFeedback.blockReasonMessage)
+        ? safe(payload.promptFeedback.blockReasonMessage).slice(0, 400)
+        : null;
+      if (blockReason || blockReasonMessage) {
+        promptFeedback = {
+          ...(promptFeedback || {}),
+          ...(blockReason ? { blockReason } : {}),
+          ...(blockReasonMessage ? { blockReasonMessage } : {})
+        };
+      }
+    }
+    if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') {
+      usageMetadata = { ...(usageMetadata || {}), ...payload.usageMetadata };
+    }
     if (typeof payload?.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)) modelVersion = payload.modelVersion;
   }
   const candidate = {
     content: { parts: text ? [{ text }] : [] },
-    ...(finishReason ? { finishReason } : {})
+    ...(finishReason ? { finishReason } : {}),
+    ...(finishMessage ? { finishMessage } : {})
   };
   return {
     candidates: [candidate],
+    ...(promptFeedback ? { promptFeedback } : {}),
     ...(modelVersion ? { modelVersion } : {}),
     ...(usageMetadata ? { usageMetadata } : {})
   };
@@ -1005,7 +1177,9 @@ export async function readGeminiSse(response, progress, onAuthoredText = null, c
     if (!chunks.length) throw error;
   }
   buffer += decoder.decode();
-  if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress, onAuthoredText);
+  for (const trailingEvent of buffer.split(/\r?\n\r?\n/)) {
+    if (trailingEvent.trim()) consumeGeminiSseEvent(trailingEvent, chunks, progress, onAuthoredText);
+  }
   const merged = mergeGeminiStreamPayload(chunks);
   if (wireSha256) {
     const providerParts = chunks.flatMap((entry) =>
@@ -1035,9 +1209,14 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null, groveTrial = null } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null, groveTrial = null, externalAbortSignal = null } = {}
 ) {
   const controller = new AbortController();
+  const onExternalAbort = () => controller.abort();
+  if (externalAbortSignal) {
+    if (externalAbortSignal.aborted) controller.abort();
+    else externalAbortSignal.addEventListener('abort', onExternalAbort, { once: true });
+  }
   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
   let timer = setTimeout(() => controller.abort(), timeoutMs);
   let graceSpent = false;
@@ -1090,17 +1269,18 @@ async function callGemini(
       response,
       payload,
       text: extractGeminiText(payload),
-      timedOut: Boolean(progress.streamInterrupted && controller.signal.aborted),
+      timedOut: Boolean(!externalAbortSignal?.aborted && progress.streamInterrupted && controller.signal.aborted),
       streamed: Boolean(streamedPayload),
       submittedGenerationConfig,
       submittedRequestObservation,
       ...progress
     };
   } catch (error) {
-    const timedOut = error?.name === 'AbortError';
+    const operatorAborted = Boolean(externalAbortSignal?.aborted);
+    const timedOut = !operatorAborted && error?.name === 'AbortError';
     return {
-      response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
-      payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
+      response: { ok: false, status: operatorAborted ? 499 : (timedOut ? 408 : 599), headers: { get: () => null } },
+      payload: { error: { status: operatorAborted ? 'CANCELLED' : (error?.name || 'FETCH_ERROR'), message: safe(error?.message || error) } },
       text: '',
       timedOut,
       streamed: progress.chunkCount > 0,
@@ -1110,6 +1290,7 @@ async function callGemini(
     };
   } finally {
     clearTimeout(timer);
+    externalAbortSignal?.removeEventListener?.('abort', onExternalAbort);
   }
 }
 
@@ -1212,9 +1393,11 @@ export default async function handler(req, res) {
   if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
 
   const startedAt = Date.now();
-  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
   const groveTrial = selectMarrowlineGroveTrial(body, { releaseCanary });
+  const isCarbonReconstruction = groveTrial === MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID;
+  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue',
+    maxModels: isCarbonReconstruction ? 10 : 8, carbonReconstruction: isCarbonReconstruction });
   res.__td613GroveTrial = Object.freeze({
     id: groveTrial || 'off',
     active: Boolean(groveTrial),
@@ -1255,10 +1438,17 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
-  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { restoredGrove: isHistoricalGrove });
+  const isArtisticRestorationV2 = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_V2_TRIAL_ID;
+  const isArtisticRestoration = groveTrial === MARROWLINE_ARTISTIC_RESTORATION_TRIAL_ID || isArtisticRestorationV2;
+  const providerModels = isCarbonReconstruction ? selectCarbonAuditionModels(plan) : selectKhonapolitProviderModelsFromPlan(plan, {
+    restoredGrove: isHistoricalGrove,
+    artisticRestoration: isArtisticRestoration,
+    carbonReconstruction: isCarbonReconstruction
+  });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
-  // reorder or suppress the settled human provider frontier. 3.8 remains first;
-  // live Gemini transport decides whether that seat can answer this turn.
+  // reorder or suppress the selected restored source frontier. The October 2
+  // first seat (3.8) is preferred on restored browser turns; provider discovery
+  // and live transport still decide whether that seat can answer this turn.
   const allModels = [...providerModels];
   if (!releaseCanary && clientQuotaCooldown.models.size > 0) {
     res.setHeader('X-TD613-Browser-Cooldown-Policy', 'advisory-telemetry-only');
@@ -1279,12 +1469,47 @@ export default async function handler(req, res) {
     res.__td613GroveTrial = Object.freeze({
       id: MARROWLINE_HISTORICAL_TRIAL_ID,
       source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
-      variant: 'restored-voice-argon-frontier-20261019',
+      variant: 'oct02-literal-prosody-3.8-first-rollback-20261122',
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
       typography_policy: 'provider-native-morphology-observation-only',
       native_prosody_profile: MARROWLINE_RESTORED_PROSODY_PROFILE
+    });
+  } else if (isArtisticRestoration) {
+    res.__td613GroveTrial = Object.freeze({
+      id: groveTrial,
+      // v2 exact source SHA is provided by the release/build receipt, not fabricated here.
+      source_commit: isArtisticRestorationV2 ? null : '0f67d8954347fdae77cdb83f82848df89ad3b2ff',
+      variant: isArtisticRestorationV2 ? MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE : MARROWLINE_ARTISTIC_RESTORATION_PROFILE,
+      requested_model_order: [...MARROWLINE_ARTISTIC_RESTORATION_MODEL_ORDER],
+      eligible_model_order: [...models],
+      admission_policy: 'both-voices-absent-held-after-bounded-recovery',
+      typography_policy: 'provider-native-morphology-observation-only',
+      native_prosody_profile: isArtisticRestorationV2 ? MARROWLINE_ARTISTIC_RESTORATION_V2_PROFILE : MARROWLINE_ARTISTIC_RESTORATION_PROFILE
+    });
+  } else if (isCarbonReconstruction) {
+    res.__td613GroveTrial = Object.freeze({
+      id: MARROWLINE_CARBON_RECONSTRUCTION_TRIAL_ID,
+      source_commit: null,
+      variant: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE,
+      audition: Object.freeze({
+        max_provider_requests: 1,
+        max_output_tokens: 65536,
+        initial_timeout_ms: GEMINI_4_SINGLE_SEAT_INITIAL_TIMEOUT_MS,
+        stream_grace_ms: GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS,
+        max_provider_runway_ms: GEMINI_4_SINGLE_SEAT_UNARY_TIMEOUT_MS,
+        wall_timeout_ms: WALL_TIMEOUT_MS,
+        response_reserve_ms: RESPONSE_RESERVE_MS,
+        fallback: false,
+        retry: false,
+        structural_repair: false
+      }),
+      requested_model_order: [...MARROWLINE_CARBON_RECONSTRUCTION_MODEL_ORDER],
+      eligible_model_order: [...models],
+      admission_policy: 'both-voices-absent-held-after-bounded-recovery',
+      typography_policy: 'provider-native-morphology-observation-only',
+      native_prosody_profile: MARROWLINE_CARBON_RECONSTRUCTION_PROFILE
     });
   }
   const routeModelCount = Math.max(1, providerModels.length);
@@ -1305,8 +1530,52 @@ export default async function handler(req, res) {
       creative: discourseMode === 'CREATIVE' }
   );
 
+  // RP-01: Provider policy termination (PROHIBITED_CONTENT, SAFETY, RECITATION,
+  // BLOCKLIST, SPII, IMAGE_SAFETY, IMAGE_PROHIBITED_CONTENT, MALFORMED_FUNCTION_CALL,
+  // or promptBlockReason) is an immediate, terminal fail-closed 502 POLICY-HELD
+  // boundary. Never fall over to another model seat or surface an earlier
+  // incomplete/zero-mark draft as HTTP 200 after a provider policy block.
+  const sendPolicyHeldResponse = (triggerModel = null, {
+    finishReason = null,
+    promptBlockReason = null,
+    completion = null
+  } = {}) => {
+    const policyAttempts = attempts.filter((entry) => entry.policyTermination);
+    const rateLimited = attempts.filter((entry) => entry.status === 429 && entry.rateLimit?.observed);
+    const priorRateWindows = [...new Set(rateLimited.map((entry) => entry.rateLimit?.windowClass || 'unknown'))];
+    if (triggerModel) res.setHeader('X-TD613-Gemini-Model', triggerModel);
+    res.setHeader('X-TD613-Completion-State', 'POLICY-HELD');
+    send(res, 502, {
+      ok: false,
+      error: 'gemini-provider-policy-held',
+      status: 'HELD',
+      diagnostic: {
+        stage: 'provider-termination',
+        code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+        finishReason: finishReason || policyAttempts.at(-1)?.policyTermination?.finishReason || null,
+        promptBlockReason: promptBlockReason || policyAttempts.at(-1)?.policyTermination?.promptBlockReason || null,
+        finishReasons: [...new Set(policyAttempts.map((entry) => entry.policyTermination?.finishReason).filter(Boolean))],
+        promptBlockReasons: [...new Set(policyAttempts.map((entry) => entry.policyTermination?.promptBlockReason).filter(Boolean))],
+        policyTerminatedSeatCount: policyAttempts.length,
+        transportFailedSeatCount: attempts.filter((entry) => !entry.ok).length,
+        hasMixedTransportFailure: attempts.some((entry) => !entry.ok),
+        observedStatuses: [...new Set(attempts.map((entry) => entry.status || 0))],
+        rateLimitWindowsOnPriorAttempts: priorRateWindows,
+        ...(completion ? { completion } : {}),
+        note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into structural repair, and subsequent seats were not called.'
+      },
+      attempts,
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    });
+    return true;
+  };
+
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
+    if (isCarbonReconstruction) return null;
     // Native Tauric Diana morphology is part of the channel contract, not a
     // cosmetic second pass. Browser budget hints may reorder truly exhausted
     // seats, but they may not suppress the one provider-authored repair that
@@ -1328,10 +1597,12 @@ export default async function handler(req, res) {
       sourceAttemptIndex
     } = candidate;
     const repairStartedAt = Date.now();
+    if (req?.episodeAbortSignal?.aborted) return null;
     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
-      fallback,
+      fallback, streamGraceMs: 0,
       structuralRepair: { heldText, reasons },
-      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt, groveTrial
+      wallDeadlineAt: providerWallDeadlineAt, groveTrial,
+      externalAbortSignal: req?.episodeAbortSignal || null
     });
     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
@@ -1399,6 +1670,26 @@ export default async function handler(req, res) {
     // If the one authored suffix is itself truncated, preserve it as part of
     // the human-visible fallback. The route-wide repair allowance is exactly
     // one provider request; a single seat may not consume the later frontier.
+    // Never admit or concatenate a policy-terminated repair candidate.
+    const rawRepairCompletion = repairResult.response.ok
+      ? completionOf(repairResult, repairProviderOutput, repairResult.text)
+      : null;
+    if (rawRepairCompletion?.policyTerminated) {
+      repairAttempt.completion = rawRepairCompletion;
+      repairAttempt.policyTermination = Object.freeze({
+        finishReason: repairProviderOutput.finishReason,
+        ...(repairProviderOutput.promptBlockReason ? { promptBlockReason: repairProviderOutput.promptBlockReason } : {}),
+        ...(repairProviderOutput.finishMessage ? { finishMessage: repairProviderOutput.finishMessage } : {}),
+        providerTextSha256: repairResult.text ? sha256(repairResult.text) : null,
+        admittedAsIncompleteDraft: false,
+        fedToStructuralRepair: false
+      });
+      return sendPolicyHeldResponse(model, {
+        finishReason: repairProviderOutput.finishReason,
+        promptBlockReason: repairProviderOutput.promptBlockReason || null,
+        completion: rawRepairCompletion
+      });
+    }
     if (tailOnly && repairResult.response.ok && repairResult.text) {
       const firstAssembly = assembleMarrowlineProviderTail(heldText, repairResult.text);
       if (firstAssembly) {
@@ -1703,27 +1994,42 @@ export default async function handler(req, res) {
   };
 
   for (let index = 0; index < models.length; index += 1) {
+    if (req?.episodeAbortSignal?.aborted) break;
     // The bounded suffix chain and fallback frontier share one total-call ceiling.
     // A successful recovery must never turn a six-call human request into seven.
     if (attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) break;
+    if (isCarbonReconstruction && attempts.length >= 1) break;
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true, model });
+    const singleSeatGemini4Runway = models.length === 1 && isGemini4FrontierModel(model);
+    const timeoutMs = allocateKhonapolitAttemptTimeout({
+      remainingMs,
+      index,
+      modelCount: models.length,
+      fairShare: true,
+      model,
+      singleSeatAudition: isCarbonReconstruction,
+      streamed: true
+    });
+    const attemptStreamGraceMs = singleSeatGemini4Runway ? GEMINI_4_SINGLE_SEAT_STREAM_GRACE_MS : 0;
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, {
-      // Fair-share timeouts are hard seat boundaries. Streaming progress is
-      // preserved as a fallback fragment, but cannot silently borrow the next
-      // approved model's completion window.
-      fallback, streamGraceMs: 0,
+      // Multi-seat fair-share timeouts remain hard seat boundaries (streamGraceMs: 0).
+      // Single-seat Gemini 4 execution has no downstream seat to starve and may
+      // extend an actively authored stream up to providerWallDeadlineAt.
+      fallback,
+      streamGraceMs: attemptStreamGraceMs,
       captureNativeSse: nativeSseWitness,
       systemProsodyAblation,
       wholeFrameCompact,
       syntheticUnicodeAssay,
       groveTrial,
-      wallDeadlineAt: providerWallDeadlineAt
+      wallDeadlineAt: providerWallDeadlineAt,
+      externalAbortSignal: req?.episodeAbortSignal || null
     });
+    if (req?.episodeAbortSignal?.aborted) break;
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
@@ -1834,6 +2140,7 @@ export default async function handler(req, res) {
       const remainingAfterAttemptMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
       if (
         !releaseCanary
+        && !isCarbonReconstruction
         && !sharedRateRetrySpent
         && rateLimit.burst === true
         && waitSeconds > 0
@@ -1868,8 +2175,31 @@ export default async function handler(req, res) {
       });
     }
 
-    const completion = result.response.ok && result.text ? completionOf(result, providerOutput) : null;
+    const completion = result.response.ok && (result.text || providerOutput.finishReason || providerOutput.promptBlockReason)
+      ? completionOf(result, providerOutput)
+      : null;
     attempt.completion = completion;
+    if (result.response.ok && completion && !completion.complete && completion.policyTerminated) {
+      // A provider policy termination (e.g. PROHIBITED_CONTENT, SAFETY, or prompt
+      // block) is an explicit terminal hold, never a retryable transport fragment
+      // or a reason to silently fail over to another model seat.
+      // Never promote partial policy-terminated text to HTTP 200 OK, inject it
+      // into a subsequent same-provider structural repair turn, or continue to
+      // another seat after an explicit provider policy block.
+      attempt.policyTermination = Object.freeze({
+        finishReason: providerOutput.finishReason,
+        ...(providerOutput.promptBlockReason ? { promptBlockReason: providerOutput.promptBlockReason } : {}),
+        ...(providerOutput.finishMessage ? { finishMessage: providerOutput.finishMessage } : {}),
+        providerTextSha256: result.text ? sha256(result.text) : null,
+        admittedAsIncompleteDraft: false,
+        fedToStructuralRepair: false
+      });
+      return sendPolicyHeldResponse(model, {
+        finishReason: providerOutput.finishReason,
+        promptBlockReason: providerOutput.promptBlockReason || null,
+        completion
+      });
+    }
     if (result.response.ok && result.text && !completion.complete) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
       const reasons = ['provider-return-unfinished', ...(relay.admission?.reasons || [])];
@@ -1924,11 +2254,21 @@ export default async function handler(req, res) {
         // untouched; five different human references are not a style template.
         // Preserve original exact bytes and give at most ONE later approved
         // seat a fresh opportunity. Never same-seat repaint or postprocess.
+        const botsEligibleBaseCount = Number(
+          relay.admission?.botsMovement?.eligibleBaseCount
+          ?? relay.highZalgo?.eligibleBaseCount
+          ?? 0
+        );
+        const botsVerticalMarkCount = Number(
+          relay.admission?.botsMovement?.verticalOrnamentMarkCount
+          ?? relay.highZalgo?.verticalOrnamentMarkCount
+          ?? 0
+        );
         const nativeMarkUnderflow = reasons.length === 1 && (
           reasons[0] === 'tauric-diana-zalgo-absent'
           || (reasons[0] === 'tauric-diana-zalgo-underflow'
-            && Number(relay.highZalgo?.eligibleBaseCount || 0) >= 80
-            && Number(relay.highZalgo?.verticalOrnamentMarkCount || 0) < 2)
+            && botsEligibleBaseCount >= 80
+            && botsVerticalMarkCount < 2)
         );
         if (!releaseCanary && nativeMarkUnderflow) {
           if (!zeroMarkFallback) zeroMarkFallback = {
@@ -2087,22 +2427,29 @@ export default async function handler(req, res) {
   }
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const morphologyFailures = attempts.filter((attempt) => attempt.morphologyHold);
+  const policyTerminatedAttempts = attempts.filter((attempt) => attempt.policyTermination);
   const heldByCanaryQuality = releaseCanary && (structuralFailures.length > 0 || morphologyFailures.length > 0);
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
     && attempts.every((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
+  const heldByPolicyTermination = policyTerminatedAttempts.length > 0
+    && !heldByCanaryQuality
+    && !allTransportAttemptsRateLimited;
   const rateWindowClasses = [...new Set(rateLimitedAttempts.map((attempt) => attempt.rateLimit?.windowClass || 'unknown'))];
   const dailyMetricReported = rateLimitedAttempts.some((attempt) => attempt.rateLimit?.daily === true);
   const allShortWindow = rateLimitedAttempts.length > 0
     && rateLimitedAttempts.every((attempt) => attempt.rateLimit?.windowClass === 'short');
+  if (heldByPolicyTermination) res.setHeader('X-TD613-Completion-State', 'POLICY-HELD');
   return send(res, allTransportAttemptsRateLimited && !heldByCanaryQuality ? 429 : 502, {
     ok: false,
     error: heldByCanaryQuality
       ? 'khonapolit-release-canary-output-quality-held'
       : allTransportAttemptsRateLimited
         ? 'gemini-rate-limit-held'
-        : 'gemini-provider-unavailable',
+        : heldByPolicyTermination
+          ? 'gemini-provider-policy-held'
+          : 'gemini-provider-unavailable',
     status: 'HELD',
     diagnostic: heldByCanaryQuality
       ? {
@@ -2132,7 +2479,20 @@ export default async function handler(req, res) {
             publishedDailyResetPolicy: dailyMetricReported
               ? 'midnight America/Los_Angeles; not an observed project balance' : null
           }
-        : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE',
+        : heldByPolicyTermination
+          ? {
+              stage: 'provider-termination',
+              code: 'PROVIDER_NONSTOP_POLICY_TERMINATION',
+              finishReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.finishReason).filter(Boolean))],
+              promptBlockReasons: [...new Set(policyTerminatedAttempts.map((attempt) => attempt.policyTermination?.promptBlockReason).filter(Boolean))],
+              policyTerminatedSeatCount: policyTerminatedAttempts.length,
+              transportFailedSeatCount: attempts.filter((attempt) => !attempt.ok).length,
+              hasMixedTransportFailure: attempts.some((attempt) => !attempt.ok),
+              observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+              rateLimitWindowsOnPriorAttempts: rateWindowClasses,
+              note: 'Provider returned a non-STOP policy termination; partial or empty output was neither admitted as a draft nor re-injected into structural repair. Any mixed transport/rate-limit seat failures are preserved alongside policy counts.'
+            }
+          : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE',
             observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
             rateLimitWindowsOnPriorAttempts: rateWindowClasses,
             note: 'A prior 429 RetryInfo cannot supply a cooldown for a separate 503 or mixed route failure.' },

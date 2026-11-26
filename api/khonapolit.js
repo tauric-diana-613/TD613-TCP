@@ -5,6 +5,12 @@ import loomDemoTaskHandler from '../server/loom-demo-task.js';
 import marrowlineAttachmentHandler from '../server/marrowline-attachment-quality.js';
 import marrowlineAttachmentUploadHandler from '../server/marrowline-attachment-upload.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
+import {
+  episodeCancelHandler,
+  episodeClaimHandler,
+  episodeConsumeHandler,
+  runWithMarrowlineEpisodeContinuity
+} from '../server/marrowline-episode-continuity.js';
 import loomAdvisoryHandler from '../server/holonomy-loom-khonapolit-advisory.js';
 import loomAssayHandler from '../server/loom-assay.js';
 import loomAssayCredentialHandler from '../server/loom-assay-credential.js';
@@ -38,6 +44,9 @@ function requestHasAttachments(req = {}) {
 
 export default function handler(req, res) {
   if (requestedOperation(req) === 'attachment-upload') return marrowlineAttachmentUploadHandler(req, res);
+  if (requestedOperation(req) === 'episode-claim') return episodeClaimHandler(req, res);
+  if (requestedOperation(req) === 'episode-consume') return episodeConsumeHandler(req, res);
+  if (requestedOperation(req) === 'episode-cancel') return episodeCancelHandler(req, res);
   if (requestedOperation(req) === 'loom-assay-credential') return loomAssayCredentialHandler(req, res);
   if (requestedOperation(req) === 'loom-assay') return loomAssayHandler(req, res);
   if (requestedOperation(req) === 'loom-advisory') return withGeminiGenerationProfile(
@@ -49,11 +58,15 @@ export default function handler(req, res) {
   if (requestedOperation(req) === 'gemini-readiness') {
     return geminiReadinessHandler(req, res);
   }
-  if (requestHasAttachments(req)) return marrowlineAttachmentHandler(req, res);
-  return withGeminiGenerationProfile(
-    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
-    () => khonapolitHandler(req, res)
-  );
+  if (requestHasAttachments(req)) {
+    return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => marrowlineAttachmentHandler(req, res));
+  }
+  return runWithMarrowlineEpisodeContinuity(req, res, (req, res) => {
+    return withGeminiGenerationProfile(
+      GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+      () => khonapolitHandler(req, res)
+    );
+  });
 }
 
 export * from '../server/khonapolit-quality.js';
