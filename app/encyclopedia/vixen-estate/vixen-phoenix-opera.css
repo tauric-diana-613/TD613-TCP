@@ -224,7 +224,10 @@ body[data-active-research-stage="OPERAHOUSE"] .vx-phx-scorebar{
   .vx-phx-scorebar-inner{padding-left:var(--gutter)}
 }
 @media(max-width:680px){
-  body:not([data-view="overview"]) .vx-phx-scorebar{margin-top:64px}
+  body:not([data-view="overview"]) .vx-phx-scorebar{display:none!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference{padding-top:4px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #view-reference .view-heading{margin-bottom:10px!important;padding:10px 14px!important}
+  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenReferenceChamber .vxe-heading{margin-bottom:8px!important}
   .vx-phx-scorebar-inner{
     grid-template-columns:minmax(0,1fr);
     padding:6px 14px 7px;
