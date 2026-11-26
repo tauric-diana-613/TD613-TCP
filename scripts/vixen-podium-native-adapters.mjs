@@ -267,11 +267,19 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
        lagTicks:payload?.lag_ticks??36
       })
      :null;
+    const compactHeadline=headline
+     ?{
+       ...headline,
+       candidates:Array.isArray(headline.candidates)
+        ?headline.candidates.map((c)=>({rank:c.rank,id:c.id,title:c.title,regime:c.regime,score:c.score}))
+        :[]
+      }
+     :null;
     return {
      schema:'emstd613.vixen.rulefield-proposal/v1',
      plan,
      conjectures,
-     synthesis_headline:headline,
+     synthesis_headline:compactHeadline,
      scientific_promotion_authority:false,
      empirical_replication_credit:0,
      human_closure_required:true

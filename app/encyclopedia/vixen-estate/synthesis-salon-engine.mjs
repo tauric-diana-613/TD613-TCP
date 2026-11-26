@@ -613,6 +613,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Systems Control × Real-Time Concurrency',
   now_notice:'Compare lock-free acquire/release audio overrun flags (C2) against Beer System-3/5 algedonic pain/pleasure escalation (C1).',
   why_matter:'Both collapse into silent queue corruption if audited only on steady-state throughput while wall (16.6 ms) and 48 kHz sample (20.8 µs) clocks drift (ω ratio 2.026).',
+  mechanism_vs_metaphor:{classification:'STRUCTURAL_MECHANISM_HYPOTHESIS',rationale:'Both require non-blocking interrupt bypass under clock mismatch, though organizational viability adds normative policy goals absent from C++20 SPSC memory fences.'},
+  competing_interpretation:'Shared emergency-queue language could simply reflect standard systems engineering vocabulary rather than an isomorphic cybernetic bypass law.',
+  counterexample:'Wait-free overrun drops remain strictly bounded inside a single producer-consumer cache line with zero System-5 goal revision.',
+  exposed_assumption:'Assumes organizational alert escalation has the same deterministic atomic ordering semantics as hardware audio buffers.',
+  diagnostic_coordinates:{source_relevance:0.92,semiotic_affinity:0.78,evidentiary_validity:0.34,conceptual_novelty:0.86},
   exact_falsifier:'Pass queue-saturation + token-culling trajectories through A-01 & A-05: if div(F) < 0 (dissipative EMA smoothing), a dissipative clamp cannot be claimed conservative across clock regimes.',
   missing_witness:'Live kernel/token-scheduler overrun traces across C2 & C1 + Human Gate #2 review.'
  },
@@ -627,6 +632,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Wearable Haptics × Cryptographic Quorum',
   now_notice:'Treat 7-node wearable IMU/capacitive array actuation (C3) through the lens of non-separable 3-party quorum delegation (C1).',
   why_matter:'Single-node and pairwise marginals shift under sweat/EMI drift without identifying intent, whereas 1-bit global phase parity flips (A-03) protect actuation against single-sensor fault injection.',
+  mechanism_vs_metaphor:{classification:'DIAGNOSTIC_METAPHOR_GUARD',rationale:'Physical multi-sensor quorum filtering resists EMI glitches, whereas multi-agent cryptographic parity guards adversarial authority laundering.'},
+  competing_interpretation:'Conventional sensor fusion (Kalman/Madgwick voting) may outperform rigid parity gates whenever continuous limb kinematics smoothly deform.',
+  counterexample:'Simultaneous sweat drift across 3 adjacent e-textile nodes triggers false quorum acceptance while 1-node bit-parity holds artificially constant.',
+  exposed_assumption:'Assumes continuous capacitive drift discretizes cleanly into Boolean quorum bits without losing spatial proportionality.',
+  diagnostic_coordinates:{source_relevance:0.84,semiotic_affinity:0.71,evidentiary_validity:0.28,conceptual_novelty:0.91},
   exact_falsifier:'Audit pairwise vs 3-node parity marginals via A-02 & A-03: actuation must remain HELD whenever 2-node reduced marginal rank drops below threshold under single-node perturbation.',
   missing_witness:'Calibrated body-network EMI logs and Human Gates #3 & #4.'
  },
@@ -641,6 +651,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Optical Inverse Problems × Adaptive Signal Filtering',
   now_notice:'Pair optimal DSP smoothing decay (C2) with capacitive e-textile skin proximity vs drone range (C3) under single-channel visibility observation.',
   why_matter:'Like optical visibility V = ηn/(1+n) (A-07), scalar envelope curves conflate fabric dielectric shift η_skin with spatial distance n_range unless an orthogonal probe breaks the level-curve degeneracy.',
+  mechanism_vs_metaphor:{classification:'STRUCTURAL_MECHANISM_HYPOTHESIS',rationale:'Both share an exact bilinear rank-1 nuisance degeneracy when two physical parameters multiply into a single observed scalar attenuation.'},
+  competing_interpretation:'Time-domain transient step response could separate fast proximity motion from slow skin-humidity shift without an optical second probe.',
+  counterexample:'Static calibration at known reference range yields rank-2 observability in impedance phase without needing V(η,n) coupling terms.',
+  exposed_assumption:'Assumes dielectric shift η and actuator range n enter only through a scalar multiplicative envelope.',
+  diagnostic_coordinates:{source_relevance:0.89,semiotic_affinity:0.68,evidentiary_validity:0.42,conceptual_novelty:0.83},
   exact_falsifier:'Evaluate candidate calibration matrices with Aperture SVD & A-07: any single-channel calibration with κ(A) > 10⁴ or rank < 2 fails closed as structurally non-identifiable.',
   missing_witness:'Orthogonal dual-frequency capacitance/EMA sweep + Gate #4 closure.'
  },
@@ -655,6 +670,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Finite-Field Algebra × Provenance Compression',
   now_notice:'Contrast OSSL discrete stylometric fork signatures (C4) against cosine vector-culling persistence in real embedding space (C1).',
   why_matter:'Erasure of fork-history conditioning coordinates creates a positive FADT gap |Γ_y| = |U_y \\ I_y| > 0 where unrelated ancestors mimic each other, while A-04 proves finite-field rank refuses continuous SVD.',
+  mechanism_vs_metaphor:{classification:'STRUCTURAL_MECHANISM_HYPOTHESIS',rationale:'Exact quotient fiber collapse Γ_y occurs mathematically whenever downstream persistence discards fork lineage coordinates.'},
+  competing_interpretation:'High-dimensional real cosine similarity could still flag suspicious stylistic overlap heuristically even when modular rank fails.',
+  counterexample:'Zero-gap quotient occurs whenever fork metadata accompanies every pruned vector snapshot without information loss.',
+  exposed_assumption:'Assumes stylometric hash residues remain stable under benign refactoring and cross-format PDF/Markdown extraction.',
+  diagnostic_coordinates:{source_relevance:0.94,semiotic_affinity:0.81,evidentiary_validity:0.39,conceptual_novelty:0.85},
   exact_falsifier:'Run FADT coordinate recovery across fork attributes & A-04 finite-field rank: reject any provenance score importing continuous cosine κ(A) as modular proof.',
   missing_witness:'Independent corpus-wide OSSL commit graph + Gate #6 review.'
  },
@@ -669,6 +689,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Social Cybernetics × Quotient Fiber Theory',
   now_notice:'Examine how “the room plus two occupants equals a third agent” (C5) maps onto LLM shared context memory (C1) — and flag C5’s missing W-PLANE anchor.',
   why_matter:'When individual state supports K₁, K₂ quotient onto an endpoint without retaining the room coordinate, the residual gap Γ_y = U_y \\ I_y captures irreducible relational surplus — yet C5 lacks W-PLANE hardware witnessing.',
+  mechanism_vs_metaphor:{classification:'DIAGNOSTIC_METAPHOR_GUARD',rationale:'1+1=3 originates as phenomenological room-occupant theory in C5; treating it as a hardware theorem without W-PLANE telemetry mistakes metaphor for measurement.'},
+  competing_interpretation:'Observed multi-agent "third voice" behavior may vanish under fixed random seeds once conversation prompt history is cleanly conditioned.',
+  counterexample:'Two stateless agents exchanging structured schemas produce zero irreducible union gap (Γ_y = ∅) over all bounded prompts.',
+  exposed_assumption:'Assumes shared conversational context creates causal agency rather than ordinary conditional correlation.',
+  diagnostic_coordinates:{source_relevance:0.90,semiotic_affinity:0.88,evidentiary_validity:0.21,conceptual_novelty:0.94},
   exact_falsifier:'Compute FADT discrepancy + XOR 1-bit synergy I(X,Y;Z) - max(I_X, I_Y): enforce mandatory W-PLANE pairing guard whenever both works lie inside S-PLANE × P-MEMBRANE alone.',
   missing_witness:'W-PLANE instrumentation grounding + empirical multi-agent session logs.'
  },
@@ -683,6 +708,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Comparative Philology × Polyrhythmic DSP Phylogeny',
   now_notice:'Place Eastern Mediterranean motif diffusion (3000–700 BCE, C5) beside 128-step polyrhythmic pattern state transitions (C2) and OSSL fork trees (C4).',
   why_matter:'Naive motif counting conflates four distinct mechanisms: environmental erasure (decoherence), archival coarse-graining, scribal intervention (projection), and orthography relabeling (gauge redundancy).',
+  mechanism_vs_metaphor:{classification:'DIAGNOSTIC_METAPHOR_GUARD',rationale:'Markov transition algebra compares discrete step mutations structurally, but historical scribal agency is non-ergodic and non-stationary.'},
+  competing_interpretation:'Shared tree-distance metrics may only measure corpus sparsity and modern editorial segmentation rather than ancient transmission channels.',
+  counterexample:'Scribal interpolation events alter motif invariant counts locally while orthography stays untouched, inverting gauge vs projection separation.',
+  exposed_assumption:'Assumes Mediterranean mythic recensions underwent uniform transition probabilities analogous to DSP step sequencers.',
+  diagnostic_coordinates:{source_relevance:0.86,semiotic_affinity:0.79,evidentiary_validity:0.24,conceptual_novelty:0.93},
   exact_falsifier:'Apply A-08 context separation & A-06 signature testing: valid structural invariants must stay stationary under spelling/notation relabeling while shifting under genuine projective recension.',
   missing_witness:'Blind cross-corpus motif transition matrices stripped of epoch labels.'
  },
@@ -697,6 +727,11 @@ const OUTSIDE_CONJECTURE_SPECS=[
   lens:'Operator Algebra × Acoustic Synthesis',
   now_notice:'Audit third-order Mixxx feedback equations (C2) alongside field-topology expressions (C5) for syntactic isomerism vs broken commutator symmetry.',
   why_matter:'A single dropped radical or transposed sample-rate factor creates a convincing “false twin” whose LaTeX looks homologous yet violates [a, a†] = 1 and destabilizes phase lock.',
+  mechanism_vs_metaphor:{classification:'STRUCTURAL_MECHANISM_HYPOTHESIS',rationale:'Symbolic ladder commutator audit (A-09) directly detects broken canonical equivalence in written operator equations across both manuscripts.'},
+  competing_interpretation:'Similar ladder notation in DSP and field notes may be purely pedagogical notation borrowed from quantum harmonic oscillators without physical equivalence.',
+  counterexample:'AST renormalization passes symbolic equivalence while continuous-time vs discrete-time bilinear transform breaks stability at Nyquist.',
+  exposed_assumption:'Assumes published notation in both source manuscripts faithfully preserves underlying differential/difference operators.',
+  diagnostic_coordinates:{source_relevance:0.91,semiotic_affinity:0.84,evidentiary_validity:0.37,conceptual_novelty:0.89},
   exact_falsifier:'Verify AST canonical form + ladder commutator residue via A-09 and project gain vectors onto the [111] mirror orthogonality subspace; reject any equivalence breaking commutator preservation.',
   missing_witness:'Symbolic equation canonicalizer audit over extracted formula folios.'
  }
@@ -713,16 +748,19 @@ export function synthesizeOutsidePerspectiveConjectures(corpus=null,{lagTicks=36
  }).slice(0,Math.max(1,Math.min(12,Number(limit)||7))).map((spec,idx)=>{
   const matchedWorks=spec.workIds.map((wid,wi)=>{
    const w=byId.get(wid);
-   if(!w)return {work_id:wid,title:spec.fallbackTitles[wi]||wid,cluster:spec.clusters[wi]||spec.clusters[0],planes:[],gate_num:null};
+   if(!w)return {work_id:wid,title:spec.fallbackTitles[wi]||wid,cluster:spec.clusters[wi]||spec.clusters[0],planes:[],filenames:[],gate_num:null};
    return {
     work_id:w.work_id,
     title:w.display_title||w.declared_title||spec.fallbackTitles[wi]||w.work_id,
     cluster:w.cluster,
     planes:[...(w.planes||[])],
+    filenames:(w.linked_sources||[]).map(s=>s.original_filename).filter(Boolean),
     human_gate_required:Boolean(w.human_gate_required),
     gate_num:w.human_gate_required?w.gate_num:null
    };
   });
+  const attributableWorkIds=[...spec.workIds];
+  const attributableFilenames=matchedWorks.flatMap(w=>w.filenames||[]);
   const allPlanes=[...new Set(matchedWorks.flatMap(w=>w.planes))];
   const hasWPlaneGrounding=allPlanes.length===0||allPlanes.includes('W-PLANE');
   const cA=clockById.get(spec.clockPair[0])||CLOCKS[0];
@@ -737,6 +775,8 @@ export function synthesizeOutsidePerspectiveConjectures(corpus=null,{lagTicks=36
    lens:spec.lens,
    clusters:spec.clusters,
    works:matchedWorks,
+   attributable_work_ids:attributableWorkIds,
+   attributable_filenames:attributableFilenames,
    planes_crossed:allPlanes,
    has_w_plane_grounding:hasWPlaneGrounding,
    grounding_advisory:hasWPlaneGrounding
@@ -751,6 +791,14 @@ export function synthesizeOutsidePerspectiveConjectures(corpus=null,{lagTicks=36
    affected_gates:gates,
    now_notice:spec.now_notice,
    why_matter:spec.why_matter,
+   mechanism_vs_metaphor:spec.mechanism_vs_metaphor,
+   competing_interpretation:spec.competing_interpretation,
+   counterexample:spec.counterexample,
+   exposed_assumption:spec.exposed_assumption,
+   diagnostic_coordinates:{
+    ...spec.diagnostic_coordinates,
+    provenance_class:'OUTSIDE_PERSPECTIVE_SYNTHESIS_CONJECTURE'
+   },
    exact_falsifier:spec.exact_falsifier,
    missing_witness:spec.missing_witness,
    claim_ceiling:'UNRATIFIED_OUTSIDE_PERSPECTIVE_CONJECTURE_NOT_EVIDENCE'
@@ -832,19 +880,19 @@ function buildBaselineUnifiedCatalog(fadt,totalWorks,baseWorks){
    id:'cand-phasonic-frontispiece',
    regime:'PHASONIC_COUNTERPOINT_SYNTHESIS',
    governing_instrument:'PHASONIC_COUNTERPOINT',
-   title:'Two-Probe Phasonic Counterpoint Across Non-Collapsing Clocks',
-   lens:'D₃/φ Phasonic Counterpoint × Crossed-Probe Conditioning',
+   title:'Two Crossed Probes Across Five Non-Commutative Clocks',
+   lens:'Crossed-Probe Conditioning × Non-Commutative Clocks',
    clusters:['C1','C2','C3','C4','C5'],
    clockPair:['plant','wall'],
    mirrorVector:[1.12,0.34,0.06],
    xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
    fadtExact:true,
    wPlaneGrounded:true,
-   headerTagline:'Phasonic Counterpoint · Two Crossed Probes',
+   headerTagline:'Typed Constitutive Cybernetics · Two Crossed Probes',
    patternSubtitle:'CROSSED PROBES · SIGNAL CLEAVED FROM GLARE.',
    heroStatement:'One beam mistakes the mirror for depth;\ntwo crossed probes cleave signal from glare—\nnothing earns a name until the world replies.',
    leftSpine:'S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS',
-   researchQuestionMeta:'PHASONIC COUNTERPOINT · FIVE CLOCKS · EXPERIMENT A',
+   researchQuestionMeta:'CONSTITUTIVE INQUIRY · FIVE CLOCKS · SOURCE PREVIEW',
    researchQuestion:`“Across ${totalWorks} non-collapsing cybernetic works spanning five non-commutative clocks (${exactCluster} exact on {A, W}), what physical invariant survives two crossed probes when single-beam visibility mistakes mirror glare for structural depth?”`,
    falsifier:'Perturb dual-probe orthogonal coupling and route arrival order A_B vs B_A under Hestenes-Jacobi SVD; hold any mechanism promotion whenever Jacobian rank < 2 or C3 exact descent fails.'
   },

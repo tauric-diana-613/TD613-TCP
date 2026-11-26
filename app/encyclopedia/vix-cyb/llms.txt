@@ -2,7 +2,9 @@
 ## A source-bound research invitation, not a laboratory control panel
 
 **Public work:** /encyclopedia/vix-cyb.html  
-**Original Work access:** Works, Manuscripts, Observatory, Salon, Folios and Methods  
+**Original Work access:** Works, Observatory, Gates, Methods, Refusals, Salon and Folios  
+**Dual-Door Podium Entrance:** /encyclopedia/vix-cyb/podium.html (Human Podium or AI/LLM Entrance)  
+**Dedicated Human Podium:** /encyclopedia/vix-cyb/human-podium.html (Maestro, Composer, Podium Settings & Ledger, Help)  
 **Separate source encounter:** Independent Reading Room, only after the visitor deliberately opens it  
 **Machine task index:** /encyclopedia/reference/podium/manifest.json  
 **Machine research instructions:** /encyclopedia/reference/podium/AGENTS.md  
@@ -22,25 +24,25 @@ An independent index result or adjacent research method cannot silently become o
 
 ## What is actually here
 
-- 32 canonical original Works and 53 linked readable source manifestations.
-- Eight unresolved author/manifestation identity questions.
+- 32 canonical original Works and 53 linked readable source manifestations, searchable and sortable by original received filename (`.md` / `.pdf`), catalog title, cluster and identity status.
+- Eight unresolved author/manifestation identity questions (`UNADJUDICATED_PAIR` by default).
 - Twenty-one historical documentary methods.
 - Eight historically recorded Vixen research folio entries remain distinct from fourteen technical/optical host records; the latter may inform a demonstration, but never inherit Performer identity or headline as original Works. One historical branding ornament retains its original non-theorem status.
-- A source-first manuscript reader with original source identity and attribution.
-- A mathematical Observatory and a two-Work Synthesis Salon, whose models remain illustrative.
-- Semantic–semiotic search with independent channels and explicit bounded comparisons.
-- Maestro for evidence-led exploration and Composer for unratified synthesis proposals.
+- A source-first manuscript reader with original filename visibility, reflowed PDF prose, parsed Markdown tables, inline image handling, and original attribution.
+- A mathematical Observatory and a Synthesis Salon pairing any bilateral Works (plus multi-source Research Cart staging), an interactive Mathematical Crib, a Dynamic Synthesis Manifesto, and seven cross-domain conjectures.
+- Header-anchored Research Cart popout supporting four distinct unprivileged exports (Cart JSON, Portable Session ZIP, Salon Question Receipt, Podium Journey Archive).
+- Semantic–semiotic search with independent channels (`Hybrid SVD+BM25F`, `Lexical BM25F`, `Phrase Span`, `Exact UTF-8`, `Document Routes`) including exact filename and body substring matching.
+- Dedicated Human Podium reached via the dual-door Podium entrance: `Maestro` for evidence-led exploration and inline source snippet inspection, `Composer` for bilateral/multi-source hypothesis drafting and unexecuted Podium Score inspection, plus `Podium Settings & Ledger` and `Human Podium Help`.
 - A separate read-only reference room; cross-source relationships require a separate ratified warrant.
-- A portable, locally exportable session. This is not a hidden background agent.
 
-The next corpus expansion (seven previously missing PDFs plus one separately selected blind-archive document) has not yet been executed or admitted. Missing source bodies, native-method parity, physical-device review and independent empirical observations must be reported accurately as unobserved.
+Missing source bodies, native-method parity, physical-device review and independent empirical observations must be reported accurately as unobserved. Opening the Podium threshold or reading this guide connects no model automatically and grants zero execution authority.
 
 ## How to conduct a useful encounter
 
 1. **Receive the operator question.** Ask which original Work, passage, research problem or potential relationship matters. Do not invent a research objective.
-2. **Locate originals.** Inspect Work and manifestation IDs; inspect the actual manuscript where available. Cite title, source ID, digest or exact passage. Preserve source-body limitations.
+2. **Locate originals.** Inspect Work and manifestation IDs and received filenames; inspect the actual manuscript where available. Cite title, filename, source ID, digest or exact passage. Preserve source-body limitations.
 3. **Choose an explicit method.** Document whether the answer uses lexical search, semantic retrieval, semiotic structure, order-dependent comparison or illustrative mathematical modeling.
-4. **Challenge the initial interpretation.** Return at least one rival account, a relevant negative control and a meaningful falsifier or missing witness.
+4. **Challenge the initial interpretation.** Return at least one rival account, a relevant negative control and a meaningful falsifier or missing witness, distinguishing mechanism hypotheses from diagnostic metaphors.
 5. **Return a bounded research proposal.** Distinguish recorded evidence, constructed mathematics, operator judgments, source uncertainty and speculative implications.
 6. **Stop at human approval.** The assistant must never infer approval, reclassify a Work, publish a cross-source mapping, change the original corpus or initiate deployment.
 
@@ -60,6 +62,6 @@ Keep manuscript quotations verbatim and distinctly attributed. Do not substitute
 
 ## Current authority and review ceiling
 
-This is a qualified preview of a research candidate, pending human edits and separate evaluation. Its machine-observed success does not imply aesthetic acceptance, historical authorship resolution, physical-iPhone inspection, external empirical replication, production release, publication approval, or a subsequent research flight. All such decisions remain human-reserved.
+This is a qualified preview of a research candidate, pending human edits and separate evaluation. Its machine-observed success does not imply aesthetic acceptance, historical authorship resolution, physical-device inspection, external empirical replication, production release, publication approval, or a subsequent research flight. All such decisions remain human-reserved.
 
 **No Mirrors at the Kiki. OPERAHOUSE ≠ OPERA ≠ PERFORMER.**

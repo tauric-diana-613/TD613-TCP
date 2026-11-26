@@ -34,8 +34,8 @@ test('Human inspector no longer exposes host-private diagnostic benches',()=>{
  assert(!ix.includes('ENGINE_DIAGNOSTIC_BENCH'),'engineering-only digest bench escaped into public inspector');
  assert(!ix.includes('A-PFR0.2 Engine Track'),'host engine inventory escaped into public inspector');
  assert(!ix.includes('TD613_PODIUM_OPERATOR_DIRECT=1'),'private CLI attestation escaped into visitor inspector');
- assert(ix.includes('VERIFY A RECORDED WORK'));
- assert(ix.includes('RESEARCH HANDOFF · ORIGINAL WORKS FIRST'));
+ assert(ix.includes('STEP 1 · FINDING &amp; READING RECORDED WORKS'));
+ assert(ix.includes('STEP 4 · DUAL-DOOR PODIUM &amp; HUMAN WORKSPACE'));
 });
 
 test('DOM language boundary covers initial chrome and asynchronous user-facing messages',async()=>{

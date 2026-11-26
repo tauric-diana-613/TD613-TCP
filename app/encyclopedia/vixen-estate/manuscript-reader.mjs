@@ -4,9 +4,16 @@
  * corpus-experiment-a.mjs, which verifies every body before this presentation layer.
  * No telemetry, mutations, auto-Podium execution, or external math CDN.
  */
-const INLINE_TOKENS = /(\\\([\s\S]+?\\\)|(?<!\\)\$(?!\$)[^\n$]+?(?<!\\)\$|\*\*[^*\n]+\*\*|\*[^*\n]+\*|\x60[^\x60\n]+\x60)/g;
+const INLINE_TOKENS = /(\\\([\s\S]+?\\\)|(?<!\\)\$(?!\$)[^\n$]+?(?<!\\)\$|!\[[^\]]*\]\[[^\]]+\]|\*\*[^*\n]+\*\*|\*[^*\n]+\*|\x60[^\x60\n]+\x60)/g;
 const SECTION = /^#{1,6}\s+(.+)$/;
 const FENCE = /^\s*(`{3,}|~{3,})(.*)$/;
+const DATA_IMAGE_DEF = /^\s*\[([^\]]+)\]:\s*<?(data:image\/(?:png|jpeg|jpg|webp|gif|svg\+xml);base64,[A-Za-z0-9+/=\s]+)>?\s*$/i;
+const TABLE_SEP = /^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)+\|?\s*$/;
+
+function splitPipeRow(line) {
+  const trimmed = String(line || '').trim().replace(/^\|/, '').replace(/\|$/, '');
+  return trimmed.split('|').map((c) => c.trim());
+}
 
 function mathNode(doc, expression, display) {
   const holder = doc.createElement(display ? 'div' : 'span');
@@ -31,7 +38,7 @@ function mathNode(doc, expression, display) {
   return holder;
 }
 
-function appendInline(doc, parent, raw) {
+function appendInline(doc, parent, raw, imageRefs = null) {
   const value = String(raw ?? '');
   INLINE_TOKENS.lastIndex = 0;
   let offset = 0;
@@ -43,6 +50,22 @@ function appendInline(doc, parent, raw) {
       parent.append(mathNode(doc, token.slice(2, -2), false));
     } else if (token.startsWith('$') && token.endsWith('$')) {
       parent.append(mathNode(doc, token.slice(1, -1), false));
+    } else if (token.startsWith('![')) {
+      const m = token.match(/^!\[([^\]]*)\]\[([^\]]+)\]$/);
+      const refSrc = m && imageRefs ? imageRefs.get(m[2].trim()) : null;
+      if (refSrc) {
+        const img = doc.createElement('img');
+        img.className = 'vix-reader-inline-img';
+        img.src = refSrc;
+        img.alt = m[1] || 'Source equation or diagram';
+        img.decoding = 'async';
+        parent.append(img);
+      } else {
+        const span = doc.createElement('span');
+        span.className = 'vix-reader-image-ref';
+        span.textContent = `[Figure/Equation ${m ? m[2] : token}]`;
+        parent.append(span);
+      }
     } else if (token.startsWith('**')) {
       const strong = doc.createElement('strong');
       strong.textContent = token.slice(2, -2);
@@ -61,17 +84,21 @@ function appendInline(doc, parent, raw) {
   if (offset < value.length) parent.append(doc.createTextNode(value.slice(offset)));
 }
 
-function flushParagraph(doc, frag, lines) {
+function flushParagraph(doc, frag, lines, imageRefs = null, paraCounter = null) {
   if (!lines.length) return;
   const p = doc.createElement('p');
   p.className = 'vix-reader-paragraph';
+  if (paraCounter && typeof paraCounter.n === 'number') {
+    paraCounter.n += 1;
+    p.dataset.displayPara = String(paraCounter.n);
+  }
   // Manuscript source is immutable. Ordinary single newlines are soft prose wraps
   // (especially PDF derivatives); only explicit Markdown hard breaks become <br>.
   // The exact original bytes remain available through the raw-source disclosure.
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const hardBreak = /(?: {2,}|\\)$/.test(line);
-    appendInline(doc, p, hardBreak ? line.replace(/(?: {2,}|\\)$/, '') : line);
+    appendInline(doc, p, hardBreak ? line.replace(/(?: {2,}|\\)$/, '') : line, imageRefs);
     if (i < lines.length - 1) {
       p.append(hardBreak ? doc.createElement('br') : doc.createTextNode(' '));
     }
@@ -206,7 +233,17 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
   const doc = target.ownerDocument;
   const raw = String(manuscript ?? '');
   const projected = projectManuscriptLineation(raw, {sourceFormat, documentTitle});
-  const lines = projected.text.split('\n');
+  const imageRefs = new Map();
+  const filteredLines = [];
+  for (const line of projected.text.split('\n')) {
+    const imgDef = !projected.pdf_derivative_reflow ? line.match(DATA_IMAGE_DEF) : null;
+    if (imgDef) {
+      imageRefs.set(imgDef[1].trim(), imgDef[2].replace(/\s+/g, ''));
+      continue;
+    }
+    filteredLines.push(line);
+  }
+  const lines = filteredLines;
   const fragment = doc.createDocumentFragment();
   if (projected.projection_title) {
     const title = doc.createElement('h3');
@@ -215,10 +252,11 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
     fragment.append(title);
   }
   const paragraph = [];
+  const paraCounter = {n: 0};
   let list = null;
   let fence = null;
   let display = null;
-  const flush = () => flushParagraph(doc, fragment, paragraph);
+  const flush = () => flushParagraph(doc, fragment, paragraph, imageRefs, paraCounter);
   const closeList = () => { list = null; };
   const closeFence = () => {
     if (!fence) return;
@@ -237,7 +275,8 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
     fragment.append(mathNode(doc, display.join('\n'), true));
     display = null;
   };
-  for (const line of lines) {
+  for (let idx = 0; idx < lines.length; idx++) {
+    const line = lines[idx];
     if (fence) {
       if (/^\s*(?:`{3,}|~{3,})\s*$/.test(line)) { closeFence(); }
       else fence.lines.push(line);
@@ -260,6 +299,40 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
     }
     const trimmed = line.trim();
     if (!trimmed) { flush(); closeList(); continue; }
+    // GFM pipe table support
+    if (trimmed.includes('|') && idx + 1 < lines.length && TABLE_SEP.test(lines[idx + 1])) {
+      flush(); closeList();
+      const wrap = doc.createElement('div');
+      wrap.className = 'vix-reader-table-wrap';
+      const table = doc.createElement('table');
+      table.className = 'vix-reader-table';
+      const thead = doc.createElement('thead');
+      const hRow = doc.createElement('tr');
+      for (const cellText of splitPipeRow(trimmed)) {
+        const th = doc.createElement('th');
+        appendInline(doc, th, cellText, imageRefs);
+        hRow.append(th);
+      }
+      thead.append(hRow);
+      table.append(thead);
+      const tbody = doc.createElement('tbody');
+      idx += 2;
+      while (idx < lines.length && lines[idx].trim() && lines[idx].includes('|')) {
+        const tr = doc.createElement('tr');
+        for (const cellText of splitPipeRow(lines[idx])) {
+          const td = doc.createElement('td');
+          appendInline(doc, td, cellText, imageRefs);
+          tr.append(td);
+        }
+        tbody.append(tr);
+        idx++;
+      }
+      idx--;
+      table.append(tbody);
+      wrap.append(table);
+      fragment.append(wrap);
+      continue;
+    }
     const displayMatch = trimmed.match(/^(\$\$|\\\[)(.*)$/);
     if (displayMatch) {
       flush(); closeList();
@@ -279,7 +352,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
       const headingLevel = Math.min(6, heading[1].length + 2);
       const h = doc.createElement('h' + headingLevel);
       h.className = 'vix-reader-heading';
-      appendInline(doc, h, heading[2]);
+      appendInline(doc, h, heading[2], imageRefs);
       fragment.append(h);
       continue;
     }
@@ -297,7 +370,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
         fragment.append(list);
       }
       const li = doc.createElement('li');
-      appendInline(doc, li, (numbered || bullet)[1]);
+      appendInline(doc, li, (numbered || bullet)[1], imageRefs);
       list.append(li);
       continue;
     }
@@ -306,7 +379,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceF
       flush(); closeList();
       const q = doc.createElement('blockquote');
       q.className = 'vix-reader-quote';
-      appendInline(doc, q, quote[1]);
+      appendInline(doc, q, quote[1], imageRefs);
       fragment.append(q);
       continue;
     }

@@ -7,7 +7,10 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import {mkdir} from 'node:fs/promises';
-const out='artifacts/vixen-browser-witness';
+import path from 'node:path';
+const out=process.env.VIXEN_WITNESS_OUT_DIR
+ ? path.join(process.env.VIXEN_WITNESS_OUT_DIR,'vixen-browser-witness')
+ : 'artifacts/vixen-browser-witness';
 await mkdir(out,{recursive:true});
 const browser=await chromium.launch({headless:true});
 try{

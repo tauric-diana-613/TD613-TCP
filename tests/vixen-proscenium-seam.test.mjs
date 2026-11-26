@@ -6,7 +6,11 @@ import {JSDOM} from 'jsdom';
 // Source-bound guard: no UI relocation may mutate the research corpus or
 // promote a local presentation operation to a machine-authorized write.
 const source=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
+const entranceSource=readFileSync(new URL('../app/encyclopedia/vix-cyb/podium.html',import.meta.url),'utf8');
+const humanPodiumSource=readFileSync(new URL('../app/encyclopedia/vix-cyb/human-podium.html',import.meta.url),'utf8');
 const dom=new JSDOM(source,{url:'https://vixen.example/encyclopedia/vix-cyb.html'});
+const entranceDom=new JSDOM(entranceSource,{url:'https://vixen.example/encyclopedia/vix-cyb/podium.html'});
+const humanPodiumDom=new JSDOM(humanPodiumSource,{url:'https://vixen.example/encyclopedia/vix-cyb/human-podium.html'});
 const doc=dom.window.document;
 const one=(s)=>doc.querySelector(s);
 
@@ -28,9 +32,14 @@ test('Source-first Salon owns the research question, candidate scoring and conje
   assert(studio.querySelector('#'+id),'Salon must retain '+id);
   assert.equal(doc.querySelectorAll('#'+id).length,1,'No duplicate controller '+id);
  }
- assert(salon.querySelector('#vixenAiJourney'));
+ assert(!salon.querySelector('#vixenAiJourney'),'AI Journey moved out of Salon into dedicated Podium');
+ assert(!one('#vixenAiJourney'),'Dedicated Human Podium lives in separate document human-podium.html');
+ assert(humanPodiumDom.window.document.querySelector('#view-podium #vixenAiJourney'),'Standalone Human Podium hosts AI Journey');
  assert(salon.querySelector('#vixenSynthesisSalon'));
- assert(salon.querySelector('button[data-view="operator"]'),'Salon must link to operator review');
+ assert(
+  salon.querySelector('a[href="./vix-cyb/human-podium.html#settings"], button[data-view="operator"]'),
+  'Salon must link to Podium Settings & Ledger review'
+ );
 });
 
 test('Human operator route owns presentation history, diagnostics and machine-boundary explanation',()=>{
@@ -47,8 +56,11 @@ test('Human operator route owns presentation history, diagnostics and machine-bo
  assert.doesNotMatch(op.textContent,/EXPERIMENT[_ -]?A|PREVIEW[_ -]?AUTHORIZED|PRODUCTION REQUIRES OPERATOR SECRET|human approval|human authorization/i,
   'Podium public copy must omit backstage release-gate notes; approval remains enforced by machine contracts');
  assert(source.includes("'reference', 'operator'"),'Operator hash must be included in routing whitelist');
- assert(one('.footer [data-view="operator"]'));
- assert(one('#mobileNav [data-view="operator"]'));
+ assert.equal(one('.footer #footerPodiumLink')?.getAttribute('href'),'./vix-cyb/podium.html');
+ assert.equal(one('#mobileNav a[href="./vix-cyb/podium.html"]')?.getAttribute('href'),'./vix-cyb/podium.html');
+ assert.equal(entranceDom.window.document.querySelector('#podiumDoorHuman')?.getAttribute('href'),'./human-podium.html');
+ assert.equal(entranceDom.window.document.querySelector('#podiumDoorAi')?.getAttribute('href'),'./llms.txt');
+ assert(humanPodiumDom.window.document.querySelector('#view-podium [data-podium-tab="settings"]'));
  assert.equal(doc.querySelectorAll('.vixen-room-rail .vixen-room').length,8,
   'Podium Settings is a control route, not an invented ninth Opera room');
 });
@@ -93,4 +105,4 @@ test('Research data and immutable performer boundaries remain intact',()=>{
  assert.equal(one('#view-operator').querySelectorAll('[data-stage-role="PERFORMER"]').length,0);
 });
 
-after(()=>dom.window.close());
+after(()=>{dom.window.close();entranceDom.window.close();humanPodiumDom.window.close();});

@@ -1,23 +1,28 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import {mkdir,readFile} from 'node:fs/promises';
+import path from 'node:path';
 
-const dest='artifacts/vixen-browser-witness';
+const dest=path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
+ ? path.join(process.env.VIXEN_WITNESS_OUT_DIR,'vixen-browser-witness')
+ : 'artifacts/vixen-browser-witness');
 await mkdir(dest,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const url='http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
 const ids=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'];
 const open=async page=>{
  await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+ await page.locator('#footerPodiumLink').waitFor({state:'attached',timeout:15000});
+ await page.evaluate(()=>{
+  const podium=document.querySelector('#footerPodiumLink');
+  if(!podium)throw Error('SOURCE_EXPEDITION_NO_PODIUM_ENTRY');
+  podium.click();
+ });
+ await page.waitForURL('**/encyclopedia/vix-cyb/podium.html',{timeout:18000});
+ await page.locator('#podiumDoorHuman').click();
+ await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:18000});
  await page.waitForFunction(()=>window.VixenSourceChallenge?.mounted===true&&
   window.VixenAIModes?.mounted===true,null,{timeout:30000});
- await page.evaluate(()=>{
-  const nav=document.querySelector('#vixenRoomRail [data-view="collection"]')||
-   document.querySelector('button[data-view="collection"]');
-  if(!nav)throw Error('SOURCE_EXPEDITION_NO_COLLECTION_ROOM');
-  nav.click();
- });
- await page.locator('#view-collection:not([hidden])').waitFor({timeout:18000});
 };
 const role=async page=>{
  await page.locator('[data-vma-role="MAESTRO"]').click();
@@ -27,7 +32,7 @@ const role=async page=>{
 async function fillEvidence(page,form){
  const snippets=await page.evaluate(async ids=>{
   const catalogue=JSON.parse(document.getElementById('vixen-corpus-bundle').textContent);
-  const m=await import('./vixen-estate/corpus-experiment-a.mjs');
+  const m=await import('../vixen-estate/corpus-experiment-a.mjs');
   const out=[];
   for(const id of ids){
    const i=catalogue.works.findIndex(w=>w.work_id===id),w=catalogue.works[i],s=w.linked_sources[0];
@@ -81,10 +86,12 @@ try{
   'Public operator source-challenge interface must avoid machine-side estate naming');
  // The original reader should open and return without losing source state.
  await panel.getByRole('button',{name:'Read the original Work'}).first().click();
+ await page.waitForURL('**/encyclopedia/vix-cyb.html#works/*',{timeout:16000});
  await page.locator('#view-works:not([hidden])').waitFor({timeout:16000});
  assert.equal(await page.locator('#worksExperimentAReaderMount').getAttribute('data-work-id'),ids[0]);
  await page.locator('#vmaJourneyDock').click();
- await page.locator('#view-collection:not([hidden])').waitFor({timeout:16000});
+ await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:16000});
+ await page.waitForFunction(()=>window.VixenSourceChallenge?.status().phase==='SOURCE',null,{timeout:20000});
  assert.equal(await page.evaluate(()=>window.VixenSourceChallenge.status().phase),'SOURCE');
  await panel.getByRole('button',{name:'Test the strongest rival explanation'}).click();
  await page.waitForFunction(()=>window.VixenSourceChallenge.status().phase==='COUNTERTEST');

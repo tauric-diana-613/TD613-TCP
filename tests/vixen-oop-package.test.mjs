@@ -19,6 +19,6 @@ test('newly generated preview README uses the runtime headliner authority',()=>{
 test('high-salience candidate labels and accessible source identity stay prospective',()=>{
  const html=readFileSync('app/encyclopedia/vix-cyb.html','utf8');
  assert(html.includes('L2 preset candidate'));
- assert(html.includes('7 Proposed Comparison Lenses'));
+ assert(/Synthesize\s+7\s+(?:Proposed\s+Comparison\s+)?Lenses/.test(html));
  assert(!/L2 ADMITTED|L2 Admitted|7 Admissible Bridges/i.test(html));
 });

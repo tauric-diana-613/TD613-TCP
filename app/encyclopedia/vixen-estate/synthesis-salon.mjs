@@ -310,16 +310,21 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   for(let i=0;i<2;i++){
    const w=getWork(i),side=mk('article','vs-source-card');
    side.dataset.estate='EMSTD613';
+   const src=w.linked_sources.find(x=>x.source_file_id===state.sources[i]);
+   const isPdfSrc=String(src?.media_type||src?.format||src?.original_filename||'').toLowerCase().includes('pdf');
+   const downloadName=isPdfSrc
+    ? String(src.original_filename||src.source_file_id).replace(/\.pdf$/i,'')+'.extracted.txt'
+    : (src.original_filename||(src.source_file_id+'.md'));
    append(side,
     paragraph((i===0?'I':'II')+' · ORIGINAL RECORDED WORK · SOURCE-TITLE','vs-source-tag'),
     select('Choose Work '+(i+1),corpus.works.map((x,j)=>({
-     id:x.work_id,label:String(j+1).padStart(2,'0')+' · '+titleText(x)
+     id:x.work_id,label:String(j+1).padStart(2,'0')+' · '+titleText(x)+' ['+(x.linked_sources[0]?.original_filename||x.work_id)+']'
     })),w.work_id,v=>chooseWork(i,v)),
     mk('h3','vs-work-title',titleText(w)),
+    paragraph('Received filename: '+(src?.original_filename||w.work_id)+' ('+(w.linked_sources.length)+' manifestation'+(w.linked_sources.length===1?'':'s')+' · '+(isPdfSrc?'extracted PDF text derivative; binary .pdf unavailable':'authentic Markdown')+')','vs-received-filename'),
     paragraph('RECORDED CATALOGUE TITLE · NOT A GENERATED SYNTHESIS CANDIDATE · AUTHORSHIP UNRESOLVED','vs-title-provenance'),
     makeSelectSource(w,state.sources[i],v=>pickSource(i,v))
    );
-   const src=w.linked_sources.find(x=>x.source_file_id===state.sources[i]);
    const manuscript=mk('div','vs-manuscript-body');
    manuscript.textContent='Expand to read the complete recorded manuscript.';
    const manuscriptReader=details('Read complete Experiment-A manuscript',manuscript,'vs-manuscript');
@@ -336,7 +341,12 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
      if(typeof rec?.text_body==='string'&&rec.text_body.length){
       const {mountVixenManuscript}=await import('./manuscript-reader.mjs');
       if(!manuscriptReader.isConnected)return;
-      mountVixenManuscript(manuscript,rec.text_body,{sourceId:src.source_file_id,showRaw:true});
+      mountVixenManuscript(manuscript,rec.text_body,{
+       sourceId:src.source_file_id,
+       sourceFormat:src.media_type||src.format||src.original_filename||'',
+       documentTitle:titleText(w),
+       showRaw:true
+      });
       manuscriptReader.dataset.loaded='true';
      }else{
       manuscript.textContent='Original text unavailable: '+(rec?.custody_status||'NO_RECORDED_BODY');
@@ -351,17 +361,49 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    });
    side.append(manuscriptReader);
    const navigation=mk('div','vs-research-bridges');
-   const openInWorks=button('Open full Works reader',()=>{
+   const openInWorks=button('Open in Works',()=>{
     const route=window.VixenResearchUI;
     if(route?.openWork)route.openWork(w.work_id,src.source_file_id);
     else window.location.hash='#works/'+encodeURIComponent(w.work_id);
    },'vs-research-bridge');
-   const searchSource=button('Search this manuscript',()=>{
+   const searchSource=button('Search file',()=>{
     const route=window.VixenResearchUI;
     if(route?.openSearch)route.openSearch(src.original_filename,{sourceId:src.source_file_id});
     else window.dispatchEvent(new CustomEvent('vixen:research-search',{detail:{query:src.original_filename,sourceId:src.source_file_id}}));
    },'vs-research-bridge');
-   const podiumInspect=button('Copy Podium work-inspection task',async()=>{
+   const downloadSource=button(isPdfSrc?'Download .extracted.txt ↓':'Download .md ↓',async()=>{
+    try{
+     const warmed=await warmSalonBody(src.source_file_id);
+     const body=warmed?.record?.text_body;
+     if(typeof body!=='string'||!body.length){
+      state.notice='Original text unavailable for download until verified.';
+      const status=host.querySelector('.vs-status');
+      if(status)status.textContent=state.notice;
+      return;
+     }
+     const mimeType=isPdfSrc?'text/plain;charset=utf-8':'text/markdown;charset=utf-8';
+     const blob=new Blob([body],{type:mimeType});
+     const url=URL.createObjectURL(blob);
+     const a=document.createElement('a');
+     a.href=url;a.download=downloadName;
+     document.body.append(a);a.click();a.remove();
+     setTimeout(()=>URL.revokeObjectURL(url),1000);
+     state.notice=isPdfSrc
+      ? 'Downloaded extracted UTF-8 text ('+downloadName+'); original binary .pdf bytes are unavailable.'
+      : 'Downloaded authentic Markdown ('+downloadName+').';
+     const status=host.querySelector('.vs-status');
+     if(status)status.textContent=state.notice;
+    }catch(_){
+     state.notice='Download blocked in this browser session.';
+    }
+   },'vs-research-bridge');
+   downloadSource.dataset.downloadKind=isPdfSrc?'EXTRACTED_NATIVE_PDF_TEXT':'NATIVE_MARKDOWN';
+   downloadSource.dataset.downloadFilename=downloadName;
+   downloadSource.dataset.binaryPdfAvailable=isPdfSrc?'false':'n/a';
+   downloadSource.title=isPdfSrc
+    ? 'Downloads extracted UTF-8 text (.extracted.txt); original binary .pdf bytes are unavailable/held'
+    : 'Downloads authentic Markdown (.md)';
+   const podiumInspect=button('Copy Podium task',async()=>{
     const task={schema:'td613.vixen.podium.task/v1',intent:'vixen.work.inspect',
      params:{work_id:w.work_id,source_file_id:src.source_file_id},
      source_id:src.source_file_id,execution_authority:false};
@@ -371,7 +413,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     if(status)status.textContent=state.notice;
     addEvent('PODIUM_SOURCE_INSPECTION_TASK_PREPARED',{source_file_id:src.source_file_id,auto_execute:false});
    },'vs-research-bridge');
-   append(navigation,openInWorks,searchSource,podiumInspect);
+   append(navigation,openInWorks,searchSource,downloadSource,podiumInspect);
    side.append(navigation);
    const provenance=details('Source provenance and unresolved authorship',
     append(mk('div','vs-provenance'),
@@ -386,10 +428,14 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   }
   const seam=button('',()=>setRoute(state.route==='A_B'?'B_A':'A_B'),'vs-seam');
   seam.setAttribute('aria-label','Flip encounter order without merging authorship ('+(state.route==='A_B'?'I → II to II → I':'II → I to I → II')+')');
-  seam.title='Flip encounter order (I ▷ II / II ▷ I) · source loci stay distinct';
+  seam.title='Flip encounter order (Work I ▷ II ↔ II ▷ I) · source loci stay distinct';
   append(seam,
    mk('span','vs-seam-neq','≠'),
-   mk('span','vs-seam-op',state.route==='A_B'?'I ▷ II ⇄':'II ▷ I ⇄')
+   mk('span','vs-seam-op',state.route==='A_B'?'Route I ▷ II ⇄':'Route II ▷ I ⇄')
+  );
+  const seamWrap=mk('div','vs-seam-wrap');
+  append(seamWrap,seam,
+   paragraph('Encounter order is non-commutative: reading Work I before Work II frames a different counterfactual than Work II before Work I, while both source digests remain unchanged.','vs-seam-caption')
   );
   const offer=mk('div','vs-program');
   append(offer,
@@ -402,7 +448,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const routes=mk('div','vs-order');
   append(routes,paragraph('ENCOUNTER ORDER · DISTINCT ROUTES, IDENTICAL SOURCE IDENTIFIERS','vs-eyebrow'));
   for(const o of ['A_B','B_A']){
-   const b=button(o==='A_B'?'I → II':'II → I',()=>setRoute(o),'vs-order-button');
+   const b=button(o==='A_B'?'I → II (Work I leads)':'II → I (Work II leads)',()=>setRoute(o),'vs-order-button');
    b.setAttribute('aria-pressed',String(state.route===o));routes.append(b);
   }
   const wA=getWork(0),wB=getWork(1);
@@ -413,9 +459,16 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const leadTitle=state.route==='A_B'?titleText(wA):titleText(wB);
   const tailTitle=state.route==='A_B'?titleText(wB):titleText(wA);
   const {svg:holonomySvg,centerText:holonomyCenterText}=makeHolonomySvg(wA,wB,vernier,state.route);
+  const holonomyGrid=mk('div','vs-holonomy-grid');
+  const holonomyExplain=mk('div','vs-holonomy-legend');
+  append(holonomyExplain,
+   paragraph('Why route history differs even when the Works stay fixed:','vs-holonomy-lead'),
+   paragraph('Upper arc traces I ▷ II (start from Work I, test against Work II). Lower dashed arc traces II ▷ I. Non-zero inversions (Δ) and L1 lag distance measure path non-commutativity without altering source bytes.','vs-holonomy-detail')
+  );
+  append(holonomyGrid,holonomySvg,holonomyExplain);
   append(holonomyCard,
-   mk('span','vs-holonomy-badge','ATLAS ROUTE MEMORY · NON-EQUIVALENT TRAJECTORY'),
-   holonomySvg,
+   mk('span','vs-holonomy-badge','ROUTE HOLONOMY · SAME SOURCES, ORDER-DEPENDENT QUESTION'),
+   holonomyGrid,
    paragraph(`Active path (${state.route==='A_B'?'I → II':'II → I'}): [${leadTitle}] ➔ [${tailTitle}] · Terminal set invariant, holonomy history distinct.`,'vs-holonomy-detail')
   );
   const memStrip=mk('div','vs-trajectory-memory');
@@ -439,7 +492,10 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   offer.append(routes,holonomyCard,memStrip);
   const clocks=state.route==='B_A'?vernier.reverse:vernier.forward;
   const clockBox=mk('section','vs-clocks');
-  clockBox.append(paragraph('FIVE CLOCKS · INTERACTIVE VERNIER & NON-COMMUTATIVE HYSTERESIS','vs-eyebrow'));
+  clockBox.append(
+   paragraph('FIVE CLOCKS · INTERACTIVE VERNIER & NON-COMMUTATIVE HYSTERESIS','vs-eyebrow'),
+   paragraph('What this instrument tests: five non-commensurable clocks—k (layer step), n (token step), τ (continuous integrator), t_wall (wall time), and t_plant (48 kHz audio)—run at distinct cadences. Dragging the lag reveals arrival-order inversions (Δ) without assuming any physical time equivalence.','vs-vernier-explainer')
+  );
   const lagLabel=mk('label','vs-slider-label','Demonstration lag · '+state.lag+' dimensionless ticks');
   const slider=mk('input','vs-slider');slider.type='range';slider.min='0';slider.max='120';slider.step='1';slider.value=String(state.lag);
   slider.setAttribute('aria-label','Synthetic arrival lag in dimensionless ticks');
@@ -506,8 +562,43 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   append(apertureHud,...hudCells);
   updateClockDOMInPlace();
   append(clockBox,lagLabel,slider,bars,vernierReadout,apertureHud,paragraph('Distinct derivative domains: k · n · τ · wall · 48 kHz plant. Drag any track (double-click to zero) or select a clock to inspect the folded cuirass under that clock plane. Equal bar positions cannot establish a physical time map.','vs-custody'));
+  const cartScopeIds=(typeof window!=='undefined'&&window.VIXEN_STUDY_TRAY?.list?.()||[])
+   .filter(id=>corpus.works.some(w=>w.work_id===id));
+  const cartScopeBar=mk('section','vs-cart-scope');
+  cartScopeBar.hidden=cartScopeIds.length===0;
+  const cartScopeHead=mk('div','vs-cart-scope-head');
+  append(cartScopeHead,
+   mk('span','vs-eyebrow','MULTI-SOURCE RESEARCH CART SCOPE · '+(cartScopeIds.length?cartScopeIds.length+' STAGED WORK(S)':'ADD WORKS BELOW OR FROM THE CATALOGUE')),
+   cartScopeIds.length>=2?button('Load first 2 Cart Works into Pair',()=>{
+    const w0=corpus.works.find(w=>w.work_id===cartScopeIds[0]);
+    const w1=corpus.works.find(w=>w.work_id===cartScopeIds[1]);
+    if(w0&&w1&&w0.work_id!==w1.work_id){
+     state.works=[w0.work_id,w1.work_id];
+     state.sources=[w0.linked_sources[0].source_file_id,w1.linked_sources[0].source_file_id];
+     changed();state.notice='Staged 2 Works from Research Cart into the Salon bilateral probe.';render();
+    }
+   },'vs-research-bridge'):null
+  );
+  cartScopeBar.append(cartScopeHead);
+  if(cartScopeIds.length){
+   const listRow=mk('div','vs-cart-scope-list');
+   for(const cid of cartScopeIds){
+    const cw=corpus.works.find(w=>w.work_id===cid);
+    if(!cw)continue;
+    const chip=mk('div','vs-cart-scope-chip');
+    const cfile=cw.linked_sources?.[0]?.original_filename||cw.work_id;
+    append(chip,
+     mk('strong','',titleText(cw)),
+     mk('span','vs-cart-scope-file',cfile),
+     button('Set I',()=>chooseWork(0,cw.work_id),'vs-research-bridge'),
+     button('Set II',()=>chooseWork(1,cw.work_id),'vs-research-bridge')
+    );
+    listRow.append(chip);
+   }
+   cartScopeBar.append(listRow);
+  }
   const inputPane=mk('section','vs-question');
-  inputPane.append(paragraph('A QUESTION WORTH REFUSING TO ANSWER PREMATURELY','vs-eyebrow'));
+  inputPane.append(paragraph('RESEARCH QUEST COMPOSER · POSE A FALSIFIABLE QUESTION','vs-eyebrow'));
   const q=mk('textarea','vs-textarea');q.placeholder='Optional: your own falsifiable question. Leave blank for a source-attributed construction.';
   q.rows=3;q.maxLength=900;q.value=state.question;q.setAttribute('aria-label','Compose an original research question');
   q.addEventListener('input',()=>{state.question=q.value;withdrawVisibleProposal()});
@@ -530,7 +621,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   }
   inputPane.append(actions);
   // Source-first: the actual recorded Work appears before decorative census statistics.
-  append(host,head,columns,seam,index,offer,clockBox,inputPane,notice());
+  append(host,head,columns,seamWrap,cartScopeBar,index,offer,clockBox,inputPane,notice());
   if(state.result&&!state.resting)host.append(renderResult());
   else host.append(paragraph('Nothing has been composed on your behalf. The original source estate remains open for inquiry.','vs-empty'));
   if(!veilHandle){
@@ -545,7 +636,9 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     try{
      window.dispatchEvent(new Ev('vixen:synthesis-updated',{detail:{
       activePlan:state.result,refraction:state.refraction,resting:state.resting,
-      route:state.route,works:[...state.works]
+      route:state.route,lag:state.lag,track:state.track,protocol:state.protocol,
+      works:[...state.works],sources:[...state.sources],
+      question:state.question,cartWorkIds:cartScopeIds
      }}));
     }catch(_){}
    }
@@ -560,8 +653,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    if(text)el.textContent=text;
    return el;
   };
-  const svg=s('svg',{class:'vs-holonomy-svg',viewBox:'0 0 320 120',role:'img',
-   'aria-label':'Holonomy diamond comparing I to II versus II to I source paths'});
+  const svg=s('svg',{class:'vs-holonomy-svg',viewBox:'0 0 360 132',role:'img',
+   'aria-label':'Holonomy diamond comparing Work I to Work II versus Work II to Work I paths'});
   const defs=s('defs');
   const mkArrow=(id,fill)=>{
    const m=s('marker',{id,viewBox:'0 0 8 8',refX:'7',refY:'4',markerWidth:'6',markerHeight:'6',orient:'auto'});
@@ -572,18 +665,20 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   svg.append(defs);
   const fwdActive=route==='A_B';
   svg.append(
-   s('path',{d:'M34,60 Q160,12 286,60',fill:'none',stroke:fwdActive?'#FF91AF':'rgba(210,221,224,0.34)',
-    'stroke-width':fwdActive?'2.6':'1.4','marker-end':'url(#vsArrowRose)'}),
-   s('path',{d:'M286,60 Q160,108 34,60',fill:'none',stroke:!fwdActive?'#FFF0A8':'rgba(210,221,224,0.34)',
-    'stroke-width':!fwdActive?'2.6':'1.4','stroke-dasharray':!fwdActive?'none':'4 3','marker-end':'url(#vsArrowGold)'}),
-   s('circle',{cx:'34',cy:'60',r:'11',fill:'#10171D',stroke:'#FF91AF','stroke-width':'1.8'}),
-   s('circle',{cx:'286',cy:'60',r:'11',fill:'#10171D',stroke:'#FFF0A8','stroke-width':'1.8'}),
-   s('text',{x:'34',y:'64','text-anchor':'middle',fill:'#FFFDF8','font-size':'10','font-weight':'700'},'W₁'),
-   s('text',{x:'286',y:'64','text-anchor':'middle',fill:'#FFFDF8','font-size':'10','font-weight':'700'},'W₂'),
-   s('text',{x:'160',y:'20','text-anchor':'middle',fill:fwdActive?'#FF91AF':'#A4B6C2','font-size':'9.5'},'I ▷ II ('+titleText(wA).slice(0,12)+')'),
-   s('text',{x:'160',y:'112','text-anchor':'middle',fill:!fwdActive?'#FFF0A8':'#A4B6C2','font-size':'9.5'},'II ▷ I ('+titleText(wB).slice(0,12)+')')
+   s('path',{d:'M44,66 Q180,14 316,66',fill:'none',stroke:fwdActive?'#FF91AF':'rgba(210,221,224,0.34)',
+    'stroke-width':fwdActive?'2.8':'1.4','marker-end':'url(#vsArrowRose)'}),
+   s('path',{d:'M316,66 Q180,118 44,66',fill:'none',stroke:!fwdActive?'#FFF0A8':'rgba(210,221,224,0.34)',
+    'stroke-width':!fwdActive?'2.8':'1.4','stroke-dasharray':!fwdActive?'none':'4 3','marker-end':'url(#vsArrowGold)'}),
+   s('circle',{cx:'44',cy:'66',r:'13',fill:'#10171D',stroke:'#FF91AF','stroke-width':'1.8'}),
+   s('circle',{cx:'316',cy:'66',r:'13',fill:'#10171D',stroke:'#FFF0A8','stroke-width':'1.8'}),
+   s('text',{x:'44',y:'70','text-anchor':'middle',fill:'#FFFDF8','font-size':'10','font-weight':'700'},'W₁'),
+   s('text',{x:'316',y:'70','text-anchor':'middle',fill:'#FFFDF8','font-size':'10','font-weight':'700'},'W₂'),
+   s('text',{x:'44',y:'92','text-anchor':'middle',fill:'#CFC9C4','font-size':'8'},'Work I'),
+   s('text',{x:'316',y:'92','text-anchor':'middle',fill:'#CFC9C4','font-size':'8'},'Work II'),
+   s('text',{x:'180',y:'20','text-anchor':'middle',fill:fwdActive?'#FF91AF':'#A4B6C2','font-size':'9.5'},'Forward I ▷ II ('+titleText(wA).slice(0,14)+')'),
+   s('text',{x:'180',y:'122','text-anchor':'middle',fill:!fwdActive?'#FFF0A8':'#A4B6C2','font-size':'9.5'},'Reverse II ▷ I ('+titleText(wB).slice(0,14)+')')
   );
-  const centerText=s('text',{x:'160',y:'64','text-anchor':'middle',fill:'#FFF8F0','font-size':'10','font-weight':'600'},
+  const centerText=s('text',{x:'180',y:'70','text-anchor':'middle',fill:'#FFF8F0','font-size':'10.5','font-weight':'600'},
    `Δ=${vernier.arrival_inversions} inv · ${vernier.tick_l1_delta}t`);
   svg.append(centerText);
   return {svg,centerText};
@@ -750,10 +845,27 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  }
  addEvent('SALON_ENTERED',{operator_authority:'UNRATIFIED_QUESTIONS_ONLY'});render();
  void warmCurrent();
- window.addEventListener('vixen-study-tray-change',()=>{
-  const status=host.querySelector('.vs-status');
-  if(status&&!state.resting)status.textContent='The shared session study tray has changed; its source identities remain unchanged.';
- });
+ if(typeof window!=='undefined'){
+  window.addEventListener('vixen-study-tray-change',()=>{
+   const status=host.querySelector('.vs-status');
+   if(status&&!state.resting)status.textContent='The shared session study tray has changed; its source identities remain unchanged.';
+   if(!host.querySelector('.vs-question textarea:focus'))render();
+  });
+  window.addEventListener('vixen:stage-cart-works',(ev)=>{
+   const ids=(ev?.detail?.workIds||[]).filter(id=>corpus.works.some(w=>w.work_id===id));
+   if(ids.length>=1){
+    const w0=corpus.works.find(w=>w.work_id===ids[0]);
+    const w1=corpus.works.find(w=>w.work_id===(ids[1]||corpus.works.find(x=>x.work_id!==ids[0])?.work_id));
+    if(w0&&w1&&w0.work_id!==w1.work_id){
+     state.works=[w0.work_id,w1.work_id];
+     state.sources=[w0.linked_sources[0].source_file_id,w1.linked_sources[0].source_file_id];
+     changed();state.notice='Staged '+ids.length+' Research Cart Work(s) into the Salon.';
+     addEvent('CART_STAGED_IN_SALON',{work_ids:[...state.works]});
+     render();
+    }
+   }
+  });
+ }
  return Object.freeze({
   mounted:true,render,
   getProposal:()=>state.result,

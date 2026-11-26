@@ -79,7 +79,7 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
     docs.push(selected);
    }
    if(!state.calibration){
-    const response=await fetch('./vixen-estate/field-lens-public-calibration.json',{cache:'no-store'});
+    const response=await fetch(new URL('./field-lens-public-calibration.json',import.meta.url).href,{cache:'no-store'});
     if(!response.ok)throw Error('Public research-method calibration unavailable.');
     const data=await response.json();
     if(token!==state.epoch)return;
@@ -259,10 +259,36 @@ export function mountVixenComparativeFieldTrial(host=$('vmaComparativeFieldLab')
  };
  window.addEventListener('vixen-maestro-session-state',roleChange);
  render();
+ const exportSnapshot=()=>({
+  phase:state.phase,sourceA:state.sourceA,sourceB:state.sourceB,query:state.query,
+  viewOrder:state.viewOrder.slice(),documents:state.documents?JSON.parse(JSON.stringify(state.documents)):null,
+  run:state.run?JSON.parse(JSON.stringify(state.run)):null,
+  receipt:state.receipt?JSON.parse(JSON.stringify(state.receipt)):null,
+  draft:{...state.draft},draftRevision:state.draftRevision,
+  receiptExportRequested:state.receiptExportRequested
+ });
+ const restoreSnapshot=(snap)=>{
+  if(!snap||typeof snap!=='object'||!activeMaestro())return false;
+  state.epoch++;state.busy=false;
+  state.phase=typeof snap.phase==='string'?snap.phase:'SETUP';
+  state.sourceA=Number.isInteger(snap.sourceA)?snap.sourceA:0;
+  state.sourceB=Number.isInteger(snap.sourceB)?snap.sourceB:1;
+  state.query=typeof snap.query==='string'?snap.query:'';
+  state.viewOrder=Array.isArray(snap.viewOrder)?snap.viewOrder.slice():[];
+  state.documents=snap.documents?JSON.parse(JSON.stringify(snap.documents)):null;
+  state.run=snap.run?JSON.parse(JSON.stringify(snap.run)):null;
+  state.receipt=snap.receipt?JSON.parse(JSON.stringify(snap.receipt)):null;
+  state.draft=Object.assign(Object.create(null),snap.draft||{});
+  state.draftRevision=Number(snap.draftRevision)||0;
+  state.receiptExportRequested=Boolean(snap.receiptExportRequested);
+  render();
+  return true;
+ };
  const api=Object.freeze({mounted:true,
   status:()=>({phase:state.phase,role_active:activeMaestro(),
    report_recorded:state.receipt!==null,
    original_python_host_executed:false,method_parity:'HELD_UNPROVEN'}),
+  exportSnapshot,restoreSnapshot,
   // Returning the submitted browser receipt is intentionally a local, untrusted assertion.
   copyLocalReceipt:()=>state.receipt?JSON.parse(JSON.stringify(state.receipt)):null,
   draftStatus:()=>Object.freeze({

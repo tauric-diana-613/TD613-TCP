@@ -86,7 +86,7 @@ export function createComposeCustodyLedger({directory=null,now=()=>new Date().to
    await rename(temp,join(entries,n(seq)));
    // Where supported, flush directory entry, not merely the file.
    const folder=await open(entries,'r');
-   try{await folder.sync()}finally{await folder.close()}
+   try{await folder.sync()}catch(e){if(!(process.platform==='win32'&&['EPERM','EISDIR','EBADF'].includes(e?.code)))throw e}finally{await folder.close()}
    return {status:'RECORDED_INTERNAL',record:rec,
      digest:rec.sha256,external_anchor_required:true,release_authority:false};
   }finally{await rmdir(lock)}

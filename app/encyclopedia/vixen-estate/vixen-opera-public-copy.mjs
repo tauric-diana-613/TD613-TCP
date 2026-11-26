@@ -35,7 +35,7 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bAteliers\b/gi,'research workspaces'],
   [/\bAtelier\b/gi,'research workspace'],
   [/\bTD613-TCP\b/g,'the hosting archive'],
-  [/\bTD613\b/g,'the research host'],
+  [/\bTD613\b(?!\s+Encyclopedia\b)/g,'the research host'],
   [/\b(?:ChatGPT|Gemini|Antigravity|Codex|Amari)\b/gi,''],
   // The constitutional roles are public terms of art. Never erase their identity.
 ]);

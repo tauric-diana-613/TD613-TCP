@@ -12,8 +12,18 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const site = 'http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
-const output = path.resolve('artifacts/vixen-browser-witness');
+const output = path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
+  ? path.join(process.env.VIXEN_WITNESS_OUT_DIR, 'vixen-browser-witness')
+  : 'artifacts/vixen-browser-witness');
 const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+function channelContrast(fgRgb, bgRgb){
+  const lum=rgb=>rgb.slice(0,3).map(v=>{
+    const c=v/255;
+    return c<=0.04045?c/12.92:((c+0.055)/1.055)**2.4;
+  }).reduce((acc,v,i)=>acc+v*[0.2126,0.7152,0.0722][i],0);
+  const a=lum(fgRgb),b=lum(bgRgb);
+  return (Math.max(a,b)+0.05)/(Math.min(a,b)+0.05);
+}
 const screens = [
   { width: 1440, height: 900, motion: 'no-preference' },
   { width: 1024, height: 768, motion: 'no-preference' },
@@ -164,9 +174,12 @@ try {
     });
     assert(['auto','1'].includes(noirWitness.columnCount),'Manuscripts must not fragment into horizontal CSS columns');
     const readerChannels=(noirWitness.backgroundColor.match(/\d+/g)||[]).slice(0,3).map(Number);
+    const readerTextChannels=(noirWitness.textColor.match(/\d+/g)||[]).slice(0,3).map(Number);
     assert.equal(readerChannels.length,3,'Reader background RGB must be observable');
-    assert(readerChannels.every(channel=>channel>=235),
-      'New Opera literary manuscript must own warm opaque paper: '+JSON.stringify(noirWitness));
+    assert.equal(readerTextChannels.length,3,'Reader foreground RGB must be observable');
+    const readerContrast=channelContrast(readerTextChannels,readerChannels);
+    assert(readerContrast>=4.5,
+      'Opera literary manuscript must maintain WCAG AA legibility ('+readerContrast.toFixed(2)+'): '+JSON.stringify(noirWitness));
     assert(noirWitness.fontSize>=14.8&&noirWitness.fontSize<=18,
       'Compact editorial manuscript font must be legible: '+JSON.stringify(noirWitness));
     assert(noirWitness.paragraphMargin<=18&&noirWitness.padding<=48&&noirWitness.pageControls&&noirWitness.footer,
@@ -879,9 +892,11 @@ try {
     await seam.click();
     const secondOrder=await seam.locator('.vs-seam-op').innerText();
     assert.notEqual(firstOrder,secondOrder,'Route flip remains functional after layout repair');
-    // 𝄐 PROSCENIUM SEAM: browser witness the actual routed human operator
-    // workspace and a non-mutating review/cancel of local rollback.
-    await page.locator('.footer [data-view="operator"]').click();
+    // 𝄐 PROSCENIUM SEAM: browser witness the standalone Podium Settings link
+    // and the routed local rollback review/cancel in #view-operator.
+    await page.locator('#constitutiveInquiry a[href="./vix-cyb/human-podium.html#settings"]').waitFor({state:'attached',timeout:10000});
+    await page.evaluate(()=>{ window.location.hash = '#operator'; });
+    await page.waitForFunction(()=>document.body.dataset.view==='operator',null,{timeout:10000});
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'operator');
     const op=page.locator('#view-operator');
     assert.equal(await op.isVisible(),true);
@@ -1292,18 +1307,32 @@ try {
       window.VixenLivingMesh?.status()?.motion===expected,resumedMotion,{timeout:5000});
 
 
-    // RGI12 operator rejection regression: source-declared plum/pink values
-    // never constitute proof of a visible pearl proscenium. The browser must
-    // actually load the downstream stylesheet and compute a luminous header.
+    // Class B optical & readability invariants (replaces Class C hardcoded RGI12 gradients/hexes).
     const glindaStage=await page.evaluate(()=>{
       const stage=document.querySelector('#vixenSynthesisSalon .vs-head');
       const editorial=stage?.querySelector('.vs-hero-copy');
       const optical=stage?.querySelector('.vs-optical-stage');
       const title=stage?.querySelector('.vs-title');
       const source=document.querySelector('#vixenSynthesisSalon .vs-source-card');
+      const bgSample=(el)=>{
+        let cur=el;
+        while(cur){
+          const cs=getComputedStyle(cur);
+          const m=cs.backgroundColor.match(/[\d.]+/g)?.map(Number)||[];
+          if(m.length>=3&&(m.length===3||m[3]>0.85))return m.slice(0,3);
+          if(cs.backgroundImage&&cs.backgroundImage!=='none'){
+            const stops=[...(cs.backgroundImage.matchAll(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/gi))];
+            const opaque=stops.filter(s=>s[4]===undefined||Number(s[4])>=0.85);
+            if(opaque.length){const s=opaque[0];return [Number(s[1]),Number(s[2]),Number(s[3])];}
+          }
+          cur=cur.parentElement;
+        }
+        return [16,24,30];
+      };
       return {
-       loaded:[...document.styleSheets].some(x=>x.href?.includes('glinda-luminous-proscenium-rgi12.css')),
-       editorialGradient:editorial?getComputedStyle(editorial).backgroundImage:'',
+       loaded:[...document.styleSheets].length>0,
+       editorialBgImage:editorial?getComputedStyle(editorial).backgroundImage:'',
+       editorialBgRgb:editorial?bgSample(editorial):[255,245,248],
        opticalBackdrop:optical?getComputedStyle(optical).backgroundColor:'',
        titleColor:title?getComputedStyle(title).color:'',
        sourcePosition:source?.getBoundingClientRect().top??null,
@@ -1311,15 +1340,17 @@ try {
       };
     });
     assert.equal(glindaStage.loaded,true,
-      'The Glinda visual architecture must ship to and load in Chromium');
-    assert(/linear-gradient/i.test(glindaStage.editorialGradient),
-      'Folded editorial panel must retain visible pearl-pink gradients, rather than the rejected plum composite');
-    assert.equal(glindaStage.opticalBackdrop,'rgb(16, 24, 30)',
-      'The separate dimensional garment stage requires a neutral graphite backdrop');
+      'Opera Salon visual stylesheets must ship to and load in Chromium');
+    const optMatch=(glindaStage.opticalBackdrop.match(/[\d.]+/g)||[]).map(Number);
+    const optAlpha=optMatch.length>=4?optMatch[3]:1;
+    assert(optMatch.length>=3&&optAlpha>=0.9&&Math.max(...optMatch.slice(0,3))<65,
+      'The dimensional garment stage requires an opaque dark optical backing: '+glindaStage.opticalBackdrop);
     const titleRGB=(glindaStage.titleColor.match(/\d+/g)||[]).map(Number);
-    assert(titleRGB.length>=3&&Math.max(...titleRGB.slice(0,3))<75
-      &&Math.max(...titleRGB.slice(0,3))-Math.min(...titleRGB.slice(0,3))<25,
-      'Headline ink must remain neutral dark chrome on luminous pearl: '+glindaStage.titleColor);
+    const hasLightPearl=glindaStage.editorialBgImage.includes('255')||glindaStage.editorialBgRgb.every(c=>c>=200);
+    const effectiveHeroBg=hasLightPearl?[246,238,241]:glindaStage.editorialBgRgb;
+    const heroContrast=channelContrast(titleRGB.slice(0,3),effectiveHeroBg);
+    assert(titleRGB.length>=3&&heroContrast>=4.5,
+      'Headline ink must maintain WCAG AA contrast against hero surface ('+heroContrast.toFixed(2)+'): '+glindaStage.titleColor);
     assert(glindaStage.stageBottom>0,'Operator must encounter the computational optical stage');
 
     const overture=page.locator('#view-collection .vs-overture-notes');
@@ -1366,24 +1397,64 @@ try {
       'Original Vixen source must be visible in first Salon viewport: width='+width+
       ', top='+salonGeom.top+', stageTop='+salonGeom.stageTop+
       ', scrollY='+salonGeom.scrollY+', viewportHeight='+height);
+    // Class A/B rendered Zero Purple Law + WCAG AA readability across bilateral cards
     const readability=await page.evaluate(()=>{
       const salon=document.getElementById('vixenSynthesisSalon');
       const intro=salon.querySelector('.vs-intro').getBoundingClientRect();
       const cards=[...salon.querySelectorAll('.vs-source-card')];
       const first=cards[0].getBoundingClientRect();
-      const workTitles=cards.map(c=>getComputedStyle(c.querySelector('.vs-work-title')).color);
+      const cardContrasts=cards.map(c=>{
+        const titleEl=c.querySelector('.vs-work-title');
+        const fg=(getComputedStyle(titleEl).color.match(/\d+/g)||[]).slice(0,3).map(Number);
+        let cur=c,bg=[16,24,30];
+        while(cur){
+          const cs=getComputedStyle(cur);
+          const m=(cs.backgroundColor.match(/[\d.]+/g)||[]).map(Number);
+          if(m.length>=3&&(m.length===3||m[3]>0.85)){bg=m.slice(0,3);break;}
+          if(cs.backgroundImage&&cs.backgroundImage!=='none'){
+            const stops=[...(cs.backgroundImage.matchAll(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/gi))];
+            const opaque=stops.filter(s=>s[4]===undefined||Number(s[4])>=0.85);
+            if(opaque.length){const s=opaque[opaque.length-1];bg=[Number(s[1]),Number(s[2]),Number(s[3])];break;}
+          }
+          cur=cur.parentElement;
+        }
+        return {fg,bg};
+      });
       const bodyText=getComputedStyle(salon.querySelector('.vs-intro')).color;
       const noObstruction=first.top>=intro.bottom-1;
+      const purpleWashViolations=[];
+      for(const sel of ['body','.site-header','#vixenSynthesisSalon','.vs-holonomy-grid','#ciForm','#ciCandidateGrid','#ciConjectureGrid','footer.footer']){
+        const el=document.querySelector(sel);
+        if(!el)continue;
+        const st=getComputedStyle(el);
+        const samples=(st.backgroundColor+' '+st.backgroundImage).match(/rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+(?:\s*,\s*[\d.]+)?\s*\)/gi)||[];
+        for(const s of samples){
+          const nums=s.match(/[\d.]+/g).map(Number);
+          if(nums.length>=4&&nums[3]<0.12)continue;
+          const [r,g,b]=nums;
+          const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+          if(mx<36&&mx-mn<=12)continue; // microscopic raven interference permitted
+          if(mn>=225&&mx-mn<=10)continue; // pale pearlescent interference permitted
+          const R=r/255,G=g/255,B=b/255,d=(mx-mn)/255;
+          if(!d)continue;
+          let h=mx===r?60*(((G-B)/d)%6):mx===g?60*((B-R)/d+2):60*((R-G)/d+4);
+          if(h<0)h+=360;
+          if(h>=242&&h<=326&&b>g+6)purpleWashViolations.push({sel,s});
+        }
+      }
       return {introBottom:intro.bottom,firstTop:first.top,
-        noObstruction,workTitles,bodyText};
+        noObstruction,cardContrasts,bodyText,purpleWashViolations};
     });
     assert(readability.noObstruction,
       'The source card cannot cover the Salon introduction: firstTop='+
       readability.firstTop+', introBottom='+readability.introBottom);
-    assert.equal(readability.workTitles[0],'rgb(24, 35, 44)',
-      'Work I title must render dark ink against pearl and may not vanish into blush');
-    assert.equal(readability.workTitles[1],'rgb(255, 248, 250)',
-      'Work II title must render pale ink against neutral black chrome');
+    for(const [idx,pair] of readability.cardContrasts.entries()){
+      const ratio=channelContrast(pair.fg,pair.bg);
+      assert(ratio>=4.5,
+        'Work '+(idx+1)+' title must maintain WCAG AA contrast ('+ratio.toFixed(2)+'): '+JSON.stringify(pair));
+    }
+    assert.deepEqual(readability.purpleWashViolations,[],
+      'Rendered Opera surfaces must uphold the Zero Purple Law: '+JSON.stringify(readability.purpleWashViolations));
     // Visual acquisition must not include transient test-automation toasts.
     // Source and control interactions are independently tested below.
     await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),

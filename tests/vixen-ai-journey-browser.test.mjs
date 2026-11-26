@@ -1,21 +1,26 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import {mkdir} from 'node:fs/promises';
+import path from 'node:path';
 
 const base='http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
-const output='artifacts/vixen-browser-witness';
+const output=path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
+ ? path.join(process.env.VIXEN_WITNESS_OUT_DIR,'vixen-browser-witness')
+ : 'artifacts/vixen-browser-witness');
 await mkdir(output,{recursive:true});
 const browser=await chromium.launch({headless:true});
 async function openSalon(page){
  await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
- await page.waitForFunction(()=>window.VixenAIModes?.mounted===true,null,{timeout:20000});
+ await page.locator('#footerPodiumLink').waitFor({state:'attached',timeout:15000});
  await page.evaluate(()=>{
-  const b=document.querySelector('#vixenRoomRail [data-view="collection"]')||
-   document.querySelector('button[data-view="collection"]');
-  if(!b)throw Error('NO_COLLECTION_NAVIGATION');
-  b.click();
+  const p=document.querySelector('#footerPodiumLink');
+  if(!p)throw Error('NO_PODIUM_NAVIGATION');
+  p.click();
  });
- await page.locator('#view-collection:not([hidden])').waitFor({timeout:12000});
+ await page.waitForURL('**/encyclopedia/vix-cyb/podium.html',{timeout:15000});
+ await page.locator('#podiumDoorHuman').click();
+ await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:15000});
+ await page.waitForFunction(()=>window.VixenAIModes?.mounted===true,null,{timeout:25000});
 }
 try{
  const desktop=await browser.newContext({viewport:{width:1440,height:900},
@@ -43,10 +48,12 @@ try{
  const sourceId=await page.evaluate(()=>
   window.VixenAIModes.session.handoff().result.source_candidates[0].work_id);
  await page.locator('#vmaSources .vma-source .vma-small').first().click();
+ await page.waitForURL('**/encyclopedia/vix-cyb.html#works/*',{timeout:15000});
  await page.locator('#view-works:not([hidden])').waitFor({timeout:15000});
  assert.equal(await page.locator('#worksExperimentAReaderMount').getAttribute('data-work-id'),sourceId);
  await page.locator('#vmaJourneyDock').click();
- await page.locator('#view-collection:not([hidden])').waitFor({timeout:10000});
+ await page.waitForURL('**/encyclopedia/vix-cyb/human-podium.html*',{timeout:15000});
+ await page.waitForFunction(()=>window.VixenAIModes?.mounted===true&&window.VixenAIModes.status().result?.active===true,null,{timeout:20000});
  // A role cannot change underfoot. The role picker is hidden while active.
  assert.equal(await page.locator('[data-vma-role="COMPOSER"]').isVisible(),false);
  await page.locator('#vmaMoves .vma-choice').first().click();

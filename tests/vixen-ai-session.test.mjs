@@ -131,11 +131,13 @@ test('Podium routes let an AI conductor branch, report and export while remainin
  assert.equal((await podium.dispatch(task('vixen.ai.archive'))).result.release_authority,false);
 });
 test('The site mounts actual role controls and a source-only browser guide',()=>{
- assert.match(html,/id="vixenAiJourney"/);
- assert.match(html,/data-vma-role="MAESTRO"/);
- assert.match(html,/data-vma-role="COMPOSER"/);
- assert.match(html,/vixen-ai-journey\.mjs/);
- assert.match(html,/vixen-ai-journey\.css/);
+ const podiumHtml=readFileSync(fileURLToPath(new URL('../app/encyclopedia/vix-cyb/human-podium.html',import.meta.url)),'utf8');
+ assert.match(html,/href="\.\/vix-cyb\/podium\.html"/);
+ assert.match(podiumHtml,/id="vixenAiJourney"/);
+ assert.match(podiumHtml,/data-vma-role="MAESTRO"/);
+ assert.match(podiumHtml,/data-vma-role="COMPOSER"/);
+ assert.match(podiumHtml,/vixen-ai-journey\.mjs/);
+ assert.match(podiumHtml,/vixen-ai-journey\.css/);
  const js=readFileSync(fileURLToPath(new URL('../app/encyclopedia/vixen-estate/vixen-ai-journey.mjs',import.meta.url)),'utf8');
  assert.match(js,/model_connected:false/);
  assert.match(js,/window\.VIXEN_STUDY_TRAY/);

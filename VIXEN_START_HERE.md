@@ -4,8 +4,10 @@
 **Current product authority:** `research/vixen-dual-estate-encyclopedia-20261108` through [PR #1730](https://github.com/tauric-diana-613/TD613-TCP/pull/1730). Resolve the **actual current HEAD** before editing; a historical preview SHA remains an immutable comparison point, never an automatically current instruction. The November 22 repaired preview at `9ad223e1062cd8cf7b1e160abf2b29c6a7e616fb` was qualified before the present pre-hydration editorial redpens.
 
 **Public web route:** `/encyclopedia/vix-cyb.html`  
+**Standalone Dual-Door Threshold & Human Podium:** `app/encyclopedia/vix-cyb/podium.html` · `app/encyclopedia/vix-cyb/human-podium.html`  
 **AI-facing public guide:** `app/encyclopedia/vix-cyb/llms.txt`  
 **Machine route list:** `app/encyclopedia/reference/podium/manifest.json`  
+**Emergence HQ & Double-Commission Navigation:** [`AMARI_VIXEN_NAVIGATION.md`](AMARI_VIXEN_NAVIGATION.md) · [`docs/VIXEN_TURN_II_GARMENT_DOSSIER.md`](docs/VIXEN_TURN_II_GARMENT_DOSSIER.md)  
 **Constitutional source-level instructions:** root `AGENTS.md`, then `app/encyclopedia/vixen-estate/AGENTS.md` and `app/encyclopedia/reference/podium/AGENTS.md`.
 
 ## Who owns what

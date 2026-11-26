@@ -10,7 +10,9 @@ import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const url='http://127.0.0.1:6130/encyclopedia/vix-cyb.html';
-const dir=path.resolve('artifacts/vixen-browser-witness');
+const dir=path.resolve(process.env.VIXEN_WITNESS_OUT_DIR
+ ? path.join(process.env.VIXEN_WITNESS_OUT_DIR,'vixen-browser-witness')
+ : 'artifacts/vixen-browser-witness');
 await mkdir(dir,{recursive:true});
 const receipt={
  schema:'emstd613.vixen.rgi09.real-webgl-candidate/v1',

@@ -196,3 +196,34 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenAiJourney{
   radial-gradient(ellipse 55% 65% at 3% 92%,rgba(29,91,98,.17),transparent 88%),
   linear-gradient(120deg,rgba(16,26,32,.86),rgba(22,30,33,.87) 45%,rgba(12,20,25,.88))!important;
 }
+#vixenAiJourney .vma-source-files{
+ font:600 10px/1.4 ui-monospace,monospace;color:#fff2a9!important;margin:2px 0 4px!important;overflow-wrap:anywhere;
+}
+#vixenAiJourney .vma-passage-peek{
+ margin:8px 0 0;padding:8px 10px;max-height:170px;overflow:auto;white-space:pre-wrap;
+ background:#090d11;border:1px solid rgba(255,242,169,.32);color:#f3ebe4;
+ font:400 11px/1.5 ui-monospace,monospace;
+}
+#vixenAiJourney .vma-composer-workbench{
+ margin-top:14px;border:1px solid rgba(255,145,175,.48)!important;background:#10171d!important;
+ max-width:100%;min-width:0;box-sizing:border-box;
+}
+#vixenAiJourney .vma-comp-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0;min-width:0;
+}
+#vixenAiJourney .vma-comp-grid > div,
+#vixenAiJourney .vma-comp-select,
+#vixenAiJourney #vmaComposerWorkbench input,
+#vixenAiJourney #vmaComposerWorkbench textarea{
+ max-width:100%;width:100%;min-width:0;box-sizing:border-box;
+}
+#vixenAiJourney .vma-comp-select{
+ text-overflow:ellipsis;overflow:hidden;white-space:nowrap;padding:7px 9px;
+ background:#090d11;color:#f4ede6;border:1px solid rgba(255,255,255,.18);
+}
+#vixenAiJourney .vma-inline{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#vixenAiJourney .vma-comp-output{
+ margin-top:10px;padding:11px 13px;background:#090d11;border-left:3px solid #fff2a9;
+ font:400 12px/1.5 Georgia,serif;color:#f4ede6;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+@media(max-width:740px){#vixenAiJourney .vma-comp-grid{grid-template-columns:minmax(0,1fr)}}

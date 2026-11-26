@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script id="td613-sitewide-reset-preflight" src="../../site-epoch-preflight.js" defer></script>
+<link rel="stylesheet" href="../vixen-estate/vixen-motion.css">
+<link rel="stylesheet" href="../reference/vixen-operator-encounter.css">
+<link rel="stylesheet" href="../vixen-estate/glinda-cybergoth-rgi10.css" data-visual-system="GLINDA_CYBERGOTH_RGI10">
+<link rel="stylesheet" href="../vixen-estate/vixen-stage-architecture-rgi10b.css" data-visual-system="THEATRE_OF_CONSEQUENCE_RGI10B">
+<link rel="stylesheet" href="../vixen-estate/glinda-luminous-proscenium-rgi12.css" data-visual-system="GLINDA_PEARL_CHROME_PROSCENIUM_RGI12">
+<link rel="stylesheet" href="../vixen-estate/vixen-electrical-breath-rgi13.css" data-visual-system="VIXEN_LIVING_MESH_ELECTRIC_COUTURE_RGI13">
+<link rel="stylesheet" href="../vixen-estate/vixen-opaline-couture-rgi14.css" data-visual-system="VIXEN_OPALINE_NO_PLUM_RGI14">
+<link rel="stylesheet" href="../assets/vixen/brand-assets.css" data-vixen-brand-contract="SVG_FOX_AND_APPROVED_FRONTISPIECE">
+<link rel="stylesheet" href="../vixen-estate/vixen-mobile-seams-rgi16.css" data-visual-system="VIXEN_OPERATOR_MOBILE_SEAM_REPAIR_RGI16">
+<link rel="stylesheet" href="../vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
+<link rel="stylesheet" href="../vixen-estate/vixen-proscenium-seam.css">
+<link rel="alternate" type="application/json" title="Vixen Podium machine research contract" href="../reference/podium/manifest.json">
+<meta name="td613-podium" content="DUAL_DOOR_ENTRANCE_READ_ONLY_HUMAN_CLOSURE_RESERVED">
+<title>Podium Entrance · Human &amp; AI Collaboration · Vixen Cybernetics</title>
+<style>
+:root{
+  --font-sans:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-display:'Syne','Trebuchet MS','Arial Black','Arial Narrow',Impact,sans-serif;
+  --font-serif:'Cormorant Garamond',Didot,'Bodoni MT','Palatino Linotype',Palatino,Georgia,serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,'Courier New',monospace;
+  --obsidian:#0a0e12;
+  --obsidian-panel:#11171c;
+  --porcelain:#F6F4F0;
+  --vixen-pink:#FF91AF;
+  --arc-flash:#FFF2A9;
+  --graphite:#1a2228;
+  --line:rgba(246,244,240,.18);
+  --line-strong:rgba(246,244,240,.42);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto!important;overflow-x:clip}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--obsidian);color:var(--porcelain);font:15px/1.68 var(--font-sans);overflow-x:clip}
+a{color:inherit}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,a:focus-visible{outline:2px solid var(--arc-flash);outline-offset:3px}
+svg.icon{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;pointer-events:none;flex-shrink:0}
+.podium-standalone-header{position:sticky;top:0;z-index:60;background:rgba(10,14,18,.96);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1440px;margin:0 auto;padding:12px clamp(14px,3vw,42px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.header-left{display:flex;align-items:center;gap:12px;min-width:0}
+.header-nav-cluster{display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
+.reading-back,.hdr-pill,.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid var(--line-strong);border-radius:8px;font:500 11px/1.2 var(--font-mono);text-decoration:none;color:var(--porcelain);background:rgba(255,255,255,.03)}
+.reading-back:hover,.hdr-pill:hover,.secondary-btn:hover{background:rgba(255,255,255,.1)}
+.primary-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 14px;border:1px solid var(--arc-flash);border-radius:8px;background:var(--arc-flash);color:#12181d;font:600 11px/1.2 var(--font-mono);text-decoration:none}
+.brand-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.brand-link .vixen-fox-emblem{width:34px;height:34px;flex-shrink:0;display:block}
+.brand-name strong{display:block;font:600 12px/1.1 var(--font-mono);letter-spacing:.12em}
+.brand-name small{display:block;font:500 10px/1.25 var(--font-mono);color:var(--vixen-pink);letter-spacing:.08em}
+.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hdr-cart-pill{position:relative}
+.hdr-cart-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--arc-flash);color:#12181d;font:700 10.5px/1 var(--font-mono)}
+.hdr-help-btn{position:relative;width:40px;padding:0;border-radius:999px}
+.hdr-help-tooltip{position:absolute;top:calc(100% + 6px);right:0;white-space:nowrap;padding:4px 8px;border-radius:6px;background:#12181d;border:1px solid var(--line-strong);color:var(--porcelain);font:500 10.5px/1.2 var(--font-mono);opacity:0;pointer-events:none;transition:opacity .2s}
+.hdr-help-btn:hover .hdr-help-tooltip,.hdr-help-btn:focus-visible .hdr-help-tooltip{opacity:1}
+main{flex:1;width:100%;max-width:1240px;margin:0 auto;padding:clamp(28px,5vw,60px) clamp(16px,3.5vw,42px)}
+.podium-threshold-inner{display:grid;gap:24px}
+.eyebrow{font:600 11px/1.3 var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--vixen-pink)}
+h1{font:600 clamp(28px,4.2vw,46px)/1.08 var(--font-display);letter-spacing:-.02em}
+.podium-threshold-dek{max-width:74ch;font:400 16px/1.68 var(--font-serif);color:rgba(246,244,240,.88)}
+.podium-doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.podium-door{display:flex;flex-direction:column;justify-content:space-between;gap:14px;padding:24px;border:1px solid var(--line-strong);border-radius:14px;background:linear-gradient(155deg,#12181f,#0b1014);text-decoration:none;transition:border-color .2s,transform .2s}
+.podium-door:hover{border-color:var(--vixen-pink);transform:translateY(-2px)}
+.podium-door-ai:hover{border-color:var(--arc-flash)}
+.podium-door-kicker{font:600 11px/1.2 var(--font-mono);letter-spacing:.14em;color:var(--arc-flash)}
+.podium-door strong{font:700 clamp(24px,3vw,34px)/1 var(--font-display);letter-spacing:.03em;color:var(--porcelain)}
+.podium-door span:not(.podium-door-kicker):not(.podium-door-cta){font:400 14.5px/1.62 var(--font-sans);color:rgba(246,244,240,.84)}
+.podium-door-meta{font:500 11.5px/1.4 var(--font-mono);color:var(--vixen-pink)}
+.podium-door-cta{font:600 12px/1.2 var(--font-mono);color:var(--arc-flash)}
+.podium-threshold-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.research-cart-popout{position:fixed;top:68px;right:18px;z-index:90;width:min(420px,calc(100vw - 24px));max-height:80vh;overflow:auto;padding:18px;border:1px solid var(--line-strong);border-radius:12px;background:#10151a;color:var(--porcelain);box-shadow:0 20px 54px rgba(0,0,0,.6)}
+.cart-popout-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.cart-popout-items{display:grid;gap:8px;margin-bottom:12px}
+.cart-popout-item{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.03)}
+.cart-popout-stage-actions,.cart-popout-exports{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.cart-popout-custody{margin-top:10px;font:400 11.5px/1.55 var(--font-sans);color:rgba(246,244,240,.75)}
+dialog.dialog{max-width:740px;width:calc(100vw - 24px);border:1px solid var(--line-strong);border-radius:14px;background:#11171c;color:var(--porcelain);padding:0}
+dialog.dialog::backdrop{background:rgba(4,7,10,.78)}
+.dialog-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dialog-body{padding:18px;display:grid;gap:12px;font-size:14px;line-height:1.65}
+footer.footer{margin-top:auto;border-top:1px solid var(--line);padding:18px clamp(16px,3.5vw,42px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;font:500 11.5px/1.4 var(--font-mono);background:#080b0e}
+.footer-actions,.footer-end-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+@media(max-width:760px){
+  .podium-doors{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:680px){
+  .lbl-desktop,.brand-name small{display:none}
+  .header-inner{padding:10px 12px;gap:8px}
+  .reading-back,.hdr-pill{min-height:36px;padding:0 8px}
+}
+</style>
+<link rel="stylesheet" href="../vixen-estate/vixen-bias-cut-couture.css" data-visual-system="VIXEN_BIAS_CUT_COUTURE_TURN_II">
+</head>
+<body data-page="podium-entrance" data-vixen-motion="live">
+<header class="podium-standalone-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-nav-cluster" role="group" aria-label="Podium Return Navigation">
+        <a class="reading-back" id="vixenReturnLink" href="../vix-cyb.html#overview" aria-label="Return to Vixen Entrance" title="Return to Vixen Entrance"><span aria-hidden="true">⌂</span><span class="lbl-desktop"> Home</span></a>
+        <button type="button" class="hdr-pill" id="vixenHistoryBack" aria-label="Go Back" title="Go Back">🢔</button>
+        <button type="button" class="hdr-pill" id="vixenHistoryForward" aria-label="Go Forward" title="Go Forward">🢖</button>
+      </div>
+      <a class="brand-link" href="../vix-cyb.html#overview" aria-label="Vixen Cybernetics Main Opera">
+        <svg class="vixen-fox-emblem" viewBox="0 0 64 64" aria-hidden="true"><polygon points="10,10 24,22 20,42 8,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="54,10 40,22 44,42 56,28" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="20,24 44,24 32,54" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="26" cy="33" r="2.2" fill="#FFF2A9"/><circle cx="38" cy="33" r="2.2" fill="#FFF2A9"/></svg>
+        <span class="brand-name"><strong>VIXEN CYBERNETICS</strong><small>PODIUM ENTRANCE · COLLABORATION THRESHOLD</small></span>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a class="secondary-btn" href="../vix-cyb.html#works"><span aria-hidden="true">←</span> Works</a>
+      <a class="secondary-btn" href="../vix-cyb.html#collection"><span aria-hidden="true">←</span> Salon</a>
+      <button type="button" class="hdr-pill hdr-cart-pill" id="researchCartBtn" aria-expanded="false" aria-controls="researchCartPopout" aria-label="Open Research Cart">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2l2.2 10h9.6l2-7H7.2"/><circle cx="10" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>
+        <span class="lbl-desktop">Research cart</span>
+        <span class="hdr-cart-badge" id="collectionCount" hidden aria-hidden="true"></span>
+      </button>
+      <button type="button" class="hdr-pill hdr-motion-control" id="motionBtn" aria-pressed="false" aria-label="Pause animations">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <button type="button" class="hdr-pill hdr-help-btn" id="headerHelpBtn" data-action="inspector" data-pua-emblem="􍘓" aria-label="Podium Entrance Help">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.5a2.4 2.4 0 0 1 4.8 0c0 1.6-2.4 2-2.4 3.6"/><circle cx="12" cy="16.8" r=".8" fill="currentColor" stroke="none"/></svg>
+        <span class="hdr-help-tooltip" role="tooltip">Need help?</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<aside id="researchCartPopout" class="research-cart-popout" role="dialog" aria-label="Research Cart" hidden>
+  <div class="cart-popout-head">
+    <div>
+      <span class="eyebrow">SESSION STUDY CART</span>
+      <h3>Research Cart <small id="researchCartPopoutCount">0 items</small></h3>
+    </div>
+    <button type="button" class="hdr-pill" id="closeResearchCartBtn" aria-label="Close Research Cart">✕</button>
+  </div>
+  <div class="cart-popout-items" id="collectionItemsContainer"></div>
+  <div class="cart-popout-stage-actions">
+    <a class="secondary-btn" id="cartStageSalonBtn" href="../vix-cyb.html#collection">Stage in Salon ↗</a>
+    <a class="secondary-btn" id="cartToPodiumBtn" href="./human-podium.html#composer">Carry to Human Podium →</a>
+  </div>
+  <div class="cart-popout-exports">
+    <button type="button" class="primary-btn" id="exportTrayBtn" disabled>Export Cart JSON ↓</button>
+    <button type="button" class="secondary-btn" id="footerSaveSessionBtn">Save Portable Session ZIP ⭳</button>
+  </div>
+  <p class="cart-popout-custody"><strong>Separate roles, read-only sources:</strong> Cart selections stay local in your browser session. Opening Podium connects no remote model and mutates no original Work.</p>
+</aside>
+
+<main id="main">
+  <section class="podium-threshold-inner" id="podiumThresholdMain" data-couture-slot="podium-threshold" aria-label="Dual-Door Podium Threshold">
+    <img class="vixen-fox-emblem bc-threshold-fox" data-vixen-asset-role="fox" src="../assets/vixen/fox-arcflash.svg" width="62" height="62" alt="" aria-hidden="true" decoding="async">
+    <p class="eyebrow">VIXEN CYBERNETICS · DUAL-DOOR PODIUM ENTRANCE</p>
+    <h1>Choose your entrance to the Podium.</h1>
+    <p class="podium-threshold-dek">You have crossed out of the eight-room Opera into a dedicated collaboration threshold. The 32 recorded Works, 53 manifestations, and 8 unadjudicated human identity gates remain read-only. Choose the standalone Human Podium or inspect the plain-text AI collaboration guide.</p>
+    <div class="bc-threshold-portal" id="bcThresholdPortal">
+      <figure class="bc-draft bc-draft--threshold" aria-label="The threshold custody seam between the human and machine entrances">
+        <div class="bc-draft-host" data-bc-draft></div>
+      </figure>
+      <div class="podium-doors">
+        <a class="podium-door podium-door-human" id="podiumDoorHuman" href="./human-podium.html">
+          <span class="podium-door-kicker">01 · DEDICATED HUMAN DESTINATION</span>
+          <strong>HUMAN</strong>
+          <span>Open the dedicated Human Podium workspace: choose <em>Maestro</em> for documentary exploration or <em>Composer</em> for cross-work drafting, plus Podium Settings &amp; Ledger and Help.</span>
+          <span class="podium-door-meta" id="podiumDoorCartStatus">Session Research Cart ready · notes remain OFF until approved</span>
+          <span class="podium-door-cta">Enter Human Podium →</span>
+        </a>
+        <a class="podium-door podium-door-ai" id="podiumDoorAi" href="./llms.txt">
+          <span class="podium-door-kicker">02 · MACHINE / LLM ENTRANCE</span>
+          <strong>AI / LLM</strong>
+          <span>Read the plain-text AI collaboration guide: source boundaries (separate archive, this collection, and source works), the 27 read-only collaborator tasks, falsifier discipline, and human-closure ceiling.</span>
+          <span class="podium-door-meta">Read-only plain-text guide · no live model · zero empirical credit</span>
+          <span class="podium-door-cta">Open AI Guide ↗</span>
+        </a>
+      </div>
+    </div>
+    <div class="podium-threshold-foot">
+      <a class="secondary-btn" id="podiumResumeExistingBtn" href="./human-podium.html?resume=1" hidden>Resume paused Podium adventure →</a>
+      <a class="secondary-btn" href="../vix-cyb.html#collection">← Back to Synthesis Salon</a>
+      <a class="secondary-btn" href="../vix-cyb.html#works">← Browse 32 Works</a>
+      <a class="secondary-btn" href="../vix-cyb.html#overview">← Main Opera Frontispiece</a>
+    </div>
+  </section>
+</main>
+
+<dialog class="dialog" id="inspectorDialog" closedby="any" aria-label="Podium Entrance User Guide">
+  <div class="dialog-header">
+    <strong style="font:600 11px/1.2 var(--font-mono);letter-spacing:.1em;color:var(--vixen-pink)">VIXEN PODIUM ENTRANCE GUIDE</strong>
+    <button type="button" class="hdr-pill" id="closeInspectorBtn">Close ✕</button>
+  </div>
+  <div class="dialog-body">
+    <p><strong>Why two separate doors?</strong> The Podium sits outside the 8-room collection so human research direction and plain-text AI collaborator instructions never impersonate an original manuscript.</p>
+    <p><strong>What carries across pages:</strong> Works added to your header Research Cart and active drafts staged in Synthesis Salon carry seamlessly across the catalogue, Podium Entrance, and Human Podium in your browser session.</p>
+    <p><strong>Custody boundary:</strong> Separate archives, this collection, and source works remain distinct. Opening Podium grants zero backend write access and connects no external model automatically.</p>
+  </div>
+</dialog>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-brand">
+    <span id="footerVixenWordmark" data-couture-slot="footer-wordmark"><strong>VIXEN CYBERNETICS</strong></span>
+  </div>
+  <div class="footer-actions">
+    <a href="../vix-cyb.html#works">Works Catalogue</a>
+    <a href="../vix-cyb.html#collection">Synthesis Salon</a>
+    <a id="footerEncyclopediaLink" href="/encyclopedia/">𝌋 TD613 Encyclopedia →</a>
+  </div>
+  <div class="footer-end-controls">
+    <a class="footer-podium-cta footer-podium-link" id="footerPodiumLink" href="./podium.html" aria-current="page">PODIUM (AI entrance) · Current</a>
+  </div>
+</footer>
+
+<script type="module">
+import {
+  readSharedStudyTray, writeSharedStudyTray, readPodiumExcursionSnapshot,
+  ensureCanonicalCorpusDom, buildCorpusLookup
+} from '../vixen-estate/vixen-shared-session-bridge.mjs';
+import { mountBiasDraft } from '../vixen-estate/vixen-bias-draft.mjs';
+
+let corpusData = null;
+let lookup = new Map();
+
+function syncCartUi() {
+  const ids = readSharedStudyTray();
+  const count = ids.length;
+  const badge = document.getElementById('collectionCount');
+  if (badge) {
+    badge.replaceChildren();
+    if (count > 0) {
+      const num = document.createElement('span');
+      num.className = 'hdr-cart-badge-num';
+      num.textContent = String(count);
+      badge.append(num);
+      badge.hidden = false;
+      badge.setAttribute('aria-hidden', 'false');
+    } else {
+      badge.hidden = true;
+      badge.setAttribute('aria-hidden', 'true');
+    }
+  }
+  const popCount = document.getElementById('researchCartPopoutCount');
+  if (popCount) popCount.textContent = count + (count === 1 ? ' item' : ' items');
+  const doorMeta = document.getElementById('podiumDoorCartStatus');
+  if (doorMeta) {
+    doorMeta.textContent = count > 0
+      ? count + ' Research Cart item' + (count === 1 ? '' : 's') + ' ready to carry · notes stay OFF until approved'
+      : 'Session Research Cart ready · notes remain OFF until approved';
+  }
+  const expBtn = document.getElementById('exportTrayBtn');
+  if (expBtn) expBtn.disabled = count === 0;
+  const list = document.getElementById('collectionItemsContainer');
+  if (list) {
+    list.replaceChildren();
+    if (!count) {
+      const empty = document.createElement('p');
+      empty.style.cssText = 'font:400 12.5px/1.6 var(--font-sans);color:rgba(246,244,240,.72)';
+      empty.textContent = 'No Works staged in your Research Cart yet. Browse 32 Works or Synthesis Salon to collect items.';
+      list.append(empty);
+    } else {
+      for (const id of ids) {
+        const meta = lookup.get(id) || { id, type: 'Record', title: id, sub: '' };
+        const card = document.createElement('div');
+        card.className = 'cart-popout-item';
+        const info = document.createElement('div');
+        const strong = document.createElement('strong');
+        strong.style.cssText = 'display:block;font-size:13px';
+        strong.textContent = meta.title;
+        const small = document.createElement('small');
+        small.style.cssText = 'display:block;font-size:11px;color:rgba(246,244,240,.72)';
+        small.textContent = meta.sub || id;
+        info.append(strong, small);
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.className = 'hdr-pill';
+        rm.textContent = 'Remove';
+        rm.addEventListener('click', () => {
+          writeSharedStudyTray(readSharedStudyTray().filter((x) => x !== id));
+          syncCartUi();
+        });
+        card.append(info, rm);
+        list.append(card);
+      }
+    }
+  }
+}
+
+document.getElementById('vixenHistoryBack')?.addEventListener('click', () => history.back());
+document.getElementById('vixenHistoryForward')?.addEventListener('click', () => history.forward());
+
+const cartBtn = document.getElementById('researchCartBtn');
+const cartPop = document.getElementById('researchCartPopout');
+const setCartOpen = (open) => {
+  if (!cartPop || !cartBtn) return;
+  cartPop.hidden = !open;
+  cartBtn.setAttribute('aria-expanded', String(open));
+  if (open) syncCartUi();
+};
+cartBtn?.addEventListener('click', (e) => { e.stopPropagation(); setCartOpen(cartPop.hidden); });
+document.getElementById('closeResearchCartBtn')?.addEventListener('click', () => setCartOpen(false));
+document.addEventListener('click', (e) => {
+  if (cartPop && !cartPop.hidden && !cartPop.contains(e.target) && e.target !== cartBtn) setCartOpen(false);
+});
+
+document.getElementById('exportTrayBtn')?.addEventListener('click', () => {
+  const ids = readSharedStudyTray();
+  if (!ids.length) return;
+  const records = ids.map((id) => lookup.get(id) || { id });
+  const blob = new Blob([JSON.stringify({ exported_at: new Date().toISOString(), capability_ceiling: 'READ_ONLY_STUDY_TRAY', records }, null, 2)], { type: 'application/json' });
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u; a.download = 'vixen-study-tray-metadata.json'; a.click();
+  setTimeout(() => URL.revokeObjectURL(u), 500);
+});
+
+document.getElementById('footerSaveSessionBtn')?.addEventListener('click', async () => {
+  const mod = await import('../vixen-estate/session-zip.mjs');
+  const ids = readSharedStudyTray();
+  await mod.downloadVixenSessionZip({
+    baseHref: new URL('../vix-cyb.html', window.location.href).href,
+    sessionMeta: { study_tray_work_ids: ids, page: 'podium-entrance' }
+  });
+});
+
+const motionBtn = document.getElementById('motionBtn');
+motionBtn?.addEventListener('click', () => {
+  const held = document.body.dataset.vixenMotion === 'still';
+  const nextStill = !held;
+  document.body.dataset.vixenMotion = nextStill ? 'still' : 'live';
+  motionBtn.setAttribute('aria-pressed', String(nextStill));
+});
+
+const helpDlg = document.getElementById('inspectorDialog');
+document.getElementById('headerHelpBtn')?.addEventListener('click', () => {
+  if (helpDlg && !helpDlg.open) helpDlg.showModal();
+});
+document.getElementById('closeInspectorBtn')?.addEventListener('click', () => helpDlg?.close());
+
+const pausedSnap = readPodiumExcursionSnapshot();
+if (pausedSnap?.active) {
+  const resumeBtn = document.getElementById('podiumResumeExistingBtn');
+  if (resumeBtn) resumeBtn.hidden = false;
+}
+
+if (location.protocol === 'file:') {
+  const f = document.getElementById('footerEncyclopediaLink');
+  if (f) { f.href = '../vix-cyb.html#overview'; f.textContent = '𝌋 Return to Opera Overview'; }
+}
+
+syncCartUi();
+window.addEventListener('pageshow', syncCartUi);
+{
+  const portal = document.getElementById('bcThresholdPortal');
+  const host = document.querySelector('.bc-draft--threshold [data-bc-draft]');
+  const doorHuman = document.getElementById('podiumDoorHuman');
+  const doorAi = document.getElementById('podiumDoorAi');
+  let activeDoor = '';
+  const schedule = mountBiasDraft(host, () => ({
+    mode: 'threshold',
+    indexA: 6,
+    indexB: 13,
+    lag: 36,
+    workIdA: 'vixen_human_podium',
+    workIdB: 'vixen_llms_contract',
+    labelA: 'HUMAN EXPEDITION',
+    fileA: 'Guided workspace',
+    labelB: 'AI / LLM BRIEF',
+    fileB: 'Plain-text guide',
+    reversed: activeDoor === 'ai',
+    cartCount: readSharedStudyTray().length
+  }), {
+    height: (w) => (w < 560 ? 205 : 210),
+    title: 'Threshold custody seam · human destination and plain-text AI contract'
+  });
+  const setDoorFocus = (which) => {
+    activeDoor = which;
+    if (portal) portal.dataset.activeDoor = which;
+    schedule();
+  };
+  doorHuman?.addEventListener('mouseenter', () => setDoorFocus('human'));
+  doorHuman?.addEventListener('focus', () => setDoorFocus('human'));
+  doorAi?.addEventListener('mouseenter', () => setDoorFocus('ai'));
+  doorAi?.addEventListener('focus', () => setDoorFocus('ai'));
+  portal?.addEventListener('mouseleave', () => { activeDoor = ''; delete portal.dataset.activeDoor; schedule(); });
+  host?.addEventListener('click', (ev) => {
+    const hit = ev.target.closest?.('[data-bc-door]');
+    if (!hit) return;
+    if (hit.dataset.bcDoor === 'human') doorHuman?.click();
+    else if (hit.dataset.bcDoor === 'ai') doorAi?.click();
+  });
+}
+ensureCanonicalCorpusDom({ vixHtmlUrl: '../vix-cyb.html' }).then(({ corpus }) => {
+  corpusData = corpus;
+  lookup = buildCorpusLookup(corpus);
+  syncCartUi();
+}).catch(() => {});
+</script>
+</body>
+</html>
