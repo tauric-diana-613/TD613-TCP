@@ -658,7 +658,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span class="brand-meta-row">
               <span class="project-math">S<sub>e</sub> ≡ [x + y] = z + 1</span>
               <span class="brand-sep" aria-hidden="true">·</span>
-              <span class="brand-sub" id="synthHeaderTagline">Typed Constitutive Cybernetics · Two Crossed Probes</span>
+              <span class="brand-sub" id="synthHeaderTagline">Source library · Computational research</span>
             </span>
           </span>
         </span>
@@ -815,7 +815,7 @@ body[data-view="overview"] .reading-back{display:none}
       </h1>
 
       <aside class="cover-marginalia" id="synthAxiomMarginalia" aria-label="Unified Synthesis Axiom">
-        <span>Typed Constitutive Cybernetics · Two Crossed Probes</span>
+        <span>Source library · Computational research</span>
         <span>Score 89.4% · κ=2.77 · Δ=3 inv · CROSSED_PROBES</span>
         <span>Verified classification boundaries · Independent evidence still required</span>
       </aside>
@@ -3511,6 +3511,7 @@ body[data-view="overview"] .reading-back{display:none}
             state.selectedWorkId = b.getAttribute('data-select-work');
             state.mobileWorkReaderOpen = true;
             renderWorksView();
+            if (window.matchMedia('(max-width:680px)').matches) window.scrollTo({top:0,behavior:'instant'});
           });
         });
       }

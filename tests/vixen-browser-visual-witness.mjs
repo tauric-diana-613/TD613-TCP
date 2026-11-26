@@ -94,6 +94,9 @@ try {
       'Works must enter fully opaque on the same frame as navigation; no canvas bleed-through');
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
     assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
+    await page.locator('#worksListContainer button[data-select-work]').first().waitFor({state:'visible',timeout:20000});
+    await page.evaluate(()=>window.scrollTo(0,0));
+    await page.screenshot({path:path.join(output,stem+'-operator-works-index.png'),fullPage:false,animations:'disabled'});
     // RGI24 operator screenshot regression: the SECOND Work is the real
     // title-case Algedonic PDF derivative (thousands of artificial word
     // breaks). Inspect its actual browser-rendered manuscript, not an
@@ -113,6 +116,8 @@ try {
         doc.querySelectorAll('.vix-reader-paragraph').length>20;
     },null,{timeout:30000,polling:250});
     const manuscript=page.locator('#expaCompanionBodyPre');
+    await page.evaluate(()=>window.scrollTo(0,0));
+    await page.screenshot({path:path.join(output,stem+'-operator-works-reader.png'),fullPage:false,animations:'disabled'});
     const reading=await manuscript.evaluate(el=>{
       const paragraphs=[...el.querySelectorAll('.vix-reader-paragraph')];
       const paragraphWords=paragraphs.map(p=>p.textContent.trim().split(/\s+/).length);
@@ -442,6 +447,11 @@ try {
     assert.equal(await page.locator('#view-overview #ciMetricVernier').count(),0);
     await page.locator('#vixenRoomRail button[data-view="collection"]').click();
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'collection');
+    assert.equal(await page.locator('#salonSourceComparison').getAttribute('open'),null);
+    assert.equal(await page.locator('#vixenSynthesisSalon .vs-source-card').first().isVisible(),false);
+    await page.locator('#ciCandidateGrid .ci-candidate-card').first().waitFor({state:'visible',timeout:20000});
+    await page.evaluate(()=>window.scrollTo(0,0));
+    await page.screenshot({path:path.join(output,stem+'-operator-salon-first-viewport.png'),fullPage:false,animations:'disabled'});
     // Exercise #constitutiveInquiry ranked candidate scoring inside Salon and
     // verify the active wheel-scroll lock on its instrument cards.
     const scrollAudit=await page.evaluate(async()=>{

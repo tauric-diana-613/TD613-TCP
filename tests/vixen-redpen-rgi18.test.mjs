@@ -185,7 +185,7 @@ test('RGI23 · three pedagogical Opera paths preserve all native source-bearing 
  for(const name of ['vixWorksPathTitle','vixGatePathTitle','vixRefusalPathTitle']){
   assert.match(page,new RegExp('id="'+name+'"'));
  }
- assert.equal((page.match(/class="vix-couture-route-guide"/g)||[]).length,3);
+ assert.equal((page.match(/class="vix-couture-route-guide(?: [^"]+)?"/g)||[]).length,3);
  assert.equal((page.match(/class="vix-route-stage" role="listitem"/g)||[]).length,9);
  assert.equal((page.match(/class="vix-route-custody"/g)||[]).length,3);
  for(const id of ['workSearchInput','worksListContainer','gateSensitivityReadout',

@@ -64,7 +64,9 @@ test('Vixen browser loads new editorial system without exposing native estate to
  assert.doesNotMatch(html,/href="\.\/vixen-estate\/vixen-noir-folio-rgi25\.css"/);
  assert.match(html,/ci-scoring-primer/);
  assert.match(html,/An instrument for asking better questions/);
- assert.match(html,/THE OBSIDIAN READING ROOM/);
+ assert.match(html,/Original source library/);
+ assert.match(html,/works-extra-tools/);
+ assert.match(html,/id="expaCompanionBodyPre"/);
  assert.doesNotMatch(html,/>FADT Exact \[C3\]/);
  assert.doesNotMatch(html,/>FADT &amp; XOR SYNERGY/);
  assert.match(css,/#expaCompanionBodyPre/);
