@@ -621,3 +621,41 @@ test('DD-02: scientific companion audit includes Atlas and preserves mathematica
   assert.ok(receipt.scientific_companion_audit, 'Companion audit receipt must be produced');
   assert.ok(receipt.scientific_companion_audit.active_roles.includes('ATLAS'), 'Audit roles must include ATLAS');
 });
+
+
+test('DD-02 native Vixen visual commission executes actual conductor and returns bounded formal alternatives', async () => {
+  const commission = JSON.parse(readFileSync(resolve('artifacts/vixen-dd02/design-commission.json'), 'utf8'));
+  assert.equal(commission.deliverable_count, 1);
+  assert.equal(commission.dossier.five_operator_supplied_audits.length, 5);
+  const receipt = await runDollhouseDesignCycle(commission);
+  assert.equal(receipt.schema, DOLLHOUSE_DESIGN_SCHEMA);
+  assert.equal(receipt.output_contract.requested_deliverables, 1);
+  assert.ok(Array.isArray(receipt.candidates) && receipt.candidates.length >= 2);
+  assert.ok(receipt.primary_materialization);
+  assert.equal(receipt.authority?.release_authority ?? false, false);
+  const publicSummary = {
+    commission_id: receipt.commission_id,
+    schema: receipt.schema,
+    instruments: receipt.selected_instruments,
+    candidate_count: receipt.candidates.length,
+    candidates: receipt.candidates.map(c => ({
+      title: c.concept_title,
+      instrument: c.governing_instrument,
+      governing_operation: c.formal_proposition
+    })),
+    primary_materialization: {
+      title: receipt.primary_materialization.title,
+      operative_verbs: receipt.primary_materialization.operative_verbs
+    },
+    internal_refraction: {
+      mutated_parameter: receipt.refractive_variant?.mutated_parameter,
+      formal_consequence: receipt.refractive_variant?.formal_consequence
+    },
+    deliverable_count: receipt.output_contract.requested_deliverables,
+    native_conductor_execution: true,
+    release_authority: false,
+    protected_b_flight: 'HELD',
+    human_closure: 'RESERVED'
+  };
+  console.log('TD613_VIXEN_DD02_NATIVE_RETURN=' + JSON.stringify(publicSummary));
+});
