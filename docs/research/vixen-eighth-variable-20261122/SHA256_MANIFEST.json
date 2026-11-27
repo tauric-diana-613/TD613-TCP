@@ -1,0 +1,34 @@
+{
+  "schema": "td613.eighth-variable.pre-registration.sha256-manifest/v1",
+  "origin": "Chat-mode authored proposed preregistration, before received trial inputs",
+  "entries": {
+    "00_README.md": {
+      "bytes": 1769,
+      "sha256": "e07eb299a7f61735d43dc49717e5db16e286debd56b986b66e3481390b44f216"
+    },
+    "01_PREREGISTRATION.md": {
+      "bytes": 13873,
+      "sha256": "45a7aab98ae445f944f69e5df90c4f0d764b12f7ba725d638c2eb94d6cffe883"
+    },
+    "02_LOCKED_PROMPTS.json": {
+      "bytes": 16631,
+      "sha256": "2dd7a68e3c34087cb8a0b122ecdd8a1fcb85f0ac51dc8a97b73b57c51b848bba"
+    },
+    "03_WORK_MODE_ACTIVATION.md": {
+      "bytes": 6888,
+      "sha256": "725a100b86debc1c6e8bd04f7b899f5cfd734bc6714da79b340e292f727e56fe"
+    },
+    "04_SCORING_AND_HOLDS.json": {
+      "bytes": 3004,
+      "sha256": "ee39a990539d35adb345ad413aeb7469816e9196e6135b27b47132455f65f9e7"
+    },
+    "05_validate_protocol.py": {
+      "bytes": 1857,
+      "sha256": "c08f391fb93e52f7b6a69441bd32df742e2c25ba5629ad4068c69b37cdb38979"
+    }
+  },
+  "source_commit": "b90ae99559b21e1561229cdc8e1d873cfaf6f43a",
+  "eighth_artifact_bytes_received": false,
+  "seven_pdf_bytes_received": false,
+  "operator_artistic_closure": "RESERVED"
+}
